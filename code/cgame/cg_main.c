@@ -315,7 +315,7 @@ void MVAPI_AfterInit(void)
 		jk2version = trap_MVAPI_GetVersion();
 
 		// Set gameplay and version
-		MV_SetGameVersion( jk2version );
+		MV_SetGameVersion( jk2version, qfalse );
 		MV_SetGamePlay( jk2startversion );
 	}
 
@@ -881,9 +881,6 @@ Q_NORETURN void QDECL CG_Error( const char *msg, ... ) {
 	trap_Error( text );
 }
 
-#ifndef CGAME_HARD_LINKED
-// this is only here so the functions in q_shared.c and bg_*.c can link (FIXME)
-
 Q_NORETURN void QDECL Com_Error( int level, const char *error, ... ) {
 	va_list		argptr;
 	char		text[1024];
@@ -905,8 +902,6 @@ void QDECL Com_Printf( const char *msg, ... ) {
 
 	CG_Printf ("%s", text);
 }
-
-#endif
 
 /*
 ================
@@ -981,7 +976,6 @@ called during a precache command
 */
 static void CG_RegisterSounds( void ) {
 	int		i;
-	char	items[MAX_ITEMS+1];
 	char	name[MAX_QPATH];
 
 	// voice commands
@@ -1220,9 +1214,6 @@ static void CG_RegisterSounds( void ) {
 		trap_S_RegisterSound (name);
 	}
 
-	// only register the items that the server says we need
-	strcpy( items, CG_ConfigString( CS_ITEMS ) );
-
 	for ( i = 1 ; i < bg_numItems ; i++ ) {
 //		if ( items[ i ] == '1' || cg_buildScript.integer ) {
 			CG_RegisterItemSounds( i );
@@ -1276,7 +1267,6 @@ This function may execute for a couple of minutes with a slow disk.
 */
 static void CG_RegisterGraphics( void ) {
 	int			i;
-	char		items[MAX_ITEMS+1];
 	static char		*sb_nums[11] = {
 		"gfx/2d/numbers/zero",
 		"gfx/2d/numbers/one",
@@ -1530,15 +1520,8 @@ Ghoul2 Insert End
 */
 	memset( cg_weapons, 0, sizeof( cg_weapons ) );
 
-	// only register the items that the server says we need
-	strcpy( items, CG_ConfigString( CS_ITEMS) );
-
-	for ( i = 1 ; i < bg_numItems ; i++ ) {
-		if ( items[ i ] == '1' || cg_buildScript.integer ) {
-			CG_LoadingItem( i );
-			CG_RegisterItemVisuals( i );
-		}
-	}
+	// Register items
+	CG_UpdateConfigString( CS_ITEMS, qtrue );
 
 	cg.loadLCARSStage = 6;
 
@@ -2489,7 +2472,7 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum ) {
 
 		if ( jk2version == VERSION_UNDEF ) CG_Error("MVSDK: Unable to detect jk2version [CGame].");
 		jk2startversion = jk2version;
-		MV_SetGameVersion(jk2version);
+		MV_SetGameVersion(jk2version, qtrue);
 	}
 	CG_Printf("jk2version [CGame]: 1.0%i\n", jk2version);
 

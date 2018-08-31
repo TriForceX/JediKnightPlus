@@ -163,7 +163,7 @@ void MV_SetGamePlay( mvversion_t version )
 	}
 }
 
-void MV_SetGameVersion( mvversion_t version )
+void MV_SetGameVersion( mvversion_t version, qboolean setGameplay )
 {
 	switch ( version )
 	{
@@ -251,5 +251,5 @@ void MV_SetGameVersion( mvversion_t version )
 			break;
 	}
 
-	MV_SetGamePlay( version ); // Default gameplay of that version...
+	if ( setGameplay ) MV_SetGamePlay( version ); // Default gameplay of that version...
 }

@@ -17,7 +17,7 @@ typedef enum
 /* */
 
 /* Functions */
-extern void MV_SetGameVersion( mvversion_t version );
+extern void MV_SetGameVersion( mvversion_t version, qboolean setGameplay );
 extern void MV_SetGamePlay( mvversion_t version );
 
 /* Function pointers */

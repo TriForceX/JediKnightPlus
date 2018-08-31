@@ -18,7 +18,7 @@ typedef enum
 extern playerState_1_02_t g_ps[MAX_CLIENTS];
 
 /* Functions */
-extern void MV_SetGameVersion( mvversion_t version );
+extern void MV_SetGameVersion( mvversion_t version, qboolean setGameplay );
 extern void MV_VersionMagic( qboolean revert );
 
 /* Function pointers */

@@ -73,7 +73,7 @@ void trap_G2API_CollisionDetect_DoesNotExistIn_1_02(CollisionRecord_t *collRecMa
 	G_Printf("MVSDK: trap_G2API_CollisionDetect called in 1.02 mode");
 }
 
-void MV_SetGameVersion( mvversion_t version )
+void MV_SetGameVersion( mvversion_t version, qboolean setGameplay )
 {
 	switch ( version )
 	{
@@ -115,7 +115,7 @@ void MV_SetGameVersion( mvversion_t version )
 			break;
 	}
 
-	MV_SetGamePlay( version ); // Default gameplay of that version...
+	if ( setGameplay ) MV_SetGamePlay( version ); // Default gameplay of that version...
 }
 
 void MV_VersionMagic( qboolean revert )

@@ -229,6 +229,7 @@ static void CG_ConfigStringModified( void ) {
 void CG_UpdateConfigString( int num, qboolean init )
 {
 	const char *str = CG_ConfigString( num );
+	int i;
 
 	if ( num >= CS_MODELS && num < CS_MODELS+MAX_MODELS )
 	{
@@ -354,7 +355,7 @@ void CG_UpdateConfigString( int num, qboolean init )
 			break;
 		case CS_TEAMVOTE_STRING:
 		case CS_TEAMVOTE_STRING + 1:
-			Q_strncpyz( cgs.teamVoteString[num-CS_TEAMVOTE_STRING], str, sizeof( cgs.teamVoteString ) );
+			Q_strncpyz( cgs.teamVoteString[num-CS_TEAMVOTE_STRING], str, sizeof( cgs.teamVoteString[0] ) );
 			break;
 		case CS_INTERMISSION:
 			cg.intermissionStarted = atoi( str );
@@ -368,6 +369,14 @@ void CG_UpdateConfigString( int num, qboolean init )
 			break;
 		case CS_SHADERSTATE:
 			CG_ShaderStateChanged( str );
+			break;
+		case CS_ITEMS:
+			for ( i = 1 ; i < bg_numItems ; i++ ) {
+				if ( str[ i ] == '1' || cg_buildScript.integer ) {
+					if ( init ) CG_LoadingItem( i );
+					CG_RegisterItemVisuals( i );
+				}
+			}
 			break;
 		case CS_MVSDK:
 			MV_LoadSettings( str );

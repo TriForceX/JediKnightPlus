@@ -75,7 +75,7 @@ if(NOT InMV)
 			set(Architecture "i386")
 			set(ARCH_X86 ON)
 			set(ARCH_X86_32 ON)
-		elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^x86.64$")
+		elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86.64|amd64)$")
 			set(GlobalDefines ${GlobalDefines} "ARCH_X86_64")
 			set(Architecture "amd64")
 			set(ARCH_X86 ON)
@@ -153,7 +153,7 @@ if (NOT InMV)
 
 		# Optimization
 		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MP") # multiprocessor compilation
-		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /O2 /Oi /Ot /Ob2 /fp:fast") # maximize speed
+		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /O2 /Oi /Ot /Ob2") # maximize speed
 
 		if(ARCH_X86_32)
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /arch:SSE2")
@@ -173,7 +173,7 @@ if (NOT InMV)
 		endif()
 
 		# Optimization
-		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -ffast-math")
+		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2")
 
 		# General
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")

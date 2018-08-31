@@ -25,8 +25,10 @@ void Team_InitGame( void ) {
 	switch( g_gametype.integer ) {
 	case GT_CTF:
 	case GT_CTY:
-		teamgame.redStatus = teamgame.blueStatus = -1; // Invalid to force update
-		Team_SetFlagStatus( TEAM_RED, FLAG_ATBASE );
+		// Initialize the status for both flags
+		teamgame.redStatus = FLAG_ATBASE;
+		teamgame.blueStatus = FLAG_DROPPED; // DROPPED, so Team_SetFlagStatus updates the configstring
+
 		Team_SetFlagStatus( TEAM_BLUE, FLAG_ATBASE );
 		break;
 	default:

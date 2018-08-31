@@ -51,6 +51,8 @@ sfxHandle_t	CG_CustomSound( int clientNum, const char *soundName ) {
 	}
 
 	CG_Error( "Unknown custom sound: %s", soundName );
+
+	return 0;
 }
 
 

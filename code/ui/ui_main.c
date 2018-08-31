@@ -145,7 +145,7 @@ void MVAPI_AfterInit(void)
 		jk2version = trap_MVAPI_GetVersion();
 
 		// Set gameplay and version
-		MV_SetGameVersion( jk2version );
+		MV_SetGameVersion( jk2version, qfalse );
 		MV_SetGamePlay( jk2startversion );
 	}
 
@@ -195,7 +195,7 @@ int MV_UiDetectVersion( void )
 	if ( jk2version == VERSION_UNDEF ) trap_Error("MVSDK: Unable to detect jk2version [UI].");
 	Com_Printf("jk2version [UI]: 1.0%i\n", jk2version);
 	jk2startversion = jk2version;
-	MV_SetGameVersion(jk2version); // Set the GameVersion...
+	MV_SetGameVersion(jk2version, qtrue); // Set the GameVersion...
 
 	switch( jk2version )
 	{

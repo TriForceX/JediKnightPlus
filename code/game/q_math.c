@@ -528,7 +528,6 @@ void VectorRotate( vec3_t in, vec3_t matrix[3], vec3_t out )
 
 //============================================================================
 
-#if !idppc
 /*
 ** float q_rsqrt( float number )
 */
@@ -546,11 +545,6 @@ float Q_rsqrt( float number )
 	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
 //	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
 
-#ifndef Q3_VM
-#ifdef __linux__
-	assert( !isnan(y) ); // bk010122 - FPE?
-#endif
-#endif
 	return y;
 }
 
@@ -560,7 +554,6 @@ float Q_fabs( float f ) {
 	fi.i &= 0x7FFFFFFF;
 	return fi.f;
 }
-#endif
 
 //============================================================
 

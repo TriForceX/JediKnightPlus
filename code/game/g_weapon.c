@@ -697,7 +697,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 
 			if ( traceEnt->takedamage )
 			{
-				vec3_t preAng;
+				vec3_t preAng = { 0 };
 				int preHealth = traceEnt->health;
 				int preLegs = 0;
 				int preTorso = 0;

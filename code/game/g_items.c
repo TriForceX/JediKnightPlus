@@ -1999,6 +1999,11 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
 
+	// Register the item even if we're going to remove it, as unpatched clients
+	// don't update their item registration on map_restart and we might enable
+	// weapons after a map_restart.
+	RegisterItem( item );
+
 	if (g_gametype.integer == GT_TOURNAMENT)
 	{
 		wDisable = g_duelWeaponDisable.integer;
@@ -2019,7 +2024,6 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 		}
 	}
 
-	RegisterItem( item );
 	if ( G_ItemDisabled(item) )
 		return;
 

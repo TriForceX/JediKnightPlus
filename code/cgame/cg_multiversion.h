@@ -3,7 +3,7 @@
 #define __CG_MULTIVERSION_H_INCLUDED___
 
 /* Functions */
-extern void MV_SetGameVersion( mvversion_t version );
+extern void MV_SetGameVersion( mvversion_t version, qboolean setGameplay );
 
 /* Function Pointers */
 extern qboolean	(*trap_Language_IsAsian)					(void);
