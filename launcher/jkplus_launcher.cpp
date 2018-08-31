@@ -88,7 +88,7 @@ string getCurrentPath(void){
 void generateDefault(void){
 	ofstream defaultFile;
 	string defaultText = 1 + MOD_DEFAULT;
-	defaultFile.open("settings.ini");
+	defaultFile.open("jkplus_launcher.ini");
 	defaultFile << defaultText.substr(0, defaultText.size() - 1);
 	defaultFile.close();
 	return;
@@ -105,10 +105,10 @@ int main()
 		string modPath = getCurrentPath();
 
 		//Check settings file
-		if (!fileExist("settings.ini")){
+		if (!fileExist("jkplus_launcher.ini")){
 			system("cls");
 			printf("\n-------------------------------- [ Error ] --------------------------------\n\n");
-			printf("Can't find 'settings.ini'. Starting to create a new one...\n");
+			printf("Can't find 'jkplus_launcher.ini'. Starting to create a new one...\n");
 			printf("\n---------------------------------------------------------------------------\n\n");
 			system("pause");
 			generateDefault();
@@ -118,10 +118,10 @@ int main()
 		}
 		
 		//Check empty file
-		if (fileEmpty("settings.ini")){
+		if (fileEmpty("jkplus_launcher.ini")){
 			system("cls");
 			printf("\n-------------------------------- [ Error ] --------------------------------\n\n");
-			printf("File 'settings.ini' is empty. Giving default values...\n");
+			printf("File 'jkplus_launcher.ini' is empty. Giving default values...\n");
 			printf("\n---------------------------------------------------------------------------\n\n");
 			system("pause");
 			generateDefault();
@@ -134,7 +134,7 @@ int main()
 		printf("%s\n", 1 + MOD_WELCOME);
 
 		//Get and parse settings
-		ifstream getSettingFile("settings.ini");
+		ifstream getSettingFile("jkplus_launcher.ini");
 		vector<getSetting> getCvars;
 		string getCvarTitle;
 		string getCvarName;
@@ -203,7 +203,7 @@ int main()
 			printf("\n--------------------------- [ Modify Settings ] ---------------------------\n\n");
 			printf("Opening settings file... Edit it and launch the server again.\n");
 			printf("\n---------------------------------------------------------------------------\n\n");
-			system("settings.ini");
+			system("jkplus_launcher.ini");
 			//Restart
 			system("cls");
 			continue;
