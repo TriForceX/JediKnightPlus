@@ -14,7 +14,7 @@ Note: This mod is under development, some features may be disabled or not finish
 
 Phase | Version | Download
 ------------ | ------------ | -------------
-Beta | 1.0-rev1 | [Click here](https://jk2mp.com/mods/jkplus)
+Beta | 1.0-rev1 | Not available
 Release | Not available | Not available
 
 # Mod & Server Setup
@@ -153,6 +153,7 @@ There is the list of unfinished stuff and people's approved requests. As i go fo
 - Add Telefrag (Show the camera on the last killer)
 - In-game screenshot viewer
 - Add Light-Amp Goggles item from single player
+- Add Flashlight feature
 - Enable voice commands (Jedi Academy style)
 - Add Hold The Point game type
 - Add Man Hunt game type
@@ -164,22 +165,26 @@ There is the list of unfinished stuff and people's approved requests. As i go fo
 
 The people below helped me to solve problems and help in this project by giving me advice or helping me directly.
 
-- DeathSpike (Client plugin related info and tips)
+- DeathSpike (Client plugin support)
 - Lee Oates (Anti-script code)
-- Nerevar (Ingame effects, camera hints and santa hat)
-- Kaiser (Map modding and assets tips)
-- Rich Whitehouse (Melee weapon code from Hydroball mod)
-- NTxC / Reality~ (1.02 related info and tips)
-- Tox Laximus (Bots AI related info and tips)
-- MCMonkey (Map modding support)
-- JediDog~ (1.03 related info and tips)
-- NewAge (Admin management code examples)
-- Wonko The Sane (JK2 base improvements tips)
-- Daggolin (Map modding and coding tips)
-- Ouned / Twitch (Engine coding tips)
+- Nerevar (Ingame effects, atmospherics and santa hat)
+- Kaiser (Map modding support)
+- Rich Whitehouse (Melee weapon from Hydroball)
+- NTxC / Reality~ (1.02 coding support)
+- Tox Laximus (Bots AI support)
+- McMonkey (Map modding support)
+- JediDog~ (1.03 coding support)
+- NewAge (Admin management support)
+- Wonko The Sane (JK2 base improvements support)
+- Daggolin (Map modding and coding support)
+- Ouned / Twitch (Engine coding support)
 - Kameleon (3D model draw angles fix)
-- Fau (2D aspect ratio fix support)
+- Fau (2D aspect ratio fix)
 - BarryHit (Coding support and testing)
+- Player (Support and testing)
+- Flendo (Beta testing)
+- VideoP / Loda (Strafe helper)
+- MVSDK / JK2MV (Gameplay changer and MVAPI)
 - x[Dsk]x Clan and 1.03 community (Support and testing)
 
 # Contact
