@@ -10,7 +10,7 @@ The main goal is to reunite the most useful and innovative stuff to the game env
 
 # Status & Download
 
-Note: This mod is under development, some features may be disabled or not finished. If you found a bug, problem or an error, please contact me at triforce@gznetwork.com
+Note: This mod is under development, some features may be disabled or not finished. If you found a bug, problem or an error, please contact me at triforce@jk2mp.com
 
 Phase | Version | Download
 ------------ | ------------ | -------------
@@ -95,6 +95,7 @@ Status | Feature
 ✗ | In-game clock showing the actual local hours, minutes and seconds
 ✗ | In-game server list to join another server without disconnect
 ✗ | Speed-o-meter to display player speed in-game and best record
+✗ | Strafe jumping helper/efficiency meter
 ✗ | Custom lightsaber hilt support
 ✗ | Two alternative huds (Jedi Academy and basic lite)
 ✗ | Alternative FPS and server time style
@@ -196,7 +197,7 @@ Visit the home page:
 https://jk2mp.com/mods/jkplus
 
 Feel free to write me if you got questions regarding the mod  
-E-mail: triforce@gznetwork.com
+E-mail: triforce@jk2mp.com
 
 # License
 
