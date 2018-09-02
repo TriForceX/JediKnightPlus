@@ -2451,7 +2451,7 @@ void DismembermentByNum(gentity_t *self, int num);
 ClientCommand
 =================
 */
-void ClientCommand( int clientNum ) {
+void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: BaseJK2 client command function
 	gentity_t *ent;
 	char	cmd[MAX_TOKEN_CHARS];
 

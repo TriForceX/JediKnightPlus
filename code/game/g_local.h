@@ -1331,3 +1331,4 @@ qboolean trap_MVAPI_DisableStructConversion( qboolean disable );                
 #include "../api/mvapi.h"
 #include "g_multiversion.h"
 
+#include "../jkplus/jkplus_local.h" // Tr!Force: JKPlus main header

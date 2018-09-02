@@ -21,6 +21,7 @@ set(MVGAMEHEADERS
 	"${SRCDir}/game/botlib.h"
 	"${SRCDir}/game/chars.h"
 	"${SRCDir}/game/g_local.h"
+	"${SRCDir}/jkplus/jkplus_local.h" # Tr!Force: JKPlus headers
 	"${SRCDir}/game/g_public.h"
 	"${SRCDir}/game/g_team.h"
 	"${SRCDir}/game/inv.h"
@@ -47,6 +48,7 @@ set(MVGAMEHEADERS
 
 set(MVGAMESOURCES
 	"${SRCDir}/game/g_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
+	"${SRCDir}/jkplus/jkplus_main.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/ai_main.c"
 	"${SRCDir}/game/ai_util.c"
 	"${SRCDir}/game/ai_wpnav.c"
@@ -61,6 +63,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_bot.c"
 	"${SRCDir}/game/g_client.c"
 	"${SRCDir}/game/g_cmds.c"
+	"${SRCDir}/jkplus/jkplus_cmds.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/g_combat.c"
 	"${SRCDir}/game/g_items.c"
 	"${SRCDir}/game/g_log.c"
