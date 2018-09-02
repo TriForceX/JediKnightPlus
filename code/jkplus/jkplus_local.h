@@ -9,10 +9,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 #undef	GAMEVERSION
 
 #define JKPLUS_LONGNAME			"Jedi Knight Plus"
-#define JKPLUS_SHORTNAME		"JKPlus"
-#define	JKPLUS_PHASE			"Beta"
-#define	JKPLUS_RELEASE			"1"
-#define JKPLUS_DEVELOP			"0-rev1"
+#define JKPLUS_SHORTNAME   		"JKPlus"
+#define JKPLUS_PHASE   			"Beta"
+#define JKPLUS_RELEASE 			"1"
+#define JKPLUS_DEVELOP 			"0-rev1"
 #define GAMEVERSION				"^5" JKPLUS_SHORTNAME " " JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
 
 /*
@@ -48,6 +48,7 @@ Global definitions
 */
 
 #define	ClientCommand				JKPlus_ClientCommand
+#define ClientThink_real			JKPlus_ClientThink_real
 #define G_RegisterCvars				JKPlus_G_RegisterCvars
 #define G_UpdateCvars				JKPlus_G_UpdateCvars
 

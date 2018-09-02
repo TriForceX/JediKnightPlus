@@ -994,7 +994,7 @@ If "g_synchronousClients 1" is set, this will be called exactly
 once for each server frame, which makes for smooth demo recording.
 ==============
 */
-void ClientThink_real( gentity_t *ent ) {
+void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: BaseJK2 client think real function
 	gclient_t	*client;
 	pmove_t		pm;
 	int			oldEventSequence;

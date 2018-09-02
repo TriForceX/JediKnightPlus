@@ -59,6 +59,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/bg_slidemove.c"
 	"${SRCDir}/game/bg_weapons.c"
 	"${SRCDir}/game/g_active.c"
+	"${SRCDir}/jkplus/jkplus_active.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/g_arenas.c"
 	"${SRCDir}/game/g_bot.c"
 	"${SRCDir}/game/g_client.c"
