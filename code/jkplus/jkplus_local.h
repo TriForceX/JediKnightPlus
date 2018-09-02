@@ -47,10 +47,13 @@ Global definitions
 =====================================================================
 */
 
-#define	ClientCommand				JKPlus_ClientCommand
+#define ClientCommand				JKPlus_ClientCommand
 #define ClientThink_real			JKPlus_ClientThink_real
-#define G_RegisterCvars				JKPlus_G_RegisterCvars
+#define G_RegisterCvars 			JKPlus_G_RegisterCvars
 #define G_UpdateCvars				JKPlus_G_UpdateCvars
+#define ClientConnect				JKPlus_ClientConnect
+#define ClientBegin					JKPlus_ClientBegin
+#define ClientSpawn					JKPlus_ClientSpawn
 
 /*
 =====================================================================
@@ -67,5 +70,4 @@ Common / new functions
 =====================================================================
 */
 
-/*void		JKPlus_someFunction1(gentity_t *ent);
-void		JKPlus_someFunction2(gentity_t *ent);*/
+char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
