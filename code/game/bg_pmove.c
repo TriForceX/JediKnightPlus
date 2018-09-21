@@ -3462,7 +3462,7 @@ static void PM_Weapon( void )
 			desiredAnim = pm->ps->forceDodgeAnim;
 
 			// TriForce: Emote prediction
-			if (pm->ps->eFlags & EF_IN_EMOTE
+			if (pm->ps->eFlags & EF_EMOTE_IN
 				&& pm->ps->velocity[0] == 0
 				&& pm->ps->velocity[1] == 0
 				&& pm->ps->velocity[2] == 0

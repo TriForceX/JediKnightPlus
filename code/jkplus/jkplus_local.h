@@ -76,11 +76,18 @@ Common / new functions
 =====================================================================
 */
 
+//g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
+//jkplus_emotes.c
 int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
 int			JKPlus_emoteIn(gentity_t *ent, int type);
 void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
 void		JKPlus_emoteDoHug(gentity_t *ent);
 void		JKPlus_emoteDoKiss(gentity_t *ent);
 void		JKPlus_emoteDoPunch(gentity_t *ent, int cmd);
+
+//jkplus_common.c
+int			JKPlus_compareCmd(char *cmd, char *required);
+void		JKPlus_stringEscape(char *in, char *out);
+void		JKPlus_cleanString(char *in, char *out);

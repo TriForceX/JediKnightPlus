@@ -49,6 +49,7 @@ set(MVGAMEHEADERS
 set(MVGAMESOURCES
 	"${SRCDir}/game/g_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
 	"${SRCDir}/jkplus/jkplus_main.c" # Tr!Force: JKPlus sources
+	"${SRCDir}/jkplus/jkplus_common.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/ai_main.c"
 	"${SRCDir}/game/ai_util.c"
 	"${SRCDir}/game/ai_wpnav.c"

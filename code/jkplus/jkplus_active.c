@@ -54,14 +54,14 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 		}
 
 		// Keep the client informed about to predict the emote leg timers
-		if (!(ent->client->ps.eFlags & EF_IN_EMOTE))
+		if (!(ent->client->ps.eFlags & EF_EMOTE_IN))
 		{
-			ent->client->ps.eFlags |= EF_IN_EMOTE;
+			ent->client->ps.eFlags |= EF_EMOTE_IN;
 		}
 	}
-	else if (ent->client->ps.eFlags & EF_IN_EMOTE)
+	else if (ent->client->ps.eFlags & EF_EMOTE_IN)
 	{
-		ent->client->ps.eFlags &= ~EF_IN_EMOTE;
+		ent->client->ps.eFlags &= ~EF_EMOTE_IN;
 	}
 
 	// Launch original client think real function
