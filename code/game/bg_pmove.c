@@ -3460,6 +3460,18 @@ static void PM_Weapon( void )
 			break;
 		case HANDEXTEND_TAUNT:
 			desiredAnim = pm->ps->forceDodgeAnim;
+
+			// TriForce: Emote prediction
+			if (pm->ps->eFlags & EF_IN_EMOTE
+				&& pm->ps->velocity[0] == 0
+				&& pm->ps->velocity[1] == 0
+				&& pm->ps->velocity[2] == 0
+				&& !(pm->ps->pm_flags & PMF_DUCKED))
+			{
+				PM_SetAnim(SETANIM_LEGS, desiredAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, 100);
+				pm->ps->legsTimer = 1;
+			}
+
 			break;
 			//Hmm... maybe use these, too?
 			//BOTH_FORCEHEAL_QUICK //quick heal (SP level 2 & 3)

@@ -28,10 +28,20 @@ typedef struct { // Cvar table struct
 vmCvar_t	jkplus_test1;
 vmCvar_t	jkplus_test2;
 
+vmCvar_t	jkplus_emotesBreak;
+vmCvar_t	jkplus_emotesFreeze;
+vmCvar_t	jkplus_emotesEnabled;
+vmCvar_t	jkplus_emotesPunchDMG;
+
 static cvarTable_t	JKPlusCvarTable[] = {
 
 	{ &jkplus_test1,				"jkplus_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_test2,				"jkplus_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
+
+	{ &jkplus_emotesBreak,			"jkplus_emotesBreak",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesFreeze,			"jkplus_emotesFreeze",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesEnabled,		"jkplus_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesPunchDMG,		"jkplus_emotesPunchDMG",		"0",					CVAR_ARCHIVE,		0, qtrue },
 
 };
 

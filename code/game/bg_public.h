@@ -391,7 +391,7 @@ typedef enum {
 #define EF_DISINTEGRATION	0x02000000		// being disintegrated by the disruptor
 #define EF_INVULNERABLE		0x04000000		// just spawned in or whatever, so is protected
 
-
+#define EF_IN_EMOTE			( 1 < 33 )		// Tr!Force: Emote prediction
 
 typedef enum {
 	EFFECT_NONE = 0,

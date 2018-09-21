@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 #define JKPLUS_PHASE   			"Beta"
 #define JKPLUS_RELEASE 			"1"
 #define JKPLUS_DEVELOP 			"0-rev1"
-#define GAMEVERSION				"^5" JKPLUS_SHORTNAME " " JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
+#define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " " JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
 
 /*
 =====================================================================
@@ -64,6 +64,11 @@ Cvar registration
 extern	vmCvar_t					jkplus_test1;
 extern	vmCvar_t					jkplus_test2;
 
+extern	vmCvar_t					jkplus_emotesBreak;
+extern	vmCvar_t					jkplus_emotesFreeze;
+extern	vmCvar_t					jkplus_emotesEnabled;
+extern	vmCvar_t					jkplus_emotesPunchDMG;
+
 /*
 =====================================================================
 Common / new functions
@@ -71,3 +76,10 @@ Common / new functions
 */
 
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
+
+int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
+int			JKPlus_emoteIn(gentity_t *ent, int type);
+void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
+void		JKPlus_emoteDoHug(gentity_t *ent);
+void		JKPlus_emoteDoKiss(gentity_t *ent);
+void		JKPlus_emoteDoPunch(gentity_t *ent, int cmd);

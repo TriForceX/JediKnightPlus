@@ -28,7 +28,11 @@ void JKPlus_ClientCommand(int clientNum)
 	trap_Argv(0, cmd, sizeof(cmd));
 
 	// Start commands
-	if (Q_stricmp(cmd, "testcmd") == 0)
+	if (JKPlus_emoteCheck(cmd, ent))
+	{
+		return;
+	}
+	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
 		char *message = jkplus_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";
 		
