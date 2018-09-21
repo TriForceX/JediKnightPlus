@@ -70,7 +70,7 @@ void JKPlus_ClientCommand(int clientNum)
 				"^3Super2         Surrender      Spin          SpinR       Spin2       Spin2R\n"
 				"^3Taunt2         Taunt3         Think         Threaten    ThumbsUp    ThumbsDown\n"
 				"^3TossBack       TossOver       TossUp        Type        Type2       Victory\n"
-				"^3Waitning       WatchOut       Wave          Wave2       Write       Write2\n"
+				"^3Waiting        WatchOut       Wave          Wave2       Write       Write2\n"
 				"^7\""));
 				return;
 		}
