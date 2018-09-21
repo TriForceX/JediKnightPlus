@@ -57,7 +57,7 @@ void JKPlus_ClientCommand(int clientNum)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Emotes ^5]^7\n"
-				"^7Emotes are visual animations making you sit down or greet at someone.\n"
+				"^7Emotes are visual animations that allows you to sit down, greet someone, etc...\n"
 				"^7There are over 50 emotes to choose from. (Some might be disabled by the server).\n"
 				"^7You can assign an emote to a key using the following command: ^2/bind <key> <emote>\n"
 				"^5----------\n"
