@@ -68,6 +68,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/jkplus/jkplus_cmds.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/jkplus/jkplus_emotes.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/g_combat.c"
+	"${SRCDir}/jkplus/jkplus_combat.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/g_items.c"
 	"${SRCDir}/game/g_log.c"
 	"${SRCDir}/game/g_mem.c"

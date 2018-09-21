@@ -16,8 +16,6 @@ Client think real function
 
 void JKPlus_ClientThink_real(gentity_t *ent)
 {
-	// Stuff here...
-
 	// Already in an emote
 	if (JKPlus_emoteIn(ent, -1))
 	{
@@ -55,7 +53,7 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 			ent->client->ps.forceHandExtendTime = level.time + INFINITE;
 		}
 
-		// Keep the client informed about to predict the emote leg timers.
+		// Keep the client informed about to predict the emote leg timers
 		if (!(ent->client->ps.eFlags & EF_IN_EMOTE))
 		{
 			ent->client->ps.eFlags |= EF_IN_EMOTE;

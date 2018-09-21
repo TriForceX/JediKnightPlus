@@ -54,6 +54,7 @@ Global definitions
 #define ClientConnect				JKPlus_ClientConnect
 #define ClientBegin					JKPlus_ClientBegin
 #define ClientSpawn					JKPlus_ClientSpawn
+#define G_Damage					JKPlus_G_Damage
 
 /*
 =====================================================================

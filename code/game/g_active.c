@@ -1617,10 +1617,21 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: BaseJK2 client th
 				{
 					if (faceKicked->health > 0 &&
 						faceKicked->client->ps.stats[STAT_HEALTH] > 0 &&
-						faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN)
+						faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN
+						&& !JKPlus_emoteIn(ent, -1) // Tr!Force: Emote prediction
+						)
 					{
 						if (Q_irand(1, 10) <= 3)
-						{ //only actually knock over sometimes, but always do velocity hit
+						{ 
+							// Tr!Force: Emote prediction
+							if(JKPlus_emoteIn(faceKicked, 2))
+							{
+								faceKicked->client->ps.forceHandExtend = HANDEXTEND_NONE;
+								faceKicked->client->ps.forceDodgeAnim = 0;
+								faceKicked->client->ps.forceHandExtendTime = 0;
+							}
+
+							//only actually knock over sometimes, but always do velocity hit
 							faceKicked->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
 							faceKicked->client->ps.forceHandExtendTime = level.time + 1100;
 							faceKicked->client->ps.forceDodgeAnim = 0; //this toggles between 1 and 0, when it's 1 we should play the get up anim

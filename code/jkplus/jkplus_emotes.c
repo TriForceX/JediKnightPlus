@@ -2,7 +2,7 @@
 ======================= Jedi Knight Plus Mod ========================
 By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 =====================================================================
-[Description]: Main commands functions
+[Description]: Main emotes functions
 =====================================================================
 */
 
@@ -161,7 +161,7 @@ int JKPlus_emoteCheck(char *cmd, gentity_t *ent)
 {
 	int	i;
 
-	// Now start on the checks for each command possibility.
+	// Now start on the checks for each command possibility
 	for(i = 0; i < sizeof(emotes) / sizeof(emotes[0]); i++)
 	{
 		if(Q_stricmp(cmd, emotes[i].cmd) == 0)
@@ -171,7 +171,7 @@ int JKPlus_emoteCheck(char *cmd, gentity_t *ent)
 		}
 	}
 
-	// It does not seem to be picked up, ignore it.
+	// It does not seem to be picked up, ignore it
 	return 0;
 }
 
@@ -192,24 +192,24 @@ int JKPlus_emoteIn(gentity_t *ent, int type)
 		{
 			switch(type)
 			{
-			case -1: // Looking for any emote.
+			case -1: // Looking for any emote
 			default:
 				return 1;
 				break;
-			case 0: // Looking for freeze emote.
+			case 0: // Looking for freeze emote
 				if(!emotes[i].special && emotes[i].endAnim != -1 &&
 					(ent->client->ps.forceHandExtend == HANDEXTEND_DODGE))
 				{
 					return 1;
 				}
 				break;
-			case 1: // Looking for non-freezing emotes.
+			case 1: // Looking for non-freezing emotes
 				if(!emotes[i].special && emotes[i].endAnim == -1)
 				{
 					return 1;
 				}
 				break;
-			case 2: // Looking for special emote.
+			case 2: // Looking for special emote
 				if(emotes[i].special &&
 					(ent->client->ps.forceHandExtend == HANDEXTEND_TAUNT))
 				{
@@ -221,7 +221,7 @@ int JKPlus_emoteIn(gentity_t *ent, int type)
 
 	}
 
-	// No match, result 0.
+	// No match, result 0
 	return 0;
 }
 
@@ -234,14 +234,14 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;
 
-	// Exception for duel gametype.
+	// Exception for duel gametype
 	if(g_gametype.integer == GT_TOURNAMENT)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this gametype.\n\"");
 		return;
 	}
 
-	// Exception for when you are moving.
+	// Exception for when you are moving
 	if(ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"Please stop moving before you attempt an emote.\n\"");
@@ -255,7 +255,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		return;
 	}
 
-	// Invalid conditions to start an emote.
+	// Invalid conditions to start an emote
 	if(ent->client->ps.duelInProgress
 		|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
 		|| ent->client->ps.saberInFlight
@@ -264,21 +264,21 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		return;
 	}
 
-	// When you have a saber and are in attack, disallow.
+	// When you have a saber and are in attack, disallow
 	if(ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
 	{
 		return;
 	}
 
-	// You have a weapon but the emote isnt a freezing/walking one, disallow.
+	// You have a weapon but the emote isnt a freezing/walking one, disallow
 	if(ent->client->ps.weapon != WP_SABER
-		&& !emotes[emoteIndex].special			// Its not walkable.
-		&& emotes[emoteIndex].endAnim == -1)	// Its not freezing.
+		&& !emotes[emoteIndex].special			// Its not walkable
+		&& emotes[emoteIndex].endAnim == -1)	// Its not freezing
 	{
 		return;
 	}
 
-	// Now that everything goes through here, we have to check if its a hug or a kiss to use their special commands.
+	// Now that everything goes through here, we have to check if its a hug or a kiss to use their special commands
 	if(emotes[emoteIndex].startAnim == -1)
 	{
 		if (Q_stricmp(emotes[emoteIndex].cmd, "hug") == 0)
@@ -303,16 +303,16 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		}
 	}
 
-	// If emotes are disabled, you can still exit an emote.
+	// If emotes are disabled, you can still exit an emote
 	if(jkplus_emotesEnabled.integer == 0 && !JKPlus_emoteIn(ent, -1))
 	{
 		return;
 	}
 
-	// This is a special type of emote.
+	// This is a special type of emote
 	if(emotes[emoteIndex].endAnim != -1)
 	{
-		// You seem to be airbourne, please stay at the ground.
+		// You seem to be airbourne, please stay at the ground
 		if(ent->client->ps.groundEntityNum == ENTITYNUM_NONE)
 		{
 			return;
@@ -361,25 +361,25 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 
 			StandardSetBodyAnim(ent, emotes[emoteIndex].endAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 		}
-		// We are starting the given animation.
+		// We are starting the given animation
 		else
 		{
 
-			// Switch saber cases for write emotes.
+			// Switch saber cases for write emotes
 			if((!ent->client->ps.saberHolstered && emoteIndex != EMOTE_WRITE && emoteIndex != EMOTE_WRITE2) ||
 				ent->client->ps.saberHolstered && (emoteIndex == EMOTE_WRITE || emoteIndex == EMOTE_WRITE2))
 			{
 				Cmd_ToggleSaber_f(ent);
 			}
 
-			// Not a walkable emote, just set it being locked and all.
+			// Not a walkable emote, just set it being locked and all
 			if(!emotes[emoteIndex].special)
 			{
 				ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
 				ent->client->ps.forceDodgeAnim = emotes[emoteIndex].startAnim;
 				ent->client->ps.forceHandExtendTime = level.time + INFINITE;
 			}
-			// Allright, we have to walk.
+			// Allright, we have to walk
 			else
 			{
 				pmove_t		pmv;
@@ -407,7 +407,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	// Normal type of emote.
 	else
 	{
-		// If you are not allowed emote breaks, you cant do it while being in air / on player.
+		// If you are not allowed emote breaks, you cant do it while being in air / on player
 		if(!jkplus_emotesBreak.value &&
 			(ent->client->ps.groundEntityNum == ENTITYNUM_NONE ||
 			ent->client->ps.groundEntityNum < MAX_CLIENTS))
@@ -415,7 +415,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 			return;
 		}
 
-		// Server wants you to freeze while the emote plays.
+		// Server wants you to freeze while the emote plays
 		if(jkplus_emotesFreeze.integer)
 		{
 			ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
@@ -503,7 +503,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 				entAngles[YAW] = vectoyaw(otherDir);
 				SetClientViewAngle(ent, entAngles);
 
-				// Server wants you to freeze while the emote plays.
+				// Server wants you to freeze while the emote plays
 				if (jkplus_emotesFreeze.integer)
 				{
 					ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
@@ -524,7 +524,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 				otherAngles[YAW] = vectoyaw(entDir);
 				SetClientViewAngle(other, otherAngles);
 
-				// Server wants you to freeze while the emote plays.
+				// Server wants you to freeze while the emote plays
 				if (jkplus_emotesFreeze.integer)
 				{
 					other->client->ps.forceHandExtend = HANDEXTEND_DODGE;
@@ -620,7 +620,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 				entAngles[YAW] = vectoyaw(otherDir);
 				SetClientViewAngle(ent, entAngles);
 
-				// Server wants you to freeze while the emote plays.
+				// Server wants you to freeze while the emote plays
 				if (jkplus_emotesFreeze.integer)
 				{
 					ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
@@ -641,7 +641,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 				otherAngles[YAW] = vectoyaw(entDir);
 				SetClientViewAngle(other, otherAngles);
 
-				// Server wants you to freeze while the emote plays.
+				// Server wants you to freeze while the emote plays
 				if (jkplus_emotesFreeze.integer)
 				{
 					other->client->ps.forceHandExtend = HANDEXTEND_DODGE;
@@ -671,7 +671,7 @@ void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
 	trace_t tr;
 	vec3_t fPos;
 
-	// Special cases to disallow the use of the emote.
+	// Special cases to disallow the use of the emote
 	if (ent->client->ps.forceRestricted
 		|| ent->client->ps.duelInProgress
 		|| ent->client->ps.saberInFlight
