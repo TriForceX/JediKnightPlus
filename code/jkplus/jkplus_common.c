@@ -66,7 +66,7 @@ void JKPlus_stringEscape(char *in, char *out)
 
 /*
 =====================================================================
-Removes color codes and converts everything to lower case.
+Removes color codes and converts everything to lower case
 =====================================================================
 */
 
@@ -91,4 +91,32 @@ void JKPlus_cleanString(char *in, char *out)
 		out[count] = tolower(in[i]);
 		count++;
 	}
+}
+
+/*
+=====================================================================
+Drops a player from the server with the given message
+=====================================================================
+*/
+
+void JKPlus_dropPlayer(gentity_t *ent, char *msg)
+{
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		ent->client->sess.spectatorState = SPECTATOR_FREE;
+		ent->client->sess.spectatorClient = ent - g_entities;
+	}
+
+	trap_DropClient(ent - g_entities, msg);
+}
+
+/*
+=====================================================================
+Sends a message/command to the client target
+=====================================================================
+*/
+
+void JKPlus_sendCommand(int target, char *cmd, char *string)
+{
+	trap_SendServerCommand(target, va("%s \"%s\"", cmd, string));
 }

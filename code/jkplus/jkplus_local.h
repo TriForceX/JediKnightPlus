@@ -91,3 +91,5 @@ void		JKPlus_emoteDoPunch(gentity_t *ent, int cmd);
 int			JKPlus_compareCmd(char *cmd, char *required);
 void		JKPlus_stringEscape(char *in, char *out);
 void		JKPlus_cleanString(char *in, char *out);
+void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
+void		JKPlus_sendCommand(int target, char *cmd, char *string);
