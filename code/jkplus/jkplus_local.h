@@ -79,6 +79,9 @@ Common / new functions
 //g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
+//jkplus_active.c
+void		JKPlus_ClientThink_real(gentity_t *ent);
+
 //jkplus_emotes.c
 int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
 int			JKPlus_emoteIn(gentity_t *ent, int type);

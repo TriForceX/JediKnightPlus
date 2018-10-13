@@ -67,7 +67,7 @@ void JKPlus_ClientCommand(int clientNum)
 				"^3Flip           HandHips       Hug           Kiss        Kneel       Laugh\n"
 				"^3LookAround     LookAround2    Nod           Point       Point2      Punch\n"
 				"^3Punch2         Sit            Sit2          Sit3        Shake       Super\n"
-				"^3Super2         Surrender      Spin          SpinR       Spin2       Spin2R\n"
+				"^3Super2         Surrender      Spin          Spin2       Spin3       Spin4\n"
 				"^3Taunt2         Taunt3         Think         Threaten    ThumbsUp    ThumbsDown\n"
 				"^3TossBack       TossOver       TossUp        Type        Type2       Victory\n"
 				"^3Waiting        WatchOut       Wave          Wave2       Write       Write2\n"

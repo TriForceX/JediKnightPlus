@@ -96,59 +96,58 @@ emoteData_t emotes[EMOTE_NUM_EMOTES] =
 	// Emote Constant		Command			Special?	Start Animation				End Animation
 	{ EMOTE_BAR,			"bar",			qfalse,		BOTH_BARTENDER_IDLE1,		-1 },
 	{ EMOTE_BEG,			"beg",			qfalse,		BOTH_KNEES1,				-1 },
-	{ EMOTE_COCKY,			"cocky",		qfalse,		645,						646 },
-	{ EMOTE_COMEON,			"comeon",		qfalse,		712,						-1 },
+	{ EMOTE_COCKY,			"cocky",		qfalse,		BOTH_TALKGESTURE6,			BOTH_TALKGESTURE6STOP },
+	{ EMOTE_COMEON,			"comeon",		qfalse,		BOTH_COME_ON1,				-1 },
 	{ EMOTE_COMTALK,		"comtalk",		qtrue,		BOTH_TALKCOMM1,				BOTH_TALKCOMM1STOP },
-	{ EMOTE_CROSSARMS,		"crossarms",	qtrue,		655,						656 },
-	{ EMOTE_DONTKILLME,		"dontkillme",	qfalse,		BOTH_BARTENDER_COWERLOOP,	656 },
-	{ EMOTE_DONTKNOW,		"dontknow",		qfalse,		635,						-1 },
+	{ EMOTE_CROSSARMS,		"crossarms",	qtrue,		BOTH_TALKGESTURE11START,	BOTH_TALKGESTURE11STOP },
+	{ EMOTE_DONTKILLME,		"dontkillme",	qfalse,		BOTH_BARTENDER_COWERLOOP,	BOTH_TALKGESTURE11STOP },
+	{ EMOTE_DONTKNOW,		"dontknow",		qfalse,		BOTH_TALKGESTURE1,			-1 },
 	{ EMOTE_DONTKNOW2,		"dontknow2",	qfalse,		BOTH_TALKGESTURE10,			-1 },
-	{ EMOTE_EXPLAIN,		"explain",		qfalse,		637,						-1 },
-	{ EMOTE_EXPLAIN2,		"explain2",		qfalse,		653,						-1 },
-	{ EMOTE_FAKEDEAD,		"fakedead",		qfalse,		1,							BOTH_FORCE_GETUP_B1 },
-	{ EMOTE_FLIP,			"flip",			qfalse,		587,						-1 },
+	{ EMOTE_EXPLAIN,		"explain",		qfalse,		BOTH_TALKGESTURE3,			-1 },
+	{ EMOTE_EXPLAIN2,		"explain2",		qfalse,		BOTH_TALKGESTURE9,			-1 },
+	{ EMOTE_FAKEDEAD,		"fakedead",		qfalse,		BOTH_DEATH1,				BOTH_FORCE_GETUP_B1 },
+	{ EMOTE_FLIP,			"flip",			qfalse,		BOTH_STAND1TO2,				-1 },
 	{ EMOTE_HANDHIPS,		"handhips",		qtrue,		BOTH_STAND5TOSTAND8,		BOTH_STAND8TOSTAND5 },
 	{ EMOTE_HUG,			"hug",			qfalse,		-1,							-1 },
 	{ EMOTE_KISS,			"kiss",			qfalse,		-1,							-1 },
-	{ EMOTE_KNEEL,			"kneel",		qfalse,		1049,						1050 },
-	{ EMOTE_LAUGH,			"laugh",		qfalse,		733,						-1 },
-	{ EMOTE_LOOKAROUND,		"lookaround",	qfalse,		572,						-1 },
-	{ EMOTE_LOOKAROUND2,	"lookaround2",	qfalse,		581,						-1 },
+	{ EMOTE_KNEEL,			"kneel",		qfalse,		BOTH_FORCEHEAL_START,		BOTH_FORCEHEAL_STOP },
+	{ EMOTE_LAUGH,			"laugh",		qfalse,		BOTH_LAUGH1STOP,			-1 },
+	{ EMOTE_LOOKAROUND,		"lookaround",	qfalse,		BOTH_STAND1IDLE1,			-1 },
+	{ EMOTE_LOOKAROUND2,	"lookaround2",	qfalse,		BOTH_STAND5IDLE1,			-1 },
 	{ EMOTE_NOD,			"nod",			qfalse,		BOTH_HEADNOD,				-1 },
-	{ EMOTE_POINT,			"point",		qfalse,		657,						-1 },
-	{ EMOTE_POINT2,			"point2",		qfalse,		644,						-1 },
+	{ EMOTE_POINT,			"point",		qfalse,		BOTH_TALKGESTURE12,			-1 },
+	{ EMOTE_POINT2,			"point2",		qfalse,		BOTH_TALKGESTURE6START,		-1 },
 	{ EMOTE_PUNCH,			"punch",		qtrue,		-1,							-1 },
 	{ EMOTE_PUNCH2,			"punch2",		qtrue,		-1,							-1 },
-	// Using 0 for end anim because its a random anim, and -1 = no return but sit does have a return...
-	{ EMOTE_SIT,			"sit",			qfalse,		BOTH_SIT2,					782 },
-	{ EMOTE_SIT2,			"sit2",			qfalse,		BOTH_SIT1,					1090 },
-	{ EMOTE_SIT3,			"sit3",			qfalse,		595,						787 },
+	{ EMOTE_SIT,			"sit",			qfalse,		BOTH_SIT2,					BOTH_SIT2TOSTAND5 },
+	{ EMOTE_SIT2,			"sit2",			qfalse,		BOTH_SIT1,					BOTH_COCKPIT_SLEEP6STOP },
+	{ EMOTE_SIT3,			"sit3",			qfalse,		BOTH_STAND5TOSIT3,			BOTH_SIT3TOSTAND5 },
 	{ EMOTE_SHAKE,			"shake",		qfalse,		BOTH_HEADSHAKE,				-1 },
-	{ EMOTE_SUPER,			"super",		qfalse,		708,						BOTH_CONSOLE2HOLDCOMSTOP },
-	{ EMOTE_SUPER2,			"super2",		qfalse,		710,						-1 },
+	{ EMOTE_SUPER,			"super",		qfalse,		BOTH_FORCEFOUNTAIN1_MIDDLE,	BOTH_CONSOLE2HOLDCOMSTOP },
+	{ EMOTE_SUPER2,			"super2",		qfalse,		BOTH_FORCEFOUNTAIN1_STOP,	-1 },
 	{ EMOTE_SURRENDER,		"surrender",	qtrue,		TORSO_SURRENDER_START,		TORSO_SURRENDER_STOP },
-	{ EMOTE_SPIN,			"spin",			qfalse,		949,						-1 },
-	{ EMOTE_SPINR,			"spinR",		qfalse,		950,						-1 },
-	{ EMOTE_SPIN2,			"spin2",		qfalse,		913,						-1 },
-	{ EMOTE_SPIN2R,			"spin2R",		qfalse,		956,						-1 },
-	{ EMOTE_TAUNT2,			"taunt2",		qfalse,		626,						-1 },
-	{ EMOTE_TAUNT3,			"taunt3",		qfalse,		726,						-1 },
-	{ EMOTE_THINK,			"think",		qfalse,		641,						656 },
+	{ EMOTE_SPIN,			"spin",			qfalse,		BOTH_FJSS_TR_BL,			-1 },
+	{ EMOTE_SPINR,			"spin2",		qfalse,		BOTH_FJSS_TL_BR,			-1 },
+	{ EMOTE_SPIN2,			"spin3",		qfalse,		BOTH_BUTTERFLY_FL1,			-1 },
+	{ EMOTE_SPIN2R,			"spin4",		qfalse,		BOTH_BUTTERFLY_FR1,			-1 },
+	{ EMOTE_TAUNT2,			"taunt2",		qfalse,		BOTH_GESTURE1,				-1 },
+	{ EMOTE_TAUNT3,			"taunt3",		qfalse,		BOTH_SABERKILLER1,			-1 },
+	{ EMOTE_THINK,			"think",		qfalse,		BOTH_TALKGESTURE5START,		BOTH_TALKGESTURE11STOP },
 	{ EMOTE_THREATEN,		"threaten",		qfalse,		BOTH_THREATEN1,				-1 },
 	{ EMOTE_THUMBSUP,		"thumbsup",		qfalse,		BOTH_THUMBING1,				-1 },
-	{ EMOTE_THUMBSDOWN,		"thumbsdown",	qfalse,		704,						-1 },
+	{ EMOTE_THUMBSDOWN,		"thumbsdown",	qfalse,		BOTH_LEANRIGHT3START,		-1 },
 	{ EMOTE_TOSSBACK,		"tossback",		qfalse,		BOTH_BARTENDER_THROW1,		-1 },
-	{ EMOTE_TOSSOVER,		"tossover",		qfalse,		769,						-1 },
-	{ EMOTE_TOSSUP,			"tossup",		qfalse,		767,						-1 },
-	{ EMOTE_TYPE,			"type",			qfalse,		BOTH_CONSOLE1,				617 },
+	{ EMOTE_TOSSOVER,		"tossover",		qfalse,		BOTH_SABERTHROW2START,		-1 },
+	{ EMOTE_TOSSUP,			"tossup",		qfalse,		BOTH_SABERTHROW1START,		-1 },
+	{ EMOTE_TYPE,			"type",			qfalse,		BOTH_CONSOLE1,				BOTH_CONSOLE1STOP },
 	{ EMOTE_TYPE2,			"type2",		qfalse,		BOTH_CONSOLE2,				BOTH_STAND1 },
-	{ EMOTE_VICTORY,		"victory",		qfalse,		768,						-1 },
+	{ EMOTE_VICTORY,		"victory",		qfalse,		BOTH_SABERTHROW1STOP,		-1 },
 	{ EMOTE_WAITING,		"waiting",		qtrue,		BOTH_STAND4,				BOTH_STAND1 },
-	{ EMOTE_WATCHOUT,		"watchout",		qfalse,		667,						-1 },
-	{ EMOTE_WAVE,			"wave",			qfalse,		668,						-1 },
-	{ EMOTE_WAVE2,			"wave2",		qfalse,		674,						-1 },
-	{ EMOTE_WRITE,			"write",		qfalse,		715,						BOTH_STAND1 },
-	{ EMOTE_WRITE2,			"write2",		qfalse,		804,						BOTH_STAND1 },
+	{ EMOTE_WATCHOUT,		"watchout",		qfalse,		BOTH_TALKGESTURE18,			-1 },
+	{ EMOTE_WAVE,			"wave",			qfalse,		BOTH_TALKGESTURE19START,	-1 },
+	{ EMOTE_WAVE2,			"wave2",		qfalse,		BOTH_PAUSE1START,			-1 },
+	{ EMOTE_WRITE,			"write",		qfalse,		BOTH_SILENCEGESTURE1,		BOTH_STAND1 },
+	{ EMOTE_WRITE2,			"write2",		qfalse,		BOTH_UNCROUCH3,				BOTH_STAND1 },
 };
 
 /*
@@ -331,12 +330,12 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 				{
 				case 1:
 				case 2:
-					cmd = 942;
+					cmd = BOTH_FORCE_GETUP_B5;
 					break;
 				case 3:
 				case 4:
 				case 5:
-					cmd = 943;
+					cmd = BOTH_FORCE_GETUP_B6;
 					break;
 				case 6:
 				case 7:
@@ -346,7 +345,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 				case 9:
 				case 10:
 				default:
-					cmd = 936;
+					cmd = BOTH_FORCE_GETUP_F1;
 					break;
 				}
 			}
@@ -503,17 +502,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 				entAngles[YAW] = vectoyaw(otherDir);
 				SetClientViewAngle(ent, entAngles);
 
-				// Server wants you to freeze while the emote plays
-				if (jkplus_emotesFreeze.integer)
-				{
-					ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
-					ent->client->ps.forceDodgeAnim = BOTH_HUGGER1;
-					ent->client->ps.forceHandExtendTime = level.time + (bgGlobalAnimations[BOTH_HUGGER1].numFrames * fabs(bgGlobalAnimations[BOTH_HUGGER1].frameLerp));
-				}
-				else
-				{
-					StandardSetBodyAnim(ent, BOTH_HUGGER1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-				}
+				StandardSetBodyAnim(ent, BOTH_HUGGER1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 
 				ent->client->ps.saberMove = LS_NONE;
 				ent->client->ps.saberBlocked = 0;
@@ -524,17 +513,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 				otherAngles[YAW] = vectoyaw(entDir);
 				SetClientViewAngle(other, otherAngles);
 
-				// Server wants you to freeze while the emote plays
-				if (jkplus_emotesFreeze.integer)
-				{
-					other->client->ps.forceHandExtend = HANDEXTEND_DODGE;
-					other->client->ps.forceDodgeAnim = BOTH_HUGGEE1;
-					other->client->ps.forceHandExtendTime = level.time + (bgGlobalAnimations[BOTH_HUGGEE1].numFrames * fabs(bgGlobalAnimations[BOTH_HUGGEE1].frameLerp));
-				}
-				else
-				{
-					StandardSetBodyAnim(other, BOTH_HUGGEE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-				}
+				StandardSetBodyAnim(other, BOTH_HUGGEE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 
 				other->client->ps.saberMove = LS_NONE;
 				other->client->ps.saberBlocked = 0;
@@ -620,17 +599,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 				entAngles[YAW] = vectoyaw(otherDir);
 				SetClientViewAngle(ent, entAngles);
 
-				// Server wants you to freeze while the emote plays
-				if (jkplus_emotesFreeze.integer)
-				{
-					ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
-					ent->client->ps.forceDodgeAnim = BOTH_KISSER1LOOP;
-					ent->client->ps.forceHandExtendTime = level.time + (bgGlobalAnimations[BOTH_KISSER1LOOP].numFrames * fabs(bgGlobalAnimations[BOTH_KISSER1LOOP].frameLerp));
-				}
-				else
-				{
-					StandardSetBodyAnim(ent, BOTH_KISSER1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-				}
+				StandardSetBodyAnim(ent, BOTH_KISSER1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 
 				ent->client->ps.saberMove = LS_NONE;
 				ent->client->ps.saberBlocked = 0;
@@ -641,17 +610,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 				otherAngles[YAW] = vectoyaw(entDir);
 				SetClientViewAngle(other, otherAngles);
 
-				// Server wants you to freeze while the emote plays
-				if (jkplus_emotesFreeze.integer)
-				{
-					other->client->ps.forceHandExtend = HANDEXTEND_DODGE;
-					other->client->ps.forceDodgeAnim = BOTH_KISSEE1LOOP;
-					other->client->ps.forceHandExtendTime = level.time + (bgGlobalAnimations[BOTH_KISSEE1LOOP].numFrames * fabs(bgGlobalAnimations[BOTH_KISSEE1LOOP].frameLerp));
-				}
-				else
-				{
-					StandardSetBodyAnim(other, BOTH_KISSEE1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-				}
+				StandardSetBodyAnim(other, BOTH_KISSEE1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 
 				other->client->ps.saberMove = LS_NONE;
 				other->client->ps.saberBlocked = 0;
@@ -690,9 +649,9 @@ void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_HUGGEE1
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_KISSER1LOOP
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_KISSEE1LOOP
-			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != 116
-			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != 131
-			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != 130)
+			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_PAIN20
+			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_MELEE2
+			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_MELEE1)
 		{
 			return;
 		}
@@ -727,7 +686,7 @@ void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
 		if (other && other->inuse && other->client && !other->client->ps.forceRestricted)
 		{
 			if (other->client->ps.weapon != WP_SABER) return;
-			StandardSetBodyAnim(other, 116, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+			StandardSetBodyAnim(other, BOTH_PAIN20, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 			other->client->ps.saberMove = LS_NONE;
 			other->client->ps.saberBlocked = 0;
 			other->client->ps.saberBlocking = 0;
