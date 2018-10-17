@@ -64,7 +64,7 @@ Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | NPC spawn command like in Single Player
 ✗ | Improved cheat commands
 ✗ | Protected server clan tag (With clan password)
-✗ | Over 50 player emotes (Sit, dance, surrender,etc...)
+✗ | Over 50 player emotes (Sit, kiss, surrender, etc...)
 ✗ | Teleport commands (Save & load position, player to player, etc...)
 ✗ | Anti lamer feature (Players can't kill during chat)
 ✗ | Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
@@ -194,7 +194,7 @@ The people below helped me to solve problems and help in this project by giving 
 Work copyrighted (C) with holder attribution 2005 - 2018
 
 Visit the home page:  
-https://jk2mp.com/mods/jkplus
+https://jkplus.github.io
 
 Feel free to write me if you got questions regarding the mod  
 E-mail: triforce@jk2mp.com

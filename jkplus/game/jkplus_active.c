@@ -6,7 +6,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 =====================================================================
 */
 
-#include "../game/g_local.h" // Original header
+#include "../../code/game/g_local.h" // Original header
 
 /*
 =====================================================================
