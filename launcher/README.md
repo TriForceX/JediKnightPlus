@@ -2,7 +2,7 @@
 Simple tool to launch **Jedi Knight Plus Mod** dedicated server.
 
 # About
-This is an additional tool (not required) i made a lot of years ago to learn some **C++**. The purpose was to improve the way to load commands before server launch (like the bash method). This was made to work on *Windows* only (but it can be easily ported to *Linux*) and works together with **JK2 Binaries** (jk2mp.exe or jk2ded.exe) or any dedicated server executable.
+This is an additional tool (not required) i made a lot of years ago to learn some **C++**. The purpose was to improve the way to load commands before server launch (like the bash method). This was made to work on *Windows* only (but it can be easily ported to *Linux*) and works together with **JK2 Binaries** (jk2mp.exe or jk2ded.exe) or any server executables and mods.
 
 # Build
 Due i reduced some code and changed few functions, to generate the main file `jkplus_launcher.exe` you should use *Visual Studio C++ 11 or higher*. To build it just follow the next steps:
@@ -22,4 +22,4 @@ Due i reduced some code and changed few functions, to generate the main file `jk
 
 5. That's it! Now you can build `jkplus_launcher.exe` to launch *Jedi Knight Plus Mod*
 
-6. **Note**: This executable creates a file called `settings.ini` to store the launch options
+6. **Note**: This executable creates a file called `jkplus_launcher.cfg` to store the launch options
