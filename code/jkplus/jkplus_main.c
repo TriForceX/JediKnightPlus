@@ -38,8 +38,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkplus_test1,				"jkplus_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_test2,				"jkplus_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
 
-	{ &jkplus_emotesBreak,			"jkplus_emotesBreak",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesFreeze,			"jkplus_emotesFreeze",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesBreak,			"jkplus_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesFreeze,			"jkplus_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_emotesEnabled,		"jkplus_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_emotesPunchDMG,		"jkplus_emotesPunchDMG",		"0",					CVAR_ARCHIVE,		0, qtrue },
 

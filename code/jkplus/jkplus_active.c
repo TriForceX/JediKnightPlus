@@ -26,7 +26,8 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 			ent->client->ps.forceHandExtendTime = 0;
 		}
 		else if (JKPlus_emoteIn(ent, 0))
-		{ // In a 'frozen' emote
+		{	
+			// In a 'frozen' emote
 			if (ent->client->pers.cmd.upmove > 0)
 			{
 				ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
@@ -41,13 +42,15 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 			}
 		}
 		else if (JKPlus_emoteIn(ent, 1) && ent->client->pers.cmd.upmove > 0)
-		{ // In an animation emote
+		{	
+			// In an animation emote
 			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
 		}
 		else if (JKPlus_emoteIn(ent, 2))
-		{ // In a special emote (walkable)
+		{	
+			// In a special emote (walkable)
 			ent->client->ps.forceHandExtend = HANDEXTEND_TAUNT;
 			ent->client->ps.forceDodgeAnim = (ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT);
 			ent->client->ps.forceHandExtendTime = level.time + INFINITE;

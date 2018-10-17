@@ -18,6 +18,7 @@ Emote list
 typedef enum {
 	EMOTE_BAR = 0,
 	EMOTE_BEG,
+	EMOTE_BURIED,
 	EMOTE_COCKY,
 	EMOTE_COMEON,
 	EMOTE_COMTALK,
@@ -30,17 +31,17 @@ typedef enum {
 	EMOTE_FAKEDEAD,
 	EMOTE_FLIP,
 	EMOTE_HANDHIPS,
+	EMOTE_HI,
 	EMOTE_HUG,
 	EMOTE_KISS,
 	EMOTE_KNEEL,
 	EMOTE_LAUGH,
-	EMOTE_LOOKAROUND,
-	EMOTE_LOOKAROUND2,
+	EMOTE_LOOK,
+	EMOTE_LOOK2,
 	EMOTE_NOD,
 	EMOTE_POINT,
 	EMOTE_POINT2,
 	EMOTE_PUNCH,
-	EMOTE_PUNCH2,
 	EMOTE_SIT,
 	EMOTE_SIT2,
 	EMOTE_SIT3,
@@ -64,12 +65,11 @@ typedef enum {
 	EMOTE_TYPE,
 	EMOTE_TYPE2,
 	EMOTE_VICTORY,
+	EMOTE_VICTORY2,
 	EMOTE_WAITING,
 	EMOTE_WATCHOUT,
-	EMOTE_WAVE,
-	EMOTE_WAVE2,
-	EMOTE_WRITE,
-	EMOTE_WRITE2,
+	EMOTE_WRITING,
+	EMOTE_WRITING2,
 
 	EMOTE_NUM_EMOTES
 
@@ -95,7 +95,8 @@ emoteData_t emotes[EMOTE_NUM_EMOTES] =
 {
 	// Emote Constant		Command			Special?	Start Animation				End Animation
 	{ EMOTE_BAR,			"bar",			qfalse,		BOTH_BARTENDER_IDLE1,		-1 },
-	{ EMOTE_BEG,			"beg",			qfalse,		BOTH_KNEES1,				-1 },
+	{ EMOTE_BEG,			"beg",			qtrue,		BOTH_KNEES1,				-1 },
+	{ EMOTE_BURIED,			"buried",		qfalse,		BOTH_DISMEMBER_RARM,		BOTH_FORCE_GETUP_B1 },
 	{ EMOTE_COCKY,			"cocky",		qfalse,		BOTH_TALKGESTURE6,			BOTH_TALKGESTURE6STOP },
 	{ EMOTE_COMEON,			"comeon",		qfalse,		BOTH_COME_ON1,				-1 },
 	{ EMOTE_COMTALK,		"comtalk",		qtrue,		BOTH_TALKCOMM1,				BOTH_TALKCOMM1STOP },
@@ -108,22 +109,22 @@ emoteData_t emotes[EMOTE_NUM_EMOTES] =
 	{ EMOTE_FAKEDEAD,		"fakedead",		qfalse,		BOTH_DEATH1,				BOTH_FORCE_GETUP_B1 },
 	{ EMOTE_FLIP,			"flip",			qfalse,		BOTH_STAND1TO2,				-1 },
 	{ EMOTE_HANDHIPS,		"handhips",		qtrue,		BOTH_STAND5TOSTAND8,		BOTH_STAND8TOSTAND5 },
+	{ EMOTE_HI,				"hi",			qfalse,		BOTH_PAUSE1START,			-1 },
 	{ EMOTE_HUG,			"hug",			qfalse,		-1,							-1 },
 	{ EMOTE_KISS,			"kiss",			qfalse,		-1,							-1 },
 	{ EMOTE_KNEEL,			"kneel",		qfalse,		BOTH_FORCEHEAL_START,		BOTH_FORCEHEAL_STOP },
 	{ EMOTE_LAUGH,			"laugh",		qfalse,		BOTH_LAUGH1STOP,			-1 },
-	{ EMOTE_LOOKAROUND,		"lookaround",	qfalse,		BOTH_STAND1IDLE1,			-1 },
-	{ EMOTE_LOOKAROUND2,	"lookaround2",	qfalse,		BOTH_STAND5IDLE1,			-1 },
+	{ EMOTE_LOOK,			"look",			qfalse,		BOTH_TALKGESTURE18,			-1 },
+	{ EMOTE_LOOK2,			"look2",		qfalse,		BOTH_EXAMINE3,				-1 },
 	{ EMOTE_NOD,			"nod",			qfalse,		BOTH_HEADNOD,				-1 },
 	{ EMOTE_POINT,			"point",		qfalse,		BOTH_TALKGESTURE12,			-1 },
-	{ EMOTE_POINT2,			"point2",		qfalse,		BOTH_TALKGESTURE6START,		-1 },
+	{ EMOTE_POINT2,			"point2",		qtrue,		BOTH_TALKGESTURE6START,		BOTH_TALKGESTURE6STOP },
 	{ EMOTE_PUNCH,			"punch",		qtrue,		-1,							-1 },
-	{ EMOTE_PUNCH2,			"punch2",		qtrue,		-1,							-1 },
 	{ EMOTE_SIT,			"sit",			qfalse,		BOTH_SIT2,					BOTH_SIT2TOSTAND5 },
 	{ EMOTE_SIT2,			"sit2",			qfalse,		BOTH_SIT1,					BOTH_COCKPIT_SLEEP6STOP },
 	{ EMOTE_SIT3,			"sit3",			qfalse,		BOTH_STAND5TOSIT3,			BOTH_SIT3TOSTAND5 },
 	{ EMOTE_SHAKE,			"shake",		qfalse,		BOTH_HEADSHAKE,				-1 },
-	{ EMOTE_SUPER,			"super",		qfalse,		BOTH_FORCEFOUNTAIN1_MIDDLE,	BOTH_CONSOLE2HOLDCOMSTOP },
+	{ EMOTE_SUPER,			"super",		qtrue,		BOTH_FORCEFOUNTAIN1_MIDDLE,	BOTH_CONSOLE2HOLDCOMSTOP },
 	{ EMOTE_SUPER2,			"super2",		qfalse,		BOTH_FORCEFOUNTAIN1_STOP,	-1 },
 	{ EMOTE_SURRENDER,		"surrender",	qtrue,		TORSO_SURRENDER_START,		TORSO_SURRENDER_STOP },
 	{ EMOTE_SPIN,			"spin",			qfalse,		BOTH_FJSS_TR_BL,			-1 },
@@ -132,7 +133,7 @@ emoteData_t emotes[EMOTE_NUM_EMOTES] =
 	{ EMOTE_SPIN2R,			"spin4",		qfalse,		BOTH_BUTTERFLY_FR1,			-1 },
 	{ EMOTE_TAUNT2,			"taunt2",		qfalse,		BOTH_GESTURE1,				-1 },
 	{ EMOTE_TAUNT3,			"taunt3",		qfalse,		BOTH_SABERKILLER1,			-1 },
-	{ EMOTE_THINK,			"think",		qfalse,		BOTH_TALKGESTURE5START,		BOTH_TALKGESTURE11STOP },
+	{ EMOTE_THINK,			"think",		qfalse,		BOTH_TALKGESTURE5START,		BOTH_TALKGESTURE5START },
 	{ EMOTE_THREATEN,		"threaten",		qfalse,		BOTH_THREATEN1,				-1 },
 	{ EMOTE_THUMBSUP,		"thumbsup",		qfalse,		BOTH_THUMBING1,				-1 },
 	{ EMOTE_THUMBSDOWN,		"thumbsdown",	qfalse,		BOTH_LEANRIGHT3START,		-1 },
@@ -142,12 +143,11 @@ emoteData_t emotes[EMOTE_NUM_EMOTES] =
 	{ EMOTE_TYPE,			"type",			qfalse,		BOTH_CONSOLE1,				BOTH_CONSOLE1STOP },
 	{ EMOTE_TYPE2,			"type2",		qfalse,		BOTH_CONSOLE2,				BOTH_STAND1 },
 	{ EMOTE_VICTORY,		"victory",		qfalse,		BOTH_SABERTHROW1STOP,		-1 },
+	{ EMOTE_VICTORY2,		"victory2",		qfalse,		BOTH_TALKGESTURE19START,	-1 },
 	{ EMOTE_WAITING,		"waiting",		qtrue,		BOTH_STAND4,				BOTH_STAND1 },
 	{ EMOTE_WATCHOUT,		"watchout",		qfalse,		BOTH_TALKGESTURE18,			-1 },
-	{ EMOTE_WAVE,			"wave",			qfalse,		BOTH_TALKGESTURE19START,	-1 },
-	{ EMOTE_WAVE2,			"wave2",		qfalse,		BOTH_PAUSE1START,			-1 },
-	{ EMOTE_WRITE,			"write",		qfalse,		BOTH_SILENCEGESTURE1,		BOTH_STAND1 },
-	{ EMOTE_WRITE2,			"write2",		qfalse,		BOTH_UNCROUCH3,				BOTH_STAND1 },
+	{ EMOTE_WRITING,		"writing",		qfalse,		BOTH_SILENCEGESTURE1,		BOTH_STAND1 },
+	{ EMOTE_WRITING2,		"writing2",		qfalse,		BOTH_UNCROUCH3,				BOTH_STAND1 },
 };
 
 /*
@@ -191,30 +191,29 @@ int JKPlus_emoteIn(gentity_t *ent, int type)
 		{
 			switch(type)
 			{
-			case -1: // Looking for any emote
-			default:
-				return 1;
-				break;
-			case 0: // Looking for freeze emote
-				if(!emotes[i].special && emotes[i].endAnim != -1 &&
-					(ent->client->ps.forceHandExtend == HANDEXTEND_DODGE))
-				{
+				case -1: // Looking for any emote
+				default:
 					return 1;
-				}
-				break;
-			case 1: // Looking for non-freezing emotes
-				if(!emotes[i].special && emotes[i].endAnim == -1)
-				{
-					return 1;
-				}
-				break;
-			case 2: // Looking for special emote
-				if(emotes[i].special &&
-					(ent->client->ps.forceHandExtend == HANDEXTEND_TAUNT))
-				{
-					return 1;
-				}
-				break;
+					break;
+				case 0: // Looking for freeze emote
+					if(!emotes[i].special && emotes[i].endAnim != -1 &&
+						(ent->client->ps.forceHandExtend == HANDEXTEND_DODGE))
+					{
+						return 1;
+					}
+					break;
+				case 1: // Looking for non-freezing emotes
+					if(!emotes[i].special && emotes[i].endAnim == -1)
+					{
+						return 1;
+					}
+					break;
+				case 2: // Looking for special emote
+					if(emotes[i].special && (ent->client->ps.forceHandExtend == HANDEXTEND_TAUNT))
+					{
+						return 1;
+					}
+					break;
 			}
 		}
 
@@ -236,21 +235,21 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	// Exception for duel gametype
 	if(g_gametype.integer == GT_TOURNAMENT)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this gametype.\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this gametype\n\"");
 		return;
 	}
 
 	// Exception for when you are moving
-	if(ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
+	if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0) && !emotes[emoteIndex].special)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"Please stop moving before you attempt an emote.\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"Please stop moving before you attempt an emote\n\"");
 		return;
 	}
 
 	// Bit values for emotes! Let the people choose!
 	if(!(jkplus_emotesEnabled.integer & (1 << emoteIndex)))
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"This emote has been disabled by the server.\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"This emote has been disabled by the server\n\"");
 		return;
 	}
 
@@ -292,12 +291,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		}
 		else if (Q_stricmp(emotes[emoteIndex].cmd, "punch") == 0)
 		{
-			JKPlus_emoteDoPunch(ent, BOTH_MELEE2);
-			return;
-		}
-		else if (Q_stricmp(emotes[emoteIndex].cmd, "punch2") == 0)
-		{
-			JKPlus_emoteDoPunch(ent, BOTH_MELEE1);
+			JKPlus_emoteDoPunch(ent);
 			return;
 		}
 	}
@@ -363,10 +357,9 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		// We are starting the given animation
 		else
 		{
-
 			// Switch saber cases for write emotes
-			if((!ent->client->ps.saberHolstered && emoteIndex != EMOTE_WRITE && emoteIndex != EMOTE_WRITE2) ||
-				ent->client->ps.saberHolstered && (emoteIndex == EMOTE_WRITE || emoteIndex == EMOTE_WRITE2))
+			if((!ent->client->ps.saberHolstered && emoteIndex != EMOTE_WRITING && emoteIndex != EMOTE_WRITING2) ||
+				ent->client->ps.saberHolstered && (emoteIndex == EMOTE_WRITING || emoteIndex == EMOTE_WRITING2))
 			{
 				Cmd_ToggleSaber_f(ent);
 			}
@@ -407,15 +400,19 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	else
 	{
 		// If you are not allowed emote breaks, you cant do it while being in air / on player
-		if(!jkplus_emotesBreak.value &&
-			(ent->client->ps.groundEntityNum == ENTITYNUM_NONE ||
-			ent->client->ps.groundEntityNum < MAX_CLIENTS))
+		if(!jkplus_emotesBreak.value && (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.groundEntityNum < MAX_CLIENTS))
 		{
 			return;
 		}
 
+		// Switch saber cases for taunt emotes
+		if ((!ent->client->ps.saberHolstered && emoteIndex == EMOTE_TAUNT2) || (ent->client->ps.saberHolstered && emoteIndex == EMOTE_TAUNT3))
+		{
+			Cmd_ToggleSaber_f(ent);
+		}
+
 		// Server wants you to freeze while the emote plays
-		if(jkplus_emotesFreeze.integer)
+		if(jkplus_emotesFreeze.integer && !emotes[emoteIndex].special)
 		{
 			ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
 			ent->client->ps.forceDodgeAnim = emotes[emoteIndex].startAnim;
@@ -442,7 +439,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 	// Check JK2 version
 	if(jk2gameplay == VERSION_1_02)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"You can't use this emote in JK2 1.02 version.\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use this emote in JK2 1.02 version\n\"");
 		return;
 	}
 
@@ -521,6 +518,11 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 			}
 		}
 	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\n\"");
+		return;
+	}
 }
 
 /*
@@ -536,7 +538,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 	// Check JK2 version
 	if(jk2gameplay == VERSION_1_02)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"You can't use this emote in JK2 1.02 version.\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use this emote in JK2 1.02 version\n\"");
 		return;
 	}
 
@@ -618,6 +620,11 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 			}
 		}
 	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\n\"");
+		return;
+	}
 }
 
 /*
@@ -625,10 +632,11 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 Emote punch function
 =====================================================================
 */
-void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
+void JKPlus_emoteDoPunch(gentity_t *ent)
 {
 	trace_t tr;
 	vec3_t fPos;
+	int cmd = Q_irand(0, 2) ? BOTH_MELEE1 : BOTH_MELEE2;
 
 	// Special cases to disallow the use of the emote
 	if (ent->client->ps.forceRestricted
@@ -657,6 +665,8 @@ void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
 		}
 	}
 
+	if (ent->client->ps.weapon == WP_SABER && !ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
+
 	StandardSetBodyAnim(ent, cmd, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 
 	ent->client->ps.saberMove = LS_NONE;
@@ -682,6 +692,8 @@ void JKPlus_emoteDoPunch(gentity_t *ent, int cmd)
 		{
 			return;
 		}
+
+		if (other->client->ps.weapon == WP_SABER && !other->client->ps.saberHolstered) Cmd_ToggleSaber_f(other);
 
 		if (other && other->inuse && other->client && !other->client->ps.forceRestricted)
 		{

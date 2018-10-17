@@ -4492,7 +4492,7 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 	if (((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSER1LOOP ||
-		(pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSEE1LOOP) && (jk2gameplay == VERSION_1_03 || jk2gameplay == VERSION_1_04)) // TriForce: Emote kiss allow
+		(pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSEE1LOOP) && (jk2gameplay == VERSION_1_03 || jk2gameplay == VERSION_1_04)) // Tr!Force: Emote kiss allow
 	{
 		pm->cmd.forwardmove = 0;
 		pm->cmd.rightmove = 0;
@@ -4595,7 +4595,7 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 	if (((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSER1LOOP ||
-		(pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSEE1LOOP) && (jk2gameplay == VERSION_1_03 || jk2gameplay == VERSION_1_04)) // TriForce: Emote kiss allow
+		(pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_KISSEE1LOOP) && (jk2gameplay == VERSION_1_03 || jk2gameplay == VERSION_1_04)) // Tr!Force: Emote kiss allow
 	{
 		pm->ps->viewangles[PITCH] = 0;
 		PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
