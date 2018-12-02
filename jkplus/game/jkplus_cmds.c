@@ -47,9 +47,9 @@ void JKPlus_ClientCommand(int clientNum)
 				"^5----------\n"
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Ranking\n"
-				"^3Emotes         Commands       MapEditing\n"
+				"^3Emotes         Commands       Build\n"
 				"^3GamePlay       GameModes      CallVote\n"
-				"^3About          Credits        Source\n"
+				"^3About          Credits        \n"
 				"^7\"", JKPLUS_LONGNAME, JKPLUS_RELEASE, JKPLUS_DEVELOP, JKPLUS_PHASE));
 				return;
 		}
