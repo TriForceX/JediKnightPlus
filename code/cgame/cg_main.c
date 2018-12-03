@@ -751,7 +751,7 @@ static int  cvarTableSize = sizeof( cvarTable ) / sizeof( cvarTable[0] );
 CG_RegisterCvars
 =================
 */
-void CG_RegisterCvars( void ) {
+void BaseJK2_CG_RegisterCvars( void ) { // Tr!Force: BaseJK2 register client cvars function
 	int			i;
 	cvarTable_t	*cv;
 	char		var[MAX_TOKEN_CHARS];
@@ -808,7 +808,7 @@ static void CG_ForceModelChange( void ) {
 CG_UpdateCvars
 =================
 */
-void CG_UpdateCvars( void ) {
+void BaseJK2_CG_UpdateCvars( void ) { // Tr!Force: BaseJK2 update client cvars function
 	int			i;
 	cvarTable_t	*cv;
 
@@ -2502,6 +2502,9 @@ Ghoul2 Insert End
 	cgDC.Assets.qhSmallFont  = trap_R_RegisterFont("ocr_a");
 	cgDC.Assets.qhMediumFont = trap_R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
+
+	// Tr!Force: Load ingame texts
+	trap_SP_Register("jkplus_ingame");
 
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );

@@ -78,6 +78,7 @@ void JKPlus_G_UpdateCvars(void)
 	int			i;
 	cvarTable_t	*cv;
 
+	// Update all the cvars
 	for(i = 0, cv = JKPlusCvarTable; i < JKPlusCvarTableSize; i++, cv++)
 	{
 		if(cv->vmCvar)

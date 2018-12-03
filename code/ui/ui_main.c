@@ -1084,6 +1084,7 @@ void UI_LoadMenus(const char *menuFile, qboolean reset) {
 }
 
 void UI_Load() {
+	char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: Fallback menus
 	char *menuSet;
 	char lastName[1024];
 	menuDef_t *menu = Menu_GetFocused();
@@ -1098,7 +1099,7 @@ void UI_Load() {
 
 	if (uiInfo.inGameLoad)
 	{
-		menuSet= "ui/jk2mpingame.txt";
+		menuSet = fallbackMenus; // Tr!Force: Fallback menus
 	}
 	else
 	{
@@ -6543,6 +6544,7 @@ UI_Init
 */
 void _UI_Init( qboolean inGameLoad ) {
 	int i;
+	char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: Fallback menus
 	const char *menuSet;
 	int start;
 
@@ -6635,6 +6637,8 @@ void _UI_Init( qboolean inGameLoad ) {
 			break;
 	}
 
+	// Tr!Force: Load menus texts
+	trap_SP_Register("jkplus_menus");
 
 	Init_Display(&uiInfo.uiDC);
 
@@ -6669,7 +6673,7 @@ void _UI_Init( qboolean inGameLoad ) {
 #if 1
 	if (inGameLoad)
 	{
-		UI_LoadMenus("ui/jk2mpingame.txt", qtrue);
+		UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: Fallback menus
 	}
 	else
 	{
@@ -6677,7 +6681,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	}
 #else //this was adding quite a giant amount of time to the load time
 	UI_LoadMenus(menuSet, qtrue);
-	UI_LoadMenus("ui/jk2mpingame.txt", qtrue);
+	UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: Fallback menus
 #endif
 	
 	Menus_CloseAll();
@@ -7399,7 +7403,7 @@ static int		cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
 UI_RegisterCvars
 =================
 */
-void UI_RegisterCvars( void ) {
+void BaseJK2_UI_RegisterCvars(void) {  // Tr!Force: BaseJK2 register UI cvars function
 	int			i;
 	cvarTable_t	*cv;
 
@@ -7413,7 +7417,7 @@ void UI_RegisterCvars( void ) {
 UI_UpdateCvars
 =================
 */
-void UI_UpdateCvars( void ) {
+void BaseJK2_UI_UpdateCvars( void ) {  // Tr!Force: BaseJK2 update UI cvars function
 	int			i;
 	cvarTable_t	*cv;
 
