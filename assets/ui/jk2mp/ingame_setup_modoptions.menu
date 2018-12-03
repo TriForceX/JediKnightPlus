@@ -1,0 +1,542 @@
+{
+	menuDef
+	{
+		name                    "ingame_setup_modoptions"
+		fullscreen              0
+		rect                    245 81 300 250
+		focusColor              1 1 1 1
+		style                   1
+		border                  1
+		descX                   305
+		descY                   335
+		descScale               0.7
+		descColor               .235 .882 .847 1
+		descAlignment           ITEM_ALIGN_CENTER
+		onClose 
+		{
+			close					ingame_setup ;
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		// HIGHLIGHT BARS
+		//
+		//----------------------------------------------------------------------------------------------
+		itemDef
+		{
+			name                    highlight1
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 0 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight2
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 20 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight3
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 40 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight4
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 60 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight5
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 80 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight6
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 100 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight7
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 120 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight8
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 140 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight9
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 160 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight10
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 180 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight11
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 200 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight12
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    20 220 300 20
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		itemDef
+		{
+			name                    highlight13
+			group                   highlights
+			style                   WINDOW_STYLE_SHADER
+			rect                    165 220 120 32
+			background              "gfx/menus/menu_blendbox"
+			forecolor               1 1 1 1
+			visible                 0
+			decoration
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		// MOD OPTIONS FIELDS
+		//
+		//----------------------------------------------------------------------------------------------
+
+		// JKPlus logo
+		itemDef
+		{
+			name				jkpluslogo
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 300 38
+			background			"gfx/menus/jkplus_logo"
+			forecolor			1 1 1 1
+			visible				1
+			decoration
+		}
+		// Intro
+		itemDef
+		{
+			text				@JKPLUSMENUS_MOD_OPTIONS_INTRO
+			type				ITEM_TYPE_TEXT
+			textalign           ITEM_ALIGN_CENTER
+			rect				150 40 300 0
+			font				2
+			textscale			.5
+			backcolor			0 0 1 0
+			forecolor			.433 .703 .722 1
+			visible				1
+			autowrapped
+		}
+		// Button Borders (X + W + 8)
+		itemDef 
+		{
+			name				border1
+			style				WINDOW_STYLE_FILLED
+			rect				0 120 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		itemDef 
+		{
+			name				border2
+			style				WINDOW_STYLE_FILLED
+			rect				103 120 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		itemDef 
+		{
+			name				border3
+			style				WINDOW_STYLE_FILLED
+			rect				206 120 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		itemDef 
+		{
+			name				border4
+			style				WINDOW_STYLE_FILLED
+			rect				0 165 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		itemDef 
+		{
+			name				border2
+			style				WINDOW_STYLE_FILLED
+			rect				103 165 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		itemDef 
+		{
+			name				border3
+			style				WINDOW_STYLE_FILLED
+			rect				206 165 95 32
+			border				1
+			bordercolor			.265 .824 .886 .25
+			visible				1
+		}
+		// Button hover (H + 2)
+		itemDef 
+		{
+			name				button1hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 120 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				button2hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				103 120 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				button3hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				206 120 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				button4hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 165 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				button5hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				103 165 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				button6hover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				206 165 95 34
+			background			"gfx/menus/menu_buttonback"			// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		// Button text (X + 13, Y + 5)
+		itemdef
+		{
+			name				button1text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON1
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON1_INFO
+			rect				13 125 95 32
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_admin ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button1hover
+			}
+			mouseexit 
+			{ 
+				hide			button1hover
+			}
+		}
+		itemdef
+		{
+			name				button2text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON2
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON2_INFO
+			rect				116 125 95 34
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_client ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button2hover
+			}
+			mouseexit 
+			{ 
+				hide			button2hover
+			}
+		}
+		itemdef
+		{
+			name				button3text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON3
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON3_INFO
+			rect				219 125 95 34
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_build ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button3hover
+			}
+			mouseexit 
+			{ 
+				hide			button3hover
+			}
+		}
+		itemdef
+		{
+			name				button4text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON4
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON4_INFO
+			rect				13 170 95 32
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_emotes ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button4hover
+			}
+			mouseexit 
+			{ 
+				hide			button4hover
+			}
+		}
+		itemdef
+		{
+			name				button5text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON5
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON5_INFO
+			rect				116 170 95 34
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_server ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button5hover
+			}
+			mouseexit 
+			{ 
+				hide			button5hover
+			}
+		}
+		itemdef
+		{
+			name				button6text
+			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON6
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON6_INFO
+			rect				219 170 95 34
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			font				2
+			textscale			.7
+			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			35
+			textaligny			2
+			forecolor			1 1 1 1
+			backcolor			0 0 0 0
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkplus_random ;
+				close			ingame_setup_modoptions ;
+			}
+			mouseenter 
+			{ 
+				show			button6hover
+			}
+			mouseexit 
+			{ 
+				hide			button6hover
+			}
+		}
+		// Website
+		itemDef
+		{
+			text				@JKPLUSMENUS_MOD_OPTIONS_WEBSITE
+			type				ITEM_TYPE_TEXT
+			textalign           ITEM_ALIGN_CENTER
+			rect				150 215 300 0
+			font				2
+			textscale			.5
+			backcolor			0 0 1 0
+			forecolor			0.65 0.65 1 1
+			visible				1
+			autowrapped
+		}
+	}
+}
