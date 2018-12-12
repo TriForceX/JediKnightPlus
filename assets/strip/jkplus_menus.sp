@@ -40,7 +40,7 @@ INDEX 3
 }
 INDEX 4
 {
-   REFERENCE MAIN_OPTION_BUTTON1
+   REFERENCE MAIN_OPTION_ADMIN
    TEXT_LANGUAGE1 "Administration"
    TEXT_LANGUAGE2 "Administration"
    TEXT_LANGUAGE3 "Verwaltung"
@@ -49,7 +49,7 @@ INDEX 4
 }
 INDEX 5
 {
-   REFERENCE MAIN_OPTION_BUTTON1_INFO
+   REFERENCE MAIN_OPTION_ADMIN_INFO
    TEXT_LANGUAGE1 "Manage server and players."
    TEXT_LANGUAGE2 "Gérer le serveur et le joueur."
    TEXT_LANGUAGE3 "Verwalten sie server und player."
@@ -58,7 +58,7 @@ INDEX 5
 }
 INDEX 6
 {
-   REFERENCE MAIN_OPTION_BUTTON2
+   REFERENCE MAIN_OPTION_CLIENT
    TEXT_LANGUAGE1 "Client"
    TEXT_LANGUAGE2 "Client"
    TEXT_LANGUAGE3 "Klient"
@@ -67,16 +67,16 @@ INDEX 6
 }
 INDEX 7
 {
-   REFERENCE MAIN_OPTION_BUTTON2_INFO
-   TEXT_LANGUAGE1 "Player settings in game and interface."
-   TEXT_LANGUAGE2 "Paramètres du joueur dans le jeu et l'interface."
-   TEXT_LANGUAGE3 "Spielereinstellungen im spiel und in der benutzeroberfläche."
-   TEXT_LANGUAGE6 "Player settings in game and interface."
-   TEXT_LANGUAGE8 "Configuración del jugador en el juego y la interfaz."
+   REFERENCE MAIN_OPTION_CLIENT_INFO
+   TEXT_LANGUAGE1 "Interface and in game player settings."
+   TEXT_LANGUAGE2 "Interface et configuration du joueur dans le jeu."
+   TEXT_LANGUAGE3 "Schnittstelle und in Spielereinstellungen."
+   TEXT_LANGUAGE6 "Interface and in game player settings."
+   TEXT_LANGUAGE8 "Interfaz y configuración del jugador en el juego."
 }
 INDEX 8
 {
-   REFERENCE MAIN_OPTION_BUTTON3
+   REFERENCE MAIN_OPTION_BUILD
    TEXT_LANGUAGE1 "Build"
    TEXT_LANGUAGE2 "Bâtir"
    TEXT_LANGUAGE3 "bauen"
@@ -85,7 +85,7 @@ INDEX 8
 }
 INDEX 9
 {
-   REFERENCE MAIN_OPTION_BUTTON3_INFO
+   REFERENCE MAIN_OPTION_BUILD_INFO
    TEXT_LANGUAGE1 "Options to build on the map."
    TEXT_LANGUAGE2 "Options pour construire sur la carte."
    TEXT_LANGUAGE3 "Optionen zum Erstellen der Karte."
@@ -94,7 +94,7 @@ INDEX 9
 }
 INDEX 10
 {
-   REFERENCE MAIN_OPTION_BUTTON4
+   REFERENCE MAIN_OPTION_EMOTES
    TEXT_LANGUAGE1 "Emotes"
    TEXT_LANGUAGE2 "Emotions"
    TEXT_LANGUAGE3 "Emotes"
@@ -103,7 +103,7 @@ INDEX 10
 }
 INDEX 11
 {
-   REFERENCE MAIN_OPTION_BUTTON4_INFO
+   REFERENCE MAIN_OPTION_EMOTES_INFO
    TEXT_LANGUAGE1 "Visual animations to apply on your player."
    TEXT_LANGUAGE2 "Des animations visuelles à appliquer sur votre lecteur."
    TEXT_LANGUAGE3 "Visuelle Animationen für Ihren Player."
@@ -112,7 +112,7 @@ INDEX 11
 }
 INDEX 12
 {
-   REFERENCE MAIN_OPTION_BUTTON5
+   REFERENCE MAIN_OPTION_SERVER
    TEXT_LANGUAGE1 "Server"
    TEXT_LANGUAGE2 "serveur"
    TEXT_LANGUAGE3 "Server"
@@ -121,7 +121,7 @@ INDEX 12
 }
 INDEX 13
 {
-   REFERENCE MAIN_OPTION_BUTTON5_INFO
+   REFERENCE MAIN_OPTION_SERVER_INFO
    TEXT_LANGUAGE1 "Server information and requests."
    TEXT_LANGUAGE2 "Informations sur le serveur et demandes."
    TEXT_LANGUAGE3 "Server informationen und Anfragen."
@@ -130,7 +130,7 @@ INDEX 13
 }
 INDEX 14
 {
-   REFERENCE MAIN_OPTION_BUTTON6
+   REFERENCE MAIN_OPTION_RANDOM
    TEXT_LANGUAGE1 "Random"
    TEXT_LANGUAGE2 "Au hasard"
    TEXT_LANGUAGE3 "Zufällig"
@@ -139,7 +139,7 @@ INDEX 14
 }
 INDEX 15
 {
-   REFERENCE MAIN_OPTION_BUTTON6_INFO
+   REFERENCE MAIN_OPTION_RANDOM_INFO
    TEXT_LANGUAGE1 "Custom settings non related with Star Wars."
    TEXT_LANGUAGE2 "Paramètres personnalisés non liés à Star Wars."
    TEXT_LANGUAGE3 "Benutzerdefinierte einstellungen, die sich nicht auf Star Wars beziehen."

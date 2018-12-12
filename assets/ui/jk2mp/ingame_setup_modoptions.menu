@@ -209,61 +209,6 @@
 			visible				1
 			autowrapped
 		}
-		// Button Borders (X + W + 8)
-		itemDef 
-		{
-			name				border1
-			style				WINDOW_STYLE_FILLED
-			rect				0 120 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
-		itemDef 
-		{
-			name				border2
-			style				WINDOW_STYLE_FILLED
-			rect				103 120 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
-		itemDef 
-		{
-			name				border3
-			style				WINDOW_STYLE_FILLED
-			rect				206 120 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
-		itemDef 
-		{
-			name				border4
-			style				WINDOW_STYLE_FILLED
-			rect				0 165 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
-		itemDef 
-		{
-			name				border2
-			style				WINDOW_STYLE_FILLED
-			rect				103 165 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
-		itemDef 
-		{
-			name				border3
-			style				WINDOW_STYLE_FILLED
-			rect				206 165 95 32
-			border				1
-			bordercolor			.265 .824 .886 .25
-			visible				1
-		}
 		// Button hover (H + 2)
 		itemDef 
 		{
@@ -331,23 +276,25 @@
 			decoration
 			visible				0
 		}
-		// Button text (X + 13, Y + 5)
+		// Button text (X + W + 8)
 		itemdef
 		{
 			name				button1text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON1
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON1_INFO
-			rect				13 125 95 32
+			text				@JKPLUSMENUS_MAIN_OPTION_ADMIN
+			descText            @JKPLUSMENUS_MAIN_OPTION_ADMIN_INFO
+			rect				0 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 
@@ -367,19 +314,21 @@
 		itemdef
 		{
 			name				button2text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON2
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON2_INFO
-			rect				116 125 95 34
+			text				@JKPLUSMENUS_MAIN_OPTION_CLIENT
+			descText            @JKPLUSMENUS_MAIN_OPTION_CLIENT_INFO
+			rect				103 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 
@@ -399,19 +348,21 @@
 		itemdef
 		{
 			name				button3text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON3
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON3_INFO
-			rect				219 125 95 34
+			text				@JKPLUSMENUS_MAIN_OPTION_BUILD
+			descText            @JKPLUSMENUS_MAIN_OPTION_BUILD_INFO
+			rect				206 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 
@@ -431,19 +382,21 @@
 		itemdef
 		{
 			name				button4text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON4
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON4_INFO
-			rect				13 170 95 32
+			text				@JKPLUSMENUS_MAIN_OPTION_EMOTES
+			descText            @JKPLUSMENUS_MAIN_OPTION_EMOTES_INFO
+			rect				0 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 
@@ -463,19 +416,21 @@
 		itemdef
 		{
 			name				button5text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON5
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON5_INFO
-			rect				116 170 95 34
+			text				@JKPLUSMENUS_MAIN_OPTION_SERVER
+			descText            @JKPLUSMENUS_MAIN_OPTION_SERVER_INFO
+			rect				103 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 
@@ -495,19 +450,21 @@
 		itemdef
 		{
 			name				button6text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUTTON6
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUTTON6_INFO
-			rect				219 170 95 34
+			text				@JKPLUSMENUS_MAIN_OPTION_RANDOM
+			descText            @JKPLUSMENUS_MAIN_OPTION_RANDOM_INFO
+			rect				206 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
 			textscale			.7
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			35
-			textaligny			2
+			textalignx			46
+			textaligny			4
 			forecolor			1 1 1 1
-			backcolor			0 0 0 0
+			backcolor			0 0 0 .1
+			border				1
+			bordercolor			.265 .824 .886 .55
 			visible				1
 			action 
 			{ 

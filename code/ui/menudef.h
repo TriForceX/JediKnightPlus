@@ -77,6 +77,8 @@
 
 #define FEEDER_FORCECFG						0x10			// force config list
 
+#define FEEDER_EMOTES						0x11			// Tr!Force: Emotes feeder
+
 // display flags
 #define CG_SHOW_BLUE_TEAM_HAS_REDFLAG     0x00000001
 #define CG_SHOW_RED_TEAM_HAS_BLUEFLAG     0x00000002

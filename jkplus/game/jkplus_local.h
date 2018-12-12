@@ -17,7 +17,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 
 /*
 =====================================================================
-Player / world information struct
+Player / world information struct and flags
 =====================================================================
 */
 
@@ -27,12 +27,6 @@ Player / world information struct
 	int			something2;					// Info 2
 
 } someInfo_t;*/
-
-/*
-=====================================================================
-Effect flags
-=====================================================================
-*/
 
 /*typedef enum {
 
@@ -76,13 +70,13 @@ Common / new functions
 =====================================================================
 */
 
-//g_client.c
+// g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
-//jkplus_active.c
+// jkplus_active.c
 void		JKPlus_ClientThink_real(gentity_t *ent);
 
-//jkplus_emotes.c
+// jkplus_emotes.c
 int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
 int			JKPlus_emoteIn(gentity_t *ent, int type);
 void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
@@ -90,7 +84,7 @@ void		JKPlus_emoteDoHug(gentity_t *ent);
 void		JKPlus_emoteDoKiss(gentity_t *ent);
 void		JKPlus_emoteDoPunch(gentity_t *ent);
 
-//jkplus_common.c
+// jkplus_common.c
 int			JKPlus_compareCmd(char *cmd, char *required);
 void		JKPlus_stringEscape(char *in, char *out);
 void		JKPlus_cleanString(char *in, char *out);

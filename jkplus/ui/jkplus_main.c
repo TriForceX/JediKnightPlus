@@ -9,6 +9,80 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 #include "../../code/ui/ui_local.h"	// Original header
 
 /*
+==================================================
+Store the structs
+==================================================
+*/
+
+JKPlusUiInfo_t JKPlusUiInfo;
+
+typedef struct {
+
+	char			*emotesCmd;			// Emotes Command
+	char			*emotesTitle;		// Emotes title
+
+} emoteData_t;
+
+emoteData_t JKPlusEmotes[] =
+{
+	// cmd				title
+	{ "bar",			"Bartender" },
+	{ "beg",			"Beg" },
+	{ "buried",			"Buried in Ground" },
+	{ "cocky",			"Cocky" },
+	{ "comeon",			"Come on!" },
+	{ "comtalk",		"Communicator Talk" },
+	{ "crossarms",		"Cross Arms" },
+	{ "dontkillme",		"Don't Kill Me!" },
+	{ "dontknow",		"Don't Know" },
+	{ "dontknow2",		"Don't Know 2" },
+	{ "explain",		"Explain" },
+	{ "explain2",		"Explain 2" },
+	{ "fakedead",		"Fake Dead" },
+	{ "flip",			"Flip Saber" },
+	{ "handhips",		"Hand Hips" },
+	{ "hi",				"Say Hi!" },
+	{ "hug",			"Hug a friend" },
+	{ "kiss",			"Kiss Someone" },
+	{ "kneel",			"Kneel" },
+	{ "laugh",			"Laugh!" },
+	{ "look",			"Look Arround" },
+	{ "look2",			"Look Arround 2" },
+	{ "nod",			"Nod" },
+	{ "point",			"Point" },
+	{ "point2",			"Point 2" },
+	{ "punch",			"Punch Him!" },
+	{ "sit",			"Sit Down" },
+	{ "sit2",			"Sit Down 2" },
+	{ "sit3",			"Sit Down 3" },
+	{ "shake",			"Head Shake" },
+	{ "super",			"I'm a Hero" },
+	{ "super2",			"I'm a Hero 2" },
+	{ "surrender",		"Surrender" },
+	{ "spin",			"Spin" },
+	{ "spin2",			"Spin 2" },
+	{ "spin3",			"Spin 3" },
+	{ "spin4",			"Spin 4" },
+	{ "taunt2",			"Taunt 2" },
+	{ "taunt3",			"Taunt 3" },
+	{ "think",			"Thinking" },
+	{ "threaten",		"Threaten" },
+	{ "thumbsup",		"Thumbs Up" },
+	{ "thumbsdown",		"Thumbs Down" },
+	{ "tossback",		"Toss Back" },
+	{ "tossover",		"Toss Over" },
+	{ "tossup",			"Toss Up" },
+	{ "type",			"Typing" },
+	{ "type2",			"Typing 2" },
+	{ "victory",		"Victory" },
+	{ "victory2",		"Victory 2" },
+	{ "waiting",		"Waiting" },
+	{ "watchout",		"Watch Out!" },
+	{ "writing",		"Writing" },
+	{ "writing2",		"Writing 2" },
+};
+
+/*
 =====================================================================
 Cvar table list
 =====================================================================
@@ -65,4 +139,94 @@ void JKPlus_UI_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_UI_UpdateCvars();
+}
+
+/*
+=====================================================================
+Emote list function
+=====================================================================
+*/
+
+static char *JKPlus_UI_EmotesList(int index, int *actual) 
+{
+	int i, c = 0;
+	*actual = 0;
+
+	for (i = 0; i < JKPlusUiInfo.emotesCount; i++)
+	{
+		if (c == index)
+		{
+			*actual = i;
+			return JKPlusEmotes[i].emotesTitle;
+		}
+		else
+		{
+			c++;
+		}
+	}
+	return "";
+}
+
+/*
+=====================================================================
+Feeder item text function
+=====================================================================
+*/
+const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3)
+{
+	static char info[MAX_STRING_CHARS];
+	static char hostname[1024];
+	static char clientBuff[32];
+	static char needPass[32];
+	static int lastColumn = -1;
+	static int lastTime = 0;
+	*handle1 = *handle2 = *handle3 = -1;
+
+	if(feederID == FEEDER_EMOTES)
+	{
+		int actual;
+		return JKPlus_UI_EmotesList(index, &actual);
+	}
+
+	// Final return, probably NULL
+	return BaseJK2_UI_FeederItemText(feederID, index, column, handle1, handle2, handle3);
+}
+
+/*
+=====================================================================
+Feeder count function
+=====================================================================
+*/
+
+int JKPlus_UI_FeederCount(float feederID)
+{
+	switch ((int)feederID)
+	{
+		case FEEDER_EMOTES:
+			JKPlusUiInfo.emotesCount = (sizeof(JKPlusEmotes) / sizeof(JKPlusEmotes[0]));
+			return JKPlusUiInfo.emotesCount;
+	}
+
+	// Launch original feeder count function
+	return BaseJK2_UI_FeederCount(feederID);
+}
+
+/*
+=====================================================================
+Run menu scripts function
+=====================================================================
+*/
+
+void JKPlus_UI_RunMenuScript(char **args) // WIP
+{
+	const char *name, *name2;
+	char buff[1024];
+
+	if (String_Parse(args, &name))
+	{
+		if (Q_stricmp(name, "runEmote") == 0) 
+		{
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("say Emote choosen is %s\n"));
+		}
+	}
 }

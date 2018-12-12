@@ -5515,7 +5515,7 @@ static void UI_BuildServerStatus(qboolean force) {
 UI_FeederCount
 ==================
 */
-static int UI_FeederCount(float feederID) 
+/*static*/ int BaseJK2_UI_FeederCount(float feederID) // Tr!Force: BaseJK2 feeder count function
 {
 	switch ( (int)feederID )
 	{
@@ -5678,8 +5678,8 @@ static void UI_UpdatePendingPings() {
 
 }
 
-static const char *UI_FeederItemText(float feederID, int index, int column, 
-									 qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3) {
+/*static*/ const char *BaseJK2_UI_FeederItemText(float feederID, int index, int column, 
+									 qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3) { // Tr!Force: BaseJK2 feeder item text function
 	static char info[MAX_STRING_CHARS];
 	static char hostname[1024];
 	static char clientBuff[32];

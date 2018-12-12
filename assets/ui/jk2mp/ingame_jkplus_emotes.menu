@@ -1,0 +1,306 @@
+//----------------------------------------------------------------------------------------------
+// INGAME ABOUT BOX 
+//----------------------------------------------------------------------------------------------
+{
+	menuDef  
+	{
+		name					"ingame_jkplus_emotes"
+		visible					0
+		fullscreen				0
+		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
+		rect					10 40 165 420
+		focusColor				1 .75 0 1
+		style					1
+		border					1
+		onopen 
+		{ 
+			uiScript			loadArenas ;
+		}
+		// Overall window backdrop
+		itemDef 
+		{
+			name				background_pic
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 165 420
+			background			"gfx/menus/menu_box_ingame"
+			forecolor			1 1 1 1
+			visible				1
+			decoration
+		}
+		// Rows
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 33 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 50 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 67 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 84 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 101 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 118 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 135 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 152 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 169 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 186 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 203 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 220 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 237 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 254 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 271 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 288 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 305 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 322 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 339 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 356 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 373 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		itemDef 
+		{
+			name				emoteRow
+			rect				10 390 128 17
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		// Main Title
+		itemDef 
+		{
+			name				emoteTitle
+			style				WINDOW_STYLE_SHADER
+			background			"gfx/menus/menu_blendbox"
+			text				@JKPLUSMENUS_MAIN_OPTION_EMOTES
+			rect				0 5 165 15
+			textalign			ITEM_ALIGN_CENTER		
+			textalignx			83
+			textaligny			-2
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			font				3
+			textscale			0.8
+			forecolor			1  1  1  1
+			border				0
+			bordercolor			0 0 0 0
+			visible				1 
+		}
+		// Main list box
+		itemDef 
+		{
+			name				emoteList
+			rect				9 29 145 380
+			type				ITEM_TYPE_LISTBOX
+			style				WINDOW_STYLE_FILLED
+			elementwidth		90
+			elementheight		17
+			textscale			.70
+			elementtype			LISTBOX_TEXT
+			feeder				FEEDER_EMOTES
+			border				1
+			bordercolor			.265 .824 .886 .3
+			forecolor			1 1 1 1
+			backcolor			0.25 0.25 0.8 0.25
+			outlinecolor		0 1 0 .25
+			visible				1
+			mouseenter 
+			{ 
+				setitemcolor	emotelist bordercolor .265 .824 .886 .55
+			}
+			mouseexit 
+			{ 
+				setitemcolor	emotelist bordercolor .265 .824 .886 .3
+			}
+			doubleClick 
+			{ 
+				uiScript		runEmote ; 
+				close			ingame_jkplus_emotes ;
+			}
+		}
+		
+	}
+}
