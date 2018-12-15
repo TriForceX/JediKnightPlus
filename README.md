@@ -1,5 +1,5 @@
 # Jedi Knight Plus (JK+)
-https://jk2mp.com/mods/jkplus
+https://jkplus.github.io
 
 Game modification for **Jedi Knight 2 Multiplayer** with useful and innovative features. *(all game versions support)*
 
@@ -64,7 +64,7 @@ Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | NPC spawn command like in Single Player
 ✗ | Improved cheat commands
 ✗ | Protected server clan tag (With clan password)
-✗ | Over 50 player emotes (Sit, kiss, surrender, etc...)
+Done ✓ | Over 50 player emotes (Sit, kiss, surrender, etc...)
 ✗ | Teleport commands (Save & load position, player to player, etc...)
 ✗ | Anti lamer feature (Players can't kill during chat)
 ✗ | Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
@@ -100,7 +100,8 @@ Status | Feature
 ✗ | Two alternative huds (Jedi Academy and basic lite)
 ✗ | Alternative FPS and server time style
 ✗ | Alternative Force points display with numbers
-✗ | Display 3D bacta indicator
+✗ | Display bacta indicator (3D model)
+✗ | Display current weapon in back (3D model)
 ✗ | Enable custom item indicator
 ✗ | Enable push/pull force effect color to match with the color of lightsaber
 ✗ | Enable the color for the second blade with dual blade lightsabers
@@ -180,7 +181,7 @@ The people below helped me to solve problems and help in this project by giving 
 - Daggolin (Map modding and coding support)
 - Ouned / Twitch (Engine coding support)
 - Kameleon (3D model draw angles fix)
-- Fau (2D aspect ratio fix)
+- Fau & Bucky (2D aspect ratio fix)
 - BarryHit (Coding support and testing)
 - Player (Support and testing)
 - Flendo (Beta testing)
@@ -193,8 +194,7 @@ The people below helped me to solve problems and help in this project by giving 
 **Jedi Knight Plus Mod developed by Tr!Force**  
 Work copyrighted (C) with holder attribution 2005 - 2018
 
-Visit the home page:  
-https://jkplus.github.io
+Visit the home page: https://jkplus.github.io
 
 Feel free to write me if you got questions regarding the mod  
 E-mail: triforce@jk2mp.com
