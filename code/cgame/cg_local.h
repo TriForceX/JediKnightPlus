@@ -1305,7 +1305,8 @@ typedef struct {
 	glconfig_t		glconfig;			// rendering configuration
 	float			screenXScale;		// derived from glconfig
 	float			screenYScale;
-	float			screenXBias;
+	//float			screenXBias;
+	float			screenWidth;		// virtual screen width (originally 640)
 
 	int				serverCommandSequence;	// reliable command stream counter
 	int				processedSnapshotNum;// the number of snapshots cgame has requested
@@ -1494,6 +1495,9 @@ extern	vmCvar_t		cg_animBlend;
 
 extern	vmCvar_t		cg_dismember;
 
+extern	vmCvar_t		cg_widescreen;
+extern	vmCvar_t		cg_fovAspectAdjust;
+
 extern	vmCvar_t		cg_thirdPerson;
 extern	vmCvar_t		cg_thirdPersonRange;
 extern	vmCvar_t		cg_thirdPersonAngle;
@@ -1592,6 +1596,7 @@ void CG_NextForcePower_f(void);
 void CG_PrevForcePower_f(void);
 void MV_LoadSettings( const char *info );
 void MV_UpdateCgFlags( void );
+void CG_WideScreenMode(qboolean on);
 
 //
 // cg_view.c

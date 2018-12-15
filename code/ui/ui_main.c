@@ -208,6 +208,43 @@ int MV_UiDetectVersion( void )
 	}
 }
 
+/*
+===================
+UI_WideScreenMode
+Make 2D drawing functions use widescreen or 640x480 coordinates
+===================
+*/
+void UI_WideScreenMode(qboolean on) {
+	if (mvapi >= 3) {
+		if (on) {
+			trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
+		}
+		else {
+			trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
+		}
+	}
+}
+
+/*
+=================
+UI_UpdateWidescreen
+=================
+*/
+extern vmCvar_t ui_widescreen;
+static void UI_UpdateWidescreen(void) {
+	if (ui_widescreen.integer && mvapi >= 3) {
+		uiInfo.screenWidth = (float)SCREEN_HEIGHT * uiInfo.uiDC.glconfig.vidWidth / uiInfo.uiDC.glconfig.vidHeight;
+	}
+	else {
+		uiInfo.screenWidth = (float)SCREEN_WIDTH;
+	}
+	uiInfo.screenXFactor = (float)SCREEN_WIDTH / uiInfo.screenWidth;
+	uiInfo.screenXFactorInv = uiInfo.screenWidth / (float)SCREEN_WIDTH;
+
+	if (mvapi >= 3 && ui_widescreen.integer != 2)
+		trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
+}
+
 menuDef_t *Menus_FindByName(const char *p);
 void Menu_ShowItemByName(menuDef_t *menu, const char *p, qboolean bShow);
 void UpdateForceUsed();
@@ -381,13 +418,11 @@ void AssetCache() {
 }
 
 void _UI_DrawSides(float x, float y, float w, float h, float size) {
-	size *= uiInfo.uiDC.xscale;
 	trap_R_DrawStretchPic( x, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap_R_DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }
 
 void _UI_DrawTopBottom(float x, float y, float w, float h, float size) {
-	size *= uiInfo.uiDC.yscale;
 	trap_R_DrawStretchPic( x, y, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap_R_DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }
@@ -422,15 +457,22 @@ int MenuFontToHandle(int iMenuFont)
 int Text_Width(const char *text, float scale, int iMenuFont) 
 {	
 	int iFontIndex = MenuFontToHandle(iMenuFont);
+	float w;
 
-	return trap_R_Font_StrLenPixels(text, iFontIndex, scale);
+	UI_WideScreenMode(qtrue);
+	w = trap_R_Font_StrLenPixels(text, iFontIndex, scale) * uiInfo.screenXFactor;
+	UI_WideScreenMode(qfalse);
+	return w;
 }
 
 int Text_Height(const char *text, float scale, int iMenuFont) 
 {
 	int iFontIndex = MenuFontToHandle(iMenuFont);
-
-	return trap_R_Font_HeightPixels(iFontIndex, scale);
+	float h;
+	UI_WideScreenMode(qtrue);
+	h = trap_R_Font_HeightPixels(iFontIndex, scale);
+	UI_WideScreenMode(qfalse);
+	return h;
 }
 
 void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont)
@@ -443,23 +485,26 @@ void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, f
 	//	
 	switch (style)
 	{
-	case  ITEM_TEXTSTYLE_NORMAL:			iStyleOR = 0;break;					// JK2 normal text
-	case  ITEM_TEXTSTYLE_BLINK:				iStyleOR = (int)STYLE_BLINK;break;		// JK2 fast blinking
-	case  ITEM_TEXTSTYLE_PULSE:				iStyleOR = (int)STYLE_BLINK;break;		// JK2 slow pulsing
-	case  ITEM_TEXTSTYLE_SHADOWED:			iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
+		case  ITEM_TEXTSTYLE_NORMAL:			iStyleOR = 0;break;						// JK2 normal text
+		case  ITEM_TEXTSTYLE_BLINK:				iStyleOR = (int)STYLE_BLINK;break;		// JK2 fast blinking
+		case  ITEM_TEXTSTYLE_PULSE:				iStyleOR = (int)STYLE_BLINK;break;		// JK2 slow pulsing
+		case  ITEM_TEXTSTYLE_SHADOWED:			iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
 	case  ITEM_TEXTSTYLE_OUTLINED:			iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
 	case  ITEM_TEXTSTYLE_OUTLINESHADOWED:	iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
-	case  ITEM_TEXTSTYLE_SHADOWEDMORE:		iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
+		case  ITEM_TEXTSTYLE_SHADOWEDMORE:		iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow
 	}
 
-	trap_R_Font_DrawString(	x,		// int ox
-							y,		// int oy
-							text,	// const char *text
-							color,	// paletteRGBA_c c
+	UI_WideScreenMode(qtrue);
+	x *= uiInfo.screenXFactorInv;
+	trap_R_Font_DrawString(	x,						// int ox
+							y,						// int oy
+							text,					// const char *text
+							color,					// paletteRGBA_c c
 							iStyleOR | iFontIndex,	// const int iFontHandle
 							!limit?-1:limit,		// iCharLimit (-1 = none)
-							scale	// const float scale = 1.0f
-							);
+							scale );				// const float scale = 1.0f
+							
+	UI_WideScreenMode(qfalse);
 }
 
 void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iMenuFont) 
@@ -480,7 +525,7 @@ void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const cha
 
 			{
 				int iFontIndex = MenuFontToHandle( iMenuFont );	
-				int iNextXpos  = trap_R_Font_StrLenPixels(sTemp, iFontIndex, scale );
+				int iNextXpos = Text_Width(sTemp, scale, iFontIndex);
 
 				Text_Paint(x+iNextXpos, y, scale, color, va("%c",cursor), 0, limit, style|ITEM_TEXTSTYLE_BLINK, iMenuFont);
 			}
@@ -497,7 +542,7 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 	int iFontIndex = MenuFontToHandle(iMenuFont);
 	
 	//float fMax = *maxX;
-	int iPixelLen = trap_R_Font_StrLenPixels(text, iFontIndex, scale);
+	int iPixelLen = Text_Width(text, scale, iFontIndex);
 	if (x + iPixelLen > *maxX)
 	{
 		// whole text won't fit, so we need to print just the amount that does...
@@ -509,9 +554,9 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 		char *psOutLastGood = psOut;
 		unsigned int uiLetter;
 
-		while (*psText && (x + trap_R_Font_StrLenPixels(sTemp, iFontIndex, scale)<=*maxX) 
-			   && psOut < &sTemp[sizeof(sTemp)-1]	// sanity
-				)
+		while (*psText && (x + Text_Width(sTemp, scale, iFontIndex) <= *maxX)
+			&& psOut < &sTemp[sizeof(sTemp) - 1]	// sanity
+			)
 		{
 			int iAdvanceCount;
 			psOutLastGood = psOut;
@@ -634,7 +679,9 @@ void _UI_Refresh( int realtime )
 	// draw cursor
 	UI_SetColor( NULL );
 	if (Menu_Count() > 0) {
-		UI_DrawHandlePic( uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+		UI_WideScreenMode(qtrue);
+		UI_DrawHandlePic(uiInfo.uiDC.cursorx * uiInfo.screenXFactorInv, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+		UI_WideScreenMode(qfalse);
 	}
 
 #ifndef NDEBUG
@@ -6536,7 +6583,6 @@ static void UI_BuildQ3Model_List( void )
 }
 
 
-
 /*
 =================
 UI_Init
@@ -6558,6 +6604,8 @@ void _UI_Init( qboolean inGameLoad ) {
 	// cache redundant calulations
 	trap_GetGlconfig( &uiInfo.uiDC.glconfig );
 
+	UI_UpdateWidescreen();
+
 	// for 640x480 virtualized screen
 	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
 	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
@@ -6569,7 +6617,6 @@ void _UI_Init( qboolean inGameLoad ) {
 		// no wide screen
 		uiInfo.uiDC.bias = 0;
 	}
-
 
   //UI_Load();
 	uiInfo.uiDC.registerShaderNoMip = &trap_R_RegisterShaderNoMip;
@@ -6748,7 +6795,7 @@ UI_MouseEvent
 void _UI_MouseEvent( int dx, int dy )
 {
 	// update mouse screen position
-	uiInfo.uiDC.cursorx += dx;
+	uiInfo.uiDC.cursorx += dx * uiInfo.screenXFactor;
 	if (uiInfo.uiDC.cursorx < 0)
 		uiInfo.uiDC.cursorx = 0;
 	else if (uiInfo.uiDC.cursorx > SCREEN_WIDTH)
@@ -7260,6 +7307,8 @@ vmCvar_t	ui_realWarmUp;
 vmCvar_t	ui_serverStatusTimeOut;
 vmCvar_t	ui_s_language;
 
+vmCvar_t	ui_widescreen;
+
 vmCvar_t	ui_MVSDK;
 
 // bk001129 - made static to avoid aliasing
@@ -7391,25 +7440,29 @@ static cvarTable_t		cvarTable[] = {
 	{ &ui_serverStatusTimeOut, "ui_serverStatusTimeOut", "7000", CVAR_ARCHIVE},
 	{ &ui_s_language, "s_language", "english", CVAR_ARCHIVE | CVAR_NORESTART},
 
+	{ &ui_widescreen, "ui_widescreen", "1", CVAR_ARCHIVE | CVAR_LATCH },
+
 	{ &ui_MVSDK, "ui_MVSDK", MVSDK_VERSION, CVAR_ROM | CVAR_USERINFO },
 };
 
 // bk001129 - made static to avoid aliasing
 static int		cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
 
-
+int widescreenModificationCount = - 1;
 /*
 =================
 UI_RegisterCvars
 =================
 */
-void BaseJK2_UI_RegisterCvars(void) {  // Tr!Force: BaseJK2 register UI cvars function
+void BaseJK2_UI_RegisterCvars( void ) {  // Tr!Force: BaseJK2 register UI cvars function
 	int			i;
 	cvarTable_t	*cv;
 
 	for ( i = 0, cv = cvarTable ; i < cvarTableSize ; i++, cv++ ) {
 		trap_Cvar_Register( cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags );
 	}
+
+	widescreenModificationCount = ui_widescreen.modificationCount;
 }
 
 /*
@@ -7423,6 +7476,11 @@ void BaseJK2_UI_UpdateCvars( void ) {  // Tr!Force: BaseJK2 update UI cvars func
 
 	for ( i = 0, cv = cvarTable ; i < cvarTableSize ; i++, cv++ ) {
 		trap_Cvar_Update( cv->vmCvar );
+	}
+
+	if (widescreenModificationCount != ui_widescreen.modificationCount) {
+		widescreenModificationCount = ui_widescreen.modificationCount;
+		UI_UpdateWidescreen();
 	}
 }
 

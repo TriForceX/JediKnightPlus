@@ -905,5 +905,5 @@ void trap_R_AddRefEntityToScene2( const refEntity_t *re )
 
 void trap_MVAPI_SetVirtualScreen( float w, float h )
 {
-	syscall( CG_MVAPI_SETVIRTUALSCREEN, w, h );
+	syscall( CG_MVAPI_SETVIRTUALSCREEN, PASSFLOAT(w), PASSFLOAT(h) );
 }

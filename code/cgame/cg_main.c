@@ -127,6 +127,7 @@ char *HolocronIcons[] = {
 };
 
 int forceModelModificationCount = -1;
+int widescreenModificationCount = -1;
 
 void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum );
 void CG_Shutdown( void );
@@ -510,6 +511,9 @@ vmCvar_t	cg_animBlend;
 
 vmCvar_t	cg_dismember;
 
+vmCvar_t	cg_widescreen;
+vmCvar_t	cg_fovAspectAdjust;
+
 vmCvar_t	cg_thirdPerson;
 vmCvar_t	cg_thirdPersonRange;
 vmCvar_t	cg_thirdPersonAngle;
@@ -668,6 +672,9 @@ static cvarTable_t cvarTable[] = { // bk001129
 
 	{ &cg_dismember, "cg_dismember", "0", CVAR_ARCHIVE },
 
+	{ &cg_widescreen, "cg_widescreen", "1", CVAR_ARCHIVE },
+	{ &cg_fovAspectAdjust, "cg_fovAspectAdjust", "0", CVAR_ARCHIVE },
+
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", 0 },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "80", CVAR_CHEAT },
 	{ &cg_thirdPersonAngle, "cg_thirdPersonAngle", "0", CVAR_CHEAT },
@@ -767,6 +774,8 @@ void BaseJK2_CG_RegisterCvars( void ) { // Tr!Force: BaseJK2 register client cva
 
 	forceModelModificationCount = cg_forceModel.modificationCount;
 
+	widescreenModificationCount = cg_widescreen.modificationCount;
+
 	trap_Cvar_Register(NULL, "model", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	//trap_Cvar_Register(NULL, "headmodel", DEFAULT_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
 	trap_Cvar_Register(NULL, "team_model", DEFAULT_TEAM_MODEL, CVAR_USERINFO | CVAR_ARCHIVE );
@@ -804,6 +813,40 @@ static void CG_ForceModelChange( void ) {
 }
 
 /*
+===================
+CG_WideScreenMode
+Make 2D drawing functions use widescreen or 640x480 coordinates
+===================
+*/
+void CG_WideScreenMode(qboolean on) {
+	if (mvapi >= 3) {
+		if (on) {
+			trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)SCREEN_HEIGHT);
+		}
+		else {
+			trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
+		}
+	}
+}
+
+
+/*
+===================
+CG_UpdateWidescreen
+===================
+*/
+static void CG_UpdateWidescreen(void) {
+	if (cg_widescreen.integer && mvapi >= 3) {
+		cgs.screenWidth = (float)SCREEN_HEIGHT * cgs.glconfig.vidWidth / cgs.glconfig.vidHeight;
+	} else {
+		cgs.screenWidth = (float)SCREEN_WIDTH;
+	}
+	
+	if (mvapi >= 3 && cg_widescreen.integer != 2)
+		trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)SCREEN_HEIGHT);
+}
+
+/*
 =================
 CG_UpdateCvars
 =================
@@ -836,6 +879,11 @@ void BaseJK2_CG_UpdateCvars( void ) { // Tr!Force: BaseJK2 update client cvars f
 	if ( forceModelModificationCount != cg_forceModel.modificationCount ) {
 		forceModelModificationCount = cg_forceModel.modificationCount;
 		CG_ForceModelChange();
+	}
+
+	if (widescreenModificationCount != cg_widescreen.modificationCount) {
+		widescreenModificationCount = cg_widescreen.modificationCount;
+		CG_UpdateWidescreen();
 	}
 }
 
@@ -2502,7 +2550,7 @@ Ghoul2 Insert End
 	cgDC.Assets.qhSmallFont  = trap_R_RegisterFont("ocr_a");
 	cgDC.Assets.qhMediumFont = trap_R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
-
+	
 	// Tr!Force: Load ingame texts
 	trap_SP_Register("jkplus_ingame");
 
@@ -2632,11 +2680,6 @@ Ghoul2 Insert End
 		ammoTicPos[i].tic		= trap_R_RegisterShaderNoMip( ammoTicPos[i].file );
 	}
 
-
-	CG_RegisterCvars();
-
-	CG_InitConsoleCommands();
-
 	cg.weaponSelect = WP_BRYAR_PISTOL;
 
 	cgs.redflag = cgs.blueflag = -1; // For compatibily, default to unset for
@@ -2647,6 +2690,13 @@ Ghoul2 Insert End
 	trap_GetGlconfig( &cgs.glconfig );
 	cgs.screenXScale = cgs.glconfig.vidWidth / 640.0;
 	cgs.screenYScale = cgs.glconfig.vidHeight / 480.0;
+
+
+	CG_RegisterCvars();
+
+	CG_InitConsoleCommands();
+
+	CG_UpdateWidescreen();
 
 	// get the gamestate from the client system
 	trap_GetGameState( &cgs.gameState );

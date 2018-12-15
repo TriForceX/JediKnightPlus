@@ -841,6 +841,10 @@ typedef struct {
 
 	qboolean inGameLoad;
 
+	float		screenWidth;
+	float		screenXFactor;
+	float		screenXFactorInv;
+
 }	uiInfo_t;
 
 extern uiInfo_t uiInfo;

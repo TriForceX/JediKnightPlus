@@ -90,8 +90,8 @@
 #define	NUM_CROSSHAIRS			10
 
 typedef struct {
-  const char *command;
-  const char *args[MAX_SCRIPT_ARGS];
+	const char *command;
+	const char *args[MAX_SCRIPT_ARGS];
 } scriptDef_t;
 
 
@@ -224,7 +224,7 @@ typedef struct textScrollDef_s
 
 typedef struct itemDef_s {
 	Window		window;						// common positional, border, style, layout info
-	Rectangle	textRect;					// rectangle the text ( if any ) consumes     
+	Rectangle	textRect;					// rectangle the text ( if any ) consumes
 	int			type;						// text, button, radiobutton, checkbox, textfield, listbox, combo
 	int			alignment;					// left center right
 	int			textalignment;				// ( optional ) alignment for text within rect based on text width
@@ -277,7 +277,7 @@ typedef struct {
 
 	vec4_t focusColor;						// focus color for items
 	vec4_t disableColor;					// focus color for items
-	itemDef_t *items[MAX_MENUITEMS];		// items this menu contains   
+	itemDef_t *items[MAX_MENUITEMS];		// items this menu contains
 	int			descX;						// X position of description
 	int			descY;						// X position of description
 	vec4_t		descColor;					// description text color for items
@@ -289,41 +289,41 @@ typedef struct {
 } menuDef_t;
 
 typedef struct {
-  const char *fontStr;
-  const char *cursorStr;
-  const char *gradientStr;
-  qhandle_t	qhSmallFont;
-  qhandle_t	qhMediumFont;
-  qhandle_t	qhBigFont;
-  qhandle_t cursor;
-  qhandle_t gradientBar;
-  qhandle_t scrollBarArrowUp;
-  qhandle_t scrollBarArrowDown;
-  qhandle_t scrollBarArrowLeft;
-  qhandle_t scrollBarArrowRight;
-  qhandle_t scrollBar;
-  qhandle_t scrollBarThumb;
-  qhandle_t buttonMiddle;
-  qhandle_t buttonInside;
-  qhandle_t solidBox;
-  qhandle_t sliderBar;
-  qhandle_t sliderThumb;
-  sfxHandle_t menuEnterSound;
-  sfxHandle_t menuExitSound;
-  sfxHandle_t menuBuzzSound;
-  sfxHandle_t itemFocusSound;
-  float fadeClamp;
-  int fadeCycle;
-  float fadeAmount;
-  float shadowX;
-  float shadowY;
-  vec4_t shadowColor;
-  float shadowFadeClamp;
-  qboolean fontRegistered;
+	const char *fontStr;
+	const char *cursorStr;
+	const char *gradientStr;
+	qhandle_t	qhSmallFont;
+	qhandle_t	qhMediumFont;
+	qhandle_t	qhBigFont;
+	qhandle_t cursor;
+	qhandle_t gradientBar;
+	qhandle_t scrollBarArrowUp;
+	qhandle_t scrollBarArrowDown;
+	qhandle_t scrollBarArrowLeft;
+	qhandle_t scrollBarArrowRight;
+	qhandle_t scrollBar;
+	qhandle_t scrollBarThumb;
+	qhandle_t buttonMiddle;
+	qhandle_t buttonInside;
+	qhandle_t solidBox;
+	qhandle_t sliderBar;
+	qhandle_t sliderThumb;
+	sfxHandle_t menuEnterSound;
+	sfxHandle_t menuExitSound;
+	sfxHandle_t menuBuzzSound;
+	sfxHandle_t itemFocusSound;
+	float fadeClamp;
+	int fadeCycle;
+	float fadeAmount;
+	float shadowX;
+	float shadowY;
+	vec4_t shadowColor;
+	float shadowFadeClamp;
+	qboolean fontRegistered;
 
-  // player settings
+	// player settings
 	qhandle_t fxBasePic;
-  qhandle_t fxPic[7];
+	qhandle_t fxPic[7];
 	qhandle_t	crosshairShader[NUM_CROSSHAIRS];
 
 } cachedAssets_t;
@@ -335,22 +335,22 @@ typedef struct
 } commandDef_t;
 
 typedef struct {
-  qhandle_t (*registerShaderNoMip) (const char *p);
-  void (*setColor) (const vec4_t v);
-  void (*drawHandlePic) (float x, float y, float w, float h, qhandle_t asset);
-  void (*drawStretchPic) (float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader );
-  void (*drawText) (float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont);  
-  int (*textWidth) (const char *text, float scale, int iMenuFont);  
-  int (*textHeight) (const char *text, float scale, int iMenuFont);
-  qhandle_t (*registerModel) (const char *p);
-  void (*modelBounds) (qhandle_t model, vec3_t min, vec3_t max);
-  void (*fillRect) ( float x, float y, float w, float h, const vec4_t color);
-  void (*drawRect) ( float x, float y, float w, float h, float size, const vec4_t color);
-  void (*drawSides) (float x, float y, float w, float h, float size);
-  void (*drawTopBottom) (float x, float y, float w, float h, float size);
-  void (*clearScene) ();
-  void (*addRefEntityToScene) (const refEntity_t *re );
-  void (*renderScene) ( const refdef_t *fd );
+	qhandle_t (*registerShaderNoMip) (const char *p);
+	void (*setColor) (const vec4_t v);
+	void (*drawHandlePic) (float x, float y, float w, float h, qhandle_t asset);
+	void (*drawStretchPic) (float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader );
+	void (*drawText) (float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont);
+	int (*textWidth) (const char *text, float scale, int iMenuFont);
+	int (*textHeight) (const char *text, float scale, int iMenuFont);
+	qhandle_t (*registerModel) (const char *p);
+	void (*modelBounds) (qhandle_t model, vec3_t min, vec3_t max);
+	void (*fillRect) ( float x, float y, float w, float h, const vec4_t color);
+	void (*drawRect) ( float x, float y, float w, float h, float size, const vec4_t color);
+	void (*drawSides) (float x, float y, float w, float h, float size);
+	void (*drawTopBottom) (float x, float y, float w, float h, float size);
+	void (*clearScene) ();
+	void (*addRefEntityToScene) (const refEntity_t *re );
+	void (*renderScene) ( const refdef_t *fd );
 
 	qhandle_t (*RegisterFont)( const char *fontName );
 	int		(*Font_StrLenPixels) (const char *text, const int iFontIndex, const float scale);
@@ -360,24 +360,24 @@ typedef struct {
 	qboolean (*Language_IsAsian)(void);
 	qboolean (*Language_UsesSpaces)(void);
 	//unsigned int (*AnyLanguage_ReadCharFromString)( const char *psText, int *piAdvanceCount, qboolean *pbIsTrailingPunctuation/* = NULL*/ );
-  void (*ownerDrawItem) (float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle,int iMenuFont);
+	void (*ownerDrawItem) (float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle,int iMenuFont);
 	float (*getValue) (int ownerDraw);
 	qboolean (*ownerDrawVisible) (int flags);
-  void (*runScript)(char **p);
-  qboolean (*deferScript)(char **p);
-  void (*getTeamColor)(vec4_t *color);
-  void (*getCVarString)(const char *cvar, char *buffer, int bufsize);
-  float (*getCVarValue)(const char *cvar);
-  void (*setCVar)(const char *cvar, const char *value);
-  void (*drawTextWithCursor)(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iFontIndex);
-  void (*setOverstrikeMode)(qboolean b);
-  qboolean (*getOverstrikeMode)();
-  void (*startLocalSound)( sfxHandle_t sfx, int channelNum );
-  qboolean (*ownerDrawHandleKey)(int ownerDraw, int flags, float *special, int key);
-  int (*feederCount)(float feederID);
-  const char *(*feederItemText)(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
-  qhandle_t (*feederItemImage)(float feederID, int index);
-  qboolean (*feederSelection)(float feederID, int index);
+	void (*runScript)(char **p);
+	qboolean (*deferScript)(char **p);
+	void (*getTeamColor)(vec4_t *color);
+	void (*getCVarString)(const char *cvar, char *buffer, int bufsize);
+	float (*getCVarValue)(const char *cvar);
+	void (*setCVar)(const char *cvar, const char *value);
+	void (*drawTextWithCursor)(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iFontIndex);
+	void (*setOverstrikeMode)(qboolean b);
+	qboolean (*getOverstrikeMode)();
+	void (*startLocalSound)( sfxHandle_t sfx, int channelNum );
+	qboolean (*ownerDrawHandleKey)(int ownerDraw, int flags, float *special, int key);
+	int (*feederCount)(float feederID);
+	const char *(*feederItemText)(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
+	qhandle_t (*feederItemImage)(float feederID, int index);
+	qboolean (*feederSelection)(float feederID, int index);
 	void (*keynumToStringBuf)( int keynum, char *buf, int buflen );
 	void (*getBindingBuf)( int keynum, char *buf, int buflen );
 	void (*setBinding)( int keynum, const char *binding );
@@ -394,21 +394,21 @@ typedef struct {
 	void (*drawCinematic)(int handle, float x, float y, float w, float h);
 	void (*runCinematicFrame)(int handle);
 
-  float			yscale;
-  float			xscale;
+	float			yscale;
+	float			xscale;
   float			bias;
   int				realTime;
   int				frameTime;
-	int				cursorx;
-	int				cursory;
+	float			cursorx;
+	float			cursory;
 	qboolean	debug;
 
   cachedAssets_t Assets;
 
 	glconfig_t glconfig;
 	qhandle_t	whiteShader;
-  qhandle_t gradientImage;
-  qhandle_t cursor;
+	qhandle_t gradientImage;
+	qhandle_t cursor;
 	float FPS;
 
 } displayContextDef_t;

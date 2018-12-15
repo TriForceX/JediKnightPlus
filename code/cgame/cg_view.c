@@ -1017,9 +1017,21 @@ static int CG_CalcFov( void ) {
 		}
 	}
 
-	x = cg.refdef.width / tan( fov_x / 360 * M_PI );
-	fov_y = atan2( cg.refdef.height, x );
-	fov_y = fov_y * 360 / M_PI;
+	if (cg_fovAspectAdjust.integer &&
+		cg.refdef.width * 3 > cg.refdef.height * 4)
+	{
+		// 4:3 screen with fov_x must fit INTO widescreen
+		float width = cg.refdef.height * (4.0f / 3.0f);
+
+		x = width / tan(DEG2RAD(0.5f * fov_x));
+		fov_x = RAD2DEG(2 * atan2(cg.refdef.width, x));
+		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
+	}
+	else
+	{
+		x = cg.refdef.width / tan(DEG2RAD(0.5f * fov_x));
+		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
+	}
 
 	// warp if underwater
 	contents = CG_PointContents( cg.refdef.vieworg, -1 );
