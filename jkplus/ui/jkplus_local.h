@@ -14,7 +14,15 @@ Player / world information struct and flags
 
 typedef struct {
 
-	int				emotesCount;		// Emotes Count
+	char			*emotesCmd;			// Emotes command
+	char			*emotesTitle;		// Emotes title
+
+} emoteData_t;
+
+typedef struct {
+
+	int				emotesCount;		// Emotes count
+	emoteData_t		emotesList;		// Emotes list
 
 } JKPlusUiInfo_t;
 
@@ -30,6 +38,7 @@ Global definitions
 #define UI_UpdateCvars				JKPlus_UI_UpdateCvars
 #define UI_FeederCount				JKPlus_UI_FeederCount
 #define UI_FeederItemText			JKPlus_UI_FeederItemText
+#define UI_FeederSelection			JKPlus_UI_FeederSelection
 
 /*
 =====================================================================
@@ -40,8 +49,9 @@ Common / new functions
 // ui_main.c
 const char	*BaseJK2_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
 int			BaseJK2_UI_FeederCount(float feederID);
+qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 
 // jkplus_main.c
 const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
 int			JKPlus_UI_FeederCount(float feederID);
-void		JKPlus_UI_RunMenuScript(char **args); // WIP
+qboolean	JKPlus_UI_FeederSelection(float feederID, int index);

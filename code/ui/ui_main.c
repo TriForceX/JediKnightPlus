@@ -6042,7 +6042,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
   return 0;
 }
 
-qboolean UI_FeederSelection(float feederID, int index) {
+qboolean BaseJK2_UI_FeederSelection(float feederID, int index) { // Tr!Force: BaseJK2 feeder selection
 	static char info[MAX_STRING_CHARS];
 	if (feederID == FEEDER_HEADS) 
 	{

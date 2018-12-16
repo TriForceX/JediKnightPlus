@@ -16,14 +16,7 @@ Store the structs
 
 JKPlusUiInfo_t JKPlusUiInfo;
 
-typedef struct {
-
-	char			*emotesCmd;			// Emotes Command
-	char			*emotesTitle;		// Emotes title
-
-} emoteData_t;
-
-emoteData_t JKPlusEmotes[] =
+emoteData_t emotesList[] =
 {
 	// cmd				title
 	{ "bar",			"Bartender" },
@@ -143,7 +136,7 @@ void JKPlus_UI_UpdateCvars(void)
 
 /*
 =====================================================================
-Emote list function
+Emotes functions
 =====================================================================
 */
 
@@ -157,7 +150,7 @@ static char *JKPlus_UI_EmotesList(int index, int *actual)
 		if (c == index)
 		{
 			*actual = i;
-			return JKPlusEmotes[i].emotesTitle;
+			return emotesList[i].emotesTitle;
 		}
 		else
 		{
@@ -203,7 +196,7 @@ int JKPlus_UI_FeederCount(float feederID)
 	switch ((int)feederID)
 	{
 		case FEEDER_EMOTES:
-			JKPlusUiInfo.emotesCount = (sizeof(JKPlusEmotes) / sizeof(JKPlusEmotes[0]));
+			JKPlusUiInfo.emotesCount = (sizeof(emotesList) / sizeof(emotesList[0]));
 			return JKPlusUiInfo.emotesCount;
 	}
 
@@ -213,20 +206,19 @@ int JKPlus_UI_FeederCount(float feederID)
 
 /*
 =====================================================================
-Run menu scripts function
+Feeder selection function
 =====================================================================
 */
 
-void JKPlus_UI_RunMenuScript(char **args) // WIP
+qboolean JKPlus_UI_FeederSelection(float feederID, int index)
 {
-	const char *name, *name2;
-	char buff[1024];
+	static char info[MAX_STRING_CHARS];
 
-	if (String_Parse(args, &name))
+	if (feederID == FEEDER_EMOTES)
 	{
-		if (Q_stricmp(name, "runEmote") == 0) 
-		{
-			trap_Cmd_ExecuteText(EXEC_APPEND, va("say Emote choosen is %s\n"));
-		}
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("%s\n", emotesList[index].emotesCmd));
 	}
+
+	// Final return, probably NULL
+	return BaseJK2_UI_FeederSelection(feederID, index);
 }

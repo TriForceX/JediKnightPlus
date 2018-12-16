@@ -295,12 +295,6 @@
 			{ 
 				setitemcolor	emotelist bordercolor .265 .824 .886 .3
 			}
-			doubleClick 
-			{ 
-				uiScript		runEmote ; 
-				close			ingame_jkplus_emotes ;
-			}
 		}
-		
 	}
 }
