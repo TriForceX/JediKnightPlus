@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 #define JKPLUS_SHORTNAME   		"JKPlus"
 #define JKPLUS_PHASE   			"Beta"
 #define JKPLUS_RELEASE 			"1"
-#define JKPLUS_DEVELOP 			"0-rev1"
+#define JKPLUS_DEVELOP 			"0-rev2"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " " JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
 
 /*
@@ -49,6 +49,7 @@ Global definitions
 #define ClientBegin					JKPlus_ClientBegin
 #define ClientSpawn					JKPlus_ClientSpawn
 #define G_Damage					JKPlus_G_Damage
+#define ConsoleCommand				JKPlus_ConsoleCommand
 
 /*
 =====================================================================

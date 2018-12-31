@@ -81,6 +81,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_session.c"
 	"${SRCDir}/game/g_spawn.c"
 	"${SRCDir}/game/g_svcmds.c"
+	"${JKPlusDir}/game/jkplus_svcmds.c" # Tr!Force: JKPlus sources
 	"${SRCDir}/game/g_target.c"
 	"${SRCDir}/game/g_team.c"
 	"${SRCDir}/game/g_trigger.c"

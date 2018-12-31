@@ -55,6 +55,7 @@ Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | Player account system (Tracks kills, deaths, etc...)
 ✗ | Ranking system based on player skills
 ✗ | Chat censor filters
+✗ | Enable black color in player names
 ✗ | In-game chat commands (Teleports, info, etc...)
 ✗ | Welcome message and news messages showing constantly on the server
 ✗ | Custom in-game modes. (Instant kill, survival, last man standing, etc...)
