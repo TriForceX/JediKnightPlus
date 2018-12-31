@@ -47,7 +47,7 @@ set dedicated 2
 // Server Version
 set mv_serverversion 1.04
 // Server Mod
-set fs_game JediKnightPlus_1.0_Beta
+set fs_game JediKnightPlus
 // Server Config
 exec jkplus_server.cfg
 )!"

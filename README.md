@@ -14,7 +14,7 @@ Note: This mod is under development, some features may be disabled or not finish
 
 Phase | Version | Download
 ------------ | ------------ | -------------
-Beta | 1.0-rev1 | Not available
+Develop | 1.0-rev2 | Not available
 Release | Not available | Not available
 
 # Mod & Server Setup
@@ -23,17 +23,17 @@ First of all is highly recommend to use [JK2MV](https://jk2mv.org/downloads) to 
 
 1. Go to `GameData` (the directory which holds `jk2mp.exe` or `jk2ded.exe`)
 
-2. Unpack the `JediKnightPlus_1.0_Beta` folder into `GameData` directory
+2. Unpack the `JediKnightPlus` folder into `GameData` directory
    
 3. To configure mod options edit the files which starts with `jkplus_<name>.cfg` like `jkplus_server.cfg`
 
 4. You can launch the server in game server setup or directly with the command prompt in *Windows* or *Unix*
 
 5. For *Windows* use the following parameters: 
-   - `C:\<path to jk2>\GameData\jk2mvded.exe +set fs_game JediKnightPlus_1.0_Beta +exec jkplus_server.cfg`
+   - `C:\<path to jk2>\GameData\jk2mvded.exe +set fs_game JediKnightPlus +exec jkplus_server.cfg`
 
 6. For *Unix* use the following parameters: 
-   - `./jk2mvded +set fs_game JediKnightPlus_1.0_Beta +exec jkplus_server.cfg`
+   - `./jk2mvded +set fs_game JediKnightPlus +exec jkplus_server.cfg`
 
 7. Also for *Windows* you can launch the server using the file `jkplus_launcher.exe`
 
@@ -57,7 +57,6 @@ Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | Chat censor filters
 ✗ | In-game chat commands (Teleports, info, etc...)
 ✗ | Welcome message and news messages showing constantly on the server
-✗ | Pause mode to instantly stop everyone on the server during game
 ✗ | Custom in-game modes. (Instant kill, survival, last man standing, etc...)
 ✗ | Custom player private chats
 ✗ | Enabled Jedi Crystal and Beer Bacta items
@@ -72,7 +71,7 @@ Done ✓ | Over 50 player emotes (Sit, kiss, surrender, etc...)
 ✗ | Items get affected by force physics (Push, pull, etc...)
 ✗ | Enable multiple private duels on FFA game type
 ✗ | Enable invisible private duels
-✗ | Enable multiple private duel modes (Full force, no force, etc...)
+✗ | Enable multiple private duel modes (Full force, no force, guns, etc...)
 ✗ | Enable chat in Duel game type
 ✗ | Alternative player dimensions
 ✗ | Custom poll call votes
@@ -143,7 +142,8 @@ Status | Feature
 ✗ | Spawn unlimited items and weapons
 ✗ | Private administrator chat room
 ✗ | Custom call vote with actions
-✗ | Team management (Lock, force, shuffle, etc...) 
+✗ | Team management (Lock, force, shuffle, etc...)
+✗ | Pause mode to instantly stop everyone on the server during game
 
 # To-Do Stuff & Public Requests
 
