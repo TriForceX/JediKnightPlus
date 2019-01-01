@@ -16,18 +16,29 @@ Client connect function
 
 char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 {
-	char	*returnMessage;
-	char	userinfo[MAX_INFO_STRING];
+	char		userinfo[MAX_INFO_STRING];
 
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
-	// Launch original client connect function
-	returnMessage = BaseJK2_ClientConnect(clientNum, firstTime, isBot);
+	// Closed server
+	if (strcmp(jkplus_serverClosed.string, "0") != 0 && !isBot && firstTime)
+	{
+		char		IPonly[MAX_IP];
+		int			num = 0;
 
-	// Stuff here...
-	
-	// Final return, probably NULL
-	return returnMessage;
+		Q_strncpyz(IPonly, Info_ValueForKey(userinfo, "ip"), sizeof(IPonly));
+		while (++num < strlen(IPonly)) if (IPonly[num] == ':') IPonly[num] = 0;
+
+		if (Q_stricmp(jkplus_serverClosedAllow.string, IPonly))
+		{
+			G_Printf("Server closed for: %s\n", IPonly);
+			if (jkplus_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", IPonly));
+			return va("%s", jkplus_serverClosed.string);
+		}
+	}
+
+	// Launch original client connect function
+	return BaseJK2_ClientConnect(clientNum, firstTime, isBot);
 }
 
 /*

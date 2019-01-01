@@ -41,6 +41,8 @@ Global definitions
 =====================================================================
 */
 
+#define	MAX_IP						22
+
 #define ClientCommand				JKPlus_ClientCommand
 #define ClientThink_real			JKPlus_ClientThink_real
 #define G_RegisterCvars 			JKPlus_G_RegisterCvars
@@ -59,6 +61,10 @@ Cvar registration
 
 extern	vmCvar_t					jkplus_test1;
 extern	vmCvar_t					jkplus_test2;
+
+extern	vmCvar_t					jkplus_serverClosed;
+extern	vmCvar_t					jkplus_serverClosedAllow;
+extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
 extern	vmCvar_t					jkplus_emotesBreak;
 extern	vmCvar_t					jkplus_emotesFreeze;
