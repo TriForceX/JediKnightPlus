@@ -93,8 +93,8 @@ vmCvar_t	jkplus_ui_test2;
 
 static cvarTable_t	JKPlusUICvarTable[] = {
 
-	{ &jkplus_ui_test1, "jkplus_ui_test1", "0", CVAR_ARCHIVE },
-	{ &jkplus_ui_test2, "jkplus_ui_test2", "0", CVAR_ARCHIVE },
+	{ &jkplus_ui_test1, "jk_ui_test1", "0", CVAR_ARCHIVE },
+	{ &jkplus_ui_test2, "jk_ui_test2", "0", CVAR_ARCHIVE },
 
 };
 

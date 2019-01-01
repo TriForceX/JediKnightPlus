@@ -39,17 +39,17 @@ vmCvar_t	jkplus_emotesPunchDMG;
 
 static cvarTable_t	JKPlusCvarTable[] = {
 
-	{ &jkplus_test1,					"jkplus_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_test2,					"jkplus_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_test1,					"jk_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	
-	{ &jkplus_serverClosed,				"jkplus_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_serverClosedAllow,		"jkplus_serverClosedAllow",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_serverClosedBroadcast,	"jkplus_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_serverClosedAllow,		"jk_serverClosedAllow",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 	
-	{ &jkplus_emotesBreak,				"jkplus_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesFreeze,				"jkplus_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesEnabled,			"jkplus_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesPunchDMG,			"jkplus_emotesPunchDMG",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_emotesPunchDMG,			"jk_emotesPunchDMG",		"0",					CVAR_ARCHIVE,		0, qtrue },
 
 };
 
