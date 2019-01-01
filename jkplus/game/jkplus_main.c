@@ -29,7 +29,7 @@ vmCvar_t	jkplus_test1;
 vmCvar_t	jkplus_test2;
 
 vmCvar_t	jkplus_serverClosed;
-vmCvar_t	jkplus_serverClosedAllow;
+vmCvar_t	jkplus_serverClosedIP;
 vmCvar_t	jkplus_serverClosedBroadcast;
 
 vmCvar_t	jkplus_emotesBreak;
@@ -43,7 +43,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkplus_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	
 	{ &jkplus_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_serverClosedAllow,		"jk_serverClosedAllow",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 	
 	{ &jkplus_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },

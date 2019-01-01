@@ -29,7 +29,7 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		Q_strncpyz(IPonly, Info_ValueForKey(userinfo, "ip"), sizeof(IPonly));
 		while (++num < strlen(IPonly)) if (IPonly[num] == ':') IPonly[num] = 0;
 
-		if (Q_stricmp(jkplus_serverClosedAllow.string, IPonly))
+		if (Q_stricmp(jkplus_serverClosedIP.string, IPonly))
 		{
 			G_Printf("Server closed for: %s\n", IPonly);
 			if (jkplus_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", IPonly));

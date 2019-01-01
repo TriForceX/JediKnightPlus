@@ -63,7 +63,7 @@ extern	vmCvar_t					jkplus_test1;
 extern	vmCvar_t					jkplus_test2;
 
 extern	vmCvar_t					jkplus_serverClosed;
-extern	vmCvar_t					jkplus_serverClosedAllow;
+extern	vmCvar_t					jkplus_serverClosedIP;
 extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
 extern	vmCvar_t					jkplus_emotesBreak;
