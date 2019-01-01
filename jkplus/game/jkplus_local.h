@@ -66,6 +66,8 @@ extern	vmCvar_t					jkplus_serverClosed;
 extern	vmCvar_t					jkplus_serverClosedIP;
 extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
+extern	vmCvar_t					jkplus_allowBlackNames;
+
 extern	vmCvar_t					jkplus_emotesBreak;
 extern	vmCvar_t					jkplus_emotesFreeze;
 extern	vmCvar_t					jkplus_emotesEnabled;

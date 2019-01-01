@@ -32,6 +32,8 @@ vmCvar_t	jkplus_serverClosed;
 vmCvar_t	jkplus_serverClosedIP;
 vmCvar_t	jkplus_serverClosedBroadcast;
 
+vmCvar_t	jkplus_allowBlackNames;
+
 vmCvar_t	jkplus_emotesBreak;
 vmCvar_t	jkplus_emotesFreeze;
 vmCvar_t	jkplus_emotesEnabled;
@@ -45,6 +47,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkplus_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
+
+	{ &jkplus_allowBlackNames,			"jk_allowBlackNames",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	
 	{ &jkplus_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },

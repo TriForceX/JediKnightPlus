@@ -55,11 +55,11 @@ Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | Player account system (Tracks kills, deaths, etc...)
 ✗ | Ranking system based on player skills
 ✗ | Chat censor filters
-✗ | Enable black color in player names
+Done ✓ | Allow black color in player names
 ✗ | In-game chat commands (Teleports, info, etc...)
 ✗ | Welcome message and news messages showing constantly on the server
-✗ | Custom in-game modes. (Instant kill, survival, last man standing, etc...)
-✗ | Custom player private chats
+✗ | Custom in-game modes (Instant kill, survival, last man standing, etc...)
+✗ | Custom player private chat rooms
 ✗ | Enabled Jedi Crystal and Beer Bacta items
 ✗ | NPC spawn command like in Single Player
 ✗ | Improved cheat commands
@@ -71,9 +71,10 @@ Done ✓ | Over 50 player emotes (Sit, kiss, surrender, etc...)
 ✗ | Basic anti-script feature (Against noob cheaters)
 ✗ | Items get affected by force physics (Push, pull, etc...)
 ✗ | Enable multiple private duels on FFA game type
+✗ | Multiple private duel modes (Full force, no force, guns, etc...)
 ✗ | Enable invisible private duels
-✗ | Enable multiple private duel modes (Full force, no force, guns, etc...)
 ✗ | Enable chat in Duel game type
+Done ✓ | Closed server feature (For maintenance or private use without password)
 ✗ | Alternative player dimensions
 ✗ | Custom poll call votes
 ✗ | Improved slow-mo duel end functionally
