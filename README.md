@@ -13,9 +13,9 @@ The main goal is to reunite the most useful and innovative stuff to the game env
 Note: This mod is under development, some features may be disabled or not finished. If you found a bug, problem or an error, please contact me at triforce@jk2mp.com
 
 Phase | Version | Download
------------- | ------------ | -------------
+:------------: | :------------: | :-------------:
 Develop | 1.0-rev2 | Not available
-Release | Not available | Not available
+Release | Undefined | Not available
 
 # Mod & Server Setup
 
@@ -48,7 +48,7 @@ The next list is all features the old Jedi Knight Plus mod already has, which ne
 ###### 1. Server Side Features
 
 Status | Feature
------- | -------
+:------: | :-------
 Done ✓ | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 ✗ | Improved bots AI (Artificial intelligence)
 ✗ | Configurable weapon features (Damage, ammo speed, firing rate, etc...)
@@ -82,7 +82,7 @@ Done ✓ | Closed server feature (For maintenance or private use without passwor
 ###### 2. Client Side Features
 
 Status | Feature
------- | -------
+:------: | :-------
 ✗ | Atmospheric effects (Rain, snow, sun, etc...)
 ✗ | Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
 ✗ | Mini keyboard display to see key-presses on-screen
@@ -119,7 +119,7 @@ Status | Feature
 ###### 3. Map Modding Features
 
 Status | Feature
------- | -------
+:------: | :-------
 ✗ | Map auto fix to convert most of single player maps playable
 ✗ | Over 15 custom entities for maps (Including entities from Single Player)
 ✗ | Add models in-game (GLM or MD3 format)
@@ -135,7 +135,7 @@ Status | Feature
 ###### 4. Administration Features
 
 Status | Feature
------- | -------
+:------: | :-------
 ✗ | Custom user roles (Administrator, moderator, builder, etc...)
 ✗ | In-game player statistics (Banned, kicked, reports, scripters, etc...)
 ✗ | Helpful commands for players (Teleport, weapons, force powers, etc...)
@@ -160,17 +160,17 @@ There is the list of unfinished stuff and people's approved requests. As i go fo
 - Add Flashlight feature
 - Enable voice commands (Jedi Academy style)
 - Add Hold The Point game type
-- Add Man Hunt game type
+- Add Man Hunt or Captains game type
 - Add Jedi Academy Radar for team games
 - In-game MP3 player
-- Portal Gun teleport mechanics
+- Portal Gun teleport weapon mechanics
 
 # Special Thanks
 
 The people below helped me to solve problems and help in this project by giving me advice or helping me directly.
 
 - DeathSpike (Client plugin support)
-- Lee Oates (Anti-script code)
+- Lee Oates (Anti-script base code)
 - Nerevar (Ingame effects, atmospherics and santa hat)
 - Kaiser (Map modding support)
 - Rich Whitehouse (Melee weapon from Hydroball)
