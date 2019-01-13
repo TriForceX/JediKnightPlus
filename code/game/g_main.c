@@ -570,7 +570,7 @@ void G_RemapTeamShaders( void ) {
 G_RegisterCvars
 =================
 */
-void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: BaseJK2 register cvars function
+void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars function
 	int			i;
 	cvarTable_t	*cv;
 	qboolean remapped = qfalse;
@@ -606,7 +606,7 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: BaseJK2 register cvars funct
 G_UpdateCvars
 =================
 */
-void BaseJK2_G_UpdateCvars( void ) { // Tr!Force: BaseJK2 update cvars function
+void BaseJK2_G_UpdateCvars( void ) { // Tr!Force: [BaseJK2] Update cvars function
 	int			i;
 	cvarTable_t	*cv;
 	qboolean remapped = qfalse;

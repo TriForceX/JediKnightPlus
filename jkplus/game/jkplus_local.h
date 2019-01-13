@@ -9,11 +9,11 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
 #undef	GAMEVERSION
 
 #define JKPLUS_LONGNAME			"Jedi Knight Plus"
-#define JKPLUS_SHORTNAME   		"JKPlus"
-#define JKPLUS_PHASE   			"Beta"
-#define JKPLUS_RELEASE 			"1"
-#define JKPLUS_DEVELOP 			"0-rev2"
-#define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " " JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
+#define JKPLUS_SHORTNAME   		"JK+"
+#define JKPLUS_RELEASE 			"0"
+#define JKPLUS_DEVELOP 			"6-rev2"
+#define JKPLUS_PHASE   			"Alpha"
+#define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " v" JKPLUS_RELEASE "." JKPLUS_DEVELOP " " JKPLUS_PHASE
 
 /*
 =====================================================================
@@ -67,6 +67,7 @@ extern	vmCvar_t					jkplus_serverClosedIP;
 extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
 extern	vmCvar_t					jkplus_allowBlackNames;
+extern	vmCvar_t					jkplus_pauseGame;
 
 extern	vmCvar_t					jkplus_emotesBreak;
 extern	vmCvar_t					jkplus_emotesFreeze;

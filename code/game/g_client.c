@@ -924,7 +924,7 @@ static void ClientCleanName( const char *in, char *out, int outSize ) {
 			}
 
 			// don't allow black in a name, period
-			if (ColorIndex(*in) == 0 && jkplus_allowBlackNames.integer == 0) { // Tr!Force: Allow black color in names
+			if (ColorIndex(*in) == 0 && jkplus_allowBlackNames.integer == 0) { // Tr!Force: [Black] Allow black color in names
 				in++;
 				continue;
 			}
@@ -1368,7 +1368,7 @@ qboolean MV_SetClientIP( int clientNum, char *value )
 	return qtrue;
 }
 
-char *BaseJK2_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) { // Tr!Force: BaseJK2 client connect function
+char *BaseJK2_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) { // Tr!Force: [BaseJK2] Client connect function
 	char		*value;
 //	char		*areabits;
 	gclient_t	*client;
@@ -1538,7 +1538,7 @@ to be placed into the level.  This will happen every level load,
 and on transition between teams, but doesn't happen on respawns
 ============
 */
-void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force: BaseJK2 client begin function
+void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force: [BaseJK2] Client begin function
 	gentity_t	*ent;
 	gclient_t	*client;
 	gentity_t	*tent;
@@ -1732,7 +1732,7 @@ Initializes all non-persistant parts of playerState
 ============
 */
 extern qboolean WP_HasForcePowers( const playerState_t *ps );
-void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: BaseJK2 client spawn function
+void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn function
 	int		index;
 	vec3_t	spawn_origin, spawn_angles;
 	gclient_t	*client;

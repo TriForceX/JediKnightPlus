@@ -1188,4 +1188,4 @@ int MV_UiDetectVersion( void );
 #include "../api/mvapi.h"
 #include "ui_multiversion.h"
 
-#include "../../jkplus/ui/jkplus_local.h" // Tr!Force: JKPlus main header
+#include "../../jkplus/ui/jkplus_local.h" // Tr!Force: [JKPlus] main header

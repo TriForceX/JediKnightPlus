@@ -12,9 +12,9 @@ The main goal is to reunite the most useful and innovative stuff to the game env
 
 Note: This mod is under development, some features may be disabled or not finished. If you found a bug, problem or an error, please contact me at triforce@jk2mp.com
 
-Phase | Version | Download
+Branch | Version | Download
 :------------: | :------------: | :-------------:
-Develop | 1.0-rev2 | Not available
+Develop | 0.6-rev1 Alpha | Not available
 Release | Undefined | Not available
 
 # Mod & Server Setup
@@ -145,7 +145,7 @@ Status | Feature
 ✗ | Private administrator chat room
 ✗ | Custom call vote with actions
 ✗ | Team management (Lock, force, shuffle, etc...)
-✗ | Pause mode to instantly stop everyone on the server during game
+Done ✓ | Pause mode to instantly stop everyone on the server during game
 
 # To-Do Stuff & Public Requests
 

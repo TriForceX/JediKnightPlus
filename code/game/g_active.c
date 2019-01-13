@@ -994,7 +994,7 @@ If "g_synchronousClients 1" is set, this will be called exactly
 once for each server frame, which makes for smooth demo recording.
 ==============
 */
-void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: BaseJK2 client think real function
+void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client think real function
 	gclient_t	*client;
 	pmove_t		pm;
 	int			oldEventSequence;
@@ -1618,12 +1618,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: BaseJK2 client th
 					if (faceKicked->health > 0 &&
 						faceKicked->client->ps.stats[STAT_HEALTH] > 0 &&
 						faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN
-						&& !JKPlus_emoteIn(ent, -1) // Tr!Force: Emote prediction
+						&& !JKPlus_emoteIn(ent, -1) // Tr!Force: [Emotes] Prediction
 						)
 					{
 						if (Q_irand(1, 10) <= 3)
 						{ 
-							// Tr!Force: Emote prediction
+							// Tr!Force: [Emotes] Prediction
 							if(JKPlus_emoteIn(faceKicked, 2))
 							{
 								faceKicked->client->ps.forceHandExtend = HANDEXTEND_NONE;
