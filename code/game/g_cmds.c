@@ -500,6 +500,11 @@ void Cmd_Kill_f( gentity_t *ent ) {
 	if (ent->health <= 0) {
 		return;
 	}
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow kill command
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't kill yourself during pause mode\n\""));
+		return;
+	}
 
 	if (g_gametype.integer == GT_TOURNAMENT && level.numPlayingClients > 1 && !level.warmupTime)
 	{
@@ -2098,6 +2103,11 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 	}
 
 	if (ent->client->ps.weapon != WP_SABER)
+	{
+		return;
+	}
+
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow toggle saber
 	{
 		return;
 	}

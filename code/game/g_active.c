@@ -676,6 +676,11 @@ Actions that happen once a second
 void ClientTimerActions( gentity_t *ent, int msec ) {
 	gclient_t	*client;
 
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	{
+		return;
+	}
+
 	client = ent->client;
 	client->timeResidual += msec;
 
@@ -1065,7 +1070,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 	if (ent && ent->client && (ent->client->ps.eFlags & EF_INVULNERABLE))
 	{
-		if (ent->client->invulnerableTimer <= level.time)
+		if (ent->client->invulnerableTimer <= level.time && !jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			ent->client->ps.eFlags &= ~EF_INVULNERABLE;
 		}
@@ -1103,6 +1108,11 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	// set speed
 	client->ps.speed = g_speed.value;
 	client->ps.basespeed = g_speed.value;
+
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow viewangles also
+	{
+		client->ps.pm_type = PM_SPINTERMISSION;
+	}
 
 	if (ent->client->ps.duelInProgress)
 	{
@@ -1459,21 +1469,27 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		ForceSeeing(ent);
 		break;
 	case GENCMD_USE_SEEKER:
-		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SEEKER)) &&
-			G_ItemUsable(&ent->client->ps, HI_SEEKER) )
+		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
-			ItemUse_Seeker(ent);
-			G_AddEvent(ent, EV_USE_ITEM0+HI_SEEKER, 0);
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SEEKER);
+			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SEEKER)) &&
+				G_ItemUsable(&ent->client->ps, HI_SEEKER))
+			{
+				ItemUse_Seeker(ent);
+				G_AddEvent(ent, EV_USE_ITEM0 + HI_SEEKER, 0);
+				ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SEEKER);
+			}
 		}
 		break;
 	case GENCMD_USE_FIELD:
-		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SHIELD)) &&
-			G_ItemUsable(&ent->client->ps, HI_SHIELD) )
+		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
-			ItemUse_Shield(ent);
-			G_AddEvent(ent, EV_USE_ITEM0+HI_SHIELD, 0);
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SHIELD);
+			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SHIELD)) &&
+				G_ItemUsable(&ent->client->ps, HI_SHIELD))
+			{
+				ItemUse_Shield(ent);
+				G_AddEvent(ent, EV_USE_ITEM0 + HI_SHIELD, 0);
+				ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SHIELD);
+			}
 		}
 		break;
 	case GENCMD_USE_BACTA:
@@ -1516,12 +1532,15 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		}
 		break;
 	case GENCMD_USE_SENTRY:
-		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SENTRY_GUN)) &&
-			G_ItemUsable(&ent->client->ps, HI_SENTRY_GUN) )
+		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
-			ItemUse_Sentry(ent);
-			G_AddEvent(ent, EV_USE_ITEM0+HI_SENTRY_GUN, 0);
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SENTRY_GUN);
+			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SENTRY_GUN)) &&
+				G_ItemUsable(&ent->client->ps, HI_SENTRY_GUN))
+			{
+				ItemUse_Sentry(ent);
+				G_AddEvent(ent, EV_USE_ITEM0 + HI_SENTRY_GUN, 0);
+				ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_SENTRY_GUN);
+			}
 		}
 		break;
 	case GENCMD_SABERATTACKCYCLE:
@@ -1698,6 +1717,11 @@ void G_CheckClientTimeouts ( gentity_t *ent )
 		return;
 	}
 
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	{
+		return;
+	}
+
 	// Already a spectator, no need to boot them to spectator
 	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR )
 	{
@@ -1729,14 +1753,14 @@ void ClientThink( int clientNum ) {
 	// phone jack if they don't get any for a while
 	ent->client->lastCmdTime = level.time;
 
-	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer ) {
+	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkplus_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
 		ClientThink_real( ent );
 	}
 }
 
 
 void G_RunClient( gentity_t *ent ) {
-	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer ) {
+	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkplus_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
 		return;
 	}
 	ent->client->pers.cmd.serverTime = level.time;

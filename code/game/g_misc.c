@@ -763,6 +763,11 @@ void shield_power_converter_use( gentity_t *self, gentity_t *other, gentity_t *a
 		return;
 	}
 
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	{
+		return;
+	}
+
 	if (self->setTime < level.time)
 	{
 		if (!self->s.loopSound)

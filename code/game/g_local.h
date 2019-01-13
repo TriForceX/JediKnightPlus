@@ -428,6 +428,7 @@ struct gclient_s {
 	int			forcePowerSoundDebounce; //if > level.time, don't do certain sound events again (drain sound, absorb sound, etc)
 
 	qboolean	fjDidJump;
+	vec3_t		JKPlusPauseSavedView; // Tr!Force: [Pause] Player saved view angles
 };
 
 
@@ -522,6 +523,8 @@ typedef struct {
 
 	// MVSDK
 	qboolean	bboxEncoding;
+
+	int			JKPlusUnpauseClient;			// Tr!Force: [Pause] Client unpause
 } level_locals_t;
 
 

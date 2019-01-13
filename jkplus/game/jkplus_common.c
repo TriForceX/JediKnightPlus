@@ -120,3 +120,38 @@ void JKPlus_sendCommand(int target, char *cmd, char *string)
 {
 	trap_SendServerCommand(target, va("%s \"%s\"", cmd, string));
 }
+
+/*
+=====================================================================
+Convert milliseconds to string
+=====================================================================
+*/
+
+const char *JKPlus_MsToString(const int ms) 
+{
+	int	   			fsecs = ms / 1000;
+	int				wholemins = fsecs / 60;
+	float			fremainsecs;
+
+	if (wholemins < 1)
+	{
+		return va("%d seconds", fsecs);
+	}
+	else if (wholemins >= 60) 
+	{
+		const int hrs = wholemins / 60;
+
+		wholemins -= hrs * 60;
+
+		if (wholemins == 0)
+		{
+			return va("%d hours", hrs);
+		}
+
+		return va("%d hours %d minutes", hrs, wholemins);
+	}
+
+	fremainsecs = (ms - wholemins * 60000) * 0.001f;
+
+	return va("%d minutes %d seconds", wholemins, (int)fremainsecs);
+}

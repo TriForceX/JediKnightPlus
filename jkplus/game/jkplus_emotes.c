@@ -696,7 +696,7 @@ void JKPlus_emoteDoPunch(gentity_t *ent)
 			other->client->ps.saberMove = LS_NONE;
 			other->client->ps.saberBlocked = 0;
 			other->client->ps.saberBlocking = 0;
-			if (jkplus_emotesPunchDMG.integer) G_Damage(other, ent, ent, NULL, NULL, jkplus_emotesPunchDMG.integer, DAMAGE_NO_ARMOR, MOD_MELEE);
+			if (jkplus_emotesPunchDamage.integer) G_Damage(other, ent, ent, NULL, NULL, jkplus_emotesPunchDamage.integer, DAMAGE_NO_ARMOR, MOD_MELEE);
 		}
 	}
 }

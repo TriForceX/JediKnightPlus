@@ -68,11 +68,12 @@ extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
 extern	vmCvar_t					jkplus_allowBlackNames;
 extern	vmCvar_t					jkplus_pauseGame;
+extern	vmCvar_t					jkplus_pauseGameCenterPrint;
 
 extern	vmCvar_t					jkplus_emotesBreak;
 extern	vmCvar_t					jkplus_emotesFreeze;
 extern	vmCvar_t					jkplus_emotesEnabled;
-extern	vmCvar_t					jkplus_emotesPunchDMG;
+extern	vmCvar_t					jkplus_emotesPunchDamage;
 
 /*
 =====================================================================
@@ -82,6 +83,9 @@ Common / new functions
 
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
+
+// jkplus_svcmds.c
+const char	*JKPlus_MsToString(const int ms);
 
 // jkplus_active.c
 void		JKPlus_ClientThink_real(gentity_t *ent);

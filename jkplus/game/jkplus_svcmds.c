@@ -48,12 +48,10 @@ static void JKPlus_svCmd_pauseGame(void)
 	if (jkplus_pauseGame.integer == 0)
 	{
 		trap_Cvar_Set("jk_pauseGame", "1");
-		trap_SendServerCommand(-1, "cp \"Game was paused by the server\n\"");
 	}
 	else
 	{
 		trap_Cvar_Set("jk_pauseGame", "0");
-		trap_SendServerCommand(-1, "cp \"Game was unpaused by the server\n\"");
 	}
 }
 

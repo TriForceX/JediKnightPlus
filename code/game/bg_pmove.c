@@ -18,6 +18,12 @@ pml_t		pml;
 
 qboolean gPMDoSlowFall = qfalse;
 
+#ifdef JK2_GAME
+extern	vmCvar_t	jkplus_pauseGame; // Tr!Force: [Pause] Cvar
+#elif defined(JK2_CGAME) || defined(JK2_UI)
+vmCvar_t	jkplus_pauseGame; // Tr!Force: [Pause] Cvar
+#endif
+
 // movement parameters
 float	pm_stopspeed = 100.0f;
 float	pm_duckScale = 0.50f;
@@ -3595,7 +3601,7 @@ static void PM_Weapon( void )
 	if ( pm->cmd.buttons & BUTTON_USE_HOLDABLE ) {
 		if ( ! ( pm->ps->pm_flags & PMF_USE_ITEM_HELD ) ) {
 
-			if (!pm->ps->stats[STAT_HOLDABLE_ITEM])
+			if (!pm->ps->stats[STAT_HOLDABLE_ITEM] || jkplus_pauseGame.integer) // Tr!Force: [Pause] Dont allow
 			{
 				return;
 			}
