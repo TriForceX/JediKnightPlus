@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
 =====================================================================
 [Description]: Main emotes functions
 =====================================================================
@@ -426,7 +426,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 			ent->client->ps.forceDodgeAnim = emotes[emoteIndex].startAnim;
 			ent->client->ps.forceHandExtendTime = level.time + (bgGlobalAnimations[emotes[emoteIndex].startAnim].numFrames * fabs(bgGlobalAnimations[emotes[emoteIndex].startAnim].frameLerp));
 		}
-		// Do a standard setting of emote.
+		// Do a standard setting of emote
 		else
 		{
 			StandardSetBodyAnim(ent, emotes[emoteIndex].startAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);

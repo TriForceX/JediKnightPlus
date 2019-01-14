@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
 =====================================================================
 [Description]: Main game module, cvar definitions, etc...
 =====================================================================
@@ -132,7 +132,7 @@ void JKPlus_G_UpdateCvars(void)
 						}
 						else
 						{
-							trap_SendServerCommand(-1, "print \"The game was paused by the server\n\"");
+							trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
 						}
 
 						// Save player viewangles
@@ -171,24 +171,24 @@ void JKPlus_G_UpdateCvars(void)
 							}
 							else
 							{
-								trap_SendServerCommand(-1, va("print \"The pause ended after %s\n\"", JKPlus_MsToString(pausedGameTime)));
+								trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_MsToString(pausedGameTime)));
 							}
 
 							level.startTime += pausedGameTime;
 
-							// Roll back the time for cg_drawtimer and scoreboard
+							// Roll back the time for cg_drawtimer
 							trap_SetConfigstring(CS_LEVEL_START_TIME, va("%i", level.startTime));
 
 							pauseGameStartTime = 0;
 
-							// Fix so times are correct on scoreboard. we dont wanna count time while game is paused
+							// Fix so times are correct on scoreboard
 							for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent) 
 							{
 								if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED) 
 								{
 									ent->client->pers.enterTime += pausedGameTime;
 
-									// If someone joined during pause, ensure they don't get negative time
+									// If someone joined during pause ensure they don't get negative time
 									if (ent->client->pers.enterTime > level.time)
 									{
 										ent->client->pers.enterTime = level.time;

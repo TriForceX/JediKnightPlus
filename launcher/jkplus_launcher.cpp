@@ -1,8 +1,8 @@
 /*
 ===================== Jedi Knight Plus Launcher =====================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
 =====================================================================
-[Description]: Main application functionality to launch the server.
+[Description]: Main application functionality to launch the server
 =====================================================================
 */
 

@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2018
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
 =====================================================================
 [Description]: Client active module
 =====================================================================
@@ -27,7 +27,7 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 		}
 		else if (JKPlus_emoteIn(ent, 0))
 		{	
-			// In a 'frozen' emote
+			// In a frozen emote
 			if (ent->client->pers.cmd.upmove > 0)
 			{
 				ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
