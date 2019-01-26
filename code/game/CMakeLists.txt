@@ -21,7 +21,7 @@ set(MVGAMEHEADERS
 	"${SRCDir}/game/botlib.h"
 	"${SRCDir}/game/chars.h"
 	"${SRCDir}/game/g_local.h"
-	"${JKPlusDir}/game/jkplus_local.h" # Tr!Force: JKPlus headers
+	"${JKPlusDir}/game/jkplus_local.h" # Tr!Force: [CMake] JKPlus headers
 	"${SRCDir}/game/g_public.h"
 	"${SRCDir}/game/g_team.h"
 	"${SRCDir}/game/inv.h"
@@ -48,8 +48,8 @@ set(MVGAMEHEADERS
 
 set(MVGAMESOURCES
 	"${SRCDir}/game/g_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKPlusDir}/game/jkplus_main.c" # Tr!Force: JKPlus sources
-	"${JKPlusDir}/game/jkplus_common.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_main.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKPlusDir}/game/jkplus_common.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/ai_main.c"
 	"${SRCDir}/game/ai_util.c"
 	"${SRCDir}/game/ai_wpnav.c"
@@ -60,16 +60,16 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/bg_slidemove.c"
 	"${SRCDir}/game/bg_weapons.c"
 	"${SRCDir}/game/g_active.c"
-	"${JKPlusDir}/game/jkplus_active.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_active.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_arenas.c"
 	"${SRCDir}/game/g_bot.c"
 	"${SRCDir}/game/g_client.c"
-	"${JKPlusDir}/game/jkplus_client.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_client.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_cmds.c"
-	"${JKPlusDir}/game/jkplus_cmds.c" # Tr!Force: JKPlus sources
-	"${JKPlusDir}/game/jkplus_emotes.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_cmds.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKPlusDir}/game/jkplus_emotes.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_combat.c"
-	"${JKPlusDir}/game/jkplus_combat.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_combat.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_items.c"
 	"${SRCDir}/game/g_log.c"
 	"${SRCDir}/game/g_mem.c"
@@ -81,7 +81,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_session.c"
 	"${SRCDir}/game/g_spawn.c"
 	"${SRCDir}/game/g_svcmds.c"
-	"${JKPlusDir}/game/jkplus_svcmds.c" # Tr!Force: JKPlus sources
+	"${JKPlusDir}/game/jkplus_svcmds.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_target.c"
 	"${SRCDir}/game/g_team.c"
 	"${SRCDir}/game/g_trigger.c"
