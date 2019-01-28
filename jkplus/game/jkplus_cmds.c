@@ -10,6 +10,63 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
 
 /*
 =====================================================================
+Drop flag function
+=====================================================================
+*/
+
+static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
+{
+	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
+	gentity_t	*ent2;
+	vec3_t		angles, velocity, org, offset, mins, maxs;
+	trace_t		tr;
+
+	if (jkplus_dropFlag.integer != 1)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Drop flag is disabled by the server\n\"");
+		return;
+	}
+
+	if (!(g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY))
+	{
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't drop a flag in this game type\n\"");
+		return;
+	}
+
+	if ((ent->client->sess.sessionTeam == TEAM_RED && ent->client->ps.powerups[PW_BLUEFLAG] == 0) || 
+		(ent->client->sess.sessionTeam == TEAM_BLUE && ent->client->ps.powerups[PW_REDFLAG] == 0))
+	{
+		return;
+	}
+
+	ent->client->ps.powerups[PW_REDFLAG] = 0;
+	ent->client->ps.powerups[PW_BLUEFLAG] = 0;
+	ent->client->ps.persistant[PERS_SCORE] -= CTF_FLAG_BONUS;
+
+	VectorCopy(ent->client->ps.viewangles, angles);
+
+	angles[PITCH] = 0;
+
+	AngleVectors(angles, velocity, NULL, NULL);
+	VectorScale(velocity, 64, offset);
+	offset[2] += ent->client->ps.viewheight / 2.f;
+	VectorScale(velocity, 75, velocity);
+	velocity[2] += 50 + random() * 35;
+
+	VectorAdd(ent->client->ps.origin, offset, org);
+
+	VectorSet(mins, -ITEM_RADIUS, -ITEM_RADIUS, 0);
+	VectorSet(maxs, ITEM_RADIUS, ITEM_RADIUS, 2 * ITEM_RADIUS);
+
+	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
+	VectorCopy(tr.endpos, org);
+
+	ent2 = LaunchItem(item, org, velocity);
+	return;
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */
@@ -76,9 +133,13 @@ void JKPlus_ClientCommand(int clientNum)
 		}
 		else
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is disabled at the moment.\n\"", arg1));
+			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is disabled at the moment\n\"", arg1));
 			return;
 		}
+	}
+	else if (Q_stricmp(cmd, "dropflag") == 0)
+	{
+		JKPlus_dropFlag(ent, clientNum);
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{

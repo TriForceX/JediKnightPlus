@@ -14,7 +14,7 @@ Note: This mod is under development, some features may be disabled or not finish
 
 Branch | Version | Download
 :------------: | :------------: | :-------------:
-Develop | 0.6-rev1 Alpha | Not available
+Develop | 0.7-rev1 Alpha | Not available
 Release | Undefined | Not available
 
 # Mod & Server Setup
@@ -68,7 +68,6 @@ Done ✓ | Over 50 player emotes (Sit, kiss, surrender, etc...)
 ✗ | Teleport commands (Save & load position, player to player, etc...)
 ✗ | Anti lamer feature (Players can't kill during chat)
 ✗ | Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
-✗ | Basic anti-script feature (Against noob cheaters)
 ✗ | Items get affected by force physics (Push, pull, etc...)
 ✗ | Enable multiple private duels on FFA game type
 ✗ | Multiple private duel modes (Full force, no force, guns, etc...)
@@ -78,6 +77,7 @@ Done ✓ | Closed server feature (For maintenance or private use without passwor
 ✗ | Alternative player dimensions
 ✗ | Custom poll call votes
 ✗ | Improved slow-mo duel end functionally
+Done ✓ | Drop Flag command for Capture The Flag gametype
  
 ###### 2. Client Side Features
 
@@ -114,6 +114,7 @@ Status | Feature
 ✗ | Enable first person lightsaber
 ✗ | Enable first person turret chair view
 ✗ | Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
+✗ | Basic anti-script feature (Against noob cheaters)
 ✗ | Increased some limits (Fov, camera range, name length, etc...)
  
 ###### 3. Map Modding Features
@@ -167,7 +168,7 @@ There is the list of unfinished stuff and people's approved requests. As i go fo
 
 # Special Thanks
 
-The people below helped me to solve problems and help in this project by giving me advice or helping me directly.
+The following people helped me solve problems, supported me and advised me or helped me directly.
 
 - DeathSpike (Client plugin support)
 - Lee Oates (Anti-script base code)
@@ -194,7 +195,7 @@ The people below helped me to solve problems and help in this project by giving 
 # Contact
 
 **Jedi Knight Plus Mod developed by Tr!Force**  
-Work copyrighted (C) with holder attribution 2005 - 2018
+Work copyrighted (C) with holder attribution 2005 - 2019
 
 Visit the home page: https://jkplus.github.io
 
