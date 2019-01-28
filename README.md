@@ -14,7 +14,7 @@ Note: This mod is under development, some features may be disabled or not finish
 
 Branch | Version | Download
 :------------: | :------------: | :-------------:
-Develop | 0.7-rev1 Alpha | Not available
+Develop | 0.7-rev2 Alpha | Not available
 Release | Undefined | Not available
 
 # Mod & Server Setup
@@ -77,7 +77,7 @@ Done ✓ | Closed server feature (For maintenance or private use without passwor
 ✗ | Alternative player dimensions
 ✗ | Custom poll call votes
 ✗ | Improved slow-mo duel end functionally
-Done ✓ | Drop Flag command for Capture The Flag gametype
+Done ✓ | Drop Flag command for CTF & CTY game types
  
 ###### 2. Client Side Features
 

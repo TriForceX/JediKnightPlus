@@ -54,7 +54,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkplus_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 
 	{ &jkplus_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_dropFlag,					"jk_dropFlag",				"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"1",					CVAR_ARCHIVE,		0, qtrue },
 	

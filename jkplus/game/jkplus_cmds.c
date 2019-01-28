@@ -17,7 +17,6 @@ Drop flag function
 static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
-	gentity_t	*ent2;
 	vec3_t		angles, velocity, org, offset, mins, maxs;
 	trace_t		tr;
 
@@ -61,8 +60,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
-	ent2 = LaunchItem(item, org, velocity);
-	return;
+	LaunchItem(item, org, velocity);
 }
 
 /*
