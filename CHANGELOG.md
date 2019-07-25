@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - **Minor:** New features added and ready to use or test
 - **Patch:** Small changes, code improvements, bug fixes or work in progress
 
+## 0.7.2
+- Updated mod header variables
+- Updated project website url on menus
+
 ## 0.7.1
 - Remove non required non required code in drop flag command
 

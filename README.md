@@ -4,7 +4,7 @@ https://triforce.dev/projects/jkplus
 
 Game modification for **Jedi Knight 2 Multiplayer** *(all game versions support)*. The main goal is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true adding new features as well porting some from other games.
 
-[![version](https://img.shields.io/badge/Current%20Version-0.7.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.7.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
 [![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](https://github.com/TriForceX/JediKnightPlus#license)
