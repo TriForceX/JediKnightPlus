@@ -72,9 +72,9 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^7Welcome to ^5%s\n"
-			"^7The version is ^2%s.%s %s\n"
+			"^7The version is ^2%s.%s.%s\n"
 			"^7This build was created in %s\n"
-			"\"", JKPLUS_LONGNAME, JKPLUS_RELEASE, JKPLUS_DEVELOP, JKPLUS_PHASE, __DATE__));
+			"\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH, __DATE__));
 	}
 }
 

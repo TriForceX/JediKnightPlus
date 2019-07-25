@@ -97,7 +97,7 @@ void JKPlus_ClientCommand(int clientNum)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Help ^5]^7\n"
-				"^7This server is running ^5%s %s.%s %s.\n"
+				"^7This server is running ^5%s %s.%s.%s\n"
 				"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 				"^5----------\n"
 				"^7Topic list:\n"
@@ -105,7 +105,7 @@ void JKPlus_ClientCommand(int clientNum)
 				"^3Emotes         Commands       Build\n"
 				"^3GamePlay       GameModes      CallVote\n"
 				"^3About          Credits        \n"
-				"^7\"", JKPLUS_LONGNAME, JKPLUS_RELEASE, JKPLUS_DEVELOP, JKPLUS_PHASE));
+				"^7\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH));
 				return;
 		}
 		if(!Q_stricmp(arg1, "emotes"))
