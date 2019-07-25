@@ -39,7 +39,7 @@ Before start is highly recommend to use [JK2MV](https://jk2mv.org/downloads) to 
 
 # Mod Features
 
-The next list is all features from the old **Jedi Knight Plus** mod which need to be ported, improved or fixed on the new source code. Finished features will be marked with a check :heavy_check_mark:
+The next list is all features from the original **Jedi Knight Plus** mod which need to be ported, improved or fixed on the new source code. Each finished task will be marked with a check :heavy_check_mark:
 
 ---
 
@@ -154,26 +154,27 @@ Status | Feature
 
 The following people supported and helped me directly on this project.
 
-- DeathSpike _(Client plugin support)_
+- [DeathSpike](https://github.com/Deathspike) _(Client plugin support)_
 - Lee Oates _(Anti-script base code)_
 - Nerevar _(Ingame effects, atmospherics and santa hat)_
 - Kaiser _(Map modding support)_
-- Rich Whitehouse _(Melee weapon from Hydroball)_
+- [Rich Whitehouse](https://www.richwhitehouse.com) _(Melee weapon from Hydroball)_
 - NTxC / Reality~ _(1.02 coding support)_
 - Tox Laximus _(Bots AI support)_
-- McMonkey _(Map modding support)_
+- [McMonkey](https://github.com/mcmonkey4eva) _(Map modding support)_
 - JediDog~ _(1.03 coding support)_
-- NewAge _(Admin management support)_
+- [NewAge](https://github.com/erfg12) _(Admin management support)_
 - Wonko The Sane _(JK2 base improvements support)_
-- Daggolin _(Map modding and coding support)_
-- Ouned / Twitch _(Engine coding support)_
+- [Daggolin](https://github.com/Daggolin) _(Map modding and coding support)_
+- [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
 - Kameleon _(3D model draw angles fix)_
-- Fau & Bucky _(2D aspect ratio fix)_
+- [Fau](https://github.com/aufau) _(2D aspect ratio fix)_
+- [Bucky](https://github.com/Bucky21659) _(EternalJK tweaks and hints)_
 - BarryHit _(Coding support and testing)_
 - Player _(Support and testing)_
-- Flendo _(Beta testing)_
-- VideoP / Loda _(Strafe helper)_
-- MVSDK / JK2MV _(Gameplay changer and MVAPI)_
+- [Flendo](https://github.com/FlendoJK2) _(Beta testing)_
+- [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
+- [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
 
 # Contact

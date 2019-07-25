@@ -1,20 +1,20 @@
 # Jedi Knight Plus Changelog
 
-The next list is a resume of the changes registered on the project. If you want see the details see the [commit history](https://github.com/TriForceX/JediKnightPlus/commits)
-
-_**Note:** Readme file and Launcher code are not included in the changelog_
+The next list is a resume of the changes registered on the project _(except readme or launcher)_. If you want see the details check the [commit history](https://github.com/TriForceX/JediKnightPlus/commits)
 
 The version control structure on this project is `<mayor>.<minor>.<patch>` where:
 - **Major:** The project is stable, tested and approved for a public release
 - **Minor:** New features added and ready to use or test
 - **Patch:** Small changes, code improvements, bug fixes or work in progress
 
+---
+
 ## 0.7.2
 - Updated mod header variables
 - Updated project website url on menus
 
 ## 0.7.1
-- Remove non required non required code in drop flag command
+- Remove non required code in drop flag command
 
 ## 0.7.0
 - Added drop flag command for CTF & CTY gametypes
