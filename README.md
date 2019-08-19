@@ -39,7 +39,7 @@ Before start is highly recommend to use [JK2MV](https://jk2mv.org/downloads) to 
 
 # Mod Features
 
-The next list is all features from the original **Jedi Knight Plus** mod which need to be ported, improved or fixed on the new source code. Each finished task will be marked with a check :heavy_check_mark:
+The next list is all features from the original **Jedi Knight Plus** mod which need to be ported, improved or fixed on the new source code. Each finished task will be marked with a check :white_check_mark:
 
 ---
 
@@ -48,13 +48,13 @@ Players doesn't need to have the client-side plugin to use this features.
 
 Status | Feature
 :------: | :-------
-:heavy_check_mark: | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
+:white_check_mark: | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
 :x: | Improved bots AI (Artificial intelligence)
 :x: | Configurable weapon features (Damage, ammo speed, firing rate, etc...)
 :x: | Player account system (Tracks kills, deaths, etc...)
 :x: | Ranking system based on player skills
 :x: | Chat censor filters
-:heavy_check_mark: | Allow black color in player names
+:white_check_mark: | Allow black color in player names
 :x: | In-game chat commands (Teleports, info, etc...)
 :x: | Welcome message and news messages showing constantly on the server
 :x: | Custom in-game modes (Instant kill, survival, last man standing, etc...)
@@ -63,7 +63,7 @@ Status | Feature
 :x: | NPC spawn command like in Single Player
 :x: | Improved cheat commands
 :x: | Protected server clan tag (With clan password)
-:heavy_check_mark: | Over 50 player emotes (Sit, kiss, surrender, etc...)
+:white_check_mark: | Over 50 player emotes (Sit, kiss, surrender, etc...)
 :x: | Teleport commands (Save & load position, player to player, etc...)
 :x: | Anti lamer feature (Players can't kill during chat)
 :x: | Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
@@ -72,11 +72,11 @@ Status | Feature
 :x: | Multiple private duel modes (Full force, no force, guns, etc...)
 :x: | Enable invisible private duels
 :x: | Enable chat in Duel game type
-:heavy_check_mark: | Closed server feature (For maintenance or private use without password)
+:white_check_mark: | Closed server feature (For maintenance or private use without password)
 :x: | Alternative player dimensions
 :x: | Custom poll call votes
 :x: | Improved slow-mo duel end functionally
-:heavy_check_mark: | Drop Flag command for CTF & CTY game types
+:white_check_mark: | Drop Flag command for CTF & CTY game types
  
 ### Client Side
 Players need the mod plugin to use this features _(doesn't affect the server gameplay)_
@@ -148,7 +148,7 @@ Status | Feature
 :x: | Private administrator chat room
 :x: | Custom call vote with actions
 :x: | Team management (Lock, force, shuffle, etc...)
-:heavy_check_mark: | Pause mode to instantly stop everyone on the server during game
+:white_check_mark: | Pause mode to instantly stop everyone on the server during game
 
 # Special Thanks
 
@@ -173,6 +173,7 @@ The following people supported and helped me directly on this project.
 - BarryHit _(Coding support and testing)_
 - Player _(Support and testing)_
 - [Flendo](https://github.com/FlendoJK2) _(Beta testing)_
+- vVv _(Pause mode base)_
 - [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
