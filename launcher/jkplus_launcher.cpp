@@ -212,7 +212,7 @@ int main(){
 		printf("\nType the number of your option: ");
 		getline(cin, userOption);
 
-		int userOptionNum = stoi(userOption);
+		int userOptionNum = userOption.empty() ? 0 : stoi(userOption);
 
 		//User options
 		switch (userOptionNum){
