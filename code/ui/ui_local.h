@@ -9,6 +9,7 @@
 #include "keycodes.h"
 #include "../game/bg_public.h"
 #include "ui_shared.h"
+#include "../api/mvmenu.h"
 
 // global display context
 
@@ -112,6 +113,11 @@ extern vmCvar_t	ui_smallFont;
 extern vmCvar_t	ui_bigFont;
 extern vmCvar_t ui_serverStatusTimeOut;
 
+// botfilter
+extern vmCvar_t	ui_botfilter;
+
+extern vmCvar_t	ui_model;
+extern vmCvar_t	ui_team_model;
 
 
 //
@@ -346,6 +352,13 @@ void UI_ClearScores();
 void UI_LoadArenas(void);
 void UI_LoadForceConfig_List( void );
 
+const char *UI_GetModelWithSkin(const char *model);
+int UI_HeadIndexForModel(const char *model);
+qboolean UI_SetTeamColorFromModel(const char *model);
+const char *UI_GetModelWithTeamColor(const char *model);
+
+void UI_FeederScrollTo(float feederId, int scrollTo);
+
 //
 // ui_menu.c
 //
@@ -567,7 +580,7 @@ typedef struct {
 	int					realtime;
 	int					cursorx;
 	int					cursory;
-	glconfig_t 	glconfig;
+	vmglconfig_t 	glconfig;
 	qboolean		debug;
 	qhandle_t		whiteShader;
 	qhandle_t		menuBackShader;
@@ -603,7 +616,7 @@ typedef struct {
 #define UI_FONT_THRESHOLD		0.1
 #define MAX_DISPLAY_SERVERS		2048
 #define MAX_SERVERSTATUS_LINES	128
-#define MAX_SERVERSTATUS_TEXT	1024
+#define MAX_SERVERSTATUS_TEXT	8192 // (was 1024) this is the reason why we never saw the full playerlist ingame.. getstatus requests can get way bigger
 #define MAX_FOUNDPLAYER_SERVERS	16
 #define TEAM_MEMBERS 8//5
 #define GAMES_ALL			0
@@ -615,12 +628,18 @@ typedef struct {
 #define MAPS_PER_TIER 3
 #define MAX_TIERS 16
 #define MAX_MODS 64
+#define MAX_DOWNLOADS 512
 #define MAX_DEMOS 256
 #define MAX_MOVIES 256
-#define MAX_PLAYERMODELS 256
+//#define MAX_PLAYERMODELS 256
 
 #define MAX_SCROLLTEXT_SIZE		4096
 #define MAX_SCROLLTEXT_LINES		64
+
+#define SKINCOLOR_DEFAULT   0
+#define SKINCOLOR_RED       1
+#define SKINCOLOR_BLUE      2
+#define SKINCOLOR_OTHER     3
 
 typedef struct {
   const char *name;
@@ -674,7 +693,7 @@ typedef struct {
 
 typedef struct serverFilter_s {
 	const char *description;
-	const char *basedir;
+	const char *value;
 } serverFilter_t;
 
 typedef struct {
@@ -728,7 +747,7 @@ typedef struct {
 
 typedef struct {
 	char address[MAX_ADDRESSLENGTH];
-	char *lines[MAX_SERVERSTATUS_LINES][4];
+	const char *lines[MAX_SERVERSTATUS_LINES][4];
 	char text[MAX_SERVERSTATUS_TEXT];
 	char pings[MAX_CLIENTS * 3];
 	int numLines;
@@ -739,6 +758,13 @@ typedef struct {
 	const char *modDescr;
 } modInfo_t;
 
+typedef struct q3Head_s q3Head_t;
+struct q3Head_s {
+	const char *name;
+	qhandle_t  icon;
+
+	q3Head_t *next;
+};
 
 typedef struct {
 	displayContextDef_t uiDC;
@@ -792,6 +818,10 @@ typedef struct {
 	int modCount;
 	int modIndex;
 
+	dlfile_t downloadsList[MAX_DOWNLOADS];
+	int downloadsCount;
+	int downloadsIndex;
+
 	const char *demoList[MAX_DEMOS];
 	int demoCount;
 	int demoIndex;
@@ -826,8 +856,7 @@ typedef struct {
 	sfxHandle_t newHighScoreSound;
 
 	int				q3HeadCount;
-	char			q3HeadNames[MAX_PLAYERMODELS][64];
-	qhandle_t	q3HeadIcons[MAX_PLAYERMODELS];
+	q3Head_t		*q3Heads;
 	int				q3SelectedHead;
 
 	int				forceConfigCount;
@@ -917,7 +946,7 @@ void UI_SPSkillMenu_Cache( void );
 // ui_syscalls.c
 //
 void			trap_Print( const char *string );
-Q_NORETURN void	trap_Error( const char *string );
+void			Q_NORETURN trap_Error( const char *string );
 int				trap_Milliseconds( void );
 void			trap_Cvar_Register( vmCvar_t *vmCvar, const char *varName, const char *defaultValue, int flags );
 void			trap_Cvar_Update( vmCvar_t *vmCvar );
@@ -930,7 +959,7 @@ void			trap_Cvar_Create( const char *var_name, const char *var_value, int flags 
 void			trap_Cvar_InfoStringBuffer( int bit, char *buffer, int bufsize );
 int				trap_Argc( void );
 void			trap_Argv( int n, char *buffer, int bufferLength );
-void			trap_Cmd_ExecuteText( int exec_when, const char *text );	// don't use EXEC_NOW!
+void			trap_Cmd_ExecuteText( cbufExec_t exec_when, const char *text );	// don't use EXEC_NOW!
 int				trap_FS_FOpenFile( const char *qpath, fileHandle_t *f, fsMode_t mode );
 void			trap_FS_Read( void *buffer, int len, fileHandle_t f );
 void			trap_FS_Write( const void *buffer, int len, fileHandle_t f );
@@ -964,7 +993,7 @@ int				trap_Key_GetCatcher( void );
 void			trap_Key_SetCatcher( int catcher );
 void			trap_GetClipboardData( char *buf, int bufsize );
 void			trap_GetClientState( uiClientState_t *state );
-void			trap_GetGlconfig( glconfig_t *glconfig );
+void			trap_GetGlconfig( vmglconfig_t *glconfig );
 int				trap_GetConfigString( int index, char* buff, int buffsize );
 /*
 int				trap_LAN_GetServerCount( int source );
@@ -1027,6 +1056,13 @@ qboolean trap_G2API_SetBoneAngles(void *ghoul2, int modelIndex, const char *bone
 /*
 Ghoul2 Insert End
 */
+
+void trap_CL_ContinueCurrentDownload(dldecision_t decision);
+
+int trap_FS_GetDLList(dlfile_t *files, int maxfiles);
+qboolean trap_FS_RMDLPrefix(const char *qpath);
+qboolean trap_UI_DeleteDLFile(const dlfile_t *file);
+
 //
 // ui_addbots.c
 //
@@ -1166,7 +1202,7 @@ typedef struct postGameInfo_s {
 extern int mvapi;
 
 // JK2MV API Functions
-int MVAPI_Init( int apilevel );
+int MVAPI_Init( int apilevel, int inGameLoad );
 void MVAPI_AfterInit( void );
 
 // JK2MV Syscalls [Universal]

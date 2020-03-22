@@ -1206,7 +1206,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			//Private duel announcements are now made globally because we only want one duel at a time.
 			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
 			{
-				trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s %s!\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname) );
+				trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname) );
 			}
 			else
 			{ //it was a draw, because we both managed to die in the same frame

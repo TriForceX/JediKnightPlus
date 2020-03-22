@@ -7,13 +7,15 @@
 #include "../cgame/cg_local.h"
 #elif JK2_UI
 #include "../ui/ui_local.h"
+#else // JK2MV_MENU
+#include "../ui/ui_local.h"
 #endif
 
 mvversion_t	jk2version      = VERSION_UNDEF;  // Current engine gameversion
 mvversion_t	jk2gameplay     = VERSION_UNDEF;  // Current gameplay to apply
 mvversion_t	jk2startversion = VERSION_UNDEF;  // Gameversion the engine had when the module was loaded
 
-#ifndef JK2_UI // Not defined for UI, but still in bg_* for game and cgame
+#if !defined(JK2_UI) && !defined(JK2MV_MENU) // Not defined for UI and MENU, but still in bg_* for game and cgame
 /* Additional functions */
 extern stringID_table_t animTable_1_02[MAX_ANIMATIONS_1_02+1];
 extern stringID_table_t animTable[MAX_ANIMATIONS+1];
@@ -188,7 +190,7 @@ void MV_SetGamePlay( mvversion_t version )
 	for ( i = 0; i < MAX_CLIENTS; i++ ) if ( g_entities[i].client && g_entities[i].inuse ) ClientUserinfoChanged(i); // Update every client's userinfo to reflect the gameplay change (assigning the value to every player opens the possibility to intoduce per-player gameplay in the future)
 #endif // #ifdef JK2_GAME
 }
-#endif // #ifndef JK2_UI // Not defined for UI, but still in bg_* for game and cgame
+#endif // #if !defined(JK2_UI) && !defined(JK2MV_MENU) // Not defined for UI and MENU, but still in bg_* for game and cgame
 
 #ifndef JK2_GAME
 

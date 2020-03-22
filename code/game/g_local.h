@@ -14,7 +14,7 @@
 #define BODY_QUEUE_SIZE		8
 
 #define INFINITE			1000000
-#define Q3_INFINITE			16777216 
+#define Q3_INFINITE			16777216 // (1 << 24)
 
 #define	FRAMETIME			100					// msec
 #define	CARNAGE_REWARD_TIME	3000

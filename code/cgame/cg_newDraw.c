@@ -1001,10 +1001,10 @@ void CG_ShowResponseHead(void) {
 	cg.voiceTime = cg.time;
 }
 
-void CG_RunMenuScript(char **args) {
+void CG_RunMenuScript(const char **p) {
 }
 
-qboolean CG_DeferMenuScript (char **args) 
+qboolean CG_DeferMenuScript (const char **p)
 {
 	return qfalse;
 }

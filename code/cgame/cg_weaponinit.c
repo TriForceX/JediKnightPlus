@@ -75,9 +75,8 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponNum == WP_REPEATER ||
 		weaponNum == WP_ROCKET_LAUNCHER)
 	{
-		strcpy( path, item->view_model );
-		COM_StripExtension( path, path );
-		strcat( path, "_barrel.md3" );
+		COM_StripExtension( item->view_model, path, sizeof(path) );
+		Q_strcat( path, sizeof(path), "_barrel.md3" );
 		weaponInfo->barrelModel = trap_R_RegisterModel( path );
 	}
 	else if (weaponNum == WP_STUN_BATON)
@@ -93,9 +92,8 @@ void CG_RegisterWeapon( int weaponNum) {
 
 	if (weaponNum != WP_SABER)
 	{
-		strcpy( path, item->view_model );
-		COM_StripExtension( path, path );
-		strcat( path, "_hand.md3" );
+		COM_StripExtension( item->view_model, path, sizeof(path) );
+		Q_strcat( path, sizeof(path), "_hand.md3" );
 		weaponInfo->handsModel = trap_R_RegisterModel( path );
 	}
 	else

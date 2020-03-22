@@ -722,8 +722,7 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 			break;
 		}
 
-		Com_sprintf(soundName, sizeof(soundName), "%s", s+1);
-		COM_StripExtension(soundName, soundName);
+		COM_StripExtension(s+1, soundName, sizeof(soundName));
 		//strip the extension because we might want .mp3's
 
 		//ci->sounds[i] = 0;

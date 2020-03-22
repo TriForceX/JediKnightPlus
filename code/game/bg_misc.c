@@ -249,7 +249,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, int maxRank, qboolean freeSaber
 
 	//final_Powers now contains all the stuff from the string
 	//Set the maximum allowed points used based on the max rank level, and count the points actually used.
-	if ( maxRank < 0 || maxRank >= NUM_FORCE_MASTERY_LEVELS ) allowedPoints = /*Q3_INFINITE*/16777216; // Some servers set their "maxRank" to 200 to allow players to use all force powers (of one side). That is actually an invalid read - a memory bug. Let's fix that...
+	if ( maxRank < 0 || maxRank >= NUM_FORCE_MASTERY_LEVELS ) allowedPoints = (1 << 24); // Some servers set their "maxRank" to 200 to allow players to use all force powers (of one side). That is actually an invalid read - a memory bug. Let's fix that...
 	else													  allowedPoints = forceMasteryPoints[maxRank];
 
 	i = 0;
@@ -2408,6 +2408,20 @@ void *BG_TempAlloc( int size )
 	if (bg_poolTail - size < bg_poolSize)
 	{
 		Com_Error( ERR_DROP, "BG_TempAlloc: buffer exceeded head (%d > %d)", bg_poolTail - size, bg_poolSize);
+		return 0;
+	}
+
+	bg_poolTail -= size;
+
+	return &bg_pool[bg_poolTail];
+}
+
+void *BG_TempAllocTry( int size )
+{
+	size = ((size + 0x00000003) & 0xfffffffc);
+
+	if (bg_poolTail - size < bg_poolSize)
+	{
 		return 0;
 	}
 

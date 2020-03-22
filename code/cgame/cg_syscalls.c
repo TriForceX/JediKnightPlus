@@ -360,7 +360,7 @@ void	trap_FX_AddLine( const vec3_t start, const vec3_t end, float size1, float s
 									killTime, shader, flags);
 }
 
-void		trap_GetGlconfig( glconfig_t *glconfig ) {
+void		trap_GetGlconfig( vmglconfig_t *glconfig ) {
 	syscall( CG_GETGLCONFIG, glconfig );
 }
 

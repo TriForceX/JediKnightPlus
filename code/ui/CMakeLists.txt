@@ -5,6 +5,7 @@ endif(NOT InMVSDK)
 
 set(MVUIHEADERS
 	"${SRCDir}/api/mvapi.h"
+	"${SRCDir}/api/mvmenu.h"
 
 	"${SRCDir}/ui/keycodes.h"
 	"${SRCDir}/ui/ui_force.h"

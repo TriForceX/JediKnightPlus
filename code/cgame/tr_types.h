@@ -301,7 +301,7 @@ typedef struct {
 	qboolean				isFullscreen;
 	qboolean				stereoEnabled;
 	qboolean				smpActive;		// dual processor
-} glconfig_t;
+} vmglconfig_t;
 
 
 #if !defined _WIN32

@@ -1624,10 +1624,11 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		trap_Cvar_VariableStringBuffer( "nextmap", s, sizeof(s) );
 		if (*s) {
 			Com_sprintf( level.voteString, sizeof( level.voteString ), "%s %s; set nextmap \"%s\"", arg1, arg2, s );
+			Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s %s" S_COLOR_WHITE "; set nextmap \"%s\"", arg1, arg2, s );
 		} else {
 			Com_sprintf( level.voteString, sizeof( level.voteString ), "%s %s", arg1, arg2 );
+			Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 		}
-		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 	}
 	else if ( !Q_stricmp ( arg1, "clientkick" ) )
 	{
@@ -1695,6 +1696,9 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		level.clients[i].ps.eFlags &= ~EF_VOTED;
 	}
 	ent->client->ps.eFlags |= EF_VOTED;
+
+	// Append white colorcode at the end of the display string as workaround for cgame leaking colors
+	Q_strcat( level.voteDisplayString, sizeof(level.voteDisplayString), S_COLOR_WHITE );
 
 	trap_SetConfigstring( CS_VOTE_TIME, va("%i", level.voteTime ) );
 	trap_SetConfigstring( CS_VOTE_STRING, level.voteDisplayString );	
@@ -2309,7 +2313,7 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
-			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 
 			ent->client->ps.duelInProgress = qtrue;
 			challenged->client->ps.duelInProgress = qtrue;

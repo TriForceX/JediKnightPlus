@@ -15,6 +15,7 @@ FORCE INTERFACE
 int uiForceSide = FORCE_LIGHTSIDE;
 int uiJediNonJedi = -1;
 int uiForceRank = FORCE_MASTERY_JEDI_KNIGHT;
+int uiServerForceRank = -1; // Until we get a valid value from the server use -1 to allow all force powers
 int uiMaxRank = MAX_FORCE_RANK;
 int uiMaxPoints = 20;
 int	uiForceUsed = 0;
@@ -68,7 +69,7 @@ int uiForcePowersRank[NUM_FORCE_POWERS] = {
 	0//FP_SABERTHROW,
 };
 
-int uiForcePowerDarkLight[NUM_FORCE_POWERS] = //0 == neutral
+const int uiForcePowerDarkLight[NUM_FORCE_POWERS] = //0 == neutral
 { //nothing should be usable at rank 0..
 	FORCE_LIGHTSIDE,//FP_HEAL,//instant
 	0,//FP_LEVITATION,//hold/duration
@@ -91,7 +92,7 @@ int uiForcePowerDarkLight[NUM_FORCE_POWERS] = //0 == neutral
 		//NUM_FORCE_POWERS
 };
 
-int uiForceStarShaders[NUM_FORCE_STAR_IMAGES][2];
+static int uiForceStarShaders[NUM_FORCE_STAR_IMAGES][2];
 int uiSaberColorShaders[NUM_SABER_COLORS];
 void UI_InitForceShaders(void)
 {
@@ -171,7 +172,7 @@ void UI_DrawForceStars(rectDef_t *rect, float scale, vec4_t color, int textStyle
 void UI_UpdateClientForcePowers(const char *teamArg)
 {
 	trap_Cvar_Set( "forcepowers", va("%i-%i-%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i%i",
-		uiForceRank, uiForceSide, uiForcePowersRank[0], uiForcePowersRank[1],
+		uiServerForceRank, uiForceSide, uiForcePowersRank[0], uiForcePowersRank[1],
 		uiForcePowersRank[2], uiForcePowersRank[3], uiForcePowersRank[4],
 		uiForcePowersRank[5], uiForcePowersRank[6], uiForcePowersRank[7],
 		uiForcePowersRank[8], uiForcePowersRank[9], uiForcePowersRank[10],
@@ -210,7 +211,7 @@ void UI_SaveForceTemplate()
 	char fcfString[512];
 	char forceStringValue[4];
 	fileHandle_t f;
-	int strPlace = 0;
+	size_t strPlace = 0;
 	int forcePlace = 0;
 	int i = 0;
 	qboolean foundFeederItem = qfalse;
@@ -250,7 +251,7 @@ void UI_SaveForceTemplate()
 	fcfString[strPlace] = '\n';
 	fcfString[strPlace+1] = 0;
 
-	trap_FS_Write(fcfString, strlen(fcfString), f);
+	trap_FS_Write(fcfString, (int)strlen(fcfString), f);
 	trap_FS_FCloseFile(f);
 
 	Com_Printf("Template saved as \"%s\".\n", selectedName);
@@ -293,7 +294,7 @@ void UpdateForceUsed()
 	uiForceRank = uiMaxRank;
 
 	uiForceUsed = 0;
-	uiForceAvailable = forceMasteryPoints[uiForceRank];
+	uiForceAvailable = (uiServerForceRank < 0 || uiServerForceRank >= NUM_FORCE_MASTERY_LEVELS ? (1 << 24) : forceMasteryPoints[uiForceRank]);
 
 	// Make sure that we have one freebie in jump.
 	if (uiForcePowersRank[FP_LEVITATION]<1)
@@ -463,7 +464,7 @@ void UI_ReadLegalForce(void)
 {
 	char fcfString[512];
 	char forceStringValue[4];
-	int strPlace = 0;
+	size_t strPlace = 0;
 	int forcePlace = 0;
 	int i = 0;
 	char singleBuf[64];
@@ -508,7 +509,7 @@ void UI_ReadLegalForce(void)
 		}
 	}
 	//Second, legalize them.
-	if (!BG_LegalizedForcePowers(fcfString, uiMaxRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0))
+	if (!BG_LegalizedForcePowers(fcfString, uiServerForceRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0))
 	{ //if they were illegal, we should refresh them.
 		updateForceLater = qtrue;
 	}
@@ -534,7 +535,7 @@ void UI_ReadLegalForce(void)
 	//	return;
 	}
 
-	uiForceRank = iBuf;
+	uiForceRank = Com_Clampi(0, uiMaxRank, iBuf);
 
 	while (fcfString[i] && fcfString[i] != '-')
 	{
@@ -562,7 +563,7 @@ void UI_ReadLegalForce(void)
 		c++;
 	}
 	uiForceUsed = 0;
-	uiForceAvailable = forceMasteryPoints[uiForceRank];
+	uiForceAvailable = (uiServerForceRank < 0 || uiServerForceRank >= NUM_FORCE_MASTERY_LEVELS ? (1 << 24) : forceMasteryPoints[uiForceRank]);
 	gTouchedForce = qtrue;
 
 	for (c=0;fcfString[i]&&c<NUM_FORCE_POWERS;c++,i++)
@@ -651,14 +652,8 @@ void UI_UpdateForcePowers()
 				uiForceSide = 0;
 				goto validitycheck;
 			}
-			uiForceRank = atoi(readBuf);
+			uiForceRank = Com_Clampi(0, uiMaxRank, atoi(readBuf));
 			i_r = 0;
-
-			if (uiForceRank > uiMaxRank)
-			{
-				uiForceRank = uiMaxRank;
-			}
-
 			i++;
 
 			while (forcePowers[i] && forcePowers[i] != '-' && i_r < 255)
@@ -755,39 +750,50 @@ validitycheck:
 }
 extern int	uiSkinColor;
 
+extern const char *UI_GetModelWithTeamColor(const char *model);
+extern int UI_HeadIndexForModel(const char *model);
+extern void UI_FeederScrollTo(float feederId, int scrollTo);
 qboolean UI_SkinColor_HandleKey(int flags, float *special, int key, int num, int min, int max, int type) 
 {
-  if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER) 
-  {
-  	int i = num;
-
-	if (key == A_MOUSE2)
+	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER)
 	{
-	    i--;
+		int i = num;
+		int selModel;
+
+		if (key == A_MOUSE2)
+		{
+			i--;
+		}
+		else
+		{
+			i++;
+		}
+
+		if (i < min)
+		{
+			i = max;
+		}
+		else if (i > max)
+		{
+			i = min;
+		}
+
+		num = i;
+
+		uiSkinColor = num;
+
+		selModel = UI_HeadIndexForModel(UI_GetModelWithTeamColor(ui_model.string));
+
+		if ( selModel != -1 ) {
+			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, selModel, NULL);
+			UI_FeederScrollTo(FEEDER_Q3HEADS, selModel);
+		} else {
+			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, 0, NULL);
+		}
+
+		return qtrue;
 	}
-	else
-	{
-	    i++;
-	}
-
-    if (i < min)
-	{
-		i = max;
-	}
-	else if (i > max)
-	{
-      i = min;
-    }
-
-    num = i;
-
-	uiSkinColor = num;
-
-	UI_FeederSelection(FEEDER_Q3HEADS, uiInfo.q3SelectedHead);
-
-    return qtrue;
-  }
-  return qfalse;
+	return qfalse;
 }
 
 
@@ -1075,7 +1081,7 @@ qboolean UI_ForcePowerRank_HandleKey(int flags, float *special, int key, int num
 int gCustRank = 0;
 int gCustSide = 0;
 
-int gCustPowersRank[NUM_FORCE_POWERS] = {
+static int gCustPowersRank[NUM_FORCE_POWERS] = {
 	0,//FP_HEAL = 0,//instant
 	1,//FP_LEVITATION,//hold/duration, this one defaults to 1 (gives a free point)
 	0,//FP_SPEED,//duration
@@ -1211,7 +1217,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 		}
 	}
 
-	BG_LegalizedForcePowers(fcfBuffer, uiMaxRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0);
+	BG_LegalizedForcePowers(fcfBuffer, uiServerForceRank, ui_freeSaber.integer, forceTeam, atoi( Info_ValueForKey( info, "g_gametype" )), 0);
 	//legalize the config based on the max rank
 
 	//now that we're done with the handle, it's time to parse our force data out of the string
@@ -1228,13 +1234,13 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 
 	iBuf = atoi(singleBuf);
 
-	if (iBuf > uiMaxRank || iBuf < 0)
+	if (iBuf > uiServerForceRank || iBuf < 0)
 	{ //this force config uses a rank level higher than our currently restricted level.. so we can't use it
 	  //FIXME: Print a message indicating this to the user
 		return;
 	}
 
-	uiForceRank = iBuf;
+	uiForceRank = Com_Clampi(0, uiMaxRank, iBuf);
 
 	while (fcfBuffer[i] && fcfBuffer[i] != '-')
 	{
@@ -1281,7 +1287,7 @@ void UI_ForceConfigHandle( int oldindex, int newindex )
 		c++;
 	}
 	uiForceUsed = 0;
-	uiForceAvailable = forceMasteryPoints[uiForceRank];
+	uiForceAvailable = (uiServerForceRank < 0 || uiServerForceRank >= NUM_FORCE_MASTERY_LEVELS ? (1 << 24) : forceMasteryPoints[uiForceRank]);
 	gTouchedForce = qtrue;
 
 	for (c=0;fcfBuffer[i]&&c<NUM_FORCE_POWERS;c++,i++)

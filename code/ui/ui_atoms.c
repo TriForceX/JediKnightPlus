@@ -9,15 +9,15 @@
 
 qboolean		m_entersound;		// after a frame, so caching won't disrupt the sound
 
-void QDECL Com_Error( int level, const char *error, ... ) {
+void QDECL Com_Error( errorParm_t level, const char *error, ... ) {
 	va_list		argptr;
 	char		text[1024];
 
 	va_start (argptr, error);
-	vsprintf (text, error, argptr);
+	Q_vsnprintf (text, sizeof(text), error, argptr);
 	va_end (argptr);
 
-	trap_Error( va("%s", text) );
+	trap_Error(text);
 }
 
 void QDECL Com_Printf( const char *msg, ... ) {
@@ -25,10 +25,10 @@ void QDECL Com_Printf( const char *msg, ... ) {
 	char		text[1024];
 
 	va_start (argptr, msg);
-	vsprintf (text, msg, argptr);
+	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
-	trap_Print( va("%s", text) );
+	trap_Print(text);
 }
 
 qboolean newUI = qfalse;
@@ -142,7 +142,8 @@ UI_ClearScores
 void UI_ClearScores() {
 	char	gameList[4096];
 	char *gameFile;
-	int		i, len, count, size;
+	int		i, count, size;
+	size_t len;
 	fileHandle_t f;
 	postGameInfo_t newInfo;
 
@@ -169,14 +170,15 @@ void UI_ClearScores() {
 }
 
 
-
+extern q3Head_t *UI_GetHeadByIndex( int index );
 static void	UI_Cache_f() {
 	int i;
 	Display_CacheAll();
 	if (trap_Argc() == 2) {
 		for (i = 0; i < uiInfo.q3HeadCount; i++)
 		{
-			trap_Print( va("model %s\n", uiInfo.q3HeadNames[i]) );
+			q3Head_t *head = UI_GetHeadByIndex(i);
+			if ( head && head->name ) trap_Print( va("model %s\n", head->name) );
 		}
 	}
 }

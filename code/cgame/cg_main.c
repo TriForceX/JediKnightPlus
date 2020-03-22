@@ -151,6 +151,7 @@ This is the only way control passes into the module.
 This must be the very first function compiled into the .q3vm file
 ================
 */
+qboolean menuInJK2MV = qfalse;
 int mvapi = 0;
 int Init_serverMessageNum;
 int Init_serverCommandSequence;
@@ -912,7 +913,7 @@ void QDECL CG_Printf( const char *msg, ... ) {
 	char		text[1024];
 
 	va_start (argptr, msg);
-	vsprintf (text, msg, argptr);
+	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
 	trap_Print( text );
@@ -923,18 +924,18 @@ Q_NORETURN void QDECL CG_Error( const char *msg, ... ) {
 	char		text[1024];
 
 	va_start (argptr, msg);
-	vsprintf (text, msg, argptr);
+	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
 	trap_Error( text );
 }
 
-Q_NORETURN void QDECL Com_Error( int level, const char *error, ... ) {
+Q_NORETURN void QDECL Com_Error( errorParm_t level, const char *error, ... ) {
 	va_list		argptr;
 	char		text[1024];
 
 	va_start (argptr, error);
-	vsprintf (text, error, argptr);
+	Q_vsnprintf (text, sizeof(text), error, argptr);
 	va_end (argptr);
 
 	CG_Error( "%s", text);
@@ -945,7 +946,7 @@ void QDECL Com_Printf( const char *msg, ... ) {
 	char		text[1024];
 
 	va_start (argptr, msg);
-	vsprintf (text, msg, argptr);
+	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
 	CG_Printf ("%s", text);
@@ -2086,7 +2087,7 @@ static clientInfo_t * CG_InfoFromScoreIndex(int index, int team, int *scoreIndex
 }
 
 static const char *CG_FeederItemText(float feederID, int index, int column,
-									 qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3) {
+									 qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6) {
 	gitem_t *item;
 	int scoreIndex = 0;
 	clientInfo_t *info = NULL;
@@ -2203,7 +2204,7 @@ static float CG_Cvar_Get(const char *cvar) {
 	return atof(buff);
 }
 
-void CG_Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const char *text, int cursorPos, char cursor, int limit, int style, int iMenuFont) {
+void CG_Text_PaintWithCursor(float x, float y, float scale, const vec4_t color, const char *text, unsigned cursorPos, char cursor, unsigned limit, int style, int iMenuFont) {
 	CG_Text_Paint(x, y, scale, color, text, 0, limit, style, iMenuFont);
 }
 
@@ -2551,8 +2552,7 @@ Ghoul2 Insert End
 	cgDC.Assets.qhMediumFont = trap_R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
 	
-	// Tr!Force: [JKPlus] Load ingame texts
-	trap_SP_Register("jkplus_ingame");
+	trap_SP_Register("jkplus_ingame"); // Tr!Force: [JKPlus] Load ingame texts
 
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );

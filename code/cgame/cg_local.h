@@ -1302,7 +1302,7 @@ typedef struct
 // all clients to begin playing instantly
 typedef struct {
 	gameState_t		gameState;			// gamestate from server
-	glconfig_t		glconfig;			// rendering configuration
+	vmglconfig_t		glconfig;			// rendering configuration
 	float			screenXScale;		// derived from glconfig
 	float			screenYScale;
 	//float			screenXBias;
@@ -1678,15 +1678,15 @@ void CG_DrawActive( stereoFrame_t stereoView );
 void CG_DrawFlagModel( float x, float y, float w, float h, int team, qboolean force2D );
 void CG_DrawTeamBackground( int x, int y, int w, int h, float alpha, int team );
 void CG_OwnerDraw(float x, float y, float w, float h, float text_x, float text_y, int ownerDraw, int ownerDrawFlags, int align, float special, float scale, vec4_t color, qhandle_t shader, int textStyle,int font);
-void CG_Text_Paint(float x, float y, float scale, vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont);
+void CG_Text_Paint(float x, float y, float scale, const vec4_t color, const char *text, float adjust, int limit, int style, int iMenuFont);
 int CG_Text_Width(const char *text, float scale, int iMenuFont);
 int CG_Text_Height(const char *text, float scale, int iMenuFont);
 void CG_SelectPrevPlayer(void);
 void CG_SelectNextPlayer(void);
 float CG_GetValue(int ownerDraw);
 qboolean CG_OwnerDrawVisible(int flags);
-void CG_RunMenuScript(char **args);
-qboolean CG_DeferMenuScript(char **args);
+void CG_RunMenuScript(const char **p);
+qboolean CG_DeferMenuScript(const char **p);
 void CG_ShowResponseHead(void);
 void CG_SetPrintString(int type, const char *p);
 void CG_InitTeamChat(void);
@@ -2037,7 +2037,7 @@ void	trap_FX_AddLine( const vec3_t start, const vec3_t end, float size1, float s
 // The glconfig_t will not change during the life of a cgame.
 // If it needs to change, the entire cgame will be restarted, because
 // all the qhandle_t are then invalid.
-void		trap_GetGlconfig( glconfig_t *glconfig );
+void		trap_GetGlconfig( vmglconfig_t *glconfig );
 
 // the gamestate should be grabbed at startup, and whenever a
 // configstring changes

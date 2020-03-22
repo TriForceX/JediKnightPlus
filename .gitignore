@@ -89,6 +89,9 @@ Desktop.ini
 .DS_Store
 *.o
 *.so
+GTAGS
+GRTAGS
+GPATH
 
 # ignore all subdirectories of the build directory
 code/base/
