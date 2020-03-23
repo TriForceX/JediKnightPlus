@@ -9,6 +9,9 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.7.4
+- Added gameplay changer as vote option
+
 ## 0.7.3
 - Fixed limits to drop flag command usage
 - Added jk_dropFlagTime cvar

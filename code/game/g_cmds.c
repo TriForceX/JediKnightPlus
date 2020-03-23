@@ -1581,9 +1581,10 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	} else if ( !Q_stricmp( arg1, "g_doWarmup" ) ) {
 	} else if ( !Q_stricmp( arg1, "timelimit" ) ) {
 	} else if ( !Q_stricmp( arg1, "fraglimit" ) ) {
+	} else if ( !Q_stricmp( arg1, "gameplay" ) ) { // Tr!Force: [GamePlay] Allow gameplay change vote
 	} else {
 		trap_SendServerCommand( ent-g_entities, "print \"Invalid vote string.\n\"" );
-		trap_SendServerCommand( ent-g_entities, "print \"Vote commands are: map_restart, nextmap, map <mapname>, g_gametype <n>, kick <player>, clientkick <clientnum>, g_doWarmup, timelimit <time>, fraglimit <frags>.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"Vote commands are: gameplay <version>, map_restart, nextmap, map <mapname>, g_gametype <n>, kick <player>, clientkick <clientnum>, g_doWarmup, timelimit <time>, fraglimit <frags>.\n\"" );
 		return;
 	}
 
@@ -1679,6 +1680,16 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "vstr nextmap");
 		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 	} 
+	// Tr!Force: [GamePlay] Allow only valid gameplay versions
+	if (!Q_stricmp(arg1, "gameplay"))
+	{
+		if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
+			trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version.\n\"");
+			return;
+		}
+		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+	}
 	else
 	{
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "%s \"%s\"", arg1, arg2 );
