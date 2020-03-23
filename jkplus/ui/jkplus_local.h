@@ -56,11 +56,11 @@ Common / new functions
 */
 
 // ui_main.c
-const char	*BaseJK2_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
+const char	*BaseJK2_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			BaseJK2_UI_FeederCount(float feederID);
 qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 
 // jkplus_main.c
-const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3);
+const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKPlus_UI_FeederCount(float feederID);
 qboolean	JKPlus_UI_FeederSelection(float feederID, int index);

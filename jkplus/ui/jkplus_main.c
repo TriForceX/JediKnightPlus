@@ -165,7 +165,7 @@ static char *JKPlus_UI_EmotesList(int index, int *actual)
 Feeder item text function
 =====================================================================
 */
-const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3)
+const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6)
 {
 	static char info[MAX_STRING_CHARS];
 	static char hostname[1024];
@@ -173,7 +173,7 @@ const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhan
 	static char needPass[32];
 	static int lastColumn = -1;
 	static int lastTime = 0;
-	*handle1 = *handle2 = *handle3 = -1;
+	*handle1 = *handle2 = *handle3 = *handle4 = -1;
 
 	if(feederID == FEEDER_EMOTES)
 	{
@@ -182,7 +182,7 @@ const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhan
 	}
 
 	// Final return, probably NULL
-	return BaseJK2_UI_FeederItemText(feederID, index, column, handle1, handle2, handle3);
+	return BaseJK2_UI_FeederItemText(feederID, index, column, handle1, handle2, handle3, handle4, handle5, handle6);
 }
 
 /*
