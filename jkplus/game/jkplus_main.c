@@ -36,6 +36,7 @@ vmCvar_t	jkplus_serverClosedBroadcast;
 
 vmCvar_t	jkplus_allowBlackNames;
 vmCvar_t	jkplus_dropFlag;
+vmCvar_t	jkplus_dropFlagTime;
 vmCvar_t	jkplus_pauseGame;
 vmCvar_t	jkplus_pauseGameCenterPrint;
 
@@ -55,6 +56,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 
 	{ &jkplus_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkplus_dropFlagTime,				"jk_dropFlagTime",			"10",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkplus_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"1",					CVAR_ARCHIVE,		0, qtrue },
 	

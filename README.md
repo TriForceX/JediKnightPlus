@@ -2,153 +2,140 @@
 
 https://triforce.dev/projects/jkplus
 
-Game modification for **Jedi Knight 2 Multiplayer** *(all game versions support)*. The main goal is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true adding new features as well porting some from other games.
+> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true adding new features as well porting some from other mods and games.
 
-[![version](https://img.shields.io/badge/Current%20Version-0.7.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+<div align="center">
+
+[![version](https://img.shields.io/badge/Current%20Version-0.7.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
+[![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
-[![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](https://github.com/TriForceX/JediKnightPlus#license)
+[![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](#license)
+
+</div>
 
 # Information
-> I started to code the first version of this mod in 2005. Back then this was a private mod, only few people had access, i never did a public release. So due to the people request i decided to remake it now (the old one had lots of bugs and trash code). 
 
-**Note:** This mod is under development, some features may be disabled or not finished. 
+- Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/wiki/Setup)
+- Read more information and guides at **wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
+- See version changes history in the **changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
+- Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkplus)
 
-- Read more information and guides at **Wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
-- See version changes history in the **Changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
-- Join my **Discord** chat server for more support  [here](https://discord.gg/tfJRtzV)
+# About
+I started to code the first version of this mod in 2005. Back then it was a private mod and only few people had access. So as a personal task and due to some people request i decided to re-code the mod into a public version, just as a legacy.
 
-# Server Setup
-
-Before start is highly recommend to use [JK2MV](https://jk2mv.org/downloads) to play the game and host dedicated servers, specially because **JK2MV** has multi-version support, lots of game improvements and fixes. For mod setup follow the next steps:
-
----
-
-1. Download the lastest mod **release** [here](https://github.com/TriForceX/JediKnightPlus/releases)
-2. Go to `GameData` (the directory which holds `jk2mp.exe` or `jk2ded.exe`)
-3. Unpack the `JediKnightPlus` folder into `GameData` directory
-4. To configure mod options edit the files which starts with `jkplus_<name>.cfg` for example `jkplus_server.cfg`
-8. For *Windows* you can launch the server using the file `jkplus_launcher.exe` and follow the steps on it
-5. Or you can launch the server in-game using **server setup** or using the **console** in *Windows*, *Linux* or *OSX*
-6. For *Windows* use the following parameters: 
-   - `C:\<path to jk2>\GameData\jk2mvded.exe +set fs_game JediKnightPlus +exec jkplus_server.cfg`
-7. For *Linux* or *OSX* use the following parameters: 
-   - `./jk2mvded +set fs_game JediKnightPlus +exec jkplus_server.cfg`
-9. You can use any JK2 dedicated server binary on the previous steps: `jk2mp`, `jk2ded` or `jk2mvded`
-10. That's it! Your server is now ready to use **Jedi Knight Plus Mod**
-
-# Mod Features
-
-The next list is all features from the original **Jedi Knight Plus** mod which need to be ported, improved or fixed on the new source code. Each finished task will be marked with a check :white_check_mark:
+The next list is all *features* from the original **Jedi Knight Plus** private mod _(2005 & 2008 versions)_ which need to be ported into the new source code. _(Each completed task will be marked with a check)_
 
 ---
 
 ### Server Side
-Players doesn't need to have the client-side plugin to use this features.
+**Description:** General server features _(No client plugin required)_
 
-Status | Feature
-:------: | :-------
-:white_check_mark: | Gameplay changer between 1.02, 1.03 and 1.04 in a single command
-:x: | Improved bots AI (Artificial intelligence)
-:x: | Configurable weapon features (Damage, ammo speed, firing rate, etc...)
-:x: | Player account system (Tracks kills, deaths, etc...)
-:x: | Ranking system based on player skills
-:x: | Chat censor filters
-:white_check_mark: | Allow black color in player names
-:x: | In-game chat commands (Teleports, info, etc...)
-:x: | Welcome message and news messages showing constantly on the server
-:x: | Custom in-game modes (Instant kill, survival, last man standing, etc...)
-:x: | Custom player private chat rooms
-:x: | Enabled Jedi Crystal and Beer Bacta items
-:x: | NPC spawn command like in Single Player
-:x: | Improved cheat commands
-:x: | Protected server clan tag (With clan password)
-:white_check_mark: | Over 50 player emotes (Sit, kiss, surrender, etc...)
-:x: | Teleport commands (Save & load position, player to player, etc...)
-:x: | Anti lamer feature (Players can't kill during chat)
-:x: | Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
-:x: | Items get affected by force physics (Push, pull, etc...)
-:x: | Enable multiple private duels on FFA game type
-:x: | Multiple private duel modes (Full force, no force, guns, etc...)
-:x: | Enable invisible private duels
-:x: | Enable chat in Duel game type
-:white_check_mark: | Closed server feature (For maintenance or private use without password)
-:x: | Alternative player dimensions
-:x: | Custom poll call votes
-:x: | Improved slow-mo duel end functionally
-:white_check_mark: | Drop Flag command for CTF & CTY game types
- 
-### Client Side
-Players need the mod plugin to use this features _(doesn't affect the server gameplay)_
+- [x] Gameplay changer between 1.02, 1.03 and 1.04 in a single command
+- [ ] Improved bots AI (Artificial intelligence)
+- [ ] Configurable weapon features (Damage, ammo speed, firing rate, etc...)
+- [ ] Player account system (Tracks kills, deaths, etc...)
+- [ ] Ranking system based on player skills
+- [ ] Chat censor filters
+- [x] Allow black color in player names
+- [ ] In-game chat commands (Teleports, info, etc...)
+- [ ] Welcome message and news messages showing constantly on the server
+- [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
+- [ ] Custom player private chat rooms
+- [ ] Enabled Jedi Crystal and Beer Bacta items
+- [ ] NPC spawn command like in Single Player
+- [ ] Improved cheat commands
+- [ ] Protected server clan tag (With clan password)
+- [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
+- [ ] Teleport commands (Save & load position, player to position, etc...)
+- [ ] Anti lamer feature (Players can't kill during chat)
+- [ ] Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
+- [ ] Items get affected by force physics (Push, pull, etc...)
+- [ ] Enable multiple private duels on FFA game type
+- [ ] Multiple private duel modes (Full force, no force, guns, etc...)
+- [ ] Enable invisible private duels
+- [ ] Enable chat in duel game type
+- [x] Passwordless closed server feature (Allow only by IP)
+- [ ] Alternative dimensions (Weapon or saber only, custom gameplay, etc...)
+- [ ] Custom poll call votes
+- [ ] Improved slow-mo duel end functionally
+- [x] Drop flag command for CTF & CTY game types
 
-Status | Feature
-:------: | :-------
-:x: | Atmospheric effects (Rain, snow, sun, etc...)
-:x: | Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
-:x: | Mini keyboard display to see key-presses on-screen
-:x: | Jedi Academy chat display mode (Positioned at left bottom)
-:x: | Three chat display icons (JK2, Jedi Academy and user customizable)
-:x: | Fixed 2D aspect ratio for non 4:3 screens
-:x: | Fire lightsaber style, to add real fire effects to the lightsaber
-:x: | Fully working jet pack to fly around the map
-:x: | Grapple hook to climb against walls
-:x: | Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
-:x: | In-game clock showing the actual local hours, minutes and seconds
-:x: | In-game server list to join another server without disconnect
-:x: | Speed-o-meter to display player speed in-game and best record
-:x: | Strafe jumping helper/efficiency meter
-:x: | Custom lightsaber hilt support
-:x: | Two alternative huds (Jedi Academy and basic lite)
-:x: | Alternative FPS and server time style
-:x: | Alternative Force points display with numbers
-:x: | Display bacta indicator (3D model)
-:x: | Display current weapon in back (3D model)
-:x: | Enable custom item indicator
-:x: | Enable push/pull force effect color to match with the color of lightsaber
-:x: | Enable the color for the second blade with dual blade lightsabers
-:x: | Custom saber trail length
-:x: | Custom in-game duel challenge music
-:x: | Custom flag transparency (For CTF game type)
-:x: | Show player icons on scoreboard
-:x: | Custom camera options (Range, distance, etc...)
-:x: | Enable first person lightsaber
-:x: | Enable first person turret chair view
-:x: | Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
-:x: | Basic anti-script feature (Against noob cheaters)
-:x: | Increased some limits (Fov, camera range, name length, etc...)
- 
-### Map Modding
-Allows in-game map modifications _(models, effects, shaders and textures)_
+---
 
-Status | Feature
-:------: | :-------
-:x: | Map auto fix to convert most of single player maps playable
-:x: | Over 15 custom entities for maps (Including entities from Single Player)
-:x: | Add models in-game (GLM or MD3 format)
-:x: | Add effects in-game (EFX format)
-:x: | Add any entity based on class name and its parameters
-:x: | Add pre-made useful utilities (NPC spawner, print consoles, assister, etc...)
-:x: | Change any shader or texture in-game
-:x: | Modify entities properties in-game
-:x: | Delete entities in-game
-:x: | Clone entities in-game
-:x: | Save feature to get all changes automatically stored in a loadable file
- 
 ### Administration
-Allows server admins to control players and server features in-game
+**Description:** In-game server management features for administrators
 
-Status | Feature
-:------: | :-------
-:x: | Custom user roles (Administrator, moderator, builder, etc...)
-:x: | In-game player statistics (Banned, kicked, reports, scripters, etc...)
-:x: | Helpful commands for players (Teleport, weapons, force powers, etc...)
-:x: | Punish commands for bad players (Slay, silence, sleep, rename, lock, etc...)
-:x: | Ability to control bots actions (Fake chat, movements, emotes, etc...)
-:x: | Spawn unlimited items and weapons
-:x: | Private administrator chat room
-:x: | Custom call vote with actions
-:x: | Team management (Lock, force, shuffle, etc...)
-:white_check_mark: | Pause mode to instantly stop everyone on the server during game
+- [ ] Custom user roles (Administrator, moderator, builder, etc...)
+- [ ] In-game player statistics (Banned, kicked, reports, scripters, etc...)
+- [ ] Helpful commands for players (Teleport, weapons, force powers, etc...)
+- [ ] Punish commands for bad players (Slay, silence, sleep, rename, lock, etc...)
+- [ ] Ability to control bots actions (Fake chat, movements, emotes, etc...)
+- [ ] Spawn unlimited items and weapons
+- [ ] Private administrator chat room
+- [ ] Custom call vote with actions
+- [ ] Team management (Lock, force, shuffle, etc...)
+- [x] Pause mode to instantly stop everyone on the server during game
+
+---
+
+### Map Modding
+**Description:** In-game maps modification tools
+
+- [ ] Map auto fix to convert most of single player maps to be playable
+- [ ] Over 15 custom entities for maps (Including entities from Single Player)
+- [ ] Add models (GLM or MD3 format)
+- [ ] Add effects (EFX format)
+- [ ] Add any entity based on class name and its parameters
+- [ ] Add pre-made useful utilities (NPC spawner, print consoles, assister, etc...)
+- [ ] Change any shader or texture
+- [ ] Modify entities properties
+- [ ] Delete entities
+- [ ] Clone entities
+- [ ] Save feature to get all changes automatically stored in a loadable file
+
+---
+
+### Client Side
+**Description:** Additional features using the clientside plugin
+
+- [ ] Atmospheric effects (Rain, snow, sun, etc...)
+- [ ] Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
+- [ ] Mini keyboard display to see key-presses on-screen
+- [ ] Jedi Academy chat display mode (Positioned at left bottom)
+- [ ] Three chat display icons (JK2, Jedi Academy and user customizable)
+- [x] Fixed 2D aspect ratio for non 4:3 screens
+- [ ] Fire lightsaber style, to add real fire effects to the lightsaber
+- [ ] Fully working jet pack to fly around the map
+- [ ] Grapple hook to climb against walls
+- [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
+- [ ] In-game clock showing the actual local hours, minutes and seconds
+- [ ] In-game server list to join another server without disconnect
+- [ ] Speed-o-meter to display player speed in-game and best record
+- [ ] Strafe jumping helper/efficiency meter
+- [ ] Custom lightsaber hilt support
+- [ ] Two alternative huds (Jedi Academy and basic lite)
+- [ ] Alternative FPS and server time style
+- [ ] Alternative Force points display with numbers
+- [ ] Display bacta indicator (3D model)
+- [ ] Display current weapon in back (3D model)
+- [ ] Enable custom item indicator
+- [ ] Enable push/pull force effect color to match with the color of lightsaber
+- [ ] Enable the color for the second blade with dual blade lightsabers
+- [ ] Custom saber trail length
+- [ ] Custom in-game duel challenge music
+- [ ] Custom flag transparency (For CTF game type)
+- [ ] Show player icons on scoreboard
+- [x] Server emotes menu for usage and ginding
+- [ ] Custom camera options (Range, distance, etc...)
+- [ ] Enable first person lightsaber
+- [ ] Enable first person turret chair view
+- [ ] Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
+- [ ] Anti-script feature (Macro scanning)
+- [ ] Increased some limits (Fov, camera range, name length, etc...)
+
+---
 
 # Special Thanks
 
@@ -157,23 +144,23 @@ The following people supported and helped me directly on this project.
 - [DeathSpike](https://github.com/Deathspike) _(Client plugin support)_
 - Lee Oates _(Anti-script base code)_
 - Nerevar _(Ingame effects, atmospherics and santa hat)_
-- Kaiser _(Map modding support)_
+- Kaiser / TVpath _(General modding support)_
 - [Rich Whitehouse](https://www.richwhitehouse.com) _(Melee weapon from Hydroball)_
-- NTxC / Reality~ _(1.02 coding support)_
+- NTxC / Reality~ _(1.02 gameplay support)_
 - Tox Laximus _(Bots AI support)_
 - [McMonkey](https://github.com/mcmonkey4eva) _(Map modding support)_
-- JediDog~ _(1.03 coding support)_
+- JediDog~ _(1.03 gameplay support)_
 - [NewAge](https://github.com/erfg12) _(Admin management support)_
-- Wonko The Sane _(JK2 base improvements support)_
+- Mr.Wonko _(JK2 base improvements support)_
 - [Daggolin](https://github.com/Daggolin) _(Map modding and coding support)_
 - [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
 - Kameleon _(3D model draw angles fix)_
-- [Fau](https://github.com/aufau) _(2D aspect ratio fix)_
-- [Bucky](https://github.com/Bucky21659) _(EternalJK tweaks and hints)_
-- BarryHit _(Coding support and testing)_
+- [Fau](https://github.com/aufau) _(2D aspect ratio fix & SaberMod tweaks)_
+- [Bucky](https://github.com/Bucky21659) _(EternalJK mod tweaks)_
+- BarryHit _(Support and testing)_
 - Player _(Support and testing)_
-- [Flendo](https://github.com/FlendoJK2) _(Beta testing)_
-- vVv _(Pause mode base)_
+- [Flendo](https://github.com/FlendoJK2) _(Support and testing)_
+- Padaget _(vVv mod tweaks)_
 - [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
@@ -181,7 +168,7 @@ The following people supported and helped me directly on this project.
 # Contact
 
 **Jedi Knight Plus Mod developed by Tr!Force**  
-Work copyrighted (C) with holder attribution 2005 - 2019
+Work copyrighted (C) with holder attribution 2005 - 2020
 
 Visit the mod page: https://triforce.dev/projects/jkplus
 

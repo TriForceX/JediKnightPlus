@@ -71,7 +71,7 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^7Welcome to ^5%s ^7(Ver: ^2%s.%s.%s ^5- ^7Build: %s)\n"
+			"^7This server is running ^5%s ^7(Ver: %s.%s.%s - Build: %s)\n"
 			"\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH, __DATE__));
 	}
 }

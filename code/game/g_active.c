@@ -673,13 +673,8 @@ ClientTimerActions
 Actions that happen once a second
 ==================
 */
-void ClientTimerActions( gentity_t *ent, int msec ) {
+void BaseJK2_ClientTimerActions( gentity_t *ent, int msec ) { // Tr!Force: BaseJK2 client timer actions function
 	gclient_t	*client;
-
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-	{
-		return;
-	}
 
 	client = ent->client;
 	client->timeResidual += msec;

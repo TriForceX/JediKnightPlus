@@ -45,6 +45,7 @@ Global definitions
 
 #define ClientCommand				JKPlus_ClientCommand
 #define ClientThink_real			JKPlus_ClientThink_real
+#define ClientTimerActions			JKPlus_ClientTimerActions
 #define G_RegisterCvars 			JKPlus_G_RegisterCvars
 #define G_UpdateCvars				JKPlus_G_UpdateCvars
 #define ClientConnect				JKPlus_ClientConnect
@@ -68,6 +69,7 @@ extern	vmCvar_t					jkplus_serverClosedBroadcast;
 
 extern	vmCvar_t					jkplus_allowBlackNames;
 extern	vmCvar_t					jkplus_dropFlag;
+extern	vmCvar_t					jkplus_dropFlagTime;
 extern	vmCvar_t					jkplus_pauseGame;
 extern	vmCvar_t					jkplus_pauseGameCenterPrint;
 

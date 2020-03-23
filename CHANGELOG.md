@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.7.3
+- Fixed limits to drop flag command usage
+- Added jk_dropFlagTime cvar
+- Added custom client timer actions
+- Merge updates from mvsdk
+
 ## 0.7.2
 - Updated mod header variables
 - Updated project website url on menus
@@ -32,6 +38,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ## 0.4.2
 - Enabled emotes usage from menus
+- Merge updates from mvsdk
 
 ## 0.4.1
 - Added main mod menu options and emotes menu
@@ -60,7 +67,8 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ## 0.1.1
 - Updated main modules for server-side client events
+- Merge updates from mvsdk
 
 ## 0.1.0
 - Added mod headers and main modules for cvars and commands
-- Merge from mvsdk source code as base
+- Initial merge from mvsdk source code as base

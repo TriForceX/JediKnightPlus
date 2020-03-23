@@ -10,6 +10,46 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
+Client timer actions function
+=====================================================================
+*/
+
+void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
+	gclient_t	*client;
+
+	client = ent->client;
+	client->JKPlusTimeResidual += msec;
+
+	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	{
+		return;
+	}
+
+	// Launch original client timer actions function
+	BaseJK2_ClientTimerActions(ent, msec);
+
+	// Custom time actions
+	while (client->JKPlusTimeResidual >= 1000)
+	{
+		client->JKPlusTimeResidual -= 1000;
+
+		// DropFlag check
+		if (client->JKPlusDropFlagTimer)
+		{
+			if (client->JKPlusDropFlagTimer > 0)
+			{
+				client->JKPlusDropFlagTimer--;
+			}
+			else
+			{
+				client->JKPlusDropFlagTimer = 0;
+			}
+		}
+	}
+}
+
+/*
+=====================================================================
 Client think real function
 =====================================================================
 */

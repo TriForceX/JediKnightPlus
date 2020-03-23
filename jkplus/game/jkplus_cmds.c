@@ -35,9 +35,16 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	if ((ent->client->sess.sessionTeam == TEAM_RED && ent->client->ps.powerups[PW_BLUEFLAG] == 0) || 
 		(ent->client->sess.sessionTeam == TEAM_BLUE && ent->client->ps.powerups[PW_REDFLAG] == 0))
 	{
+		trap_SendServerCommand(ent - g_entities, "cp \"You doesn't have any flag to drop\n\"");
 		return;
 	}
 
+	if (ent->client->JKPlusDropFlagTimer > 0)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKPlusDropFlagTimer));
+		return;
+	}
+	
 	ent->client->ps.powerups[PW_REDFLAG] = 0;
 	ent->client->ps.powerups[PW_BLUEFLAG] = 0;
 	ent->client->ps.persistant[PERS_SCORE] -= CTF_FLAG_BONUS;
@@ -60,6 +67,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
+	ent->client->JKPlusDropFlagTimer = jkplus_dropFlagTime.integer;
 	LaunchItem(item, org, velocity);
 }
 
