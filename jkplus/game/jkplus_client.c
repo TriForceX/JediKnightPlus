@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 [Description]: Main client module
 =====================================================================
@@ -71,9 +71,7 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^7Welcome to ^5%s\n"
-			"^7The version is ^2%s.%s.%s\n"
-			"^7This build was created in %s\n"
+			"^7Welcome to ^5%s ^7(Ver: ^2%s.%s.%s ^5- ^7Build: %s)\n"
 			"\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH, __DATE__));
 	}
 }

@@ -77,7 +77,8 @@
 
 #define FEEDER_FORCECFG						0x10			// force config list
 
-#define FEEDER_EMOTES						0x11			// Tr!Force: [Emotes] Feeder
+#define FEEDER_DOWNLOADS					0x11			// list of downloaded / blocked files
+#define FEEDER_EMOTES						0x12			// Tr!Force: Emotes feeder
 
 // display flags
 #define CG_SHOW_BLUE_TEAM_HAS_REDFLAG     0x00000001

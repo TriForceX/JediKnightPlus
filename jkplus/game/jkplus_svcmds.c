@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2019
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 [Description]: Main server commands functions
 =====================================================================
