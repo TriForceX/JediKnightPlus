@@ -241,7 +241,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	}
 
 	// Exception for duel gametype
-	if(g_gametype.integer == GT_TOURNAMENT)
+	if(g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this gametype\n\"");
 		return;

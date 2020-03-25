@@ -14,7 +14,7 @@ Drop flag function
 =====================================================================
 */
 
-static void jkcvar_dropFlag(gentity_t *ent, int clientNum)
+static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
 	vec3_t		angles, velocity, org, offset, mins, maxs;
@@ -145,7 +145,7 @@ void JKPlus_ClientCommand(int clientNum)
 	}
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
-		jkcvar_dropFlag(ent, clientNum);
+		JKPlus_dropFlag(ent, clientNum);
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
