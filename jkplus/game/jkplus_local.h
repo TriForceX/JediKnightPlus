@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
 #define JKPLUS_MINOR 			"7"
-#define JKPLUS_PATCH  			"4"
+#define JKPLUS_PATCH  			"5"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*
@@ -68,6 +68,8 @@ extern	vmCvar_t					jkcvar_serverClosedIP;
 extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
+extern	vmCvar_t					jkcvar_fixVoteMap;
+
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_pauseGame;

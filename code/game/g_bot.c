@@ -166,12 +166,28 @@ qboolean G_DoesMapSupportGametype(const char *mapname, int gametype)
 	int			n = 0;
 	char		*type = NULL;
 
-	if (!g_arenaInfos[0])
+	if (!mapname || !mapname[0])
 	{
 		return qfalse;
 	}
 
-	if (!mapname || !mapname[0])
+	// Tr!Force: [Vote] Fix for gametype not supported maps
+	if (jkcvar_fixVoteMap.integer != 0)
+	{
+		fileHandle_t	f;
+		trap_FS_FOpenFile(va("maps/%s.bsp", mapname), &f, FS_READ);
+		if (f)
+		{
+			trap_FS_FCloseFile(f);
+			return qtrue;
+		}
+		else
+		{
+			return qfalse;
+		}
+	}
+
+	if (!g_arenaInfos[0])
 	{
 		return qfalse;
 	}

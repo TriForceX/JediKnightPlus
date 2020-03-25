@@ -6,7 +6,7 @@ https://triforce.dev/projects/jkplus
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.7.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.7.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -54,6 +54,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Items get affected by force physics (Push, pull, etc...)
 - [ ] Enable multiple private duels on FFA game type
 - [ ] Multiple private duel modes (Full force, no force, guns, etc...)
+- [ ] Custom duel stats, health and armor
 - [ ] Enable invisible private duels
 - [ ] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
@@ -162,8 +163,11 @@ The following people supported and helped me directly on this project.
 - [Flendo](https://github.com/FlendoJK2) _(Support and testing)_
 - Padaget _(vVv mod tweaks)_
 - [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
+- Noodle _(User interface support)_
+- Effect.ve _(General coding support)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
+- =AJC= Clan and 1.04 community _(Support and testing)_
 
 # Contact
 

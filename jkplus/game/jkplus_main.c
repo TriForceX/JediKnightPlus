@@ -35,6 +35,8 @@ vmCvar_t	jkcvar_serverClosedIP;
 vmCvar_t	jkcvar_serverClosedBroadcast;
 
 vmCvar_t	jkcvar_allowBlackNames;
+vmCvar_t	jkcvar_fixVoteMap;
+
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_pauseGame;
@@ -55,6 +57,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_fixVoteMap,				"jk_fixVoteMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
+
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },

@@ -9,6 +9,11 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.7.5
+- Fix for gametype not supported maps on callvote
+- Disabled emotes on CTF & CTY
+- Renamed internal cvars for better recognize
+
 ## 0.7.4
 - Added gameplay changer as vote option
 
