@@ -46,8 +46,8 @@ Cvar registration
 =====================================================================
 */
 
-extern vmCvar_t						jkplus_ui_test1;
-extern vmCvar_t						jkplus_ui_test2;
+extern vmCvar_t						jkcvar_ui_test1;
+extern vmCvar_t						jkcvar_ui_test2;
 
 /*
 =====================================================================

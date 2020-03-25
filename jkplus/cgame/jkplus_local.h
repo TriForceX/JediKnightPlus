@@ -21,5 +21,5 @@ Cvar registration
 =====================================================================
 */
 
-extern vmCvar_t						jkplus_cg_test1;
-extern vmCvar_t						jkplus_cg_test2;
+extern vmCvar_t						jkcvar_cg_test1;
+extern vmCvar_t						jkcvar_cg_test2;

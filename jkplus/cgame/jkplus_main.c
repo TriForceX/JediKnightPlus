@@ -21,13 +21,13 @@ typedef struct { // Cvar table struct
 	int			cvarFlags;
 } cvarTable_t;
 
-vmCvar_t	jkplus_cg_test1;
-vmCvar_t	jkplus_cg_test2;
+vmCvar_t	jkcvar_cg_test1;
+vmCvar_t	jkcvar_cg_test2;
 
 static cvarTable_t	JKPlusCGCvarTable[] = {
 
-	{ &jkplus_cg_test1, "jk_cg_test1", "0", CVAR_ARCHIVE },
-	{ &jkplus_cg_test2, "jk_cg_test2", "0", CVAR_ARCHIVE },
+	{ &jkcvar_cg_test1, "jk_cg_test1", "0", CVAR_ARCHIVE },
+	{ &jkcvar_cg_test2, "jk_cg_test2", "0", CVAR_ARCHIVE },
 
 };
 
