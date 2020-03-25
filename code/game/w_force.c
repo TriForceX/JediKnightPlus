@@ -2594,6 +2594,69 @@ qboolean G_InGetUpAnim(playerState_t *ps)
 	return qfalse;
 }
 
+// Tr!Force: [Items] Respawn time calculation for item throwing
+int JKPlus_adjustRespawnTime(gentity_t *ent)
+{
+	float respawnTime;
+
+	// Respawn time based on giType
+	if (ent->item->giType == IT_ARMOR)
+	{
+		respawnTime = ITEM_RESPAWN_ARMOR;
+	}
+	else if (ent->item->giType == IT_HOLDABLE)
+	{
+		respawnTime = ITEM_RESPAWN_HOLDABLE;
+	}
+	else if (ent->item->giType == IT_HEALTH)
+	{
+		respawnTime = ITEM_RESPAWN_HEALTH;
+	}
+	else if (ent->item->giType == IT_AMMO)
+	{
+		respawnTime = ITEM_RESPAWN_AMMO;
+	}
+
+	// Adaption disabled so no wait time/random set
+	if (!g_adaptRespawn.integer && !ent->wait && !ent->random)
+	{
+		return((int)respawnTime);
+	}
+	else
+	{
+		// Scale respawn time based on the current playing clients
+		if (level.numPlayingClients > 4)
+		{
+			if (level.numPlayingClients > 32)
+			{
+				respawnTime *= 0.25;
+			}
+			else if (level.numPlayingClients > 12)
+			{
+				respawnTime *= 20.0 / (float)(level.numPlayingClients + 8);
+			}
+			else
+			{
+				respawnTime *= 8.0 / (float)(level.numPlayingClients + 4);
+			}
+		}
+
+		// Check wait
+		if (ent->wait)
+			respawnTime = ent->wait;
+
+		// Check random
+		if (ent->random)
+			respawnTime += crandom() * ent->random;
+
+		// Don't allow below 1
+		if (respawnTime < 1.0)
+			respawnTime = 1.0;
+
+		return ((int)respawnTime);
+	}
+}
+
 extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace );
 void ForceThrow( gentity_t *self, qboolean pull )
 {
@@ -3234,6 +3297,44 @@ void ForceThrow( gentity_t *self, qboolean pull )
 			{//pretend you pushed it
 				Touch_Button( push_list[x], self, NULL );
 				continue;
+			}
+			// Tr!Force: [Items] Allow force physics on items
+			else if (push_list[x]->s.eType == ET_ITEM && jkcvar_itemForcePhysics.integer)
+			{
+				// Check if is pull or push.
+				float throwscale = pull ? -650.0f : 650.0f;
+
+				// Item filter
+				switch (push_list[x]->item->giType)
+				{
+				case IT_AMMO:
+				case IT_ARMOR:
+				case IT_HEALTH:
+				case IT_HOLDABLE:
+					break;
+				default:
+					continue;
+				}
+
+				// Set respawntime
+				push_list[x]->nextthink = level.time + JKPlus_adjustRespawnTime(push_list[x]) * 1000;
+				push_list[x]->think = RespawnItem;
+
+				// Adds gravity
+				push_list[x]->s.pos.trType = TR_GRAVITY;
+				push_list[x]->s.apos.trType = TR_GRAVITY;
+
+				VectorScale(forward, throwscale, push_list[x]->s.pos.trDelta);
+				VectorScale(forward, throwscale, push_list[x]->s.apos.trDelta);
+
+				push_list[x]->s.pos.trTime = level.time;
+				push_list[x]->s.apos.trTime = level.time;
+
+				VectorCopy(push_list[x]->r.currentOrigin, push_list[x]->s.pos.trBase);
+				VectorCopy(push_list[x]->r.currentOrigin, push_list[x]->s.apos.trBase);
+
+				// Bounce
+				push_list[x]->s.eFlags |= EF_BOUNCE_HALF;
 			}
 		}
 	}

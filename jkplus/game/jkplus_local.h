@@ -43,6 +43,11 @@ Global definitions
 
 #define	MAX_IP						22
 
+#define	ITEM_RESPAWN_ARMOR			20
+#define	ITEM_RESPAWN_HEALTH			30
+#define	ITEM_RESPAWN_AMMO			40
+#define	ITEM_RESPAWN_HOLDABLE		60
+
 #define ClientCommand				JKPlus_ClientCommand
 #define ClientThink_real			JKPlus_ClientThink_real
 #define ClientTimerActions			JKPlus_ClientTimerActions
@@ -69,6 +74,7 @@ extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_fixVoteMap;
+extern	vmCvar_t					jkcvar_itemForcePhysics;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
