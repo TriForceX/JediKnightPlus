@@ -924,7 +924,7 @@ static void ClientCleanName( const char *in, char *out, int outSize ) {
 			}
 
 			// don't allow black in a name, period
-			if (ColorIndex(*in) == 0 && jkplus_allowBlackNames.integer == 0) { // Tr!Force: [Black] Allow black color in names
+			if (ColorIndex(*in) == 0 && jkcvar_allowBlackNames.integer == 0) { // Tr!Force: [Black] Allow black color in names
 				in++;
 				continue;
 			}

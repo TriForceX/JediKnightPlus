@@ -404,7 +404,7 @@ void G_RunMover( gentity_t *ent ) {
 	}
 
 	// check think function
-	if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 	{
 		G_RunThink( ent );
 	}

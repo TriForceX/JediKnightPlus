@@ -255,7 +255,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	}
 
 	// Bit values for emotes! Let the people choose!
-	if(!(jkplus_emotesEnabled.integer & (1 << emoteIndex)))
+	if(!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"This emote has been disabled by the server\n\"");
 		return;
@@ -305,7 +305,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	}
 
 	// If emotes are disabled, you can still exit an emote
-	if(jkplus_emotesEnabled.integer == 0 && !JKPlus_emoteIn(ent, -1))
+	if(jkcvar_emotesEnabled.integer == 0 && !JKPlus_emoteIn(ent, -1))
 	{
 		return;
 	}
@@ -408,7 +408,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	else
 	{
 		// If you are not allowed emote breaks, you cant do it while being in air / on player
-		if(!jkplus_emotesBreak.value && (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.groundEntityNum < MAX_CLIENTS))
+		if(!jkcvar_emotesBreak.value && (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.groundEntityNum < MAX_CLIENTS))
 		{
 			return;
 		}
@@ -420,7 +420,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 		}
 
 		// Server wants you to freeze while the emote plays
-		if(jkplus_emotesFreeze.integer && !emotes[emoteIndex].special)
+		if(jkcvar_emotesFreeze.integer && !emotes[emoteIndex].special)
 		{
 			ent->client->ps.forceHandExtend = HANDEXTEND_DODGE;
 			ent->client->ps.forceDodgeAnim = emotes[emoteIndex].startAnim;
@@ -448,12 +448,12 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 		|| ent->client->ps.duelInProgress
 		|| ent->client->ps.saberInFlight
 		|| ent->client->ps.weapon != WP_SABER
-		|| !jkplus_emotesEnabled.integer
+		|| !jkcvar_emotesEnabled.integer
 		|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
 		|| BG_SaberInSpecialAttack(ent->client->ps.legsAnim))
 		return;
 
-	if(!(jkplus_emotesEnabled.integer & EMOTE_HUG))
+	if(!(jkcvar_emotesEnabled.integer & EMOTE_HUG))
 	{
 		if ((ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND1
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND2
@@ -540,14 +540,14 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 		|| ent->client->ps.duelInProgress
 		|| ent->client->ps.saberInFlight
 		|| ent->client->ps.weapon != WP_SABER
-		|| jkplus_emotesEnabled.integer == 0
+		|| jkcvar_emotesEnabled.integer == 0
 		|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
 		|| BG_SaberInSpecialAttack(ent->client->ps.legsAnim))
 	{
 		return;
 	}
 
-	if (jkplus_emotesEnabled.integer != 2)
+	if (jkcvar_emotesEnabled.integer != 2)
 	{
 		if ((ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND1
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND2
@@ -638,12 +638,12 @@ void JKPlus_emoteDoPunch(gentity_t *ent)
 		|| ent->client->ps.saberInFlight
 		|| ent->client->ps.pm_type == PM_SPECTATOR
 		|| ent->client->ps.pm_type == PM_DEAD
-		|| jkplus_emotesEnabled.integer == 0)
+		|| jkcvar_emotesEnabled.integer == 0)
 	{
 		return;
 	}
 
-	if (jkplus_emotesEnabled.integer != 2)
+	if (jkcvar_emotesEnabled.integer != 2)
 	{
 		if ((ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND1
 			&& (ent->client->ps.legsAnim&~ANIM_TOGGLEBIT) != BOTH_STAND2
@@ -696,7 +696,7 @@ void JKPlus_emoteDoPunch(gentity_t *ent)
 			other->client->ps.saberMove = LS_NONE;
 			other->client->ps.saberBlocked = 0;
 			other->client->ps.saberBlocking = 0;
-			if (jkplus_emotesPunchDamage.integer) G_Damage(other, ent, ent, NULL, NULL, jkplus_emotesPunchDamage.integer, DAMAGE_NO_ARMOR, MOD_MELEE);
+			if (jkcvar_emotesPunchDamage.integer) G_Damage(other, ent, ent, NULL, NULL, jkcvar_emotesPunchDamage.integer, DAMAGE_NO_ARMOR, MOD_MELEE);
 		}
 	}
 }

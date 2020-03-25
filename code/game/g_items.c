@@ -2117,7 +2117,7 @@ void G_RunItem( gentity_t *ent ) {
 
 	if ( ent->s.pos.trType == TR_STATIONARY ) {
 		// check think function
-		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			G_RunThink( ent );
 		}
@@ -2145,7 +2145,7 @@ void G_RunItem( gentity_t *ent ) {
 	trap_LinkEntity( ent );	// FIXME: avoid this for stationary?
 
 	// check think function
-	if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 	{
 		G_RunThink( ent );
 	}

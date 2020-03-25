@@ -27,43 +27,43 @@ typedef struct { // Cvar table struct
 
 } cvarTable_t;
 
-vmCvar_t	jkplus_test1;
-vmCvar_t	jkplus_test2;
+vmCvar_t	jkcvar_test1;
+vmCvar_t	jkcvar_test2;
 
-vmCvar_t	jkplus_serverClosed;
-vmCvar_t	jkplus_serverClosedIP;
-vmCvar_t	jkplus_serverClosedBroadcast;
+vmCvar_t	jkcvar_serverClosed;
+vmCvar_t	jkcvar_serverClosedIP;
+vmCvar_t	jkcvar_serverClosedBroadcast;
 
-vmCvar_t	jkplus_allowBlackNames;
-vmCvar_t	jkplus_dropFlag;
-vmCvar_t	jkplus_dropFlagTime;
-vmCvar_t	jkplus_pauseGame;
-vmCvar_t	jkplus_pauseGameCenterPrint;
+vmCvar_t	jkcvar_allowBlackNames;
+vmCvar_t	jkcvar_dropFlag;
+vmCvar_t	jkcvar_dropFlagTime;
+vmCvar_t	jkcvar_pauseGame;
+vmCvar_t	jkcvar_pauseGameCenterPrint;
 
-vmCvar_t	jkplus_emotesBreak;
-vmCvar_t	jkplus_emotesFreeze;
-vmCvar_t	jkplus_emotesEnabled;
-vmCvar_t	jkplus_emotesPunchDamage;
+vmCvar_t	jkcvar_emotesBreak;
+vmCvar_t	jkcvar_emotesFreeze;
+vmCvar_t	jkcvar_emotesEnabled;
+vmCvar_t	jkcvar_emotesPunchDamage;
 
 static cvarTable_t	JKPlusCvarTable[] = {
 
-	{ &jkplus_test1,					"jk_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_test1,					"jk_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	
-	{ &jkplus_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 
-	{ &jkplus_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_dropFlagTime,				"jk_dropFlagTime",			"10",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"1",					CVAR_ARCHIVE,		0, qtrue },
 	
-	{ &jkplus_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkplus_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,		0, qtrue },
 
 };
 
@@ -113,14 +113,14 @@ void JKPlus_G_UpdateCvars(void)
 
 				if(cv->trackChange)
 				{
-					if (cv->vmCvar != &jkplus_pauseGame)
+					if (cv->vmCvar != &jkcvar_pauseGame)
 					{
 						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 					}
 				}
 
 				// Pause game
-				if (cv->vmCvar == &jkplus_pauseGame) 
+				if (cv->vmCvar == &jkcvar_pauseGame) 
 				{
 					int pause = cv->vmCvar->integer ? 1 : 0;
 					int num;
@@ -130,7 +130,7 @@ void JKPlus_G_UpdateCvars(void)
 						gentity_t *ent;
 						pauseGameStartTime = level.time;
 
-						if (jkplus_pauseGameCenterPrint.integer == 1)
+						if (jkcvar_pauseGameCenterPrint.integer == 1)
 						{
 							trap_SendServerCommand(-1, "cp \"Game paused by the server\n\"");
 						}
@@ -169,7 +169,7 @@ void JKPlus_G_UpdateCvars(void)
 								}
 							}
 
-							if (jkplus_pauseGameCenterPrint.integer == 1)
+							if (jkcvar_pauseGameCenterPrint.integer == 1)
 							{
 								trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_MsToString(pausedGameTime)));
 							}

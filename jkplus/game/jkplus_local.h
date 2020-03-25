@@ -60,23 +60,23 @@ Cvar registration
 =====================================================================
 */
 
-extern	vmCvar_t					jkplus_test1;
-extern	vmCvar_t					jkplus_test2;
+extern	vmCvar_t					jkcvar_test1;
+extern	vmCvar_t					jkcvar_test2;
 
-extern	vmCvar_t					jkplus_serverClosed;
-extern	vmCvar_t					jkplus_serverClosedIP;
-extern	vmCvar_t					jkplus_serverClosedBroadcast;
+extern	vmCvar_t					jkcvar_serverClosed;
+extern	vmCvar_t					jkcvar_serverClosedIP;
+extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
-extern	vmCvar_t					jkplus_allowBlackNames;
-extern	vmCvar_t					jkplus_dropFlag;
-extern	vmCvar_t					jkplus_dropFlagTime;
-extern	vmCvar_t					jkplus_pauseGame;
-extern	vmCvar_t					jkplus_pauseGameCenterPrint;
+extern	vmCvar_t					jkcvar_allowBlackNames;
+extern	vmCvar_t					jkcvar_dropFlag;
+extern	vmCvar_t					jkcvar_dropFlagTime;
+extern	vmCvar_t					jkcvar_pauseGame;
+extern	vmCvar_t					jkcvar_pauseGameCenterPrint;
 
-extern	vmCvar_t					jkplus_emotesBreak;
-extern	vmCvar_t					jkplus_emotesFreeze;
-extern	vmCvar_t					jkplus_emotesEnabled;
-extern	vmCvar_t					jkplus_emotesPunchDamage;
+extern	vmCvar_t					jkcvar_emotesBreak;
+extern	vmCvar_t					jkcvar_emotesFreeze;
+extern	vmCvar_t					jkcvar_emotesEnabled;
+extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
 /*
 =====================================================================

@@ -20,7 +20,7 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 	client = ent->client;
 	client->JKPlusTimeResidual += msec;
 
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 	{
 		return;
 	}

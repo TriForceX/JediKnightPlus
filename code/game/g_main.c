@@ -2034,7 +2034,7 @@ void CheckExitRules( void ) {
 		}
 	}
 
-	if ( g_timelimit.integer && !level.warmupTime && !jkplus_pauseGame.integer ) { // Tr!Force: [Pause] Don't allow
+	if ( g_timelimit.integer && !level.warmupTime && !jkcvar_pauseGame.integer ) { // Tr!Force: [Pause] Don't allow
 		if ( level.time - level.startTime >= g_timelimit.integer*60000 ) {
 //			trap_SendServerCommand( -1, "print \"Timelimit hit.\n\"");
 			trap_SendServerCommand( -1, va("print \"%s.\n\"",G_GetStripEdString("SVINGAME", "TIMELIMIT_HIT")));
@@ -2499,7 +2499,7 @@ Runs thinking code for this frame if necessary
 void G_RunThink (gentity_t *ent) {
 	float	thinktime;
 
-	if (jkplus_pauseGame.integer) // Tr!Force; [Pause] Don't allow
+	if (jkcvar_pauseGame.integer) // Tr!Force; [Pause] Don't allow
 	{
 		return;
 	}

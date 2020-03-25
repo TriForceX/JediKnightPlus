@@ -500,7 +500,7 @@ void Cmd_Kill_f( gentity_t *ent ) {
 	if (ent->health <= 0) {
 		return;
 	}
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow kill command
+	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow kill command
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"You can't kill yourself during pause mode\n\""));
 		return;
@@ -2122,7 +2122,7 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 		return;
 	}
 
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow toggle saber
+	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow toggle saber
 	{
 		return;
 	}

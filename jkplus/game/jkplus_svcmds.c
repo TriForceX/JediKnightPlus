@@ -45,7 +45,7 @@ Pause game command functions
 
 static void JKPlus_svCmd_pauseGame(void)
 {
-	if (jkplus_pauseGame.integer == 0)
+	if (jkcvar_pauseGame.integer == 0)
 	{
 		trap_Cvar_Set("jk_pauseGame", "1");
 	}

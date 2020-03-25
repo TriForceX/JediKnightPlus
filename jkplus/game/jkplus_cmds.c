@@ -14,13 +14,13 @@ Drop flag function
 =====================================================================
 */
 
-static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
+static void jkcvar_dropFlag(gentity_t *ent, int clientNum)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
 	vec3_t		angles, velocity, org, offset, mins, maxs;
 	trace_t		tr;
 
-	if (jkplus_dropFlag.integer != 1)
+	if (jkcvar_dropFlag.integer != 1)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"Drop flag is disabled by the server\n\"");
 		return;
@@ -67,7 +67,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
-	ent->client->JKPlusDropFlagTimer = jkplus_dropFlagTime.integer;
+	ent->client->JKPlusDropFlagTimer = jkcvar_dropFlagTime.integer;
 	LaunchItem(item, org, velocity);
 }
 
@@ -145,13 +145,13 @@ void JKPlus_ClientCommand(int clientNum)
 	}
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
-		JKPlus_dropFlag(ent, clientNum);
+		jkcvar_dropFlag(ent, clientNum);
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
-		char *message = jkplus_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";
+		char *message = jkcvar_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";
 		
-		trap_SendServerCommand(ent - g_entities, va("print \"%s and the value is %i. Test 2 is %i\n\"", message, jkplus_test1.integer, jkplus_test2.integer));
+		trap_SendServerCommand(ent - g_entities, va("print \"%s and the value is %i. Test 2 is %i\n\"", message, jkcvar_test1.integer, jkcvar_test2.integer));
 	}
 
 	// Launch original client command function

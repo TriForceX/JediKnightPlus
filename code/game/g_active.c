@@ -1065,7 +1065,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 	if (ent && ent->client && (ent->client->ps.eFlags & EF_INVULNERABLE))
 	{
-		if (ent->client->invulnerableTimer <= level.time && !jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (ent->client->invulnerableTimer <= level.time && !jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			ent->client->ps.eFlags &= ~EF_INVULNERABLE;
 		}
@@ -1104,7 +1104,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	client->ps.speed = g_speed.value;
 	client->ps.basespeed = g_speed.value;
 
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow viewangles also
+	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow viewangles also
 	{
 		client->ps.pm_type = PM_SPINTERMISSION;
 	}
@@ -1464,7 +1464,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		ForceSeeing(ent);
 		break;
 	case GENCMD_USE_SEEKER:
-		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SEEKER)) &&
 				G_ItemUsable(&ent->client->ps, HI_SEEKER))
@@ -1476,7 +1476,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		}
 		break;
 	case GENCMD_USE_FIELD:
-		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SHIELD)) &&
 				G_ItemUsable(&ent->client->ps, HI_SHIELD))
@@ -1527,7 +1527,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		}
 		break;
 	case GENCMD_USE_SENTRY:
-		if (!jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 		{
 			if ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SENTRY_GUN)) &&
 				G_ItemUsable(&ent->client->ps, HI_SENTRY_GUN))
@@ -1712,7 +1712,7 @@ void G_CheckClientTimeouts ( gentity_t *ent )
 		return;
 	}
 
-	if (jkplus_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 	{
 		return;
 	}
@@ -1748,14 +1748,14 @@ void ClientThink( int clientNum ) {
 	// phone jack if they don't get any for a while
 	ent->client->lastCmdTime = level.time;
 
-	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkplus_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
+	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
 		ClientThink_real( ent );
 	}
 }
 
 
 void G_RunClient( gentity_t *ent ) {
-	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkplus_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
+	if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer) { // Tr!Force: [Pause] Don't allow
 		return;
 	}
 	ent->client->pers.cmd.serverTime = level.time;
