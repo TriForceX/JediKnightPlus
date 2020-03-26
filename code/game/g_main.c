@@ -693,7 +693,7 @@ G_InitGame
 
 ============
 */
-void G_InitGame( int levelTime, int randomSeed, int restart ) {
+void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Force: BaseJk2 Init game function
 	int					i;
 
 	B_InitAlloc(); //make sure everything is clean

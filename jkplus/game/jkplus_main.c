@@ -35,6 +35,7 @@ vmCvar_t	jkcvar_serverClosedIP;
 vmCvar_t	jkcvar_serverClosedBroadcast;
 
 vmCvar_t	jkcvar_allowBlackNames;
+vmCvar_t	jkcvar_allowMultiDuel;
 vmCvar_t	jkcvar_fixVoteMap;
 vmCvar_t	jkcvar_itemForcePhysics;
 vmCvar_t	jkcvar_duelStartHealth;
@@ -60,6 +61,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_fixVoteMap,				"jk_fixVoteMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,		0, qtrue },
@@ -246,4 +248,20 @@ void JKPlus_G_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_G_UpdateCvars();
+}
+
+/*
+=====================================================================
+Main initialization functions
+=====================================================================
+*/
+void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
+	int					i;
+
+	G_Printf(S_COLOR_CYAN "------ JKPlus Initialization ------\n");
+
+	// Launch original init game function
+	BaseJK2_G_InitGame();
+
+	// More stuff ...
 }

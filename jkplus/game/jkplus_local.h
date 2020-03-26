@@ -58,6 +58,7 @@ Global definitions
 #define ClientSpawn					JKPlus_ClientSpawn
 #define G_Damage					JKPlus_G_Damage
 #define ConsoleCommand				JKPlus_ConsoleCommand
+#define G_InitGame					JKPlus_G_InitGame
 
 /*
 =====================================================================
@@ -73,6 +74,7 @@ extern	vmCvar_t					jkcvar_serverClosedIP;
 extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
+extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_fixVoteMap;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;

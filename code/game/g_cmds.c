@@ -2284,17 +2284,21 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 		return;
 	}
 
-	//New: Don't let a player duel if he just did and hasn't waited 10 seconds yet (note: If someone challenges him, his duel timer will reset so he can accept)
-	if (ent->client->ps.fd.privateDuelTime > level.time)
+	// Tr!Force: [Duel] Allow multiple duels
+	if (jkcvar_allowMultiDuel.integer != 1)
 	{
-		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_JUSTDID")) );
-		return;
-	}
+		//New: Don't let a player duel if he just did and hasn't waited 10 seconds yet (note: If someone challenges him, his duel timer will reset so he can accept)
+		if (ent->client->ps.fd.privateDuelTime > level.time)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_JUSTDID")));
+			return;
+		}
 
-	if (G_OtherPlayersDueling())
-	{
-		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_BUSY")) );
-		return;
+		if (G_OtherPlayersDueling())
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_BUSY")));
+			return;
+		}
 	}
 
 	AngleVectors( ent->client->ps.viewangles, forward, NULL, NULL );
