@@ -16,6 +16,8 @@ Client connect function
 
 char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 {
+	gentity_t	*ent;
+	gclient_t	*client;
 	char		userinfo[MAX_INFO_STRING];
 
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
@@ -35,6 +37,31 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 			if (jkcvar_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", IPonly));
 			return va("%s", jkcvar_serverClosed.string);
 		}
+	}
+
+	// Connect message
+	if (firstTime && !(ent->r.svFlags & SVF_BOT) && !isBot)
+	{
+		vmCvar_t	clientTemp;
+		char		*clientIP;
+		int			endTime, waitTime;
+
+		endTime = 5;
+		waitTime = endTime + 1;
+		clientIP = Info_ValueForKey(userinfo, "ip");
+
+		trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
+		trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", waitTime, clientIP, waitTime));
+
+		client->JKPlusConnectTime = clientTemp.integer;
+
+		if (client->JKPlusConnectTime < endTime) {
+			return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
+		}
+
+		client->JKPlusConnectTime = 0;
+		trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
+		G_LogPrintf("ClientWelcome: %s is ready to join\n", clientIP);
 	}
 
 	// Launch original client connect function

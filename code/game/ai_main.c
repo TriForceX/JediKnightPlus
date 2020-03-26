@@ -7033,7 +7033,7 @@ int BotAISetup( int restart ) {
 	//rww - new bot cvars..
 	trap_Cvar_Register(&bot_forcepowers, "bot_forcepowers", "1", CVAR_CHEAT);
 	trap_Cvar_Register(&bot_forgimmick, "bot_forgimmick", "0", CVAR_CHEAT);
-	trap_Cvar_Register(&bot_honorableduelacceptance, "bot_honorableduelacceptance", "0", CVAR_CHEAT);
+	trap_Cvar_Register(&bot_honorableduelacceptance, "bot_honorableduelacceptance", "0", 0); // Tr!Force [Bot] Allow bot duel challenges
 #ifdef _DEBUG
 	trap_Cvar_Register(&bot_nogoals, "bot_nogoals", "0", CVAR_CHEAT);
 	trap_Cvar_Register(&bot_debugmessages, "bot_debugmessages", "0", CVAR_CHEAT);

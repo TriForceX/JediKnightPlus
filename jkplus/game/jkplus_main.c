@@ -36,6 +36,8 @@ vmCvar_t	jkcvar_serverClosedBroadcast;
 
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowMultiDuel;
+vmCvar_t	jkcvar_allowDuelChat;
+
 vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteGameplay;
 vmCvar_t	jkcvar_itemForcePhysics;
@@ -48,9 +50,9 @@ vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_pauseGame;
 vmCvar_t	jkcvar_pauseGameCenterPrint;
 
+vmCvar_t	jkcvar_emotesEnabled;
 vmCvar_t	jkcvar_emotesBreak;
 vmCvar_t	jkcvar_emotesFreeze;
-vmCvar_t	jkcvar_emotesEnabled;
 vmCvar_t	jkcvar_emotesPunchDamage;
 
 static cvarTable_t	JKPlusCvarTable[] = {
@@ -64,6 +66,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",					CVAR_ARCHIVE,		0, qtrue },
+
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,		0, qtrue },
@@ -74,11 +78,11 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"1",					CVAR_ARCHIVE,		0, qtrue },
-	
+	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"0",					CVAR_ARCHIVE,		0, qtrue },
+
+	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,		0, qtrue },
 
 };

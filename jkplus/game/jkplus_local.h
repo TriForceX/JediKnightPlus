@@ -75,6 +75,8 @@ extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
+extern	vmCvar_t					jkcvar_allowDuelChat;
+
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteGameplay;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
@@ -87,9 +89,9 @@ extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_pauseGame;
 extern	vmCvar_t					jkcvar_pauseGameCenterPrint;
 
+extern	vmCvar_t					jkcvar_emotesEnabled;
 extern	vmCvar_t					jkcvar_emotesBreak;
 extern	vmCvar_t					jkcvar_emotesFreeze;
-extern	vmCvar_t					jkcvar_emotesEnabled;
 extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
 /*

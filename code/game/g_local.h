@@ -429,9 +429,10 @@ struct gclient_s {
 
 	qboolean	fjDidJump;
 
-	vec3_t		JKPlusPauseSavedView; // Tr!Force: [Pause] Player saved view angles
-	int			JKPlusTimeResidual; // Tr!Force: Player time residual
-	int			JKPlusDropFlagTimer; // Tr!Force: [DropFlag] Player timer
+	vec3_t		JKPlusPauseSavedView;	// Tr!Force: [Pause] Player saved view angles
+	int			JKPlusTimeResidual;		// Tr!Force: Player time residual
+	int			JKPlusDropFlagTimer;	// Tr!Force: [DropFlag] Player timer
+	int			JKPlusConnectTime;		// Tr!Force: Client connect timer
 };
 
 

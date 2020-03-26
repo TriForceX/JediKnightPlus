@@ -1044,12 +1044,15 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 	if ( mode == SAY_TEAM  && !OnSameTeam(ent, other) ) {
 		return;
 	}
-	// no chatting to players in tournements
-	if ( (g_gametype.integer == GT_TOURNAMENT )
-		&& other->client->sess.sessionTeam == TEAM_FREE
-		&& ent->client->sess.sessionTeam != TEAM_FREE ) {
-		//Hmm, maybe some option to do so if allowed?  Or at least in developer mode...
-		return;
+	// Tr!Force: [Duel] Allow duel chat
+	if (jkcvar_allowDuelChat.integer == 0) {
+		// no chatting to players in tournements
+		if ((g_gametype.integer == GT_TOURNAMENT)
+			&& other->client->sess.sessionTeam == TEAM_FREE
+			&& ent->client->sess.sessionTeam != TEAM_FREE) {
+			//Hmm, maybe some option to do so if allowed?  Or at least in developer mode...
+			return;
+		}
 	}
 
 	trap_SendServerCommand( other-g_entities, va("%s \"%s%c%c%s\"", 
