@@ -75,6 +75,8 @@ extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_fixVoteMap;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
+extern	vmCvar_t					jkcvar_duelStartHealth;
+extern	vmCvar_t					jkcvar_duelStartShield;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;

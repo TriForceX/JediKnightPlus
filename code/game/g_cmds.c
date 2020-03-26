@@ -2335,6 +2335,13 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
+			// Tr!Force: [Duel] Default start health and shield
+			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartShield.integer != 0) 
+			{
+				ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
+				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartHealth.integer;
+			}
+
 			//Holster their sabers now, until the duel starts (then they'll get auto-turned on to look cool)
 
 			if (!ent->client->ps.saberHolstered)

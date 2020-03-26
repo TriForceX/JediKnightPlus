@@ -37,6 +37,8 @@ vmCvar_t	jkcvar_serverClosedBroadcast;
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_fixVoteMap;
 vmCvar_t	jkcvar_itemForcePhysics;
+vmCvar_t	jkcvar_duelStartHealth;
+vmCvar_t	jkcvar_duelStartShield;
 
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
@@ -60,6 +62,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"1",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_fixVoteMap,				"jk_fixVoteMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_duelStartShield,			"jk_duelStartShield",		"0",					CVAR_ARCHIVE,		0, qtrue },
 
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
