@@ -3015,8 +3015,8 @@ dflags		these flags are used to control how T_Damage works
 ============
 */
 
-void BaseJK2_G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
-			   vec3_t dir, vec3_t point, int damage, int dflags, int mod ) { // Tr!Force: [BaseJK2] Game damage function
+void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
+			   vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
 	gclient_t	*client;
 	int			take;
 	int			asave;
@@ -3026,6 +3026,19 @@ void BaseJK2_G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker
 	float		famt = 0;
 	float		hamt = 0;
 	float		shieldAbsorbed = 0;
+	// Tr!Force: [DamagePlums] Set variables
+	int			takeHealth;
+	int			oldHealth = targ->health;
+	int			oldArmor = 0;
+
+	// Tr!Force: [Emotes] If valid attacker, check his flags for attacking
+	if (attacker - g_entities >= 0 && attacker - g_entities < MAX_CLIENTS)
+	{
+		if (JKPlus_emoteIn(attacker, -1))
+		{
+			return;
+		}
+	}
 
 	if ( !targ ) return;
 
@@ -3532,9 +3545,30 @@ void BaseJK2_G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker
 			targ->pain (targ, attacker, take);
 		}
 
-		G_LogWeaponDamage(attacker->s.number, mod, take);
+		//G_LogWeaponDamage(attacker->s.number, mod, take); // Tr!Force: [DamagePlums] Log before
 	}
 
+	// Tr!Force: [DamagePlums] Trigger damage score plums
+	if (client && attacker->client)
+	{
+		// All damage types must sum up to the total health of players
+		if (oldHealth <= 0)
+			return;
+		else if (targ->health <= 0)
+			takeHealth = oldHealth;
+		else
+			takeHealth = oldHealth - targ->health;
+
+		take = takeHealth + oldArmor - client->ps.stats[STAT_ARMOR];
+
+		if (take == 0)
+			return;
+
+		if (jkcvar_damagePlums.integer)
+			ScorePlum(attacker, client->ps.origin, take);
+
+		G_LogWeaponDamage(attacker->s.number, mod, take);
+	}
 }
 
 

@@ -47,6 +47,7 @@ vmCvar_t	jkcvar_duelEndStats;
 
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
+vmCvar_t	jkcvar_damagePlums;
 vmCvar_t	jkcvar_pauseGame;
 vmCvar_t	jkcvar_pauseGameCenterPrint;
 
@@ -77,6 +78,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"0",					CVAR_ARCHIVE,		0, qtrue },
 

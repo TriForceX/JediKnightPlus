@@ -6,7 +6,7 @@ https://triforce.dev/projects/jkplus
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.7.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.8.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -40,10 +40,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Chat censor filters
 - [x] Allow black color in player names
 - [ ] In-game chat commands (Teleports, info, etc...)
-- [ ] Welcome message and news messages showing constantly on the server
+- [ ] Welcome message on client begin
+- [ ] Server news messages per each certain amount of time
 - [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
 - [ ] Custom player private chat rooms
 - [ ] Enabled Jedi Crystal and Beer Bacta items
+- [x] Show damage plums on hits
 - [ ] NPC spawn command like in Single Player
 - [ ] Improved cheat commands
 - [ ] Protected server clan tag (With clan password)
@@ -51,11 +53,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Teleport commands (Save & load position, player to position, etc...)
 - [ ] Anti lamer feature (Players can't kill during chat)
 - [ ] Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
-- [ ] Items get affected by force physics (Push, pull, etc...)
-- [ ] Enable multiple private duels on FFA game type
-- [ ] Multiple private duel modes (Full force, no force, guns, etc...)
-- [ ] Custom duel stats, health and armor
-- [ ] Enable invisible private duels
+- [x] Items get affected by force physics (Push, pull, etc...)
+- [x] Enable multiple duel challenge
+- [ ] Custom duel challenge modes (Full force, no force, guns, etc...)
+- [x] Custom duel stats (Health, shield and hits)
+- [x] Custom duel challenge start health and shield
+- [ ] Enable invisible private duel challenge
 - [ ] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
 - [ ] Alternative dimensions (Weapon or saber only, custom gameplay, etc...)

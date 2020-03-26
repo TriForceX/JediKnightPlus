@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.8.0
+- Allow force physics on items
+- Allow multiple duel challenge
+- Allow chat for dueling players
+- Display duel challenge end stats
+- Added duel chalenge start health/shield
+- Added hit damage plums
+- Removed old custom server launcher
+
 ## 0.7.5
 - Fix for gametype not supported maps on callvote
 - Disabled emotes on CTF & CTY

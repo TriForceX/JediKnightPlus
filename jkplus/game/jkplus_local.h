@@ -11,8 +11,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_LONGNAME			"Jedi Knight Plus"
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
-#define JKPLUS_MINOR 			"7"
-#define JKPLUS_PATCH  			"5"
+#define JKPLUS_MINOR 			"8"
+#define JKPLUS_PATCH  			"0"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*
@@ -56,7 +56,6 @@ Global definitions
 #define ClientConnect				JKPlus_ClientConnect
 #define ClientBegin					JKPlus_ClientBegin
 #define ClientSpawn					JKPlus_ClientSpawn
-#define G_Damage					JKPlus_G_Damage
 #define ConsoleCommand				JKPlus_ConsoleCommand
 #define G_InitGame					JKPlus_G_InitGame
 
@@ -86,6 +85,7 @@ extern	vmCvar_t					jkcvar_duelEndStats;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
+extern	vmCvar_t					jkcvar_damagePlums;
 extern	vmCvar_t					jkcvar_pauseGame;
 extern	vmCvar_t					jkcvar_pauseGameCenterPrint;
 
