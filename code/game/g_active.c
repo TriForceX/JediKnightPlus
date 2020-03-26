@@ -1179,12 +1179,28 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
+			// Tr!Force: [Duel] Display duel end stats
+			if (jkcvar_duelEndStats.integer == 1)
+			{
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " won with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " shield and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits\n\"",
+					ent->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
+			}
+
 			//Winner gets full health.. providing he's still alive
 			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
 			{
-				if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
+				// Tr!Force: [Duel] Default start health and shield
+				if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartShield.integer != 0)
 				{
-					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+					ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
+					ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartShield.integer;
+				}
+				else
+				{
+					if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
+					{
+						ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+					}
 				}
 
 				if (g_spawnInvulnerability.integer)

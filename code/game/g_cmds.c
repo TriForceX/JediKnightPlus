@@ -1683,12 +1683,20 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	// Tr!Force: [GamePlay] Allow only valid gameplay versions
 	if (!Q_stricmp(arg1, "gameplay"))
 	{
-		if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
-			trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version.\n\"");
+		if (jkcvar_voteGameplay.integer == 0)
+		{
+			trap_SendServerCommand(ent - g_entities, "print \"Gameplay vote is disabled.\n\"");
 			return;
 		}
-		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+		else 
+		{
+			if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
+				trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version.\n\"");
+				return;
+			}
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+		}
 	}
 	else
 	{
@@ -2343,7 +2351,10 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartShield.integer != 0) 
 			{
 				ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
-				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartHealth.integer;
+				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartShield.integer;
+
+				challenged->client->ps.stats[STAT_HEALTH] = challenged->health = jkcvar_duelStartHealth.integer;
+				challenged->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartShield.integer;
 			}
 
 			//Holster their sabers now, until the duel starts (then they'll get auto-turned on to look cool)

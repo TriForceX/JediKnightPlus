@@ -172,7 +172,7 @@ qboolean G_DoesMapSupportGametype(const char *mapname, int gametype)
 	}
 
 	// Tr!Force: [Vote] Fix for gametype not supported maps
-	if (jkcvar_fixVoteMap.integer != 0)
+	if (jkcvar_voteCustomMap.integer != 0)
 	{
 		fileHandle_t	f;
 		trap_FS_FOpenFile(va("maps/%s.bsp", mapname), &f, FS_READ);
