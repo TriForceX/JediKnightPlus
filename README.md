@@ -32,7 +32,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Server Side
 **Description:** General server features _(No client plugin required)_
 
-- [x] Gameplay changer between 1.02, 1.03 and 1.04 in a single command
+- [x] Gameplay changer between 1.02, 1.03 and 1.04 in the current match
 - [ ] Improved bots AI (Artificial intelligence)
 - [ ] Configurable weapon features (Damage, ammo speed, firing rate, etc...)
 - [ ] Player account system (Tracks kills, deaths, etc...)
@@ -47,8 +47,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enabled Jedi Crystal and Beer Bacta items
 - [x] Show damage plums on hits
 - [ ] NPC spawn command like in Single Player
-- [ ] Improved cheat commands
-- [ ] Protected server clan tag (With clan password)
+- [ ] New and improved cheat commands
+- [ ] Clan tag protection for clan members
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
 - [ ] Teleport commands (Save & load position, player to position, etc...)
 - [ ] Anti lamer feature (Players can't kill during chat)
@@ -59,7 +59,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom duel stats (Health, shield and hits)
 - [x] Custom duel challenge start health and shield
 - [ ] Enable invisible private duel challenge
-- [ ] Enable chat in duel game type
+- [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
 - [ ] Alternative dimensions (Weapon or saber only, custom gameplay, etc...)
 - [ ] Custom poll call votes
@@ -74,7 +74,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom user roles (Administrator, moderator, builder, etc...)
 - [ ] In-game player statistics (Banned, kicked, reports, scripters, etc...)
 - [ ] Helpful commands for players (Teleport, weapons, force powers, etc...)
-- [ ] Punish commands for bad players (Slay, silence, sleep, rename, lock, etc...)
+- [ ] Punish commands for players (Slay, silence, sleep, rename, lock, etc...)
 - [ ] Ability to control bots actions (Fake chat, movements, emotes, etc...)
 - [ ] Spawn unlimited items and weapons
 - [ ] Private administrator chat room
@@ -91,8 +91,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Over 15 custom entities for maps (Including entities from Single Player)
 - [ ] Add models (GLM or MD3 format)
 - [ ] Add effects (EFX format)
-- [ ] Add any entity based on class name and its parameters
-- [ ] Add pre-made useful utilities (NPC spawner, print consoles, assister, etc...)
+- [ ] Add any entity based on classname and parameters
+- [ ] Add pre-made useful utilities (NPC spawner, message consoles, assister, etc...)
 - [ ] Change any shader or texture
 - [ ] Modify entities properties
 - [ ] Delete entities
@@ -132,7 +132,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom flag transparency (For CTF game type)
 - [ ] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
-- [ ] Custom camera options (Range, distance, etc...)
+- [ ] Unlockd some client commands and cvars (Camera range, distance, etc...)
 - [ ] Enable first person lightsaber
 - [ ] Enable first person turret chair view
 - [ ] Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
