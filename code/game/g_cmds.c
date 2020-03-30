@@ -1684,7 +1684,7 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 	} 
 	// Tr!Force: [GamePlay] Allow only valid gameplay versions
-	if (!Q_stricmp(arg1, "gameplay"))
+	else if (!Q_stricmp(arg1, "gameplay"))
 	{
 		if (jkcvar_voteGameplay.integer == 0)
 		{
