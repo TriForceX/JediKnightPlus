@@ -205,7 +205,7 @@ Convert milliseconds to string
 =====================================================================
 */
 
-const char *JKPlus_MsToString(const int ms) 
+const char *JKPlus_msToString(const int ms) 
 {
 	int	   			fsecs = ms / 1000;
 	int				wholemins = fsecs / 60;

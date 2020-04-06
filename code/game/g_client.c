@@ -890,7 +890,7 @@ static void ForceClientSkin( gclient_t *client, char *model, const char *skin ) 
 ClientCheckName
 ============
 */
-/*static*/ void BaseJK2_ClientCleanName(const char *in, char *out, int outSize) { // Tr!Force: BaseJK2 client clean name function
+/*static*/ void BaseJK2_ClientCleanName(const char *in, char *out, int outSize) { // Tr!Force: [BaseJK2] client clean name function
 	int		len, colorlessLen;
 	char	ch;
 	char	*p;

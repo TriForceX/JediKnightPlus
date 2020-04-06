@@ -107,16 +107,13 @@ Common / new functions
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
-// jkplus_client.c
+// jk_client.c
 void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
 
-// jkplus_svcmds.c
-const char	*JKPlus_MsToString(const int ms);
-
-// jkplus_active.c
+// jk_active.c
 void		JKPlus_ClientThink_real(gentity_t *ent);
 
-// jkplus_emotes.c
+// jk_emotes.c
 int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
 int			JKPlus_emoteIn(gentity_t *ent, int type);
 void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
@@ -124,7 +121,8 @@ void		JKPlus_emoteDoHug(gentity_t *ent);
 void		JKPlus_emoteDoKiss(gentity_t *ent);
 void		JKPlus_emoteDoPunch(gentity_t *ent);
 
-// jkplus_common.c
+// jk_common.c
+const char	*JKPlus_msToString(const int ms);
 int			JKPlus_compareCmd(char *cmd, char *required);
 void		JKPlus_stringEscape(char *in, char *out);
 void		JKPlus_cleanString(char *in, char *out);

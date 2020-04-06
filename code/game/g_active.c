@@ -673,7 +673,7 @@ ClientTimerActions
 Actions that happen once a second
 ==================
 */
-void BaseJK2_ClientTimerActions( gentity_t *ent, int msec ) { // Tr!Force: BaseJK2 client timer actions function
+void BaseJK2_ClientTimerActions( gentity_t *ent, int msec ) { // Tr!Force: [BaseJK2] client timer actions function
 	gclient_t	*client;
 
 	client = ent->client;

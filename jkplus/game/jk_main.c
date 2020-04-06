@@ -195,11 +195,11 @@ void JKPlus_G_UpdateCvars(void)
 
 							if (jkcvar_pauseGameCenterPrint.integer == 1)
 							{
-								trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_MsToString(pausedGameTime)));
+								trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime)));
 							}
 							else
 							{
-								trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_MsToString(pausedGameTime)));
+								trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime)));
 							}
 
 							level.startTime += pausedGameTime;

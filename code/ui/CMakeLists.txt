@@ -1,4 +1,4 @@
-﻿# Make sure the user is not executing this script directly
+# Make sure the user is not executing this script directly
 if(NOT InMVSDK)
 	message(FATAL_ERROR "Use the top-level cmake script!")
 endif(NOT InMVSDK)
@@ -10,7 +10,7 @@ set(MVUIHEADERS
 	"${SRCDir}/ui/keycodes.h"
 	"${SRCDir}/ui/ui_force.h"
 	"${SRCDir}/ui/ui_local.h"
-	"${JKPlusDir}/ui/jkplus_local.h" # Tr!Force: [CMake] JKPlus headers
+	"${JKPlusDir}/ui/jk_local.h" # Tr!Force: [CMake] JKPlus headers
 	"${SRCDir}/ui/ui_public.h"
 	"${SRCDir}/ui/ui_shared.h"
 	"${SRCDir}/ui/ui_multiversion.h"
@@ -23,7 +23,7 @@ set(MVUIHEADERS
 
 set(MVUISOURCES
 	"${SRCDir}/ui/ui_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKPlusDir}/ui/jkplus_main.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKPlusDir}/ui/jk_main.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/ui/ui_atoms.c"
 	"${SRCDir}/ui/ui_force.c"
 	"${SRCDir}/ui/ui_gameinfo.c"
