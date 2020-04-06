@@ -431,8 +431,9 @@ struct gclient_s {
 
 	vec3_t		JKPlusPauseSavedView;	// Tr!Force: [Pause] Player saved view angles
 	int			JKPlusTimeResidual;		// Tr!Force: Player time residual
-	int			JKPlusDropFlagTimer;	// Tr!Force: [DropFlag] Player timer
-	int			JKPlusConnectTime;		// Tr!Force: Client connect timer
+	int			JKPlusDropFlagTime;		// Tr!Force: [DropFlag] Player time
+	int			JKPlusConnectTime;		// Tr!Force: Client connect time
+	int			JKPlusChatTime;			// Tr!Force: Chat protect time
 };
 
 

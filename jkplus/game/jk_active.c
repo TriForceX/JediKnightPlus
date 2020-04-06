@@ -16,7 +16,6 @@ Client timer actions function
 
 void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 	gclient_t	*client;
-
 	client = ent->client;
 	client->JKPlusTimeResidual += msec;
 
@@ -33,17 +32,36 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 	{
 		client->JKPlusTimeResidual -= 1000;
 
-		// DropFlag check
-		if (client->JKPlusDropFlagTimer)
+		// Drop flag check
+		if (client->JKPlusDropFlagTime)
 		{
-			if (client->JKPlusDropFlagTimer > 0)
+			if (client->JKPlusDropFlagTime > 0)
 			{
-				client->JKPlusDropFlagTimer--;
+				client->JKPlusDropFlagTime--;
 			}
 			else
 			{
-				client->JKPlusDropFlagTimer = 0;
+				client->JKPlusDropFlagTime = 0;
 			}
+		}
+
+		// Chat protect check
+		if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
+		{
+			if (client->JKPlusChatTime >= jkcvar_chatProtectTime.integer)
+			{
+				client->JKPlusChatTime = jkcvar_chatProtectTime.integer;
+				ent->flags |= FL_GODMODE;
+			}
+			else
+			{
+				client->JKPlusChatTime++;
+			}
+		}
+		else
+		{
+			if (client->JKPlusChatTime != 0) client->JKPlusChatTime = 0;
+			if (ent->flags & FL_GODMODE) ent->flags &= ~FL_GODMODE;
 		}
 	}
 }

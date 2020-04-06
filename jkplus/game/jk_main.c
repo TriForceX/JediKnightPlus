@@ -38,6 +38,8 @@ vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowMultiDuel;
 vmCvar_t	jkcvar_allowDuelChat;
 vmCvar_t	jkcvar_noDuplicatedNames;
+vmCvar_t	jkcvar_chatProtect;
+vmCvar_t	jkcvar_chatProtectTime;
 
 vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteGameplay;
@@ -70,6 +72,8 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",					CVAR_ARCHIVE,		0, qtrue },
 
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",					CVAR_ARCHIVE,		0, qtrue },

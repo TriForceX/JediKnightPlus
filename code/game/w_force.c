@@ -631,6 +631,12 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
+	// Tr!Force: [ChatProtect] Check if chat protect is enabled
+	if (jkcvar_chatProtect.integer && (other->client->ps.eFlags & EF_TALK) && (other->client->JKPlusChatTime >= jkcvar_chatProtectTime.integer))
+	{
+		return 0;
+	}
+
 	return 1;
 }
 

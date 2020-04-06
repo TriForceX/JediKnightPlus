@@ -2091,7 +2091,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// Tr!Force: [DropFlag] Client dropped flag timer reset
-	self->client->JKPlusDropFlagTimer = 0;
+	self->client->JKPlusDropFlagTime = 0;
 
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,

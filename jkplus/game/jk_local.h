@@ -79,6 +79,8 @@ extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
 extern	vmCvar_t					jkcvar_noDuplicatedNames;
+extern	vmCvar_t					jkcvar_chatProtect;
+extern	vmCvar_t					jkcvar_chatProtectTime;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteGameplay;

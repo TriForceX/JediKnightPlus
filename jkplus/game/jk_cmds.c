@@ -39,9 +39,9 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 		return;
 	}
 
-	if (ent->client->JKPlusDropFlagTimer > 0)
+	if (ent->client->JKPlusDropFlagTime > 0)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKPlusDropFlagTimer));
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKPlusDropFlagTime));
 		return;
 	}
 	
@@ -67,7 +67,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
-	ent->client->JKPlusDropFlagTimer = jkcvar_dropFlagTime.integer;
+	ent->client->JKPlusDropFlagTime = jkcvar_dropFlagTime.integer;
 	LaunchItem(item, org, velocity);
 }
 
