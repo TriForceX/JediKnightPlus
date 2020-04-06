@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.8.1
+- Prevent duplicated player names
+- Fixed wrong callvote condition
+
 ## 0.8.0
 - Allow force physics on items
 - Allow multiple duel challenge

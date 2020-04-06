@@ -6,7 +6,7 @@ https://triforce.dev/projects/jkplus
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.8.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.8.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -39,6 +39,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Ranking system based on player skills
 - [ ] Chat censor filters
 - [x] Allow black color in player names
+- [x] Prevent duplicated player names
 - [ ] In-game chat commands (Teleports, info, etc...)
 - [ ] Welcome message on client begin
 - [ ] Server news messages per each certain amount of time

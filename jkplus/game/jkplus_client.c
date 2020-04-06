@@ -116,3 +116,143 @@ void JKPlus_ClientSpawn(gentity_t *ent)
 	
 	// Stuff here...
 }
+
+/*
+=====================================================================
+Client clean name function
+=====================================================================
+*/
+void JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) {
+	int		len, colorlessLen;
+	char	ch;
+	char	*p;
+	int		spaces;
+
+	// Custom variables for name checks
+	char	 outBuffer[MAX_STRING_CHARS];
+	char	 tempBuffer[MAX_STRING_CHARS];
+	char	 multiBuffer[MAX_NETNAME];
+	int		 i, count, num;
+
+	memset(outBuffer, 0, sizeof(outBuffer));
+	memset(multiBuffer, 0, sizeof(multiBuffer));
+
+	//save room for trailing null byte
+	outSize--;
+
+	len = 0;
+	colorlessLen = 0;
+	p = out;
+	*p = 0;
+	spaces = 0;
+
+	while (1) {
+		ch = *in++;
+		if (!ch) {
+			break;
+		}
+
+		// ASCII character filtering (Don't use in JKA)
+		if ((int)ch < 0)
+		{
+			continue;
+		}
+
+		// don't allow leading spaces
+		if (!*p && ch == ' ') {
+			continue;
+		}
+
+		// check colors
+		if (ch == Q_COLOR_ESCAPE) {
+			// solo trailing carat is not a color prefix
+			if (!*in) {
+				break;
+			}
+
+			// don't allow black in a name, period (except the server allow it)
+			if (ColorIndex(*in) == 0 && jkcvar_allowBlackNames.integer == 0) {
+				in++;
+				continue;
+			}
+
+			// make sure room in dest for both chars
+			if (len > outSize - 2) {
+				break;
+			}
+
+			*out++ = ch;
+			*out++ = *in++;
+			len += 2;
+			continue;
+		}
+
+		// don't allow too many consecutive spaces
+		if (ch == ' ') {
+			spaces++;
+			if (spaces > 3) {
+				continue;
+			}
+		}
+		else {
+			spaces = 0;
+		}
+
+		if (len > outSize - 1) {
+			break;
+		}
+
+		*out++ = ch;
+		colorlessLen++;
+		len++;
+	}
+	*out = 0;
+
+	// Check the total name length
+	if (strlen(p) > MAX_NAME_CHECK)
+	{
+		memset(multiBuffer, 0, sizeof(multiBuffer));
+		for (i = 0; i < MAX_NAME_CHECK; i++)
+		{
+			multiBuffer[i] = p[i];
+		}
+		strcpy(p, multiBuffer);
+	}
+
+	// Check the name length without colours
+	count = 0;
+	for (i = 0; i < strlen(p); i++)
+	{
+		outBuffer[count] = p[i];
+		count++;
+		memset(tempBuffer, 0, sizeof(tempBuffer));
+		JKPlus_sanitizeString(tempBuffer, outBuffer, sizeof(tempBuffer));
+
+		if (strlen(tempBuffer) >= MAX_NAME_PRINT)
+		{
+			break;
+		}
+	}
+
+	// Check duplicated player names
+	if (jkcvar_noDuplicatedNames.integer)
+	{
+		num = JKPlus_duplicatedNameCheck(ent, outBuffer);
+
+		if (num)
+		{
+			memset(multiBuffer, 0, sizeof(multiBuffer));
+			strcpy(multiBuffer, va("%s" S_COLOR_WHITE "[%i]", outBuffer, num));
+			Q_strncpyz(outBuffer, multiBuffer, sizeof(outBuffer));
+		}
+	}
+
+	// don't allow empty names
+	if (*p == 0 || colorlessLen == 0) {
+		Q_strncpyz(p, "Padawan", outSize);
+	}
+	else // Give the player his current name
+	{
+		Q_strncpyz(p, outBuffer, outSize);
+	}
+}

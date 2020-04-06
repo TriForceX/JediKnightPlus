@@ -890,7 +890,7 @@ static void ForceClientSkin( gclient_t *client, char *model, const char *skin ) 
 ClientCheckName
 ============
 */
-static void ClientCleanName( const char *in, char *out, int outSize ) {
+/*static*/ void BaseJK2_ClientCleanName(const char *in, char *out, int outSize) { // Tr!Force: BaseJK2 client clean name function
 	int		len, colorlessLen;
 	char	ch;
 	char	*p;
@@ -924,7 +924,7 @@ static void ClientCleanName( const char *in, char *out, int outSize ) {
 			}
 
 			// don't allow black in a name, period
-			if (ColorIndex(*in) == 0 && jkcvar_allowBlackNames.integer == 0) { // Tr!Force: [Black] Allow black color in names
+			if( ColorIndex(*in) == 0 ) {
 				in++;
 				continue;
 			}

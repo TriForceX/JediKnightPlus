@@ -318,7 +318,7 @@ typedef struct {
 } mvclientSession_t;
 
 //
-#define MAX_NETNAME			36
+#define MAX_NETNAME			64 // Tr!Force: [Names] Increase max name length
 #define	MAX_VOTE_COUNT		3
 
 // client data that stays across multiple respawns, but is cleared

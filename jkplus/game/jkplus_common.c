@@ -95,6 +95,84 @@ void JKPlus_cleanString(char *in, char *out)
 
 /*
 =====================================================================
+Sanitize strings with color codes
+=====================================================================
+*/
+char *JKPlus_sanitizeString(char *dest, char *source, int destSize)
+{
+	char	string[MAX_TOKEN_CHARS];
+	char	clean[MAX_TOKEN_CHARS];
+	int		i, n, length;
+
+	memset(string, 0, sizeof(string));
+	memset(clean, 0, sizeof(clean));
+
+	Q_strncpyz(string, source, sizeof(string));
+
+	length = strlen(string);
+
+	n = 0;
+
+	for (i = 0; i < length; i++)
+	{
+		if (string[i] != '^')
+		{
+			clean[n] = tolower(string[i]);
+			n++;
+		}
+		else if (string[i] == '^')
+		{
+			i++;
+		}
+	}
+
+	Q_strncpyz(dest, clean, destSize);
+	return dest;
+}
+
+/*
+=====================================================================
+Check for duplicated player names
+=====================================================================
+*/
+int JKPlus_duplicatedNameCheck(gentity_t *ent, char *clientName)
+{
+	gentity_t	*other;
+	int			i, j, num;
+	char		cleanEnt[MAX_NETNAME];
+	char		cleanOther[MAX_NETNAME];
+	char		newName[MAX_NETNAME];
+
+	Q_strncpyz(newName, clientName, sizeof(newName));
+
+	num = 0;
+	for (i = 0; i < MAX_CLIENTS; i++)
+	{
+		for (j = 0; j < MAX_CLIENTS; j++)
+		{
+			other = &g_entities[j];
+			JKPlus_sanitizeString(cleanEnt, newName, sizeof(cleanEnt));
+
+			if (other && other->client && other->inuse && other->client->pers.connected == CON_CONNECTED)
+			{
+				JKPlus_sanitizeString(cleanOther, other->client->pers.netname, sizeof(cleanOther));
+
+				if (other - g_entities != ent - g_entities)
+				{
+					if (!Q_stricmp(cleanOther, cleanEnt))
+					{
+						num++;
+						Q_strncpyz(newName, va("%s[%i]", clientName, num), sizeof(newName));
+					}
+				}
+			}
+		}
+	}
+	return num;
+}
+
+/*
+=====================================================================
 Drops a player from the server with the given message
 =====================================================================
 */

@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
 #define JKPLUS_MINOR 			"8"
-#define JKPLUS_PATCH  			"0"
+#define JKPLUS_PATCH  			"1"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*
@@ -42,6 +42,8 @@ Global definitions
 */
 
 #define	MAX_IP						22
+#define	MAX_NAME_PRINT				28 // 24
+#define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
 
 #define	ITEM_RESPAWN_ARMOR			20
 #define	ITEM_RESPAWN_HEALTH			30
@@ -58,6 +60,7 @@ Global definitions
 #define ClientSpawn					JKPlus_ClientSpawn
 #define ConsoleCommand				JKPlus_ConsoleCommand
 #define G_InitGame					JKPlus_G_InitGame
+#define ClientCleanName(a, b, c)	JKPlus_ClientCleanName(ent, a, b, c)
 
 /*
 =====================================================================
@@ -75,6 +78,7 @@ extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
+extern	vmCvar_t					jkcvar_noDuplicatedNames;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteGameplay;
@@ -102,6 +106,9 @@ Common / new functions
 
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
+
+// jkplus_client.c
+void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
 
 // jkplus_svcmds.c
 const char	*JKPlus_MsToString(const int ms);
