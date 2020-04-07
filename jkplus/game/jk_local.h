@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
 #define JKPLUS_MINOR 			"8"
-#define JKPLUS_PATCH  			"1"
+#define JKPLUS_PATCH  			"2"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*
@@ -71,6 +71,8 @@ Cvar registration
 extern	vmCvar_t					jkcvar_test1;
 extern	vmCvar_t					jkcvar_test2;
 
+extern	vmCvar_t					jkcvar_serverMotd;
+extern	vmCvar_t					jkcvar_serverMotdTime;
 extern	vmCvar_t					jkcvar_serverClosed;
 extern	vmCvar_t					jkcvar_serverClosedIP;
 extern	vmCvar_t					jkcvar_serverClosedBroadcast;
@@ -126,7 +128,7 @@ void		JKPlus_emoteDoPunch(gentity_t *ent);
 // jk_common.c
 const char	*JKPlus_msToString(const int ms);
 int			JKPlus_compareCmd(char *cmd, char *required);
-void		JKPlus_stringEscape(char *in, char *out);
+void		JKPlus_stringEscape(char *in, char *out, int outSize);
 void		JKPlus_cleanString(char *in, char *out);
 void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);

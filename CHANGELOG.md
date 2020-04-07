@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.8.2
+- Added chat protect
+- Added welcome message
+
 ## 0.8.1
 - Prevent duplicated player names
 - Fixed wrong callvote condition

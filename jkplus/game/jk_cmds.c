@@ -147,6 +147,13 @@ void JKPlus_ClientCommand(int clientNum)
 	{
 		JKPlus_dropFlag(ent, clientNum);
 	}
+	else if (Q_stricmp(cmd, "showmotd") == 0)
+	{
+		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		{
+			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
+		}
+	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
 		char *message = jkcvar_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";

@@ -434,6 +434,7 @@ struct gclient_s {
 	int			JKPlusDropFlagTime;		// Tr!Force: [DropFlag] Player time
 	int			JKPlusConnectTime;		// Tr!Force: Client connect time
 	int			JKPlusChatTime;			// Tr!Force: Chat protect time
+	int			JKPlusMotdTime;			// Tr!Force: Server motd time
 };
 
 

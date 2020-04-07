@@ -16,6 +16,8 @@ Client timer actions function
 
 void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 	gclient_t	*client;
+	char		serverMotd[MAX_STRING_CHARS];
+
 	client = ent->client;
 	client->JKPlusTimeResidual += msec;
 
@@ -62,6 +64,14 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 		{
 			if (client->JKPlusChatTime != 0) client->JKPlusChatTime = 0;
 			if (ent->flags & FL_GODMODE) ent->flags &= ~FL_GODMODE;
+		}
+
+		// Show server motd
+		if (client->JKPlusMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		{
+			JKPlus_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
+			trap_SendServerCommand(ent->client->ps.clientNum, va("cp \"%s\nTime limit: %d\"", serverMotd, ent->client->JKPlusMotdTime));
+			client->JKPlusMotdTime--;
 		}
 	}
 }

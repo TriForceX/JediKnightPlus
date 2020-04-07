@@ -30,6 +30,8 @@ typedef struct { // Cvar table struct
 vmCvar_t	jkcvar_test1;
 vmCvar_t	jkcvar_test2;
 
+vmCvar_t	jkcvar_serverMotd;
+vmCvar_t	jkcvar_serverMotdTime;
 vmCvar_t	jkcvar_serverClosed;
 vmCvar_t	jkcvar_serverClosedIP;
 vmCvar_t	jkcvar_serverClosedBroadcast;
@@ -63,7 +65,9 @@ static cvarTable_t	JKPlusCvarTable[] = {
 
 	{ &jkcvar_test1,					"jk_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
-	
+
+	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
 	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },

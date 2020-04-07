@@ -32,35 +32,27 @@ Cleans the given string from newlines and such
 =====================================================================
 */
 
-void JKPlus_stringEscape(char *in, char *out)
+void JKPlus_stringEscape(char *in, char *out, int outSize)
 {
 	char	ch, ch1;
-	int		len = 0;
-	int		Size = 1023;
+	int len = 0;
+	outSize--;
 
 	while (1)
 	{
 		ch = *in++;
 		ch1 = *in;
-
 		if (ch == '\\' && ch1 == 'n')
 		{
 			in++;
 			*out++ = '\n';
 		}
-		else
-		{
-			*out++ = ch;
-		}
-
-		if (len > Size - 1)
-		{
+		else *out++ = ch;
+		if (len > outSize - 1) {
 			break;
 		}
-
 		len++;
 	}
-
 	return;
 }
 
