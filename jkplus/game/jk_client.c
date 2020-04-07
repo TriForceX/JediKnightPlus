@@ -16,56 +16,58 @@ Client connect function
 
 char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 {
-	gentity_t	*ent;
-	gclient_t	*client;
 	char		userinfo[MAX_INFO_STRING];
+	char		*baseMessage;
 
+	// Set userinfo
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
-	// Closed server
-	if (strcmp(jkcvar_serverClosed.string, "0") != 0 && !isBot && firstTime)
-	{
-		char		IPonly[MAX_IP];
-		int			num = 0;
-
-		Q_strncpyz(IPonly, Info_ValueForKey(userinfo, "ip"), sizeof(IPonly));
-		while (++num < strlen(IPonly)) if (IPonly[num] == ':') IPonly[num] = 0;
-
-		if (Q_stricmp(jkcvar_serverClosedIP.string, IPonly))
-		{
-			G_Printf("Server closed for: %s\n", IPonly);
-			if (jkcvar_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", IPonly));
-			return va("%s", jkcvar_serverClosed.string);
-		}
-	}
-
-	// Connect message
-	if (firstTime && !(ent->r.svFlags & SVF_BOT) && !isBot)
-	{
-		vmCvar_t	clientTemp;
-		char		*clientIP;
-		int			endTime, waitTime;
-
-		endTime = 5;
-		waitTime = endTime + 1;
-		clientIP = Info_ValueForKey(userinfo, "ip");
-
-		trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
-		trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", waitTime, clientIP, waitTime));
-
-		client->JKPlusConnectTime = clientTemp.integer;
-
-		if (client->JKPlusConnectTime < endTime) {
-			return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
-		}
-
-		client->JKPlusConnectTime = 0;
-		trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
-		G_LogPrintf("ClientWelcome: %s is ready to join\n", clientIP);
-	}
-
 	// Launch original client connect function
-	return BaseJK2_ClientConnect(clientNum, firstTime, isBot);
+	baseMessage = BaseJK2_ClientConnect(clientNum, firstTime, isBot);
+
+	// First time connect and allowed connect
+	if (baseMessage == NULL && firstTime)
+	{
+		if (!isBot)
+		{
+			vmCvar_t	clientTemp;
+			char		*clientIP;
+			int			clientEnd, clientWait, num = 0;
+
+			clientIP = Info_ValueForKey(userinfo, "ip");
+			while (++num < strlen(clientIP)) if (clientIP[num] == ':') clientIP[num] = 0;
+
+			// Closed server
+			if (strcmp(jkcvar_serverClosed.string, "0") != 0)
+			{
+				if (Q_stricmp(jkcvar_serverClosedIP.string, clientIP))
+				{
+					G_Printf("Server closed for: %s\n", clientIP);
+					if (jkcvar_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", clientIP));
+					return va("%s", jkcvar_serverClosed.string);
+				}
+			}
+
+			// Connect message
+			clientEnd = 5;
+			clientWait = clientEnd + 1;
+			
+			trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
+			trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", clientWait, clientIP, clientWait));
+
+			g_entities[clientNum].client->JKPlusConnectTime = clientTemp.integer;
+
+			if (g_entities[clientNum].client->JKPlusConnectTime < clientEnd) {
+				return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
+			}
+
+			g_entities[clientNum].client->JKPlusConnectTime = 0;
+			trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
+			G_LogPrintf("ClientMessage: %s is ready to join\n", clientIP);
+		}
+	}
+
+	return baseMessage;
 }
 
 /*
