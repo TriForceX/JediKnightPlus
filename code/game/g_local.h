@@ -309,6 +309,8 @@ typedef struct {
 	qboolean	setForce;			// set to true once player is given the chance to set force powers
 	int			updateUITime;		// only update userinfo for FP/SL if < level.time
 	qboolean	teamLeader;			// true when this client is a team leader
+
+	qboolean	JKPlusMotdSeen;		// Tr!Force: [Motd] Server motd already seen
 } clientSession_t;
 
 // JK2MV
@@ -434,7 +436,7 @@ struct gclient_s {
 	int			JKPlusDropFlagTime;		// Tr!Force: [DropFlag] Player time
 	int			JKPlusConnectTime;		// Tr!Force: Client connect time
 	int			JKPlusChatTime;			// Tr!Force: Chat protect time
-	int			JKPlusMotdTime;			// Tr!Force: Server motd time
+	int			JKPlusMotdTime;			// Tr!Force: [Motd] Server motd time
 };
 
 
