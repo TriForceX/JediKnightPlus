@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.8.3
+- Server motd only shows once
+- Item physics restores original position
+
 ## 0.8.2
 - Added chat protect
 - Added welcome message

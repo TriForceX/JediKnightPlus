@@ -247,6 +247,9 @@ struct gentity_s {
 	int			damageRedirectTo; //this entity number
 
 	gitem_t		*item;			// for bonus items
+
+	vec3_t		JKPlusItemFirstOrigin; // Tr!Force: [Items] Reset original item position
+	qboolean    JKPlusItemSpawnedBefore; // Tr!Force: [Items] Reset original item position
 };
 
 #define DAMAGEREDIRECT_HEAD		1

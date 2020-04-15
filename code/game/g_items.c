@@ -1333,6 +1333,15 @@ void RespawnItem( gentity_t *ent ) {
 			;
 	}
 
+	// Tr!Force: [Items] Reset original item position
+	if (jkcvar_itemForcePhysics.integer == 1) 
+	{
+		VectorCopy(ent->JKPlusItemFirstOrigin, ent->s.origin);
+		VectorCopy(ent->JKPlusItemFirstOrigin, ent->s.pos.trBase);
+		VectorCopy(ent->JKPlusItemFirstOrigin, ent->s.apos.trBase);
+		VectorCopy(ent->JKPlusItemFirstOrigin, ent->r.currentOrigin);
+	}
+
 	ent->r.contents = CONTENTS_TRIGGER;
 	//ent->s.eFlags &= ~EF_NODRAW;
 	ent->s.eFlags &= ~(EF_NODRAW | EF_ITEMPLACEHOLDER);
@@ -1882,6 +1891,13 @@ void FinishSpawningItem( gentity_t *ent ) {
 	}
 	*/
 
+	// Tr!Force: [Items] Reset original item position
+	if (jkcvar_itemForcePhysics.integer == 1 && !ent->JKPlusItemSpawnedBefore)
+	{
+		ent->JKPlusItemSpawnedBefore = qtrue;
+		VectorCopy(tr.endpos, ent->JKPlusItemFirstOrigin);
+	}
+
 	trap_LinkEntity (ent);
 }
 
@@ -2026,6 +2042,11 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 
 	if ( G_ItemDisabled(item) )
 		return;
+
+	if (jkcvar_itemForcePhysics.integer == 1 && ent->JKPlusItemSpawnedBefore)
+	{
+		VectorCopy(ent->JKPlusItemFirstOrigin, ent->s.origin);
+	}
 
 	ent->item = item;
 	// some movers spawn on the second frame, so delay item

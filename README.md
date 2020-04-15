@@ -2,11 +2,11 @@
 
 https://triforce.dev/projects/jkplus
 
-> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true adding new features as well porting some from other mods and games.
+> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal is to reunite the most useful and custom stuff to the game environment, specially make players ideas come true adding new features as well porting some from other mods and games.
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.8.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.8.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -57,8 +57,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Items get affected by force physics (Push, pull, etc...)
 - [x] Enable multiple duel challenge
 - [ ] Custom duel challenge modes (Full force, no force, guns, etc...)
-- [x] Custom duel stats (Health, shield and hits)
-- [x] Custom duel challenge start health and shield
+- [x] Custom duel stats (Health, armor and hits)
+- [x] Custom duel challenge start health and armor
 - [ ] Enable invisible private duel challenge
 - [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)

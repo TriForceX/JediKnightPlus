@@ -47,7 +47,7 @@ vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteGameplay;
 vmCvar_t	jkcvar_itemForcePhysics;
 vmCvar_t	jkcvar_duelStartHealth;
-vmCvar_t	jkcvar_duelStartShield;
+vmCvar_t	jkcvar_duelStartArmor;
 vmCvar_t	jkcvar_duelEndStats;
 
 vmCvar_t	jkcvar_dropFlag;
@@ -63,39 +63,39 @@ vmCvar_t	jkcvar_emotesPunchDamage;
 
 static cvarTable_t	JKPlusCvarTable[] = {
 
-	{ &jkcvar_test1,					"jk_test1",					"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_test2,					"jk_test2",					"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_test1,					"jk_test1",					"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,				0, qtrue },
 
-	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",	CVAR_ARCHIVE,				0, qtrue },
 
-	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",	CVAR_ARCHIVE,				0, qtrue },
 
-	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_duelStartShield,			"jk_duelStartShield",		"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_duelEndStats,				"jk_duelEndStats",			"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",	CVAR_ARCHIVE | CVAR_LATCH,	0, qtrue },
+	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_duelStartArmor,			"jk_duelStartShield",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_duelEndStats,				"jk_duelEndStats",			"0",	CVAR_ARCHIVE,				0, qtrue },
 
-	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"0",	CVAR_ARCHIVE,				0, qtrue },
 
-	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,		0, qtrue },
-	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,		0, qtrue },
+	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",	CVAR_ARCHIVE,				0, qtrue },
 
 };
 

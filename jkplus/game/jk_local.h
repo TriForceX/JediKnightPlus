@@ -88,7 +88,7 @@ extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteGameplay;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
-extern	vmCvar_t					jkcvar_duelStartShield;
+extern	vmCvar_t					jkcvar_duelStartArmor;
 extern	vmCvar_t					jkcvar_duelEndStats;
 
 extern	vmCvar_t					jkcvar_dropFlag;
