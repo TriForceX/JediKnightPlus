@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
 #define JKPLUS_MINOR 			"8"
-#define JKPLUS_PATCH  			"3"
+#define JKPLUS_PATCH  			"4"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*

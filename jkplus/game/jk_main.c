@@ -83,7 +83,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",	CVAR_ARCHIVE,				0, qtrue },
 	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",	CVAR_ARCHIVE | CVAR_LATCH,	0, qtrue },
 	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",	CVAR_ARCHIVE,				0, qtrue },
-	{ &jkcvar_duelStartArmor,			"jk_duelStartShield",		"0",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_duelStartArmor,			"jk_duelStartArmor",		"0",	CVAR_ARCHIVE,				0, qtrue },
 	{ &jkcvar_duelEndStats,				"jk_duelEndStats",			"0",	CVAR_ARCHIVE,				0, qtrue },
 
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",	CVAR_ARCHIVE,				0, qtrue },

@@ -78,7 +78,8 @@ Client begin function
 
 void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 {
-	gentity_t *ent = &g_entities[clientNum];
+	gentity_t	*ent = &g_entities[clientNum];
+	gclient_t	*client;
 
 	// Check and modify allowed teams
 	if (g_gametype.integer < GT_TEAM && (ent->client->sess.sessionTeam == TEAM_RED || ent->client->sess.sessionTeam == TEAM_BLUE))
@@ -96,6 +97,9 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Launch original client begin function
 	BaseJK2_ClientBegin(clientNum, allowTeamReset);
 
+	// Set and get user info
+	client = level.clients + clientNum;
+
 	// Show a welcome message
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
@@ -107,8 +111,8 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 		// Server motd time
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKPlusMotdSeen)
 		{
-			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
-			ent->client->sess.JKPlusMotdSeen = qtrue;
+			client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
+			client->sess.JKPlusMotdSeen = qtrue;
 		}
 	}
 }
