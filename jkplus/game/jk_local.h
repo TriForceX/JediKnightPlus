@@ -83,6 +83,7 @@ extern	vmCvar_t					jkcvar_allowDuelChat;
 extern	vmCvar_t					jkcvar_noDuplicatedNames;
 extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
+extern	vmCvar_t					jkcvar_playerIgnore;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteGameplay;

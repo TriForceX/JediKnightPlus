@@ -154,6 +154,48 @@ void JKPlus_ClientCommand(int clientNum)
 			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
+	else if (Q_stricmp(cmd, "ignore") == 0)
+	{
+		char    arg1[MAX_TOKEN_CHARS];
+		char    arg2[MAX_TOKEN_CHARS];
+
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
+		Com_sprintf(arg2, sizeof(arg2), "%s", arg2);
+
+		if (!jkcvar_playerIgnore.integer) 
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
+			return;
+		}
+
+		if (trap_Argc() < 3)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \""
+				"^5[^7 Ignore ^5]^7\n"
+				"^7You can ignore a player chat or duel challenge\n"
+				"^7You can use this feature using the following command: ^2/ignore <option> <user>\n"
+				"^5----------\n"
+				"^7Options:      ^7Users:\n"
+				"^3chat          name\n"
+				"^3duel          client number\n"
+				"^3              all\n"
+				"^7\""));
+			return;
+		}
+		else 
+		{
+			if (!(!Q_stricmp(arg1, "chat") || !Q_stricmp(arg1, "duel")))
+			{
+				trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is not valid\n\"", arg1));
+				return;
+			}
+
+			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7and ^3%s\n\"", arg1, arg2));
+		}
+	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
 		char *message = jkcvar_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";

@@ -42,6 +42,7 @@ vmCvar_t	jkcvar_allowDuelChat;
 vmCvar_t	jkcvar_noDuplicatedNames;
 vmCvar_t	jkcvar_chatProtect;
 vmCvar_t	jkcvar_chatProtectTime;
+vmCvar_t	jkcvar_playerIgnore;
 
 vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteGameplay;
@@ -78,6 +79,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",	CVAR_ARCHIVE,				0, qtrue },
 	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",	CVAR_ARCHIVE,				0, qtrue },
 	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",	CVAR_ARCHIVE,				0, qtrue },
+	{ &jkcvar_playerIgnore,				"jk_playerIgnore",			"0",	CVAR_ARCHIVE,				0, qtrue },
 
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",	CVAR_ARCHIVE,				0, qtrue },
 	{ &jkcvar_voteGameplay,				"jk_voteGameplay",			"0",	CVAR_ARCHIVE,				0, qtrue },
