@@ -2347,7 +2347,12 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 		// Tr!Force: [Ignore] Apply duel ignore
 		if (JKPlus_IsClientIgnored("duel", challenged->s.number, ent->s.number))
 		{
-			trap_SendServerCommand(ent - g_entities, "cp \"This player does't want to be challenged\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
+			return;
+		}
+		if (JKPlus_IsClientIgnored("duel", ent->s.number, challenged->s.number))
+		{
+			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
 			return;
 		}
 

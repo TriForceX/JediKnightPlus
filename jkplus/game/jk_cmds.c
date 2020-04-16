@@ -254,13 +254,15 @@ void JKPlus_ClientCommand(int clientNum)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Ignore ^5]^7\n"
-				"^7You can ignore a player chat or duel challenge\n"
+				"^7Ignore a player chat or duel challenge\n"
 				"^7You can use this feature using the following command: ^2/ignore <option> <user>\n"
 				"^5----------\n"
-				"^7Options:      ^7Users:\n"
-				"^3chat          name\n"
-				"^3duel          client number\n"
-				"^3              all\n"
+				"^7Options:\n"
+				"^3chat\n"
+				"^3duel\n"
+				"^5----------\n"
+				"^2Note 1: ^7No need to use full name or color name, you can use just a part of it\n"
+				"^2Note 2: ^7Use this command again to undo the changes\n"
 				"^7\""));
 			return;
 		}
