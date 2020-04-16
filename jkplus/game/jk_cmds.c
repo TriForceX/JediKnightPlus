@@ -73,10 +73,85 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 
 /*
 =====================================================================
+Instructs all chat to be ignored by the given
+=====================================================================
+*/
+void JKPlus_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore)
+{
+	if (ignorer == ignored)
+	{
+		return;
+	}
+	if (g_entities[ignored].client->pers.connected != CON_CONNECTED)
+	{
+		return;
+	}
+	if (ignore)
+	{
+		if (!Q_stricmp(option, "chat")) {
+			g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
+		}
+		else if (!Q_stricmp(option, "duel")) {
+			g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
+		}
+	}
+	else
+	{
+		if (!Q_stricmp(option, "chat")) {
+			g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+		}
+		else if (!Q_stricmp(option, "duel")) {
+			g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+		}
+	}
+}
+
+/*
+=====================================================================
+Checks to see if the given client is being ignored by a specific client
+=====================================================================
+*/
+qboolean JKPlus_IsClientIgnored(char *option, int ignorer, int ignored)
+{
+	if (!Q_stricmp(option, "chat")) {
+		if (g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
+		{
+			return qtrue;
+		}
+	}
+	else if (!Q_stricmp(option, "duel")) {
+		if (g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
+		{
+			return qtrue;
+		}
+	}
+	return qfalse;
+}
+
+/*
+=====================================================================
+Clears any possible ignore flags that were set and not reset
+=====================================================================
+*/
+void JKPlus_RemoveFromAllIgnoreLists(char *option, int ignorer)
+{
+	int i;
+
+	for (i = 0; i < level.maxclients; i++) {
+		if (!Q_stricmp(option, "chat")) {
+			g_entities[i].client->sess.JKPlusIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+		}
+		else if (!Q_stricmp(option, "duel")) {
+			g_entities[i].client->sess.JKPlusIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+		}
+	}
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */
-
 void JKPlus_ClientCommand(int clientNum)
 {
 	gentity_t *ent = &g_entities[clientNum];
@@ -156,6 +231,10 @@ void JKPlus_ClientCommand(int clientNum)
 	}
 	else if (Q_stricmp(cmd, "ignore") == 0)
 	{
+		qboolean ignore;
+		int		ignored = -1;
+		char	*option;
+		char	name[MAX_STRING_CHARS];
 		char    arg1[MAX_TOKEN_CHARS];
 		char    arg2[MAX_TOKEN_CHARS];
 
@@ -192,8 +271,51 @@ void JKPlus_ClientCommand(int clientNum)
 				trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is not valid\n\"", arg1));
 				return;
 			}
+			else 
+			{
+				ignored = JKPlus_ClientNumberFromArg(arg2);
 
-			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7and ^3%s\n\"", arg1, arg2));
+				if (ignored == -1)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored == -2)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"There are more names that contains ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored >= MAX_CLIENTS || ignored < 0)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored == ent->client->ps.clientNum)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\"", arg2));
+					return;
+				}
+				else if (!g_entities[ignored].inuse)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
+					return;
+				}
+				else
+				{
+					ignore = JKPlus_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+
+					JKPlus_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
+
+					if (ignore)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring ^3%s ^7%ss now\n\"", g_entities[ignored].client->pers.netname, arg1));
+					}
+					else
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring %ss from ^3%s\n\"", arg1, g_entities[ignored].client->pers.netname));
+					}
+				}
+			}
 		}
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)

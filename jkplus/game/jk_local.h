@@ -112,6 +112,9 @@ Common / new functions
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
+// jk_cmds.c
+qboolean	JKPlus_IsClientIgnored(char *option, int ignorer, int ignored);
+
 // jk_client.c
 void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
 
@@ -133,3 +136,4 @@ void		JKPlus_stringEscape(char *in, char *out, int outSize);
 void		JKPlus_cleanString(char *in, char *out);
 void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
+int			JKPlus_ClientNumberFromArg(char* name);

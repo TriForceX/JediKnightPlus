@@ -1045,7 +1045,8 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 		return;
 	}
 	// Tr!Force: [Duel] Allow duel chat
-	if (jkcvar_allowDuelChat.integer == 0) {
+	if (jkcvar_allowDuelChat.integer == 0) 
+	{
 		// no chatting to players in tournements
 		if ((g_gametype.integer == GT_TOURNAMENT)
 			&& other->client->sess.sessionTeam == TEAM_FREE
@@ -1053,6 +1054,12 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 			//Hmm, maybe some option to do so if allowed?  Or at least in developer mode...
 			return;
 		}
+	}
+
+	// Tr!Force: [Ignore] Apply chat ignore
+	if (JKPlus_IsClientIgnored("chat", other->s.number, ent->s.number))
+	{
+		return;
 	}
 
 	trap_SendServerCommand( other-g_entities, va("%s \"%s%c%c%s\"", 
@@ -2334,6 +2341,13 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 
 		if (g_gametype.integer >= GT_TEAM && OnSameTeam(ent, challenged))
 		{
+			return;
+		}
+
+		// Tr!Force: [Ignore] Apply duel ignore
+		if (JKPlus_IsClientIgnored("duel", challenged->s.number, ent->s.number))
+		{
+			trap_SendServerCommand(ent - g_entities, "cp \"This player does't want to be challenged\n\"");
 			return;
 		}
 
