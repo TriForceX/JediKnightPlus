@@ -13,7 +13,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Drop flag function
 =====================================================================
 */
-
 static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
@@ -149,6 +148,277 @@ void JKPlus_RemoveFromAllIgnoreLists(char *option, int ignorer)
 
 /*
 =====================================================================
+Custom callvote function
+=====================================================================
+*/
+void JKPlus_CallVote(gentity_t *ent) 
+{
+	int		i;
+	char	arg1[MAX_STRING_TOKENS];
+	char	arg2[MAX_STRING_TOKENS];
+	const	char *gameNames[] = {
+		"Free For All",
+		"Holocron FFA",
+		"Jedi Master",
+		"Duel",
+		"Single Player",
+		"Team FFA",
+		"N/A",
+		"Capture the Flag",
+		"Capture the Ysalamiri"
+	};
+
+	if (!g_allowVote.integer) {
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOVOTE")));
+		return;
+	}
+
+	if (level.voteTime) {
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEINPROGRESS")));
+		return;
+	}
+	if (ent->client->pers.voteCount >= MAX_VOTE_COUNT) {
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "MAXVOTES")));
+		return;
+	}
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) {
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOSPECVOTE")));
+		return;
+	}
+
+	// make sure it is a valid command to vote on
+	trap_Argv(1, arg1, sizeof(arg1));
+	trap_Argv(2, arg2, sizeof(arg2));
+
+	if( strchr( arg1, ';' ) || strchr( arg2, ';' ) || strchr( arg1, '\n' ) || strchr( arg2, '\n' ) ) {
+		trap_SendServerCommand(ent - g_entities, "print \"Invalid vote string\n\"");
+		return;
+	}
+
+	if ( !Q_stricmp( arg1, "map_restart" ) ) {
+	} else if ( !Q_stricmp( arg1, "nextmap" ) ) {
+	} else if ( !Q_stricmp( arg1, "map" ) ) {
+	} else if ( !Q_stricmp( arg1, "g_gametype" ) ) {
+	} else if ( !Q_stricmp( arg1, "kick" ) ) {
+	} else if ( !Q_stricmp( arg1, "clientkick" ) ) {
+	} else if ( !Q_stricmp( arg1, "g_doWarmup" ) ) {
+	} else if ( !Q_stricmp( arg1, "timelimit" ) ) {
+	} else if ( !Q_stricmp( arg1, "fraglimit" ) ) {
+	} else if ( !Q_stricmp( arg1, "gameplay" ) ) {
+	} else if ( !Q_stricmp( arg1, "poll" ) ) {
+	} else {
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"^5[^7 Call Vote ^5]^7\n"
+			"^7You can perform a call vote within the other players to change some server options\n"
+			"^7You can do it using the following command: ^2/callvote <option> <value>\n"
+			"^5----------\n"
+			"^7Option list:\n"
+			"^3map_restart\n"
+			"^3nextmap\n"
+			"^3map <mapname>\n"
+			"^3g_gametype <number>\n"
+			"^3kick <player name>\n"
+			"^3clientkick <client number>\n"
+			"^3g_doWarmup\n"
+			"^3timelimit <time>\n"
+			"^3fraglimit <frags>\n"
+			"^3gameplay <version>\n"
+			"^3poll <question>\n"
+			"^5----------\n"
+			"^2Note: ^7Some options may be disabled by the server\n"
+			"^7\""));
+		return;
+	}
+
+	// if there is still a vote to be executed
+	if (level.voteExecuteTime) {
+		level.voteExecuteTime = 0;
+		trap_SendConsoleCommand(EXEC_APPEND, va("%s\n", level.voteString));
+	}
+
+	// special case for g_gametype, check for bad values
+	if (!Q_stricmp(arg1, "g_gametype"))
+	{
+		i = atoi(arg2);
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_G_GAMETYPE))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		if (i == GT_SINGLE_PLAYER || i < GT_FFA || i >= GT_MAX_GAME_TYPE) {
+			trap_SendServerCommand(ent - g_entities, "print \"Invalid gametype\n\"");
+			return;
+		}
+
+		level.votingGametype = qtrue;
+		level.votingGametypeTo = i;
+
+		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %d", arg1, i);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s %s", arg1, gameNames[i]);
+	}
+	else if (!Q_stricmp(arg1, "map"))
+	{
+		// special case for map changes, we want to reset the nextmap setting
+		// this allows a player to change maps, but not upset the map rotation
+		char	s[MAX_STRING_CHARS];
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_MAP))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		if (!G_DoesMapSupportGametype(arg2, trap_Cvar_VariableIntegerValue("g_gametype")))
+		{
+			//trap_SendServerCommand( ent-g_entities, "print \"You can't vote for this map, it isn't supported by the current gametype.\n\"" );
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOVOTE_MAPNOTSUPPORTEDBYGAME")));
+			return;
+		}
+
+		trap_Cvar_VariableStringBuffer("nextmap", s, sizeof(s));
+		if (*s) {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s; set nextmap \"%s\"", arg1, arg2, s);
+		}
+		else {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
+		}
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+	}
+	else if (!Q_stricmp(arg1, "clientkick"))
+	{
+		int n = atoi(arg2);
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_CLIENTKICK))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		if (n < 0 || n >= MAX_CLIENTS)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"invalid client number %d\n\"", n));
+			return;
+		}
+
+		if (g_entities[n].client->pers.connected == CON_DISCONNECTED)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"there is no client with the client number %d\n\"", n));
+			return;
+		}
+
+		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "kick %s", g_entities[n].client->pers.netname);
+	}
+	else if (!Q_stricmp(arg1, "kick"))
+	{
+		int clientid = G_ClientNumberFromName(arg2);
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_KICK))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		if (clientid == -1)
+		{
+			clientid = G_ClientNumberFromStrippedName(arg2);
+
+			if (clientid == -1)
+			{
+				trap_SendServerCommand(ent - g_entities, va("print \"there is no client named '%s' currently on the server\n\"", arg2));
+				return;
+			}
+		}
+
+		Com_sprintf(level.voteString, sizeof(level.voteString), "clientkick %d", clientid);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "kick %s", g_entities[clientid].client->pers.netname);
+	}
+	else if (!Q_stricmp(arg1, "nextmap"))
+	{
+		char	s[MAX_STRING_CHARS];
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_NEXTMAP))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		trap_Cvar_VariableStringBuffer("nextmap", s, sizeof(s));
+		if (!*s) {
+			trap_SendServerCommand(ent - g_entities, "print \"nextmap not set\n\"");
+			return;
+		}
+		Com_sprintf(level.voteString, sizeof(level.voteString), "vstr nextmap");
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+	}
+	else if (!Q_stricmp(arg1, "gameplay"))
+	{
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_GAMEPLAY))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+		else 
+		{
+			if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
+				trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version, use: ^21.02^7, ^21.03^7 or ^21.04\n\"");
+				return;
+			}
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+		}
+	}
+	else if (!Q_stricmp(arg1, "poll"))
+	{
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_POLL))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+		else
+		{
+			if (arg2[0] == '\0') {
+				trap_SendServerCommand(ent - g_entities, "print \"Usage: callvote poll <question>\n\"");
+				return;
+			}
+			else {
+				Com_sprintf(level.voteString, sizeof(level.voteString), "");
+				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", JKPlus_ConcatArgs(2));
+			}
+		}
+	}
+	else
+	{
+		if ((!Q_stricmp(arg1, "g_dowarmup") && !(jkcvar_voteControl.integer & (1 << VOTE_G_DOWARMUP))) ||
+			(!Q_stricmp(arg1, "timelimit") && !(jkcvar_voteControl.integer & (1 << VOTE_TIMELIMIT))) ||
+			(!Q_stricmp(arg1, "map_restart") && !(jkcvar_voteControl.integer & (1 << VOTE_MAP_RESTART))) ||
+			(!Q_stricmp(arg1, "fraglimit") && !(jkcvar_voteControl.integer & (1 << VOTE_FRAGLIMIT))))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"Voting not allowed for %s\n\"", arg1));
+			return;
+		}
+		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+	}
+
+	trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLCALLEDVOTE")));
+
+	// start the voting, the caller autoamtically votes yes
+	level.voteTime = level.time;
+	level.voteYes = 1;
+	level.voteNo = 0;
+
+	for (i = 0; i < level.maxclients; i++) {
+		level.clients[i].ps.eFlags &= ~EF_VOTED;
+	}
+	ent->client->ps.eFlags |= EF_VOTED;
+
+	// Append white colorcode at the end of the display string as workaround for cgame leaking colors
+	Q_strcat(level.voteDisplayString, sizeof(level.voteDisplayString), S_COLOR_WHITE);
+
+	trap_SetConfigstring(CS_VOTE_TIME, va("%i", level.voteTime));
+	trap_SetConfigstring(CS_VOTE_STRING, level.voteDisplayString);
+	trap_SetConfigstring(CS_VOTE_YES, va("%i", level.voteYes));
+	trap_SetConfigstring(CS_VOTE_NO, va("%i", level.voteNo));
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */
@@ -186,17 +456,32 @@ void JKPlus_ClientCommand(int clientNum)
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Ranking\n"
 				"^3Emotes         Commands       Build\n"
-				"^3GamePlay       GameModes      CallVote\n"
 				"^3About          Credits        \n"
 				"^7\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH));
 				return;
 		}
-		if(!Q_stricmp(arg1, "emotes"))
+		if (!Q_stricmp(arg1, "commands"))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \""
+				"^5[^7 Command ^5]^7\n"
+				"^7You can perform many console commands to do an action\n"
+				"^7Some of this commands are restricted to be used with the ^2client plugin\n"
+				"^5----------\n"
+				"^7Command list:\n"
+				"^3emotes\n"
+				"^3ignore\n"
+				"^3dropflag\n"
+				"^3showmotd\n"
+				"^3callvote\n"
+				"^7\""));
+			return;
+		}
+		else if(!Q_stricmp(arg1, "emotes"))
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Emotes ^5]^7\n"
 				"^7Emotes are visual animations that allows you to sit down, greet someone, etc...\n"
-				"^7There are over 50 emotes to choose from. (Some might be disabled by the server).\n"
+				"^7There are over 50 emotes to choose from. (Some might be disabled by the server)\n"
 				"^7You can assign an emote to a key using the following command: ^2/bind <key> <emote>\n"
 				"^5----------\n"
 				"^7Emote list:\n"
@@ -255,9 +540,9 @@ void JKPlus_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Ignore ^5]^7\n"
 				"^7Ignore a player chat or duel challenge\n"
-				"^7You can use this feature using the following command: ^2/ignore <option> <user>\n"
+				"^7You can use this feature using the following command: ^2/ignore <option> <player>\n"
 				"^5----------\n"
-				"^7Options:\n"
+				"^7Option list:\n"
 				"^3chat\n"
 				"^3duel\n"
 				"^5----------\n"

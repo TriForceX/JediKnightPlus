@@ -179,7 +179,42 @@ qboolean G_DoesMapSupportGametype(const char *mapname, int gametype)
 		if (f)
 		{
 			trap_FS_FCloseFile(f);
-			return qtrue;
+
+			if ( // Requires serverside or bsp modification
+				Q_stricmp(mapname, "artus_topside") == 0 ||
+				Q_stricmp(mapname, "cairn_assembly") == 0 ||
+				Q_stricmp(mapname, "cairn_reactor") == 0 ||
+				Q_stricmp(mapname, "doom_shields") == 0 ||
+				Q_stricmp(mapname, "bespin_streets") == 0 ||
+				Q_stricmp(mapname, "bespin_platform") == 0 ||
+				Q_stricmp(mapname, "yavin_temple") == 0 ||
+				Q_stricmp(mapname, "yavin_swamp") == 0 ||
+				Q_stricmp(mapname, "yavin_trial") == 0 ||
+				Q_stricmp(mapname, "yavin_canyon") == 0 ||
+				Q_stricmp(mapname, "yavin_courtyard") == 0 ||
+				Q_stricmp(mapname, "yavin_final") == 0 ||
+				Q_stricmp(mapname, "valley") == 0 ||
+				Q_stricmp(mapname, "pit") == 0 ||
+				// Requires engine and bsp modification
+				Q_stricmp(mapname, "kejim_base") == 0 ||
+				Q_stricmp(mapname, "kejim_post") == 0 ||
+				Q_stricmp(mapname, "artus_detention") == 0 ||
+				Q_stricmp(mapname, "artus_mine") == 0 ||
+				Q_stricmp(mapname, "bespin_undercity") == 0 ||
+				Q_stricmp(mapname, "cairn_bay") == 0 ||
+				Q_stricmp(mapname, "cairn_dock1") == 0 ||
+				Q_stricmp(mapname, "doom_comm") == 0 ||
+				Q_stricmp(mapname, "doom_detention") == 0 ||
+				Q_stricmp(mapname, "ns_hideout") == 0 ||
+				Q_stricmp(mapname, "ns_starpad") == 0 ||
+				Q_stricmp(mapname, "ns_streets") == 0 )
+			{
+				return qfalse;
+			}
+			else 
+			{
+				return qtrue;
+			}
 		}
 		else
 		{

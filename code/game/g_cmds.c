@@ -1591,10 +1591,9 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	} else if ( !Q_stricmp( arg1, "g_doWarmup" ) ) {
 	} else if ( !Q_stricmp( arg1, "timelimit" ) ) {
 	} else if ( !Q_stricmp( arg1, "fraglimit" ) ) {
-	} else if ( !Q_stricmp( arg1, "gameplay" ) ) { // Tr!Force: [GamePlay] Allow gameplay change vote
 	} else {
 		trap_SendServerCommand( ent-g_entities, "print \"Invalid vote string.\n\"" );
-		trap_SendServerCommand( ent-g_entities, "print \"Vote commands are: gameplay <version>, map_restart, nextmap, map <mapname>, g_gametype <n>, kick <player>, clientkick <clientnum>, g_doWarmup, timelimit <time>, fraglimit <frags>.\n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"Vote commands are: map_restart, nextmap, map <mapname>, g_gametype <n>, kick <player>, clientkick <clientnum>, g_doWarmup, timelimit <time>, fraglimit <frags>.\n\"" );
 		return;
 	}
 
@@ -1690,24 +1689,6 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "vstr nextmap");
 		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 	} 
-	// Tr!Force: [GamePlay] Allow only valid gameplay versions
-	else if (!Q_stricmp(arg1, "gameplay"))
-	{
-		if (jkcvar_voteGameplay.integer == 0)
-		{
-			trap_SendServerCommand(ent - g_entities, "print \"Gameplay vote is disabled.\n\"");
-			return;
-		}
-		else 
-		{
-			if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
-				trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version.\n\"");
-				return;
-			}
-			Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
-			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
-		}
-	}
 	else
 	{
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "%s \"%s\"", arg1, arg2 );
@@ -2720,8 +2701,14 @@ void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client comm
 		Cmd_ForceChanged_f (ent);
 	else if (Q_stricmp (cmd, "where") == 0)
 		Cmd_Where_f (ent);
-	else if (Q_stricmp (cmd, "callvote") == 0)
-		Cmd_CallVote_f (ent);
+	else if (Q_stricmp(cmd, "callvote") == 0) {
+		if (jkcvar_voteControl.integer) { // Tr!Force: [Vote] Custom callvote control
+			JKPlus_CallVote(ent);
+		}
+		else {
+			Cmd_CallVote_f(ent);
+		}
+	}
 	else if (Q_stricmp (cmd, "vote") == 0)
 		Cmd_Vote_f (ent);
 	else if (Q_stricmp (cmd, "callteamvote") == 0)

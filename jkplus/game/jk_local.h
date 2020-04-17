@@ -21,19 +21,22 @@ Player / world information struct and flags
 =====================================================================
 */
 
-/*typedef struct {
+//Vote Control
+typedef enum
+{
+	VOTE_MAP_RESTART = 0,
+	VOTE_NEXTMAP,
+	VOTE_MAP,
+	VOTE_G_GAMETYPE,
+	VOTE_KICK,
+	VOTE_CLIENTKICK,
+	VOTE_G_DOWARMUP,
+	VOTE_TIMELIMIT,
+	VOTE_FRAGLIMIT,
+	VOTE_GAMEPLAY,
+	VOTE_POLL
 
-	int			something1;					// Info 1
-	int			something2;					// Info 2
-
-} someInfo_t;*/
-
-/*typedef enum {
-
-	EFFECT_SOMETHING1 = 0,					// Effect 1
-	EFFECT_SOMETHING2,						// Effect 2
-
-} someEffects_t;*/
+} jkplus_vote_t;
 
 /*
 =====================================================================
@@ -86,7 +89,8 @@ extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
-extern	vmCvar_t					jkcvar_voteGameplay;
+extern	vmCvar_t					jkcvar_voteControl;
+extern	vmCvar_t					jkcvar_voteResults;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;
@@ -114,6 +118,7 @@ char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
 // jk_cmds.c
 qboolean	JKPlus_IsClientIgnored(char *option, int ignorer, int ignored);
+void		JKPlus_CallVote(gentity_t *ent);
 
 // jk_client.c
 void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
@@ -137,3 +142,4 @@ void		JKPlus_cleanString(char *in, char *out);
 void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
 int			JKPlus_ClientNumberFromArg(char* name);
+char		*JKPlus_ConcatArgs(int start);

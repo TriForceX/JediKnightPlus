@@ -2344,6 +2344,21 @@ void CheckVote( void ) {
 			return;
 		}
 	}
+
+	// Tr!Force: [Vote] Show vote results
+	if (strstr(level.voteDisplayString, "Poll:"))
+	{
+		trap_SendServerCommand(-1, va("cp \"%s\n"
+			"^7Yes: ^2%d "
+			"^7No: ^1%d\"",
+			level.voteDisplayString, level.voteYes, level.voteNo));
+	}
+	if(jkcvar_voteResults.integer)
+	{
+		trap_SendServerCommand(-1, va("print \"Vote results: Yes: ^2%d ^7No: ^1%d\n\"",
+			level.voteYes, level.voteNo));
+	}
+
 	level.voteTime = 0;
 	trap_SetConfigstring( CS_VOTE_TIME, "" );
 

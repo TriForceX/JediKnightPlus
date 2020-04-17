@@ -105,8 +105,13 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	{
 		// Current mod version
 		trap_SendServerCommand(clientNum, va("print \""
-			"This server is running " S_COLOR_CYAN "%s" S_COLOR_WHITE " (Version: %s.%s.%s - Build: %s)\n"
-			"\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH, __DATE__));
+			"This server is running " S_COLOR_CYAN "%s" S_COLOR_WHITE " (Version: " S_COLOR_GREEN "%s.%s.%s" S_COLOR_WHITE " - Build: %s)\n"
+			"\"", 
+			JKPLUS_LONGNAME, 
+			JKPLUS_MAJOR, 
+			JKPLUS_MINOR, 
+			JKPLUS_PATCH, 
+			__DATE__));
 
 		// Server motd time
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKPlusMotdSeen)

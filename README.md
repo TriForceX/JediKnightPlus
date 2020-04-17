@@ -6,7 +6,7 @@ https://triforce.dev/projects/jkplus
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.8.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.8.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -59,11 +59,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom duel challenge modes (Full force, no force, guns, etc...)
 - [x] Custom duel stats (Health, armor and hits)
 - [x] Custom duel challenge start health and armor
-- [ ] Enable invisible private duel challenge
+- [ ] Enable invisible & non-solid private duel challenge
+- [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
 - [ ] Alternative dimensions (Weapon or saber only, custom gameplay, etc...)
-- [ ] Custom poll call votes
+- [x] Custom call vote system
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
 
@@ -168,7 +169,7 @@ The following people supported and helped me directly on this project.
 - Padaget _(vVv mod tweaks)_
 - [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
 - Noodle _(User interface support)_
-- Effect.ve _(General coding support)_
+- QK-Lite / Effect.ve _(General coding support)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
 - =AJC= Clan and 1.04 community _(Support and testing)_

@@ -9,9 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.8.4
+- Fixed duel armor cvar
+- Added ignore chat & duel challenge command
+- Added custom call vote system
+
 ## 0.8.3
 - Server motd only shows once
 - Item physics restores original position
+- Changed back private duel armor to the original
 
 ## 0.8.2
 - Added chat protect
