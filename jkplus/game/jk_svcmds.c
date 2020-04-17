@@ -23,16 +23,19 @@ static void JKPlus_svCmd_gamePlay(void)
 	if (!Q_stricmp(arg1, "2") || !Q_stricmp(arg1, "1.02"))
 	{
 		MV_SetGamePlay(VERSION_1_02);
+		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.02\n\"");
 		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
 	}
 	else if (!Q_stricmp(arg1, "3") || !Q_stricmp(arg1, "1.03"))
 	{
 		MV_SetGamePlay(VERSION_1_03);
+		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.03\n\"");
 		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
 	}
 	else 
 	{
 		MV_SetGamePlay(VERSION_1_04);
+		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.04\n\"");
 		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
 	}
 }

@@ -436,11 +436,7 @@ void JKPlus_ClientCommand(int clientNum)
 	trap_Argv(0, cmd, sizeof(cmd));
 
 	// Start commands
-	if (JKPlus_emoteCheck(cmd, ent))
-	{
-		return;
-	}
-	else if (Q_stricmp(cmd, "help") == 0)
+	if (Q_stricmp(cmd, "help") == 0)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
 
@@ -482,9 +478,9 @@ void JKPlus_ClientCommand(int clientNum)
 				"^5[^7 Emotes ^5]^7\n"
 				"^7Emotes are visual animations that allows you to sit down, greet someone, etc...\n"
 				"^7There are over 50 emotes to choose from. (Some might be disabled by the server)\n"
-				"^7You can assign an emote to a key using the following command: ^2/bind <key> <emote>\n"
+				"^7You can play an emote animation by using the following command: ^2/emote <animation>\n"
 				"^5----------\n"
-				"^7Emote list:\n"
+				"^7Animation list:\n"
 				"^3Bar            Beg            Buried        Cocky       ComeOn      ComTalk\n"
 				"^3CrossArms      DontKillMe     DontKnow      DontKnow2   Explain     Explain2\n"
 				"^3FakeDead       Flip           HandHips      Hi          Hug         Kiss\n"
@@ -501,6 +497,26 @@ void JKPlus_ClientCommand(int clientNum)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is disabled at the moment\n\"", arg1));
 			return;
+		}
+	}
+	else if (Q_stricmp(cmd, "emote") == 0)
+	{
+		char    arg1[MAX_TOKEN_CHARS];
+
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (trap_Argc() < 2)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
+			return;
+		}
+		else 
+		{
+			if (!JKPlus_emoteCheck(arg1, ent))
+			{
+				trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote for ^3%s\n\"", arg1));
+				return;
+			}
 		}
 	}
 	else if (Q_stricmp(cmd, "dropflag") == 0)

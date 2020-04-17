@@ -216,7 +216,7 @@ qboolean JKPlus_UI_FeederSelection(float feederID, int index)
 
 	if (feederID == FEEDER_EMOTES)
 	{
-		trap_Cmd_ExecuteText(EXEC_APPEND, va("%s\n", emotesList[index].emotesCmd));
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", emotesList[index].emotesCmd));
 	}
 
 	// Final return, probably NULL
