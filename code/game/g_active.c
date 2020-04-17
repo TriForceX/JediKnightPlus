@@ -1625,6 +1625,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	{
 		gentity_t *faceKicked = &g_entities[client->ps.forceKickFlip-1];
 
+		// Tr!Force: [ChatProtect] Prevent kicks
+		if (jkcvar_chatProtect.integer >= 2 && (faceKicked->client->ps.eFlags & EF_TALK) && (faceKicked->client->JKPlusChatTime >= jkcvar_chatProtectTime.integer))
+		{
+			faceKicked = NULL;
+		}
+
 		if (faceKicked && faceKicked->client && (!OnSameTeam(ent, faceKicked) || g_friendlyFire.integer) &&
 			(!faceKicked->client->ps.duelInProgress || faceKicked->client->ps.duelIndex == ent->s.number) &&
 			(!ent->client->ps.duelInProgress || ent->client->ps.duelIndex == faceKicked->s.number))
