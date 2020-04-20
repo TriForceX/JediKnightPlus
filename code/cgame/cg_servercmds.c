@@ -145,6 +145,7 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.capturelimit = atoi( Info_ValueForKey( info, "capturelimit" ) );
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
+	cgs.jkcvar_altDimensions = atoi(Info_ValueForKey(info, "jk_altDimensions")); // Tr!Force: [Dimensions] Main cvar
 	mapname = Info_ValueForKey( info, "mapname" );
 
 

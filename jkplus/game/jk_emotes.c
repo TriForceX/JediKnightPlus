@@ -392,7 +392,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 				pmv.ps = &ent->client->ps;
 				pmv.animations = bgGlobalAnimations;
 				pmv.cmd = ent->client->pers.cmd;
-				pmv.trace = trap_Trace;
+				pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
 				pmv.pointcontents = trap_PointContents;
 				pmv.gametype = g_gametype.integer;
 

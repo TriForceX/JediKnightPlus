@@ -53,7 +53,8 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 			if (client->JKPlusChatTime >= jkcvar_chatProtectTime.integer)
 			{
 				client->JKPlusChatTime = jkcvar_chatProtectTime.integer;
-				ent->flags |= FL_GODMODE;
+				client->ps.eFlags |= JK_CHAT_PROTECT;
+				ent->takedamage = qfalse;
 			}
 			else
 			{
@@ -63,7 +64,8 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 		else
 		{
 			if (client->JKPlusChatTime != 0) client->JKPlusChatTime = 0;
-			if (ent->flags & FL_GODMODE) ent->flags &= ~FL_GODMODE;
+			if (client->ps.eFlags & JK_CHAT_PROTECT) client->ps.eFlags &= ~JK_CHAT_PROTECT;
+			if (!ent->health <= 0) ent->takedamage = qtrue;
 		}
 
 		// Show server motd
@@ -125,14 +127,14 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 		}
 
 		// Keep the client informed about to predict the emote leg timers
-		if (!(ent->client->ps.eFlags & EF_EMOTE_IN))
+		if (!(ent->client->ps.eFlags & JK_EMOTE_IN))
 		{
-			ent->client->ps.eFlags |= EF_EMOTE_IN;
+			ent->client->ps.eFlags |= JK_EMOTE_IN;
 		}
 	}
-	else if (ent->client->ps.eFlags & EF_EMOTE_IN)
+	else if (ent->client->ps.eFlags & JK_EMOTE_IN)
 	{
-		ent->client->ps.eFlags &= ~EF_EMOTE_IN;
+		ent->client->ps.eFlags &= ~JK_EMOTE_IN;
 	}
 
 	// Launch original client think real function

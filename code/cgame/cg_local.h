@@ -1407,6 +1407,8 @@ Ghoul2 Insert End
 
 	int				mvsdk_svFlags;
 
+	int				jkcvar_altDimensions; // Tr!Force: [Dimensions] Main cvar
+
 } cgs_t;
 
 //==============================================================================

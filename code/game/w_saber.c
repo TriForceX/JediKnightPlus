@@ -629,7 +629,7 @@ qboolean WP_SabersCheckLock2( gentity_t *attacker, gentity_t *defender, sabersLo
 	pmv.ps = &attacker->client->ps;
 	pmv.animations = bgGlobalAnimations;
 	pmv.cmd = attacker->client->pers.cmd;
-	pmv.trace = trap_Trace;
+	pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
 	pmv.pointcontents = trap_PointContents;
 	pmv.gametype = g_gametype.integer;
 
@@ -1841,6 +1841,21 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 			return qfalse;
 		}
 
+		// Tr!Force: [Dimensions] Check saber clash
+		if (jkcvar_chatProtect.integer >= 2)
+		{
+			if (otherOwner && otherOwner->client &&
+				otherOwner->client->ps.eFlags & JK_CHAT_PROTECT)
+			{
+				return qfalse;
+			}
+			if (otherOwner && otherOwner->client &&
+				self->client->ps.eFlags & JK_CHAT_PROTECT)
+			{
+				return qfalse;
+			}
+		}
+
 		didHit = qtrue;
 
 		te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
@@ -2357,6 +2372,21 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			self->client->ps.duelIndex != otherOwner->s.number)
 		{
 			return qfalse;
+		}
+
+		// Tr!Force: [Dimensions] Check saber clash
+		if (jkcvar_chatProtect.integer >= 2)
+		{
+			if (otherOwner && otherOwner->client &&
+				otherOwner->client->ps.eFlags & JK_CHAT_PROTECT)
+			{
+				return qfalse;
+			}
+			if (otherOwner && otherOwner->client &&
+				self->client->ps.eFlags & JK_CHAT_PROTECT)
+			{
+				return qfalse;
+			}
 		}
 
 		didHit = qtrue;
@@ -3603,7 +3633,8 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			}
 		}
 	}
-	else if (!self->client->ps.saberHolstered)
+	else if (!self->client->ps.saberHolstered &&
+		!((jkcvar_chatProtect.integer >= 2) && (self->client->ps.eFlags & JK_CHAT_PROTECT)) ) // Tr!Force: [Dimensions] Check saber hit and block
 	{
 		gentity_t *saberent = &g_entities[self->client->ps.saberEntityNum];
 

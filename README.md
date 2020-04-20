@@ -6,7 +6,7 @@ https://triforce.dev/projects/jkplus
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.8.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.9.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -63,7 +63,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
-- [ ] Alternative dimensions (Weapon or saber only, custom gameplay, etc...)
+- [x] Alternative dimensions (Duel, chat, etc...)
 - [x] Custom call vote system
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types

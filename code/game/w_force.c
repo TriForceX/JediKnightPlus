@@ -632,7 +632,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	}
 
 	// Tr!Force: [ChatProtect] Prevent force usage
-	if (jkcvar_chatProtect.integer >= 2 && (other->client->ps.eFlags & EF_TALK) && (other->client->JKPlusChatTime >= jkcvar_chatProtectTime.integer))
+	if (jkcvar_chatProtect.integer >= 2 && (other->client->ps.eFlags & JK_CHAT_PROTECT))
 	{
 		return 0;
 	}

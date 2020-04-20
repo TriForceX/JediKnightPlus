@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.0
+- Changed emote command usage
+- Set emote player custom height
+- Updated chat protect options
+- Added duel & chat dimensions
+
 ## 0.8.4
 - Fixed duel armor cvar
 - Added ignore chat & duel challenge command

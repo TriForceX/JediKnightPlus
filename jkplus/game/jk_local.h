@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JKPLUS_SHORTNAME   		"JK+"
 #define JKPLUS_MAJOR 			"0"
 #define JKPLUS_MINOR 			"8"
-#define JKPLUS_PATCH  			"4"
+#define JKPLUS_PATCH  			"5"
 #define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
 
 /*
@@ -107,6 +107,8 @@ extern	vmCvar_t					jkcvar_emotesBreak;
 extern	vmCvar_t					jkcvar_emotesFreeze;
 extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
+extern	vmCvar_t					jkcvar_altDimensions;
+
 /*
 =====================================================================
 Common / new functions
@@ -122,6 +124,9 @@ void		JKPlus_CallVote(gentity_t *ent);
 
 // jk_client.c
 void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
+
+// jk_dimensions.c
+void		JKPlus_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
 
 // jk_active.c
 void		JKPlus_ClientThink_real(gentity_t *ent);
