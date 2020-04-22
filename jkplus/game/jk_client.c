@@ -43,7 +43,6 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 				if (Q_stricmp(jkcvar_serverClosedIP.string, clientIP))
 				{
 					G_Printf("Server closed for: %s\n", clientIP);
-					if (jkcvar_serverClosedBroadcast.integer) trap_SendServerCommand(-1, va("print \"Server closed for: %s\n\"", clientIP));
 					return va("%s", jkcvar_serverClosed.string);
 				}
 			}
@@ -64,6 +63,9 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 			g_entities[clientNum].client->JKPlusConnectTime = 0;
 			trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
 			G_LogPrintf("ClientMessage: %s is ready to join\n", clientIP);
+
+			// Show base client connect message
+			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", g_entities[clientNum].client->pers.netname, G_GetStripEdString("SVINGAME", "PLCONNECT")));
 		}
 	}
 
@@ -86,10 +88,10 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	{
 		ent->client->sess.sessionTeam = TEAM_FREE;
 	}
-	else if (g_gametype.integer >= GT_TEAM
-		&& ent->client->sess.sessionTeam != TEAM_RED
-		&& ent->client->sess.sessionTeam != TEAM_BLUE
-		&& ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+	else if (g_gametype.integer >= GT_TEAM && 
+		ent->client->sess.sessionTeam != TEAM_RED && 
+		ent->client->sess.sessionTeam != TEAM_BLUE && 
+		ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		ent->client->sess.sessionTeam = TEAM_SPECTATOR;
 	}
@@ -105,13 +107,23 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	{
 		// Current mod version
 		trap_SendServerCommand(clientNum, va("print \""
-			"This server is running " S_COLOR_CYAN "%s" S_COLOR_WHITE " (Version: " S_COLOR_GREEN "%s.%s.%s" S_COLOR_WHITE " - Build: %s)\n"
-			"\"", 
-			JKPLUS_LONGNAME, 
-			JKPLUS_MAJOR, 
-			JKPLUS_MINOR, 
-			JKPLUS_PATCH, 
-			__DATE__));
+			"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n"
+			"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
+
+		// Show base client begin message
+		if (g_gametype.integer != GT_TOURNAMENT)
+		{
+			// Random message
+			if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKPlusRandomBegin[0], "") == 0)
+			{
+				int random = rand() % level.JKPlusRandomBeginCount;
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKPlusRandomBegin[random]));
+			}
+			else 
+			{
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")));
+			}
+		}
 
 		// Server motd time
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKPlusMotdSeen)
@@ -176,7 +188,6 @@ void JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSi
 		{
 			continue;
 		}
-
 		// don't allow leading spaces
 		if (!*p && ch == ' ') {
 			continue;

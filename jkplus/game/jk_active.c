@@ -14,17 +14,21 @@ Client timer actions function
 =====================================================================
 */
 
-void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
+void JKPlus_ClientTimerActions(gentity_t *ent, int msec) 
+{
 	gclient_t	*client;
+	qtime_t		serverTime;
+	char		*serverTimeType;
 	char		serverMotd[MAX_STRING_CHARS];
+
+	trap_RealTime(&serverTime);
+	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
 	client = ent->client;
 	client->JKPlusTimeResidual += msec;
 
-	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-	{
-		return;
-	}
+	// Don't allow in pause mode
+	if (jkcvar_pauseGame.integer) return;
 
 	// Launch original client timer actions function
 	BaseJK2_ClientTimerActions(ent, msec);
@@ -72,8 +76,29 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec) {
 		if (client->JKPlusMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
 			JKPlus_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
-			trap_SendServerCommand(ent->client->ps.clientNum, va("cp \"%s\nTime limit: %d\"", serverMotd, ent->client->JKPlusMotdTime));
+			trap_SendServerCommand(client->ps.clientNum, va("cp \"%s\nTime: %d\"", serverMotd, client->JKPlusMotdTime));
 			client->JKPlusMotdTime--;
+		}
+
+		// Server news
+		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKPlusServerNews[0], "") == 0)
+		{
+			int i;
+			int total = level.JKPlusServerNewsCount;
+			
+			level.JKPlusServerNewsNum++;
+
+			for (i = 1; i < (jkcvar_serverNewsTime.integer * total); i++)
+			{
+				if (level.JKPlusServerNewsNum == (jkcvar_serverNewsTime.integer * i))
+				{
+					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.JKPlusServerNews[(i-1)]));
+					// Reset
+					if (level.JKPlusServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
+						level.JKPlusServerNewsNum = 0;
+					}
+				}
+			}
 		}
 	}
 }

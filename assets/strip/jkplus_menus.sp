@@ -32,11 +32,11 @@ INDEX 2
 INDEX 3
 {
    REFERENCE MOD_OPTIONS_WEBSITE
-   TEXT_LANGUAGE1 "Visit https://triforce.dev/projects/jkplus for more info!"
-   TEXT_LANGUAGE2 "Visitez https://triforce.dev/projects/jkplus pour plus d'informations!"
-   TEXT_LANGUAGE3 "Besuchen Sie https://triforce.dev/projects/jkplus für weitere Informationen!"
-   TEXT_LANGUAGE6 "Visit https://triforce.dev/projects/jkplus for more information!"
-   TEXT_LANGUAGE8 "Visita https://triforce.dev/projects/jkplus para mas infomación!"
+   TEXT_LANGUAGE1 "Visit https://jkmod.github.io for more info!"
+   TEXT_LANGUAGE2 "Visitez https://jkmod.github.io pour plus d'informations!"
+   TEXT_LANGUAGE3 "Besuchen Sie https://jkmod.github.io für weitere Informationen!"
+   TEXT_LANGUAGE6 "Visit https://jkmod.github.io for more information!"
+   TEXT_LANGUAGE8 "Visita https://jkmod.github.io para mas infomación!"
 }
 INDEX 4
 {

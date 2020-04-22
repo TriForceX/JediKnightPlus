@@ -1502,9 +1502,10 @@ char *BaseJK2_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot )
 	ClientUserinfoChanged( clientNum );
 
 	// don't do the "xxx connected" messages if they were caried over from previous level
-	if ( firstTime ) {
+	// Tr!Force: [Welcome] Don't show on client begin
+	/*if ( firstTime ) {
 		trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLCONNECT")) );
-	}
+	}*/
 
 	if ( g_gametype.integer >= GT_TEAM &&
 		client->sess.sessionTeam != TEAM_SPECTATOR ) {
@@ -1690,9 +1691,10 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 		tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN );
 		tent->s.clientNum = ent->s.clientNum;
 
-		if ( g_gametype.integer != GT_TOURNAMENT  ) {
+		// Tr!Force: [Welcome] Don't show on client begin
+		/*if ( g_gametype.integer != GT_TOURNAMENT  ) {
 			trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")) );
-		}
+		}*/
 	}
 	G_LogPrintf( "ClientBegin: %i\n", clientNum );
 

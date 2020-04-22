@@ -13,31 +13,13 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Gameplay command functions
 =====================================================================
 */
-
-static void JKPlus_svCmd_gamePlay(void) 
+static void JKPlus_svCmd_gamePlay(void)
 {
-	char arg1[MAX_TOKEN_CHARS];
+	char	arg1[MAX_TOKEN_CHARS];
 
 	trap_Argv(1, arg1, sizeof(arg1));
 
-	if (!Q_stricmp(arg1, "2") || !Q_stricmp(arg1, "1.02"))
-	{
-		MV_SetGamePlay(VERSION_1_02);
-		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.02\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
-	}
-	else if (!Q_stricmp(arg1, "3") || !Q_stricmp(arg1, "1.03"))
-	{
-		MV_SetGamePlay(VERSION_1_03);
-		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.03\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
-	}
-	else 
-	{
-		MV_SetGamePlay(VERSION_1_04);
-		trap_SendServerCommand(-1, "print \"Server gameplay was changed to 1.04\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
-	}
+	trap_Cvar_Set("jk_gamePlay", arg1);
 }
 
 /*
@@ -45,7 +27,6 @@ static void JKPlus_svCmd_gamePlay(void)
 Pause game command functions
 =====================================================================
 */
-
 static void JKPlus_svCmd_pauseGame(void)
 {
 	if (jkcvar_pauseGame.integer == 0)
@@ -63,7 +44,6 @@ static void JKPlus_svCmd_pauseGame(void)
 Console command function
 =====================================================================
 */
-
 qboolean JKPlus_ConsoleCommand(void)
 {
 	char	cmd[MAX_TOKEN_CHARS];
@@ -75,7 +55,6 @@ qboolean JKPlus_ConsoleCommand(void)
 		JKPlus_svCmd_gamePlay();
 		return qtrue;
 	}
-
 	if (!Q_stricmp(cmd, "pausegame"))
 	{
 		JKPlus_svCmd_pauseGame();

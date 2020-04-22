@@ -233,15 +233,18 @@ void JKPlus_sendCommand(int target, char *cmd, char *string)
 Convert milliseconds to string
 =====================================================================
 */
-const char *JKPlus_msToString(const int ms) 
+const char *JKPlus_msToString(const int ms, qboolean abbr) 
 {
-	int	   			fsecs = ms / 1000;
-	int				wholemins = fsecs / 60;
-	float			fremainsecs;
+	int	   		fsecs = ms / 1000;
+	int			wholemins = fsecs / 60;
+	float		fremainsecs;
+	char		*strseconds = abbr ? "sec" : "seconds";
+	char		*strminutes = abbr ? "min" : "minutes";
+	char		*strhours = abbr ? "hrs" : "minutes";
 
 	if (wholemins < 1)
 	{
-		return va("%d seconds", fsecs);
+		return va("%d %s", fsecs, strseconds);
 	}
 	else if (wholemins >= 60) 
 	{
@@ -251,15 +254,13 @@ const char *JKPlus_msToString(const int ms)
 
 		if (wholemins == 0)
 		{
-			return va("%d hours", hrs);
+			return va("%d %s", hrs, strhours);
 		}
-
-		return va("%d hours %d minutes", hrs, wholemins);
+		return va("%d %s %d %s", hrs, strhours, wholemins, strminutes);
 	}
-
 	fremainsecs = (ms - wholemins * 60000) * 0.001f;
 
-	return va("%d minutes %d seconds", wholemins, (int)fremainsecs);
+	return va("%d %s %d %s", wholemins, strminutes, (int)fremainsecs, strseconds);
 }
 
 /*
@@ -356,7 +357,8 @@ int JKPlus_ClientNumberFromStrippedName(const char* name)
 Concatenate arguments
 =====================================================================
 */
-char *JKPlus_ConcatArgs(int start) {
+char *JKPlus_ConcatArgs(int start) 
+{
 	int		i, c, tlen;
 	static char	line[MAX_STRING_CHARS];
 	int		len;
@@ -382,4 +384,35 @@ char *JKPlus_ConcatArgs(int start) {
 	line[len] = 0;
 
 	return line;
+}
+
+/*
+=====================================================================
+Gameplay changer
+=====================================================================
+*/
+void JKPlus_gamePlay(char *gameplay)
+{
+	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
+	{
+		MV_SetGamePlay(VERSION_1_02);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
+	}
+	else if (!Q_stricmp(gameplay, "3") || !Q_stricmp(gameplay, "1.03"))
+	{
+		MV_SetGamePlay(VERSION_1_03);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
+	}
+	else if (!Q_stricmp(gameplay, "4") || !Q_stricmp(gameplay, "1.04"))
+	{
+		MV_SetGamePlay(VERSION_1_04);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
+	}
+	else 
+	{
+		trap_Cvar_Set("jk_gamePlay", va("%i", jk2gameplay));
+	}
 }

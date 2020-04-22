@@ -8,12 +8,12 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #undef	GAMEVERSION
 
-#define JKPLUS_LONGNAME			"Jedi Knight Plus"
-#define JKPLUS_SHORTNAME   		"JK+"
-#define JKPLUS_MAJOR 			"0"
-#define JKPLUS_MINOR 			"8"
-#define JKPLUS_PATCH  			"5"
-#define GAMEVERSION				S_COLOR_CYAN JKPLUS_SHORTNAME " Mod v" JKPLUS_MAJOR "." JKPLUS_MINOR "." JKPLUS_PATCH
+#define JK_LONGNAME			"Jedi Knight Plus"
+#define JK_SHORTNAME   		"JK+"
+#define JK_MAJOR 			"0"
+#define JK_MINOR 			"9"
+#define JK_PATCH  			"1"
+#define GAMEVERSION			S_COLOR_CYAN JK_SHORTNAME " Mod v" JK_MAJOR "." JK_MINOR "." JK_PATCH
 
 /*
 =====================================================================
@@ -21,7 +21,7 @@ Player / world information struct and flags
 =====================================================================
 */
 
-//Vote Control
+// Vote Control
 typedef enum
 {
 	VOTE_MAP_RESTART = 0,
@@ -47,6 +47,8 @@ Global definitions
 #define	MAX_IP						22
 #define	MAX_NAME_PRINT				28 // 24
 #define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
+#define MAX_FILE_TEXT				8192
+#define MAX_LINES					64
 
 #define	ITEM_RESPAWN_ARMOR			20
 #define	ITEM_RESPAWN_HEALTH			30
@@ -78,7 +80,6 @@ extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
 extern	vmCvar_t					jkcvar_serverClosed;
 extern	vmCvar_t					jkcvar_serverClosedIP;
-extern	vmCvar_t					jkcvar_serverClosedBroadcast;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
@@ -100,14 +101,17 @@ extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_damagePlums;
 extern	vmCvar_t					jkcvar_pauseGame;
-extern	vmCvar_t					jkcvar_pauseGameCenterPrint;
 
 extern	vmCvar_t					jkcvar_emotesEnabled;
 extern	vmCvar_t					jkcvar_emotesBreak;
 extern	vmCvar_t					jkcvar_emotesFreeze;
 extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
+extern	vmCvar_t					jkcvar_gamePlay;
 extern	vmCvar_t					jkcvar_altDimensions;
+extern	vmCvar_t					jkcvar_randomBegin;
+extern	vmCvar_t					jkcvar_serverNews;
+extern	vmCvar_t					jkcvar_serverNewsTime;
 
 /*
 =====================================================================
@@ -140,7 +144,7 @@ void		JKPlus_emoteDoKiss(gentity_t *ent);
 void		JKPlus_emoteDoPunch(gentity_t *ent);
 
 // jk_common.c
-const char	*JKPlus_msToString(const int ms);
+const char	*JKPlus_msToString(const int ms, qboolean abbr);
 int			JKPlus_compareCmd(char *cmd, char *required);
 void		JKPlus_stringEscape(char *in, char *out, int outSize);
 void		JKPlus_cleanString(char *in, char *out);
@@ -148,3 +152,4 @@ void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
 int			JKPlus_ClientNumberFromArg(char* name);
 char		*JKPlus_ConcatArgs(int start);
+void		JKPlus_ingameGameplay(char *gameplay);

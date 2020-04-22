@@ -94,7 +94,7 @@ Emote table list
 
 emoteData_t emotes[EMOTE_NUM_EMOTES] =
 {
-	// Emote Constant		Command			Special?	Start Animation				End Animation				Compatible all?
+	// Emote constant		Command			Special?	Start animation				End animation				Compatible all?
 	{ EMOTE_BAR,			"bar",			qfalse,		BOTH_BARTENDER_IDLE1,		-1,							qtrue },
 	{ EMOTE_BEG,			"beg",			qtrue,		BOTH_KNEES1,				-1,							qtrue },
 	{ EMOTE_BURIED,			"buried",		qfalse,		BOTH_DISMEMBER_RARM,		BOTH_FORCE_GETUP_B1,		qtrue },

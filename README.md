@@ -1,12 +1,12 @@
 # Jedi Knight Plus
 
-https://triforce.dev/projects/jkplus
+https://jkmod.github.io
 
 > Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal is to reunite the most useful and custom stuff to the game environment, specially make players ideas come true adding new features as well porting some from other mods and games.
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.9.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.9.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -20,7 +20,7 @@ https://triforce.dev/projects/jkplus
 - Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/wiki/Setup)
 - Read more information and guides at **wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
 - See version changes history in the **changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
-- Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkplus)
+- Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkmod)
 
 # About
 I started to code the first version of this mod in 2005. Back then it was a private mod and only few people had access. So as a personal task and due to some people request i decided to re-code the mod into a public version, just as a legacy.
@@ -42,7 +42,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Prevent duplicated player names
 - [ ] In-game chat commands (Teleports, info, etc...)
 - [x] Welcome message on client begin
-- [ ] Server news messages per each certain amount of time
+- [x] Show server news messages from time to time
 - [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
 - [ ] Custom player private chat rooms
 - [ ] Enabled Jedi Crystal and Beer Bacta items
@@ -59,7 +59,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom duel challenge modes (Full force, no force, guns, etc...)
 - [x] Custom duel stats (Health, armor and hits)
 - [x] Custom duel challenge start health and armor
-- [ ] Enable invisible & non-solid private duel challenge
+- [ ] Enable invisible private duels
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
@@ -67,6 +67,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom call vote system
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
+- [x] Random client begin messages
 
 ---
 
@@ -140,6 +141,15 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
 - [ ] Anti-script feature (Macro scanning)
 - [ ] Increased some limits (Fov, camera range, name length, etc...)
+- [x] Smooth client dimensions
+
+---
+
+### Cheats
+**Description:** Some features when cheats are enabled
+
+- [ ] Free backstabs & dfa combos usage
+- [ ] Use force grip on items
 
 ---
 
@@ -179,7 +189,7 @@ The following people supported and helped me directly on this project.
 **Jedi Knight Plus Mod developed by Tr!Force**  
 Work copyrighted (C) with holder attribution 2005 - 2020
 
-Visit the mod page: https://triforce.dev/projects/jkplus
+Visit the mod page: https://jkmod.github.io
 
 Feel free to write me if you got questions regarding the mod\
 E-Mail: triforce@gznetwork.com

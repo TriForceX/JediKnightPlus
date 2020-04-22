@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.1
+- Added random client begin messages
+- Added server news messages
+- Fixed mod version and code cleanup
+- Changed pause game options
+- Changed mod urls
+
 ## 0.9.0
 - Changed emote command usage
 - Set emote player custom height

@@ -190,7 +190,7 @@ void JKPlus_CallVote(gentity_t *ent)
 	trap_Argv(1, arg1, sizeof(arg1));
 	trap_Argv(2, arg2, sizeof(arg2));
 
-	if( strchr( arg1, ';' ) || strchr( arg2, ';' ) || strchr( arg1, '\n' ) || strchr( arg2, '\n' ) ) {
+	if( strchr( arg1, ';' ) || strchr( arg2, ';' ) || strchr( arg1, '\n' ) || strchr( arg2, '\r' ) ) {
 		trap_SendServerCommand(ent - g_entities, "print \"Invalid vote string\n\"");
 		return;
 	}
@@ -357,7 +357,7 @@ void JKPlus_CallVote(gentity_t *ent)
 		else 
 		{
 			if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
-				trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version, use: ^21.02^7, ^21.03^7 or ^21.04\n\"");
+				trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version, use: ^31.02^7, ^31.03^7 or ^31.04\n\"");
 				return;
 			}
 			Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
@@ -444,16 +444,22 @@ void JKPlus_ClientCommand(int clientNum)
 
 		if(trap_Argc() < 2)
 		{
+			qtime_t		serverTime;
+			char		*serverTimeType;
+
+			trap_RealTime(&serverTime);
+			serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
+
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Help ^5]^7\n"
-				"^7This server is running ^5%s %s.%s.%s\n"
+				"^7This server is running ^5%s ^7(Version: ^2%s.%s.%s^7 - Server Time: %02i:%02i%s)\n"
 				"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 				"^5----------\n"
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Ranking\n"
 				"^3Emotes         Commands       Build\n"
 				"^3About          Credits        \n"
-				"^7\"", JKPLUS_LONGNAME, JKPLUS_MAJOR, JKPLUS_MINOR, JKPLUS_PATCH));
+				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
 				return;
 		}
 		if (!Q_stricmp(arg1, "commands"))
@@ -464,7 +470,7 @@ void JKPlus_ClientCommand(int clientNum)
 				"^7Some of this commands are restricted to be used with the ^2client plugin\n"
 				"^5----------\n"
 				"^7Command list:\n"
-				"^3emotes\n"
+				"^3emote\n"
 				"^3ignore\n"
 				"^3dropflag\n"
 				"^3showmotd\n"
@@ -623,11 +629,17 @@ void JKPlus_ClientCommand(int clientNum)
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
-		char *message = jkcvar_test1.integer == 1 ? "Test 1 is enabled" : "Test 1 is disabled";
-		
-		trap_SendServerCommand(ent - g_entities, va("print \"%s and the value is %i. Test 2 is %i\n\"", message, jkcvar_test1.integer, jkcvar_test2.integer));
-	}
+		char    arg1[MAX_TOKEN_CHARS];
+		char    arg2[MAX_TOKEN_CHARS];
 
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
+		Com_sprintf(arg2, sizeof(arg2), "%s", arg2);
+
+		trap_SendServerCommand(ent - g_entities, va("print \"Cvar1: %s Cvar2: %i Arg1: %s Arg2: %i\n\"", jkcvar_test1.string, jkcvar_test2.integer, arg1, atoi(arg2)));
+	}
 	// Launch original client command function
 	else
 	{

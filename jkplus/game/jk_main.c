@@ -34,7 +34,6 @@ vmCvar_t	jkcvar_serverMotd;
 vmCvar_t	jkcvar_serverMotdTime;
 vmCvar_t	jkcvar_serverClosed;
 vmCvar_t	jkcvar_serverClosedIP;
-vmCvar_t	jkcvar_serverClosedBroadcast;
 
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowMultiDuel;
@@ -56,25 +55,24 @@ vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_damagePlums;
 vmCvar_t	jkcvar_pauseGame;
-vmCvar_t	jkcvar_pauseGameCenterPrint;
 
 vmCvar_t	jkcvar_emotesEnabled;
 vmCvar_t	jkcvar_emotesBreak;
 vmCvar_t	jkcvar_emotesFreeze;
 vmCvar_t	jkcvar_emotesPunchDamage;
 
+vmCvar_t	jkcvar_gamePlay;
 vmCvar_t	jkcvar_altDimensions;
+vmCvar_t	jkcvar_randomBegin;
+vmCvar_t	jkcvar_serverNews;
+vmCvar_t	jkcvar_serverNewsTime;
 
-static cvarTable_t	JKPlusCvarTable[] = {
-
-	{ &jkcvar_test1,					"jk_test1",					"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,						0, qtrue },
-
+static cvarTable_t	JKPlusCvarTable[] = 
+{
 	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",	CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverClosedBroadcast,	"jk_serverClosedBroadcast",	"0",	CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -87,7 +85,7 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteControl,				"jk_voteControl",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteResults,				"jk_voteResults",			"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",	CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue },
+	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",	CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue }, // Fix me
 	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelStartArmor,			"jk_duelStartArmor",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndStats,				"jk_duelEndStats",			"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -95,16 +93,21 @@ static cvarTable_t	JKPlusCvarTable[] = {
 	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_pauseGameCenterPrint,		"jk_pauseGameCenterPrint",	"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",	CVAR_ARCHIVE,						0, qfalse },
 
 	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",	CVAR_ARCHIVE,						0, qtrue },
 
+	{ &jkcvar_gamePlay,					"jk_gamePlay",				"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qfalse },
 	{ &jkcvar_altDimensions,			"jk_altDimensions",			"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_randomBegin,				"jk_randomBegin",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNews,				"jk_serverNews",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNewsTime,			"jk_serverNewsTime",		"60",	CVAR_ARCHIVE,						0, qtrue },
 
+	{ &jkcvar_test1,					"jk_test1",					"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,						0, qtrue },
 };
 
 static int JKPlusCvarTableSize = sizeof(JKPlusCvarTable) / sizeof(JKPlusCvarTable[0]);
@@ -153,10 +156,13 @@ void JKPlus_G_UpdateCvars(void)
 
 				if(cv->trackChange)
 				{
-					if (cv->vmCvar != &jkcvar_pauseGame)
+					// Server news and random begin warning
+					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews) && !(Q_stricmp(cv->vmCvar->string, "0") == 0 || Q_stricmp(cv->vmCvar->string, "paused") == 0))
 					{
-						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
+						G_Printf("%s will load the files upon restarting.\n", cv->cvarName);
 					}
+					// Normal tracking
+					trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 				}
 
 				// Pause game
@@ -165,19 +171,13 @@ void JKPlus_G_UpdateCvars(void)
 					int pause = cv->vmCvar->integer ? 1 : 0;
 					int num;
 
-					if (pause) 
+					if (pause)
 					{
 						gentity_t *ent;
 						pauseGameStartTime = level.time;
 
-						if (jkcvar_pauseGameCenterPrint.integer == 1)
-						{
-							trap_SendServerCommand(-1, "cp \"Game paused by the server\n\"");
-						}
-						else
-						{
-							trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
-						}
+						trap_SendServerCommand(-1, "cp \"Game paused by the server\n\"");
+						trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
 
 						// Save player viewangles
 						for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent) 
@@ -187,12 +187,13 @@ void JKPlus_G_UpdateCvars(void)
 								VectorCopy(ent->client->ps.viewangles, ent->client->JKPlusPauseSavedView);
 							}
 						}
+
+						// Stop server news
+						if (Q_stricmp(jkcvar_serverNews.string, "1") == 0) trap_Cvar_Set("jk_serverNews", "paused"); // Fix me
 					}
 					else 
 					{
 						// Set unpause
-						level.JKPlusUnpauseClient = -1;
-
 						if (pauseGameStartTime > 0 && pauseGameStartTime < level.time) 
 						{
 							gentity_t *ent;
@@ -209,14 +210,8 @@ void JKPlus_G_UpdateCvars(void)
 								}
 							}
 
-							if (jkcvar_pauseGameCenterPrint.integer == 1)
-							{
-								trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime)));
-							}
-							else
-							{
-								trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime)));
-							}
+							trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime, qtrue)));
+							trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime, qtrue)));
 
 							level.startTime += pausedGameTime;
 
@@ -233,41 +228,35 @@ void JKPlus_G_UpdateCvars(void)
 									ent->client->pers.enterTime += pausedGameTime;
 
 									// If someone joined during pause ensure they don't get negative time
-									if (ent->client->pers.enterTime > level.time)
-									{
-										ent->client->pers.enterTime = level.time;
-									}
-
+									if (ent->client->pers.enterTime > level.time) ent->client->pers.enterTime = level.time;
 									if (ent->client->pers.teamState.flagsince) 
 									{
 										// If holding a flag update the timer so its not counting pause time
 										ent->client->pers.teamState.flagsince += pausedGameTime;
-
-										if (ent->client->pers.teamState.flagsince > level.time)
-										{
-											ent->client->pers.teamState.flagsince = level.time;
-										}
+										if (ent->client->pers.teamState.flagsince > level.time) ent->client->pers.teamState.flagsince = level.time;
 									}
-									if (ent->client->pers.teamState.lastreturnedflag) 
-									{
-										ent->client->pers.teamState.lastreturnedflag += pausedGameTime;
-									}
-									if (ent->client->pers.teamState.lastfraggedcarrier) 
-									{
-										ent->client->pers.teamState.lastfraggedcarrier += pausedGameTime;
-									}
-									if (ent->client->pers.teamState.lasthurtcarrier) 
-									{
-										ent->client->pers.teamState.lasthurtcarrier += pausedGameTime;
-									}
-									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) 
-									{
-										// Restore this player viewangles
-										SetClientViewAngle(ent, ent->client->JKPlusPauseSavedView);
-									}
+									if (ent->client->pers.teamState.lastreturnedflag) ent->client->pers.teamState.lastreturnedflag += pausedGameTime;
+									if (ent->client->pers.teamState.lastfraggedcarrier) ent->client->pers.teamState.lastfraggedcarrier += pausedGameTime;
+									if (ent->client->pers.teamState.lasthurtcarrier) ent->client->pers.teamState.lasthurtcarrier += pausedGameTime;
+									// Restore this player viewangles
+									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->JKPlusPauseSavedView); 
 								}
 							}
+
+							// Reload server news
+							if (Q_stricmp(jkcvar_serverNews.string, "paused") == 0) trap_SendConsoleCommand(EXEC_APPEND, "jk_serverNews 1\n"); // Fix me
 						}
+					}
+				}
+
+				// Ingame gameplay
+				if (cv->vmCvar == &jkcvar_gamePlay)
+				{
+					char *gameplay = cv->vmCvar->string;
+
+					if (strcmp(gameplay, "0") != 0)
+					{
+						JKPlus_gamePlay(gameplay);
 					}
 				}
 			}
@@ -291,5 +280,111 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	// Launch original init game function
 	BaseJK2_G_InitGame(levelTime, randomSeed, restart);
 
-	// More stuff ...
+	// Check gameplay
+	if (strcmp(jkcvar_gamePlay.string, "0") != 0)
+	{
+		JKPlus_gamePlay(jkcvar_gamePlay.string);
+	}
+
+	// Set random begin message
+	if (jkcvar_randomBegin.integer)
+	{
+		static fileHandle_t	f;
+		static char			*filename = "config/random_begin.cfg";
+		static int			filefound = 1;
+		static char			buf[MAX_FILE_TEXT];
+		static int			len;
+		static char			*linestart;
+		static char			*lineend;
+		static int			count;
+
+		// File check
+		len = trap_FS_FOpenFile(filename, &f, FS_READ);
+		if (!f) {
+			G_Printf("File not found: %s\n", filename);
+			filefound = 0;
+		}
+		if (len >= MAX_FILE_TEXT) {
+			G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
+			trap_FS_FCloseFile(f);
+			filefound = 0;
+		}
+		if (!filefound) {
+			trap_Cvar_Set("jk_randomBegin", "0");
+			return;
+		}
+		trap_FS_Read(buf, len, f);
+		buf[len] = 0;
+		trap_FS_FCloseFile(f);
+
+		// File parse
+		level.JKPlusRandomBeginCount = 0;
+		linestart = buf;
+		lineend = strchr(linestart, '\n');
+		while (lineend)
+		{
+			*lineend = 0;
+			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
+			level.JKPlusRandomBeginCount++;
+			linestart = lineend + 1;
+			lineend = strchr(linestart, '\n');
+			if (count >= MAX_LINES) break;
+		}
+		if (count < MAX_LINES) {
+			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
+			level.JKPlusRandomBeginCount++;
+		}
+		G_Printf("%i random begin messages loaded\n", level.JKPlusRandomBeginCount);
+	}
+
+	// Set server news
+	if (jkcvar_serverNews.integer)
+	{
+		static fileHandle_t	f;
+		static char			*filename = "config/server_news.cfg";
+		static int			filefound = 1;
+		static char			buf[MAX_FILE_TEXT];
+		static int			len;
+		static char			*linestart;
+		static char			*lineend;
+		static int			count;
+
+		// File check
+		len = trap_FS_FOpenFile(filename, &f, FS_READ);
+		if (!f) {
+			G_Printf("File not found: %s\n", filename);
+			filefound = 0;
+		}
+		if (len >= MAX_FILE_TEXT) {
+			G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
+			trap_FS_FCloseFile(f);
+			filefound = 0;
+		}
+		if (!filefound) {
+			trap_Cvar_Set("jk_serverNews", "0");
+			return;
+		}
+		trap_FS_Read(buf, len, f);
+		buf[len] = 0;
+		trap_FS_FCloseFile(f);
+
+		// File parse
+		level.JKPlusServerNewsCount = 0;
+		linestart = buf;
+		lineend = strchr(linestart, '\n');
+		while (lineend)
+		{
+			*lineend = 0;
+			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
+			level.JKPlusServerNewsCount++;
+			linestart = lineend + 1;
+			lineend = strchr(linestart, '\n');
+			if (count >= MAX_LINES) break;
+		}
+		if (count < MAX_LINES) {
+			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
+			level.JKPlusServerNewsCount++;
+		}
+		G_Printf("%i server news loaded\n", level.JKPlusServerNewsCount);
+	}
 }

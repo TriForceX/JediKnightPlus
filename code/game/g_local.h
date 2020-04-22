@@ -537,7 +537,11 @@ typedef struct {
 	// MVSDK
 	qboolean	bboxEncoding;
 
-	int			JKPlusUnpauseClient;			// Tr!Force: [Pause] Client unpause
+	char		JKPlusRandomBegin[MAX_SPAWN_VARS][MAX_STRING_CHARS];	// Tr!Force: [RandomBegin] Store messages
+	int			JKPlusRandomBeginCount;	// Tr!Force: [RandomBegin] Message counter
+	char		JKPlusServerNews[MAX_SPAWN_VARS][MAX_STRING_CHARS];		// Tr!Force: [RandomBegin] Store messages
+	int			JKPlusServerNewsCount;  // Tr!Force: [ServerNews] News counter
+	int			JKPlusServerNewsNum;	// Tr!Force: [ServerNews] News timer
 } level_locals_t;
 
 

@@ -1182,7 +1182,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Duel] Display duel end stats
 			if (jkcvar_duelEndStats.integer == 1)
 			{
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " won with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits\n\"",
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " won with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " body hits\n\"",
 					ent->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
 			}
 

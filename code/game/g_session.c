@@ -40,7 +40,7 @@ void G_WriteClientSessionData( gclient_t *client ) {
 		client->sess.selectedFP,
 		client->sess.JKPlusMotdSeen,		// Tr!Force: [Motd] Keep motd seen
 		client->sess.JKPlusIgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
-		client->sess.JKPlusIgnoredDuels[2]		// Tr!Force: [ignore] Keep ignore duel
+		client->sess.JKPlusIgnoredDuels[2]	// Tr!Force: [ignore] Keep ignore duel
 		);
 
 	var = va( "session%i", (int)(client - level.clients) );
