@@ -9,6 +9,9 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.2
+- Prevent server news on duel gametype
+
 ## 0.9.1
 - Added random client begin messages
 - Added server news messages

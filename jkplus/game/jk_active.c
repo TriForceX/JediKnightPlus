@@ -81,7 +81,7 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec)
 		}
 
 		// Server news
-		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKPlusServerNews[0], "") == 0)
+		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKPlusServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
 		{
 			int i;
 			int total = level.JKPlusServerNewsCount;

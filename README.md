@@ -8,7 +8,7 @@ https://jkmod.github.io
 
 [![version](https://img.shields.io/badge/Current%20Version-0.9.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
-[![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkplus)
+[![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
 [![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](#license)
@@ -109,16 +109,16 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 
 - [ ] Atmospheric effects (Rain, snow, sun, etc...)
 - [ ] Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
-- [ ] Mini keyboard display to see key-presses on-screen
-- [ ] Jedi Academy chat display mode (Positioned at left bottom)
-- [ ] Three chat display icons (JK2, Jedi Academy and user customizable)
+- [ ] Mini keyboard display to see key presses on screen
+- [ ] Jedi Academy chat display mode (At left bottom)
+- [ ] Three chat display icons (BaseJK2, BaseJKA and user customizable)
 - [x] Fixed 2D aspect ratio for non 4:3 screens
 - [ ] Fire lightsaber style, to add real fire effects to the lightsaber
-- [ ] Fully working jet pack to fly around the map
-- [ ] Grapple hook to climb against walls
+- [ ] Jet pack to fly around the map
+- [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
-- [ ] In-game clock showing the actual local hours, minutes and seconds
-- [ ] In-game server list to join another server without disconnect
+- [ ] Ingame clock showing the actual local hours, minutes and seconds
+- [ ] Ingame server list to join another server without disconnect
 - [ ] Speed-o-meter to display player speed in-game and best record
 - [ ] Strafe jumping helper/efficiency meter
 - [ ] Custom lightsaber hilt support
@@ -132,7 +132,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enable the color for the second blade with dual blade lightsabers
 - [ ] Custom saber trail length
 - [ ] Custom in-game duel challenge music
-- [ ] Custom flag transparency (For CTF game type)
+- [ ] Custom flag transparency (For CTF & CTY game type)
 - [ ] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
 - [ ] Unlockd some client commands and cvars (Camera range, distance, etc...)
@@ -146,7 +146,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ---
 
 ### Cheats
-**Description:** Some features when cheats are enabled
+**Description:** Some features available when cheats are enabled
 
 - [ ] Free backstabs & dfa combos usage
 - [ ] Use force grip on items
