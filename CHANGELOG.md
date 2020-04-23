@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.3
+- Added force duel challenge
+- Prevent some files from loading in duel gametype
+
 ## 0.9.2
 - Prevent server news on duel gametype
 

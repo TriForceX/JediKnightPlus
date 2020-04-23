@@ -37,6 +37,7 @@ vmCvar_t	jkcvar_serverClosedIP;
 
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowMultiDuel;
+vmCvar_t	jkcvar_allowForceDuel;
 vmCvar_t	jkcvar_allowDuelChat;
 vmCvar_t	jkcvar_noDuplicatedNames;
 vmCvar_t	jkcvar_chatProtect;
@@ -76,6 +77,7 @@ static cvarTable_t	JKPlusCvarTable[] =
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowForceDuel,			"jk_allowForceDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -287,7 +289,7 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	}
 
 	// Set random begin message
-	if (jkcvar_randomBegin.integer)
+	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
 		static fileHandle_t	f;
 		static char			*filename = "config/random_begin.cfg";
@@ -338,7 +340,7 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	}
 
 	// Set server news
-	if (jkcvar_serverNews.integer)
+	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
 		static fileHandle_t	f;
 		static char			*filename = "config/server_news.cfg";

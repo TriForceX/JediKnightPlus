@@ -2233,7 +2233,7 @@ qboolean G_OtherPlayersDueling(void)
 	return qfalse;
 }
 
-void Cmd_EngageDuel_f(gentity_t *ent)
+void BaseJK2_Cmd_EngageDuel_f(gentity_t *ent) // Tr!Force: [Duel] BaseJK2 engage duel command
 {
 	trace_t tr;
 	vec3_t forward, fwdOrg;
@@ -2283,21 +2283,17 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 		return;
 	}
 
-	// Tr!Force: [Duel] Allow multiple duels
-	if (jkcvar_allowMultiDuel.integer != 1)
+	//New: Don't let a player duel if he just did and hasn't waited 10 seconds yet (note: If someone challenges him, his duel timer will reset so he can accept)
+	if (ent->client->ps.fd.privateDuelTime > level.time)
 	{
-		//New: Don't let a player duel if he just did and hasn't waited 10 seconds yet (note: If someone challenges him, his duel timer will reset so he can accept)
-		if (ent->client->ps.fd.privateDuelTime > level.time)
-		{
-			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_JUSTDID")));
-			return;
-		}
+		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_JUSTDID")) );
+		return;
+	}
 
-		if (G_OtherPlayersDueling())
-		{
-			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_BUSY")));
-			return;
-		}
+	if (G_OtherPlayersDueling())
+	{
+		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_BUSY")) );
+		return;
 	}
 
 	AngleVectors( ent->client->ps.viewangles, forward, NULL, NULL );
@@ -2325,18 +2321,6 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 			return;
 		}
 
-		// Tr!Force: [Ignore] Apply duel ignore
-		if (JKPlus_IsClientIgnored("duel", challenged->s.number, ent->s.number))
-		{
-			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
-			return;
-		}
-		if (JKPlus_IsClientIgnored("duel", ent->s.number, challenged->s.number))
-		{
-			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
-			return;
-		}
-
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
 			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
@@ -2349,16 +2333,6 @@ void Cmd_EngageDuel_f(gentity_t *ent)
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
-
-			// Tr!Force: [Duel] Default start health and shield
-			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0) 
-			{
-				ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
-				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
-
-				challenged->client->ps.stats[STAT_HEALTH] = challenged->health = jkcvar_duelStartHealth.integer;
-				challenged->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
-			}
 
 			//Holster their sabers now, until the duel starts (then they'll get auto-turned on to look cool)
 

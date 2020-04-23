@@ -620,15 +620,39 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
-	//Dueling fighters cannot use force powers on others, with the exception of force push when locked with each other
-	if (attacker && attacker->client && attacker->client->ps.duelInProgress)
+	
+	// Tr!Force: [Duel] Check usage in force duel
+	if (jkcvar_allowForceDuel.integer)
 	{
-		return 0;
-	}
+		//Dueling fighters cannot use force powers on others, with the exception of force push when locked with each other
+		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
+		{
+			if ((attacker->client->pers.JKPlusForceDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			{
+				return 0;
+			}
+		}
 
-	if (other && other->client && other->client->ps.duelInProgress)
+		if (other && other->client && other->client->ps.duelInProgress)
+		{
+			if ((other->client->pers.JKPlusForceDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			{
+				return 0;
+			}
+		}
+	}
+	else 
 	{
-		return 0;
+		//Dueling fighters cannot use force powers on others, with the exception of force push when locked with each other
+		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
+		{
+			return 0;
+		}
+
+		if (other && other->client && other->client->ps.duelInProgress)
+		{
+			return 0;
+		}
 	}
 
 	// Tr!Force: [ChatProtect] Prevent force usage
@@ -725,6 +749,22 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 	}
 
 	return WP_ForcePowerAvailable( self, forcePower );
+}
+
+// Tr!Force: [Duel] Force power valid on force duel
+qboolean JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps)
+{
+	gentity_t	*ent = &g_entities[ps->clientNum];
+	if (!ent || !ent->client || ent->s.number > 31)
+	{
+		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
+		return qfalse;
+	}
+	if ((ent->client->pers.JKPlusForceDuel == 0))
+	{
+		return qfalse;
+	}
+	return qtrue;
 }
 
 int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacker, int atPower, int atPowerLevel, int atForceSpent)

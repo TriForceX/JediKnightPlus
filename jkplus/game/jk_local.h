@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JK_SHORTNAME   		"JK+"
 #define JK_MAJOR 			"0"
 #define JK_MINOR 			"9"
-#define JK_PATCH  			"2"
+#define JK_PATCH  			"3"
 #define GAMEVERSION			S_COLOR_CYAN JK_SHORTNAME " Mod v" JK_MAJOR "." JK_MINOR "." JK_PATCH
 
 /*
@@ -66,6 +66,7 @@ Global definitions
 #define ConsoleCommand				JKPlus_ConsoleCommand
 #define G_InitGame					JKPlus_G_InitGame
 #define ClientCleanName(a, b, c)	JKPlus_ClientCleanName(ent, a, b, c)
+#define Cmd_EngageDuel_f			JKPlus_EngageDuel
 
 /*
 =====================================================================
@@ -83,6 +84,7 @@ extern	vmCvar_t					jkcvar_serverClosedIP;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
+extern	vmCvar_t					jkcvar_allowForceDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
 extern	vmCvar_t					jkcvar_noDuplicatedNames;
 extern	vmCvar_t					jkcvar_chatProtect;

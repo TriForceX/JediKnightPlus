@@ -419,6 +419,194 @@ void JKPlus_CallVote(gentity_t *ent)
 
 /*
 =====================================================================
+Custom engage duel function
+=====================================================================
+*/
+extern int saberOffSound;
+extern int saberOnSound;
+
+void JKPlus_EngageDuel(gentity_t *ent, int type)
+{
+	trace_t tr;
+	vec3_t forward, fwdOrg;
+
+	if (!g_privateDuel.integer)
+	{
+		return;
+	}
+
+	if (g_gametype.integer == GT_TOURNAMENT)
+	{ //rather pointless in this mode..
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NODUEL_GAMETYPE")));
+		return;
+	}
+
+	if (g_gametype.integer >= GT_TEAM)
+	{ //no private dueling in team modes
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NODUEL_GAMETYPE")));
+		return;
+	}
+
+	if (ent->client->ps.duelTime >= level.time)
+	{
+		return;
+	}
+
+	if (ent->client->ps.weapon != WP_SABER)
+	{
+		return;
+	}
+
+	/*
+	if (!ent->client->ps.saberHolstered)
+	{ //must have saber holstered at the start of the duel
+		return;
+	}
+	*/
+	//NOTE: No longer doing this..
+
+	if (ent->client->ps.saberInFlight)
+	{
+		return;
+	}
+
+	if (ent->client->ps.duelInProgress)
+	{
+		return;
+	}
+
+	// Tr!Force: [Duel] Allow multiple duels
+	if (jkcvar_allowMultiDuel.integer != 1)
+	{
+		//New: Don't let a player duel if he just did and hasn't waited 10 seconds yet (note: If someone challenges him, his duel timer will reset so he can accept)
+		if (ent->client->ps.fd.privateDuelTime > level.time)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_JUSTDID")));
+			return;
+		}
+
+		if (G_OtherPlayersDueling())
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "CANTDUEL_BUSY")));
+			return;
+		}
+	}
+
+	AngleVectors(ent->client->ps.viewangles, forward, NULL, NULL);
+
+	fwdOrg[0] = ent->client->ps.origin[0] + forward[0] * 256;
+	fwdOrg[1] = ent->client->ps.origin[1] + forward[1] * 256;
+	fwdOrg[2] = (ent->client->ps.origin[2] + ent->client->ps.viewheight) + forward[2] * 256;
+
+	trap_Trace(&tr, ent->client->ps.origin, NULL, NULL, fwdOrg, ent->s.number, MASK_PLAYERSOLID);
+
+	if (tr.fraction != 1 && tr.entityNum < MAX_CLIENTS)
+	{
+		gentity_t *challenged = &g_entities[tr.entityNum];
+
+		if (!challenged || !challenged->client || !challenged->inuse ||
+			challenged->health < 1 || challenged->client->ps.stats[STAT_HEALTH] < 1 ||
+			challenged->client->ps.weapon != WP_SABER || challenged->client->ps.duelInProgress ||
+			challenged->client->ps.saberInFlight)
+		{
+			return;
+		}
+
+		if (g_gametype.integer >= GT_TEAM && OnSameTeam(ent, challenged))
+		{
+			return;
+		}
+
+		// Tr!Force: [Ignore] Apply duel ignore
+		if (JKPlus_IsClientIgnored("duel", challenged->s.number, ent->s.number))
+		{
+			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
+			return;
+		}
+		if (JKPlus_IsClientIgnored("duel", ent->s.number, challenged->s.number))
+		{
+			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
+			return;
+		}
+
+		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
+		{
+			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
+
+			ent->client->ps.duelInProgress = qtrue;
+			challenged->client->ps.duelInProgress = qtrue;
+
+			ent->client->ps.duelTime = level.time + 2000;
+			challenged->client->ps.duelTime = level.time + 2000;
+
+			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
+			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
+
+			// Tr!Force: [Duel] Default start health and shield
+			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0)
+			{
+				ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
+				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
+
+				challenged->client->ps.stats[STAT_HEALTH] = challenged->health = jkcvar_duelStartHealth.integer;
+				challenged->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
+			}
+
+			//Holster their sabers now, until the duel starts (then they'll get auto-turned on to look cool)
+
+			if (!ent->client->ps.saberHolstered)
+			{
+				G_Sound(ent, CHAN_AUTO, saberOffSound);
+				ent->client->ps.weaponTime = 400;
+				ent->client->ps.saberHolstered = qtrue;
+			}
+			if (!challenged->client->ps.saberHolstered)
+			{
+				G_Sound(challenged, CHAN_AUTO, saberOffSound);
+				challenged->client->ps.weaponTime = 400;
+				challenged->client->ps.saberHolstered = qtrue;
+			}
+		}
+		else
+		{
+			if (jkcvar_allowForceDuel.integer) 
+			{
+				if (type) 
+				{
+					//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
+					trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n(Full force)\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n(Full force)\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					
+					ent->client->pers.JKPlusForceDuel = type;
+					challenged->client->pers.JKPlusForceDuel = type;
+				}
+				else 
+				{
+					//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
+					trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n(No force)\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n(No force)\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+				}
+			}
+			else 
+			{
+				//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
+				trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+				trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+			}
+		}
+
+		challenged->client->ps.fd.privateDuelTime = 0; //reset the timer in case this player just got out of a duel. He should still be able to accept the challenge.
+
+		ent->client->ps.forceHandExtend = HANDEXTEND_DUELCHALLENGE;
+		ent->client->ps.forceHandExtendTime = level.time + 1000;
+
+		ent->client->ps.duelIndex = challenged->s.number;
+		ent->client->ps.duelTime = level.time + 5000;
+	}
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */
@@ -457,8 +645,8 @@ void JKPlus_ClientCommand(int clientNum)
 				"^5----------\n"
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Ranking\n"
-				"^3Emotes         Commands       Build\n"
-				"^3About          Credits        \n"
+				"^3Emotes         Commands       Duels\n"
+				"^3Build          About          Credits\n"
 				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
 				return;
 		}
@@ -498,6 +686,19 @@ void JKPlus_ClientCommand(int clientNum)
 				"^3Victory        Victory2       Waiting       WatchOut    Writing     Writing2\n"
 				"^7\""));
 				return;
+		}
+		else if (!Q_stricmp(arg1, "duels"))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \""
+				"^5[^7 Duels ^5]^7\n"
+				"^7Engage different duel challenge to another players\n"
+				"^7You can assign to a key using the following command: ^2/bind engage_duel_<type>\n"
+				"^5----------\n"
+				"^7Command list:\n"
+				"^3engage_duel\n"
+				"^3engage_duel_force\n"
+				"^7\""));
+			return;
 		}
 		else
 		{
@@ -601,7 +802,7 @@ void JKPlus_ClientCommand(int clientNum)
 				}
 				else if (ignored == ent->client->ps.clientNum)
 				{
-					trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\"", arg2));
+					trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
 					return;
 				}
 				else if (!g_entities[ignored].inuse)
@@ -625,6 +826,18 @@ void JKPlus_ClientCommand(int clientNum)
 					}
 				}
 			}
+		}
+	}
+	else if (Q_stricmp(cmd, "engage_duel_force") == 0)
+	{
+		if (!jkcvar_allowForceDuel.integer)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"Force duel is disabled by the server\n\""));
+			JKPlus_EngageDuel(ent, 0);
+		}
+		else
+		{
+			JKPlus_EngageDuel(ent, 1);
 		}
 	}
 	else if (Q_stricmp(cmd, "testcmd") == 0)

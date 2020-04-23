@@ -3058,6 +3058,11 @@ void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		{
 			return;
 		}
+		// Tr!Force: [Duels] Not in force duel
+		else if (attacker && attacker->client && mod != MOD_SABER && attacker->client->pers.JKPlusForceDuel == 0 && jkcvar_allowForceDuel.integer)
+		{
+			return;
+		}
 		else if (attacker && attacker->client && mod != MOD_SABER)
 		{
 			return;

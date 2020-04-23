@@ -344,6 +344,8 @@ typedef struct {
 	int			voteCount;			// to prevent people from constantly calling votes
 	int			teamVoteCount;		// to prevent people from constantly calling votes
 	qboolean	teamInfo;			// send team overlay updates?
+
+	int			JKPlusForceDuel;		// Tr!Force: [Duel] Client is in force duel
 } clientPersistant_t;
 
 

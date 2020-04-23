@@ -1318,6 +1318,15 @@ qboolean BG_HasYsalamiri(int gametype, playerState_t *ps)
 	return qfalse;
 }
 
+// Tr!Force: [Duel] Force power valid on force duel
+#ifdef JK2_GAME
+extern	vmCvar_t	jkcvar_allowForceDuel;
+extern	qboolean	JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps);
+#elif defined(JK2_CGAME) || defined(JK2_UI)
+vmCvar_t	jkcvar_allowForceDuel;
+qboolean	JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps) { return 0; };
+#endif
+
 qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t power)
 {
 	if (BG_HasYsalamiri(gametype, ps))
@@ -1337,7 +1346,11 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 		{
 			if (!ps->saberLockFrame || power != FP_PUSH)
 			{
-				return qfalse;
+				// Tr!Force: [Duel] Check force duel
+				if (!JKPlusForcePowerValid(power, ps) && jkcvar_allowForceDuel.integer)
+				{
+					return qfalse;
+				}
 			}
 		}
 	}
