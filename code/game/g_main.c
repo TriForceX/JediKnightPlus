@@ -139,6 +139,7 @@ vmCvar_t	g_mv_forcePowerDisableMode;
 
 // New cvars
 vmCvar_t	g_submodelWorkaround;
+vmCvar_t	g_botTeamAutoBalance;
 
 vmCvar_t	g_MVSDK;
 
@@ -311,6 +312,9 @@ static cvarTable_t		gameCvarTable[] = {
 	// So we have a cvar in the game module to let servers enable the clientside workaround for bigger maps, defaulting to "0".
 	// Clients supporting the workaround are going to inform the server about it in their userinfo, no matter what this cvar is set to.
 	{ &g_submodelWorkaround, "g_submodelWorkaround", "0", CVAR_ARCHIVE, 0, qtrue },
+
+	// Bots reset their teams on map_restart and map change on basejk. This is often undesired, so let the host decide.
+	{ &g_botTeamAutoBalance, "g_botTeamAutoBalance", "1", CVAR_ARCHIVE, 0, qtrue },
 
 	{ &g_MVSDK, "g_MVSDK", MVSDK_VERSION, CVAR_ROM | CVAR_SERVERINFO, 0, qfalse },
 };
@@ -1000,7 +1004,7 @@ void AddTournamentPlayer( void ) {
 			continue;
 		}
 
-		if ( !nextInLine || client->sess.spectatorTime < nextInLine->sess.spectatorTime ) {
+		if ( !nextInLine || client->sess.spectatorOrder > nextInLine->sess.spectatorOrder ) {
 			nextInLine = client;
 		}
 	}
@@ -1215,10 +1219,10 @@ int QDECL SortRanks( const void *a, const void *b ) {
 
 	// then spectators
 	if ( ca->sess.sessionTeam == TEAM_SPECTATOR && cb->sess.sessionTeam == TEAM_SPECTATOR ) {
-		if ( ca->sess.spectatorTime < cb->sess.spectatorTime ) {
+		if ( ca->sess.spectatorOrder > cb->sess.spectatorOrder ) {
 			return -1;
 		}
-		if ( ca->sess.spectatorTime > cb->sess.spectatorTime ) {
+		if ( ca->sess.spectatorOrder < cb->sess.spectatorOrder ) {
 			return 1;
 		}
 		return 0;
@@ -1315,7 +1319,7 @@ void CalculateRanks( void ) {
 
 		if (currentWinner && currentWinner->client)
 		{
-			trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s %s\n\"",
+			G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s %s\n",
 			currentWinner->client->pers.netname, G_GetStripEdString("SVINGAME", "VERSUS"), level.clients[nonSpecIndex].pers.netname));
 		}
 	}
@@ -2797,6 +2801,11 @@ void	mysrand( unsigned seed ) {
 int		myrand( void ) {
 	myRandSeed = (69069 * myRandSeed + 1);
 	return myRandSeed & 0x7fff;
+}
+
+void G_StringAppendSubstring( char *dst, size_t dstSize, const char *src, size_t srcLen )
+{
+	Q_strcat( dst, strlen(dst)+srcLen+1 >= dstSize ? dstSize : strlen(dst)+srcLen+1, src );
 }
 
 /*

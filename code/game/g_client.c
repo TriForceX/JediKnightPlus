@@ -240,7 +240,7 @@ void JMSaberTouch(gentity_t *self, gentity_t *other, trace_t *trace)
 		other->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
 	}
 
-	trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"", other->client->pers.netname, G_GetStripEdString("SVINGAME", "BECOMEJM")) );
+	G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n", other->client->pers.netname, G_GetStripEdString("SVINGAME", "BECOMEJM")) );
 
 	other->client->ps.isJediMaster = qtrue;
 	other->client->ps.saberIndex = self->s.number;
@@ -1573,13 +1573,19 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	if ((ent->r.svFlags & SVF_BOT) && g_gametype.integer >= GT_TEAM)
 	{
-		if (allowTeamReset)
+		if (allowTeamReset && g_botTeamAutoBalance.integer)
 		{
 			const char *team = "Red";
 			int preSess;
 
+			if ( !ent->client->pers.botDelayed )
+			{ // Delay bots until all clients are connected
+				ent->client->pers.botDelayed = qtrue;
+				return;
+			}
+
 			//SetTeam(ent, "");
-			ent->client->sess.sessionTeam = PickTeam(-1);
+			ent->client->sess.sessionTeam = PickTeam(clientNum);
 			trap_GetUserinfo(clientNum, userinfo, MAX_INFO_STRING);
 
 			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
@@ -2348,6 +2354,148 @@ void ClientDisconnect( int clientNum ) {
 	}
 
 	G_ClearClientLog(clientNum);
+}
+
+#define MAX_CLIENT_CENTERPRINT_LINELENGTH 50
+#define MAX_CLIENT_CENTERPRINT_LENGTH 1024
+void G_CenterPrint( int targetNum, int autoLineWraps, const char *message )
+{
+	if ( !autoLineWraps )
+		trap_SendServerCommand( targetNum, va("cp \"%s\"", message) );
+	else
+	{
+		char newMessage[MAX_CLIENT_CENTERPRINT_LENGTH];
+
+		const char *lineStart = message;
+		const char *lineEnd = lineStart;
+		const char *wordStart, *wordEnd;
+		const char *ptr;
+
+		int lineLength;
+		int wordLength;
+		int curLength;
+		int reset;
+		int isMultiLang;
+
+		*newMessage = 0;
+
+		while ( *lineStart && (size_t)(lineStart-message) < strlen(message) )
+		{
+			if ( *newMessage ) Q_strcat( newMessage, sizeof(newMessage), "\n" );
+
+			while ( *lineEnd && *lineEnd != '\n' ) lineEnd++;
+			lineLength = lineEnd - lineStart;
+
+			isMultiLang = 0;
+			ptr = lineStart;
+			while ( ptr < lineEnd-2 )
+			{
+				if ( *ptr == '@' && *(ptr+1) == '@' && *(ptr+2) == '@' )
+				{
+					isMultiLang = 1;
+					break;
+				}
+				ptr++;
+			}
+
+			if ( lineLength > MAX_CLIENT_CENTERPRINT_LINELENGTH || isMultiLang )
+			{ // Now we have to cut the line.
+				wordStart = wordEnd = lineStart;
+				curLength = 0;
+				reset = 0;
+
+				while ( lineStart < lineEnd )
+				{
+					isMultiLang = 0;
+					if ( reset )
+					{
+						curLength = 0;
+						Q_strcat( newMessage, sizeof(newMessage), "\n" );
+
+						ptr = wordStart;
+						while ( *ptr && (*ptr == ' ' || *ptr == '\t') ) ptr++;
+
+						if ( !Q_IsColorString_1_02(ptr) ) // CenterPrint interprets colors like the 1.02 console
+						{
+							// Find the old color if we don't start with a new color on the next line
+							ptr = wordStart - 1;
+							while ( *ptr && ptr >= lineStart )
+							{
+								if ( Q_IsColorString_1_02(ptr) )
+								{
+									if ( *(ptr+1) == '7' ) break; // Don't redo white
+
+									Q_strcat( newMessage, sizeof(newMessage), va("^%c", *(ptr+1)) );
+									curLength += 2;
+									reset = 2;
+									break;
+								}
+								ptr--;
+							}
+						}
+					}
+					wordEnd = wordStart;
+					while ( *wordEnd != ' ' && *wordEnd != '\t' && *wordEnd != '\n' && wordEnd < lineEnd ) wordEnd++;
+					wordLength = wordEnd - wordStart;
+
+					if ( wordEnd > lineEnd ) // Make sure the word is still in our line and doesn't exceed it
+						break;
+
+					if ( wordLength >= 3 && *wordStart == '@' && *(wordStart+1) == '@' && *(wordStart+2) == '@' )
+						isMultiLang = 1;
+
+					// & 1: move whole words to the next line (prefered if combined with 2)
+					// & 2: cut words into pieces
+					if ( curLength + wordLength > MAX_CLIENT_CENTERPRINT_LINELENGTH || isMultiLang )
+					{ // The next word would make the line too long
+						if ( (autoLineWraps & 2) && (!curLength || !(autoLineWraps & 1)) && !isMultiLang )
+						{ // We want to cut the word into pieces
+							if ( curLength && !reset ) Q_strcat( newMessage, sizeof(newMessage), " " );
+
+							wordEnd = ptr = wordStart + (MAX_CLIENT_CENTERPRINT_LINELENGTH - curLength);
+							ptr = wordEnd - 1;
+
+							// Make sure we don't accidently split a colorcode
+							while ( *ptr && ptr > wordStart && *ptr == '^' ) ptr--;
+							if ( ptr == wordStart ) ptr = wordEnd - 1;
+
+							wordEnd = ptr + 1;
+
+							G_StringAppendSubstring( newMessage, sizeof(newMessage), wordStart, wordEnd-wordStart );
+							wordStart = wordEnd;
+						}
+						else if ( !curLength || reset == 2 )
+						{ // We don't to split it, so just append the whole thing and let the client cut it off
+							G_StringAppendSubstring( newMessage, sizeof(newMessage), wordStart, wordLength );
+							wordStart = wordEnd + 1;
+						}
+
+						// Reset the counters
+						reset = 1;
+					}
+					else
+					{ // Append the word
+						// If this isn't the first word add a space
+						if ( curLength && !reset ) Q_strcat( newMessage, sizeof(newMessage), " " );
+						G_StringAppendSubstring( newMessage, sizeof(newMessage), wordStart, wordLength );
+						curLength += wordLength + 1;
+						wordStart = wordEnd + 1;
+
+						reset = 0;
+					}
+
+					// Shouldn't get here
+					if ( !*wordEnd ) break;
+				}
+			}
+			else G_StringAppendSubstring( newMessage, sizeof(newMessage), lineStart, lineLength );
+
+			// Next line
+			lineStart = lineEnd + 1;
+			lineEnd = lineStart;
+		}
+		trap_SendServerCommand( targetNum, va("cp \"%s\"", newMessage) );
+	}
 }
 
 

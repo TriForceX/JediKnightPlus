@@ -550,13 +550,13 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 	client->ps.fd.forceDoInit = 1; //every time we change teams make sure our force powers are set right
 
 	if ( client->sess.sessionTeam == TEAM_RED ) {
-		trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"",
+		G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n",
 			client->pers.netname, G_GetStripEdString("SVINGAME", "JOINEDTHEREDTEAM")) );
 	} else if ( client->sess.sessionTeam == TEAM_BLUE ) {
-		trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"",
+		G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n",
 		client->pers.netname, G_GetStripEdString("SVINGAME", "JOINEDTHEBLUETEAM")));
 	} else if ( client->sess.sessionTeam == TEAM_SPECTATOR && oldTeam != TEAM_SPECTATOR ) {
-		trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"",
+		G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n",
 		client->pers.netname, G_GetStripEdString("SVINGAME", "JOINEDTHESPECTATORS")));
 	} else if ( client->sess.sessionTeam == TEAM_FREE ) {
 		if (g_gametype.integer == GT_TOURNAMENT)
@@ -566,12 +566,12 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 
 			if (currentWinner && currentWinner->client)
 			{
-				trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s %s\n\"",
+				G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s %s\n",
 				currentWinner->client->pers.netname, G_GetStripEdString("SVINGAME", "VERSUS"), client->pers.netname));
 			}
 			else
 			{
-				trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"",
+				G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n",
 				client->pers.netname, G_GetStripEdString("SVINGAME", "JOINEDTHEBATTLE")));
 			}
 			*/
@@ -579,7 +579,7 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 		}
 		else
 		{
-			trap_SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"",
+			G_CenterPrint( -1, 3, va("%s" S_COLOR_WHITE " %s\n",
 			client->pers.netname, G_GetStripEdString("SVINGAME", "JOINEDTHEBATTLE")));
 		}
 	}
@@ -757,7 +757,15 @@ void SetTeam( gentity_t *ent, char *s ) {
 	// they go to the end of the line for tournements
 	if ( team == TEAM_SPECTATOR ) {
 		if ( (g_gametype.integer != GT_TOURNAMENT) || (oldTeam != TEAM_SPECTATOR) )	{//so you don't get dropped to the bottom of the queue for changing skins, etc.
-			client->sess.spectatorTime = level.time;
+			gclient_t *otherClient;
+			int i;
+			for ( i = 0; i < level.maxclients; i++ ) {
+				otherClient = &g_clients[i];
+				if ( otherClient == client )
+					otherClient->sess.spectatorOrder = 0;
+				else if ( otherClient->pers.connected >= CON_CONNECTING )
+					otherClient->sess.spectatorOrder++;
+			}
 		}
 	}
 
@@ -1691,6 +1699,14 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	} 
 	else
 	{
+		if ( !Q_stricmp( arg1, "g_doWarmup" ) || !Q_stricmp( arg1, "timelimit" ) || !Q_stricmp( arg1, "fraglimit" ) )
+		{
+			if ( strlen(arg2) >= MAX_CVAR_VALUE_STRING )
+			{
+				trap_SendServerCommand( ent-g_entities, "print \"The specified value is too long.\n" );
+				return;
+			}
+		}
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "%s \"%s\"", arg1, arg2 );
 		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "%s", level.voteString );
 	}
@@ -2352,8 +2368,8 @@ void BaseJK2_Cmd_EngageDuel_f(gentity_t *ent) // Tr!Force: [Duel] BaseJK2 engage
 		else
 		{
 			//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
-			trap_SendServerCommand( challenged-g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")) );
-			trap_SendServerCommand( ent-g_entities, va("cp \"%s %s\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
+			G_CenterPrint( challenged-g_entities, 3, va("%s" S_COLOR_WHITE " %s\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")) );
+			G_CenterPrint( ent-g_entities, 3, va("%s %s\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
 		}
 
 		challenged->client->ps.fd.privateDuelTime = 0; //reset the timer in case this player just got out of a duel. He should still be able to accept the challenge.
@@ -2478,22 +2494,28 @@ ClientCommand
 void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client command function
 	gentity_t *ent;
 	char	cmd[MAX_TOKEN_CHARS];
+	char token[BIG_INFO_STRING]; // As the engine uses Cmd_TokenizeString2 a single parameter is theoretically not limited by MAX_TOKEN_CHARS, but by BIG_INFO_STRING
+	int i, argc;
 
 	ent = g_entities + clientNum;
 	if ( !ent->client || ent->client->pers.connected < CON_CONNECTED ) {
 		return;		// not fully in game yet
 	}
 
+	// Filter '\n' and '\r'
+	argc = trap_Argc();
+	for ( i = 0; i < argc; i++ )
+	{
+		trap_Argv( i, token, sizeof(token) );
+		if ( strchr(token, '\n') || strchr(token, '\r') )
+		{
+			trap_SendServerCommand( clientNum, "print \"Invalid input - command blocked.\n\"" );
+			G_Printf("ClientCommand: client '%i' (%s) tried to use an invalid command - command blocked.\n", clientNum, ent->client->pers.netname);
+			return;
+		}
+	}
 
 	trap_Argv( 0, cmd, sizeof( cmd ) );
-	
-	// Filter "\n" and "\r"
-	if( strchr(ConcatArgs(0), '\n') != NULL || strchr(ConcatArgs(0), '\r') != NULL )
-	{
-		trap_SendServerCommand( clientNum, "print \"Invalid input - command blocked.\n\"" );
-		G_Printf("ClientCommand: client '%i' (%s) tried to use an invalid command - command blocked.\n", clientNum, ent->client->pers.netname);
-		return;
-	}
 
 	//rww - redirect bot commands
 	if (strstr(cmd, "bot_") && AcceptBotCommand(cmd, ent))

@@ -2,6 +2,9 @@
 //
 #include "g_local.h"
 
+// Useful when trying to store remaining time across map changes
+#define LevelTimeDiff( timeVal )		( timeVal > level.time ? timeVal - level.time : 0 )
+#define RestoreLevelTimeDiff( timeVal )	( timeVal = timeVal ? level.time + timeVal : 0 )
 
 /*
 =======================================================================
@@ -29,7 +32,7 @@ void G_WriteClientSessionData( gclient_t *client ) {
 		" %i\""		// Tr!Force: [ignore] Keep ignore chat
 		" %i\"",	// Tr!Force: [ignore] Keep ignore duel
 		client->sess.sessionTeam,
-		client->sess.spectatorTime,
+		client->sess.spectatorOrder,
 		client->sess.spectatorState,
 		client->sess.spectatorClient,
 		client->sess.wins,
@@ -86,7 +89,7 @@ void G_ReadSessionData( gclient_t *client ) {
 		" %i\""		// Tr!Force: [ignore] Keep ignore chat
 		" %i\"",	// Tr!Force: [ignore] Keep ignore duel
 		&sessionTeam,                 // bk010221 - format
-		&client->sess.spectatorTime,
+		&client->sess.spectatorOrder,
 		&spectatorState,              // bk010221 - format
 		&client->sess.spectatorClient,
 		&client->sess.wins,
@@ -215,7 +218,7 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 	}
 
 	sess->spectatorState = SPECTATOR_FREE;
-	sess->spectatorTime = level.time;
+	sess->spectatorOrder = 0;
 
 	G_WriteClientSessionData( client );
 }
