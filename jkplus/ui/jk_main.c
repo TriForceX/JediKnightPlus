@@ -175,7 +175,7 @@ const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhan
 	static int lastTime = 0;
 	*handle1 = *handle2 = *handle3 = *handle4 = -1;
 
-	if(feederID == FEEDER_EMOTES)
+	if(feederID == FEEDER_JK_EMOTES)
 	{
 		int actual;
 		return JKPlus_UI_EmotesList(index, &actual);
@@ -195,7 +195,7 @@ int JKPlus_UI_FeederCount(float feederID)
 {
 	switch ((int)feederID)
 	{
-		case FEEDER_EMOTES:
+		case FEEDER_JK_EMOTES:
 			JKPlusUiInfo.emotesCount = (sizeof(emotesList) / sizeof(emotesList[0]));
 			return JKPlusUiInfo.emotesCount;
 	}
@@ -214,7 +214,7 @@ qboolean JKPlus_UI_FeederSelection(float feederID, int index)
 {
 	static char info[MAX_STRING_CHARS];
 
-	if (feederID == FEEDER_EMOTES)
+	if (feederID == FEEDER_JK_EMOTES)
 	{
 		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", emotesList[index].emotesCmd));
 	}

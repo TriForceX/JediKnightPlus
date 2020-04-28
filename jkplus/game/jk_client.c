@@ -116,7 +116,7 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 			// Random message
 			if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKPlusRandomBegin[0], "") == 0)
 			{
-				int random = rand() % level.JKPlusRandomBeginCount;
+				int random = myrand() % level.JKPlusRandomBeginCount;
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKPlusRandomBegin[random]));
 			}
 			else 

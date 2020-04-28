@@ -1053,7 +1053,7 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 		return;
 	}
 	// Tr!Force: [Duel] Allow duel chat
-	if (jkcvar_allowDuelChat.integer == 0) 
+	if (!jkcvar_allowDuelChat.integer) 
 	{
 		// no chatting to players in tournements
 		if ((g_gametype.integer == GT_TOURNAMENT)

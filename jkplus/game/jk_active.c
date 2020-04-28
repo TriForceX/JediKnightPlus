@@ -76,7 +76,7 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec)
 		if (client->JKPlusMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
 			JKPlus_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
-			trap_SendServerCommand(client->ps.clientNum, va("cp \"%s\nTime: %d\"", serverMotd, client->JKPlusMotdTime));
+			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->JKPlusMotdTime));
 			client->JKPlusMotdTime--;
 		}
 

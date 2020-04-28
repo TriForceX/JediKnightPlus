@@ -392,6 +392,14 @@ void JKPlus_CallVote(gentity_t *ent)
 			trap_SendServerCommand(ent - g_entities, va("print \"Voting not allowed for %s\n\"", arg1));
 			return;
 		}
+		if (!Q_stricmp(arg1, "g_doWarmup") || !Q_stricmp(arg1, "timelimit") || !Q_stricmp(arg1, "fraglimit"))
+		{
+			if (strlen(arg2) >= MAX_CVAR_VALUE_STRING)
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"The specified value is too long.\n");
+				return;
+			}
+		}
 		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
 		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
 	}
@@ -573,25 +581,25 @@ void JKPlus_EngageDuel(gentity_t *ent, int type)
 			{
 				if (type) 
 				{
-					//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
-					trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n(Full force)\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n(Full force)\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					// Print full force duel initiation in private
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n(Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s\n(Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 					
 					ent->client->pers.JKPlusForceDuel = type;
 					challenged->client->pers.JKPlusForceDuel = type;
 				}
 				else 
 				{
-					//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
-					trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n(No force)\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n(No force)\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					// Print full no-force duel initiation in private
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n(No force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s\n(No force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 				}
 			}
 			else 
 			{
 				//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
-				trap_SendServerCommand(challenged - g_entities, va("cp \"%s" S_COLOR_WHITE " %s\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-				trap_SendServerCommand(ent - g_entities, va("cp \"%s %s\n\"", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+				G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+				G_CenterPrint(ent - g_entities, 3, va("%s %s\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 			}
 		}
 
@@ -612,18 +620,32 @@ Client command function
 */
 void JKPlus_ClientCommand(int clientNum)
 {
-	gentity_t *ent = &g_entities[clientNum];
+	gentity_t *ent;
+	char	cmd[MAX_TOKEN_CHARS];
+	char token[BIG_INFO_STRING]; // As the engine uses Cmd_TokenizeString2 a single parameter is theoretically not limited by MAX_TOKEN_CHARS, but by BIG_INFO_STRING
+	int i, argc;
 
-	char cmd[MAX_TOKEN_CHARS];
+	ent = g_entities + clientNum;
+	if (!ent->client || ent->client->pers.connected < CON_CONNECTED) {
+		return;		// not fully in game yet
+	}
 
-	if (!ent->inuse || !ent->client)
+	// Filter '\n' and '\r'
+	argc = trap_Argc();
+	for (i = 0; i < argc; i++)
 	{
-		return;
+		trap_Argv(i, token, sizeof(token));
+		if (strchr(token, '\n') || strchr(token, '\r'))
+		{
+			trap_SendServerCommand(clientNum, "print \"Invalid input - command blocked.\n\"");
+			G_Printf("ClientCommand: client '%i' (%s) tried to use an invalid command - command blocked.\n", clientNum, ent->client->pers.netname);
+			return;
+		}
 	}
 
 	trap_Argv(0, cmd, sizeof(cmd));
 
-	// Start commands
+	// Help command
 	if (Q_stricmp(cmd, "help") == 0)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
@@ -661,8 +683,8 @@ void JKPlus_ClientCommand(int clientNum)
 				"^3emote\n"
 				"^3ignore\n"
 				"^3dropflag\n"
-				"^3showmotd\n"
 				"^3callvote\n"
+				"^3motd\n"
 				"^7\""));
 			return;
 		}
@@ -706,6 +728,7 @@ void JKPlus_ClientCommand(int clientNum)
 			return;
 		}
 	}
+	// Emote command
 	else if (Q_stricmp(cmd, "emote") == 0)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
@@ -726,17 +749,19 @@ void JKPlus_ClientCommand(int clientNum)
 			}
 		}
 	}
+	// Drop flag command
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
 		JKPlus_dropFlag(ent, clientNum);
 	}
-	else if (Q_stricmp(cmd, "showmotd") == 0)
+	else if (Q_stricmp(cmd, "motd") == 0)
 	{
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
 			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
+	// Ignore command
 	else if (Q_stricmp(cmd, "ignore") == 0)
 	{
 		qboolean ignore;
@@ -828,6 +853,7 @@ void JKPlus_ClientCommand(int clientNum)
 			}
 		}
 	}
+	// Engage duel force command
 	else if (Q_stricmp(cmd, "engage_duel_force") == 0)
 	{
 		if (!jkcvar_allowForceDuel.integer)
@@ -840,6 +866,7 @@ void JKPlus_ClientCommand(int clientNum)
 			JKPlus_EngageDuel(ent, 1);
 		}
 	}
+	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
