@@ -105,18 +105,18 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Show a welcome message
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
-		// Current mod version
-		trap_SendServerCommand(clientNum, va("print \""
-			"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n"
-			"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
-
 		// Show base client begin message
 		if (g_gametype.integer != GT_TOURNAMENT)
 		{
+			// Current mod version
+			trap_SendServerCommand(clientNum, va("print \""
+				"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n"
+				"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
+
 			// Random message
 			if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKPlusRandomBegin[0], "") == 0)
 			{
-				int random = myrand() % level.JKPlusRandomBeginCount;
+				int random = JKPlus_Rand() % level.JKPlusRandomBeginCount;
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKPlusRandomBegin[random]));
 			}
 			else 

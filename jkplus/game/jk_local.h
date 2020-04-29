@@ -154,4 +154,6 @@ void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
 int			JKPlus_ClientNumberFromArg(char* name);
 char		*JKPlus_ConcatArgs(int start);
-void		JKPlus_ingameGameplay(char *gameplay);
+void		JKPlus_Gameplay(char *gameplay);
+void		JKPlus_sRand(unsigned seed);
+int			JKPlus_Rand(void);

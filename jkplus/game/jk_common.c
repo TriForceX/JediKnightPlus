@@ -416,3 +416,21 @@ void JKPlus_gamePlay(char *gameplay)
 		trap_Cvar_Set("jk_gamePlay", va("%i", jk2gameplay));
 	}
 }
+
+/*
+=====================================================================
+Rand alternative (Linux rand() behaves different than on Winodws or qvm
+=====================================================================
+*/
+static int JKPlusRandSeed = 0;
+
+void JKPlus_sRand(unsigned seed) 
+{
+	JKPlusRandSeed = seed;
+}
+
+int	JKPlus_Rand(void) 
+{
+	JKPlusRandSeed = (69069 * JKPlusRandSeed + 1);
+	return JKPlusRandSeed & 0x7fff;
+}

@@ -159,12 +159,17 @@ void JKPlus_G_UpdateCvars(void)
 				if(cv->trackChange)
 				{
 					// Server news and random begin warning
-					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews) && !(Q_stricmp(cv->vmCvar->string, "0") == 0 || Q_stricmp(cv->vmCvar->string, "paused") == 0))
+					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews))
 					{
-						G_Printf("%s will load the files upon restarting.\n", cv->cvarName);
+						if (!(Q_stricmp(cv->vmCvar->string, "0") == 0 || Q_stricmp(cv->vmCvar->string, "paused") == 0)) {
+							G_Printf("%s will load the files upon restarting.\n", cv->cvarName);
+						}
 					}
 					// Normal tracking
-					trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
+					else 
+					{
+						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
+					}
 				}
 
 				// Pause game
