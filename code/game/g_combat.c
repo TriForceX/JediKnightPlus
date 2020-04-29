@@ -3052,31 +3052,56 @@ void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		return;
 	}
 
-	if (targ && targ->client && targ->client->ps.duelInProgress)
+	if (jkcvar_allowCustomDuel.integer) 
 	{
-		if (attacker && attacker->client && attacker->s.number != targ->client->ps.duelIndex)
+		if (targ && targ->client && targ->client->ps.duelInProgress)
 		{
-			return;
+			if (attacker && attacker->client && attacker->s.number != targ->client->ps.duelIndex)
+			{
+				return;
+			}
+			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
+			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.JKPlusCustomDuel == 1))
+			{
+				return;
+			}
 		}
-		// Tr!Force: [Duels] Not in force duel
-		else if (attacker && attacker->client && mod != MOD_SABER && attacker->client->pers.JKPlusForceDuel == 0 && jkcvar_allowForceDuel.integer)
+		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			return;
-		}
-		else if (attacker && attacker->client && mod != MOD_SABER)
-		{
-			return;
+			if (targ && targ->client && targ->s.number != attacker->client->ps.duelIndex)
+			{
+				return;
+			}
+			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
+			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.JKPlusCustomDuel == 1))
+			{
+				return;
+			}
 		}
 	}
-	if (attacker && attacker->client && attacker->client->ps.duelInProgress)
+	else 
 	{
-		if (targ && targ->client && targ->s.number != attacker->client->ps.duelIndex)
+		if (targ && targ->client && targ->client->ps.duelInProgress)
 		{
-			return;
+			if (attacker && attacker->client && attacker->s.number != targ->client->ps.duelIndex)
+			{
+				return;
+			}
+			else if (attacker && attacker->client && mod != MOD_SABER)
+			{
+				return;
+			}
 		}
-		else if (targ && targ->client && mod != MOD_SABER)
+		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			return;
+			if (targ && targ->client && targ->s.number != attacker->client->ps.duelIndex)
+			{
+				return;
+			}
+			else if (targ && targ->client && mod != MOD_SABER)
+			{
+				return;
+			}
 		}
 	}
 

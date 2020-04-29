@@ -577,22 +577,22 @@ void JKPlus_EngageDuel(gentity_t *ent, int type)
 		}
 		else
 		{
-			if (jkcvar_allowForceDuel.integer) 
+			if (jkcvar_allowCustomDuel.integer) 
 			{
-				if (type) 
+				if (type == 1) 
 				{
 					// Print full force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n(Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s\n(Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 					
-					ent->client->pers.JKPlusForceDuel = type;
-					challenged->client->pers.JKPlusForceDuel = type;
+					ent->client->pers.JKPlusCustomDuel = type;
+					challenged->client->pers.JKPlusCustomDuel = type;
 				}
 				else 
 				{
 					// Print full no-force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n(No force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s\n(No force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (No force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (No force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 				}
 			}
 			else 
@@ -856,9 +856,9 @@ void JKPlus_ClientCommand(int clientNum)
 	// Engage duel force command
 	else if (Q_stricmp(cmd, "engage_duel_force") == 0)
 	{
-		if (!jkcvar_allowForceDuel.integer)
+		if (!jkcvar_allowCustomDuel.integer)
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Force duel is disabled by the server\n\""));
+			trap_SendServerCommand(ent - g_entities, va("print \"^3Force duel ^7is disabled by the server\n\""));
 			JKPlus_EngageDuel(ent, 0);
 		}
 		else

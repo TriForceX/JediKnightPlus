@@ -346,7 +346,7 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
-	int			JKPlusForceDuel;		// Tr!Force: [Duel] Client is in force duel
+	int			JKPlusCustomDuel;		// Tr!Force: [CustomDuel] Client is in force duel
 } clientPersistant_t;
 
 

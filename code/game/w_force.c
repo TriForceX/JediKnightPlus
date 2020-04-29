@@ -620,14 +620,12 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
-	
-	// Tr!Force: [Duel] Check usage in force duel
-	if (jkcvar_allowForceDuel.integer)
+	// Tr!Force: [CustomDuel] Check usage in force duel
+	if (jkcvar_allowCustomDuel.integer)
 	{
-		//Dueling fighters cannot use force powers on others, with the exception of force push when locked with each other
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.JKPlusForceDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->pers.JKPlusCustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
@@ -635,7 +633,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.JKPlusForceDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->pers.JKPlusCustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}
@@ -751,16 +749,17 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 	return WP_ForcePowerAvailable( self, forcePower );
 }
 
-// Tr!Force: [Duel] Force power valid on force duel
+// Tr!Force: [CustomDuel] Force power valid on force duel
 qboolean JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps)
 {
 	gentity_t	*ent = &g_entities[ps->clientNum];
+
 	if (!ent || !ent->client || ent->s.number > 31)
 	{
 		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if ((ent->client->pers.JKPlusForceDuel == 0))
+	if (ent->client->pers.JKPlusCustomDuel == 0)
 	{
 		return qfalse;
 	}

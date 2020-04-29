@@ -1169,27 +1169,36 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
 			ent->client->ps.duelInProgress = 0;
-			ent->client->pers.JKPlusForceDuel = 0; // Tr!Force: [Duel] Turn off force duels
+			ent->client->pers.JKPlusCustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
 		{
-			ent->client->ps.duelInProgress = 0;
-			duelAgainst->client->ps.duelInProgress = 0;
-
-			// Tr!Force: [Duel] Turn off force duels
-			ent->client->pers.JKPlusForceDuel = 0;
-			duelAgainst->client->pers.JKPlusForceDuel = 0;
-
-			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
-			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
-
 			// Tr!Force: [Duel] Display duel end stats
 			if (jkcvar_duelEndStats.integer == 1)
 			{
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " won with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " body hits\n\"",
-					ent->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
+				char *duelmessage;
+
+				if(ent->client->pers.JKPlusCustomDuel == 1) {
+					duelmessage = "won a force duel";
+				}
+				else {
+					duelmessage = "won a duel";
+				}
+
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " body hits\n\"",
+					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
 			}
+
+			ent->client->ps.duelInProgress = 0;
+			duelAgainst->client->ps.duelInProgress = 0;
+
+			// Tr!Force: [CustomDuel] Turn off force duels
+			ent->client->pers.JKPlusCustomDuel = 0;
+			duelAgainst->client->pers.JKPlusCustomDuel = 0;
+
+			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
 			//Winner gets full health.. providing he's still alive
 			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
@@ -1242,9 +1251,9 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				ent->client->ps.duelInProgress = 0;
 				duelAgainst->client->ps.duelInProgress = 0;
 
-				// Tr!Force: [Duel] Turn off force duels
-				ent->client->pers.JKPlusForceDuel = 0;
-				duelAgainst->client->pers.JKPlusForceDuel = 0;
+				// Tr!Force: [CustomDuel] Turn off force duels
+				ent->client->pers.JKPlusCustomDuel = 0;
+				duelAgainst->client->pers.JKPlusCustomDuel = 0;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);

@@ -37,7 +37,7 @@ vmCvar_t	jkcvar_serverClosedIP;
 
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowMultiDuel;
-vmCvar_t	jkcvar_allowForceDuel;
+vmCvar_t	jkcvar_allowCustomDuel;
 vmCvar_t	jkcvar_allowDuelChat;
 vmCvar_t	jkcvar_noDuplicatedNames;
 vmCvar_t	jkcvar_chatProtect;
@@ -77,7 +77,7 @@ static cvarTable_t	JKPlusCvarTable[] =
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowForceDuel,			"jk_allowForceDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowCustomDuel,			"jk_allowCustomDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",	CVAR_ARCHIVE,						0, qtrue },
