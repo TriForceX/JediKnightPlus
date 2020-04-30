@@ -177,6 +177,10 @@ void JKPlus_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEINPROGRESS")));
 		return;
 	}
+	if (ent->client->JKPlusVoteWaitTime > 0) {
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->JKPlusVoteWaitTime));
+		return;
+	}
 	if (ent->client->pers.voteCount >= MAX_VOTE_COUNT) {
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "MAXVOTES")));
 		return;
@@ -415,6 +419,9 @@ void JKPlus_CallVote(gentity_t *ent)
 		level.clients[i].ps.eFlags &= ~EF_VOTED;
 	}
 	ent->client->ps.eFlags |= EF_VOTED;
+
+	// Call vote timer
+	ent->client->JKPlusVoteWaitTime = jkcvar_voteWaitTime.integer;
 
 	// Append white colorcode at the end of the display string as workaround for cgame leaking colors
 	Q_strcat(level.voteDisplayString, sizeof(level.voteDisplayString), S_COLOR_WHITE);

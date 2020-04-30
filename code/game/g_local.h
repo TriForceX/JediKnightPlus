@@ -445,6 +445,7 @@ struct gclient_s {
 	int			JKPlusConnectTime;		// Tr!Force: Client connect time
 	int			JKPlusChatTime;			// Tr!Force: Chat protect time
 	int			JKPlusMotdTime;			// Tr!Force: [Motd] Server motd time
+	int			JKPlusVoteWaitTime;		// Tr!Force: [Vote] Player callvote wait time
 };
 
 

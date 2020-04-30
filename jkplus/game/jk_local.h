@@ -12,7 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JK_SHORTNAME   		"JK+"
 #define JK_MAJOR 			"0"
 #define JK_MINOR 			"9"
-#define JK_PATCH  			"4"
+#define JK_PATCH  			"5"
 #define GAMEVERSION			S_COLOR_CYAN JK_SHORTNAME " Mod v" JK_MAJOR "." JK_MINOR "." JK_PATCH
 
 /*
@@ -94,6 +94,7 @@ extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteControl;
 extern	vmCvar_t					jkcvar_voteResults;
+extern	vmCvar_t					jkcvar_voteWaitTime;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;

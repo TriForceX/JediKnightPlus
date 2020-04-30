@@ -47,6 +47,7 @@ vmCvar_t	jkcvar_playerIgnore;
 vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteControl;
 vmCvar_t	jkcvar_voteResults;
+vmCvar_t	jkcvar_voteWaitTime;
 vmCvar_t	jkcvar_itemForcePhysics;
 vmCvar_t	jkcvar_duelStartHealth;
 vmCvar_t	jkcvar_duelStartArmor;
@@ -87,6 +88,7 @@ static cvarTable_t	JKPlusCvarTable[] =
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteControl,				"jk_voteControl",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteResults,				"jk_voteResults",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteWaitTime,				"jk_voteWaitTime",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",	CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue }, // Fix me
 	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelStartArmor,			"jk_duelStartArmor",		"0",	CVAR_ARCHIVE,						0, qtrue },

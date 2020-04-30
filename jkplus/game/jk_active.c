@@ -41,14 +41,15 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec)
 		// Drop flag check
 		if (client->JKPlusDropFlagTime)
 		{
-			if (client->JKPlusDropFlagTime > 0)
-			{
-				client->JKPlusDropFlagTime--;
-			}
-			else
-			{
-				client->JKPlusDropFlagTime = 0;
-			}
+			if (client->JKPlusDropFlagTime > 0) client->JKPlusDropFlagTime--;
+			else client->JKPlusDropFlagTime = 0;
+		}
+
+		// Call vote check
+		if (client->JKPlusVoteWaitTime)
+		{
+			if (client->JKPlusVoteWaitTime > 0) client->JKPlusVoteWaitTime--;
+			else client->JKPlusVoteWaitTime = 0;
 		}
 
 		// Chat protect check
