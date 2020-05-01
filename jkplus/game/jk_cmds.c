@@ -622,6 +622,149 @@ void JKPlus_EngageDuel(gentity_t *ent, int type)
 
 /*
 =====================================================================
+Custom say function
+=====================================================================
+*/
+extern char	*ConcatArgs(int start);
+extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
+
+void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0) 
+{ 
+	char		*p;
+
+	if (trap_Argc() < 2 && !arg0) {
+		return;
+	}
+
+	if (arg0)
+	{
+		p = ConcatArgs(0);
+	}
+	else
+	{
+		p = ConcatArgs(1);
+	}
+
+	// Show motd
+	if (Q_stricmp(p, "!motd") == 0)
+	{
+		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		{
+			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
+		}
+	}
+	// Teleport chat (from file)
+	if (jkcvar_teleportChat.integer)
+	{
+		int			i = 0;
+		char		command[MAX_TOKEN_CHARS];
+		char		map[MAX_TOKEN_CHARS];
+		char		origin[MAX_TOKEN_CHARS];
+		char		rotation[MAX_TOKEN_CHARS];
+		int			realrotation;
+		vec3_t		realorigin;
+		vmCvar_t	currentmap;
+
+		if (level.JKPlusTeleportChat[0] || p || p[0])
+		{
+			trap_Cvar_Register(&currentmap, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
+
+			for (i = 0; i < level.JKPlusTeleportChatCount; i++)
+			{
+				strcpy(command, Info_ValueForKey(level.JKPlusTeleportChat[i], "command"));
+				strcpy(map, Info_ValueForKey(level.JKPlusTeleportChat[i], "map"));
+				strcpy(origin, Info_ValueForKey(level.JKPlusTeleportChat[i], "origin"));
+				strcpy(rotation, Info_ValueForKey(level.JKPlusTeleportChat[i], "rotation"));
+
+				sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
+
+				if (Q_stricmp(p, command) == 0)
+				{
+					if (Q_stricmp(map, currentmap.string) == 0)
+					{
+						if (!ent->client->JKPlusTeleportChatUsed)
+						{
+							vec3_t		temporigin, tempangles;
+
+							VectorClear(temporigin);
+							VectorClear(tempangles);
+
+							temporigin[0] = realorigin[0];
+							temporigin[1] = realorigin[1];
+							temporigin[2] = realorigin[2];
+							tempangles[PITCH] = 0.0f;
+							tempangles[YAW] = realrotation;
+							tempangles[ROLL] = 0.0f;
+
+							TeleportPlayer(ent, temporigin, tempangles);
+
+							ent->client->JKPlusTeleportChatUsed = qtrue;
+						}
+						else 
+						{
+							trap_SendServerCommand(ent - g_entities, va("cp \"You need to respawn to teleport again\n\""));
+						}
+						break;
+					}
+					else
+					{
+						trap_SendServerCommand(ent - g_entities, va("cp \"Teleport not available for this map\n\""));
+						break;
+					}
+					break;
+				}
+			}
+		}
+	}
+	// Teleport chat (save & load)
+	if (jkcvar_teleportChat.integer == 2)
+	{
+		if (Q_stricmp(p, "!savepos") == 0)
+		{
+			ent->client->ps.viewangles[0] = 0.0f;
+			ent->client->ps.viewangles[2] = 0.0f;
+			ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
+			ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
+			ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
+			ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
+			ent->client->pers.JKPlusTeleportChatSet = qtrue;
+
+			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
+			/*
+			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"", 
+				(int)ent->client->pers.JKPlusTeleportChatSaveX,
+				(int)ent->client->pers.JKPlusTeleportChatSaveY,
+				(int)ent->client->pers.JKPlusTeleportChatSaveZ,
+				ent->client->pers.JKPlusTeleportChatSaveYAW));
+			*/
+		}
+		if (Q_stricmp(p, "!gotopos") == 0)
+		{
+			if (!ent->client->pers.JKPlusTeleportChatSet)
+			{
+				trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
+			}
+			else 
+			{
+				vec3_t temporigin, tempangles;
+
+				temporigin[0] = ent->client->pers.JKPlusTeleportChatSaveX;
+				temporigin[1] = ent->client->pers.JKPlusTeleportChatSaveY;
+				temporigin[2] = ent->client->pers.JKPlusTeleportChatSaveZ;
+				tempangles[PITCH] = 0.0f;
+				tempangles[YAW] = ent->client->pers.JKPlusTeleportChatSaveYAW;
+				tempangles[ROLL] = 0.0f;
+
+				TeleportPlayer(ent, temporigin, tempangles);
+			}
+		}
+	}
+
+	G_Say(ent, NULL, mode, p);
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */

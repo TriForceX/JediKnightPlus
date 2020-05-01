@@ -43,6 +43,7 @@ vmCvar_t	jkcvar_noDuplicatedNames;
 vmCvar_t	jkcvar_chatProtect;
 vmCvar_t	jkcvar_chatProtectTime;
 vmCvar_t	jkcvar_playerIgnore;
+vmCvar_t	jkcvar_teleportChat;
 
 vmCvar_t	jkcvar_voteCustomMap;
 vmCvar_t	jkcvar_voteControl;
@@ -84,6 +85,7 @@ static cvarTable_t	JKPlusCvarTable[] =
 	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,				"jk_playerIgnore",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChat,				"jk_teleportChat",			"0",	CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteControl,				"jk_voteControl",			"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -354,6 +356,21 @@ void JKPlus_serverNewsInit(void)
 
 /*
 =====================================================================
+Server news initialization
+=====================================================================
+*/
+void JKPlus_teleportChatInit(void)
+{
+	static char		*linestart;
+
+	linestart = JKPlusReadFile("config/teleport_chats.cfg");
+	level.JKPlusTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKPlusTeleportChatCount, &level.JKPlusTeleportChat[level.JKPlusTeleportChatCount]);
+
+	G_Printf("%i teleport chats loaded\n", level.JKPlusTeleportChatCount);
+}
+
+/*
+=====================================================================
 Main initialization functions
 =====================================================================
 */
@@ -381,5 +398,11 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
 		JKPlus_serverNewsInit();
+	}
+
+	// Set chat teleport
+	if (jkcvar_teleportChat.integer)
+	{
+		JKPlus_teleportChatInit();
 	}
 }

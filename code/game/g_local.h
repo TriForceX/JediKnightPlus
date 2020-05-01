@@ -346,7 +346,12 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
-	int			JKPlusCustomDuel;		// Tr!Force: [CustomDuel] Client is in force duel
+	int			JKPlusCustomDuel;				// Tr!Force: [CustomDuel] Client is in force duel
+	int			JKPlusTeleportChatSaveX;		// Tr!Force: [Teleport] Player saved pos x
+	int			JKPlusTeleportChatSaveY;		// Tr!Force: [Teleport] Player saved pos y
+	int			JKPlusTeleportChatSaveZ;		// Tr!Force: [Teleport] Player saved pos z
+	int			JKPlusTeleportChatSaveYAW;	// Tr!Force: [Teleport] Player saved pos yaw
+	qboolean	JKPlusTeleportChatSet;			// Tr!Force: [Teleport] Player saved pos set
 } clientPersistant_t;
 
 
@@ -446,6 +451,7 @@ struct gclient_s {
 	int			JKPlusChatTime;			// Tr!Force: Chat protect time
 	int			JKPlusMotdTime;			// Tr!Force: [Motd] Server motd time
 	int			JKPlusVoteWaitTime;		// Tr!Force: [Vote] Player callvote wait time
+	qboolean	JKPlusTeleportChatUsed;			// Tr!Force: [Teleport] Player check used
 };
 
 
@@ -542,10 +548,12 @@ typedef struct {
 	qboolean	bboxEncoding;
 
 	char		JKPlusRandomBegin[MAX_SPAWN_VARS][MAX_STRING_CHARS];	// Tr!Force: [RandomBegin] Store messages
-	int			JKPlusRandomBeginCount;	// Tr!Force: [RandomBegin] Message counter
+	int			JKPlusRandomBeginCount;		// Tr!Force: [RandomBegin] Message counter
 	char		JKPlusServerNews[MAX_SPAWN_VARS][MAX_STRING_CHARS];		// Tr!Force: [RandomBegin] Store messages
-	int			JKPlusServerNewsCount;  // Tr!Force: [ServerNews] News counter
-	int			JKPlusServerNewsNum;	// Tr!Force: [ServerNews] News timer
+	int			JKPlusServerNewsCount;		// Tr!Force: [ServerNews] News counter
+	int			JKPlusServerNewsNum;		// Tr!Force: [ServerNews] News timer
+	char		*JKPlusTeleportChat[MAX_STRING_CHARS];					// Tr!Force: [Teleport] Chat teleport info
+	int			JKPlusTeleportChatCount;	// Tr!Force: [Teleport] Chat teleport counter
 } level_locals_t;
 
 

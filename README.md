@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.9.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.9.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -40,7 +40,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Chat censor filters
 - [x] Allow black color in player names
 - [x] Prevent duplicated player names
-- [ ] In-game chat commands (Teleports, info, etc...)
+- [x] In-game chat commands (Teleports, info, etc...)
 - [x] Welcome message on client begin
 - [x] Show server news messages from time to time
 - [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
@@ -51,7 +51,6 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] New and improved cheat commands
 - [ ] Clan tag protection for clan members
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
-- [ ] Teleport commands (Save & load position, player to position, etc...)
 - [x] Anti lamer feature (Players can't kill during chat)
 - [ ] Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
 - [x] Items get affected by force physics (Push, pull, etc...)

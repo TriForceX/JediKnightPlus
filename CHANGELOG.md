@@ -9,6 +9,11 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.5
+- Added teleport chat commands
+- Added call vote wait time
+- Code tweaks and cleanup
+
 ## 0.9.4
 - Fixed force duel challenge bugs
 - Updated some center prints

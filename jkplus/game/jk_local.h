@@ -67,6 +67,7 @@ Global definitions
 #define G_InitGame					JKPlus_G_InitGame
 #define ClientCleanName(a, b, c)	JKPlus_ClientCleanName(ent, a, b, c)
 #define Cmd_EngageDuel_f			JKPlus_EngageDuel
+#define Cmd_Say_f					JKPlus_Say
 
 /*
 =====================================================================
@@ -90,6 +91,7 @@ extern	vmCvar_t					jkcvar_noDuplicatedNames;
 extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
+extern	vmCvar_t					jkcvar_teleportChat;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteControl;

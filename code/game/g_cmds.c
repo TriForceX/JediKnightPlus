@@ -1143,7 +1143,7 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 Cmd_Say_f
 ==================
 */
-static void Cmd_Say_f( gentity_t *ent, int mode, qboolean arg0 ) {
+/*static*/ void BaseJK2_Cmd_Say_f( gentity_t *ent, int mode, qboolean arg0 ) { // Tr!Force: [BaseJK2] Command say function
 	char		*p;
 
 	if ( trap_Argc () < 2 && !arg0 ) {
