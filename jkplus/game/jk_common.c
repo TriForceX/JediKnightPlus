@@ -388,32 +388,36 @@ char *JKPlus_ConcatArgs(int start)
 
 /*
 =====================================================================
-Gameplay changer
+Read file
 =====================================================================
 */
-void JKPlus_gamePlay(char *gameplay)
+char *JKPlusReadFile(char *filename)
 {
-	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
-	{
-		MV_SetGamePlay(VERSION_1_02);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
+	static fileHandle_t	f;
+	static int			filefound = 1;
+	static char			buf[MAX_FILE_TEXT];
+	static int			len;
+
+	// File check
+	len = trap_FS_FOpenFile(filename, &f, FS_READ);
+	if (!f) {
+		G_Printf("File not found: %s\n", filename);
+		filefound = 0;
 	}
-	else if (!Q_stricmp(gameplay, "3") || !Q_stricmp(gameplay, "1.03"))
-	{
-		MV_SetGamePlay(VERSION_1_03);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
+	if (len >= MAX_FILE_TEXT) {
+		G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
+		trap_FS_FCloseFile(f);
+		filefound = 0;
 	}
-	else if (!Q_stricmp(gameplay, "4") || !Q_stricmp(gameplay, "1.04"))
-	{
-		MV_SetGamePlay(VERSION_1_04);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
+	if (!filefound) {
+		return qfalse;
 	}
-	else 
-	{
-		trap_Cvar_Set("jk_gamePlay", va("%i", jk2gameplay));
+	else {
+		trap_FS_Read(buf, len, f);
+		buf[len] = 0;
+		trap_FS_FCloseFile(f);
+
+		return buf;
 	}
 }
 

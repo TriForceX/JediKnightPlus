@@ -278,6 +278,82 @@ void JKPlus_G_UpdateCvars(void)
 
 /*
 =====================================================================
+Random begin initialization
+=====================================================================
+*/
+void JKPlus_randomBeginInit(void) 
+{
+	static char		*linestart;
+	static char		*lineend;
+	static int		count;
+
+	level.JKPlusRandomBeginCount = 0;
+	linestart = JKPlusReadFile("config/random_begin.cfg");
+
+	if (linestart)
+	{
+		lineend = strchr(linestart, '\n');
+		while (lineend)
+		{
+			*lineend = 0;
+			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
+			level.JKPlusRandomBeginCount++;
+			linestart = lineend + 1;
+			lineend = strchr(linestart, '\n');
+			if (count >= MAX_LINES) break;
+		}
+		if (count < MAX_LINES) {
+			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
+			level.JKPlusRandomBeginCount++;
+		}
+		G_Printf("%i random begin messages loaded\n", level.JKPlusRandomBeginCount);
+	}
+	else
+	{
+		trap_Cvar_Set("jk_randomBegin", "0");
+	}
+}
+
+/*
+=====================================================================
+Server news initialization
+=====================================================================
+*/
+void JKPlus_serverNewsInit(void)
+{
+	static char		*linestart;
+	static char		*lineend;
+	static int		count;
+
+	level.JKPlusServerNewsCount = 0;
+	linestart = JKPlusReadFile("config/server_news.cfg");
+
+	if (linestart)
+	{
+		lineend = strchr(linestart, '\n');
+		while (lineend)
+		{
+			*lineend = 0;
+			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
+			level.JKPlusServerNewsCount++;
+			linestart = lineend + 1;
+			lineend = strchr(linestart, '\n');
+			if (count >= MAX_LINES) break;
+		}
+		if (count < MAX_LINES) {
+			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
+			level.JKPlusServerNewsCount++;
+		}
+		G_Printf("%i server news loaded\n", level.JKPlusServerNewsCount);
+	}
+	else
+	{
+		trap_Cvar_Set("jk_serverNews", "0");
+	}
+}
+
+/*
+=====================================================================
 Main initialization functions
 =====================================================================
 */
@@ -298,102 +374,12 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	// Set random begin message
 	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
-		static fileHandle_t	f;
-		static char			*filename = "config/random_begin.cfg";
-		static int			filefound = 1;
-		static char			buf[MAX_FILE_TEXT];
-		static int			len;
-		static char			*linestart;
-		static char			*lineend;
-		static int			count;
-
-		// File check
-		len = trap_FS_FOpenFile(filename, &f, FS_READ);
-		if (!f) {
-			G_Printf("File not found: %s\n", filename);
-			filefound = 0;
-		}
-		if (len >= MAX_FILE_TEXT) {
-			G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
-			trap_FS_FCloseFile(f);
-			filefound = 0;
-		}
-		if (!filefound) {
-			trap_Cvar_Set("jk_randomBegin", "0");
-			return;
-		}
-		trap_FS_Read(buf, len, f);
-		buf[len] = 0;
-		trap_FS_FCloseFile(f);
-
-		// File parse
-		level.JKPlusRandomBeginCount = 0;
-		linestart = buf;
-		lineend = strchr(linestart, '\n');
-		while (lineend)
-		{
-			*lineend = 0;
-			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
-			level.JKPlusRandomBeginCount++;
-			linestart = lineend + 1;
-			lineend = strchr(linestart, '\n');
-			if (count >= MAX_LINES) break;
-		}
-		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
-			level.JKPlusRandomBeginCount++;
-		}
-		G_Printf("%i random begin messages loaded\n", level.JKPlusRandomBeginCount);
+		JKPlus_randomBeginInit();
 	}
 
 	// Set server news
 	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
-		static fileHandle_t	f;
-		static char			*filename = "config/server_news.cfg";
-		static int			filefound = 1;
-		static char			buf[MAX_FILE_TEXT];
-		static int			len;
-		static char			*linestart;
-		static char			*lineend;
-		static int			count;
-
-		// File check
-		len = trap_FS_FOpenFile(filename, &f, FS_READ);
-		if (!f) {
-			G_Printf("File not found: %s\n", filename);
-			filefound = 0;
-		}
-		if (len >= MAX_FILE_TEXT) {
-			G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
-			trap_FS_FCloseFile(f);
-			filefound = 0;
-		}
-		if (!filefound) {
-			trap_Cvar_Set("jk_serverNews", "0");
-			return;
-		}
-		trap_FS_Read(buf, len, f);
-		buf[len] = 0;
-		trap_FS_FCloseFile(f);
-
-		// File parse
-		level.JKPlusServerNewsCount = 0;
-		linestart = buf;
-		lineend = strchr(linestart, '\n');
-		while (lineend)
-		{
-			*lineend = 0;
-			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
-			level.JKPlusServerNewsCount++;
-			linestart = lineend + 1;
-			lineend = strchr(linestart, '\n');
-			if (count >= MAX_LINES) break;
-		}
-		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
-			level.JKPlusServerNewsCount++;
-		}
-		G_Printf("%i server news loaded\n", level.JKPlusServerNewsCount);
+		JKPlus_serverNewsInit();
 	}
 }

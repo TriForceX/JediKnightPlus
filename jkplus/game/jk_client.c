@@ -13,7 +13,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Client connect function
 =====================================================================
 */
-
 char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 {
 	char		userinfo[MAX_INFO_STRING];
@@ -77,7 +76,6 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 Client begin function
 =====================================================================
 */
-
 void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 {
 	gentity_t	*ent = &g_entities[clientNum];
@@ -139,7 +137,6 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 Client spawn function
 =====================================================================
 */
-
 void JKPlus_ClientSpawn(gentity_t *ent)
 {
 	// Launch original client spawn function

@@ -125,6 +125,9 @@ Common / new functions
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
+// g_main.c
+void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
+
 // jk_cmds.c
 qboolean	JKPlus_IsClientIgnored(char *option, int ignorer, int ignored);
 void		JKPlus_CallVote(gentity_t *ent);
@@ -155,6 +158,9 @@ void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
 int			JKPlus_ClientNumberFromArg(char* name);
 char		*JKPlus_ConcatArgs(int start);
-void		JKPlus_Gameplay(char *gameplay);
+char		*JKPlusReadFile(char *filename);
 void		JKPlus_sRand(unsigned seed);
 int			JKPlus_Rand(void);
+
+// jk_svcmds.c
+void		JKPlus_Gameplay(char *gameplay);

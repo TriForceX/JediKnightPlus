@@ -13,6 +13,37 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Gameplay command functions
 =====================================================================
 */
+/*
+=====================================================================
+Gameplay changer
+=====================================================================
+*/
+void JKPlus_gamePlay(char *gameplay)
+{
+	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
+	{
+		MV_SetGamePlay(VERSION_1_02);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
+	}
+	else if (!Q_stricmp(gameplay, "3") || !Q_stricmp(gameplay, "1.03"))
+	{
+		MV_SetGamePlay(VERSION_1_03);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
+	}
+	else if (!Q_stricmp(gameplay, "4") || !Q_stricmp(gameplay, "1.04"))
+	{
+		MV_SetGamePlay(VERSION_1_04);
+		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
+		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
+	}
+	else
+	{
+		trap_Cvar_Set("jk_gamePlay", va("%i", jk2gameplay));
+	}
+}
+
 static void JKPlus_svCmd_gamePlay(void)
 {
 	char	arg1[MAX_TOKEN_CHARS];
