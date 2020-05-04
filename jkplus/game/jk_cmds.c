@@ -730,57 +730,62 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 		}
 	}
 	// Teleport chat (save & load)
-	if (jkcvar_teleportChat.integer == 2)
+	if (Q_stricmp(p, "!savepos") == 0)
 	{
-		if (Q_stricmp(p, "!savepos") == 0)
+		if (jkcvar_teleportChat.integer != 2)
 		{
-			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
-			{
-				trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
-			}
-			else 
-			{
-				ent->client->ps.viewangles[0] = 0.0f;
-				ent->client->ps.viewangles[2] = 0.0f;
-				ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
-				ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
-				ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
-				ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
-				ent->client->pers.JKPlusTeleportChatSet = qtrue;
-
-				trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
-				/*
-				trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
-					(int)ent->client->pers.JKPlusTeleportChatSaveX,
-					(int)ent->client->pers.JKPlusTeleportChatSaveY,
-					(int)ent->client->pers.JKPlusTeleportChatSaveZ,
-					ent->client->pers.JKPlusTeleportChatSaveYAW));
-				*/
-			}
+			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
 		}
-		if (Q_stricmp(p, "!loadpos") == 0)
+		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
-			if (!ent->client->pers.JKPlusTeleportChatSet)
-			{
-				trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
-			}
-			else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
-			{
-				trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
-			}
-			else 
-			{
-				vec3_t temporigin, tempangles;
+			trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+		}
+		else 
+		{
+			ent->client->ps.viewangles[0] = 0.0f;
+			ent->client->ps.viewangles[2] = 0.0f;
+			ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
+			ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
+			ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
+			ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
+			ent->client->pers.JKPlusTeleportChatSet = qtrue;
 
-				temporigin[0] = ent->client->pers.JKPlusTeleportChatSaveX;
-				temporigin[1] = ent->client->pers.JKPlusTeleportChatSaveY;
-				temporigin[2] = ent->client->pers.JKPlusTeleportChatSaveZ;
-				tempangles[PITCH] = 0.0f;
-				tempangles[YAW] = ent->client->pers.JKPlusTeleportChatSaveYAW;
-				tempangles[ROLL] = 0.0f;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
+			/*
+			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
+				(int)ent->client->pers.JKPlusTeleportChatSaveX,
+				(int)ent->client->pers.JKPlusTeleportChatSaveY,
+				(int)ent->client->pers.JKPlusTeleportChatSaveZ,
+				ent->client->pers.JKPlusTeleportChatSaveYAW));
+			*/
+		}
+	}
+	if (Q_stricmp(p, "!loadpos") == 0)
+	{
+		if (jkcvar_teleportChat.integer != 2)
+		{
+			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
+		}
+		else if (!ent->client->pers.JKPlusTeleportChatSet)
+		{
+			trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
+		}
+		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+		{
+			trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+		}
+		else 
+		{
+			vec3_t temporigin, tempangles;
 
-				JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
-			}
+			temporigin[0] = ent->client->pers.JKPlusTeleportChatSaveX;
+			temporigin[1] = ent->client->pers.JKPlusTeleportChatSaveY;
+			temporigin[2] = ent->client->pers.JKPlusTeleportChatSaveZ;
+			tempangles[PITCH] = 0.0f;
+			tempangles[YAW] = ent->client->pers.JKPlusTeleportChatSaveYAW;
+			tempangles[ROLL] = 0.0f;
+
+			JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 		}
 	}
 
