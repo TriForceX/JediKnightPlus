@@ -210,7 +210,13 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 				if ( level.numNonSpectatorClients >= 2 ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
-					sess->sessionTeam = TEAM_FREE;
+					// Tr!Force: [Plugin] Don't allow
+					if (jkcvar_forcePlugin.integer && !client->pers.JKPlusClientPlugin) {
+						sess->sessionTeam = TEAM_SPECTATOR;
+					}
+					else {
+						sess->sessionTeam = TEAM_FREE;
+					}
 				}
 				break;
 			}

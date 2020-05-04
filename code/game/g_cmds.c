@@ -861,7 +861,16 @@ void Cmd_Team_f( gentity_t *ent ) {
 		//ent->client->sess.losses++;
 	}
 
-	trap_Argv( 1, s, sizeof( s ) );
+	// Tr!Force: [Plugin] Don't allow
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKPlusClientPlugin)
+	{
+		ClientBegin(ent->s.number, qfalse);
+		return;
+	}
+	else
+	{
+		trap_Argv(1, s, sizeof(s));
+	}
 
 	SetTeam( ent, s );
 
@@ -978,6 +987,11 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 	if ( ent->client->sess.sessionTeam != TEAM_SPECTATOR && ent->client->switchTeamTime > level.time )
 	{
 		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOSWITCH")) );
+		return;
+	}
+
+	// Tr!Force: [Plugin] Don't allow
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKPlusClientPlugin) {
 		return;
 	}
 

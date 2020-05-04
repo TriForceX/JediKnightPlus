@@ -391,7 +391,7 @@ char *JKPlus_ConcatArgs(int start)
 Read file
 =====================================================================
 */
-char *JKPlusReadFile(char *filename)
+char *JKPlus_ReadFile(char *filename)
 {
 	static fileHandle_t	f;
 	static int			filefound = 1;

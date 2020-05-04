@@ -6,14 +6,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 */
 
-#undef	GAMEVERSION
-
-#define JK_LONGNAME			"Jedi Knight Plus"
-#define JK_SHORTNAME   		"JK+"
-#define JK_MAJOR 			"0"
-#define JK_MINOR 			"9"
-#define JK_PATCH  			"5"
-#define GAMEVERSION			S_COLOR_CYAN JK_SHORTNAME " Mod v" JK_MAJOR "." JK_MINOR "." JK_PATCH
+#include "../../jkplus/game/jk_version.h" // Version header
 
 /*
 =====================================================================
@@ -118,6 +111,8 @@ extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
 
+extern	vmCvar_t					jkcvar_forcePlugin;
+
 /*
 =====================================================================
 Common / new functions
@@ -130,26 +125,15 @@ char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 // g_main.c
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
 
-// jk_cmds.c
-qboolean	JKPlus_IsClientIgnored(char *option, int ignorer, int ignored);
-void		JKPlus_CallVote(gentity_t *ent);
+// jk_active.c
+void		JKPlus_ClientThink_real(gentity_t *ent);
 
 // jk_client.c
 void		JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
 
-// jk_dimensions.c
-void		JKPlus_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
-
-// jk_active.c
-void		JKPlus_ClientThink_real(gentity_t *ent);
-
-// jk_emotes.c
-int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
-int			JKPlus_emoteIn(gentity_t *ent, int type);
-void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
-void		JKPlus_emoteDoHug(gentity_t *ent);
-void		JKPlus_emoteDoKiss(gentity_t *ent);
-void		JKPlus_emoteDoPunch(gentity_t *ent);
+// jk_cmds.c
+qboolean	JKPlus_IsClientIgnored(char *option, int ignorer, int ignored);
+void		JKPlus_CallVote(gentity_t *ent);
 
 // jk_common.c
 const char	*JKPlus_msToString(const int ms, qboolean abbr);
@@ -160,9 +144,23 @@ void		JKPlus_dropPlayer(gentity_t *ent, char *msg);
 void		JKPlus_sendCommand(int target, char *cmd, char *string);
 int			JKPlus_ClientNumberFromArg(char* name);
 char		*JKPlus_ConcatArgs(int start);
-char		*JKPlusReadFile(char *filename);
+char		*JKPlus_ReadFile(char *filename);
 void		JKPlus_sRand(unsigned seed);
 int			JKPlus_Rand(void);
 
+// jk_dimensions.c
+void		JKPlus_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
+
+// jk_emotes.c
+int			JKPlus_emoteCheck(char *cmd, gentity_t *ent);
+int			JKPlus_emoteIn(gentity_t *ent, int type);
+void		JKPlus_emoteDo(gentity_t *ent, int emoteIndex);
+void		JKPlus_emoteDoHug(gentity_t *ent);
+void		JKPlus_emoteDoKiss(gentity_t *ent);
+void		JKPlus_emoteDoPunch(gentity_t *ent);
+
+// jk_misc.c
+void		JKPlus_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, qboolean killbox);
+
 // jk_svcmds.c
-void		JKPlus_Gameplay(char *gameplay);
+void		JKPlus_gamePlay(char *gameplay);

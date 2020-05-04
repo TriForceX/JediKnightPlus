@@ -26,6 +26,7 @@ set(MVGAMEHEADERS
 	"${SRCDir}/game/g_team.h"
 	"${SRCDir}/game/inv.h"
 	"${SRCDir}/game/match.h"
+	"${JKPlusDir}/game/jk_version.h" # Tr!Force: [CMake] JKPlus headers
 	"${SRCDir}/game/q_shared.h"
 	"${SRCDir}/game/surfaceflags.h"
 	"${SRCDir}/game/syn.h"
@@ -74,6 +75,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_log.c"
 	"${SRCDir}/game/g_mem.c"
 	"${SRCDir}/game/g_misc.c"
+	"${JKPlusDir}/game/jk_misc.c" # Tr!Force: [CMake] JKPlus sources
 	"${SRCDir}/game/g_missile.c"
 	"${SRCDir}/game/g_mover.c"
 	"${SRCDir}/game/g_object.c"

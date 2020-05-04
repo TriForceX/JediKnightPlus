@@ -1003,6 +1003,10 @@ void AddTournamentPlayer( void ) {
 			client->sess.spectatorClient < 0  ) {
 			continue;
 		}
+		// Tr!Force: [Plugin] Don't allow
+		if (jkcvar_forcePlugin.integer && !client->pers.JKPlusClientPlugin) {
+			continue;
+		}
 
 		if ( !nextInLine || client->sess.spectatorOrder > nextInLine->sess.spectatorOrder ) {
 			nextInLine = client;

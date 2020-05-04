@@ -7,6 +7,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 */
 
 #include "../../code/game/g_local.h" // Original header
+#include "../../jkplus/game/jk_version.h" // Version header
 
 /*
 =====================================================================
@@ -70,6 +71,8 @@ vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
 
+vmCvar_t	jkcvar_forcePlugin;
+
 static cvarTable_t	JKPlusCvarTable[] = 
 {
 	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -111,6 +114,8 @@ static cvarTable_t	JKPlusCvarTable[] =
 	{ &jkcvar_randomBegin,				"jk_randomBegin",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,				"jk_serverNews",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,			"jk_serverNewsTime",		"60",	CVAR_ARCHIVE,						0, qtrue },
+
+	{ &jkcvar_forcePlugin,				"jk_forcePlugin",			"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_test1,					"jk_test1",					"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -173,6 +178,29 @@ void JKPlus_G_UpdateCvars(void)
 					else 
 					{
 						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
+					}
+				}
+
+				// Plugin check
+				if (cv->vmCvar == &jkcvar_forcePlugin)
+				{
+					int check = cv->vmCvar->integer ? 1 : 0;
+					int num;
+
+					if (check)
+					{
+						gentity_t *ent;
+
+						for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent)
+						{
+							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+							{
+								if (!ent->client->pers.JKPlusClientPlugin)
+								{
+									ClientBegin(ent->s.number, qfalse);
+								}
+							}
+						}
 					}
 				}
 
@@ -290,7 +318,7 @@ void JKPlus_randomBeginInit(void)
 	static int		count;
 
 	level.JKPlusRandomBeginCount = 0;
-	linestart = JKPlusReadFile("config/random_begin.cfg");
+	linestart = JKPlus_ReadFile("config/random_begin.cfg");
 
 	if (linestart)
 	{
@@ -328,7 +356,7 @@ void JKPlus_serverNewsInit(void)
 	static int		count;
 
 	level.JKPlusServerNewsCount = 0;
-	linestart = JKPlusReadFile("config/server_news.cfg");
+	linestart = JKPlus_ReadFile("config/server_news.cfg");
 
 	if (linestart)
 	{
@@ -356,17 +384,24 @@ void JKPlus_serverNewsInit(void)
 
 /*
 =====================================================================
-Server news initialization
+Teleport chats initialization
 =====================================================================
 */
 void JKPlus_teleportChatInit(void)
 {
 	static char		*linestart;
 
-	linestart = JKPlusReadFile("config/teleport_chats.cfg");
-	level.JKPlusTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKPlusTeleportChatCount, &level.JKPlusTeleportChat[level.JKPlusTeleportChatCount]);
+	linestart = JKPlus_ReadFile("config/teleport_chats.cfg");
 
-	G_Printf("%i teleport chats loaded\n", level.JKPlusTeleportChatCount);
+	if (linestart)
+	{
+		level.JKPlusTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKPlusTeleportChatCount, &level.JKPlusTeleportChat[level.JKPlusTeleportChatCount]);
+		G_Printf("%i teleport chats loaded\n", level.JKPlusTeleportChatCount);
+	}
+	else
+	{
+		trap_Cvar_Set("jk_teleportChat", "0");
+	}
 }
 
 /*
@@ -400,7 +435,7 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 		JKPlus_serverNewsInit();
 	}
 
-	// Set chat teleport
+	// Set teleport chats
 	if (jkcvar_teleportChat.integer)
 	{
 		JKPlus_teleportChatInit();

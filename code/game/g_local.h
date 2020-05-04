@@ -9,7 +9,7 @@
 //==================================================================
 
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"basemv"
+// #define	GAMEVERSION	"basemv" // Tr!Force: [Plugin] Use this on main version header
 
 #define BODY_QUEUE_SIZE		8
 
@@ -346,11 +346,12 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
+	qboolean	JKPlusClientPlugin;				// Tr!Force: [Plugin] Set player client plugin
 	int			JKPlusCustomDuel;				// Tr!Force: [CustomDuel] Client is in force duel
 	int			JKPlusTeleportChatSaveX;		// Tr!Force: [Teleport] Player saved pos x
 	int			JKPlusTeleportChatSaveY;		// Tr!Force: [Teleport] Player saved pos y
 	int			JKPlusTeleportChatSaveZ;		// Tr!Force: [Teleport] Player saved pos z
-	int			JKPlusTeleportChatSaveYAW;	// Tr!Force: [Teleport] Player saved pos yaw
+	int			JKPlusTeleportChatSaveYAW;		// Tr!Force: [Teleport] Player saved pos yaw
 	qboolean	JKPlusTeleportChatSet;			// Tr!Force: [Teleport] Player saved pos set
 } clientPersistant_t;
 

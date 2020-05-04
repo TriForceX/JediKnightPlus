@@ -627,6 +627,7 @@ Custom say function
 */
 extern char	*ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
+extern qboolean SaberAttacking(gentity_t *self);
 
 void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0) 
 { 
@@ -682,7 +683,19 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 				{
 					if (Q_stricmp(map, currentmap.string) == 0)
 					{
-						if (!ent->client->JKPlusTeleportChatUsed)
+						if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+						{
+							trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+						}
+						else if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
+								|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
+								|| ent->client->ps.saberInFlight
+								|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
+								|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
+						{
+							trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
+						}
+						else if (!ent->client->JKPlusTeleportChatUsed)
 						{
 							vec3_t		temporigin, tempangles;
 
@@ -696,7 +709,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 							tempangles[YAW] = realrotation;
 							tempangles[ROLL] = 0.0f;
 
-							TeleportPlayer(ent, temporigin, tempangles);
+							JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 
 							ent->client->JKPlusTeleportChatUsed = qtrue;
 						}
@@ -721,28 +734,39 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		if (Q_stricmp(p, "!savepos") == 0)
 		{
-			ent->client->ps.viewangles[0] = 0.0f;
-			ent->client->ps.viewangles[2] = 0.0f;
-			ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
-			ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
-			ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
-			ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
-			ent->client->pers.JKPlusTeleportChatSet = qtrue;
+			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+			{
+				trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+			}
+			else 
+			{
+				ent->client->ps.viewangles[0] = 0.0f;
+				ent->client->ps.viewangles[2] = 0.0f;
+				ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
+				ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
+				ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
+				ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
+				ent->client->pers.JKPlusTeleportChatSet = qtrue;
 
-			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
-			/*
-			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"", 
-				(int)ent->client->pers.JKPlusTeleportChatSaveX,
-				(int)ent->client->pers.JKPlusTeleportChatSaveY,
-				(int)ent->client->pers.JKPlusTeleportChatSaveZ,
-				ent->client->pers.JKPlusTeleportChatSaveYAW));
-			*/
+				trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
+				/*
+				trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
+					(int)ent->client->pers.JKPlusTeleportChatSaveX,
+					(int)ent->client->pers.JKPlusTeleportChatSaveY,
+					(int)ent->client->pers.JKPlusTeleportChatSaveZ,
+					ent->client->pers.JKPlusTeleportChatSaveYAW));
+				*/
+			}
 		}
-		if (Q_stricmp(p, "!gotopos") == 0)
+		if (Q_stricmp(p, "!loadpos") == 0)
 		{
 			if (!ent->client->pers.JKPlusTeleportChatSet)
 			{
 				trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
+			}
+			else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+			{
+				trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
 			}
 			else 
 			{
@@ -755,7 +779,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 				tempangles[YAW] = ent->client->pers.JKPlusTeleportChatSaveYAW;
 				tempangles[ROLL] = 0.0f;
 
-				TeleportPlayer(ent, temporigin, tempangles);
+				JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 			}
 		}
 	}
@@ -938,7 +962,7 @@ void JKPlus_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Ignore ^5]^7\n"
 				"^7Ignore a player chat or duel challenge\n"
-				"^7You can use this feature using the following command: ^2/ignore <option> <player>\n"
+				"^7You can use this feature using the following command: ^2/ignore <option> <player|clientnum|all>\n"
 				"^5----------\n"
 				"^7Option list:\n"
 				"^3chat\n"

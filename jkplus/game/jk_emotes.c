@@ -229,6 +229,8 @@ int JKPlus_emoteIn(gentity_t *ent, int type)
 Emote launch function
 =====================================================================
 */
+extern qboolean SaberAttacking(gentity_t *self);
+
 void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;

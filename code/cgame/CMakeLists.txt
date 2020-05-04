@@ -22,6 +22,7 @@ set(MVCGAMEHEADERS
 	"${SRCDir}/game/bg_public.h"
 	"${SRCDir}/game/bg_saga.h"
 	"${SRCDir}/game/bg_weapons.h"
+	"${JKPlusDir}/game/jk_version.h" # Tr!Force: [CMake] JKPlus headers
 	"${SRCDir}/game/q_shared.h"
 	"${SRCDir}/game/surfaceflags.h"
 	"${SRCDir}/game/bg_multiversion.h"

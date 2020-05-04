@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.6
+- Updated teleport chat methods
+- Added client plugin check
+
 ## 0.9.5
 - Added teleport chat commands
 - Added call vote wait time

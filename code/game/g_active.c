@@ -595,9 +595,17 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 	client = ent->client;
 
 	if ( client->sess.spectatorState != SPECTATOR_FOLLOW ) {
-		client->ps.pm_type = PM_SPECTATOR;
-		client->ps.speed = 400;	// faster than normal
-		client->ps.basespeed = 400;
+		// Tr!Force: [Plugin] Don't allow
+		if (jkcvar_forcePlugin.integer && !client->pers.JKPlusClientPlugin) 
+		{
+			client->ps.pm_type = PM_SPINTERMISSION;
+		}
+		else
+		{
+			client->ps.pm_type = PM_SPECTATOR;
+			client->ps.speed = 400;	// faster than normal
+			client->ps.basespeed = 400;
+		}
 
 		// set up for pmove
 		memset (&pm, 0, sizeof(pm));
