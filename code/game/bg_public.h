@@ -391,21 +391,7 @@ typedef enum {
 #define EF_DISINTEGRATION	0x02000000		// being disintegrated by the disruptor
 #define EF_INVULNERABLE		0x04000000		// just spawned in or whatever, so is protected
 
-#define JK_EMOTE_IN			( 1 << 0 )		// Tr!Force: [Emotes] Emote prediction
-#define JK_CHAT_PROTECT		( 1 << 1 )		// Tr!Force: [Dimensions] Chat prediction
-//#define JK_EXAMPLE		( 1 << 2 )
-//#define JK_EXAMPLE		( 1 << 3 )
-//#define JK_EXAMPLE		( 1 << 4 )
-//...
-//#define JK_EXAMPLE		( 1 << 31 )
-
-// Tr!Force: [Dimensions] List
-typedef enum
-{
-	DIMENSION_DUEL = 0,
-	DIMENSION_CHAT
-
-} jkmod_dimensions_t;
+#include "../../jkplus/game/jk_public.h"	// Tr!Force: [JKMod] Public header
 
 typedef enum {
 	EFFECT_NONE = 0,

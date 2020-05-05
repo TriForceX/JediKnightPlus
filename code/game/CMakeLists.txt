@@ -16,6 +16,7 @@ set(MVGAMEHEADERS
 	"${SRCDir}/game/be_ea.h"
 	"${SRCDir}/game/bg_local.h"
 	"${SRCDir}/game/bg_public.h"
+	"${JKModDir}/game/jk_public.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/game/bg_saga.h"
 	"${SRCDir}/game/bg_weapons.h"
 	"${SRCDir}/game/botlib.h"

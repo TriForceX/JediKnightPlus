@@ -33,7 +33,7 @@ Global definitions
 
 /*
 =====================================================================
-Player / world information struct and flags
+Player / world information
 =====================================================================
 */
 
