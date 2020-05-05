@@ -229,7 +229,8 @@ void		JKMod_emoteDoKiss(gentity_t *ent);
 void		JKMod_emoteDoPunch(gentity_t *ent);
 
 // jk_misc.c
-void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, qboolean killbox);
+gentity_t	*JK_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
+void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean telefrag, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);

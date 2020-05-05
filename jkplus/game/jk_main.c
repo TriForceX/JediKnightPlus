@@ -7,7 +7,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 */
 
 #include "../../code/game/g_local.h" // Original header
-#include "../../jkplus/game/jk_version.h" // Version header
 
 /*
 =====================================================================
@@ -439,5 +438,11 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) {
 	if (jkcvar_teleportChat.integer)
 	{
 		JKMod_teleportChatInit();
+
+		// Reset to normal teleport chat
+		if (jkcvar_teleportChat.integer == 2) 
+		{
+			trap_Cvar_Set("jk_teleportChat", "1");
+		}
 	}
 }

@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.7
+- Renamed mod functions
+- Moved mod stuff to mod files
+- Improved teleport player function
+- Added effects and sounds to teleport chats
+
 ## 0.9.6
 - Updated teleport chat methods
 - Added client plugin check
