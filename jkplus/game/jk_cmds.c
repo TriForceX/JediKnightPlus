@@ -592,8 +592,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
 					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 					
-					ent->client->pers.JKModCustomDuel = type;
-					challenged->client->pers.JKModCustomDuel = type;
+					ent->client->pers.jkmodPers.CustomDuel = type;
+					challenged->client->pers.jkmodPers.CustomDuel = type;
 				}
 				else 
 				{
@@ -744,19 +744,19 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			ent->client->ps.viewangles[0] = 0.0f;
 			ent->client->ps.viewangles[2] = 0.0f;
-			ent->client->pers.JKModTeleportChatSaveX = (int)ent->client->ps.origin[0];
-			ent->client->pers.JKModTeleportChatSaveY = (int)ent->client->ps.origin[1];
-			ent->client->pers.JKModTeleportChatSaveZ = (int)ent->client->ps.origin[2];
-			ent->client->pers.JKModTeleportChatSaveYAW = ent->client->ps.viewangles[1];
-			ent->client->pers.JKModTeleportChatSet = qtrue;
+			ent->client->pers.jkmodPers.TeleportChatSaveX = (int)ent->client->ps.origin[0];
+			ent->client->pers.jkmodPers.TeleportChatSaveY = (int)ent->client->ps.origin[1];
+			ent->client->pers.jkmodPers.TeleportChatSaveZ = (int)ent->client->ps.origin[2];
+			ent->client->pers.jkmodPers.TeleportChatSaveYAW = ent->client->ps.viewangles[1];
+			ent->client->pers.jkmodPers.TeleportChatSet = qtrue;
 
 			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
 			/*
 			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
-				(int)ent->client->pers.JKModTeleportChatSaveX,
-				(int)ent->client->pers.JKModTeleportChatSaveY,
-				(int)ent->client->pers.JKModTeleportChatSaveZ,
-				ent->client->pers.JKModTeleportChatSaveYAW));
+				(int)ent->client->pers.jkmodPers.TeleportChatSaveX,
+				(int)ent->client->pers.jkmodPers.TeleportChatSaveY,
+				(int)ent->client->pers.jkmodPers.TeleportChatSaveZ,
+				ent->client->pers.jkmodPers.TeleportChatSaveYAW));
 			*/
 		}
 	}
@@ -766,7 +766,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
 		}
-		else if (!ent->client->pers.JKModTeleportChatSet)
+		else if (!ent->client->pers.jkmodPers.TeleportChatSet)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
 		}
@@ -778,11 +778,11 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			vec3_t temporigin, tempangles;
 
-			temporigin[0] = ent->client->pers.JKModTeleportChatSaveX;
-			temporigin[1] = ent->client->pers.JKModTeleportChatSaveY;
-			temporigin[2] = ent->client->pers.JKModTeleportChatSaveZ;
+			temporigin[0] = ent->client->pers.jkmodPers.TeleportChatSaveX;
+			temporigin[1] = ent->client->pers.jkmodPers.TeleportChatSaveY;
+			temporigin[2] = ent->client->pers.jkmodPers.TeleportChatSaveZ;
 			tempangles[PITCH] = 0.0f;
-			tempangles[YAW] = ent->client->pers.JKModTeleportChatSaveYAW;
+			tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatSaveYAW;
 			tempangles[ROLL] = 0.0f;
 
 			JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);

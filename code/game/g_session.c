@@ -211,7 +211,7 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					// Tr!Force: [Plugin] Don't allow
-					if (jkcvar_forcePlugin.integer && !client->pers.JKModClientPlugin) {
+					if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) {
 						sess->sessionTeam = TEAM_SPECTATOR;
 					}
 					else {

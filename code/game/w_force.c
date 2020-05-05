@@ -625,7 +625,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	{
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.JKModCustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->pers.jkmodPers.CustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
@@ -633,7 +633,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.JKModCustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->pers.jkmodPers.CustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}
@@ -759,7 +759,7 @@ qboolean JKModForcePowerValid(forcePowers_t power, playerState_t *ps)
 		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if (ent->client->pers.JKModCustomDuel == 0)
+	if (ent->client->pers.jkmodPers.CustomDuel == 0)
 	{
 		return qfalse;
 	}

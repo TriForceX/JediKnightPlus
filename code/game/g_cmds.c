@@ -862,7 +862,7 @@ void Cmd_Team_f( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKModClientPlugin)
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.jkmodPers.ClientPlugin)
 	{
 		ClientBegin(ent->s.number, qfalse);
 		return;
@@ -991,7 +991,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKModClientPlugin) {
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.jkmodPers.ClientPlugin) {
 		return;
 	}
 

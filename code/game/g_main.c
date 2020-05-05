@@ -1004,7 +1004,7 @@ void AddTournamentPlayer( void ) {
 			continue;
 		}
 		// Tr!Force: [Plugin] Don't allow
-		if (jkcvar_forcePlugin.integer && !client->pers.JKModClientPlugin) {
+		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) {
 			continue;
 		}
 

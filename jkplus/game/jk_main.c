@@ -195,7 +195,7 @@ void JKMod_G_UpdateCvars(void)
 						{
 							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 							{
-								if (!ent->client->pers.JKModClientPlugin)
+								if (!ent->client->pers.jkmodPers.ClientPlugin)
 								{
 									ClientBegin(ent->s.number, qfalse);
 								}

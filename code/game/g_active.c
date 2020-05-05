@@ -596,7 +596,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 
 	if ( client->sess.spectatorState != SPECTATOR_FOLLOW ) {
 		// Tr!Force: [Plugin] Don't allow
-		if (jkcvar_forcePlugin.integer && !client->pers.JKModClientPlugin) 
+		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) 
 		{
 			client->ps.pm_type = PM_SPINTERMISSION;
 		}
@@ -1177,7 +1177,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
 			ent->client->ps.duelInProgress = 0;
-			ent->client->pers.JKModCustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
+			ent->client->pers.jkmodPers.CustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
@@ -1187,7 +1187,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			{
 				char *duelmessage;
 
-				if(ent->client->pers.JKModCustomDuel == 1) {
+				if(ent->client->pers.jkmodPers.CustomDuel == 1) {
 					duelmessage = "won a force duel";
 				}
 				else {
@@ -1202,8 +1202,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelInProgress = 0;
 
 			// Tr!Force: [CustomDuel] Turn off force duels
-			ent->client->pers.JKModCustomDuel = 0;
-			duelAgainst->client->pers.JKModCustomDuel = 0;
+			ent->client->pers.jkmodPers.CustomDuel = 0;
+			duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1260,8 +1260,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->ps.duelInProgress = 0;
 
 				// Tr!Force: [CustomDuel] Turn off force duels
-				ent->client->pers.JKModCustomDuel = 0;
-				duelAgainst->client->pers.JKModCustomDuel = 0;
+				ent->client->pers.jkmodPers.CustomDuel = 0;
+				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);

@@ -54,7 +54,20 @@ typedef enum
 
 } jkmod_vote_t;
 
-// Client spawn
+// Client persistant
+typedef struct
+{
+	qboolean	ClientPlugin;			// Set player client plugin
+	int			CustomDuel;				// Client is in force duel
+	int			TeleportChatSaveX;		// Player saved pos x
+	int			TeleportChatSaveY;		// Player saved pos y
+	int			TeleportChatSaveZ;		// Player saved pos z
+	int			TeleportChatSaveYAW;	// Player saved pos yaw
+	qboolean	TeleportChatSet;		// Player saved pos set
+
+} jkmod_pers_t;
+
+// Client clear
 typedef struct 
 {
 	vec3_t		PauseSavedView;		// Player saved view angles

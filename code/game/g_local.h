@@ -348,13 +348,7 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
-	qboolean	JKModClientPlugin;				// Tr!Force: [Plugin] Set player client plugin
-	int			JKModCustomDuel;				// Tr!Force: [CustomDuel] Client is in force duel
-	int			JKModTeleportChatSaveX;		// Tr!Force: [Teleport] Player saved pos x
-	int			JKModTeleportChatSaveY;		// Tr!Force: [Teleport] Player saved pos y
-	int			JKModTeleportChatSaveZ;		// Tr!Force: [Teleport] Player saved pos z
-	int			JKModTeleportChatSaveYAW;		// Tr!Force: [Teleport] Player saved pos yaw
-	qboolean	JKModTeleportChatSet;			// Tr!Force: [Teleport] Player saved pos set
+	jkmod_pers_t	jkmodPers;		// Tr!Force: [JKMod] client persistant
 } clientPersistant_t;
 
 
@@ -447,7 +441,7 @@ struct gclient_s {
 
 	qboolean	fjDidJump;
 
-	jkmod_client_t	jkmodClient;	// Tr!Force: [JKMod] client spawn
+	jkmod_client_t	jkmodClient;	// Tr!Force: [JKMod] client clear
 };
 
 

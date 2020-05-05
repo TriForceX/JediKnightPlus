@@ -108,10 +108,10 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	serverVersion = JK_VERSION;
 	clientVersion = Info_ValueForKey(userinfo, "JKMod_ClientVersion");
 
-	client->pers.JKModClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
+	client->pers.jkmodPers.ClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
 
 	// Check client plugin
-	if (client->pers.JKModClientPlugin || !jkcvar_forcePlugin.integer)
+	if (client->pers.jkmodPers.ClientPlugin || !jkcvar_forcePlugin.integer)
 	{
 		// Show a welcome message
 		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
