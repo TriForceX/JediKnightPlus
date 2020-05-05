@@ -9,7 +9,7 @@ set(MVCGAMEHEADERS
 	"${SRCDir}/cgame/animtable.h"
 	"${SRCDir}/cgame/cg_lights.h"
 	"${SRCDir}/cgame/cg_local.h"
-	"${JKPlusDir}/cgame/jk_local.h" # Tr!Force: [CMake] JKPlus headers
+	"${JKModDir}/cgame/jk_local.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/cgame/cg_media.h"
 	"${SRCDir}/cgame/cg_public.h"
 	"${SRCDir}/cgame/fx_local.h"
@@ -22,7 +22,7 @@ set(MVCGAMEHEADERS
 	"${SRCDir}/game/bg_public.h"
 	"${SRCDir}/game/bg_saga.h"
 	"${SRCDir}/game/bg_weapons.h"
-	"${JKPlusDir}/game/jk_version.h" # Tr!Force: [CMake] JKPlus headers
+	"${JKModDir}/game/jk_version.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/game/q_shared.h"
 	"${SRCDir}/game/surfaceflags.h"
 	"${SRCDir}/game/bg_multiversion.h"
@@ -37,7 +37,7 @@ set(MVCGAMEHEADERS
 
 set(MVCGAMESOURCES
 	"${SRCDir}/cgame/cg_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKPlusDir}/cgame/jk_main.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/cgame/jk_main.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_consolecmds.c"
 	"${SRCDir}/cgame/cg_draw.c"
 	"${SRCDir}/cgame/cg_drawtools.c"

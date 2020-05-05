@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Teleport player function
 =====================================================================
 */
-void JKPlus_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, qboolean killbox)
+void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, qboolean killbox)
 {
 	gentity_t	*tent;
 

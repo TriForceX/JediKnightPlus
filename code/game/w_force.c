@@ -625,7 +625,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	{
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.JKPlusCustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->pers.JKModCustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
@@ -633,7 +633,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.JKPlusCustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->pers.JKModCustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}
@@ -750,7 +750,7 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 }
 
 // Tr!Force: [CustomDuel] Force power valid on force duel
-qboolean JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps)
+qboolean JKModForcePowerValid(forcePowers_t power, playerState_t *ps)
 {
 	gentity_t	*ent = &g_entities[ps->clientNum];
 
@@ -759,7 +759,7 @@ qboolean JKPlusForcePowerValid(forcePowers_t power, playerState_t *ps)
 		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if (ent->client->pers.JKPlusCustomDuel == 0)
+	if (ent->client->pers.JKModCustomDuel == 0)
 	{
 		return qfalse;
 	}
@@ -2640,7 +2640,7 @@ qboolean G_InGetUpAnim(playerState_t *ps)
 }
 
 // Tr!Force: [Items] Respawn time calculation for item throwing
-int JKPlus_adjustRespawnTime(gentity_t *ent)
+int JKMod_adjustRespawnTime(gentity_t *ent)
 {
 	float respawnTime;
 
@@ -3362,7 +3362,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				}
 
 				// Set respawntime
-				push_list[x]->nextthink = level.time + JKPlus_adjustRespawnTime(push_list[x]) * 1000;
+				push_list[x]->nextthink = level.time + JKMod_adjustRespawnTime(push_list[x]) * 1000;
 				push_list[x]->think = RespawnItem;
 
 				// Adds gravity

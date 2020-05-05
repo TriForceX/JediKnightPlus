@@ -405,7 +405,7 @@ typedef enum
 	DIMENSION_DUEL = 0,
 	DIMENSION_CHAT
 
-} jkplus_dimensions_t;
+} jkmod_dimensions_t;
 
 typedef enum {
 	EFFECT_NONE = 0,

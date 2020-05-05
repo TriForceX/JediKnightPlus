@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Compare the given command with another
 =====================================================================
 */
-int JKPlus_compareCmd(char *cmd, char *required)
+int JKMod_compareCmd(char *cmd, char *required)
 {
 	if (Q_stricmp(cmd, required) == 0)
 	{
@@ -30,7 +30,7 @@ int JKPlus_compareCmd(char *cmd, char *required)
 Cleans the given string from newlines and such
 =====================================================================
 */
-void JKPlus_stringEscape(char *in, char *out, int outSize)
+void JKMod_stringEscape(char *in, char *out, int outSize)
 {
 	char	ch, ch1;
 	int len = 0;
@@ -59,7 +59,7 @@ void JKPlus_stringEscape(char *in, char *out, int outSize)
 Removes color codes and converts everything to lower case
 =====================================================================
 */
-void JKPlus_cleanString(char *in, char *out)
+void JKMod_cleanString(char *in, char *out)
 {
 	int	i, count = 0;
 	int	strLen = strlen(in);
@@ -87,7 +87,7 @@ void JKPlus_cleanString(char *in, char *out)
 Sanitize strings with color codes
 =====================================================================
 */
-char *JKPlus_sanitizeString(char *dest, char *source, int destSize)
+char *JKMod_sanitizeString(char *dest, char *source, int destSize)
 {
 	char	string[MAX_TOKEN_CHARS];
 	char	clean[MAX_TOKEN_CHARS];
@@ -124,7 +124,7 @@ char *JKPlus_sanitizeString(char *dest, char *source, int destSize)
 Sanitize strings with color codes Rev2
 =====================================================================
 */
-void JKPlus_sanitizeStringRev2(char *in, char *out)
+void JKMod_sanitizeStringRev2(char *in, char *out)
 {
 	int i = 0;
 	int r = 0;
@@ -166,7 +166,7 @@ void JKPlus_sanitizeStringRev2(char *in, char *out)
 Check for duplicated player names
 =====================================================================
 */
-int JKPlus_duplicatedNameCheck(gentity_t *ent, char *clientName)
+int JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName)
 {
 	gentity_t	*other;
 	int			i, j, num;
@@ -182,11 +182,11 @@ int JKPlus_duplicatedNameCheck(gentity_t *ent, char *clientName)
 		for (j = 0; j < MAX_CLIENTS; j++)
 		{
 			other = &g_entities[j];
-			JKPlus_sanitizeString(cleanEnt, newName, sizeof(cleanEnt));
+			JKMod_sanitizeString(cleanEnt, newName, sizeof(cleanEnt));
 
 			if (other && other->client && other->inuse && other->client->pers.connected == CON_CONNECTED)
 			{
-				JKPlus_sanitizeString(cleanOther, other->client->pers.netname, sizeof(cleanOther));
+				JKMod_sanitizeString(cleanOther, other->client->pers.netname, sizeof(cleanOther));
 
 				if (other - g_entities != ent - g_entities)
 				{
@@ -207,7 +207,7 @@ int JKPlus_duplicatedNameCheck(gentity_t *ent, char *clientName)
 Drops a player from the server with the given message
 =====================================================================
 */
-void JKPlus_dropPlayer(gentity_t *ent, char *msg)
+void JKMod_dropPlayer(gentity_t *ent, char *msg)
 {
 	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
@@ -223,7 +223,7 @@ void JKPlus_dropPlayer(gentity_t *ent, char *msg)
 Sends a message/command to the client target
 =====================================================================
 */
-void JKPlus_sendCommand(int target, char *cmd, char *string)
+void JKMod_sendCommand(int target, char *cmd, char *string)
 {
 	trap_SendServerCommand(target, va("%s \"%s\"", cmd, string));
 }
@@ -233,7 +233,7 @@ void JKPlus_sendCommand(int target, char *cmd, char *string)
 Convert milliseconds to string
 =====================================================================
 */
-const char *JKPlus_msToString(const int ms, qboolean abbr) 
+const char *JKMod_msToString(const int ms, qboolean abbr) 
 {
 	int	   		fsecs = ms / 1000;
 	int			wholemins = fsecs / 60;
@@ -268,19 +268,19 @@ const char *JKPlus_msToString(const int ms, qboolean abbr)
 Get client number from stripped substring
 =====================================================================
 */
-int JKPlus_ClientNumberFromStrippedSubstring(const char* name)
+int JKMod_ClientNumberFromStrippedSubstring(const char* name)
 {
 	char		s2[MAX_STRING_CHARS];
 	char		n2[MAX_STRING_CHARS];
 	int			i, match = -1;
 	gclient_t	*cl;
 
-	JKPlus_sanitizeStringRev2((char*)name, s2);
+	JKMod_sanitizeStringRev2((char*)name, s2);
 
 	for (i = 0; i < level.numConnectedClients; i++)
 	{
 		cl = &level.clients[level.sortedClients[i]];
-		JKPlus_sanitizeStringRev2(cl->pers.netname, n2);
+		JKMod_sanitizeStringRev2(cl->pers.netname, n2);
 		if (strstr(n2, s2))
 		{
 			if (match != -1)
@@ -297,7 +297,7 @@ int JKPlus_ClientNumberFromStrippedSubstring(const char* name)
 Get client number from argument
 =====================================================================
 */
-int JKPlus_ClientNumberFromArg(char* name)
+int JKMod_ClientNumberFromArg(char* name)
 {
 	int client_id = 0;
 	char *cp;
@@ -320,7 +320,7 @@ int JKPlus_ClientNumberFromArg(char* name)
 	{ 
 		if (client_id == -1)
 		{
-			client_id = JKPlus_ClientNumberFromStrippedSubstring(name);
+			client_id = JKMod_ClientNumberFromStrippedSubstring(name);
 		}
 	}
 	return client_id;
@@ -331,7 +331,7 @@ int JKPlus_ClientNumberFromArg(char* name)
 Get client number from stripped name
 =====================================================================
 */
-int JKPlus_ClientNumberFromStrippedName(const char* name)
+int JKMod_ClientNumberFromStrippedName(const char* name)
 {
 	char		s2[MAX_STRING_CHARS];
 	char		n2[MAX_STRING_CHARS];
@@ -339,11 +339,11 @@ int JKPlus_ClientNumberFromStrippedName(const char* name)
 	gclient_t*	cl;
 
 	// check for a name match
-	JKPlus_sanitizeStringRev2((char*)name, s2);
+	JKMod_sanitizeStringRev2((char*)name, s2);
 
 	for (i = 0, cl = level.clients; i < level.numConnectedClients; i++, cl++)
 	{
-		JKPlus_sanitizeStringRev2(cl->pers.netname, n2);
+		JKMod_sanitizeStringRev2(cl->pers.netname, n2);
 		if (!strcmp(n2, s2))
 		{
 			return i;
@@ -357,7 +357,7 @@ int JKPlus_ClientNumberFromStrippedName(const char* name)
 Concatenate arguments
 =====================================================================
 */
-char *JKPlus_ConcatArgs(int start) 
+char *JKMod_ConcatArgs(int start) 
 {
 	int		i, c, tlen;
 	static char	line[MAX_STRING_CHARS];
@@ -391,7 +391,7 @@ char *JKPlus_ConcatArgs(int start)
 Read file
 =====================================================================
 */
-char *JKPlus_ReadFile(char *filename)
+char *JKMod_ReadFile(char *filename)
 {
 	static fileHandle_t	f;
 	static int			filefound = 1;
@@ -426,15 +426,15 @@ char *JKPlus_ReadFile(char *filename)
 Rand alternative (Linux rand() behaves different than on Winodws or qvm
 =====================================================================
 */
-static int JKPlusRandSeed = 0;
+static int JKModRandSeed = 0;
 
-void JKPlus_sRand(unsigned seed) 
+void JKMod_sRand(unsigned seed) 
 {
-	JKPlusRandSeed = seed;
+	JKModRandSeed = seed;
 }
 
-int	JKPlus_Rand(void) 
+int	JKMod_Rand(void) 
 {
-	JKPlusRandSeed = (69069 * JKPlusRandSeed + 1);
-	return JKPlusRandSeed & 0x7fff;
+	JKModRandSeed = (69069 * JKModRandSeed + 1);
+	return JKModRandSeed & 0x7fff;
 }

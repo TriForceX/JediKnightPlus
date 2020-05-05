@@ -104,7 +104,7 @@ set(RCC "q3rcc")
 set(ASM "q3asm")
 
 # Directories
-set(JKPlusDir "${CMAKE_CURRENT_SOURCE_DIR}/jkplus") # Tr!Force: [CMake] Main mod code folder
+set(JKModDir "${CMAKE_CURRENT_SOURCE_DIR}/jkplus") # Tr!Force: [CMake] Main mod code folder
 set(SRCDir "${CMAKE_CURRENT_SOURCE_DIR}/code")
 set(QVMDir "${CMAKE_BINARY_DIR}/out/vm")
 

@@ -18,7 +18,7 @@ Gameplay command functions
 Gameplay changer
 =====================================================================
 */
-void JKPlus_gamePlay(char *gameplay)
+void JKMod_gamePlay(char *gameplay)
 {
 	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
 	{
@@ -44,7 +44,7 @@ void JKPlus_gamePlay(char *gameplay)
 	}
 }
 
-static void JKPlus_svCmd_gamePlay(void)
+static void JKMod_svCmd_gamePlay(void)
 {
 	char	arg1[MAX_TOKEN_CHARS];
 
@@ -58,7 +58,7 @@ static void JKPlus_svCmd_gamePlay(void)
 Pause game command functions
 =====================================================================
 */
-static void JKPlus_svCmd_pauseGame(void)
+static void JKMod_svCmd_pauseGame(void)
 {
 	if (jkcvar_pauseGame.integer == 0)
 	{
@@ -75,7 +75,7 @@ static void JKPlus_svCmd_pauseGame(void)
 Console command function
 =====================================================================
 */
-qboolean JKPlus_ConsoleCommand(void)
+qboolean JKMod_ConsoleCommand(void)
 {
 	char	cmd[MAX_TOKEN_CHARS];
 
@@ -83,12 +83,12 @@ qboolean JKPlus_ConsoleCommand(void)
 
 	if (!Q_stricmp(cmd, "gameplay"))
 	{
-		JKPlus_svCmd_gamePlay();
+		JKMod_svCmd_gamePlay();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "pausegame"))
 	{
-		JKPlus_svCmd_pauseGame();
+		JKMod_svCmd_pauseGame();
 		return qtrue;
 	}
 

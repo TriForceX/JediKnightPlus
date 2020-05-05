@@ -2091,10 +2091,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// Tr!Force: [DropFlag] Client dropped flag timer reset
-	self->client->JKPlusDropFlagTime = 0;
+	self->client->JKModDropFlagTime = 0;
 
 	// Tr!force: [Teleport] Client teleport used off
-	self->client->JKPlusTeleportChatUsed = qfalse;
+	self->client->JKModTeleportChatUsed = qfalse;
 
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,
@@ -3037,7 +3037,7 @@ void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// Tr!Force: [Emotes] If valid attacker, check his flags for attacking
 	if (attacker - g_entities >= 0 && attacker - g_entities < MAX_CLIENTS)
 	{
-		if (JKPlus_emoteIn(attacker, -1))
+		if (JKMod_emoteIn(attacker, -1))
 		{
 			return;
 		}
@@ -3064,7 +3064,7 @@ void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				return;
 			}
 			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
-			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.JKPlusCustomDuel == 1))
+			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.JKModCustomDuel == 1))
 			{
 				return;
 			}
@@ -3076,7 +3076,7 @@ void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				return;
 			}
 			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
-			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.JKPlusCustomDuel == 1))
+			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.JKModCustomDuel == 1))
 			{
 				return;
 			}

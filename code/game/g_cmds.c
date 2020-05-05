@@ -862,7 +862,7 @@ void Cmd_Team_f( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKPlusClientPlugin)
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKModClientPlugin)
 	{
 		ClientBegin(ent->s.number, qfalse);
 		return;
@@ -991,7 +991,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKPlusClientPlugin) {
+	if (jkcvar_forcePlugin.integer && !ent->client->pers.JKModClientPlugin) {
 		return;
 	}
 
@@ -1079,7 +1079,7 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 	}
 
 	// Tr!Force: [Ignore] Apply chat ignore
-	if (JKPlus_IsClientIgnored("chat", other->s.number, ent->s.number))
+	if (JKMod_IsClientIgnored("chat", other->s.number, ent->s.number))
 	{
 		return;
 	}
@@ -2467,7 +2467,7 @@ void Cmd_DebugSetBodyAnim_f(gentity_t *self, int flags)
 	pmv.ps = &self->client->ps;
 	pmv.animations = bgGlobalAnimations;
 	pmv.cmd = self->client->pers.cmd;
-	pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+	pmv.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 	pmv.pointcontents = trap_PointContents;
 	pmv.gametype = g_gametype.integer;
 
@@ -2486,7 +2486,7 @@ void StandardSetBodyAnim(gentity_t *self, int anim, int flags)
 	pmv.ps = &self->client->ps;
 	pmv.animations = bgGlobalAnimations;
 	pmv.cmd = self->client->pers.cmd;
-	pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+	pmv.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 	pmv.pointcontents = trap_PointContents;
 	pmv.gametype = g_gametype.integer;
 
@@ -2713,7 +2713,7 @@ void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client comm
 		Cmd_Where_f (ent);
 	else if (Q_stricmp(cmd, "callvote") == 0) {
 		if (jkcvar_voteControl.integer) { // Tr!Force: [Vote] Custom callvote control
-			JKPlus_CallVote(ent);
+			JKMod_CallVote(ent);
 		}
 		else {
 			Cmd_CallVote_f(ent);

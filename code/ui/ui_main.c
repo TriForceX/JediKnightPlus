@@ -1209,7 +1209,7 @@ void UI_LoadMenus(const char *menuFile, qboolean reset) {
 }
 
 void UI_Load() {
-	char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: [JKPlus] Fallback menus
+	char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: [JKMod] Fallback menus
 	char *menuSet;
 	char lastName[1024];
 	menuDef_t *menu = Menu_GetFocused();
@@ -1224,7 +1224,7 @@ void UI_Load() {
 
 	if (uiInfo.inGameLoad)
 	{
-		menuSet = fallbackMenus; // Tr!Force: [JKPlus] Fallback menus
+		menuSet = fallbackMenus; // Tr!Force: [JKMod] Fallback menus
 	}
 	else
 	{
@@ -7234,7 +7234,7 @@ UI_Init
 */
 void _UI_Init( qboolean inGameLoad ) {
 	int i;
-	const char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: [JKPlus] Fallback menus
+	const char *fallbackMenus = !trap_Cvar_VariableValue("mv_apienabled") ? "ui/jk2mpingame_fallback.txt" : "ui/jk2mpingame.txt"; // Tr!Force: [JKMod] Fallback menus
 	const char *menuSet;
 	uiClientState_t cstate;
 
@@ -7342,7 +7342,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	}
 
 	trap_SP_Register("mv"); // language file
-	trap_SP_Register("jkplus_menus"); // Tr!Force: [JKPlus] Load menus texts
+	trap_SP_Register("jkmod_menus"); // Tr!Force: [JKMod] Load menus texts
 
 
 	Init_Display(&uiInfo.uiDC);
@@ -7376,7 +7376,7 @@ void _UI_Init( qboolean inGameLoad ) {
 #if 1
 	if (inGameLoad)
 	{
-		UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: [JKPlus] Fallback menus
+		UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: [JKMod] Fallback menus
 	}
 	else
 	{
@@ -7384,7 +7384,7 @@ void _UI_Init( qboolean inGameLoad ) {
 	}
 #else //this was adding quite a giant amount of time to the load time
 	UI_LoadMenus(menuSet, qtrue);
-	UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: [JKPlus] Fallback menus
+	UI_LoadMenus(fallbackMenus, qtrue); // Tr!Force: [JKMod] Fallback menus
 #endif
 	
 	Menus_CloseAll();

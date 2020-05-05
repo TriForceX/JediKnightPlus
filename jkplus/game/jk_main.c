@@ -73,7 +73,7 @@ vmCvar_t	jkcvar_serverNewsTime;
 
 vmCvar_t	jkcvar_forcePlugin;
 
-static cvarTable_t	JKPlusCvarTable[] = 
+static cvarTable_t	JKModCvarTable[] = 
 {
 	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",	CVAR_ARCHIVE,						0, qtrue },
@@ -121,7 +121,7 @@ static cvarTable_t	JKPlusCvarTable[] =
 	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,						0, qtrue },
 };
 
-static int JKPlusCvarTableSize = sizeof(JKPlusCvarTable) / sizeof(JKPlusCvarTable[0]);
+static int JKModCvarTableSize = sizeof(JKModCvarTable) / sizeof(JKModCvarTable[0]);
 
 /*
 =====================================================================
@@ -129,13 +129,13 @@ Register / update cvars functions
 =====================================================================
 */
 
-void JKPlus_G_RegisterCvars(void)
+void JKMod_G_RegisterCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Register all the cvars
-	for(i = 0, cv = JKPlusCvarTable; i < JKPlusCvarTableSize; i++, cv++)
+	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
 	{
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 
@@ -149,13 +149,13 @@ void JKPlus_G_RegisterCvars(void)
 	BaseJK2_G_RegisterCvars();
 }
 
-void JKPlus_G_UpdateCvars(void)
+void JKMod_G_UpdateCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Update all the cvars
-	for(i = 0, cv = JKPlusCvarTable; i < JKPlusCvarTableSize; i++, cv++)
+	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
 	{
 		if(cv->vmCvar)
 		{
@@ -195,7 +195,7 @@ void JKPlus_G_UpdateCvars(void)
 						{
 							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 							{
-								if (!ent->client->pers.JKPlusClientPlugin)
+								if (!ent->client->pers.JKModClientPlugin)
 								{
 									ClientBegin(ent->s.number, qfalse);
 								}
@@ -223,7 +223,7 @@ void JKPlus_G_UpdateCvars(void)
 						{
 							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED) 
 							{
-								VectorCopy(ent->client->ps.viewangles, ent->client->JKPlusPauseSavedView);
+								VectorCopy(ent->client->ps.viewangles, ent->client->JKModPauseSavedView);
 							}
 						}
 
@@ -249,8 +249,8 @@ void JKPlus_G_UpdateCvars(void)
 								}
 							}
 
-							trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime, qtrue)));
-							trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKPlus_msToString(pausedGameTime, qtrue)));
+							trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKMod_msToString(pausedGameTime, qtrue)));
+							trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_msToString(pausedGameTime, qtrue)));
 
 							level.startTime += pausedGameTime;
 
@@ -278,7 +278,7 @@ void JKPlus_G_UpdateCvars(void)
 									if (ent->client->pers.teamState.lastfraggedcarrier) ent->client->pers.teamState.lastfraggedcarrier += pausedGameTime;
 									if (ent->client->pers.teamState.lasthurtcarrier) ent->client->pers.teamState.lasthurtcarrier += pausedGameTime;
 									// Restore this player viewangles
-									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->JKPlusPauseSavedView); 
+									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->JKModPauseSavedView); 
 								}
 							}
 
@@ -295,7 +295,7 @@ void JKPlus_G_UpdateCvars(void)
 
 					if (strcmp(gameplay, "0") != 0)
 					{
-						JKPlus_gamePlay(gameplay);
+						JKMod_gamePlay(gameplay);
 					}
 				}
 			}
@@ -311,14 +311,14 @@ void JKPlus_G_UpdateCvars(void)
 Random begin initialization
 =====================================================================
 */
-void JKPlus_randomBeginInit(void) 
+void JKMod_randomBeginInit(void) 
 {
 	static char		*linestart;
 	static char		*lineend;
 	static int		count;
 
-	level.JKPlusRandomBeginCount = 0;
-	linestart = JKPlus_ReadFile("config/random_begin.cfg");
+	level.JKModRandomBeginCount = 0;
+	linestart = JKMod_ReadFile("config/random_begin.cfg");
 
 	if (linestart)
 	{
@@ -326,17 +326,17 @@ void JKPlus_randomBeginInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
-			level.JKPlusRandomBeginCount++;
+			Q_strncpyz(level.JKModRandomBegin[count++], linestart, sizeof(level.JKModRandomBegin[0]));
+			level.JKModRandomBeginCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKPlusRandomBegin[count++], linestart, sizeof(level.JKPlusRandomBegin[0]));
-			level.JKPlusRandomBeginCount++;
+			Q_strncpyz(level.JKModRandomBegin[count++], linestart, sizeof(level.JKModRandomBegin[0]));
+			level.JKModRandomBeginCount++;
 		}
-		G_Printf("%i random begin messages loaded\n", level.JKPlusRandomBeginCount);
+		G_Printf("%i random begin messages loaded\n", level.JKModRandomBeginCount);
 	}
 	else
 	{
@@ -349,14 +349,14 @@ void JKPlus_randomBeginInit(void)
 Server news initialization
 =====================================================================
 */
-void JKPlus_serverNewsInit(void)
+void JKMod_serverNewsInit(void)
 {
 	static char		*linestart;
 	static char		*lineend;
 	static int		count;
 
-	level.JKPlusServerNewsCount = 0;
-	linestart = JKPlus_ReadFile("config/server_news.cfg");
+	level.JKModServerNewsCount = 0;
+	linestart = JKMod_ReadFile("config/server_news.cfg");
 
 	if (linestart)
 	{
@@ -364,17 +364,17 @@ void JKPlus_serverNewsInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
-			level.JKPlusServerNewsCount++;
+			Q_strncpyz(level.JKModServerNews[count++], linestart, sizeof(level.JKModServerNews[0]));
+			level.JKModServerNewsCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKPlusServerNews[count++], linestart, sizeof(level.JKPlusServerNews[0]));
-			level.JKPlusServerNewsCount++;
+			Q_strncpyz(level.JKModServerNews[count++], linestart, sizeof(level.JKModServerNews[0]));
+			level.JKModServerNewsCount++;
 		}
-		G_Printf("%i server news loaded\n", level.JKPlusServerNewsCount);
+		G_Printf("%i server news loaded\n", level.JKModServerNewsCount);
 	}
 	else
 	{
@@ -387,16 +387,16 @@ void JKPlus_serverNewsInit(void)
 Teleport chats initialization
 =====================================================================
 */
-void JKPlus_teleportChatInit(void)
+void JKMod_teleportChatInit(void)
 {
 	static char		*linestart;
 
-	linestart = JKPlus_ReadFile("config/teleport_chats.cfg");
+	linestart = JKMod_ReadFile("config/teleport_chats.cfg");
 
 	if (linestart)
 	{
-		level.JKPlusTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKPlusTeleportChatCount, &level.JKPlusTeleportChat[level.JKPlusTeleportChatCount]);
-		G_Printf("%i teleport chats loaded\n", level.JKPlusTeleportChatCount);
+		level.JKModTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKModTeleportChatCount, &level.JKModTeleportChat[level.JKModTeleportChatCount]);
+		G_Printf("%i teleport chats loaded\n", level.JKModTeleportChatCount);
 	}
 	else
 	{
@@ -409,10 +409,10 @@ void JKPlus_teleportChatInit(void)
 Main initialization functions
 =====================================================================
 */
-void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
+void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) {
 	int					i;
 
-	G_Printf(S_COLOR_CYAN "------ JKPlus Initialization ------\n");
+	G_Printf(S_COLOR_CYAN "------ JKMod Initialization ------\n");
 
 	// Launch original init game function
 	BaseJK2_G_InitGame(levelTime, randomSeed, restart);
@@ -420,24 +420,24 @@ void JKPlus_G_InitGame(int levelTime, int randomSeed, int restart) {
 	// Check gameplay
 	if (strcmp(jkcvar_gamePlay.string, "0") != 0)
 	{
-		JKPlus_gamePlay(jkcvar_gamePlay.string);
+		JKMod_gamePlay(jkcvar_gamePlay.string);
 	}
 
 	// Set random begin message
 	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
-		JKPlus_randomBeginInit();
+		JKMod_randomBeginInit();
 	}
 
 	// Set server news
 	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
 	{
-		JKPlus_serverNewsInit();
+		JKMod_serverNewsInit();
 	}
 
 	// Set teleport chats
 	if (jkcvar_teleportChat.integer)
 	{
-		JKPlus_teleportChatInit();
+		JKMod_teleportChatInit();
 	}
 }

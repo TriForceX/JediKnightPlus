@@ -2552,7 +2552,7 @@ Ghoul2 Insert End
 	cgDC.Assets.qhMediumFont = trap_R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
 	
-	trap_SP_Register("jkplus_ingame"); // Tr!Force: [JKPlus] Load ingame texts
+	trap_SP_Register("jkmod_ingame"); // Tr!Force: [JKMod] Load ingame texts
 
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );

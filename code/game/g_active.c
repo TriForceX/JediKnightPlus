@@ -596,7 +596,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 
 	if ( client->sess.spectatorState != SPECTATOR_FOLLOW ) {
 		// Tr!Force: [Plugin] Don't allow
-		if (jkcvar_forcePlugin.integer && !client->pers.JKPlusClientPlugin) 
+		if (jkcvar_forcePlugin.integer && !client->pers.JKModClientPlugin) 
 		{
 			client->ps.pm_type = PM_SPINTERMISSION;
 		}
@@ -612,7 +612,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		pm.ps = &client->ps;
 		pm.cmd = *ucmd;
 		pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;	// spectators can fly through bodies
-		pm.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+		pm.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 		pm.pointcontents = trap_PointContents;
 
 		pm.animations = NULL;
@@ -1177,7 +1177,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
 			ent->client->ps.duelInProgress = 0;
-			ent->client->pers.JKPlusCustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
+			ent->client->pers.JKModCustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
@@ -1187,7 +1187,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			{
 				char *duelmessage;
 
-				if(ent->client->pers.JKPlusCustomDuel == 1) {
+				if(ent->client->pers.JKModCustomDuel == 1) {
 					duelmessage = "won a force duel";
 				}
 				else {
@@ -1202,8 +1202,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelInProgress = 0;
 
 			// Tr!Force: [CustomDuel] Turn off force duels
-			ent->client->pers.JKPlusCustomDuel = 0;
-			duelAgainst->client->pers.JKPlusCustomDuel = 0;
+			ent->client->pers.JKModCustomDuel = 0;
+			duelAgainst->client->pers.JKModCustomDuel = 0;
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1260,8 +1260,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->ps.duelInProgress = 0;
 
 				// Tr!Force: [CustomDuel] Turn off force duels
-				ent->client->pers.JKPlusCustomDuel = 0;
-				duelAgainst->client->pers.JKPlusCustomDuel = 0;
+				ent->client->pers.JKModCustomDuel = 0;
+				duelAgainst->client->pers.JKModCustomDuel = 0;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1349,7 +1349,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	else {
 		pm.tracemask = MASK_PLAYERSOLID;
 	}
-	pm.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+	pm.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 	pm.pointcontents = trap_PointContents;
 	pm.debugLevel = g_debugMove.integer;
 	pm.noFootsteps = ( g_dmflags.integer & DF_NO_FOOTSTEPS ) > 0;
@@ -1671,13 +1671,13 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 					if (faceKicked->health > 0 &&
 						faceKicked->client->ps.stats[STAT_HEALTH] > 0 &&
 						faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN
-						&& !JKPlus_emoteIn(ent, -1) // Tr!Force: [Emotes] Prediction
+						&& !JKMod_emoteIn(ent, -1) // Tr!Force: [Emotes] Prediction
 						)
 					{
 						if (Q_irand(1, 10) <= 3)
 						{ 
 							// Tr!Force: [Emotes] Prediction
-							if(JKPlus_emoteIn(faceKicked, 2))
+							if(JKMod_emoteIn(faceKicked, 2))
 							{
 								faceKicked->client->ps.forceHandExtend = HANDEXTEND_NONE;
 								faceKicked->client->ps.forceDodgeAnim = 0;

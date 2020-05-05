@@ -629,7 +629,7 @@ qboolean WP_SabersCheckLock2( gentity_t *attacker, gentity_t *defender, sabersLo
 	pmv.ps = &attacker->client->ps;
 	pmv.animations = bgGlobalAnimations;
 	pmv.cmd = attacker->client->pers.cmd;
-	pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+	pmv.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 	pmv.pointcontents = trap_PointContents;
 	pmv.gametype = g_gametype.integer;
 

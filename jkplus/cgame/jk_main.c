@@ -25,14 +25,14 @@ typedef struct { // Cvar table struct
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
 
-static cvarTable_t	JKPlusCGCvarTable[] = {
+static cvarTable_t	JKModCGCvarTable[] = {
 
 	{ &jkcvar_cg_test1, "jk_cg_test1", "0", CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2, "jk_cg_test2", "0", CVAR_ARCHIVE },
 
 };
 
-static int JKPlusCGCvarTableSize = sizeof(JKPlusCGCvarTable) / sizeof(JKPlusCGCvarTable[0]);
+static int JKModCGCvarTableSize = sizeof(JKModCGCvarTable) / sizeof(JKModCGCvarTable[0]);
 
 /*
 =====================================================================
@@ -40,13 +40,13 @@ Register / update cvars functions
 =====================================================================
 */
 
-void JKPlus_CG_RegisterCvars(void)
+void JKMod_CG_RegisterCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Register all the cvars
-	for (i = 0, cv = JKPlusCGCvarTable; i < JKPlusCGCvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModCGCvarTable; i < JKModCGCvarTableSize; i++, cv++) {
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName,
 			cv->defaultString, cv->cvarFlags);
 	}
@@ -55,17 +55,17 @@ void JKPlus_CG_RegisterCvars(void)
 	BaseJK2_CG_RegisterCvars();
 
 	// Set the client plugin version
-	trap_Cvar_Register(NULL, "JKPlus_ClientVersion", "", CVAR_USERINFO | CVAR_ROM);
-	trap_Cvar_Set("JKPlus_ClientVersion", JK_VERSION);
+	trap_Cvar_Register(NULL, "JKMod_ClientVersion", "", CVAR_USERINFO | CVAR_ROM);
+	trap_Cvar_Set("JKMod_ClientVersion", JK_VERSION);
 }
 
-void JKPlus_CG_UpdateCvars(void)
+void JKMod_CG_UpdateCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Update all the cvars
-	for (i = 0, cv = JKPlusCGCvarTable; i < JKPlusCGCvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModCGCvarTable; i < JKModCGCvarTableSize; i++, cv++) {
 		trap_Cvar_Update(cv->vmCvar);
 	}
 

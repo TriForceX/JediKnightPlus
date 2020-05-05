@@ -21,12 +21,12 @@ set(MVGAMEHEADERS
 	"${SRCDir}/game/botlib.h"
 	"${SRCDir}/game/chars.h"
 	"${SRCDir}/game/g_local.h"
-	"${JKPlusDir}/game/jk_local.h" # Tr!Force: [CMake] JKPlus headers
+	"${JKModDir}/game/jk_local.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/game/g_public.h"
 	"${SRCDir}/game/g_team.h"
 	"${SRCDir}/game/inv.h"
 	"${SRCDir}/game/match.h"
-	"${JKPlusDir}/game/jk_version.h" # Tr!Force: [CMake] JKPlus headers
+	"${JKModDir}/game/jk_version.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/game/q_shared.h"
 	"${SRCDir}/game/surfaceflags.h"
 	"${SRCDir}/game/syn.h"
@@ -49,8 +49,8 @@ set(MVGAMEHEADERS
 
 set(MVGAMESOURCES
 	"${SRCDir}/game/g_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKPlusDir}/game/jk_main.c" # Tr!Force: [CMake] JKPlus sources
-	"${JKPlusDir}/game/jk_common.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_main.c" # Tr!Force: [CMake] JKMod sources
+	"${JKModDir}/game/jk_common.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/ai_main.c"
 	"${SRCDir}/game/ai_util.c"
 	"${SRCDir}/game/ai_wpnav.c"
@@ -61,21 +61,21 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/bg_slidemove.c"
 	"${SRCDir}/game/bg_weapons.c"
 	"${SRCDir}/game/g_active.c"
-	"${JKPlusDir}/game/jk_active.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_active.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_arenas.c"
 	"${SRCDir}/game/g_bot.c"
 	"${SRCDir}/game/g_client.c"
-	"${JKPlusDir}/game/jk_client.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_client.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_cmds.c"
-	"${JKPlusDir}/game/jk_cmds.c" # Tr!Force: [CMake] JKPlus sources
-	"${JKPlusDir}/game/jk_emotes.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_cmds.c" # Tr!Force: [CMake] JKMod sources
+	"${JKModDir}/game/jk_emotes.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_combat.c"
-	"${JKPlusDir}/game/jk_dimensions.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_dimensions.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_items.c"
 	"${SRCDir}/game/g_log.c"
 	"${SRCDir}/game/g_mem.c"
 	"${SRCDir}/game/g_misc.c"
-	"${JKPlusDir}/game/jk_misc.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_misc.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_missile.c"
 	"${SRCDir}/game/g_mover.c"
 	"${SRCDir}/game/g_object.c"
@@ -83,7 +83,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_session.c"
 	"${SRCDir}/game/g_spawn.c"
 	"${SRCDir}/game/g_svcmds.c"
-	"${JKPlusDir}/game/jk_svcmds.c" # Tr!Force: [CMake] JKPlus sources
+	"${JKModDir}/game/jk_svcmds.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_target.c"
 	"${SRCDir}/game/g_team.c"
 	"${SRCDir}/game/g_trigger.c"

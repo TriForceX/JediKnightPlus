@@ -14,7 +14,7 @@ Client timer actions function
 =====================================================================
 */
 
-void JKPlus_ClientTimerActions(gentity_t *ent, int msec) 
+void JKMod_ClientTimerActions(gentity_t *ent, int msec) 
 {
 	gclient_t	*client;
 	qtime_t		serverTime;
@@ -25,7 +25,7 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec)
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
 	client = ent->client;
-	client->JKPlusTimeResidual += msec;
+	client->JKModTimeResidual += msec;
 
 	// Don't allow in pause mode
 	if (jkcvar_pauseGame.integer) return;
@@ -34,69 +34,69 @@ void JKPlus_ClientTimerActions(gentity_t *ent, int msec)
 	BaseJK2_ClientTimerActions(ent, msec);
 
 	// Custom time actions
-	while (client->JKPlusTimeResidual >= 1000)
+	while (client->JKModTimeResidual >= 1000)
 	{
-		client->JKPlusTimeResidual -= 1000;
+		client->JKModTimeResidual -= 1000;
 
 		// Drop flag check
-		if (client->JKPlusDropFlagTime)
+		if (client->JKModDropFlagTime)
 		{
-			if (client->JKPlusDropFlagTime > 0) client->JKPlusDropFlagTime--;
-			else client->JKPlusDropFlagTime = 0;
+			if (client->JKModDropFlagTime > 0) client->JKModDropFlagTime--;
+			else client->JKModDropFlagTime = 0;
 		}
 
 		// Call vote check
-		if (client->JKPlusVoteWaitTime)
+		if (client->JKModVoteWaitTime)
 		{
-			if (client->JKPlusVoteWaitTime > 0) client->JKPlusVoteWaitTime--;
-			else client->JKPlusVoteWaitTime = 0;
+			if (client->JKModVoteWaitTime > 0) client->JKModVoteWaitTime--;
+			else client->JKModVoteWaitTime = 0;
 		}
 
 		// Chat protect check
 		if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
 		{
-			if (client->JKPlusChatTime >= jkcvar_chatProtectTime.integer)
+			if (client->JKModChatTime >= jkcvar_chatProtectTime.integer)
 			{
-				client->JKPlusChatTime = jkcvar_chatProtectTime.integer;
+				client->JKModChatTime = jkcvar_chatProtectTime.integer;
 				client->ps.eFlags |= JK_CHAT_PROTECT;
 				ent->takedamage = qfalse;
 			}
 			else
 			{
-				client->JKPlusChatTime++;
+				client->JKModChatTime++;
 			}
 		}
 		else
 		{
-			if (client->JKPlusChatTime != 0) client->JKPlusChatTime = 0;
+			if (client->JKModChatTime != 0) client->JKModChatTime = 0;
 			if (client->ps.eFlags & JK_CHAT_PROTECT) client->ps.eFlags &= ~JK_CHAT_PROTECT;
 			if (!ent->health <= 0) ent->takedamage = qtrue;
 		}
 
 		// Show server motd
-		if (client->JKPlusMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		if (client->JKModMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
-			JKPlus_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
-			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->JKPlusMotdTime));
-			client->JKPlusMotdTime--;
+			JKMod_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
+			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->JKModMotdTime));
+			client->JKModMotdTime--;
 		}
 
 		// Server news
-		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKPlusServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
+		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKModServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
 		{
 			int i;
-			int total = level.JKPlusServerNewsCount;
+			int total = level.JKModServerNewsCount;
 			
-			level.JKPlusServerNewsNum++;
+			level.JKModServerNewsNum++;
 
 			for (i = 1; i < (jkcvar_serverNewsTime.integer * total); i++)
 			{
-				if (level.JKPlusServerNewsNum == (jkcvar_serverNewsTime.integer * i))
+				if (level.JKModServerNewsNum == (jkcvar_serverNewsTime.integer * i))
 				{
-					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.JKPlusServerNews[(i-1)]));
+					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.JKModServerNews[(i-1)]));
 					// Reset
-					if (level.JKPlusServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
-						level.JKPlusServerNewsNum = 0;
+					if (level.JKModServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
+						level.JKModServerNewsNum = 0;
 					}
 				}
 			}
@@ -110,10 +110,10 @@ Client think real function
 =====================================================================
 */
 
-void JKPlus_ClientThink_real(gentity_t *ent)
+void JKMod_ClientThink_real(gentity_t *ent)
 {
 	// Already in an emote
-	if (JKPlus_emoteIn(ent, -1))
+	if (JKMod_emoteIn(ent, -1))
 	{
 		if (ent->client->ps.pm_type == PM_DEAD)
 		{
@@ -121,7 +121,7 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
 		}
-		else if (JKPlus_emoteIn(ent, 0))
+		else if (JKMod_emoteIn(ent, 0))
 		{	
 			// In a frozen emote
 			if (ent->client->pers.cmd.upmove > 0)
@@ -137,14 +137,14 @@ void JKPlus_ClientThink_real(gentity_t *ent)
 				ent->client->ps.forceHandExtendTime = level.time + INFINITE;
 			}
 		}
-		else if (JKPlus_emoteIn(ent, 1) && ent->client->pers.cmd.upmove > 0)
+		else if (JKMod_emoteIn(ent, 1) && ent->client->pers.cmd.upmove > 0)
 		{	
 			// In an animation emote
 			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
 		}
-		else if (JKPlus_emoteIn(ent, 2))
+		else if (JKMod_emoteIn(ent, 2))
 		{	
 			// In a special emote (walkable)
 			ent->client->ps.forceHandExtend = HANDEXTEND_TAUNT;

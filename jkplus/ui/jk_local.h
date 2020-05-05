@@ -24,9 +24,9 @@ typedef struct {
 	int				emotesCount;		// Emotes count
 	emoteData_t		emotesList;		// Emotes list
 
-} JKPlusUiInfo_t;
+} JKModUiInfo_t;
 
-extern JKPlusUiInfo_t JKPlusUiInfo;
+extern JKModUiInfo_t JKModUiInfo;
 
 /*
 =====================================================================
@@ -34,11 +34,11 @@ Global definitions
 =====================================================================
 */
 
-#define UI_RegisterCvars 			JKPlus_UI_RegisterCvars
-#define UI_UpdateCvars				JKPlus_UI_UpdateCvars
-#define UI_FeederCount				JKPlus_UI_FeederCount
-#define UI_FeederItemText			JKPlus_UI_FeederItemText
-#define UI_FeederSelection			JKPlus_UI_FeederSelection
+#define UI_RegisterCvars 			JKMod_UI_RegisterCvars
+#define UI_UpdateCvars				JKMod_UI_UpdateCvars
+#define UI_FeederCount				JKMod_UI_FeederCount
+#define UI_FeederItemText			JKMod_UI_FeederItemText
+#define UI_FeederSelection			JKMod_UI_FeederSelection
 
 /*
 =====================================================================
@@ -61,6 +61,6 @@ int			BaseJK2_UI_FeederCount(float feederID);
 qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 
 // jk_main.c
-const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
-int			JKPlus_UI_FeederCount(float feederID);
-qboolean	JKPlus_UI_FeederSelection(float feederID, int index);
+const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
+int			JKMod_UI_FeederCount(float feederID);
+qboolean	JKMod_UI_FeederSelection(float feederID, int index);

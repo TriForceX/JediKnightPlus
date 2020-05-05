@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Drop flag function
 =====================================================================
 */
-static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
+static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
 	vec3_t		angles, velocity, org, offset, mins, maxs;
@@ -38,9 +38,9 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 		return;
 	}
 
-	if (ent->client->JKPlusDropFlagTime > 0)
+	if (ent->client->JKModDropFlagTime > 0)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKPlusDropFlagTime));
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKModDropFlagTime));
 		return;
 	}
 	
@@ -66,7 +66,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
-	ent->client->JKPlusDropFlagTime = jkcvar_dropFlagTime.integer;
+	ent->client->JKModDropFlagTime = jkcvar_dropFlagTime.integer;
 	LaunchItem(item, org, velocity);
 }
 
@@ -75,7 +75,7 @@ static void JKPlus_dropFlag(gentity_t *ent, int clientNum)
 Instructs all chat to be ignored by the given
 =====================================================================
 */
-void JKPlus_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore)
+void JKMod_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore)
 {
 	if (ignorer == ignored)
 	{
@@ -88,19 +88,19 @@ void JKPlus_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore
 	if (ignore)
 	{
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
+			g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
+			g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
 		}
 	}
 	else
 	{
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 	}
 }
@@ -110,16 +110,16 @@ void JKPlus_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore
 Checks to see if the given client is being ignored by a specific client
 =====================================================================
 */
-qboolean JKPlus_IsClientIgnored(char *option, int ignorer, int ignored)
+qboolean JKMod_IsClientIgnored(char *option, int ignorer, int ignored)
 {
 	if (!Q_stricmp(option, "chat")) {
-		if (g_entities[ignored].client->sess.JKPlusIgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
+		if (g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
 		{
 			return qtrue;
 		}
 	}
 	else if (!Q_stricmp(option, "duel")) {
-		if (g_entities[ignored].client->sess.JKPlusIgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
+		if (g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
 		{
 			return qtrue;
 		}
@@ -132,16 +132,16 @@ qboolean JKPlus_IsClientIgnored(char *option, int ignorer, int ignored)
 Clears any possible ignore flags that were set and not reset
 =====================================================================
 */
-void JKPlus_RemoveFromAllIgnoreLists(char *option, int ignorer)
+void JKMod_RemoveFromAllIgnoreLists(char *option, int ignorer)
 {
 	int i;
 
 	for (i = 0; i < level.maxclients; i++) {
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[i].client->sess.JKPlusIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[i].client->sess.JKModIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[i].client->sess.JKPlusIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[i].client->sess.JKModIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 	}
 }
@@ -151,7 +151,7 @@ void JKPlus_RemoveFromAllIgnoreLists(char *option, int ignorer)
 Custom callvote function
 =====================================================================
 */
-void JKPlus_CallVote(gentity_t *ent) 
+void JKMod_CallVote(gentity_t *ent) 
 {
 	int		i;
 	char	arg1[MAX_STRING_TOKENS];
@@ -177,8 +177,8 @@ void JKPlus_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEINPROGRESS")));
 		return;
 	}
-	if (ent->client->JKPlusVoteWaitTime > 0) {
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->JKPlusVoteWaitTime));
+	if (ent->client->JKModVoteWaitTime > 0) {
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->JKModVoteWaitTime));
 		return;
 	}
 	if (ent->client->pers.voteCount >= MAX_VOTE_COUNT) {
@@ -382,7 +382,7 @@ void JKPlus_CallVote(gentity_t *ent)
 			}
 			else {
 				Com_sprintf(level.voteString, sizeof(level.voteString), "");
-				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", JKPlus_ConcatArgs(2));
+				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", JKMod_ConcatArgs(2));
 			}
 		}
 	}
@@ -421,7 +421,7 @@ void JKPlus_CallVote(gentity_t *ent)
 	ent->client->ps.eFlags |= EF_VOTED;
 
 	// Call vote timer
-	ent->client->JKPlusVoteWaitTime = jkcvar_voteWaitTime.integer;
+	ent->client->JKModVoteWaitTime = jkcvar_voteWaitTime.integer;
 
 	// Append white colorcode at the end of the display string as workaround for cgame leaking colors
 	Q_strcat(level.voteDisplayString, sizeof(level.voteDisplayString), S_COLOR_WHITE);
@@ -440,7 +440,7 @@ Custom engage duel function
 extern int saberOffSound;
 extern int saberOnSound;
 
-void JKPlus_EngageDuel(gentity_t *ent, int type)
+void JKMod_EngageDuel(gentity_t *ent, int type)
 {
 	trace_t tr;
 	vec3_t forward, fwdOrg;
@@ -533,12 +533,12 @@ void JKPlus_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Ignore] Apply duel ignore
-		if (JKPlus_IsClientIgnored("duel", challenged->s.number, ent->s.number))
+		if (JKMod_IsClientIgnored("duel", challenged->s.number, ent->s.number))
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
 			return;
 		}
-		if (JKPlus_IsClientIgnored("duel", ent->s.number, challenged->s.number))
+		if (JKMod_IsClientIgnored("duel", ent->s.number, challenged->s.number))
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
 			return;
@@ -592,8 +592,8 @@ void JKPlus_EngageDuel(gentity_t *ent, int type)
 					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
 					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
 					
-					ent->client->pers.JKPlusCustomDuel = type;
-					challenged->client->pers.JKPlusCustomDuel = type;
+					ent->client->pers.JKModCustomDuel = type;
+					challenged->client->pers.JKModCustomDuel = type;
 				}
 				else 
 				{
@@ -629,7 +629,7 @@ extern char	*ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
 extern qboolean SaberAttacking(gentity_t *self);
 
-void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0) 
+void JKMod_Say(gentity_t *ent, int mode, qboolean arg0) 
 { 
 	char		*p;
 
@@ -651,7 +651,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
-			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
+			ent->client->JKModMotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
 	// Teleport chat (from file)
@@ -666,16 +666,16 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 		vec3_t		realorigin;
 		vmCvar_t	currentmap;
 
-		if (level.JKPlusTeleportChat[0] || p || p[0])
+		if (level.JKModTeleportChat[0] || p || p[0])
 		{
 			trap_Cvar_Register(&currentmap, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
-			for (i = 0; i < level.JKPlusTeleportChatCount; i++)
+			for (i = 0; i < level.JKModTeleportChatCount; i++)
 			{
-				strcpy(command, Info_ValueForKey(level.JKPlusTeleportChat[i], "command"));
-				strcpy(map, Info_ValueForKey(level.JKPlusTeleportChat[i], "map"));
-				strcpy(origin, Info_ValueForKey(level.JKPlusTeleportChat[i], "origin"));
-				strcpy(rotation, Info_ValueForKey(level.JKPlusTeleportChat[i], "rotation"));
+				strcpy(command, Info_ValueForKey(level.JKModTeleportChat[i], "command"));
+				strcpy(map, Info_ValueForKey(level.JKModTeleportChat[i], "map"));
+				strcpy(origin, Info_ValueForKey(level.JKModTeleportChat[i], "origin"));
+				strcpy(rotation, Info_ValueForKey(level.JKModTeleportChat[i], "rotation"));
 
 				sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
 
@@ -695,7 +695,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 						{
 							trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
 						}
-						else if (!ent->client->JKPlusTeleportChatUsed)
+						else if (!ent->client->JKModTeleportChatUsed)
 						{
 							vec3_t		temporigin, tempangles;
 
@@ -709,9 +709,9 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 							tempangles[YAW] = realrotation;
 							tempangles[ROLL] = 0.0f;
 
-							JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
+							JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 
-							ent->client->JKPlusTeleportChatUsed = qtrue;
+							ent->client->JKModTeleportChatUsed = qtrue;
 						}
 						else 
 						{
@@ -744,19 +744,19 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			ent->client->ps.viewangles[0] = 0.0f;
 			ent->client->ps.viewangles[2] = 0.0f;
-			ent->client->pers.JKPlusTeleportChatSaveX = (int)ent->client->ps.origin[0];
-			ent->client->pers.JKPlusTeleportChatSaveY = (int)ent->client->ps.origin[1];
-			ent->client->pers.JKPlusTeleportChatSaveZ = (int)ent->client->ps.origin[2];
-			ent->client->pers.JKPlusTeleportChatSaveYAW = ent->client->ps.viewangles[1];
-			ent->client->pers.JKPlusTeleportChatSet = qtrue;
+			ent->client->pers.JKModTeleportChatSaveX = (int)ent->client->ps.origin[0];
+			ent->client->pers.JKModTeleportChatSaveY = (int)ent->client->ps.origin[1];
+			ent->client->pers.JKModTeleportChatSaveZ = (int)ent->client->ps.origin[2];
+			ent->client->pers.JKModTeleportChatSaveYAW = ent->client->ps.viewangles[1];
+			ent->client->pers.JKModTeleportChatSet = qtrue;
 
 			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
 			/*
 			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
-				(int)ent->client->pers.JKPlusTeleportChatSaveX,
-				(int)ent->client->pers.JKPlusTeleportChatSaveY,
-				(int)ent->client->pers.JKPlusTeleportChatSaveZ,
-				ent->client->pers.JKPlusTeleportChatSaveYAW));
+				(int)ent->client->pers.JKModTeleportChatSaveX,
+				(int)ent->client->pers.JKModTeleportChatSaveY,
+				(int)ent->client->pers.JKModTeleportChatSaveZ,
+				ent->client->pers.JKModTeleportChatSaveYAW));
 			*/
 		}
 	}
@@ -766,7 +766,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
 		}
-		else if (!ent->client->pers.JKPlusTeleportChatSet)
+		else if (!ent->client->pers.JKModTeleportChatSet)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
 		}
@@ -778,14 +778,14 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			vec3_t temporigin, tempangles;
 
-			temporigin[0] = ent->client->pers.JKPlusTeleportChatSaveX;
-			temporigin[1] = ent->client->pers.JKPlusTeleportChatSaveY;
-			temporigin[2] = ent->client->pers.JKPlusTeleportChatSaveZ;
+			temporigin[0] = ent->client->pers.JKModTeleportChatSaveX;
+			temporigin[1] = ent->client->pers.JKModTeleportChatSaveY;
+			temporigin[2] = ent->client->pers.JKModTeleportChatSaveZ;
 			tempangles[PITCH] = 0.0f;
-			tempangles[YAW] = ent->client->pers.JKPlusTeleportChatSaveYAW;
+			tempangles[YAW] = ent->client->pers.JKModTeleportChatSaveYAW;
 			tempangles[ROLL] = 0.0f;
 
-			JKPlus_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
+			JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 		}
 	}
 
@@ -797,7 +797,7 @@ void JKPlus_Say(gentity_t *ent, int mode, qboolean arg0)
 Client command function
 =====================================================================
 */
-void JKPlus_ClientCommand(int clientNum)
+void JKMod_ClientCommand(int clientNum)
 {
 	gentity_t *ent;
 	char	cmd[MAX_TOKEN_CHARS];
@@ -921,7 +921,7 @@ void JKPlus_ClientCommand(int clientNum)
 		}
 		else 
 		{
-			if (!JKPlus_emoteCheck(arg1, ent))
+			if (!JKMod_emoteCheck(arg1, ent))
 			{
 				trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote for ^3%s\n\"", arg1));
 				return;
@@ -931,13 +931,13 @@ void JKPlus_ClientCommand(int clientNum)
 	// Drop flag command
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
-		JKPlus_dropFlag(ent, clientNum);
+		JKMod_dropFlag(ent, clientNum);
 	}
 	else if (Q_stricmp(cmd, "motd") == 0)
 	{
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
-			ent->client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
+			ent->client->JKModMotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
 	// Ignore command
@@ -987,7 +987,7 @@ void JKPlus_ClientCommand(int clientNum)
 			}
 			else 
 			{
-				ignored = JKPlus_ClientNumberFromArg(arg2);
+				ignored = JKMod_ClientNumberFromArg(arg2);
 
 				if (ignored == -1)
 				{
@@ -1016,9 +1016,9 @@ void JKPlus_ClientCommand(int clientNum)
 				}
 				else
 				{
-					ignore = JKPlus_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+					ignore = JKMod_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
 
-					JKPlus_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
+					JKMod_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
 
 					if (ignore)
 					{
@@ -1038,11 +1038,11 @@ void JKPlus_ClientCommand(int clientNum)
 		if (!jkcvar_allowCustomDuel.integer)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"^3Force duel ^7is disabled by the server\n\""));
-			JKPlus_EngageDuel(ent, 0);
+			JKMod_EngageDuel(ent, 0);
 		}
 		else
 		{
-			JKPlus_EngageDuel(ent, 1);
+			JKMod_EngageDuel(ent, 1);
 		}
 	}
 	// Test command

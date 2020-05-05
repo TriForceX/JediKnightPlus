@@ -157,7 +157,7 @@ Emote command check
 =====================================================================
 */
 
-int JKPlus_emoteCheck(char *cmd, gentity_t *ent)
+int JKMod_emoteCheck(char *cmd, gentity_t *ent)
 {
 	int	i;
 
@@ -166,7 +166,7 @@ int JKPlus_emoteCheck(char *cmd, gentity_t *ent)
 	{
 		if(Q_stricmp(cmd, emotes[i].cmd) == 0)
 		{
-			JKPlus_emoteDo(ent, emotes[i].emoteIndex);
+			JKMod_emoteDo(ent, emotes[i].emoteIndex);
 			return 1;
 		}
 	}
@@ -181,7 +181,7 @@ Emote check in list
 =====================================================================
 */
 
-int JKPlus_emoteIn(gentity_t *ent, int type)
+int JKMod_emoteIn(gentity_t *ent, int type)
 {
 	int	i;
 
@@ -231,7 +231,7 @@ Emote launch function
 */
 extern qboolean SaberAttacking(gentity_t *self);
 
-void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
+void JKMod_emoteDo(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;
 
@@ -291,23 +291,23 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 	{
 		if (Q_stricmp(emotes[emoteIndex].cmd, "hug") == 0)
 		{
-			JKPlus_emoteDoHug(ent);
+			JKMod_emoteDoHug(ent);
 			return;
 		}
 		else if (Q_stricmp(emotes[emoteIndex].cmd, "kiss") == 0)
 		{
-			JKPlus_emoteDoKiss(ent);
+			JKMod_emoteDoKiss(ent);
 			return;
 		}
 		else if (Q_stricmp(emotes[emoteIndex].cmd, "punch") == 0)
 		{
-			JKPlus_emoteDoPunch(ent);
+			JKMod_emoteDoPunch(ent);
 			return;
 		}
 	}
 
 	// If emotes are disabled, you can still exit an emote
-	if(jkcvar_emotesEnabled.integer == 0 && !JKPlus_emoteIn(ent, -1))
+	if(jkcvar_emotesEnabled.integer == 0 && !JKMod_emoteIn(ent, -1))
 	{
 		return;
 	}
@@ -394,7 +394,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 				pmv.ps = &ent->client->ps;
 				pmv.animations = bgGlobalAnimations;
 				pmv.cmd = ent->client->pers.cmd;
-				pmv.trace = JKPlus_Dimensions; // Tr!Force: [Dimensions] Main trace
+				pmv.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
 				pmv.pointcontents = trap_PointContents;
 				pmv.gametype = g_gametype.integer;
 
@@ -441,7 +441,7 @@ void JKPlus_emoteDo(gentity_t *ent, int emoteIndex)
 Emote hug function
 =====================================================================
 */
-void JKPlus_emoteDoHug(gentity_t *ent)
+void JKMod_emoteDoHug(gentity_t *ent)
 {
 	trace_t tr;
 	vec3_t fPos;
@@ -533,7 +533,7 @@ void JKPlus_emoteDoHug(gentity_t *ent)
 Emote kiss function
 =====================================================================
 */
-void JKPlus_emoteDoKiss(gentity_t *ent)
+void JKMod_emoteDoKiss(gentity_t *ent)
 {
 	trace_t tr;
 	vec3_t fPos;
@@ -628,7 +628,7 @@ void JKPlus_emoteDoKiss(gentity_t *ent)
 Emote punch function
 =====================================================================
 */
-void JKPlus_emoteDoPunch(gentity_t *ent)
+void JKMod_emoteDoPunch(gentity_t *ent)
 {
 	trace_t tr;
 	vec3_t fPos;

@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Client connect function
 =====================================================================
 */
-char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
+char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 {
 	char		userinfo[MAX_INFO_STRING];
 	char		*baseMessage;
@@ -53,13 +53,13 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 			trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
 			trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", clientWait, clientIP, clientWait));
 
-			g_entities[clientNum].client->JKPlusConnectTime = clientTemp.integer;
+			g_entities[clientNum].client->JKModConnectTime = clientTemp.integer;
 
-			if (g_entities[clientNum].client->JKPlusConnectTime < clientEnd) {
+			if (g_entities[clientNum].client->JKModConnectTime < clientEnd) {
 				return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
 			}
 
-			g_entities[clientNum].client->JKPlusConnectTime = 0;
+			g_entities[clientNum].client->JKModConnectTime = 0;
 			trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
 			G_LogPrintf("ClientMessage: %s is ready to join\n", clientIP);
 
@@ -76,7 +76,7 @@ char *JKPlus_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 Client begin function
 =====================================================================
 */
-void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
+void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 {
 	gentity_t	*ent = &g_entities[clientNum];
 	gclient_t	*client;
@@ -106,12 +106,12 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
-	clientVersion = Info_ValueForKey(userinfo, "JKPlus_ClientVersion");
+	clientVersion = Info_ValueForKey(userinfo, "JKMod_ClientVersion");
 
-	client->pers.JKPlusClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
+	client->pers.JKModClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
 
 	// Check client plugin
-	if (client->pers.JKPlusClientPlugin || !jkcvar_forcePlugin.integer)
+	if (client->pers.JKModClientPlugin || !jkcvar_forcePlugin.integer)
 	{
 		// Show a welcome message
 		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
@@ -125,10 +125,10 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 					"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
 
 				// Random message
-				if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKPlusRandomBegin[0], "") == 0)
+				if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKModRandomBegin[0], "") == 0)
 				{
-					int random = JKPlus_Rand() % level.JKPlusRandomBeginCount;
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKPlusRandomBegin[random]));
+					int random = JKMod_Rand() % level.JKModRandomBeginCount;
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKModRandomBegin[random]));
 				}
 				else
 				{
@@ -137,10 +137,10 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 			}
 
 			// Server motd time
-			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKPlusMotdSeen)
+			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKModMotdSeen)
 			{
-				client->JKPlusMotdTime = jkcvar_serverMotdTime.integer;
-				client->sess.JKPlusMotdSeen = qtrue;
+				client->JKModMotdTime = jkcvar_serverMotdTime.integer;
+				client->sess.JKModMotdSeen = qtrue;
 			}
 		}
 	}
@@ -193,7 +193,7 @@ void JKPlus_ClientBegin(int clientNum, qboolean allowTeamReset)
 Client spawn function
 =====================================================================
 */
-void JKPlus_ClientSpawn(gentity_t *ent)
+void JKMod_ClientSpawn(gentity_t *ent)
 {
 	// Launch original client spawn function
 	BaseJK2_ClientSpawn(ent);
@@ -206,7 +206,7 @@ void JKPlus_ClientSpawn(gentity_t *ent)
 Client clean name function
 =====================================================================
 */
-void JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) {
+void JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) {
 	int		len, colorlessLen;
 	char	ch;
 	char	*p;
@@ -309,7 +309,7 @@ void JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSi
 		outBuffer[count] = p[i];
 		count++;
 		memset(tempBuffer, 0, sizeof(tempBuffer));
-		JKPlus_sanitizeString(tempBuffer, outBuffer, sizeof(tempBuffer));
+		JKMod_sanitizeString(tempBuffer, outBuffer, sizeof(tempBuffer));
 
 		if (strlen(tempBuffer) >= MAX_NAME_PRINT)
 		{
@@ -320,7 +320,7 @@ void JKPlus_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSi
 	// Check duplicated player names
 	if (jkcvar_noDuplicatedNames.integer)
 	{
-		num = JKPlus_duplicatedNameCheck(ent, outBuffer);
+		num = JKMod_duplicatedNameCheck(ent, outBuffer);
 
 		if (num)
 		{

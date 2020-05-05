@@ -23,7 +23,7 @@ dimension_save_t dimension_save[MAX_GENTITIES];
 Dimensions trace
 =====================================================================
 */
-void JKPlus_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask) 
+void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask) 
 {
 	static int i, j; // This gets called a lot, make it static
 	static int reset;

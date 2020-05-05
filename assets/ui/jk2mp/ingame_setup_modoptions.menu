@@ -187,10 +187,10 @@
 		// JKPlus logo
 		itemDef
 		{
-			name				jkpluslogo
+			name				jkmodlogo
 			style				WINDOW_STYLE_SHADER
 			rect				0 0 300 38
-			background			"gfx/menus/jkplus_logo"
+			background			"gfx/menus/jkmod_logo"
 			forecolor			1 1 1 1
 			visible				1
 			decoration
@@ -198,7 +198,7 @@
 		// Intro
 		itemDef
 		{
-			text				@JKPLUSMENUS_MOD_OPTIONS_INTRO
+			text				@JKMODMENUS_MOD_OPTIONS_INTRO
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
 			rect				150 40 300 0
@@ -280,8 +280,8 @@
 		itemdef
 		{
 			name				button1text
-			text				@JKPLUSMENUS_MAIN_OPTION_ADMIN
-			descText            @JKPLUSMENUS_MAIN_OPTION_ADMIN_INFO
+			text				@JKMODMENUS_MAIN_OPTION_ADMIN
+			descText            @JKMODMENUS_MAIN_OPTION_ADMIN_INFO
 			rect				0 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -299,7 +299,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_admin ;
+				open			ingame_jkmod_admin ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -314,8 +314,8 @@
 		itemdef
 		{
 			name				button2text
-			text				@JKPLUSMENUS_MAIN_OPTION_CLIENT
-			descText            @JKPLUSMENUS_MAIN_OPTION_CLIENT_INFO
+			text				@JKMODMENUS_MAIN_OPTION_CLIENT
+			descText            @JKMODMENUS_MAIN_OPTION_CLIENT_INFO
 			rect				103 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -333,7 +333,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_client ;
+				open			ingame_jkmod_client ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -348,8 +348,8 @@
 		itemdef
 		{
 			name				button3text
-			text				@JKPLUSMENUS_MAIN_OPTION_BUILD
-			descText            @JKPLUSMENUS_MAIN_OPTION_BUILD_INFO
+			text				@JKMODMENUS_MAIN_OPTION_BUILD
+			descText            @JKMODMENUS_MAIN_OPTION_BUILD_INFO
 			rect				206 120 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -367,7 +367,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_build ;
+				open			ingame_jkmod_build ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -382,8 +382,8 @@
 		itemdef
 		{
 			name				button4text
-			text				@JKPLUSMENUS_MAIN_OPTION_EMOTES
-			descText            @JKPLUSMENUS_MAIN_OPTION_EMOTES_INFO
+			text				@JKMODMENUS_MAIN_OPTION_EMOTES
+			descText            @JKMODMENUS_MAIN_OPTION_EMOTES_INFO
 			rect				0 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -401,7 +401,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_emotes ;
+				open			ingame_jkmod_emotes ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -416,8 +416,8 @@
 		itemdef
 		{
 			name				button5text
-			text				@JKPLUSMENUS_MAIN_OPTION_SERVER
-			descText            @JKPLUSMENUS_MAIN_OPTION_SERVER_INFO
+			text				@JKMODMENUS_MAIN_OPTION_SERVER
+			descText            @JKMODMENUS_MAIN_OPTION_SERVER_INFO
 			rect				103 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -435,7 +435,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_server ;
+				open			ingame_jkmod_server ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -450,8 +450,8 @@
 		itemdef
 		{
 			name				button6text
-			text				@JKPLUSMENUS_MAIN_OPTION_RANDOM
-			descText            @JKPLUSMENUS_MAIN_OPTION_RANDOM_INFO
+			text				@JKMODMENUS_MAIN_OPTION_RANDOM
+			descText            @JKMODMENUS_MAIN_OPTION_RANDOM_INFO
 			rect				206 165 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -469,7 +469,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkplus_random ;
+				open			ingame_jkmod_random ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -484,7 +484,7 @@
 		// Website
 		itemDef
 		{
-			text				@JKPLUSMENUS_MOD_OPTIONS_WEBSITE
+			text				@JKMODMENUS_MOD_OPTIONS_WEBSITE
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
 			rect				150 215 300 0

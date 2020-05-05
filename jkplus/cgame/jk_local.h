@@ -12,8 +12,8 @@ Global definitions
 =====================================================================
 */
 
-#define CG_RegisterCvars 			JKPlus_CG_RegisterCvars
-#define CG_UpdateCvars				JKPlus_CG_UpdateCvars
+#define CG_RegisterCvars 			JKMod_CG_RegisterCvars
+#define CG_UpdateCvars				JKMod_CG_UpdateCvars
 
 /*
 =====================================================================

@@ -14,7 +14,7 @@ Store the structs
 ==================================================
 */
 
-JKPlusUiInfo_t JKPlusUiInfo;
+JKModUiInfo_t JKModUiInfo;
 
 emoteData_t emotesList[] =
 {
@@ -91,14 +91,14 @@ typedef struct { // Cvar table struct
 vmCvar_t	jkcvar_ui_test1;
 vmCvar_t	jkcvar_ui_test2;
 
-static cvarTable_t	JKPlusUICvarTable[] = {
+static cvarTable_t	JKModUICvarTable[] = {
 
 	{ &jkcvar_ui_test1, "jk_ui_test1", "0", CVAR_ARCHIVE },
 	{ &jkcvar_ui_test2, "jk_ui_test2", "0", CVAR_ARCHIVE },
 
 };
 
-static int JKPlusUICvarTableSize = sizeof(JKPlusUICvarTable) / sizeof(JKPlusUICvarTable[0]);
+static int JKModUICvarTableSize = sizeof(JKModUICvarTable) / sizeof(JKModUICvarTable[0]);
 
 /*
 =====================================================================
@@ -106,13 +106,13 @@ Register / update cvars functions
 =====================================================================
 */
 
-void JKPlus_UI_RegisterCvars(void)
+void JKMod_UI_RegisterCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Register all the cvars
-	for (i = 0, cv = JKPlusUICvarTable; i < JKPlusUICvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModUICvarTable; i < JKModUICvarTableSize; i++, cv++) {
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 	}
 
@@ -120,13 +120,13 @@ void JKPlus_UI_RegisterCvars(void)
 	BaseJK2_UI_RegisterCvars();
 }
 
-void JKPlus_UI_UpdateCvars(void)
+void JKMod_UI_UpdateCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
 
 	// Update all the cvars
-	for (i = 0, cv = JKPlusUICvarTable; i < JKPlusUICvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModUICvarTable; i < JKModUICvarTableSize; i++, cv++) {
 		trap_Cvar_Update(cv->vmCvar);
 	}
 
@@ -140,12 +140,12 @@ Emotes functions
 =====================================================================
 */
 
-static char *JKPlus_UI_EmotesList(int index, int *actual) 
+static char *JKMod_UI_EmotesList(int index, int *actual) 
 {
 	int i, c = 0;
 	*actual = 0;
 
-	for (i = 0; i < JKPlusUiInfo.emotesCount; i++)
+	for (i = 0; i < JKModUiInfo.emotesCount; i++)
 	{
 		if (c == index)
 		{
@@ -165,7 +165,7 @@ static char *JKPlus_UI_EmotesList(int index, int *actual)
 Feeder item text function
 =====================================================================
 */
-const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6)
+const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6)
 {
 	static char info[MAX_STRING_CHARS];
 	static char hostname[1024];
@@ -178,7 +178,7 @@ const char *JKPlus_UI_FeederItemText(float feederID, int index, int column, qhan
 	if(feederID == FEEDER_JK_EMOTES)
 	{
 		int actual;
-		return JKPlus_UI_EmotesList(index, &actual);
+		return JKMod_UI_EmotesList(index, &actual);
 	}
 
 	// Final return, probably NULL
@@ -191,13 +191,13 @@ Feeder count function
 =====================================================================
 */
 
-int JKPlus_UI_FeederCount(float feederID)
+int JKMod_UI_FeederCount(float feederID)
 {
 	switch ((int)feederID)
 	{
 		case FEEDER_JK_EMOTES:
-			JKPlusUiInfo.emotesCount = (sizeof(emotesList) / sizeof(emotesList[0]));
-			return JKPlusUiInfo.emotesCount;
+			JKModUiInfo.emotesCount = (sizeof(emotesList) / sizeof(emotesList[0]));
+			return JKModUiInfo.emotesCount;
 	}
 
 	// Launch original feeder count function
@@ -210,7 +210,7 @@ Feeder selection function
 =====================================================================
 */
 
-qboolean JKPlus_UI_FeederSelection(float feederID, int index)
+qboolean JKMod_UI_FeederSelection(float feederID, int index)
 {
 	static char info[MAX_STRING_CHARS];
 
