@@ -38,9 +38,9 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 		return;
 	}
 
-	if (ent->client->JKModDropFlagTime > 0)
+	if (ent->client->jkmodClient.DropFlagTime > 0)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->JKModDropFlagTime));
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to take the flag again\n\"", ent->client->jkmodClient.DropFlagTime));
 		return;
 	}
 	
@@ -66,7 +66,7 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 	trap_Trace(&tr, ent->client->ps.origin, mins, maxs, org, ent->s.number, MASK_SOLID);
 	VectorCopy(tr.endpos, org);
 
-	ent->client->JKModDropFlagTime = jkcvar_dropFlagTime.integer;
+	ent->client->jkmodClient.DropFlagTime = jkcvar_dropFlagTime.integer;
 	LaunchItem(item, org, velocity);
 }
 
@@ -177,8 +177,8 @@ void JKMod_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEINPROGRESS")));
 		return;
 	}
-	if (ent->client->JKModVoteWaitTime > 0) {
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->JKModVoteWaitTime));
+	if (ent->client->jkmodClient.VoteWaitTime > 0) {
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->jkmodClient.VoteWaitTime));
 		return;
 	}
 	if (ent->client->pers.voteCount >= MAX_VOTE_COUNT) {
@@ -421,7 +421,7 @@ void JKMod_CallVote(gentity_t *ent)
 	ent->client->ps.eFlags |= EF_VOTED;
 
 	// Call vote timer
-	ent->client->JKModVoteWaitTime = jkcvar_voteWaitTime.integer;
+	ent->client->jkmodClient.VoteWaitTime = jkcvar_voteWaitTime.integer;
 
 	// Append white colorcode at the end of the display string as workaround for cgame leaking colors
 	Q_strcat(level.voteDisplayString, sizeof(level.voteDisplayString), S_COLOR_WHITE);
@@ -651,7 +651,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
-			ent->client->JKModMotdTime = jkcvar_serverMotdTime.integer;
+			ent->client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
 	// Teleport chat (from file)
@@ -666,16 +666,16 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		vec3_t		realorigin;
 		vmCvar_t	currentmap;
 
-		if (level.jkmodData.TeleportChats[0] || p || p[0])
+		if (level.jkmodLevel.TeleportChats[0] || p || p[0])
 		{
 			trap_Cvar_Register(&currentmap, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
-			for (i = 0; i < level.jkmodData.TeleportChatsCount; i++)
+			for (i = 0; i < level.jkmodLevel.TeleportChatsCount; i++)
 			{
-				strcpy(command, Info_ValueForKey(level.jkmodData.TeleportChats[i], "command"));
-				strcpy(map, Info_ValueForKey(level.jkmodData.TeleportChats[i], "map"));
-				strcpy(origin, Info_ValueForKey(level.jkmodData.TeleportChats[i], "origin"));
-				strcpy(rotation, Info_ValueForKey(level.jkmodData.TeleportChats[i], "rotation"));
+				strcpy(command, Info_ValueForKey(level.jkmodLevel.TeleportChats[i], "command"));
+				strcpy(map, Info_ValueForKey(level.jkmodLevel.TeleportChats[i], "map"));
+				strcpy(origin, Info_ValueForKey(level.jkmodLevel.TeleportChats[i], "origin"));
+				strcpy(rotation, Info_ValueForKey(level.jkmodLevel.TeleportChats[i], "rotation"));
 
 				sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
 
@@ -695,7 +695,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 						{
 							trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
 						}
-						else if (!ent->client->JKModTeleportChatUsed)
+						else if (!ent->client->jkmodClient.TeleportChatUsed)
 						{
 							vec3_t		temporigin, tempangles;
 
@@ -711,7 +711,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 
 							JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, qtrue);
 
-							ent->client->JKModTeleportChatUsed = qtrue;
+							ent->client->jkmodClient.TeleportChatUsed = qtrue;
 						}
 						else 
 						{
@@ -937,7 +937,7 @@ void JKMod_ClientCommand(int clientNum)
 	{
 		if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
-			ent->client->JKModMotdTime = jkcvar_serverMotdTime.integer;
+			ent->client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
 		}
 	}
 	// Ignore command

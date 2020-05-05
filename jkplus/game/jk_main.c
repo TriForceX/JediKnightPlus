@@ -223,7 +223,7 @@ void JKMod_G_UpdateCvars(void)
 						{
 							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED) 
 							{
-								VectorCopy(ent->client->ps.viewangles, ent->client->JKModPauseSavedView);
+								VectorCopy(ent->client->ps.viewangles, ent->client->jkmodClient.PauseSavedView);
 							}
 						}
 
@@ -278,7 +278,7 @@ void JKMod_G_UpdateCvars(void)
 									if (ent->client->pers.teamState.lastfraggedcarrier) ent->client->pers.teamState.lastfraggedcarrier += pausedGameTime;
 									if (ent->client->pers.teamState.lasthurtcarrier) ent->client->pers.teamState.lasthurtcarrier += pausedGameTime;
 									// Restore this player viewangles
-									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->JKModPauseSavedView); 
+									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->jkmodClient.PauseSavedView); 
 								}
 							}
 
@@ -317,7 +317,7 @@ void JKMod_randomBeginInit(void)
 	static char		*lineend;
 	static int		count;
 
-	level.jkmodData.RandomBeginCount = 0;
+	level.jkmodLevel.RandomBeginCount = 0;
 	linestart = JKMod_ReadFile("config/random_begin.cfg");
 
 	if (linestart)
@@ -326,17 +326,17 @@ void JKMod_randomBeginInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.jkmodData.RandomBegin[count++], linestart, sizeof(level.jkmodData.RandomBegin[0]));
-			level.jkmodData.RandomBeginCount++;
+			Q_strncpyz(level.jkmodLevel.RandomBegin[count++], linestart, sizeof(level.jkmodLevel.RandomBegin[0]));
+			level.jkmodLevel.RandomBeginCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.jkmodData.RandomBegin[count++], linestart, sizeof(level.jkmodData.RandomBegin[0]));
-			level.jkmodData.RandomBeginCount++;
+			Q_strncpyz(level.jkmodLevel.RandomBegin[count++], linestart, sizeof(level.jkmodLevel.RandomBegin[0]));
+			level.jkmodLevel.RandomBeginCount++;
 		}
-		G_Printf("%i random begin messages loaded\n", level.jkmodData.RandomBeginCount);
+		G_Printf("%i random begin messages loaded\n", level.jkmodLevel.RandomBeginCount);
 	}
 	else
 	{
@@ -355,7 +355,7 @@ void JKMod_serverNewsInit(void)
 	static char		*lineend;
 	static int		count;
 
-	level.jkmodData.ServerNewsCount = 0;
+	level.jkmodLevel.ServerNewsCount = 0;
 	linestart = JKMod_ReadFile("config/server_news.cfg");
 
 	if (linestart)
@@ -364,17 +364,17 @@ void JKMod_serverNewsInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.jkmodData.ServerNews[count++], linestart, sizeof(level.jkmodData.ServerNews[0]));
-			level.jkmodData.ServerNewsCount++;
+			Q_strncpyz(level.jkmodLevel.ServerNews[count++], linestart, sizeof(level.jkmodLevel.ServerNews[0]));
+			level.jkmodLevel.ServerNewsCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.jkmodData.ServerNews[count++], linestart, sizeof(level.jkmodData.ServerNews[0]));
-			level.jkmodData.ServerNewsCount++;
+			Q_strncpyz(level.jkmodLevel.ServerNews[count++], linestart, sizeof(level.jkmodLevel.ServerNews[0]));
+			level.jkmodLevel.ServerNewsCount++;
 		}
-		G_Printf("%i server news loaded\n", level.jkmodData.ServerNewsCount);
+		G_Printf("%i server news loaded\n", level.jkmodLevel.ServerNewsCount);
 	}
 	else
 	{
@@ -395,8 +395,8 @@ void JKMod_teleportChatInit(void)
 
 	if (linestart)
 	{
-		level.jkmodData.TeleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodData.TeleportChatsCount, &level.jkmodData.TeleportChats[level.jkmodData.TeleportChatsCount]);
-		G_Printf("%i teleport chats loaded\n", level.jkmodData.TeleportChatsCount);
+		level.jkmodLevel.TeleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodLevel.TeleportChatsCount, &level.jkmodLevel.TeleportChats[level.jkmodLevel.TeleportChatsCount]);
+		G_Printf("%i teleport chats loaded\n", level.jkmodLevel.TeleportChatsCount);
 	}
 	else
 	{

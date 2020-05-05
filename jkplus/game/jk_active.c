@@ -25,7 +25,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
 	client = ent->client;
-	client->JKModTimeResidual += msec;
+	client->jkmodClient.TimeResidual += msec;
 
 	// Don't allow in pause mode
 	if (jkcvar_pauseGame.integer) return;
@@ -34,69 +34,69 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	BaseJK2_ClientTimerActions(ent, msec);
 
 	// Custom time actions
-	while (client->JKModTimeResidual >= 1000)
+	while (client->jkmodClient.TimeResidual >= 1000)
 	{
-		client->JKModTimeResidual -= 1000;
+		client->jkmodClient.TimeResidual -= 1000;
 
 		// Drop flag check
-		if (client->JKModDropFlagTime)
+		if (client->jkmodClient.DropFlagTime)
 		{
-			if (client->JKModDropFlagTime > 0) client->JKModDropFlagTime--;
-			else client->JKModDropFlagTime = 0;
+			if (client->jkmodClient.DropFlagTime > 0) client->jkmodClient.DropFlagTime--;
+			else client->jkmodClient.DropFlagTime = 0;
 		}
 
 		// Call vote check
-		if (client->JKModVoteWaitTime)
+		if (client->jkmodClient.VoteWaitTime)
 		{
-			if (client->JKModVoteWaitTime > 0) client->JKModVoteWaitTime--;
-			else client->JKModVoteWaitTime = 0;
+			if (client->jkmodClient.VoteWaitTime > 0) client->jkmodClient.VoteWaitTime--;
+			else client->jkmodClient.VoteWaitTime = 0;
 		}
 
 		// Chat protect check
 		if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
 		{
-			if (client->JKModChatTime >= jkcvar_chatProtectTime.integer)
+			if (client->jkmodClient.ChatTime >= jkcvar_chatProtectTime.integer)
 			{
-				client->JKModChatTime = jkcvar_chatProtectTime.integer;
+				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
 				client->ps.eFlags |= JK_CHAT_PROTECT;
 				ent->takedamage = qfalse;
 			}
 			else
 			{
-				client->JKModChatTime++;
+				client->jkmodClient.ChatTime++;
 			}
 		}
 		else
 		{
-			if (client->JKModChatTime != 0) client->JKModChatTime = 0;
+			if (client->jkmodClient.ChatTime != 0) client->jkmodClient.ChatTime = 0;
 			if (client->ps.eFlags & JK_CHAT_PROTECT) client->ps.eFlags &= ~JK_CHAT_PROTECT;
 			if (!ent->health <= 0) ent->takedamage = qtrue;
 		}
 
 		// Show server motd
-		if (client->JKModMotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		if (client->jkmodClient.MotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
 			JKMod_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
-			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->JKModMotdTime));
-			client->JKModMotdTime--;
+			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.MotdTime));
+			client->jkmodClient.MotdTime--;
 		}
 
 		// Server news
-		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.jkmodData.ServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
+		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.jkmodLevel.ServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
 		{
 			int i;
-			int total = level.jkmodData.ServerNewsCount;
+			int total = level.jkmodLevel.ServerNewsCount;
 			
-			level.jkmodData.ServerNewsNum++;
+			level.jkmodLevel.ServerNewsNum++;
 
 			for (i = 1; i < (jkcvar_serverNewsTime.integer * total); i++)
 			{
-				if (level.jkmodData.ServerNewsNum == (jkcvar_serverNewsTime.integer * i))
+				if (level.jkmodLevel.ServerNewsNum == (jkcvar_serverNewsTime.integer * i))
 				{
-					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodData.ServerNews[(i-1)]));
+					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodLevel.ServerNews[(i-1)]));
 					// Reset
-					if (level.jkmodData.ServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
-						level.jkmodData.ServerNewsNum = 0;
+					if (level.jkmodLevel.ServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
+						level.jkmodLevel.ServerNewsNum = 0;
 					}
 				}
 			}

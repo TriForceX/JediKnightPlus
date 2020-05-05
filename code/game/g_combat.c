@@ -2091,10 +2091,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// Tr!Force: [DropFlag] Client dropped flag timer reset
-	self->client->JKModDropFlagTime = 0;
+	self->client->jkmodClient.DropFlagTime = 0;
 
 	// Tr!force: [Teleport] Client teleport used off
-	self->client->JKModTeleportChatUsed = qfalse;
+	self->client->jkmodClient.TeleportChatUsed = qfalse;
 
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,

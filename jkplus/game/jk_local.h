@@ -54,6 +54,20 @@ typedef enum
 
 } jkmod_vote_t;
 
+// Client spawn
+typedef struct 
+{
+	vec3_t		PauseSavedView;		// Player saved view angles
+	int			TimeResidual;		// Player time residual
+	int			DropFlagTime;		// Player time
+	int			ConnectTime;		// Client connect time
+	int			ChatTime;			// Chat protect time
+	int			MotdTime;			// Server motd time
+	int			VoteWaitTime;		// Player callvote wait time
+	qboolean	TeleportChatUsed;	// Player check used
+	
+} jkmod_client_t;
+
 // Level data
 typedef struct
 {

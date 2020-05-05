@@ -53,13 +53,13 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 			trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
 			trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", clientWait, clientIP, clientWait));
 
-			g_entities[clientNum].client->JKModConnectTime = clientTemp.integer;
+			g_entities[clientNum].client->jkmodClient.ConnectTime = clientTemp.integer;
 
-			if (g_entities[clientNum].client->JKModConnectTime < clientEnd) {
+			if (g_entities[clientNum].client->jkmodClient.ConnectTime < clientEnd) {
 				return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
 			}
 
-			g_entities[clientNum].client->JKModConnectTime = 0;
+			g_entities[clientNum].client->jkmodClient.ConnectTime = 0;
 			trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
 			G_LogPrintf("ClientMessage: %s is ready to join\n", clientIP);
 
@@ -125,10 +125,10 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 					"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
 
 				// Random message
-				if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodData.RandomBegin[0], "") == 0)
+				if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodLevel.RandomBegin[0], "") == 0)
 				{
-					int random = JKMod_Rand() % level.jkmodData.RandomBeginCount;
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodData.RandomBegin[random]));
+					int random = JKMod_Rand() % level.jkmodLevel.RandomBeginCount;
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLevel.RandomBegin[random]));
 				}
 				else
 				{
@@ -139,7 +139,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			// Server motd time
 			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.JKModMotdSeen)
 			{
-				client->JKModMotdTime = jkcvar_serverMotdTime.integer;
+				client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
 				client->sess.JKModMotdSeen = qtrue;
 			}
 		}

@@ -447,14 +447,7 @@ struct gclient_s {
 
 	qboolean	fjDidJump;
 
-	vec3_t		JKModPauseSavedView;	// Tr!Force: [Pause] Player saved view angles
-	int			JKModTimeResidual;		// Tr!Force: Player time residual
-	int			JKModDropFlagTime;		// Tr!Force: [DropFlag] Player time
-	int			JKModConnectTime;		// Tr!Force: Client connect time
-	int			JKModChatTime;			// Tr!Force: Chat protect time
-	int			JKModMotdTime;			// Tr!Force: [Motd] Server motd time
-	int			JKModVoteWaitTime;		// Tr!Force: [Vote] Player callvote wait time
-	qboolean	JKModTeleportChatUsed;			// Tr!Force: [Teleport] Player check used
+	jkmod_client_t	jkmodClient;	// Tr!Force: [JKMod] client spawn
 };
 
 
@@ -550,7 +543,7 @@ typedef struct {
 	// MVSDK
 	qboolean	bboxEncoding;
 
-	jkmod_locals_t	jkmodData;			// Tr!Force: [Data] level locals
+	jkmod_locals_t	jkmodLevel;			// Tr!Force: [JKMod] level locals
 } level_locals_t;
 
 
