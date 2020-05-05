@@ -315,9 +315,7 @@ typedef struct {
 	int			updateUITime;		// only update userinfo for FP/SL if < level.time
 	qboolean	teamLeader;			// true when this client is a team leader
 
-	qboolean	JKModMotdSeen;			// Tr!Force: [Motd] Server motd already seen
-	int			JKModIgnoredChats[2];	// Tr!Force: [Ignore] Client ignored chats
-	int			JKModIgnoredDuels[2];	// Tr!Force: [Ignore] Client ignored duels
+	jkmod_sess_t	jkmodSess;		// Tr!Force: [JKMod] client session
 } clientSession_t;
 
 // JK2MV

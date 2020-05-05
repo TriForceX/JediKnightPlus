@@ -41,9 +41,9 @@ void G_WriteClientSessionData( gclient_t *client ) {
 		client->sess.setForce,
 		client->sess.saberLevel,
 		client->sess.selectedFP,
-		client->sess.JKModMotdSeen,		// Tr!Force: [Motd] Keep motd seen
-		client->sess.JKModIgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
-		client->sess.JKModIgnoredDuels[2]	// Tr!Force: [ignore] Keep ignore duel
+		client->sess.jkmodSess.MotdSeen,		// Tr!Force: [Motd] Keep motd seen
+		client->sess.jkmodSess.IgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
+		client->sess.jkmodSess.IgnoredDuels[2]	// Tr!Force: [ignore] Keep ignore duel
 		);
 
 	var = va( "session%i", (int)(client - level.clients) );
@@ -77,9 +77,10 @@ void G_ReadSessionData( gclient_t *client ) {
 	int spectatorState;
 	int sessionTeam;
 	int setForce;
-	int JKModMotdSeen;		// Tr!Force: [Motd] Keep motd seen
-	int JKModIgnoredChats[2]; // Tr!Force: [ignore] Keep ignore chat
-	int JKModIgnoredDuels[2]; // Tr!Force: [ignore] Keep ignore duel
+
+	int MotdSeen;			// Tr!Force: [Motd] Keep motd seen
+	int IgnoredChats[2];	// Tr!Force: [ignore] Keep ignore chat
+	int IgnoredDuels[2];	// Tr!Force: [ignore] Keep ignore duel
 
 	var = va( "session%i", (int)(client - level.clients) );
 	trap_Cvar_VariableStringBuffer( var, s, sizeof(s) );
@@ -98,9 +99,9 @@ void G_ReadSessionData( gclient_t *client ) {
 		&setForce,
 		&client->sess.saberLevel,
 		&client->sess.selectedFP,
-		&JKModMotdSeen,		// Tr!Force: [Motd] Keep motd seen
-		&JKModIgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
-		&JKModIgnoredDuels[2]		// Tr!Force: [ignore] Keep ignore duel
+		&MotdSeen,		// Tr!Force: [Motd] Keep motd seen
+		&IgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
+		&IgnoredDuels[2]		// Tr!Force: [ignore] Keep ignore duel
 		);
 
 	// bk001205 - format issues
@@ -108,9 +109,9 @@ void G_ReadSessionData( gclient_t *client ) {
 	client->sess.spectatorState = (spectatorState_t)spectatorState;
 	client->sess.teamLeader = (qboolean)teamLeader;
 	client->sess.setForce = (qboolean)setForce;
-	client->sess.JKModMotdSeen = (qboolean)JKModMotdSeen;		// Tr!Force: [Motd] Keep motd seen
-	client->sess.JKModIgnoredChats[2] = JKModIgnoredChats[2];	// Tr!Force: [ignore] Keep ignore chat
-	client->sess.JKModIgnoredDuels[2] = JKModIgnoredDuels[2];	// Tr!Force: [ignore] Keep ignore duel
+	client->sess.jkmodSess.MotdSeen = (qboolean)MotdSeen;		// Tr!Force: [Motd] Keep motd seen
+	client->sess.jkmodSess.IgnoredChats[2] = IgnoredChats[2];	// Tr!Force: [ignore] Keep ignore chat
+	client->sess.jkmodSess.IgnoredDuels[2] = IgnoredDuels[2];	// Tr!Force: [ignore] Keep ignore duel
 
 	client->ps.fd.saberAnimLevel = client->sess.saberLevel;
 	client->ps.fd.forcePowerSelected = client->sess.selectedFP;

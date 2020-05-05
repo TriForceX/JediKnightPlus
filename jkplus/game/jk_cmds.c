@@ -88,19 +88,19 @@ void JKMod_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore)
 	if (ignore)
 	{
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
+			g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
+			g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
 		}
 	}
 	else
 	{
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 	}
 }
@@ -113,13 +113,13 @@ Checks to see if the given client is being ignored by a specific client
 qboolean JKMod_IsClientIgnored(char *option, int ignorer, int ignored)
 {
 	if (!Q_stricmp(option, "chat")) {
-		if (g_entities[ignored].client->sess.JKModIgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
+		if (g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
 		{
 			return qtrue;
 		}
 	}
 	else if (!Q_stricmp(option, "duel")) {
-		if (g_entities[ignored].client->sess.JKModIgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
+		if (g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
 		{
 			return qtrue;
 		}
@@ -138,10 +138,10 @@ void JKMod_RemoveFromAllIgnoreLists(char *option, int ignorer)
 
 	for (i = 0; i < level.maxclients; i++) {
 		if (!Q_stricmp(option, "chat")) {
-			g_entities[i].client->sess.JKModIgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[i].client->sess.jkmodSess.IgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 		else if (!Q_stricmp(option, "duel")) {
-			g_entities[i].client->sess.JKModIgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
+			g_entities[i].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
 		}
 	}
 }

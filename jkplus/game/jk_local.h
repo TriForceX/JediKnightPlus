@@ -54,6 +54,15 @@ typedef enum
 
 } jkmod_vote_t;
 
+// Client session
+typedef struct
+{
+	qboolean	MotdSeen;			// Server motd already seen
+	int			IgnoredChats[2];	// Tr!Force: [Ignore] Client ignored chats
+	int			IgnoredDuels[2];	// Tr!Force: [Ignore] Client ignored duels
+
+} jkmod_sess_t;
+
 // Client persistant
 typedef struct
 {
