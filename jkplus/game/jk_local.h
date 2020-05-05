@@ -54,6 +54,14 @@ typedef enum
 
 } jkmod_vote_t;
 
+// Server entity
+typedef struct
+{
+	vec3_t		ItemFirstOrigin;		// First original item position
+	qboolean    ItemSpawnedBefore;		// Reset original item position
+
+} jkmod_ent_t;
+
 // Client session
 typedef struct
 {

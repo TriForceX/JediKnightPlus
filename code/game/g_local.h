@@ -250,8 +250,7 @@ struct gentity_s {
 
 	gitem_t		*item;			// for bonus items
 
-	vec3_t		JKModItemFirstOrigin; // Tr!Force: [Items] Reset original item position
-	qboolean    JKModItemSpawnedBefore; // Tr!Force: [Items] Reset original item position
+	jkmod_ent_t	jkmodEnt;		// Tr!Force: [JKMod] server entity
 };
 
 #define DAMAGEREDIRECT_HEAD		1

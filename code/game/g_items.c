@@ -1336,10 +1336,10 @@ void RespawnItem( gentity_t *ent ) {
 	// Tr!Force: [Items] Reset original item position
 	if (jkcvar_itemForcePhysics.integer == 1) 
 	{
-		VectorCopy(ent->JKModItemFirstOrigin, ent->s.origin);
-		VectorCopy(ent->JKModItemFirstOrigin, ent->s.pos.trBase);
-		VectorCopy(ent->JKModItemFirstOrigin, ent->s.apos.trBase);
-		VectorCopy(ent->JKModItemFirstOrigin, ent->r.currentOrigin);
+		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
+		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.pos.trBase);
+		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.apos.trBase);
+		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->r.currentOrigin);
 	}
 
 	ent->r.contents = CONTENTS_TRIGGER;
@@ -1892,10 +1892,10 @@ void FinishSpawningItem( gentity_t *ent ) {
 	*/
 
 	// Tr!Force: [Items] Reset original item position
-	if (jkcvar_itemForcePhysics.integer == 1 && !ent->JKModItemSpawnedBefore)
+	if (jkcvar_itemForcePhysics.integer == 1 && !ent->jkmodEnt.ItemSpawnedBefore)
 	{
-		ent->JKModItemSpawnedBefore = qtrue;
-		VectorCopy(tr.endpos, ent->JKModItemFirstOrigin);
+		ent->jkmodEnt.ItemSpawnedBefore = qtrue;
+		VectorCopy(tr.endpos, ent->jkmodEnt.ItemFirstOrigin);
 	}
 
 	trap_LinkEntity (ent);
@@ -2043,9 +2043,9 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	if ( G_ItemDisabled(item) )
 		return;
 
-	if (jkcvar_itemForcePhysics.integer == 1 && ent->JKModItemSpawnedBefore)
+	if (jkcvar_itemForcePhysics.integer == 1 && ent->jkmodEnt.ItemSpawnedBefore)
 	{
-		VectorCopy(ent->JKModItemFirstOrigin, ent->s.origin);
+		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
 	}
 
 	ent->item = item;
