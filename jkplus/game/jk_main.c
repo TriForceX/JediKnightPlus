@@ -317,7 +317,7 @@ void JKMod_randomBeginInit(void)
 	static char		*lineend;
 	static int		count;
 
-	level.JKModRandomBeginCount = 0;
+	level.jkmodData.RandomBeginCount = 0;
 	linestart = JKMod_ReadFile("config/random_begin.cfg");
 
 	if (linestart)
@@ -326,17 +326,17 @@ void JKMod_randomBeginInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.JKModRandomBegin[count++], linestart, sizeof(level.JKModRandomBegin[0]));
-			level.JKModRandomBeginCount++;
+			Q_strncpyz(level.jkmodData.RandomBegin[count++], linestart, sizeof(level.jkmodData.RandomBegin[0]));
+			level.jkmodData.RandomBeginCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKModRandomBegin[count++], linestart, sizeof(level.JKModRandomBegin[0]));
-			level.JKModRandomBeginCount++;
+			Q_strncpyz(level.jkmodData.RandomBegin[count++], linestart, sizeof(level.jkmodData.RandomBegin[0]));
+			level.jkmodData.RandomBeginCount++;
 		}
-		G_Printf("%i random begin messages loaded\n", level.JKModRandomBeginCount);
+		G_Printf("%i random begin messages loaded\n", level.jkmodData.RandomBeginCount);
 	}
 	else
 	{
@@ -355,7 +355,7 @@ void JKMod_serverNewsInit(void)
 	static char		*lineend;
 	static int		count;
 
-	level.JKModServerNewsCount = 0;
+	level.jkmodData.ServerNewsCount = 0;
 	linestart = JKMod_ReadFile("config/server_news.cfg");
 
 	if (linestart)
@@ -364,17 +364,17 @@ void JKMod_serverNewsInit(void)
 		while (lineend)
 		{
 			*lineend = 0;
-			Q_strncpyz(level.JKModServerNews[count++], linestart, sizeof(level.JKModServerNews[0]));
-			level.JKModServerNewsCount++;
+			Q_strncpyz(level.jkmodData.ServerNews[count++], linestart, sizeof(level.jkmodData.ServerNews[0]));
+			level.jkmodData.ServerNewsCount++;
 			linestart = lineend + 1;
 			lineend = strchr(linestart, '\n');
 			if (count >= MAX_LINES) break;
 		}
 		if (count < MAX_LINES) {
-			Q_strncpyz(level.JKModServerNews[count++], linestart, sizeof(level.JKModServerNews[0]));
-			level.JKModServerNewsCount++;
+			Q_strncpyz(level.jkmodData.ServerNews[count++], linestart, sizeof(level.jkmodData.ServerNews[0]));
+			level.jkmodData.ServerNewsCount++;
 		}
-		G_Printf("%i server news loaded\n", level.JKModServerNewsCount);
+		G_Printf("%i server news loaded\n", level.jkmodData.ServerNewsCount);
 	}
 	else
 	{
@@ -395,8 +395,8 @@ void JKMod_teleportChatInit(void)
 
 	if (linestart)
 	{
-		level.JKModTeleportChatCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.JKModTeleportChatCount, &level.JKModTeleportChat[level.JKModTeleportChatCount]);
-		G_Printf("%i teleport chats loaded\n", level.JKModTeleportChatCount);
+		level.jkmodData.TeleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodData.TeleportChatsCount, &level.jkmodData.TeleportChats[level.jkmodData.TeleportChatsCount]);
+		G_Printf("%i teleport chats loaded\n", level.jkmodData.TeleportChatsCount);
 	}
 	else
 	{

@@ -82,21 +82,21 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		}
 
 		// Server news
-		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.JKModServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
+		if (Q_stricmp(jkcvar_serverNews.string, "1") == 0 && !Q_stricmp(level.jkmodData.ServerNews[0], "") == 0 && g_gametype.integer != GT_TOURNAMENT)
 		{
 			int i;
-			int total = level.JKModServerNewsCount;
+			int total = level.jkmodData.ServerNewsCount;
 			
-			level.JKModServerNewsNum++;
+			level.jkmodData.ServerNewsNum++;
 
 			for (i = 1; i < (jkcvar_serverNewsTime.integer * total); i++)
 			{
-				if (level.JKModServerNewsNum == (jkcvar_serverNewsTime.integer * i))
+				if (level.jkmodData.ServerNewsNum == (jkcvar_serverNewsTime.integer * i))
 				{
-					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.JKModServerNews[(i-1)]));
+					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodData.ServerNews[(i-1)]));
 					// Reset
-					if (level.JKModServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
-						level.JKModServerNewsNum = 0;
+					if (level.jkmodData.ServerNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
+						level.jkmodData.ServerNewsNum = 0;
 					}
 				}
 			}

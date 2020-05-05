@@ -125,10 +125,10 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 					"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
 
 				// Random message
-				if (jkcvar_randomBegin.integer && !Q_stricmp(level.JKModRandomBegin[0], "") == 0)
+				if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodData.RandomBegin[0], "") == 0)
 				{
-					int random = JKMod_Rand() % level.JKModRandomBeginCount;
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.JKModRandomBegin[random]));
+					int random = JKMod_Rand() % level.jkmodData.RandomBeginCount;
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodData.RandomBegin[random]));
 				}
 				else
 				{

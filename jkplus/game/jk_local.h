@@ -6,7 +6,30 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 */
 
+#ifndef __JK_LOCAL_H__
+#define __JK_LOCAL_H__
+
 #include "../../jkplus/game/jk_version.h" // Version header
+
+/*
+=====================================================================
+Global definitions
+=====================================================================
+*/
+
+#define	MAX_IP						22
+#define MAX_NETNAME					64
+#define	MAX_NAME_PRINT				28 // 24
+#define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
+#define MAX_FILE_VARS				64
+#define MAX_FILE_CHARS				1024
+#define MAX_FILE_TEXT				8192
+#define MAX_LINES					64
+
+#define	ITEM_RESPAWN_ARMOR			20
+#define	ITEM_RESPAWN_HEALTH			30
+#define	ITEM_RESPAWN_AMMO			40
+#define	ITEM_RESPAWN_HOLDABLE		60
 
 /*
 =====================================================================
@@ -31,22 +54,24 @@ typedef enum
 
 } jkmod_vote_t;
 
+// Level data
+typedef struct
+{
+	char		RandomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
+	int			RandomBeginCount;								// Message counter
+	char		ServerNews[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
+	int			ServerNewsCount;								// News counter
+	int			ServerNewsNum;									// News timer
+	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
+	int			TeleportChatsCount;								// Chat teleport counter
+
+} jkmod_locals_t;
+
 /*
 =====================================================================
-Global definitions
+Re-routed functions
 =====================================================================
 */
-
-#define	MAX_IP						22
-#define	MAX_NAME_PRINT				28 // 24
-#define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
-#define MAX_FILE_TEXT				8192
-#define MAX_LINES					64
-
-#define	ITEM_RESPAWN_ARMOR			20
-#define	ITEM_RESPAWN_HEALTH			30
-#define	ITEM_RESPAWN_AMMO			40
-#define	ITEM_RESPAWN_HOLDABLE		60
 
 #define ClientCommand				JKMod_ClientCommand
 #define ClientThink_real			JKMod_ClientThink_real
@@ -164,3 +189,5 @@ void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboo
 
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);
+
+#endif // __JK_LOCAL_H__

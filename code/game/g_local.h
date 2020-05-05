@@ -96,6 +96,8 @@ extern int gEscapeTime;
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
+#include "../../jkplus/game/jk_local.h" // Tr!Force: [JKMod] Main header
+
 struct gentity_s {
 	entityState_t	s;				// communicated by server to clients
 	entityShared_t	r;				// shared by both the server system and game
@@ -325,7 +327,7 @@ typedef struct {
 } mvclientSession_t;
 
 //
-#define MAX_NETNAME			64 // Tr!Force: [Names] Increase max name length
+// #define MAX_NETNAME			36 // Tr!Force: [Header] Use this on main local header
 #define	MAX_VOTE_COUNT		3
 
 // client data that stays across multiple respawns, but is cleared
@@ -548,13 +550,7 @@ typedef struct {
 	// MVSDK
 	qboolean	bboxEncoding;
 
-	char		JKModRandomBegin[MAX_SPAWN_VARS][MAX_STRING_CHARS];	// Tr!Force: [RandomBegin] Store messages
-	int			JKModRandomBeginCount;		// Tr!Force: [RandomBegin] Message counter
-	char		JKModServerNews[MAX_SPAWN_VARS][MAX_STRING_CHARS];		// Tr!Force: [RandomBegin] Store messages
-	int			JKModServerNewsCount;		// Tr!Force: [ServerNews] News counter
-	int			JKModServerNewsNum;		// Tr!Force: [ServerNews] News timer
-	char		*JKModTeleportChat[MAX_STRING_CHARS];					// Tr!Force: [Teleport] Chat teleport info
-	int			JKModTeleportChatCount;	// Tr!Force: [Teleport] Chat teleport counter
+	jkmod_locals_t	jkmodData;			// Tr!Force: [Data] level locals
 } level_locals_t;
 
 
@@ -580,7 +576,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir );
 void Cmd_SaberAttackCycle_f(gentity_t *ent);
 int G_ItemUsable(playerState_t *ps, int forcedUse);
 void Cmd_ToggleSaber_f(gentity_t *ent);
-void Cmd_EngageDuel_f(gentity_t *ent);
+// void Cmd_EngageDuel_f(gentity_t *ent); // Tr!Force: [Header] Use this on main local header
 
 gentity_t *G_GetDuelWinner(gclient_t *client);
 
@@ -1369,4 +1365,3 @@ qboolean trap_MVAPI_DisableStructConversion( qboolean disable );                
 #include "../api/mvapi.h"
 #include "g_multiversion.h"
 
-#include "../../jkplus/game/jk_local.h" // Tr!Force: [JKMod] Main header

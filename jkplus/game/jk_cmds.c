@@ -666,16 +666,16 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		vec3_t		realorigin;
 		vmCvar_t	currentmap;
 
-		if (level.JKModTeleportChat[0] || p || p[0])
+		if (level.jkmodData.TeleportChats[0] || p || p[0])
 		{
 			trap_Cvar_Register(&currentmap, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
-			for (i = 0; i < level.JKModTeleportChatCount; i++)
+			for (i = 0; i < level.jkmodData.TeleportChatsCount; i++)
 			{
-				strcpy(command, Info_ValueForKey(level.JKModTeleportChat[i], "command"));
-				strcpy(map, Info_ValueForKey(level.JKModTeleportChat[i], "map"));
-				strcpy(origin, Info_ValueForKey(level.JKModTeleportChat[i], "origin"));
-				strcpy(rotation, Info_ValueForKey(level.JKModTeleportChat[i], "rotation"));
+				strcpy(command, Info_ValueForKey(level.jkmodData.TeleportChats[i], "command"));
+				strcpy(map, Info_ValueForKey(level.jkmodData.TeleportChats[i], "map"));
+				strcpy(origin, Info_ValueForKey(level.jkmodData.TeleportChats[i], "origin"));
+				strcpy(rotation, Info_ValueForKey(level.jkmodData.TeleportChats[i], "rotation"));
 
 				sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
 
