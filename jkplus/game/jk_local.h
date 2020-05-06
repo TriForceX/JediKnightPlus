@@ -65,9 +65,9 @@ typedef struct
 // Client session
 typedef struct
 {
-	qboolean	MotdSeen;			// Server motd already seen
-	int			IgnoredChats[2];	// Tr!Force: [Ignore] Client ignored chats
-	int			IgnoredDuels[2];	// Tr!Force: [Ignore] Client ignored duels
+	qboolean	MotdSeen;			// Server motd seen
+	int			IgnoredChats[2];	// Client ignored chats
+	int			IgnoredDuels[2];	// Client ignored duels
 
 } jkmod_sess_t;
 
@@ -80,7 +80,7 @@ typedef struct
 	int			TeleportChatSaveY;		// Player saved pos y
 	int			TeleportChatSaveZ;		// Player saved pos z
 	int			TeleportChatSaveYAW;	// Player saved pos yaw
-	qboolean	TeleportChatSet;		// Player saved pos set
+	char		*TeleportChatSaved;		// Player saved pos set
 
 } jkmod_pers_t;
 

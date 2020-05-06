@@ -741,20 +741,16 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			ent->client->ps.viewangles[0] = 0.0f;
 			ent->client->ps.viewangles[2] = 0.0f;
-			ent->client->pers.jkmodPers.TeleportChatSaveX = (int)ent->client->ps.origin[0];
-			ent->client->pers.jkmodPers.TeleportChatSaveY = (int)ent->client->ps.origin[1];
-			ent->client->pers.jkmodPers.TeleportChatSaveZ = (int)ent->client->ps.origin[2];
+			ent->client->pers.jkmodPers.TeleportChatSaveX = ent->client->ps.origin[0];
+			ent->client->pers.jkmodPers.TeleportChatSaveY = ent->client->ps.origin[1];
+			ent->client->pers.jkmodPers.TeleportChatSaveZ = ent->client->ps.origin[2];
 			ent->client->pers.jkmodPers.TeleportChatSaveYAW = ent->client->ps.viewangles[1];
-			ent->client->pers.jkmodPers.TeleportChatSet = qtrue;
-
+			
+			
 			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
-			/*
-			trap_SendServerCommand(ent - g_entities, va("print \"Saved position: ^3X: ^7%d, ^3Y: ^7%d, ^3Z: ^7%d, ^3YAW: ^7%d\n\"",
-				(int)ent->client->pers.jkmodPers.TeleportChatSaveX,
-				(int)ent->client->pers.jkmodPers.TeleportChatSaveY,
-				(int)ent->client->pers.jkmodPers.TeleportChatSaveZ,
-				ent->client->pers.jkmodPers.TeleportChatSaveYAW));
-			*/
+
+			if (ent->client->pers.jkmodPers.TeleportChatSaved != "true") ent->client->pers.jkmodPers.TeleportChatSaved = "true";
+			else return;
 		}
 	}
 	if (Q_stricmp(p, "!loadpos") == 0)
@@ -763,7 +759,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
 		}
-		else if (!ent->client->pers.jkmodPers.TeleportChatSet)
+		else if (!ent->client->pers.jkmodPers.TeleportChatSaved)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
 		}
@@ -783,6 +779,9 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 			tempangles[ROLL] = 0.0f;
 
 			JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
+
+			if (ent->client->pers.jkmodPers.TeleportChatSaved == "true") ent->client->pers.jkmodPers.TeleportChatSaved = va("%i %i %i", temporigin[0], temporigin[1], temporigin[2]);
+			else return;
 		}
 	}
 
