@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Play effect by ID function
 =====================================================================
 */
-gentity_t *JK_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
+gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 {
 	gentity_t	*te;
 
@@ -25,6 +25,45 @@ gentity_t *JK_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 	return te;
 }
 
+/*
+=====================================================================
+Push box function
+=====================================================================
+*/
+void JKMod_PushBox(gentity_t *ent) {
+	int			i, num;
+	int			touch[MAX_GENTITIES];
+	gentity_t	*hit;
+	vec3_t		mins, maxs;
+	vec3_t		temporigin, tempangles;
+
+	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
+	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
+
+	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+	for (i = 0; i < num; i++) 
+	{
+		hit = &g_entities[touch[i]];
+		if (!hit->client) {
+			continue;
+		}
+
+		// push it
+		VectorClear(temporigin);
+		VectorClear(tempangles);
+
+		tempangles[ROLL] = 0;
+		tempangles[PITCH] = 0;
+		tempangles[YAW] = hit->client->ps.viewangles[YAW];
+
+		temporigin[0] = hit->client->ps.origin[0];
+		temporigin[1] = hit->client->ps.origin[1];
+		temporigin[2] = hit->client->ps.origin[2] + DEFAULT_MAXS_2;
+
+		JKMod_TeleportPlayer(hit, temporigin, tempangles, qfalse, qfalse, 0, "none", NULL);
+	}
+}
 /*
 =====================================================================
 Teleport player function
@@ -54,17 +93,20 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 		}
 		else
 		{
-			vec3_t temporigin;
+			if (strcmp(efxfile, "none") != 0)
+			{
+				vec3_t temporigin;
 
-			temporigin[YAW] = 0;
-			temporigin[PITCH] = -90;
-			temporigin[ROLL] = 0;
+				temporigin[YAW] = 0;
+				temporigin[PITCH] = -90;
+				temporigin[ROLL] = 0;
 
-			JK_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin);
-			G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")));
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin);
+				G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")));
 
-			JK_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin);
-			G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")));
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin);
+				G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")));
+			}
 		}
 	}
 
@@ -75,12 +117,11 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	}
 
 	VectorCopy(origin, player->client->ps.origin);
+	player->client->ps.origin[2] += 1;
 
 	if (spitplayer) 
 	{
 		// spit the player out
-		player->client->ps.origin[2] += 1;
-
 		AngleVectors(angles, player->client->ps.velocity, NULL, NULL);
 		VectorScale(player->client->ps.velocity, spitspeed, player->client->ps.velocity);
 		player->client->ps.pm_time = 160;		// hold time
@@ -98,6 +139,13 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	{
 		if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
 			G_KillBox(player);
+		}
+	}
+	// If not, push them
+	else
+	{
+		if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
+			JKMod_PushBox(player);
 		}
 	}
 

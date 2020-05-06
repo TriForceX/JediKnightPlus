@@ -707,7 +707,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 						tempangles[YAW] = realrotation;
 						tempangles[ROLL] = 0.0f;
 
-						JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qtrue, 200, "cinematics/hugesparks", NULL);
+						JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qtrue, 300, "cinematics/hugesparks", NULL);
 
 						ent->client->jkmodClient.TeleportChatUsed = qtrue;
 					}
