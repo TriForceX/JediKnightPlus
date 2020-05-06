@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.9.7-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.9.8-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -167,6 +167,7 @@ The following people supported and helped me directly on this project.
 - JediDog~ _(1.03 gameplay support)_
 - [NewAge](https://github.com/erfg12) _(Admin management support)_
 - Mr.Wonko _(JK2 base improvements support)_
+- [Xycaleth](https://github.com/xycaleth) _(LeagueMod tweaks)_
 - [Daggolin](https://github.com/Daggolin) _(Map modding and coding support)_
 - [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
 - Kameleon _(3D model draw angles fix)_

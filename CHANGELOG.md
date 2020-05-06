@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.8
+- Added push box for teleport chats
+- Fixed bot team join on duel gametype
+
 ## 0.9.7
 - Renamed mod functions
 - Moved mod stuff to mod files

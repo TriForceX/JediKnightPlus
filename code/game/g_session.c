@@ -203,7 +203,8 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 					level.numNonSpectatorClients >= g_maxGameClients.integer ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
-					sess->sessionTeam = TEAM_FREE;
+					// Tr!Force: [Plugin] Don't allow
+					sess->sessionTeam = (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
 				}
 				break;
 			case GT_TOURNAMENT:
@@ -212,12 +213,7 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					// Tr!Force: [Plugin] Don't allow
-					if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) {
-						sess->sessionTeam = TEAM_SPECTATOR;
-					}
-					else {
-						sess->sessionTeam = TEAM_FREE;
-					}
+					sess->sessionTeam = (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
 				}
 				break;
 			}
