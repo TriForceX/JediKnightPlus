@@ -533,12 +533,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Ignore] Apply duel ignore
-		if (JKMod_IsClientIgnored("duel", challenged->s.number, ent->s.number))
+		if (JKMod_IsClientIgnored("duel", challenged->s.number, ent->s.number) || challenged->client->sess.jkmodSess.IgnoredAll[1])
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
 			return;
 		}
-		if (JKMod_IsClientIgnored("duel", ent->s.number, challenged->s.number))
+		if (JKMod_IsClientIgnored("duel", ent->s.number, challenged->s.number) || ent->client->sess.jkmodSess.IgnoredAll[1])
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
 			return;
@@ -983,46 +983,64 @@ void JKMod_ClientCommand(int clientNum)
 			}
 			else 
 			{
-				ignored = JKMod_ClientNumberFromArg(arg2);
+				if (!Q_stricmp(arg2, "all"))
+				{
+					ignored = !Q_stricmp(arg1, "chat") ? 0 : 1;
 
-				if (ignored == -1)
-				{
-					trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", arg2));
-					return;
-				}
-				else if (ignored == -2)
-				{
-					trap_SendServerCommand(ent - g_entities, va("print \"There are more names that contains ^3%s\n\"", arg2));
-					return;
-				}
-				else if (ignored >= MAX_CLIENTS || ignored < 0)
-				{
-					trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", arg2));
-					return;
-				}
-				else if (ignored == ent->client->ps.clientNum)
-				{
-					trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
-					return;
-				}
-				else if (!g_entities[ignored].inuse)
-				{
-					trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
-					return;
-				}
-				else
-				{
-					ignore = JKMod_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+					ent->client->sess.jkmodSess.IgnoredAll[ignored] = ent->client->sess.jkmodSess.IgnoredAll[ignored] ? qfalse : qtrue;
 
-					JKMod_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
-
-					if (ignore)
+					if (ent->client->sess.jkmodSess.IgnoredAll[ignored])
 					{
-						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring ^3%s ^7%ss now\n\"", g_entities[ignored].client->pers.netname, arg1));
+						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring all ^3%ss ^7now\n\"", arg1));
 					}
 					else
 					{
-						trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring %ss from ^3%s\n\"", arg1, g_entities[ignored].client->pers.netname));
+						trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring ^3%ss\n\"", arg1));
+					}
+				}
+				else
+				{
+					ignored = JKMod_ClientNumberFromArg(arg2);
+
+					if (ignored == -1)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", arg2));
+						return;
+					}
+					else if (ignored == -2)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"There are more names that contains ^3%s\n\"", arg2));
+						return;
+					}
+					else if (ignored >= MAX_CLIENTS || ignored < 0)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", arg2));
+						return;
+					}
+					else if (ignored == ent->client->ps.clientNum)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
+						return;
+					}
+					else if (!g_entities[ignored].inuse)
+					{
+						trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
+						return;
+					}
+					else
+					{
+						ignore = JKMod_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+
+						JKMod_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
+
+						if (ignore)
+						{
+							trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring ^3%s ^7%ss now\n\"", g_entities[ignored].client->pers.netname, arg1));
+						}
+						else
+						{
+							trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring %ss from ^3%s\n\"", arg1, g_entities[ignored].client->pers.netname));
+						}
 					}
 				}
 			}

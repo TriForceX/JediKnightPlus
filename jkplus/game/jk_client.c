@@ -137,7 +137,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			}
 
 			// Server motd time
-			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !ent->client->sess.jkmodSess.MotdSeen)
+			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !client->sess.jkmodSess.MotdSeen)
 			{
 				client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
 				client->sess.jkmodSess.MotdSeen = qtrue;

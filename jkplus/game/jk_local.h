@@ -68,6 +68,7 @@ typedef struct
 	qboolean	MotdSeen;			// Server motd seen
 	int			IgnoredChats[2];	// Client ignored chats
 	int			IgnoredDuels[2];	// Client ignored duels
+	int			IgnoredAll[2];		// Client ignored all chats & duels
 
 } jkmod_sess_t;
 

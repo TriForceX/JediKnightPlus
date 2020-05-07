@@ -1079,7 +1079,7 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 	}
 
 	// Tr!Force: [Ignore] Apply chat ignore
-	if (JKMod_IsClientIgnored("chat", other->s.number, ent->s.number))
+	if (JKMod_IsClientIgnored("chat", other->s.number, ent->s.number) || other->client->sess.jkmodSess.IgnoredAll[0])
 	{
 		return;
 	}
