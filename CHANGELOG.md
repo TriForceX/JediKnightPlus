@@ -9,6 +9,11 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.9.9
+- Prevent teleport save & load chat spam
+- Added option to ignore all duels & chats
+- Added whois command
+
 ## 0.9.8
 - Added push box for teleport chats
 - Fixed bot team join on duel gametype

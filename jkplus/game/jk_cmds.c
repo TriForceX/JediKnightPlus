@@ -837,14 +837,15 @@ void JKMod_ClientCommand(int clientNum)
 
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Help ^5]^7\n"
-				"^7This server is running ^5%s ^7(Version: ^2%s.%s.%s^7 - Server Time: %02i:%02i%s)\n"
+				"^7This server is running ^5%s ^7- Version: ^2%s.%s.%s\n"
+				"^7The current server gameplay is ^21.0%i ^7and the server time is %02i:%02i%s\n"
 				"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 				"^5----------\n"
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Ranking\n"
 				"^3Emotes         Commands       Duels\n"
 				"^3Build          About          Credits\n"
-				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
+				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, jk2gameplay, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
 				return;
 		}
 		if (!Q_stricmp(arg1, "commands"))
@@ -860,6 +861,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^3dropflag\n"
 				"^3callvote\n"
 				"^3motd\n"
+				"^3whois\n"
 				"^7\""));
 			return;
 		}
@@ -963,14 +965,15 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Ignore ^5]^7\n"
 				"^7Ignore a player chat or duel challenge\n"
-				"^7You can use this feature using the following command: ^2/ignore <option> <player|clientnum|all>\n"
+				"^7You can use this feature using the following command: ^2/ignore <option> <player|number|all>\n"
 				"^5----------\n"
 				"^7Option list:\n"
 				"^3chat\n"
 				"^3duel\n"
 				"^5----------\n"
 				"^2Note 1: ^7No need to use full name or color name, you can use just a part of it\n"
-				"^2Note 2: ^7Use this command again to undo the changes\n"
+				"^2Note 2: ^7You can use the command ^3/whois ^7to check the player number\n"
+				"^2Note 3: ^7Use this command again to undo the changes\n"
 				"^7\""));
 			return;
 		}
@@ -1058,6 +1061,66 @@ void JKMod_ClientCommand(int clientNum)
 		{
 			JKMod_EngageDuel(ent, 1);
 		}
+	}
+	// Engage duel force command
+	else if (Q_stricmp(cmd, "whois") == 0)
+	{
+		char		status[MAX_STRING_CHARS] = "";
+		int		    i;
+
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"^5[^7 Who is ^5]^7\n"
+			"^7List of all players connected on the server\n"
+			"^7Client plugin status: ^2Updated^7, ^3Outdated^7, ^1No plugin\n"
+			"^7\""));
+
+		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^7Num Name                      Type  Plugin\n");
+		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
+
+		for (i = 0; i < level.maxclients; i++)
+		{
+			gentity_t 	*ent = &g_entities[i];
+			char		name[MAX_STRING_CHARS] = "";
+			char		userinfo[MAX_INFO_STRING];
+			char		*type;
+			char		*valid;
+			char		*plugin;
+
+			if (!ent || !ent->client || !ent->inuse)
+			{
+				continue;
+			}
+			if (ent->client->pers.connected == CON_DISCONNECTED)
+			{
+				continue;
+			}
+
+			strcpy(name, ent->client->pers.netname);
+			trap_GetUserinfo(i, userinfo, sizeof(userinfo));
+
+			if (ent->r.svFlags & SVF_BOT) {
+				type = "Bot";
+				plugin = JK_VERSION;
+				valid = S_COLOR_GREEN;
+			}
+			else {
+				type = "Human";
+				plugin = Info_ValueForKey(userinfo, "JKMod_ClientVersion");
+				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
+			}
+			
+			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %25s %5s %s%8s\n",
+				i,
+				Q_CleanStr(name, qfalse),
+				type,
+				valid,
+				plugin[0] == '\0' ? "No plugin" : plugin
+			));
+		}
+
+		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
+		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
 	}
 	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)
