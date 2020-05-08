@@ -237,6 +237,11 @@ gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
 void		JKMod_PushBox(gentity_t *ent);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean telefrag, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 
+// jk_session.c
+void		JKMod_InitSessionData(gclient_t *client);
+void		JKMod_ReadSessionData(gclient_t *client);
+void		JKMod_WriteSessionData(gclient_t *client);
+
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);
 

@@ -27,10 +27,7 @@ void G_WriteClientSessionData( gclient_t *client ) {
 	const char	*s;
 	const char	*var;
 
-	s = va("%i %i %i %i %i %i %i %i %i %i\""
-		" %i\""		// Tr!Force: [Motd] Keep motd seen
-		" %i\""		// Tr!Force: [ignore] Keep ignore chat
-		" %i\"",	// Tr!Force: [ignore] Keep ignore duel
+	s = va("%i %i %i %i %i %i %i %i %i %i", 
 		client->sess.sessionTeam,
 		client->sess.spectatorOrder,
 		client->sess.spectatorState,
@@ -40,10 +37,7 @@ void G_WriteClientSessionData( gclient_t *client ) {
 		client->sess.teamLeader,
 		client->sess.setForce,
 		client->sess.saberLevel,
-		client->sess.selectedFP,
-		client->sess.jkmodSess.MotdSeen,		// Tr!Force: [Motd] Keep motd seen
-		client->sess.jkmodSess.IgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
-		client->sess.jkmodSess.IgnoredDuels[2]	// Tr!Force: [ignore] Keep ignore duel
+		client->sess.selectedFP
 		);
 
 	var = va( "session%i", (int)(client - level.clients) );
@@ -59,6 +53,9 @@ void G_WriteClientSessionData( gclient_t *client ) {
 		);
 	var = va( "sessionmv%i", (int)(client-level.clients) );
 	trap_Cvar_Set( var, s );
+
+	// Tr!Force: [Session] Write session data
+	JKMod_WriteSessionData(client);
 }
 
 /*
@@ -78,17 +75,10 @@ void G_ReadSessionData( gclient_t *client ) {
 	int sessionTeam;
 	int setForce;
 
-	int MotdSeen;			// Tr!Force: [Motd] Keep motd seen
-	int IgnoredChats[2];	// Tr!Force: [ignore] Keep ignore chat
-	int IgnoredDuels[2];	// Tr!Force: [ignore] Keep ignore duel
-
 	var = va( "session%i", (int)(client - level.clients) );
 	trap_Cvar_VariableStringBuffer( var, s, sizeof(s) );
 
-	sscanf( s, "%i %i %i %i %i %i %i %i %i %i\""
-		" %i\""		// Tr!Force: [Motd] Keep motd seen
-		" %i\""		// Tr!Force: [ignore] Keep ignore chat
-		" %i\"",	// Tr!Force: [ignore] Keep ignore duel
+	sscanf( s, "%i %i %i %i %i %i %i %i %i %i",
 		&sessionTeam,                 // bk010221 - format
 		&client->sess.spectatorOrder,
 		&spectatorState,              // bk010221 - format
@@ -98,10 +88,7 @@ void G_ReadSessionData( gclient_t *client ) {
 		&teamLeader,                   // bk010221 - format
 		&setForce,
 		&client->sess.saberLevel,
-		&client->sess.selectedFP,
-		&MotdSeen,		// Tr!Force: [Motd] Keep motd seen
-		&IgnoredChats[2],	// Tr!Force: [ignore] Keep ignore chat
-		&IgnoredDuels[2]		// Tr!Force: [ignore] Keep ignore duel
+		&client->sess.selectedFP
 		);
 
 	// bk001205 - format issues
@@ -109,12 +96,12 @@ void G_ReadSessionData( gclient_t *client ) {
 	client->sess.spectatorState = (spectatorState_t)spectatorState;
 	client->sess.teamLeader = (qboolean)teamLeader;
 	client->sess.setForce = (qboolean)setForce;
-	client->sess.jkmodSess.MotdSeen = (qboolean)MotdSeen;		// Tr!Force: [Motd] Keep motd seen
-	client->sess.jkmodSess.IgnoredChats[2] = IgnoredChats[2];	// Tr!Force: [ignore] Keep ignore chat
-	client->sess.jkmodSess.IgnoredDuels[2] = IgnoredDuels[2];	// Tr!Force: [ignore] Keep ignore duel
 
 	client->ps.fd.saberAnimLevel = client->sess.saberLevel;
 	client->ps.fd.forcePowerSelected = client->sess.selectedFP;
+
+	// Tr!Force: [Session] Read session data
+	JKMod_ReadSessionData(client);
 }
 
 /*
@@ -222,6 +209,9 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 
 	sess->spectatorState = SPECTATOR_FREE;
 	sess->spectatorOrder = 0;
+
+	// Tr!Force: [Session] Initialize session data
+	JKMod_InitSessionData(client);
 
 	G_WriteClientSessionData( client );
 }
