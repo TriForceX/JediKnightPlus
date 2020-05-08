@@ -71,6 +71,8 @@ vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
 
 vmCvar_t	jkcvar_forcePlugin;
+vmCvar_t	jkcvar_antiWarp;
+vmCvar_t	jkcvar_antiWarpTime;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
@@ -115,6 +117,8 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_serverNewsTime,			"jk_serverNewsTime",		"60",	CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_forcePlugin,				"jk_forcePlugin",			"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_antiWarp,					"jk_antiWarp",				"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_antiWarpTime,				"jk_antiWarpTime",			"1",	CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_test1,					"jk_test1",					"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,					"jk_test2",					"0",	CVAR_ARCHIVE,						0, qtrue },

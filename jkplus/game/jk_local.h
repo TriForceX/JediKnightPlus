@@ -119,6 +119,7 @@ Re-routed functions
 */
 
 #define ClientCommand				JKMod_ClientCommand
+#define G_RunClient					JKMod_RunClient
 #define ClientThink_real			JKMod_ClientThink_real
 #define ClientTimerActions			JKMod_ClientTimerActions
 #define G_RegisterCvars 			JKMod_G_RegisterCvars
@@ -182,6 +183,8 @@ extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
 
 extern	vmCvar_t					jkcvar_forcePlugin;
+extern	vmCvar_t					jkcvar_antiWarp;
+extern	vmCvar_t					jkcvar_antiWarpTime;
 
 /*
 =====================================================================

@@ -1793,8 +1793,8 @@ void ClientThink( int clientNum ) {
 }
 
 
-void G_RunClient( gentity_t *ent ) {
-	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer ) { // Tr!Force: [Pause] Don't allow
+void BaseJK2_G_RunClient( gentity_t *ent ) { // Tr!Force: [BaseJK2] Run client function
+	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer ) { 
 		return;
 	}
 

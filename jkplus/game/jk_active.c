@@ -13,7 +13,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Client timer actions function
 =====================================================================
 */
-
 void JKMod_ClientTimerActions(gentity_t *ent, int msec) 
 {
 	gclient_t	*client;
@@ -109,7 +108,6 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 Client think real function
 =====================================================================
 */
-
 void JKMod_ClientThink_real(gentity_t *ent)
 {
 	// Already in an emote
@@ -165,4 +163,73 @@ void JKMod_ClientThink_real(gentity_t *ent)
 
 	// Launch original client think real function
 	BaseJK2_ClientThink_real(ent);
+}
+
+/*
+=====================================================================
+Run client function
+=====================================================================
+*/
+void JKMod_RunClient(gentity_t *ent) 
+{
+	if (jkcvar_antiWarp.integer)
+	{
+		gclient_t	*client = ent->client;
+		usercmd_t	*cmd = &client->pers.cmd;
+
+		if (jkcvar_pauseGame.integer) // Don't allow in pause mode
+		{ 
+			return;
+		}
+		else if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
+		{ 
+			ClientBegin(ent - g_entities, qtrue);
+			ent->client->pers.botDelayed = qfalse;
+		}
+		else if ((ent->r.svFlags & SVF_BOT) || g_synchronousClients.integer)
+		{
+			cmd->serverTime = level.time;
+			ClientThink_real(ent);
+		}
+		else if (client->lastCmdTime > 0 &&
+			client->lastCmdTime < level.time - jkcvar_antiWarpTime.value*1000 &&
+			client->pers.connected == CON_CONNECTED &&
+			client->sess.spectatorState == SPECTATOR_NOT &&
+			client->ps.pm_type != PM_DEAD)
+		{
+			client->ps.eFlags |= EF_CONNECTION;
+
+			if (jkcvar_antiWarp.integer == 2)
+			{
+				// Create a fake user command to make him move, causing client prediction error for a warping player
+				cmd->serverTime = level.time + (cmd->serverTime - client->lastCmdTime);
+				cmd->buttons = 0;
+				cmd->generic_cmd = 0; // Let go any force power eg grip
+				cmd->forwardmove = 0;
+				cmd->rightmove = 0;
+				cmd->upmove = 0;
+
+				ClientThink_real(ent);
+			}
+		}
+		else
+		{
+			client->ps.eFlags &= ~EF_CONNECTION;
+		}
+	}
+	else
+	{
+		if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer) { // Don't allow in pause mode
+			return;
+		}
+
+		if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
+		{ 
+			ClientBegin(ent - g_entities, qtrue);
+			ent->client->pers.botDelayed = qfalse;
+		}
+
+		ent->client->pers.cmd.serverTime = level.time;
+		ClientThink_real(ent);
+	}
 }
