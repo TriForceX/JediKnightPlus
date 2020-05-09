@@ -34,7 +34,7 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 	if ((ent->client->sess.sessionTeam == TEAM_RED && ent->client->ps.powerups[PW_BLUEFLAG] == 0) || 
 		(ent->client->sess.sessionTeam == TEAM_BLUE && ent->client->ps.powerups[PW_REDFLAG] == 0))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You doesn't have any flag to drop\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You don't have any flag to drop\n\"");
 		return;
 	}
 
@@ -72,78 +72,33 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 
 /*
 =====================================================================
-Instructs all chat to be ignored by the given
+Instructs all chat & duels to be ignored by the given
 =====================================================================
 */
-void JKMod_IgnoreClient(char *option, int ignorer, int ignored, qboolean ignore)
+void JKMod_IgnoreClient(int option, int ignorer, int ignored, qboolean ignore)
 {
-	if (ignorer == ignored)
-	{
-		return;
-	}
-	if (g_entities[ignored].client->pers.connected != CON_CONNECTED)
-	{
-		return;
-	}
 	if (ignore)
 	{
-		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] |= (1 << (ignorer % 32));
-		}
-		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] |= (1 << (ignorer % 32));
-		}
+		g_entities[ignorer].client->sess.jkmodSess.IgnoredPlayer[option] |= (1 << ignored);
 	}
 	else
 	{
-		if (!Q_stricmp(option, "chat")) {
-			g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
-		}
-		else if (!Q_stricmp(option, "duel")) {
-			g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
-		}
+		g_entities[ignorer].client->sess.jkmodSess.IgnoredPlayer[option] &= ~(1 << ignored);
 	}
 }
 
 /*
 =====================================================================
-Checks to see if the given client is being ignored by a specific client
+Checks if the given client is being ignored by a specific client
 =====================================================================
 */
-qboolean JKMod_IsClientIgnored(char *option, int ignorer, int ignored)
+qboolean JKMod_IsClientIgnored(int option, int ignorer, int ignored)
 {
-	if (!Q_stricmp(option, "chat")) {
-		if (g_entities[ignored].client->sess.jkmodSess.IgnoredChats[ignorer / 32] & (1 << (ignorer % 32)))
-		{
-			return qtrue;
-		}
-	}
-	else if (!Q_stricmp(option, "duel")) {
-		if (g_entities[ignored].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] & (1 << (ignorer % 32)))
-		{
-			return qtrue;
-		}
+	if (g_entities[ignorer].client->sess.jkmodSess.IgnoredPlayer[option] & (1 << ignored))
+	{
+		return qtrue;
 	}
 	return qfalse;
-}
-
-/*
-=====================================================================
-Clears any possible ignore flags that were set and not reset
-=====================================================================
-*/
-void JKMod_RemoveFromAllIgnoreLists(char *option, int ignorer)
-{
-	int i;
-
-	for (i = 0; i < level.maxclients; i++) {
-		if (!Q_stricmp(option, "chat")) {
-			g_entities[i].client->sess.jkmodSess.IgnoredChats[ignorer / 32] &= ~(1 << (ignorer % 32));
-		}
-		else if (!Q_stricmp(option, "duel")) {
-			g_entities[i].client->sess.jkmodSess.IgnoredDuels[ignorer / 32] &= ~(1 << (ignorer % 32));
-		}
-	}
 }
 
 /*
@@ -533,12 +488,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Ignore] Apply duel ignore
-		if (JKMod_IsClientIgnored("duel", challenged->s.number, ent->s.number) || challenged->client->sess.jkmodSess.IgnoredAll[1])
+		if (JKMod_IsClientIgnored(1, challenged->s.number, ent->s.number) || challenged->client->sess.jkmodSess.IgnoredAll[1])
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
 			return;
 		}
-		if (JKMod_IsClientIgnored("duel", ent->s.number, challenged->s.number) || ent->client->sess.jkmodSess.IgnoredAll[1])
+		if (JKMod_IsClientIgnored(1, ent->s.number, challenged->s.number) || ent->client->sess.jkmodSess.IgnoredAll[1])
 		{
 			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
 			return;
@@ -761,7 +716,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		}
 		else if (!ent->client->pers.jkmodPers.TeleportChatSaved)
 		{
-			trap_SendServerCommand(ent - g_entities, va("cp \"You doesn't have any saved position\n\""));
+			trap_SendServerCommand(ent - g_entities, va("cp \"You don't have any saved position\n\""));
 		}
 		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
@@ -943,7 +898,7 @@ void JKMod_ClientCommand(int clientNum)
 	{
 		qboolean ignore;
 		int		ignored = -1;
-		char	*option;
+		int		option;
 		char	name[MAX_STRING_CHARS];
 		char    arg1[MAX_TOKEN_CHARS];
 		char    arg2[MAX_TOKEN_CHARS];
@@ -986,13 +941,13 @@ void JKMod_ClientCommand(int clientNum)
 			}
 			else 
 			{
+				option = !Q_stricmp(arg1, "chat") ? 0 : 1;
+
 				if (!Q_stricmp(arg2, "all"))
 				{
-					ignored = !Q_stricmp(arg1, "chat") ? 0 : 1;
+					ent->client->sess.jkmodSess.IgnoredAll[option] = ent->client->sess.jkmodSess.IgnoredAll[option] ? qfalse : qtrue;
 
-					ent->client->sess.jkmodSess.IgnoredAll[ignored] = ent->client->sess.jkmodSess.IgnoredAll[ignored] ? qfalse : qtrue;
-
-					if (ent->client->sess.jkmodSess.IgnoredAll[ignored])
+					if (ent->client->sess.jkmodSess.IgnoredAll[option])
 					{
 						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring all ^3%ss ^7now\n\"", arg1));
 					}
@@ -1025,16 +980,16 @@ void JKMod_ClientCommand(int clientNum)
 						trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
 						return;
 					}
-					else if (!g_entities[ignored].inuse)
+					else if (!g_entities[ignored].inuse || g_entities[ignored].client->pers.connected != CON_CONNECTED)
 					{
 						trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
 						return;
 					}
 					else
 					{
-						ignore = JKMod_IsClientIgnored(arg1, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+						ignore = JKMod_IsClientIgnored(option, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
 
-						JKMod_IgnoreClient(arg1, ent->client->ps.clientNum, ignored, ignore);
+						JKMod_IgnoreClient(option, ent->client->ps.clientNum, ignored, ignore);
 
 						if (ignore)
 						{
@@ -1074,9 +1029,9 @@ void JKMod_ClientCommand(int clientNum)
 			"^7Client plugin status: ^2Updated^7, ^3Outdated^7, ^1No plugin\n"
 			"^7\""));
 
-		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
-		Q_strcat(status, sizeof(status), "^7Num Name                      Type  Plugin\n");
-		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^7Num Name                         Type  Plugin\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 
 		for (i = 0; i < level.maxclients; i++)
 		{
@@ -1087,14 +1042,8 @@ void JKMod_ClientCommand(int clientNum)
 			char		*valid;
 			char		*plugin;
 
-			if (!ent || !ent->client || !ent->inuse)
-			{
-				continue;
-			}
-			if (ent->client->pers.connected == CON_DISCONNECTED)
-			{
-				continue;
-			}
+			if (!ent || !ent->client || !ent->inuse) continue;
+			if (ent->client->pers.connected == CON_DISCONNECTED) continue;
 
 			strcpy(name, ent->client->pers.netname);
 			trap_GetUserinfo(i, userinfo, sizeof(userinfo));
@@ -1110,7 +1059,7 @@ void JKMod_ClientCommand(int clientNum)
 				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 			}
 			
-			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %25s %5s %s%8s\n",
+			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %s%8s\n",
 				i,
 				Q_CleanStr(name, qfalse),
 				type,
@@ -1119,7 +1068,7 @@ void JKMod_ClientCommand(int clientNum)
 			));
 		}
 
-		Q_strcat(status, sizeof(status), "^5--- ------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
 	}
 	// Test command
@@ -1133,6 +1082,8 @@ void JKMod_ClientCommand(int clientNum)
 
 		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
 		Com_sprintf(arg2, sizeof(arg2), "%s", arg2);
+
+		if (arg1[0] == '\0') strcpy(arg1, "empty");
 
 		trap_SendServerCommand(ent - g_entities, va("print \"Cvar1: %s Cvar2: %i Arg1: %s Arg2: %i\n\"", jkcvar_test1.string, jkcvar_test2.integer, arg1, atoi(arg2)));
 	}

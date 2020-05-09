@@ -66,8 +66,7 @@ typedef struct
 typedef struct
 {
 	qboolean	MotdSeen;			// Server motd seen
-	int			IgnoredChats[2];	// Client ignored chats
-	int			IgnoredDuels[2];	// Client ignored duels
+	int			IgnoredPlayer[2];	// Client ignored player chats & duels
 	int			IgnoredAll[2];		// Client ignored all chats & duels
 
 } jkmod_sess_t;
@@ -205,7 +204,7 @@ void		JKMod_ClientThink_real(gentity_t *ent);
 void		JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
 
 // jk_cmds.c
-qboolean	JKMod_IsClientIgnored(char *option, int ignorer, int ignored);
+qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
 void		JKMod_CallVote(gentity_t *ent);
 
 // jk_common.c

@@ -292,6 +292,7 @@ int JKMod_ClientNumberFromStrippedSubstring(const char* name)
 	}
 	return match;
 }
+
 /*
 =====================================================================
 Get client number from argument

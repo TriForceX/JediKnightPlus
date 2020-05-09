@@ -37,7 +37,7 @@ void JKMod_ReadSessionData(gclient_t *client)
 	int	j = 0;		// Location of last space
 	int	num = 0;	// String section number
 
-	trap_Cvar_VariableStringBuffer(va("session%i", client - level.clients), s, sizeof(s));
+	trap_Cvar_VariableStringBuffer(va("session%i", (int)(client - level.clients)), s, sizeof(s));
 	sessionDataLen = strlen(s);
 
 	for (i = 0; i < sessionDataLen; i++)
@@ -56,16 +56,22 @@ void JKMod_ReadSessionData(gclient_t *client)
 
 			switch (num)
 			{
-			case 11:
-				client->sess.jkmodSess.MotdSeen = atoi(buf);
-				break;
-			case 12:
-				client->sess.jkmodSess.IgnoredChats[2] = atoi(buf);
-				break;
-			case 13:
-				client->sess.jkmodSess.IgnoredDuels[2] = atoi(buf);
-			default:
-				break;
+				case 11:
+					client->sess.jkmodSess.MotdSeen = atoi(buf);
+					break;
+				case 12:
+					client->sess.jkmodSess.IgnoredPlayer[0] = atoi(buf);
+					break;
+				case 13:
+					client->sess.jkmodSess.IgnoredPlayer[1] = atoi(buf);
+					break;
+				case 14:
+					client->sess.jkmodSess.IgnoredAll[0] = atoi(buf);
+					break;
+				case 15:
+					client->sess.jkmodSess.IgnoredAll[1] = atoi(buf);
+				default:
+					break;
 			}
 		}
 	}
@@ -80,13 +86,15 @@ void JKMod_WriteSessionData(gclient_t *client)
 {
 	char	original[MAX_STRING_CHARS] = "";
 
-	trap_Cvar_VariableStringBuffer(va("session%i", client - level.clients), original, sizeof(original));
+	trap_Cvar_VariableStringBuffer(va("session%i", (int)(client - level.clients)), original, sizeof(original));
 
-	Q_strcat(original, sizeof(original), va(" %i %i %i",
+	Q_strcat(original, sizeof(original), va(" %i %i %i %i %i ", // Fix me
 		client->sess.jkmodSess.MotdSeen,
-		client->sess.jkmodSess.IgnoredChats[2],
-		client->sess.jkmodSess.IgnoredDuels[2]
+		client->sess.jkmodSess.IgnoredPlayer[0],
+		client->sess.jkmodSess.IgnoredPlayer[1],
+		client->sess.jkmodSess.IgnoredAll[0],
+		client->sess.jkmodSess.IgnoredAll[1]
 	));
 
-	trap_Cvar_Set(va("session%i", client - level.clients), va("%s", original));
+	trap_Cvar_Set(va("session%i", (int)(client - level.clients)), va("%s", original));
 }
