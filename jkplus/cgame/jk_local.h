@@ -6,8 +6,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 */
 
-#ifndef __JK_LOCAL_H__
-#define __JK_LOCAL_H__
+#ifndef __JK_CG_LOCAL_H__
+#define __JK_CG_LOCAL_H__
 
 /*
 =====================================================================
@@ -41,4 +41,4 @@ Cvar registration
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
 
-#endif // __JK_LOCAL_H__
+#endif // __JK_CG_LOCAL_H__

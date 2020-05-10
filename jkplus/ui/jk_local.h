@@ -6,8 +6,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 */
 
-#ifndef __JK_LOCAL_H__
-#define __JK_LOCAL_H__
+#ifndef __JK_UI_LOCAL_H__
+#define __JK_UI_LOCAL_H__
 
 /*
 =====================================================================
@@ -68,4 +68,4 @@ const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhand
 int			JKMod_UI_FeederCount(float feederID);
 qboolean	JKMod_UI_FeederSelection(float feederID, int index);
 
-#endif // __JK_LOCAL_H__
+#endif // __JK_UI_LOCAL_H__
