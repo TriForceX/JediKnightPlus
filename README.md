@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.9.9-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.10.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -32,33 +32,31 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Server Side
 **Description:** General server features _(No client plugin required)_
 
-- [x] Gameplay changer between 1.02, 1.03 and 1.04 in the current match
+- [x] Gameplay changer between 1.02, 1.03 and 1.04 no matter the server version
 - [ ] Improved bots AI (Artificial intelligence)
-- [ ] Configurable weapon features (Damage, ammo speed, firing rate, etc...)
-- [ ] Player account system (Tracks kills, deaths, etc...)
+- [ ] Custom weapon features (Damage, ammo speed, firing rate, etc...)
+- [ ] Player accounts system (Save data such as kills, deaths, etc...)
 - [ ] Ranking system based on player skills
 - [ ] Chat censor filters
+- [x] Chat protection
 - [x] Allow black color in player names
 - [x] Prevent duplicated player names
-- [x] In-game chat commands (Teleports, info, etc...)
-- [x] Welcome message on client begin
-- [x] Show server news messages from time to time
+- [x] Teleport chat commands (Map areas, save & load, etc...)
+- [x] Welcome message on client begin (MOTD)
+- [x] Server news messages displayed constantly
 - [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
 - [ ] Custom player private chat rooms
-- [ ] Enabled Jedi Crystal and Beer Bacta items
 - [x] Show damage plums on hits
-- [ ] NPC spawn command like in Single Player
-- [ ] New and improved cheat commands
-- [ ] Clan tag protection for clan members
+- [ ] Clan system (Tag protection, member role, etc...)
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
 - [x] Anti lamer feature (Players can't kill during chat)
-- [ ] Dual blade lightsaber gameplay (Fixed damages, different combos, etc...)
+- [ ] Dual blade lightsaber gameplay (Fixed damages, custom combos, etc...)
+- [ ] Custom melee weapon
 - [x] Items get affected by force physics (Push, pull, etc...)
-- [x] Enable multiple duel challenge
+- [x] Enable multiple duel challenges
 - [x] Custom duel challenge modes (Full force, no force,etc...)
-- [x] Custom duel stats (Health, armor and hits)
 - [x] Custom duel challenge start health and armor
-- [ ] Enable invisible private duels
+- [x] Custom duel stats (Health, armor and body hits)
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Passwordless closed server feature (Allow only by IP)
@@ -67,6 +65,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
+- [x] Macro scanning feature (anti script)
+- [x] Prevent player warping or lag scripts
 
 ---
 
@@ -80,7 +80,6 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Ability to control bots actions (Fake chat, movements, emotes, etc...)
 - [ ] Spawn unlimited items and weapons
 - [ ] Private administrator chat room
-- [ ] Custom call vote with actions
 - [ ] Team management (Lock, force, shuffle, etc...)
 - [x] Pause mode to instantly stop everyone on the server during game
 
@@ -138,8 +137,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enable first person lightsaber
 - [ ] Enable first person turret chair view
 - [ ] Enable custom player skins (Rocket Trooper, Jedi Jan, etc...)
-- [ ] Anti-script feature (Macro scanning)
 - [ ] Increased some limits (Fov, camera range, name length, etc...)
+- [ ] Enable invisible private duels
 - [x] Smooth client dimensions
 
 ---
@@ -149,6 +148,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 
 - [ ] Free backstabs & dfa combos usage
 - [ ] Use force grip on items
+- [ ] NPC spawn like in single player game
 
 ---
 

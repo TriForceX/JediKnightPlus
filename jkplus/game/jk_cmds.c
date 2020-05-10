@@ -1025,8 +1025,8 @@ void JKMod_ClientCommand(int clientNum)
 	// Engage duel force command
 	else if (Q_stricmp(cmd, "whois") == 0)
 	{
-		char		status[MAX_STRING_CHARS] = "";
-		int		    i;
+		char	status[MAX_STRING_CHARS] = "";
+		int		i;
 
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
@@ -1075,6 +1075,23 @@ void JKMod_ClientCommand(int clientNum)
 
 		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
+	}
+	// Illegal macro announce
+	else if (Q_stricmp(cmd, "macroused") == 0)
+	{
+		if (jkcvar_macroScan.integer)
+		{
+			G_Say(ent, NULL, SAY_ALL, va("^5Illegal script/bind detected^1! ^7(IP: ^3%s^7)", ent->client->sess.jkmodSess.ClientIP));
+
+			if (jkcvar_macroScan.integer == 2)
+			{
+				SetTeam(ent, "spectator");
+			}
+			else if (jkcvar_macroScan.integer == 3)
+			{
+				trap_DropClient(clientNum, va("%s", G_GetStripEdString("SVINGAME", "WAS_KICKED")));
+			}
+		}
 	}
 	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)

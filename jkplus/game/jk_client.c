@@ -65,6 +65,9 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 
 			// Show base client connect message
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", g_entities[clientNum].client->pers.netname, G_GetStripEdString("SVINGAME", "PLCONNECT")));
+
+			// Set client IP
+			Q_strncpyz(g_entities[clientNum].client->sess.jkmodSess.ClientIP, clientIP, sizeof(g_entities[clientNum].client->sess.jkmodSess.ClientIP));
 		}
 	}
 

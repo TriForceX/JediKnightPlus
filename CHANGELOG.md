@@ -8,6 +8,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - **Patch:** Small changes, code improvements, bug fixes or work in progress
 
 ---
+## 0.10.0
+- Moved mod session stuff to a custom file
+- Keep ignore all chats & duels on session
+- Prevent spam on map teleport chats
+- Added anti player warping and lag scripts
+- Added anti script & macro scanning
 
 ## 0.9.9
 - Prevent teleport save & load chat spam

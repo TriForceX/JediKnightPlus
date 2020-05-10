@@ -17,7 +17,6 @@ Global definitions
 =====================================================================
 */
 
-#define	MAX_IP						22
 #define MAX_NETNAME					64
 #define	MAX_NAME_PRINT				28 // 24
 #define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
@@ -66,6 +65,7 @@ typedef struct
 typedef struct
 {
 	qboolean	MotdSeen;			// Server motd seen
+	char		ClientIP[64];			// Client IP
 	int			IgnoredPlayer[2];	// Client ignored player chats & duels
 	int			IgnoredAll[2];		// Client ignored all chats & duels
 
@@ -74,7 +74,7 @@ typedef struct
 // Client persistant
 typedef struct
 {
-	qboolean	ClientPlugin;			// Set player client plugin
+	qboolean	ClientPlugin;			// Player client plugin
 	int			CustomDuel;				// Client is in force duel
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved

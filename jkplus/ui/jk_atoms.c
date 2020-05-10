@@ -438,14 +438,15 @@ void JKMod_MacroScan(void)
 		if (macro == 1)
 		{ 
 			// Found illegal macro
-			Com_Printf("Illegal binding found.... removing\n");
+			Com_Printf("^3Illegal binding found... removing\n");
 
 			for (j = 0; j < strlen(buf); j++)
 			{ 
 				// Replace ';' with ':'
 				if (buf[j] == ';') buf[j] = ':';
 			}
-			trap_Key_SetBinding(i, va("echo illegal macro: %s", buf));
+			trap_Key_SetBinding(i, va("echo ^3Illegal macro: ^7%s", buf));
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("macroused\n"));
 		}
 	}
 }
@@ -458,23 +459,25 @@ Macro enable function
 void JKMod_MacroEnable(void) 
 {
 	// Process binds and scan for macros, the re-enable them
-	int i, j;
-	char buf[256];
-
-	// Com_Printf("starting macro enable scan\n");
+	int		i, j;
+	char	buf[256];
+	char	*find = "echo ^3Illegal macro: ^7";
+	int		findSize = strlen(find);
+	
+	// Com_Printf("Starting macro enable scan\n");
 	for (i = 0; i < MAX_KEYS; i++)
 	{
 		trap_Key_GetBindingBuf(i, buf, 256);
 		buf[255] = 0; // Just in case
-		if (!Q_stricmpn(buf, "echo illegal macro: ", 20))
+		if (!Q_stricmpn(buf, find, findSize))
 		{ 
 			// Found a commented macro
-			for (j = 20; j < strlen(buf); j++)
+			for (j = findSize; j < strlen(buf); j++)
 			{ 
 				// Replace ':' with ';'
 				if (buf[j] == ':') buf[j] = ';';
 			}
-			trap_Key_SetBinding(i, buf + 20);
+			trap_Key_SetBinding(i, buf + findSize);
 		}
 	}
 }

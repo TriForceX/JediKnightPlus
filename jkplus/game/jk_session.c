@@ -20,6 +20,9 @@ void JKMod_InitSessionData(gclient_t *client)
 		JKMod_ReadSessionData(client);
 		return;
 	}
+
+	memset(&client->sess.jkmodSess, 0, sizeof(client->sess.jkmodSess));
+	Q_strncpyz(client->sess.jkmodSess.ClientIP, "none", sizeof(client->sess.jkmodSess.ClientIP));
 }
 
 /*
@@ -70,6 +73,9 @@ void JKMod_ReadSessionData(gclient_t *client)
 					break;
 				case 15:
 					client->sess.jkmodSess.IgnoredAll[1] = atoi(buf);
+					break;
+				case 16:
+					Q_strncpyz(client->sess.jkmodSess.ClientIP, buf, sizeof(client->sess.jkmodSess.ClientIP));
 				default:
 					break;
 			}
@@ -88,12 +94,13 @@ void JKMod_WriteSessionData(gclient_t *client)
 
 	trap_Cvar_VariableStringBuffer(va("session%i", (int)(client - level.clients)), original, sizeof(original));
 
-	Q_strcat(original, sizeof(original), va(" %i %i %i %i %i ", // Fix me
+	Q_strcat(original, sizeof(original), va(" %i %i %i %i %i %s ", // Fix me
 		client->sess.jkmodSess.MotdSeen,
 		client->sess.jkmodSess.IgnoredPlayer[0],
 		client->sess.jkmodSess.IgnoredPlayer[1],
 		client->sess.jkmodSess.IgnoredAll[0],
-		client->sess.jkmodSess.IgnoredAll[1]
+		client->sess.jkmodSess.IgnoredAll[1],
+		client->sess.jkmodSess.ClientIP
 	));
 
 	trap_Cvar_Set(va("session%i", (int)(client - level.clients)), va("%s", original));
