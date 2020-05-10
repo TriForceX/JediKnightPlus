@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JK_SHORTNAME   		"JK+"
 #define JK_MAJOR 			"0"
 #define JK_MINOR 			"10"
-#define JK_PATCH  			"0"
+#define JK_PATCH  			"1"
 #define JK_VERSION			JK_SHORTNAME " Mod v" JK_MAJOR "." JK_MINOR "." JK_PATCH
 
 #define GAMEVERSION			S_COLOR_CYAN JK_VERSION

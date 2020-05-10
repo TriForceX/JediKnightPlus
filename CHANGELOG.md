@@ -8,6 +8,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - **Patch:** Small changes, code improvements, bug fixes or work in progress
 
 ---
+
+## 0.10.1
+- Fixed custom duel force usage before it starts
+
 ## 0.10.0
 - Moved mod session stuff to a custom file
 - Keep ignore all chats & duels on session

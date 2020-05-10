@@ -192,7 +192,7 @@ void JKMod_RunClient(gentity_t *ent)
 			ClientThink_real(ent);
 		}
 		else if (client->lastCmdTime > 0 &&
-			client->lastCmdTime < level.time - jkcvar_antiWarpTime.value*1000 &&
+			client->lastCmdTime < level.time - (jkcvar_antiWarpTime.value*1000) &&
 			client->pers.connected == CON_CONNECTED &&
 			client->sess.spectatorState == SPECTATOR_NOT &&
 			client->ps.pm_type != PM_DEAD)
@@ -204,7 +204,7 @@ void JKMod_RunClient(gentity_t *ent)
 				// Create a fake user command to make him move, causing client prediction error for a warping player
 				cmd->serverTime = level.time + (cmd->serverTime - client->lastCmdTime);
 				cmd->buttons = 0;
-				cmd->generic_cmd = 0; // Let go any force power eg grip
+				cmd->generic_cmd = 0; // Let go any force power
 				cmd->forwardmove = 0;
 				cmd->rightmove = 0;
 				cmd->upmove = 0;

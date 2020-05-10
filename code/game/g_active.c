@@ -1171,6 +1171,13 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			ucmd->forwardmove = 0;
 			ucmd->rightmove = 0;
 			ucmd->upmove = 0;
+
+			// Tr!Force: [CustomDuel] Don't allow
+			if (jkcvar_allowCustomDuel.integer)
+			{
+				ucmd->buttons = 0;
+				ucmd->generic_cmd = 0;
+			}
 		}
 
 		if (!duelAgainst || !duelAgainst->client || !duelAgainst->inuse ||
