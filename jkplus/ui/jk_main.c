@@ -40,7 +40,6 @@ static int JKModUICvarTableSize = sizeof(JKModUICvarTable) / sizeof(JKModUICvarT
 Emotes table list
 =====================================================================
 */
-
 jkmod_emotes_table_t jkmodEmotesTable[] =
 {
 	// cmd				title
@@ -100,12 +99,13 @@ jkmod_emotes_table_t jkmodEmotesTable[] =
 	{ "writing2",		"Writing 2" },
 };
 
+jkmod_emotes_t jkmodEmotes;
+
 /*
 =====================================================================
 Register / update cvars functions
 =====================================================================
 */
-
 void JKMod_UI_RegisterCvars(void)
 {
 	int			i;
@@ -139,10 +139,8 @@ void JKMod_UI_UpdateCvars(void)
 Emotes functions
 =====================================================================
 */
-
 static char *JKMod_UI_EmotesList(int index, int *actual) 
 {
-	jkmod_emotes_t jkmodEmotes;
 	int i, c = 0;
 	*actual = 0;
 
@@ -194,8 +192,6 @@ Feeder count function
 
 int JKMod_UI_FeederCount(float feederID)
 {
-	jkmod_emotes_t jkmodEmotes;
-
 	switch ((int)feederID)
 	{
 		case FEEDER_JK_EMOTES:
