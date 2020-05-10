@@ -71,15 +71,16 @@ vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
 
 vmCvar_t	jkcvar_forcePlugin;
+vmCvar_t	jkcvar_macroScan;
 vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
-	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",	CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",	CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverClosedIP,			"jk_serverClosedIP",		"0",	CVAR_ARCHIVE,						0, qfalse },
 
 	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",	CVAR_ARCHIVE,						0, qtrue },
@@ -110,13 +111,14 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",	CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_gamePlay,					"jk_gamePlay",				"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qfalse },
+	{ &jkcvar_gamePlay,					"jk_gamePlay",				"0",	CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensions,			"jk_altDimensions",			"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_randomBegin,				"jk_randomBegin",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,				"jk_serverNews",			"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,			"jk_serverNewsTime",		"60",	CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_forcePlugin,				"jk_forcePlugin",			"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_macroScan,				"jk_macroScan",				"0",	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_antiWarp,					"jk_antiWarp",				"0",	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,				"jk_antiWarpTime",			"1",	CVAR_ARCHIVE,						0, qtrue },
 

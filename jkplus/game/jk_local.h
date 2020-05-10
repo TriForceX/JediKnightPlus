@@ -179,6 +179,7 @@ extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
 
 extern	vmCvar_t					jkcvar_forcePlugin;
+extern	vmCvar_t					jkcvar_macroScan;
 extern	vmCvar_t					jkcvar_antiWarp;
 extern	vmCvar_t					jkcvar_antiWarpTime;
 

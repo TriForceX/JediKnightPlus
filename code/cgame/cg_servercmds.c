@@ -145,9 +145,11 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.capturelimit = atoi( Info_ValueForKey( info, "capturelimit" ) );
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
-	cgs.jkcvar_altDimensions = atoi(Info_ValueForKey(info, "jk_altDimensions")); // Tr!Force: [Dimensions] Main cvar
-	mapname = Info_ValueForKey( info, "mapname" );
 
+	cgs.jkmodCvar.altDimensions = atoi(Info_ValueForKey(info, "jk_altDimensions")); // Tr!Force: [Dimensions] Main cvar
+	cgs.jkmodCvar.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));			// Tr!Force: [MacroScan] Main cvar
+
+	mapname = Info_ValueForKey( info, "mapname" );
 
 	//rww - You must do this one here, Info_ValueForKey always uses the same memory pointer.
 	trap_Cvar_Set ( "ui_about_mapname", mapname );

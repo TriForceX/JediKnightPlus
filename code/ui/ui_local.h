@@ -174,6 +174,8 @@ extern vmCvar_t	ui_team_model;
 #define QM_LOSTFOCUS			2
 #define QM_ACTIVATED			3
 
+#include "../../jkplus/ui/jk_local.h" // Tr!Force: [JKMod] main header
+
 typedef struct _tag_menuframework
 {
 	int	cursor;
@@ -1223,5 +1225,3 @@ int MV_UiDetectVersion( void );
 
 #include "../api/mvapi.h"
 #include "ui_multiversion.h"
-
-#include "../../jkplus/ui/jk_local.h" // Tr!Force: [JKMod] main header

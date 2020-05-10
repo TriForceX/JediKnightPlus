@@ -6,27 +6,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
 */
 
-/*
-=====================================================================
-Player / world information struct and flags
-=====================================================================
-*/
-
-typedef struct {
-
-	char			*emotesCmd;			// Emotes command
-	char			*emotesTitle;		// Emotes title
-
-} emoteData_t;
-
-typedef struct {
-
-	int				emotesCount;		// Emotes count
-	emoteData_t		emotesList;		// Emotes list
-
-} JKModUiInfo_t;
-
-extern JKModUiInfo_t JKModUiInfo;
+#ifndef __JK_LOCAL_H__
+#define __JK_LOCAL_H__
 
 /*
 =====================================================================
@@ -39,6 +20,28 @@ Global definitions
 #define UI_FeederCount				JKMod_UI_FeederCount
 #define UI_FeederItemText			JKMod_UI_FeederItemText
 #define UI_FeederSelection			JKMod_UI_FeederSelection
+
+/*
+=====================================================================
+Player / world information
+=====================================================================
+*/
+
+// Emotes data
+typedef struct 
+{
+	int				count;	// Emotes count
+	char			*cmd;	// Emotes command
+
+} jkmod_emotes_t;
+
+// Emotes table
+typedef struct
+{
+	char			*cmd;	// Emotes command
+	char			*title;	// Emotes title
+
+} jkmod_emotes_table_t;
 
 /*
 =====================================================================
@@ -64,3 +67,5 @@ qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKMod_UI_FeederCount(float feederID);
 qboolean	JKMod_UI_FeederSelection(float feederID, int index);
+
+#endif // __JK_LOCAL_H__

@@ -638,6 +638,8 @@ typedef struct {
 // occurs, and they will have visible effects for #define STEP_TIME or whatever msec after
 
 #define MAX_PREDICTED_EVENTS	16
+
+#include "../../jkplus/cgame/jk_local.h" // Tr!Force: [JKMod] Main header
  
 typedef struct {
 	int			clientFrame;		// incremented each frame
@@ -1407,7 +1409,7 @@ Ghoul2 Insert End
 
 	int				mvsdk_svFlags;
 
-	int				jkcvar_altDimensions; // Tr!Force: [Dimensions] Main cvar
+	jkmod_cvar_t	jkmodCvar;		// Tr!Force: [JKMod] Server cvars
 
 } cgs_t;
 
@@ -2293,5 +2295,3 @@ void trap_MVAPI_SetVirtualScreen( float w, float h );                // Level: 3
 
 #include "../api/mvapi.h"
 #include "cg_multiversion.h"
-
-#include "../../jkplus/cgame/jk_local.h" // Tr!Force: [JKMod] Main header

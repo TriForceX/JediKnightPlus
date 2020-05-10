@@ -155,27 +155,27 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			mins, maxs, cmodel,  mask, origin, angles);
 
 		// Tr!Force: [Dimensions] Check dimensions
-		if (cgs.jkcvar_altDimensions) 
+		if (cgs.jkmodCvar.altDimensions)
 		{
 			if (trace.fraction < 1.0 && ent->number < MAX_CLIENTS)
 			{
-				if ((cgs.jkcvar_altDimensions & (1 << DIMENSION_DUEL)) & cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != ent->number)
+				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) & cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != ent->number)
 				{ 
 					// If you are dueling and this client is not your partner, skip it
 					continue;
 				}
-				if ((cgs.jkcvar_altDimensions & (1 << DIMENSION_DUEL)) & !cg.snap->ps.duelInProgress && ent->bolt1)
+				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) & !cg.snap->ps.duelInProgress && ent->bolt1)
 				{ 
 					// If the entity is dueling, but not with you, skip it (bolt1 contains the duelinprogress info)
 					continue;
 				}
-				if ((cgs.jkcvar_altDimensions & (1 << DIMENSION_CHAT)) && (cg_entities[ent->number].currentState.eFlags & JK_CHAT_PROTECT))
+				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && (cg_entities[ent->number].currentState.eFlags & JK_CHAT_PROTECT))
 				{ 
 					// Client is in the chat zone so skip it
 					continue;
 				}
 			}
-			else if ((cgs.jkcvar_altDimensions & (1 << DIMENSION_DUEL)) && trace.fraction < 1.0 && cg.snap->ps.duelInProgress)
+			else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) && trace.fraction < 1.0 && cg.snap->ps.duelInProgress)
 			{
 				if (ent->weapon == WP_TURRET || ent->modelindex == HI_SHIELD)
 				{ 

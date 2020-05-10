@@ -25,6 +25,7 @@ set(MVUISOURCES
 	"${SRCDir}/ui/ui_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
 	"${JKModDir}/ui/jk_main.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/ui/ui_atoms.c"
+	"${JKModDir}/ui/jk_atoms.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/ui/ui_force.c"
 	"${SRCDir}/ui/ui_gameinfo.c"
 	"${SRCDir}/ui/ui_shared.c"

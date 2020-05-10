@@ -9,14 +9,39 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/ui/ui_local.h"	// Original header
 
 /*
-==================================================
-Store the structs
-==================================================
+=====================================================================
+Cvar table list
+=====================================================================
 */
 
-JKModUiInfo_t JKModUiInfo;
+typedef struct { // Cvar table struct
 
-emoteData_t emotesList[] =
+	vmCvar_t	*vmCvar;
+	char		*cvarName;
+	char		*defaultString;
+	int			cvarFlags;
+
+} cvarTable_t;
+
+vmCvar_t	jkcvar_ui_test1;
+vmCvar_t	jkcvar_ui_test2;
+
+static cvarTable_t	JKModUICvarTable[] = {
+
+	{ &jkcvar_ui_test1, "jk_ui_test1", "0", CVAR_ARCHIVE },
+	{ &jkcvar_ui_test2, "jk_ui_test2", "0", CVAR_ARCHIVE },
+
+};
+
+static int JKModUICvarTableSize = sizeof(JKModUICvarTable) / sizeof(JKModUICvarTable[0]);
+
+/*
+=====================================================================
+Emotes table list
+=====================================================================
+*/
+
+jkmod_emotes_table_t jkmodEmotesTable[] =
 {
 	// cmd				title
 	{ "bar",			"Bartender" },
@@ -77,31 +102,6 @@ emoteData_t emotesList[] =
 
 /*
 =====================================================================
-Cvar table list
-=====================================================================
-*/
-
-typedef struct { // Cvar table struct
-	vmCvar_t	*vmCvar;
-	char		*cvarName;
-	char		*defaultString;
-	int			cvarFlags;
-} cvarTable_t;
-
-vmCvar_t	jkcvar_ui_test1;
-vmCvar_t	jkcvar_ui_test2;
-
-static cvarTable_t	JKModUICvarTable[] = {
-
-	{ &jkcvar_ui_test1, "jk_ui_test1", "0", CVAR_ARCHIVE },
-	{ &jkcvar_ui_test2, "jk_ui_test2", "0", CVAR_ARCHIVE },
-
-};
-
-static int JKModUICvarTableSize = sizeof(JKModUICvarTable) / sizeof(JKModUICvarTable[0]);
-
-/*
-=====================================================================
 Register / update cvars functions
 =====================================================================
 */
@@ -142,15 +142,16 @@ Emotes functions
 
 static char *JKMod_UI_EmotesList(int index, int *actual) 
 {
+	jkmod_emotes_t jkmodEmotes;
 	int i, c = 0;
 	*actual = 0;
 
-	for (i = 0; i < JKModUiInfo.emotesCount; i++)
+	for (i = 0; i < jkmodEmotes.count; i++)
 	{
 		if (c == index)
 		{
 			*actual = i;
-			return emotesList[i].emotesTitle;
+			return jkmodEmotesTable[i].title;
 		}
 		else
 		{
@@ -193,11 +194,13 @@ Feeder count function
 
 int JKMod_UI_FeederCount(float feederID)
 {
+	jkmod_emotes_t jkmodEmotes;
+
 	switch ((int)feederID)
 	{
 		case FEEDER_JK_EMOTES:
-			JKModUiInfo.emotesCount = (sizeof(emotesList) / sizeof(emotesList[0]));
-			return JKModUiInfo.emotesCount;
+			jkmodEmotes.count = (sizeof(jkmodEmotesTable) / sizeof(jkmodEmotesTable[0]));
+			return jkmodEmotes.count;
 	}
 
 	// Launch original feeder count function
@@ -216,7 +219,7 @@ qboolean JKMod_UI_FeederSelection(float feederID, int index)
 
 	if (feederID == FEEDER_JK_EMOTES)
 	{
-		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", emotesList[index].emotesCmd));
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", jkmodEmotesTable[index].cmd));
 	}
 
 	// Final return, probably NULL
