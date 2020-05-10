@@ -76,11 +76,8 @@ typedef struct
 {
 	qboolean	ClientPlugin;			// Set player client plugin
 	int			CustomDuel;				// Client is in force duel
-	int			TeleportChatSaveX;		// Player saved pos x
-	int			TeleportChatSaveY;		// Player saved pos y
-	int			TeleportChatSaveZ;		// Player saved pos z
-	int			TeleportChatSaveYAW;	// Player saved pos yaw
-	char		*TeleportChatSaved;		// Player saved pos set
+	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
+	char		*TeleportChatSaved;		// Player saved pos saved
 
 } jkmod_pers_t;
 

@@ -639,6 +639,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 					if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 					{
 						trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+						return;
 					}
 					else if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
 							|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
@@ -647,6 +648,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 							|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
 					{
 						trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
+						return;
 					}
 					else if (!ent->client->jkmodClient.TeleportChatUsed)
 					{
@@ -663,21 +665,19 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 						tempangles[ROLL] = 0.0f;
 
 						JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qtrue, 300, "cinematics/hugesparks", NULL);
-
 						ent->client->jkmodClient.TeleportChatUsed = qtrue;
 					}
 					else 
 					{
 						trap_SendServerCommand(ent - g_entities, va("cp \"You need to respawn to teleport again\n\""));
+						return;
 					}
-					break;
 				}
 				else
 				{
 					trap_SendServerCommand(ent - g_entities, va("cp \"Teleport not available for this map\n\""));
-					break;
+					return;
 				}
-				break;
 			}
 		}
 	}
@@ -687,19 +687,21 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		if (jkcvar_teleportChat.integer != 2)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
+			return;
 		}
 		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+			return;
 		}
 		else 
 		{
 			ent->client->ps.viewangles[0] = 0.0f;
 			ent->client->ps.viewangles[2] = 0.0f;
-			ent->client->pers.jkmodPers.TeleportChatSaveX = ent->client->ps.origin[0];
-			ent->client->pers.jkmodPers.TeleportChatSaveY = ent->client->ps.origin[1];
-			ent->client->pers.jkmodPers.TeleportChatSaveZ = ent->client->ps.origin[2];
-			ent->client->pers.jkmodPers.TeleportChatSaveYAW = ent->client->ps.viewangles[1];
+			ent->client->pers.jkmodPers.TeleportChatOrigin[0] = ent->client->ps.origin[0];
+			ent->client->pers.jkmodPers.TeleportChatOrigin[1] = ent->client->ps.origin[1];
+			ent->client->pers.jkmodPers.TeleportChatOrigin[2] = ent->client->ps.origin[2];
+			ent->client->pers.jkmodPers.TeleportChatOrigin[3] = ent->client->ps.viewangles[1];
 			
 			
 			trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
@@ -713,24 +715,27 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		if (jkcvar_teleportChat.integer != 2)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
+			return;
 		}
 		else if (!ent->client->pers.jkmodPers.TeleportChatSaved)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You don't have any saved position\n\""));
+			return;
 		}
 		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
 			trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+			return;
 		}
 		else 
 		{
 			vec3_t temporigin, tempangles;
 
-			temporigin[0] = ent->client->pers.jkmodPers.TeleportChatSaveX;
-			temporigin[1] = ent->client->pers.jkmodPers.TeleportChatSaveY;
-			temporigin[2] = ent->client->pers.jkmodPers.TeleportChatSaveZ;
+			temporigin[0] = ent->client->pers.jkmodPers.TeleportChatOrigin[0];
+			temporigin[1] = ent->client->pers.jkmodPers.TeleportChatOrigin[1];
+			temporigin[2] = ent->client->pers.jkmodPers.TeleportChatOrigin[2];
 			tempangles[PITCH] = 0.0f;
-			tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatSaveYAW;
+			tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatOrigin[3];
 			tempangles[ROLL] = 0.0f;
 
 			JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
