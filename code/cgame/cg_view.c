@@ -1502,6 +1502,9 @@ CG_DrawActiveFrame
 Generates and draws a game scene and status information at the given time.
 =================
 */
+static int jkmod_macro_scan_time = 0;		//Tr!Force: [MacroScan] Last macro scan
+static qboolean jkmod_macro_scan = qfalse;	//Tr!Force: [MacroScan] Macro scan enabled
+
 void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demoPlayback ) {
 	int		inwater;
 
@@ -1521,6 +1524,24 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	if ( cg.infoScreenText[0] != 0 ) {
 		CG_DrawInformation();
 		return;
+	}
+
+	//Tr!Force: [MacroScan] See if we should force a scan for macros
+	if (cgs.jkmodCvar.macroScan)
+	{
+		// Scan once every second
+		if ((jkmod_macro_scan_time + 1000) < cg.time)
+		{
+			trap_SendConsoleCommand("jk_ui_macroscan\n");
+			jkmod_macro_scan_time = cg.time;
+			jkmod_macro_scan = qfalse;
+		}
+	}
+	else if (jkmod_macro_scan == qfalse)
+	{
+		// Find any disabled macros and re-enable them...
+		trap_SendConsoleCommand("jk_ui_macroenable\n");
+		jkmod_macro_scan = qtrue;
 	}
 
 	trap_FX_AdjustTime( cg.time, cg.refdef.vieworg, cg.refdef.viewaxis );

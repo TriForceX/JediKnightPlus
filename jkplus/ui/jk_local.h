@@ -63,6 +63,10 @@ const char	*BaseJK2_UI_FeederItemText(float feederID, int index, int column, qha
 int			BaseJK2_UI_FeederCount(float feederID);
 qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 
+// jk_atoms.c
+void		JKMod_MacroScan(void);
+void		JKMod_MacroEnable(void);
+
 // jk_main.c
 const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKMod_UI_FeederCount(float feederID);

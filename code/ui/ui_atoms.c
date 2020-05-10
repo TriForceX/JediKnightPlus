@@ -356,6 +356,19 @@ qboolean UI_ConsoleCommand( int realTime ) {
 		return qtrue;
 	}
 
+	// Tr!Force: [MacroScan] Scan command
+	if (Q_stricmp(cmd, "jk_ui_macroscan") == 0)
+	{
+		JKMod_MacroScan();
+		return qtrue;
+	}
+	// Tr!Force: [MacroScan] Enable command
+	if (Q_stricmp(cmd, "jk_ui_macroenable") == 0)
+	{
+		JKMod_MacroEnable();
+		return qtrue;
+	}
+
 	return qfalse;
 }
 
