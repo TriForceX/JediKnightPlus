@@ -184,9 +184,9 @@
 		// JKPlus logo
 		itemDef
 		{
-			name				jkmodlogo
+			name				modLogo
 			style				WINDOW_STYLE_SHADER
-			rect				0 5 300 38
+			rect				62.5 12.5 175 22
 			background			"gfx/menus/jkmod_logo"
 			forecolor			1 1 1 1
 			visible				1
@@ -198,7 +198,7 @@
 			text				@JKMODMENUS_MOD_OPTIONS_INTRO
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
-			rect				150 45 300 0
+			rect				150 45 290 0
 			font				2
 			textscale			.5
 			backcolor			0 0 1 0
