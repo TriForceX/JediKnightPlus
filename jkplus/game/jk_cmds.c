@@ -1060,7 +1060,7 @@ void JKMod_ClientCommand(int clientNum)
 			}
 			else {
 				type = "Human";
-				plugin = Info_ValueForKey(userinfo, "JKMod_ClientVersion");
+				plugin = Info_ValueForKey(userinfo, "jkmod_clientversion");
 				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 			}
 			

@@ -2,11 +2,11 @@
 
 https://jkmod.github.io
 
-> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal is to reunite the most useful and custom stuff to the game environment, specially make players ideas come true adding new features as well porting some from other mods and games.
+> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games.
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.10.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.10.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -17,7 +17,7 @@ https://jkmod.github.io
 
 # Information
 
-- Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/wiki/Setup)
+- Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/releases)
 - Read more information and guides at **wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
 - See version changes history in the **changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
 - Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkmod)
@@ -116,7 +116,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [ ] Ingame clock showing the actual local hours, minutes and seconds
-- [ ] Ingame server list to join another server without disconnect
+- [x] Ingame server list to join another server without disconnect
 - [ ] Speed-o-meter to display player speed in-game and best record
 - [ ] Strafe jumping helper/efficiency meter
 - [ ] Custom lightsaber hilt support

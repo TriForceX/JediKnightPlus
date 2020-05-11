@@ -23,11 +23,11 @@ INDEX 1
 INDEX 2
 {
    REFERENCE MOD_OPTIONS_INTRO
-   TEXT_LANGUAGE1 "The main goal of this mod is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true, as well porting some features from Jedi Academy or another games, and of course making new ones."
-   TEXT_LANGUAGE2 "L’objectif principal de ce mod est de réunir les éléments les plus utiles et les plus novateurs dans l’environnement de jeu, de concrétiser les idées des joueurs, de porter certaines fonctionnalités de Jedi Academy ou d’un autre jeu, et bien sûr d’en créer de nouvelles."
-   TEXT_LANGUAGE3 "Das Hauptziel dieses Mods ist es, die nützlichsten und innovativsten Dinge mit der Spielumgebung zu vereinen, speziell die Ideen der Spieler wahr werden zu lassen, einige Features von Jedi Academy oder anderen Spielen zu portieren und natürlich neue zu entwickeln."
-   TEXT_LANGUAGE6 "The main goal of this mod is to reunite the most useful and innovative stuff to the game environment, specially make players ideas come true, as well porting some features from Jedi Academy or another games, and of course making new ones."
-   TEXT_LANGUAGE8 "El objetivo principal de este mod es reunir las cosas más útiles e innovadoras para el entorno del juego, especialmente para que las ideas de los jugadores se hagan realidad, además de portar algunas características de Jedi Academy u otros juegos y por supuesto, crear otras nuevas."
+   TEXT_LANGUAGE1 "The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games."
+   TEXT_LANGUAGE2 "L'objectif de ce mod est de rassembler des choses utiles et d'ajouter des éléments personnalisés au jeu, en réalisant les idées des joueurs en ajoutant de nouvelles options et en portant d'autres mods et jeux."
+   TEXT_LANGUAGE3 "Das Ziel dieses Mods ist es, dem Spiel nützliche und neue Dinge hinzuzufügen, um die Ideen der Spieler zum Leben zu erwecken, indem neue Optionen hinzugefügt und einige andere Mods und Spiele portiert werden."
+   TEXT_LANGUAGE6 "The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games."
+   TEXT_LANGUAGE8 "El objetivo de este mod es reunir cosas útiles y agregar elementos personalizados al juego, haciendo realidad las ideas de los jugadores agregando nuevas opciones y portando algunas de otros mods y juegos."
 }
 INDEX 3
 {

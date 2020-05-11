@@ -7,7 +7,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 */
 
 #include "../../code/cgame/cg_local.h"	// Original header
-#include "../../jkplus/game/jk_version.h" // Version header
 
 /*
 =====================================================================
@@ -55,8 +54,8 @@ void JKMod_CG_RegisterCvars(void)
 	BaseJK2_CG_RegisterCvars();
 
 	// Set the client plugin version
-	trap_Cvar_Register(NULL, "JKMod_ClientVersion", "", CVAR_USERINFO | CVAR_ROM);
-	trap_Cvar_Set("JKMod_ClientVersion", JK_VERSION);
+	trap_Cvar_Register(NULL, "jkmod_clientversion", "", CVAR_USERINFO | CVAR_ROM);
+	trap_Cvar_Set("jkmod_clientversion", JK_VERSION);
 }
 
 void JKMod_CG_UpdateCvars(void)

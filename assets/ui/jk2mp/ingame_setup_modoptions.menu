@@ -17,11 +17,10 @@
 			close					ingame_setup ;
 		}
 
-		//----------------------------------------------------------------------------------------------
-		//
-		// HIGHLIGHT BARS
-		//
-		//----------------------------------------------------------------------------------------------
+		//---------------------------------------------
+		//	HIGHLIGHT BARS
+		//---------------------------------------------
+		
 		itemDef
 		{
 			name                    highlight1
@@ -178,18 +177,16 @@
 			decoration
 		}
 
-		//----------------------------------------------------------------------------------------------
-		//
-		// MOD OPTIONS FIELDS
-		//
-		//----------------------------------------------------------------------------------------------
+		//---------------------------------------------
+		//	MOD OPTIONS TITLE
+		//---------------------------------------------
 
 		// JKPlus logo
 		itemDef
 		{
 			name				jkmodlogo
 			style				WINDOW_STYLE_SHADER
-			rect				0 0 300 38
+			rect				0 5 300 38
 			background			"gfx/menus/jkmod_logo"
 			forecolor			1 1 1 1
 			visible				1
@@ -201,7 +198,7 @@
 			text				@JKMODMENUS_MOD_OPTIONS_INTRO
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
-			rect				150 40 300 0
+			rect				150 45 300 0
 			font				2
 			textscale			.5
 			backcolor			0 0 1 0
@@ -209,13 +206,18 @@
 			visible				1
 			autowrapped
 		}
+		
+		//---------------------------------------------
+		//	MOD OPTIONS BUTTONS
+		//---------------------------------------------
+		
 		// Button hover (H + 2)
 		itemDef 
 		{
 			name				button1hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 120 95 34
+			rect				0 115 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -226,7 +228,7 @@
 			name				button2hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				103 120 95 34
+			rect				103 115 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -237,7 +239,7 @@
 			name				button3hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				206 120 95 34
+			rect				206 115 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -248,7 +250,7 @@
 			name				button4hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 165 95 34
+			rect				0 155 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -259,7 +261,7 @@
 			name				button5hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				103 165 95 34
+			rect				103 155 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -270,7 +272,7 @@
 			name				button6hover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				206 165 95 34
+			rect				206 155 95 34
 			background			"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -282,7 +284,7 @@
 			name				button1text
 			text				@JKMODMENUS_MAIN_OPTION_ADMIN
 			descText            @JKMODMENUS_MAIN_OPTION_ADMIN_INFO
-			rect				0 120 95 32
+			rect				0 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -316,7 +318,7 @@
 			name				button2text
 			text				@JKMODMENUS_MAIN_OPTION_CLIENT
 			descText            @JKMODMENUS_MAIN_OPTION_CLIENT_INFO
-			rect				103 120 95 32
+			rect				103 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -350,7 +352,7 @@
 			name				button3text
 			text				@JKMODMENUS_MAIN_OPTION_BUILD
 			descText            @JKMODMENUS_MAIN_OPTION_BUILD_INFO
-			rect				206 120 95 32
+			rect				206 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -384,7 +386,7 @@
 			name				button4text
 			text				@JKMODMENUS_MAIN_OPTION_EMOTES
 			descText            @JKMODMENUS_MAIN_OPTION_EMOTES_INFO
-			rect				0 165 95 32
+			rect				0 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -418,7 +420,7 @@
 			name				button5text
 			text				@JKMODMENUS_MAIN_OPTION_SERVER
 			descText            @JKMODMENUS_MAIN_OPTION_SERVER_INFO
-			rect				103 165 95 32
+			rect				103 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -452,7 +454,7 @@
 			name				button6text
 			text				@JKMODMENUS_MAIN_OPTION_RANDOM
 			descText            @JKMODMENUS_MAIN_OPTION_RANDOM_INFO
-			rect				206 165 95 32
+			rect				206 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
 			font				2
@@ -481,13 +483,39 @@
 				hide			button6hover
 			}
 		}
+		
+		//---------------------------------------------
+		//	MOD OPTIONS ABOUT
+		//---------------------------------------------
+		
+		// Mod version
+		itemDef
+		{
+			name				aboutVersion
+			rect				10 210 300 20
+			type				4
+			style				0	
+			text				@MENUS0_VERSION
+			cvar				jkmod_clientversion
+			//maxPaintChars		40
+			textalign			ITEM_ALIGN_CENTER		
+			textalignx			135
+			textaligny			2
+			textalign			1    
+			font				2
+			textscale			.5
+			forecolor			1 1 1 1
+			visible				1
+			decoration
+		}
 		// Website
 		itemDef
 		{
+			name				aboutWebsite
 			text				@JKMODMENUS_MOD_OPTIONS_WEBSITE
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
-			rect				150 215 300 0
+			rect				150 225 300 0
 			font				2
 			textscale			.5
 			backcolor			0 0 1 0

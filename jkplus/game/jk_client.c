@@ -109,7 +109,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
-	clientVersion = Info_ValueForKey(userinfo, "JKMod_ClientVersion");
+	clientVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
 
 	client->pers.jkmodPers.ClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
 

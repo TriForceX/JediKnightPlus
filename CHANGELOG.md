@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.10.2
+- Added ingame server list
+- Added client version on main menu
+
 ## 0.10.1
 - Fixed custom duel force usage before it starts
 

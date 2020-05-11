@@ -9,6 +9,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #ifndef __JK_CG_LOCAL_H__
 #define __JK_CG_LOCAL_H__
 
+#include "../../jkplus/game/jk_version.h" // Version header
+
 /*
 =====================================================================
 Global definitions
