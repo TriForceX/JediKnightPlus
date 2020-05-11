@@ -189,7 +189,6 @@ const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhand
 Feeder count function
 =====================================================================
 */
-
 int JKMod_UI_FeederCount(float feederID)
 {
 	switch ((int)feederID)
@@ -208,7 +207,6 @@ int JKMod_UI_FeederCount(float feederID)
 Feeder selection function
 =====================================================================
 */
-
 qboolean JKMod_UI_FeederSelection(float feederID, int index)
 {
 	static char info[MAX_STRING_CHARS];

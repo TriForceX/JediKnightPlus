@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMODMENUS
-COUNT 16
+COUNT 22
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -145,4 +145,58 @@ INDEX 15
    TEXT_LANGUAGE3 "Benutzerdefinierte einstellungen, die sich nicht auf Star Wars beziehen."
    TEXT_LANGUAGE6 "Custom settings non related with Star Wars."
    TEXT_LANGUAGE8 "Configuraciones persinalizadas no relacionadas con Star Wars."
+}
+INDEX 16
+{
+   REFERENCE MAIN_MENU_SERVERS
+   TEXT_LANGUAGE1 "Servers"
+   TEXT_LANGUAGE2 "Serveurs"
+   TEXT_LANGUAGE3 "Servers"
+   TEXT_LANGUAGE6 "Servers"
+   TEXT_LANGUAGE8 "Servidores"
+}
+INDEX 17
+{
+   REFERENCE MAIN_MENU_SERVERS_TITLE
+   TEXT_LANGUAGE1 "Server list"
+   TEXT_LANGUAGE2 "Liste des serveurs"
+   TEXT_LANGUAGE3 "Serverliste"
+   TEXT_LANGUAGE6 "Server list"
+   TEXT_LANGUAGE8 "Listado de servidores"
+}
+INDEX 18
+{
+   REFERENCE MAIN_MENU_SERVERS_ATTR
+   TEXT_LANGUAGE1 "Attributes"
+   TEXT_LANGUAGE2 "attributs"
+   TEXT_LANGUAGE3 "Attribute"
+   TEXT_LANGUAGE6 "Attributes"
+   TEXT_LANGUAGE8 "Atributos"
+}
+INDEX 19
+{
+   REFERENCE MAIN_MENU_SERVERS_FILTER
+   TEXT_LANGUAGE1 "Filter"
+   TEXT_LANGUAGE2 "Filtre"
+   TEXT_LANGUAGE3 "Filter"
+   TEXT_LANGUAGE6 "Filter"
+   TEXT_LANGUAGE8 "Filtro"
+}
+INDEX 20
+{
+   REFERENCE MAIN_MENU_SERVERS_INFO
+   TEXT_LANGUAGE1 "Info."
+   TEXT_LANGUAGE2 "Infos."
+   TEXT_LANGUAGE3 "Info."
+   TEXT_LANGUAGE6 "Info."
+   TEXT_LANGUAGE8 "Info."
+}
+INDEX 21
+{
+   REFERENCE MAIN_MENU_SERVERS_FAVORITE
+   TEXT_LANGUAGE1 "Add fav."
+   TEXT_LANGUAGE2 "Ajouter fav."
+   TEXT_LANGUAGE3 "Favorit hinz."
+   TEXT_LANGUAGE6 "Add fav."
+   TEXT_LANGUAGE8 "Añadir fav."
 }

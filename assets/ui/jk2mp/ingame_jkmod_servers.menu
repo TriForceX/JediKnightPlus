@@ -1,0 +1,657 @@
+{
+	menuDef  
+	{
+		name					"ingame_jkmod_servers"
+		visible					0
+		fullscreen				0
+		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
+		rect					260 40 360 290
+		focusColor				1 .75 0 1
+		style					1
+		border					1
+		onOpen 
+		{
+			uiScript			RefreshServers ;
+		}
+				
+		// Overall window backdrop
+		itemDef 
+		{
+			name				background_pic
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 365 280
+			background			"gfx/menus/menu_box_ingame"
+			forecolor			1 1 1 0.8
+			visible				1
+			decoration
+		}
+		// Main Title
+		itemDef 
+		{
+			name				serverListTitle
+			style				WINDOW_STYLE_SHADER
+			background			"gfx/menus/menu_blendbox"
+			text				@JKMODMENUS_MAIN_MENU_SERVERS_TITLE
+			rect				0 5 365 15
+			textalign			ITEM_ALIGN_CENTER		
+			textalignx			182
+			textaligny			-2
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			font				3
+			textscale			0.8
+			forecolor			1  1  1  1
+			border				0
+			bordercolor			0 0 0 0
+			visible				1 
+		}
+
+		//---------------------------------------------
+		//	HORIZONTAL SEPARATORS
+		//---------------------------------------------
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 52 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 72 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 92 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 112 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 132 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 152 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 172 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 192 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 212 328 22
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+
+		itemDef 
+		{
+			name				serverRow
+			rect				10 230 328 20
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		
+		//---------------------------------------------
+		//	COLUMN LINES
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				ServerColumn
+			group				groupColumn
+			rect				9 49 188 202
+			style				WINDOW_STYLE_FILLED
+			border				1
+			backcolor			0 0 0 0
+			bordersize			1
+			bordercolor			0.2 0.2 0.5 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				PlayersColumn
+			group				groupColumn
+			rect				195 49 47 202
+			style				WINDOW_STYLE_FILLED
+			border				1
+			backcolor			0 0 0 0
+			bordersize			1
+			bordercolor			0.2 0.2 0.5 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				TypeColumn
+			group				groupColumn
+			rect				240 49 38 202
+			style				WINDOW_STYLE_FILLED
+			border				1
+			backcolor			0 0 0 0
+			bordersize			1
+			bordercolor			0.2 0.2 0.5 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				AttributesColumn
+			group				groupColumn
+			rect				276 49 63 202
+			style				WINDOW_STYLE_FILLED
+			border				1
+			backcolor			0 0 0 0
+			bordersize			1
+			bordercolor			0.2 0.2 0.5 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				ServerList
+			rect				9 49 346 202
+			type				ITEM_TYPE_LISTBOX
+			style				WINDOW_STYLE_FILLED
+			elementwidth		120
+			elementheight		19.7
+			textscale			.70
+			elementtype			LISTBOX_TEXT
+			feeder				FEEDER_SERVERS
+			border				1
+			bordercolor			0.2 0.2 0.5 0.5
+			forecolor			1 1 1 1
+			backcolor			0.25 0.25 0.8 0.25
+			outlinecolor		0 1 0 .25
+			visible				1
+			columns				5  2 32 32   600 0 0  185 5 10  230 4 4  600 0 0
+			mouseenter 
+			{ 
+				setitemcolor	ServerList bordercolor 0.2 0.2 1 1; 
+			}
+			mouseexit 
+			{ 
+				setitemcolor	ServerList bordercolor 0.2 0.2 0.5 0.5
+			}
+			doubleClick 
+			{ 
+				uiScript		JoinServer ;
+				close			ingame_jkmod_servers ;
+			}
+		}
+
+		//---------------------------------------------
+		//	BUTTONS
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				refreshHover
+			style				WINDOW_STYLE_SHADER
+			rect				7 250 30 32
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 0.8
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				refreshBackground
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				12 256 20 20
+			background			"jkmod_refreshicon_alpha"
+			forecolor			1 1 1 0.8
+			visible				1
+			mouseenter 
+			{ 
+				show			refreshButton;
+				hide			refreshBackground;				
+			}
+		}
+		
+		itemDef 
+		{
+			name				refreshButton
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				12 256 20 20
+			background			"jkmod_refreshicon_alpha_hover"
+			forecolor			1 1 1 1
+			visible				0
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				uiScript		RefreshFilter;
+			}
+			mouseenter 
+			{ 
+				show			refreshHover;
+			}
+			mouseexit 
+			{ 
+				hide			refreshHover;
+				hide			refreshButton;
+				show			refreshBackground;
+			}
+		}
+		
+		itemDef 
+		{
+			name				joinHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				50 250 50 32
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				joinButton
+			text 				@MENUS0_JOIN
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				50 250 50 32
+			textalign			1
+			textalignx			25 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				close			ingame_jkmod_servers ;  
+				uiScript		JoinServer ;
+			}
+			mouseenter 
+			{ 
+				show			joinHover
+			}
+			mouseexit 
+			{ 
+				hide			joinHover
+			}
+		}
+		
+		itemDef 
+		{
+			name				addFavoriteHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				115 250 84 32
+			background			"gfx/menus/menu_buttonback"	// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				addFavoriteButton
+			text 				@JKMODMENUS_MAIN_MENU_SERVERS_FAVORITE
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				115 250 84 32
+			textalign			1
+			textalignx			42 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				uiScript		addFavorite ;
+			}
+			mouseenter 
+			{ 
+				show			addFavoriteHover
+			}
+			mouseexit 
+			{ 
+				hide			addFavoriteHover
+			}
+		}
+		
+		itemDef 
+		{
+			name				serverInfoHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				207 250 50 32
+			background			"gfx/menus/menu_buttonback"	// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				serverInfoButton
+			text				@JKMODMENUS_MAIN_MENU_SERVERS_INFO
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				207 250 50 32
+			textalign			1
+			textalignx			25 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;  
+				open			ingame_jkmod_servers_info 
+			}
+			mouseenter 
+			{ 
+				show			serverInfoHover
+			}
+			mouseexit 
+			{ 
+				hide			serverInfoHover
+			}
+		}
+		
+		itemDef 
+		{
+			name				filterHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				264 250 50 32
+			background			"gfx/menus/menu_buttonback"	// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				filterButton
+			text 				@JKMODMENUS_MAIN_MENU_SERVERS_FILTER
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				264 250 50 32
+			textalign			1
+			textalignx			25 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkmod_servers_filter ;
+			}
+			mouseenter 
+			{ 
+				show			filterHover
+			}
+			mouseexit 
+			{ 
+				hide			filterHover
+			}
+		}
+		
+		itemDef 
+		{
+			name				searchHover
+			style				WINDOW_STYLE_SHADER
+			rect				329 250 30 32
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 0.8
+			decoration
+			visible				0
+		}
+
+		itemDef 
+		{
+			name				searchButton
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				338 259 13 13
+			background			"jkmod_searchicon_alpha"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkmod_servers_find
+			}
+			mouseenter 
+			{ 
+				show			searchHover;
+			}
+			mouseexit 
+			{ 
+				hide			searchHover;
+			}
+		}
+		
+		//---------------------------------------------
+		//	SORT TABS	
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				serversTab
+			group				groupTabs
+			text				@MENUS0_SERVER_NAME
+			type				ITEM_TYPE_BUTTON
+			textscale			.70
+			style				WINDOW_STYLE_FILLED
+			background			"gfx/menus/menu_blendbox3" // Frame around button
+			rect				9 26 188 26 
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			4
+			textaligny			2
+			backcolor			0.6 0.6 0.6 1
+			forecolor			0.65 0.65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		ServerSort 0 ; 
+				setitemcolor	groupTabs backcolor 0.6 0.6 0.6 1 ; 
+				setitemcolor	serversTab backcolor 1 1 1 1 ; 
+				setitemcolor	groupTabs forecolor 0.65 0.65 1 1 ;
+				setitemcolor	serversTab forecolor 1 1 1 1 ;  
+				setitemcolor	groupColumn backcolor 0 0 0 0 ; 
+				setitemcolor	ServerColumn backcolor 0.1 0.1 0.5 0.5
+			}
+			mouseEnter 
+			{ 
+				setitemcolor	ServerColumn bordercolor 1 1 0.4 1
+			}
+
+			mouseExit 
+			{ 
+				setitemcolor	ServerColumn bordercolor 0.2 0.2 0.5 0.5 
+			}  
+		}
+		
+		itemDef 
+		{
+			name				playersTab
+			group				groupTabs
+			text				@MENUS0_PLYRS
+			type				ITEM_TYPE_BUTTON
+			textscale			.70
+			style				WINDOW_STYLE_FILLED
+			background			"gfx/menus/menu_blendbox3" // Frame around button
+			rect				195 26 47 26
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			4
+			textaligny			2
+			backcolor			0.6 0.6 0.6 1
+			forecolor			0.65 0.65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		ServerSort 2 ;
+				setitemcolor	groupTabs backcolor 0.6 0.6 0.6 1 ; 
+				setitemcolor	playersTab backcolor 1 1 1 1 ;  
+				setitemcolor	groupTabs forecolor 0.65 0.65 1 1 ;
+				setitemcolor	playersTab forecolor 1 1 1 1 ;  
+				setitemcolor	groupColumn backcolor 0 0 0 0 ; 
+				setitemcolor	PlayersColumn backcolor 0.1 0.1 0.5 0.5 
+			}
+			mouseEnter 
+			{ 
+				setitemcolor	PlayersColumn bordercolor 1 1 0.4 1 
+			}
+			mouseExit 
+			{ 
+				setitemcolor	PlayersColumn bordercolor 0.2 0.2 0.5 0.5 
+			}  	  
+		}
+
+		itemDef 
+		{
+			name				typeTab
+			group				groupTabs
+			text				@MENUS0_SORT_TYPE
+			textscale			.70
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			background			"gfx/menus/menu_blendbox3" // Frame around button
+			rect				240 26 38 26
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			4
+			textaligny			2
+			backcolor			0.6 0.6 0.6 1
+			forecolor			0.65 0.65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		ServerSort 3 ;
+				setitemcolor	groupTabs backcolor 0.6 0.6 0.6 1 ; 
+				setitemcolor	typeTab backcolor 1 1 1 1 ;  
+				setitemcolor	groupTabs forecolor 0.65 0.65 1 1 ;
+				setitemcolor	typeTab forecolor 1 1 1 1 ;  
+				setitemcolor	groupColumn backcolor 0 0 0 0 ; 
+				setitemcolor	TypeColumn backcolor 0.1 0.1 0.5 0.5 
+			}
+			mouseEnter 
+			{ 
+				setitemcolor	TypeColumn bordercolor 1 1 0.4 1 
+			}
+			mouseExit 
+			{ 
+				setitemcolor	TypeColumn bordercolor 0.2 0.2 0.5 0.5 
+			}	  	  
+		}
+		
+		itemDef 
+		{
+			name				attributesTab
+			group				groupTabs
+			text				@JKMODMENUS_MAIN_MENU_SERVERS_ATTR
+			textscale			.70
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_FILLED
+			background			"gfx/menus/menu_blendbox3" // Frame around button
+			rect				276 26 70 26
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			4
+			textaligny			2
+			backcolor			0.6 0.6 0.6 1
+			forecolor			0.65 0.65 1 1
+			visible				1 
+			
+			mouseEnter 
+			{ 
+				setitemcolor	AttributesColumn bordercolor 1 1 0.4 1 
+			}
+			mouseExit 
+			{ 
+				setitemcolor	AttributesColumn bordercolor 0.2 0.2 0.5 0.5 
+			}	  	  
+		}
+	}	
+}
