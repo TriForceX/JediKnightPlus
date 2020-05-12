@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.10.3
+- Upscaled main menu mod logo
+- Enable 1.02 player angles for ingame changes
+- Added custom player models surf files
+- Renamed client side source files
+
 ## 0.10.2
 - Added ingame server list
 - Added client version on main menu
