@@ -10,22 +10,23 @@ set(MVUIHEADERS
 	"${SRCDir}/ui/keycodes.h"
 	"${SRCDir}/ui/ui_force.h"
 	"${SRCDir}/ui/ui_local.h"
-	"${JKModDir}/ui/jk_local.h" # Tr!Force: [CMake] JKMod headers
+	"${JKModDir}/ui/jk_ui_local.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/ui/ui_public.h"
 	"${SRCDir}/ui/ui_shared.h"
 	"${SRCDir}/ui/ui_multiversion.h"
 	"${SRCDir}/ui/ui_multiversion_syscalls.h"
 	
 	"${SRCDir}/game/bg_weapons.h"
+	"${JKModDir}/game/jk_version.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/game/q_shared.h"
 	"${SRCDir}/game/bg_multiversion.h"
 )
 
 set(MVUISOURCES
 	"${SRCDir}/ui/ui_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKModDir}/ui/jk_main.c" # Tr!Force: [CMake] JKMod sources
+	"${JKModDir}/ui/jk_ui_main.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/ui/ui_atoms.c"
-	"${JKModDir}/ui/jk_atoms.c" # Tr!Force: [CMake] JKMod sources
+	"${JKModDir}/ui/jk_ui_atoms.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/ui/ui_force.c"
 	"${SRCDir}/ui/ui_gameinfo.c"
 	"${SRCDir}/ui/ui_shared.c"

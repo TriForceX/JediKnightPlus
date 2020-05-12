@@ -174,7 +174,7 @@ extern vmCvar_t	ui_team_model;
 #define QM_LOSTFOCUS			2
 #define QM_ACTIVATED			3
 
-#include "../../jkplus/ui/jk_local.h" // Tr!Force: [JKMod] main header
+#include "../../jkplus/ui/jk_ui_local.h" // Tr!Force: [JKMod] Main header
 
 typedef struct _tag_menuframework
 {

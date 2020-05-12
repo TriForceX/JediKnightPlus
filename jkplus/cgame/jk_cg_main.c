@@ -26,8 +26,8 @@ vmCvar_t	jkcvar_cg_test2;
 
 static cvarTable_t	JKModCGCvarTable[] = {
 
-	{ &jkcvar_cg_test1, "jk_cg_test1", "0", CVAR_ARCHIVE },
-	{ &jkcvar_cg_test2, "jk_cg_test2", "0", CVAR_ARCHIVE },
+	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
 
 };
 

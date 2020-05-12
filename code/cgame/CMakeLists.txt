@@ -9,7 +9,7 @@ set(MVCGAMEHEADERS
 	"${SRCDir}/cgame/animtable.h"
 	"${SRCDir}/cgame/cg_lights.h"
 	"${SRCDir}/cgame/cg_local.h"
-	"${JKModDir}/cgame/jk_local.h" # Tr!Force: [CMake] JKMod headers
+	"${JKModDir}/cgame/jk_cg_local.h" # Tr!Force: [CMake] JKMod headers
 	"${SRCDir}/cgame/cg_media.h"
 	"${SRCDir}/cgame/cg_public.h"
 	"${SRCDir}/cgame/fx_local.h"
@@ -38,9 +38,10 @@ set(MVCGAMEHEADERS
 
 set(MVCGAMESOURCES
 	"${SRCDir}/cgame/cg_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
-	"${JKModDir}/cgame/jk_main.c" # Tr!Force: [CMake] JKMod sources
+	"${JKModDir}/cgame/jk_cg_main.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_consolecmds.c"
 	"${SRCDir}/cgame/cg_draw.c"
+	"${JKModDir}/cgame/jk_cg_draw.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_drawtools.c"
 	"${SRCDir}/cgame/cg_effects.c"
 	"${SRCDir}/cgame/cg_ents.c"
