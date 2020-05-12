@@ -252,7 +252,7 @@ retryModel:
 		retriedAlready = qtrue;
 	}
 
-	if ( (cg_mv_fixbrokenmodelsclient.integer == 1 || (cg_mv_fixbrokenmodelsclient.integer && jk2startversion > VERSION_1_02)) && !CG_IsValidCharacterModel(modelName, skinName))
+	if ( (cg_mv_fixbrokenmodelsclient.integer == 1 || (cg_mv_fixbrokenmodelsclient.integer && jk2gameplay > VERSION_1_02)) && !CG_IsValidCharacterModel(modelName, skinName)) // Tr!Force: [Gameplay] Check ingame gameplay changes
 	{
 		modelName = "kyle";
 		skinName = "default";
@@ -2845,7 +2845,7 @@ static void CG_G2PlayerAngles( centity_t *cent, vec3_t legs[3], vec3_t legsAngle
 	AnglesSubtract( headAngles, torsoAngles, headAngles );
 	AnglesSubtract( torsoAngles, legsAngles, torsoAngles );
 
-	if ( jk2startversion != VERSION_1_02 ) legsAngles[PITCH] = 0;
+	if ( jk2gameplay != VERSION_1_02 ) legsAngles[PITCH] = 0; // Tr!Force: [Gameplay] Check ingame gameplay changes
 
 	AnglesToAxis( legsAngles, legs );
 	// we assume that model 0 is the player model.
@@ -2870,7 +2870,7 @@ static void CG_G2PlayerAngles( centity_t *cent, vec3_t legs[3], vec3_t legsAngle
 	viewAngles[YAW] = viewAngles[ROLL] = 0;
 	viewAngles[PITCH] *= 0.5;
 
-	if ( jk2startversion == VERSION_1_02 )
+	if ( jk2gameplay == VERSION_1_02 ) // Tr!Force: [Gameplay] Check ingame gameplay changes
 	{
 		VectorCopy( cent->lerpAngles, angles );
 		angles[PITCH] = 0;
@@ -6665,7 +6665,7 @@ doEssentialTwo:
 				efOrg[1] -= boltDir[1]*4;
 				efOrg[2] -= boltDir[2]*4;
 
-				if ( jk2startversion == VERSION_1_02 )
+				if ( jk2gameplay == VERSION_1_02 ) // Tr!Force: [Gameplay] Check ingame gameplay changes
 				{
 					efOrg[2] += 8;
 				}
@@ -6677,7 +6677,7 @@ doEssentialTwo:
 				VectorCopy(efOrg, cent->grip_arm.origin);
 				VectorCopy(cent->grip_arm.origin, cent->grip_arm.lightingOrigin);
 
-				if ( jk2startversion == VERSION_1_02 )
+				if ( jk2gameplay == VERSION_1_02 ) // Tr!Force: [Gameplay] Check ingame gameplay changes
 				{
 					VectorCopy(cent->lerpAngles, armAng);
 					armAng[ROLL] = -90;
