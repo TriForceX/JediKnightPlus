@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.10.4
+- Fixed wrong player model selection
+- Fixed player animation bug on gameplay change
+- Added server closed password
+- Added call vote minimum players cvar
+
 ## 0.10.3
 - Upscaled main menu mod logo
 - Enable 1.02 player angles for ingame changes

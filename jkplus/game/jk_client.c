@@ -31,19 +31,19 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		{
 			vmCvar_t	clientTemp;
 			char		*clientIP;
+			char		*clientPass;
 			int			clientEnd, clientWait, num = 0;
 
 			clientIP = Info_ValueForKey(userinfo, "ip");
+			clientPass = Info_ValueForKey(userinfo, "password");
+
 			while (++num < strlen(clientIP)) if (clientIP[num] == ':') clientIP[num] = 0;
 
 			// Closed server
-			if (strcmp(jkcvar_serverClosed.string, "0") != 0)
+			if (jkcvar_serverClosed.string[0] && strcmp(jkcvar_serverClosed.string, "0") != 0 && Q_stricmp(jkcvar_serverClosed.string, clientPass))
 			{
-				if (Q_stricmp(jkcvar_serverClosedIP.string, clientIP))
-				{
-					G_Printf("Server closed for: %s\n", clientIP);
-					return va("%s", jkcvar_serverClosed.string);
-				}
+				G_Printf("Server closed for: %s using password: %s\n", clientIP, clientPass);
+				return va("%s", jkcvar_serverClosedText.string);
 			}
 
 			// Connect message

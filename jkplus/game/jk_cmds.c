@@ -144,6 +144,10 @@ void JKMod_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOSPECVOTE")));
 		return;
 	}
+	if (level.numVotingClients < jkcvar_voteMinPlayers.integer) {
+		trap_SendServerCommand(ent - g_entities, va("print \"You need atleast %i players to call a vote\n\"", jkcvar_voteMinPlayers.integer));
+		return;
+	}
 
 	// make sure it is a valid command to vote on
 	trap_Argv(1, arg1, sizeof(arg1));

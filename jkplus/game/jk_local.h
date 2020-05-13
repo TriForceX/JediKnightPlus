@@ -141,7 +141,7 @@ extern	vmCvar_t					jkcvar_test2;
 extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
 extern	vmCvar_t					jkcvar_serverClosed;
-extern	vmCvar_t					jkcvar_serverClosedIP;
+extern	vmCvar_t					jkcvar_serverClosedText;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
@@ -157,6 +157,7 @@ extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteControl;
 extern	vmCvar_t					jkcvar_voteResults;
 extern	vmCvar_t					jkcvar_voteWaitTime;
+extern	vmCvar_t					jkcvar_voteMinPlayers;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;
