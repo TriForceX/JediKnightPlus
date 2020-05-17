@@ -29,6 +29,7 @@ This is the only way control passes into the module.
 vmCvar_t  ui_debug;
 vmCvar_t  ui_initialized;
 qboolean menuInJK2MV = qfalse;
+qboolean isMainMenu = qfalse;
 int mvapi = 0;
 int Init_inGameLoad;
 
@@ -47,6 +48,7 @@ LIBEXPORT intptr_t vmMain( intptr_t command, intptr_t arg0, intptr_t arg1, intpt
   }
   switch ( command ) {
 	  case UI_GETAPIVERSION:
+			if ( arg11 ) isMainMenu = qtrue;
 			trap_Cvar_Set("ui_menulevel", "2");
 			return /*UI_API_VERSION*/MV_UiDetectVersion();
 	  case UI_INIT:
@@ -250,10 +252,10 @@ Make 2D drawing functions use widescreen or 640x480 coordinates
 void UI_WideScreenMode(qboolean on) {
 	if (mvapi >= 3) {
 		if (on) {
-			trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
+			trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, uiInfo.virtualScreenHeightOn);
 		}
 		else {
-			trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
+			trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, uiInfo.virtualScreenHeightOff);
 		}
 	}
 }
@@ -263,19 +265,56 @@ void UI_WideScreenMode(qboolean on) {
 UI_UpdateWidescreen
 =================
 */
-extern vmCvar_t ui_widescreen;
 static void UI_UpdateWidescreen(void) {
+	float		vidWidth = uiInfo.uiDC.glconfig.vidWidth;
+	float		vidHeight = uiInfo.uiDC.glconfig.vidHeight;
+	qboolean	portrait;
+	qboolean	landscape;
+
 	if (ui_widescreen.integer && mvapi >= 3) {
-		uiInfo.screenWidth = (float)SCREEN_HEIGHT * uiInfo.uiDC.glconfig.vidWidth / uiInfo.uiDC.glconfig.vidHeight;
+		landscape = (3 * vidWidth >= 4 * vidHeight);
+		portrait = !landscape;
+	} else {
+		portrait = qfalse;
+		landscape = qfalse;
 	}
-	else {
+
+	if (isMainMenu) {
+		portrait = qfalse;
+	}
+
+	if (landscape) {
+		uiInfo.screenWidth = (float)SCREEN_HEIGHT * vidWidth / vidHeight;
+		uiInfo.screenHeight = (float)SCREEN_HEIGHT;
+		uiInfo.virtualScreenHeightOn = (float)SCREEN_HEIGHT;
+		uiInfo.cursorXScale = (SCREEN_WIDTH * vidHeight) / (SCREEN_HEIGHT * vidWidth);
+		uiInfo.cursorYScale = 1.0f;
+	} else if (portrait) {
 		uiInfo.screenWidth = (float)SCREEN_WIDTH;
+		uiInfo.screenHeight = (float)SCREEN_HEIGHT;
+		uiInfo.virtualScreenHeightOn = (float)SCREEN_WIDTH * vidHeight / vidWidth;
+		uiInfo.cursorXScale = 1.0f;
+		uiInfo.cursorYScale = 1.0f;
+	} else {
+		uiInfo.screenWidth = (float)SCREEN_WIDTH;
+		uiInfo.screenHeight = (float)SCREEN_HEIGHT;
+		uiInfo.virtualScreenHeightOn = (float)SCREEN_HEIGHT;
+		uiInfo.cursorXScale = 1.0f;
+		uiInfo.cursorYScale = (SCREEN_HEIGHT * vidWidth) / (SCREEN_WIDTH * vidHeight);
 	}
+
+	uiInfo.virtualScreenHeightOff = uiInfo.virtualScreenHeightOn;
+
 	uiInfo.screenXFactor = (float)SCREEN_WIDTH / uiInfo.screenWidth;
 	uiInfo.screenXFactorInv = uiInfo.screenWidth / (float)SCREEN_WIDTH;
 
-	if (mvapi >= 3 && ui_widescreen.integer != 2)
-		trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
+	uiInfo.screenYFactor = (float)SCREEN_HEIGHT / uiInfo.screenHeight;
+	uiInfo.screenYFactorInv = uiInfo.screenHeight / (float)SCREEN_HEIGHT;
+
+	uiInfo.uiDC.screenWidth = uiInfo.screenWidth;
+	uiInfo.uiDC.screenHeight = uiInfo.screenHeight;
+
+	UI_WideScreenMode(qfalse);
 }
 
 menuDef_t *Menus_FindByName(const char *p);
@@ -295,7 +334,6 @@ static void UI_BuildFindPlayerList(qboolean force);
 static int QDECL UI_ServersQsortCompare( const void *arg1, const void *arg2 );
 static int UI_MapCountByGameType(qboolean singlePlayer);
 static int UI_HeadCountByTeam( void );
-static int UI_HeadCountByColor( void );
 static void UI_ParseGameInfo(const char *teamFile);
 static const char *UI_SelectedMap(int index, int *actual);
 static const char *UI_SelectedHead(int index, int *actual);
@@ -528,7 +566,7 @@ int Text_Height(const char *text, float scale, int iMenuFont)
 	int iFontIndex = MenuFontToHandle(iMenuFont);
 	float h;
 	UI_WideScreenMode(qtrue);
-	h = trap_R_Font_HeightPixels(iFontIndex, scale);
+	h = trap_R_Font_HeightPixels(iFontIndex, scale) * uiInfo.screenYFactor;
 	UI_WideScreenMode(qfalse);
 	return h;
 }
@@ -554,6 +592,7 @@ static void Text_Paint(float x, float y, float scale, const vec4_t color, const 
 
 	UI_WideScreenMode(qtrue);
 	x *= uiInfo.screenXFactorInv;
+	y *= uiInfo.screenYFactorInv;
 	trap_R_Font_DrawString(	x,						// int ox
 							y,						// int oy
 							text,					// const char *text
@@ -561,7 +600,6 @@ static void Text_Paint(float x, float y, float scale, const vec4_t color, const 
 							iStyleOR | iFontIndex,	// const int iFontHandle
 							!limit?-1:limit,		// iCharLimit (-1 = none)
 							scale );				// const float scale = 1.0f
-							
 	UI_WideScreenMode(qfalse);
 }
 
@@ -664,8 +702,8 @@ _UI_Refresh
 
 void UI_DrawCenteredPic(qhandle_t image, int w, int h) {
   int x, y;
-  x = (SCREEN_WIDTH - w) / 2;
-  y = (SCREEN_HEIGHT - h) / 2;
+  x = (uiInfo.screenWidth - w) / 2;
+  y = (uiInfo.screenHeight - h) / 2;
   UI_DrawHandlePic(x, y, w, h, image);
 }
 
@@ -737,14 +775,17 @@ void _UI_Refresh( int realtime )
 		UI_BuildServerStatus(qfalse);
 		// refresh find player list
 		UI_BuildFindPlayerList(qfalse);
-	} 
-	
-	// draw cursor
-	UI_SetColor( NULL );
-	if (Menu_Count() > 0) {
-		UI_WideScreenMode(qtrue);
-		UI_DrawHandlePic(uiInfo.uiDC.cursorx * uiInfo.screenXFactorInv, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
-		UI_WideScreenMode(qfalse);
+
+		// draw cursor
+		if ( (trap_Key_GetCatcher() & KEYCATCH_UI) && Menu_Count() > 0 ) {
+			float	cursorx = uiInfo.uiDC.cursorx * uiInfo.screenXFactorInv;
+			float	cursory = uiInfo.uiDC.cursory * uiInfo.screenYFactorInv;
+
+			UI_SetColor(NULL);
+			UI_WideScreenMode(qtrue);
+			UI_DrawHandlePic(cursorx, cursory , 48, 48, uiInfo.uiDC.Assets.cursor);
+			UI_WideScreenMode(qfalse);
+		}
 	}
 
 #ifndef NDEBUG
@@ -1456,13 +1497,13 @@ static void UI_DrawSkinColor(rectDef_t *rect, float scale, vec4_t color, int tex
 
 	switch(val)
 	{
-	case TEAM_RED:
+	case SKINCOLOR_RED:
 		s = "Red";
 		break;
-	case TEAM_BLUE:
+	case SKINCOLOR_BLUE:
 		s = "Blue";
 		break;
-	case TEAM_SPECTATOR: // Tr!Force: [JKMod] Enable 'Other' player model selection
+	case SKINCOLOR_OTHER:
 		s = "Other";
 		break;
 	default:
@@ -2894,7 +2935,7 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
       UI_DrawHandicap(&rect, scale, color, textStyle, iMenuFont);
       break;
     case UI_SKIN_COLOR:
-      UI_DrawSkinColor(&rect, scale, color, textStyle, uiSkinColor, TEAM_FREE, TEAM_SPECTATOR, iMenuFont); // Tr!Force: [JKMod] Enable 'Other' player model selection
+      UI_DrawSkinColor(&rect, scale, color, textStyle, uiSkinColor, SKINCOLOR_DEFAULT, SKINCOLOR_OTHER, iMenuFont);
       break;
 	case UI_FORCE_SIDE:
       UI_DrawForceSide(&rect, scale, color, textStyle, uiForceSide, 1, 2, iMenuFont);
@@ -3730,7 +3771,7 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
       return UI_Handicap_HandleKey(flags, special, key);
       break;
     case UI_SKIN_COLOR:
-      return UI_SkinColor_HandleKey(flags, special, key, uiSkinColor, TEAM_FREE, TEAM_SPECTATOR, ownerDraw); // Tr!Force: [JKMod] Enable 'Other' player model selection
+      return UI_SkinColor_HandleKey(flags, special, key, uiSkinColor, SKINCOLOR_DEFAULT, SKINCOLOR_OTHER, ownerDraw);
       break;
     case UI_FORCE_SIDE:
       return UI_ForceSide_HandleKey(flags, special, key, uiForceSide, 1, 2, ownerDraw);
@@ -5329,7 +5370,7 @@ static qboolean UI_HeadBelongsToCurrentTeamColor( q3Head_t *head )
 UI_HeadCountByColor
 ==================
 */
-static int UI_HeadCountByColor() {
+int UI_HeadCountByColor() {
 	int c;
 	q3Head_t *head = uiInfo.q3Heads;
 
@@ -6486,7 +6527,7 @@ void UI_FeederScrollTo(float feederId, int scrollTo) {
 	}
 }
 
-qboolean uiUpdateModel = qtrue;
+int uiUpdateModel = 1;
 static qhandle_t UI_FeederItemImage(float feederID, int index) {
 	if (feederID == FEEDER_HEADS) 
 	{
@@ -6515,7 +6556,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 			const char *playerModel = NULL;
 			static int selModel;
 
-			if (uiUpdateModel)
+			if (uiUpdateModel > 0)
 			{
 				if (serverGameType >= GT_TEAM)
 				{
@@ -6537,7 +6578,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 					}
 				}
 				selModel = UI_HeadIndexForModel(playerModel);
-				uiUpdateModel = qfalse;
+				uiUpdateModel = 0;
 			}
 
 			//if ( selModel == -1 ) selModel = trap_Cvar_VariableValue("ui_selectedModelIndex");
@@ -6559,7 +6600,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 				selModel = UI_HeadIndexForModel(playerModel);
 			}
 
-			if (selModel != -1)
+			if (selModel != -1 && uiUpdateModel != -1)
 			{
 				if (uiInfo.q3SelectedHead != selModel)
 				{
@@ -7265,11 +7306,11 @@ void _UI_Init( qboolean inGameLoad ) {
 	UI_UpdateWidescreen();
 
 	// for 640x480 virtualized screen
-	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
-	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
-	if ( uiInfo.uiDC.glconfig.vidWidth * 480 > uiInfo.uiDC.glconfig.vidHeight * 640 ) {
+	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/(float)SCREEN_HEIGHT);
+	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/(float)SCREEN_WIDTH);
+	if ( uiInfo.uiDC.glconfig.vidWidth * SCREEN_HEIGHT > uiInfo.uiDC.glconfig.vidHeight * SCREEN_WIDTH ) {
 		// wide screen
-		uiInfo.uiDC.bias = 0.5 * ( uiInfo.uiDC.glconfig.vidWidth - ( uiInfo.uiDC.glconfig.vidHeight * (640.0/480.0) ) );
+		uiInfo.uiDC.bias = 0.5 * ( uiInfo.uiDC.glconfig.vidWidth - ( uiInfo.uiDC.glconfig.vidHeight * ((float)SCREEN_WIDTH/(float)SCREEN_HEIGHT) ) );
 	}
 	else {
 		// no wide screen
@@ -7456,25 +7497,35 @@ UI_MouseEvent
 */
 void _UI_MouseEvent( int dx, int dy )
 {
+	// hack for portrait mode. virtualScreenHeightOff should be
+	// private to Widescreen functions
+	float	yMax = uiInfo.virtualScreenHeightOff;
+	float	xScale = ui_sensitivity.value;
+	float	yscale = ui_sensitivity.value;
+
+	if (ui_widescreenCursorScale.integer) {
+		xScale *= uiInfo.cursorXScale;
+		yscale *= uiInfo.cursorYScale;
+	}
+
 	// update mouse screen position
-	uiInfo.uiDC.cursorx += dx * uiInfo.screenXFactor;
+	uiInfo.uiDC.cursorx += dx * xScale;
+
 	if (uiInfo.uiDC.cursorx < 0)
 		uiInfo.uiDC.cursorx = 0;
 	else if (uiInfo.uiDC.cursorx > SCREEN_WIDTH)
 		uiInfo.uiDC.cursorx = SCREEN_WIDTH;
 
-	uiInfo.uiDC.cursory += dy;
+	uiInfo.uiDC.cursory += dy * yscale;
+
 	if (uiInfo.uiDC.cursory < 0)
 		uiInfo.uiDC.cursory = 0;
-	else if (uiInfo.uiDC.cursory > SCREEN_HEIGHT)
-		uiInfo.uiDC.cursory = SCREEN_HEIGHT;
+	else if (uiInfo.uiDC.cursory > yMax)
+		uiInfo.uiDC.cursory = yMax;
 
-  if (Menu_Count() > 0) {
-    //menuDef_t *menu = Menu_GetFocused();
-    //Menu_HandleMouseMove(menu, uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory);
+	if (Menu_Count() > 0) {
 		Display_MouseMove(NULL, uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory);
-  }
-
+	}
 }
 
 void UI_LoadNonIngame() {
@@ -7685,7 +7736,7 @@ static void UI_DisplayDownloadInfo( const char *downloadName, float centerPoint,
 	vec4_t colorLtGreyAlpha = {0, 0, 0, .5};
 #endif
 
-	UI_FillRect( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, colorLtGreyAlpha );
+	UI_FillRect( 0, 0, uiInfo.screenWidth, uiInfo.screenHeight, colorLtGreyAlpha );
 
 	downloadSize = trap_Cvar_VariableValue("cl_downloadSize");
 	if (downloadSize) {
@@ -7832,7 +7883,7 @@ void UI_DrawConnectScreen( qboolean overlay ) {
 	//UI_DrawProportionalString( 320, 96, "Press Esc to abort", UI_CENTER|UI_SMALLFONT|UI_DROPSHADOW, menu_text_color );
 
 	// display global MOTD at bottom
-	Text_PaintCenter(centerPoint, 425, scale, colorWhite, Info_ValueForKey( cstate.updateInfoString, "motd" ), 0, FONT_MEDIUM);
+	Text_PaintCenter(centerPoint, uiInfo.screenHeight-55, scale, colorWhite, Info_ValueForKey( cstate.updateInfoString, "motd" ), 0, FONT_MEDIUM);
 	// print any server info (server full, bad version, etc)
 	if ( cstate.connState < CA_CONNECTED ) {
 		Text_PaintCenter(centerPoint, yStart + 176, scale, colorWhite, cstate.messageString, 0, FONT_MEDIUM);
@@ -8027,6 +8078,8 @@ vmCvar_t	ui_s_language;
 vmCvar_t	ui_botfilter;
 
 vmCvar_t	ui_widescreen;
+vmCvar_t	ui_widescreenCursorScale;
+vmCvar_t	ui_sensitivity;
 
 vmCvar_t	ui_model;
 vmCvar_t	ui_team_model;
@@ -8163,6 +8216,8 @@ static const cvarTable_t cvarTable[] = {
 	{ &ui_s_language, "s_language", "english", CVAR_ARCHIVE | CVAR_NORESTART},
 
 	{ &ui_widescreen, "ui_widescreen", "1", CVAR_ARCHIVE | CVAR_LATCH },
+	{ &ui_widescreenCursorScale, "ui_widescreenCursorScale", "1", CVAR_ARCHIVE },
+	{ &ui_sensitivity, "ui_sensitivity", "1", CVAR_ARCHIVE },
 
 	{ &ui_MVSDK, "ui_MVSDK", MVSDK_VERSION, CVAR_ROM | CVAR_USERINFO },
 
@@ -8214,11 +8269,11 @@ void BaseJK2_UI_UpdateCvars( void ) {  // Tr!Force: [BaseJK2] Update UI cvars fu
 
 	if (modelModificationCount != ui_model.modificationCount) {
 		modelModificationCount = ui_model.modificationCount;
-		uiUpdateModel = qtrue;
+		uiUpdateModel = 1;
 	}
 	if (teamModelModificationCount != ui_team_model.modificationCount) {
 		teamModelModificationCount = ui_team_model.modificationCount;
-		uiUpdateModel = qtrue;
+		uiUpdateModel = 1;
 	}
 }
 

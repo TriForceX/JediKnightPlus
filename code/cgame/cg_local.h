@@ -1308,7 +1308,12 @@ typedef struct {
 	float			screenXScale;		// derived from glconfig
 	float			screenYScale;
 	//float			screenXBias;
+	float			screenHeight;
 	float			screenWidth;		// virtual screen width (originally 640)
+	float			screenXFactor;
+	float			screenXFactorInv;
+	float			screenYFactor;
+	float			screenYFactorInv;
 
 	int				serverCommandSequence;	// reliable command stream counter
 	int				processedSnapshotNum;// the number of snapshots cgame has requested

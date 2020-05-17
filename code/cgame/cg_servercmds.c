@@ -1242,7 +1242,7 @@ static void CG_ServerCommand( void ) {
 	if ( !strcmp( cmd, "cp" ) ) {
 		char strEd[MAX_STRIPED_SV_STRING];
 		CG_CheckSVStripEdRef(strEd, CG_Argv(1));
-		CG_CenterPrint( strEd, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+		CG_CenterPrint( strEd, cgs.screenHeight * 0.30, BIGCHAR_WIDTH );
 		return;
 	}
 

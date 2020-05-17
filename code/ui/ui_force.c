@@ -748,7 +748,8 @@ validitycheck:
 
 	UpdateForceUsed();
 }
-extern int	uiSkinColor;
+extern int uiSkinColor;
+extern int uiUpdateModel;
 
 extern const char *UI_GetModelWithTeamColor(const char *model);
 extern int UI_HeadIndexForModel(const char *model);
@@ -757,38 +758,44 @@ qboolean UI_SkinColor_HandleKey(int flags, float *special, int key, int num, int
 {
 	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER)
 	{
-		int i = num;
 		int selModel;
-
-		if (key == A_MOUSE2)
-		{
-			i--;
-		}
-		else
-		{
-			i++;
-		}
-
-		if (i < min)
-		{
-			i = max;
-		}
-		else if (i > max)
-		{
-			i = min;
-		}
-
-		num = i;
 
 		uiSkinColor = num;
 
-		selModel = UI_HeadIndexForModel(UI_GetModelWithTeamColor(ui_model.string));
+		while ( 1 )
+		{
+			if (key == A_MOUSE2)
+				uiSkinColor--;
+			else
+				uiSkinColor++;
 
-		if ( selModel != -1 ) {
-			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, selModel, NULL);
-			UI_FeederScrollTo(FEEDER_Q3HEADS, selModel);
-		} else {
-			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, 0, NULL);
+			if ( uiSkinColor < min )
+				uiSkinColor = max;
+			else if ( uiSkinColor > max )
+				uiSkinColor = min;
+
+			// If the next skin color has no members skip it
+			if ( UI_HeadCountByColor() < 1 && uiSkinColor != num )
+				continue;
+
+			if ( uiSkinColor == SKINCOLOR_OTHER )
+				selModel = UI_HeadIndexForModel(ui_model.string);
+			else
+				selModel = UI_HeadIndexForModel(UI_GetModelWithTeamColor(ui_model.string));
+
+			if ( selModel != -1 )
+			{
+				Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, selModel, NULL);
+				UI_FeederScrollTo(FEEDER_Q3HEADS, selModel);
+			}
+			else
+			{
+				Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL);
+				UI_FeederScrollTo(FEEDER_Q3HEADS, 0);
+				uiInfo.q3SelectedHead = -1;
+				uiUpdateModel = -1;
+			}
+			break;
 		}
 
 		return qtrue;

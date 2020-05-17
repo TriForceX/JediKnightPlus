@@ -822,7 +822,7 @@ Make 2D drawing functions use widescreen or 640x480 coordinates
 void CG_WideScreenMode(qboolean on) {
 	if (mvapi >= 3) {
 		if (on) {
-			trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)SCREEN_HEIGHT);
+			trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)cgs.screenHeight);
 		}
 		else {
 			trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
@@ -838,13 +838,29 @@ CG_UpdateWidescreen
 */
 static void CG_UpdateWidescreen(void) {
 	if (cg_widescreen.integer && mvapi >= 3) {
-		cgs.screenWidth = (float)SCREEN_HEIGHT * cgs.glconfig.vidWidth / cgs.glconfig.vidHeight;
+		if ( cgs.glconfig.vidWidth >= cgs.glconfig.vidHeight ) {
+			cgs.screenWidth = (float)SCREEN_HEIGHT * cgs.glconfig.vidWidth / cgs.glconfig.vidHeight;
+			cgs.screenHeight = (float)SCREEN_HEIGHT;
+		} else {
+			cgs.screenWidth = (float)SCREEN_WIDTH;
+			cgs.screenHeight = (float)SCREEN_WIDTH * cgs.glconfig.vidHeight / cgs.glconfig.vidWidth;
+		}
 	} else {
 		cgs.screenWidth = (float)SCREEN_WIDTH;
+		cgs.screenHeight = (float)SCREEN_HEIGHT;
 	}
-	
-	if (mvapi >= 3 && cg_widescreen.integer != 2)
-		trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)SCREEN_HEIGHT);
+
+	cgs.screenXFactor = (float)SCREEN_WIDTH / cgs.screenWidth;
+	cgs.screenXFactorInv = cgs.screenWidth / (float)SCREEN_WIDTH;
+
+	cgs.screenYFactor = (float)SCREEN_HEIGHT / cgs.screenHeight;
+	cgs.screenYFactorInv = cgs.screenHeight / (float)SCREEN_HEIGHT;
+
+	cgDC.screenWidth = cgs.screenWidth;
+	cgDC.screenHeight = cgs.screenHeight;
+
+	if (mvapi >= 3)
+		trap_MVAPI_SetVirtualScreen(cgs.screenWidth, cgs.screenHeight);
 }
 
 /*
@@ -2688,8 +2704,8 @@ Ghoul2 Insert End
 
 	// get the rendering configuration from the client system
 	trap_GetGlconfig( &cgs.glconfig );
-	cgs.screenXScale = cgs.glconfig.vidWidth / 640.0;
-	cgs.screenYScale = cgs.glconfig.vidHeight / 480.0;
+	cgs.screenXScale = cgs.glconfig.vidWidth / (float)SCREEN_WIDTH;
+	cgs.screenYScale = cgs.glconfig.vidHeight / (float)SCREEN_HEIGHT;
 
 
 	CG_RegisterCvars();

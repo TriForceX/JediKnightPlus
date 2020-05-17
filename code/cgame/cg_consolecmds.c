@@ -120,7 +120,7 @@ static void CG_spWin_f( void) {
 	trap_Cvar_Set("cg_thirdPersonRange", "100");
 	CG_AddBufferedSound(cgs.media.winnerSound);
 	//trap_S_StartLocalSound(cgs.media.winnerSound, CHAN_ANNOUNCER);
-	CG_CenterPrint("YOU WIN!", SCREEN_HEIGHT * .30, 0);
+	CG_CenterPrint("YOU WIN!", cgs.screenHeight * .30, 0);
 }
 
 static void CG_spLose_f( void) {
@@ -131,7 +131,7 @@ static void CG_spLose_f( void) {
 	trap_Cvar_Set("cg_thirdPersonRange", "100");
 	CG_AddBufferedSound(cgs.media.loserSound);
 	//trap_S_StartLocalSound(cgs.media.loserSound, CHAN_ANNOUNCER);
-	CG_CenterPrint("YOU LOSE...", SCREEN_HEIGHT * .30, 0);
+	CG_CenterPrint("YOU LOSE...", cgs.screenHeight * .30, 0);
 }
 
 

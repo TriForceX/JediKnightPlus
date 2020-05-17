@@ -273,7 +273,7 @@ clientkilled:
 			s = va("%s %s", sKilledStr, targetName );
 		}
 		if (!(cg_singlePlayerActive.integer && cg_cameraOrbit.integer)) {
-			CG_CenterPrint( s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+			CG_CenterPrint( s, cgs.screenHeight * 0.30, BIGCHAR_WIDTH );
 		} 
 		// print the text message as well
 	}
@@ -456,7 +456,7 @@ static void CG_UseItem( centity_t *cent ) {
 	// print a message if the local player
 	if ( es->number == cg.snap->ps.clientNum ) {
 		if ( !itemNum ) {
-			CG_CenterPrint( "No item to use", SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+			CG_CenterPrint( "No item to use", cgs.screenHeight * 0.30, BIGCHAR_WIDTH );
 		} else {
 			item = BG_FindItemForHoldable( itemNum );
 		}
@@ -1235,7 +1235,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 					const char *strText = CG_GetStripEdString("INGAMETEXT", "PICKUPLINE");
 
 					//Com_Printf("%s %s\n", strText, showPowersName[index]);
-					CG_CenterPrint( va("%s %s\n", strText, CG_GetStripEdString("INGAME",showPowersName[index])), SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+					CG_CenterPrint( va("%s %s\n", strText, CG_GetStripEdString("INGAME",showPowersName[index])), cgs.screenHeight * 0.30, BIGCHAR_WIDTH );
 				}
 
 				//Show the player their force selection bar in case picking the holocron up changed the current selection
