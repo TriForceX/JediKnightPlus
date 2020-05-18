@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------------------------
-// INGAME ABOUT BOX 
+// INGAME EMOTES 
 //----------------------------------------------------------------------------------------------
 {
 	menuDef  
@@ -12,10 +12,15 @@
 		focusColor				1 .75 0 1
 		style					1
 		border					1
-		onopen 
+		onOpen
 		{ 
-			uiScript			loadArenas ;
+			uiScript			JKMod_emoteCamera;
 		}
+		onClose
+		{ 
+			uiScript			JKMod_emoteCamera;
+		}
+
 		// Overall window backdrop
 		itemDef 
 		{

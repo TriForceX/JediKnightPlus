@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.10.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.10.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -59,7 +59,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom duel stats (Health, armor and body hits)
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
-- [x] Passwordless closed server feature (Allow only by IP)
+- [x] Closed server feature (Allow by password)
 - [x] Alternative dimensions (Duel, chat, etc...)
 - [x] Custom call vote system
 - [ ] Improved slow-mo duel end functionally
@@ -115,7 +115,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Jet pack to fly around the map
 - [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
-- [ ] Ingame clock showing the actual local hours, minutes and seconds
+- [x] Ingame clock showing the real time hours, minutes and seconds
 - [x] Ingame server list to join another server without disconnect
 - [ ] Speed-o-meter to display player speed in-game and best record
 - [ ] Strafe jumping helper/efficiency meter
@@ -129,7 +129,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enable push/pull force effect color to match with the color of lightsaber
 - [ ] Enable the color for the second blade with dual blade lightsabers
 - [ ] Custom saber trail length
-- [ ] Custom in-game duel challenge music
+- [ ] Custom ingame duel challenge music
 - [ ] Custom flag transparency (For CTF & CTY game type)
 - [ ] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
@@ -138,7 +138,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Enable first person turret chair view
 - [x] Enable 23 custom BaseJK2 player skins by surf files
 - [ ] Increased some limits (Fov, camera range, name length, etc...)
-- [ ] Enable invisible private duels
+- [x] Enable invisible private duels
 - [x] Smooth client dimensions
 
 ---

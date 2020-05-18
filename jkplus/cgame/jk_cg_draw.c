@@ -39,7 +39,7 @@ void JKMod_CG_DrawClock(void)
 	x = cgs.screenWidth - 66;
 	y = cgs.screenHeight - 178;
 
-	CG_DrawPic(x, y, 64, 32, trap_R_RegisterShaderNoMip("gfx/hud/clock_bg"));
+	CG_DrawPic(x, y, 64, 32, trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg"));
 
 	CG_Text_Paint(x + 8, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_hour), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
 	CG_Text_Paint(x + 29, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_min), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);

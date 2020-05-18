@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMODMENUS
-COUNT 22
+COUNT 34
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -68,10 +68,10 @@ INDEX 6
 INDEX 7
 {
    REFERENCE MAIN_OPTION_CLIENT_INFO
-   TEXT_LANGUAGE1 "Interface and in game player settings."
+   TEXT_LANGUAGE1 "Interface and ingame player settings."
    TEXT_LANGUAGE2 "Interface et configuration du joueur dans le jeu."
    TEXT_LANGUAGE3 "Schnittstelle und in Spielereinstellungen."
-   TEXT_LANGUAGE6 "Interface and in game player settings."
+   TEXT_LANGUAGE6 "Interface and ingame player settings."
    TEXT_LANGUAGE8 "Interfaz y configuración del jugador en el juego."
 }
 INDEX 8
@@ -199,4 +199,112 @@ INDEX 21
    TEXT_LANGUAGE3 "Favorit hinz."
    TEXT_LANGUAGE6 "Add fav."
    TEXT_LANGUAGE8 "Añadir fav."
+}
+INDEX 22
+{
+   REFERENCE MAIN_MENU_CLIENT_PRIVATEDUEL
+   TEXT_LANGUAGE1 "Private duel:"
+   TEXT_LANGUAGE2 "Duel privé:"
+   TEXT_LANGUAGE3 "Privates duell:"
+   TEXT_LANGUAGE6 "Private duel:"
+   TEXT_LANGUAGE8 "Duelo privado:"
+}
+INDEX 23
+{
+   REFERENCE MAIN_MENU_CLIENT_PRIVATEDUEL_DESC
+   TEXT_LANGUAGE1 "Hide other players when duelling."
+   TEXT_LANGUAGE2 "Ajouter fav."
+   TEXT_LANGUAGE3 "Favorit hinz."
+   TEXT_LANGUAGE6 "Hide other players when duelling."
+   TEXT_LANGUAGE8 "Esconde a otros jugadores cuando estés en duelo."
+}
+INDEX 24
+{
+   REFERENCE MAIN_MENU_CLIENT_DRAWCLOCK
+   TEXT_LANGUAGE1 "Draw clock:"
+   TEXT_LANGUAGE2 "Afficher l'horloge:"
+   TEXT_LANGUAGE3 "Uhr anzeigen:"
+   TEXT_LANGUAGE6 "Draw clock:"
+   TEXT_LANGUAGE8 "Mostrar reloj:"
+}
+INDEX 25
+{
+   REFERENCE MAIN_MENU_CLIENT_DRAWCLOCK_DESC
+   TEXT_LANGUAGE1 "Show a real-time clock."
+   TEXT_LANGUAGE2 "Afficher une horloge en temps réel."
+   TEXT_LANGUAGE3 "Zeigen sie eine echtzeituhr."
+   TEXT_LANGUAGE6 "Show a real-time clock."
+   TEXT_LANGUAGE8 "Muesta un reloj en tiempo real."
+}
+INDEX 26
+{
+   REFERENCE MAIN_MENU_CLIENT_DAMAGEPLUMS
+   TEXT_LANGUAGE1 "Damage plums:"
+   TEXT_LANGUAGE2 "Dégâts de prune:"
+   TEXT_LANGUAGE3 "Pflaumen beschädigen:"
+   TEXT_LANGUAGE6 "Damage plums:"
+   TEXT_LANGUAGE8 "Indicadores daño:"
+}
+INDEX 27
+{
+   REFERENCE MAIN_MENU_CLIENT_DAMAGEPLUMS_DESC
+   TEXT_LANGUAGE1 "Show damage indicators."
+   TEXT_LANGUAGE2 "Afficher les indicateurs de dommages."
+   TEXT_LANGUAGE3 "Schadensindikatoren anzeigen."
+   TEXT_LANGUAGE6 "Show damage indicators."
+   TEXT_LANGUAGE8 "Mostrar indicadores de daños."
+}
+INDEX 28
+{
+   REFERENCE MAIN_MENU_CLIENT_FPLS
+   TEXT_LANGUAGE1 "1st person lightsaber:"
+   TEXT_LANGUAGE2 "Sabre laser 1er personne:"
+   TEXT_LANGUAGE3 "Lichtschwert 1. person:"
+   TEXT_LANGUAGE6 "1st person lightsaber:"
+   TEXT_LANGUAGE8 "Sable láser 1ra persona:"
+}
+INDEX 29
+{
+   REFERENCE MAIN_MENU_CLIENT_FPLS_DESC
+   TEXT_LANGUAGE1 "Shows lightsaber in first person mode."
+   TEXT_LANGUAGE2 "Affiche le sabre laser en mode première personne."
+   TEXT_LANGUAGE3 "Zeigt Lichtschwert im 1. personen modus."
+   TEXT_LANGUAGE6 "Shows lightsaber in first person mode."
+   TEXT_LANGUAGE8 "Muestra sable láser en modo de primera persona."
+}
+INDEX 30
+{
+   REFERENCE MAIN_MENU_CLIENT_FOV
+   TEXT_LANGUAGE1 "Field of view:"
+   TEXT_LANGUAGE2 "Champ de vision:"
+   TEXT_LANGUAGE3 "Sichtfeld:"
+   TEXT_LANGUAGE6 "Field of view:"
+   TEXT_LANGUAGE8 "Campo de visión:"
+}
+INDEX 31
+{
+   REFERENCE MAIN_MENU_CLIENT_FOV_DESC
+   TEXT_LANGUAGE1 "Camera field of view."
+   TEXT_LANGUAGE2 "Champ de vision de la caméra."
+   TEXT_LANGUAGE3 "Sichtfeld der kamera."
+   TEXT_LANGUAGE6 "Camera field of view."
+   TEXT_LANGUAGE8 "Campo de visión de la cámara."
+}
+INDEX 32
+{
+   REFERENCE MAIN_MENU_CLIENT_THIRDCAMERA
+   TEXT_LANGUAGE1 "3rd person range:"
+   TEXT_LANGUAGE2 "Rang en 3e personne:"
+   TEXT_LANGUAGE3 "Bereich der 3. person:"
+   TEXT_LANGUAGE6 "3rd person range:"
+   TEXT_LANGUAGE8 "Rango en 3ra persona:"
+}
+INDEX 33
+{
+   REFERENCE MAIN_MENU_CLIENT_THIRDCAMERA_DESC
+   TEXT_LANGUAGE1 "Third person camera range."
+   TEXT_LANGUAGE2 "Zone de caméra à la troisième personne."
+   TEXT_LANGUAGE3 "Kamerabereich für dritte."
+   TEXT_LANGUAGE6 "Third person camera range."
+   TEXT_LANGUAGE8 "Rango de la cámara en tercera persona."
 }

@@ -8,6 +8,7 @@
 	loadMenu { "ui/jk2mp/ingame_join.menu" }
 	loadMenu { "ui/jk2mp/ingame_setup.menu" }
 	loadMenu { "ui/jk2mp/ingame_setup_modoptions.menu" }
+	loadMenu { "ui/jk2mp/ingame_jkmod_client.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_emotes.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_info.menu" }

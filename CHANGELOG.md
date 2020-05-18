@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.10.5
+- Added private duel option
+- Added real time clock options
+- Updated client mod menu options
+- Merge updates from mvsdk
+
 ## 0.10.4
 - Fixed wrong player model selection
 - Fixed player animation bug on gameplay change
