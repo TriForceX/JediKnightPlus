@@ -8,16 +8,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Main header
 
-// Dimension entity save
-typedef struct jkmod_dimension_save_s
-{
-	int entityNum;
-	int contents;
-
-} jkmod_dimension_save_t;
-
 // Set dimension struct
-jkmod_dimension_save_t jkmod_dimension_save[MAX_GENTITIES];
+jkmod_dimension_ents_t jkmod_dimension_ents[MAX_GENTITIES];
 
 /*
 =====================================================================
@@ -48,8 +40,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[i].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh
-						jkmod_dimension_save[j].entityNum = i;
-						jkmod_dimension_save[j].contents = g_entities[i].r.contents;
+						jkmod_dimension_ents[j].entityNum = i;
+						jkmod_dimension_ents[j].contents = g_entities[i].r.contents;
 						j++;
 						g_entities[i].r.contents = 0;
 					}
@@ -59,8 +51,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 						if (g_entities[g_entities[i].client->ps.saberEntityNum].r.contents)
 						{ 
 							// There are some strange situations where contents can get over-written twice... sigh
-							jkmod_dimension_save[j].entityNum = g_entities[i].client->ps.saberEntityNum;
-							jkmod_dimension_save[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
+							jkmod_dimension_ents[j].entityNum = g_entities[i].client->ps.saberEntityNum;
+							jkmod_dimension_ents[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
 							j++;
 							g_entities[g_entities[i].client->ps.saberEntityNum].r.contents = 0;
 						}
@@ -81,8 +73,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[i].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = i;
-						jkmod_dimension_save[j].contents = g_entities[i].r.contents;
+						jkmod_dimension_ents[j].entityNum = i;
+						jkmod_dimension_ents[j].contents = g_entities[i].r.contents;
 						j++;
 						g_entities[i].r.contents = 0;
 					}
@@ -92,8 +84,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 						if (g_entities[g_entities[i].client->ps.saberEntityNum].r.contents)
 						{ 
 							// There are some strange situations where contents can get over-written twice... sigh						
-							jkmod_dimension_save[j].entityNum = g_entities[i].client->ps.saberEntityNum;
-							jkmod_dimension_save[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
+							jkmod_dimension_ents[j].entityNum = g_entities[i].client->ps.saberEntityNum;
+							jkmod_dimension_ents[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
 							j++;
 							g_entities[g_entities[i].client->ps.saberEntityNum].r.contents = 0;
 						}
@@ -117,8 +109,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[i].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = i;
-						jkmod_dimension_save[j].contents = g_entities[i].r.contents;
+						jkmod_dimension_ents[j].entityNum = i;
+						jkmod_dimension_ents[j].contents = g_entities[i].r.contents;
 						j++;
 						g_entities[i].r.contents = 0;
 					}
@@ -128,8 +120,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 						if (g_entities[g_entities[i].client->ps.saberEntityNum].r.contents)
 						{ 
 							// There are some strange situations where contents can get over-written twice... sigh						
-							jkmod_dimension_save[j].entityNum = g_entities[i].client->ps.saberEntityNum;
-							jkmod_dimension_save[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
+							jkmod_dimension_ents[j].entityNum = g_entities[i].client->ps.saberEntityNum;
+							jkmod_dimension_ents[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
 							j++;
 							g_entities[g_entities[i].client->ps.saberEntityNum].r.contents = 0;
 						}
@@ -150,8 +142,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[i].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = i;
-						jkmod_dimension_save[j].contents = g_entities[i].r.contents;
+						jkmod_dimension_ents[j].entityNum = i;
+						jkmod_dimension_ents[j].contents = g_entities[i].r.contents;
 						j++;
 						g_entities[i].r.contents = 0;
 					}
@@ -161,8 +153,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 						if (g_entities[g_entities[i].client->ps.saberEntityNum].r.contents)
 						{ 
 							// There are some strange situations where contents can get over-written twice... sigh						
-							jkmod_dimension_save[j].entityNum = g_entities[i].client->ps.saberEntityNum;
-							jkmod_dimension_save[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
+							jkmod_dimension_ents[j].entityNum = g_entities[i].client->ps.saberEntityNum;
+							jkmod_dimension_ents[j].contents = g_entities[g_entities[i].client->ps.saberEntityNum].r.contents;
 							j++;
 							g_entities[g_entities[i].client->ps.saberEntityNum].r.contents = 0;
 						}
@@ -186,8 +178,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 				if (g_entities[results->entityNum].r.contents)
 				{ 
 					// There are some strange situations where contents can get over-written twice... sigh						
-					jkmod_dimension_save[j].entityNum = results->entityNum;
-					jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+					jkmod_dimension_ents[j].entityNum = results->entityNum;
+					jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 					j++;
 					g_entities[results->entityNum].r.contents = 0; // Change contents of hit entity and run trace again
 				}
@@ -197,8 +189,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = g_entities[results->entityNum].client->ps.saberEntityNum;
-						jkmod_dimension_save[j].contents = g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = g_entities[results->entityNum].client->ps.saberEntityNum;
+						jkmod_dimension_ents[j].contents = g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents;
 						j++;
 						g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents = 0;
 					}
@@ -234,8 +226,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[results->entityNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = results->entityNum;
-						jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = results->entityNum;
+						jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 						j++;
 						g_entities[results->entityNum].r.contents = 0; // Change contents of hit entity and run trace again
 					}
@@ -245,8 +237,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 						if (g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents)
 						{ 
 							// There are some strange situations where contents can get over-written twice... sigh						
-							jkmod_dimension_save[j].entityNum = g_entities[results->entityNum].client->ps.saberEntityNum;
-							jkmod_dimension_save[j].contents = g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents;
+							jkmod_dimension_ents[j].entityNum = g_entities[results->entityNum].client->ps.saberEntityNum;
+							jkmod_dimension_ents[j].contents = g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents;
 							j++;
 							g_entities[g_entities[results->entityNum].client->ps.saberEntityNum].r.contents = 0;
 						}
@@ -268,16 +260,16 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 				if (g_entities[g_entities[results->entityNum].r.ownerNum].r.contents)
 				{ 
 					// There are some strange situations where contents can get over-written twice... sigh						
-					jkmod_dimension_save[j].entityNum = g_entities[results->entityNum].r.ownerNum;
-					jkmod_dimension_save[j].contents = g_entities[g_entities[results->entityNum].r.ownerNum].r.contents;
+					jkmod_dimension_ents[j].entityNum = g_entities[results->entityNum].r.ownerNum;
+					jkmod_dimension_ents[j].contents = g_entities[g_entities[results->entityNum].r.ownerNum].r.contents;
 					j++;
 					g_entities[g_entities[results->entityNum].r.ownerNum].r.contents = 0; // Set saber owner contents to zero
 				}
 				if (g_entities[results->entityNum].r.contents)
 				{ 
 					// There are some strange situations where contents can get over-written twice... sigh
-					jkmod_dimension_save[j].entityNum = results->entityNum;
-					jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+					jkmod_dimension_ents[j].entityNum = results->entityNum;
+					jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 					j++;
 					g_entities[results->entityNum].r.contents = 0; // Set the lightsaber contents to zero, run the trace again
 				}
@@ -306,16 +298,16 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[g_entities[results->entityNum].r.ownerNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh
-						jkmod_dimension_save[j].entityNum = g_entities[results->entityNum].r.ownerNum;
-						jkmod_dimension_save[j].contents = g_entities[g_entities[results->entityNum].r.ownerNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = g_entities[results->entityNum].r.ownerNum;
+						jkmod_dimension_ents[j].contents = g_entities[g_entities[results->entityNum].r.ownerNum].r.contents;
 						j++;
 						g_entities[g_entities[results->entityNum].r.ownerNum].r.contents = 0; // Set saber owner contents to zero
 					}
 					if (g_entities[results->entityNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh
-						jkmod_dimension_save[j].entityNum = results->entityNum;
-						jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = results->entityNum;
+						jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 						j++;
 						g_entities[results->entityNum].r.contents = 0; // Set the lightsaber contents to zero, run the trace again
 					}
@@ -359,8 +351,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[results->entityNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = results->entityNum;
-						jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = results->entityNum;
+						jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 						j++;
 						g_entities[results->entityNum].r.contents = 0; // Set sentry gun owner contents to zero
 					}
@@ -375,8 +367,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 				if (g_entities[results->entityNum].r.contents)
 				{ 
 					// There are some strange situations where contents can get over-written twice... sigh						
-					jkmod_dimension_save[j].entityNum = results->entityNum;
-					jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+					jkmod_dimension_ents[j].entityNum = results->entityNum;
+					jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 					j++;
 					g_entities[results->entityNum].r.contents = 0; // Set sentry gun owner contents to zero
 				}
@@ -419,8 +411,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 					if (g_entities[results->entityNum].r.contents)
 					{ 
 						// There are some strange situations where contents can get over-written twice... sigh						
-						jkmod_dimension_save[j].entityNum = results->entityNum;
-						jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+						jkmod_dimension_ents[j].entityNum = results->entityNum;
+						jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 						j++;
 						g_entities[results->entityNum].r.contents = 0; // Set portable shield owner contents to zero
 					}
@@ -435,8 +427,8 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 				if (g_entities[results->entityNum].r.contents)
 				{ 
 					// There are some strange situations where contents can get over-written twice... sigh						
-					jkmod_dimension_save[j].entityNum = results->entityNum;
-					jkmod_dimension_save[j].contents = g_entities[results->entityNum].r.contents;
+					jkmod_dimension_ents[j].entityNum = results->entityNum;
+					jkmod_dimension_ents[j].contents = g_entities[results->entityNum].r.contents;
 					j++;
 					g_entities[results->entityNum].r.contents = 0; // Set portable shield owner contents to zero
 				}
@@ -466,6 +458,6 @@ void JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, c
 	// Now reset all entity contents that have been saved
 	for (i = 0; i < j; i++)
 	{
-		g_entities[jkmod_dimension_save[i].entityNum].r.contents = jkmod_dimension_save[i].contents;
+		g_entities[jkmod_dimension_ents[i].entityNum].r.contents = jkmod_dimension_ents[i].contents;
 	}
 }

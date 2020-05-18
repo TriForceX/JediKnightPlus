@@ -1537,7 +1537,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 			jkmod_macro_scan = qfalse;
 		}
 	}
-	else if (jkmod_macro_scan == qfalse)
+	else if (!jkmod_macro_scan)
 	{
 		// Find any disabled macros and re-enable them...
 		trap_SendConsoleCommand("jk_ui_macroenable\n");

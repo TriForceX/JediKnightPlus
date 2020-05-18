@@ -3018,7 +3018,7 @@ dflags		these flags are used to control how T_Damage works
 ============
 */
 
-void G_Damage(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
+void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			   vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
 	gclient_t	*client;
 	int			take;

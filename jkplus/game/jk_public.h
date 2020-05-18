@@ -24,12 +24,20 @@ Player / world information
 =====================================================================
 */
 
-// Dimensions
+// Dimensions options
 typedef enum
 {
 	DIMENSION_DUEL = 0,
 	DIMENSION_CHAT
 
 } jkmod_dimensions_t;
+
+// Dimension entities
+typedef struct jkmod_dimension_ents_s
+{
+	int entityNum;
+	int contents;
+
+} jkmod_dimension_ents_t;
 
 #endif //__JK_PUBLIC_H__

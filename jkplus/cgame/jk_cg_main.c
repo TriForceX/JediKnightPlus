@@ -14,6 +14,8 @@ Cvar table list
 =====================================================================
 */
 
+static qboolean jkmod_duel_warning = qfalse;
+
 typedef struct { // Cvar table struct
 	vmCvar_t	*vmCvar;
 	char		*cvarName;
@@ -21,10 +23,14 @@ typedef struct { // Cvar table struct
 	int			cvarFlags;
 } cvarTable_t;
 
+vmCvar_t	jkcvar_cg_privateDuel;
+
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
 
 static cvarTable_t	JKModCGCvarTable[] = {
+
+	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
@@ -67,6 +73,18 @@ void JKMod_CG_UpdateCvars(void)
 	for (i = 0, cv = JKModCGCvarTable; i < JKModCGCvarTableSize; i++, cv++) {
 		trap_Cvar_Update(cv->vmCvar);
 	}
+
+	// Warning private duel dimiension
+	if (jkcvar_cg_privateDuel.integer)
+	{
+		if (!(cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)))
+		{
+			if (!jkmod_duel_warning) Com_Printf("WARNING: Duel dimension is not available, you may collide with a non-dueling player during private duels\n");
+			jkmod_duel_warning = qtrue;
+		}
+		else jkmod_duel_warning = qfalse;
+	}
+	else jkmod_duel_warning = qfalse;
 
 	// Launch original update cvars function
 	BaseJK2_CG_UpdateCvars();

@@ -5984,6 +5984,12 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
+	// Tr!Force: [PrivateDuel] Don't render players outside of duel
+	if (jkcvar_cg_privateDuel.integer && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	{
+		return;
+	}
+
 	cent->ghoul2 = cg_entities[cent->currentState.number].ghoul2;
 
 	if (!cent->ghoul2)
