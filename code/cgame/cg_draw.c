@@ -4374,6 +4374,9 @@ static void CG_Draw2D( void ) {
 	if ( !cg.scoreBoardShowing) {
 		CG_DrawCenterString();
 	}
+
+	// Tr!Force: [Draw2D] Load custom draw 2d functions
+	JKMod_CG_Draw2D();
 }
 
 

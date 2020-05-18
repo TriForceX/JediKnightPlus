@@ -24,6 +24,7 @@ typedef struct { // Cvar table struct
 } cvarTable_t;
 
 vmCvar_t	jkcvar_cg_privateDuel;
+vmCvar_t	jkcvar_cg_drawClock;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
@@ -31,6 +32,7 @@ vmCvar_t	jkcvar_cg_test2;
 static cvarTable_t	JKModCGCvarTable[] = {
 
 	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
@@ -44,7 +46,6 @@ static int JKModCGCvarTableSize = sizeof(JKModCGCvarTable) / sizeof(JKModCGCvarT
 Register / update cvars functions
 =====================================================================
 */
-
 void JKMod_CG_RegisterCvars(void)
 {
 	int			i;
