@@ -6073,6 +6073,12 @@ void CG_Player( centity_t *cent ) {
 		cent->trickAlphaTime = cg.time;
 	}
 
+	// Tr!Force: [HitBox] Draw the hitbox
+	if (jkcvar_cg_drawHitBox.integer) 
+	{
+		JKMod_CG_AddHitBox(cent);
+	}
+
 	//If this client has tricked you.
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,
 		cent->currentState.trickedentindex2,

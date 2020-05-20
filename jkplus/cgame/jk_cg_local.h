@@ -42,6 +42,7 @@ Cvar registration
 
 extern vmCvar_t						jkcvar_cg_privateDuel;
 extern vmCvar_t						jkcvar_cg_drawClock;
+extern vmCvar_t						jkcvar_cg_drawHitBox;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
@@ -55,5 +56,6 @@ Common / new functions
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);
 void		JKMod_CG_DrawClock(void);
+void		JKMod_CG_AddHitBox(centity_t *cent);
 
 #endif // __JK_CG_LOCAL_H__
