@@ -27,7 +27,6 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 
 	// send the latest information on all clients
 	string[0] = 0;
-	stringlength = 0;
 	scoreFlags = 0;
 
 	numSorted = level.numConnectedClients;
@@ -36,6 +35,9 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 	{
 		numSorted = MAX_CLIENT_SCORE_SEND;
 	}
+
+	Com_sprintf( string, sizeof(string), "scores %i %i %i", level.numConnectedClients, level.teamScores[TEAM_RED], level.teamScores[TEAM_BLUE] );
+	stringlength = strlen( string );
 
 	for (i=0 ; i < numSorted ; i++) {
 		int		ping;
@@ -74,12 +76,7 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 		stringlength += j;
 	}
 
-	//still want to know the total # of clients
-	i = level.numConnectedClients;
-
-	trap_SendServerCommand( ent-g_entities, va("scores %i %i %i%s", i, 
-		level.teamScores[TEAM_RED], level.teamScores[TEAM_BLUE],
-		string ) );
+	trap_SendServerCommand( ent-g_entities, string );
 }
 
 
