@@ -27,6 +27,7 @@ vmCvar_t	jkcvar_cg_privateDuel;
 vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
 vmCvar_t	jkcvar_cg_drawForcePoints;
+vmCvar_t	jkcvar_cg_chatIcon;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
@@ -37,6 +38,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawForcePoints,	"jk_cg_drawForcePoints",	"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },

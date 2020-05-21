@@ -3406,7 +3406,7 @@ static void CG_PlayerSprites( centity_t *cent ) {
 	}
 
 	if ( cent->currentState.eFlags & EF_TALK && cg_drawPlayerSprites.integer & 2 ) {
-		CG_PlayerFloatSprite( cent, cgs.media.balloonShader );
+		CG_PlayerFloatSprite( cent, (jkcvar_cg_chatIcon.integer ? trap_R_RegisterShader("jkmod_chat_icon")  : cgs.media.balloonShader) ); // Tr!Force: [ChatIcon] Draw custom chat icon
 		return;
 	}
 /*

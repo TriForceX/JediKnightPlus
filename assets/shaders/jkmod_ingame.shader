@@ -17,3 +17,21 @@ jkmod_hitbox_nocull
 		rgbGen vertex
 	}
 }
+jkmod_chat_icon
+{
+	nopicmip
+	nomipmaps
+    {
+        map gfx/mp/jkmod_chat_icon
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+    }
+}
+gfx/2d/net
+{
+    nopicmip
+    nomipmaps
+    {
+        map gfx/2d/net
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+    }
+}
