@@ -45,6 +45,10 @@ static void CG_TransitionEntity( centity_t *cent ) {
 		cent->currentState.legsAnim = MV_MapAnimation104( cent->currentState.legsAnim );
 	}
 
+	// modelindex is transfered as signed 8-bit integer (byte), making submodels > 127 appear as negative numbers on the client.
+	// As a negative modelindex isn't valid for SOLID_BMODEL and leads to errors let's try to compensate the modelindex here if the server tells us to.
+	if ( cent->currentState.solid == SOLID_BMODEL && cent->currentState.modelindex < 0 && cgs.mvsdk_svFlags & MVSDK_SVFLAG_SUBMODEL_WORKAROUND ) cent->currentState.modelindex += 256;
+
 	// reset if the entity wasn't in the last frame or was teleported
 	if ( !cent->interpolate ) {
 		CG_ResetEntity( cent );
@@ -106,6 +110,10 @@ void CG_SetInitialSnapshot( snapshot_t *snap ) {
 			cent->currentState.torsoAnim = MV_MapAnimation104( cent->currentState.torsoAnim );
 			cent->currentState.legsAnim = MV_MapAnimation104( cent->currentState.legsAnim );
 		}
+
+		// modelindex is transfered as signed 8-bit integer (byte), making submodels > 127 appear as negative numbers on the client.
+		// As a negative modelindex isn't valid for SOLID_BMODEL and leads to errors let's try to compensate the modelindex here if the server tells us to.
+		if ( cent->currentState.solid == SOLID_BMODEL && cent->currentState.modelindex < 0 && cgs.mvsdk_svFlags & MVSDK_SVFLAG_SUBMODEL_WORKAROUND ) cent->currentState.modelindex += 256;
 
 		CG_ResetEntity( cent );
 
