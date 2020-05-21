@@ -846,6 +846,13 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 		return;
 	}
 
+	// Tr!Force: [ForcePoints] Draw it
+	if (jkcvar_cg_drawForcePoints.integer)
+	{
+		trap_R_SetColor(colorTable[CT_ICON_BLUE]);
+		CG_DrawNumField(x + 28, y + 39, 3, cg.snap->ps.fd.forcePower, 6, 12, NUM_FONT_SMALL, qfalse);
+	}
+
 	if ( cent->currentState.weapon == WP_SABER )
 	{
 		trap_R_SetColor( colorTable[CT_WHITE] );
