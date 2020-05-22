@@ -4267,7 +4267,7 @@ void CG_G2SaberEffects(vec3_t start, vec3_t end, centity_t *owner)
 }
 #endif
 
-#define SABER_TRAIL_TIME	40.0f
+#define SABER_TRAIL_TIME	jkcvar_cg_saberTrailSpeed.value // Tr!Force: [SaberTrail] Set custom speed
 #define FX_USE_ALPHA		0x08000000
 
 void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, int renderfx, int modelIndex, vec3_t origin, vec3_t angles, qboolean fromSaber)
