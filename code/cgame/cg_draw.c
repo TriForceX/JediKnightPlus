@@ -3842,6 +3842,7 @@ static void CG_Draw2D( void ) {
 
 	if ( cg.snap->ps.pm_type == PM_INTERMISSION ) {
 		CG_DrawIntermission();
+		if (jkcvar_cg_chatBox.integer) JKMod_CG_ChatBox_DrawStrings(); // Tr!Force: [ChatBox] Draw on intermission
 		return;
 	}
 

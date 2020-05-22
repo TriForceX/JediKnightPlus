@@ -868,6 +868,8 @@ Ghoul2 Insert End
 */
 
 	char				sharedBuffer[MAX_CG_SHARED_BUFFER_SIZE];
+
+	jkmod_cg_t			jkmodCG;		// Tr!Force: [JKMod] Client game
 } cg_t;
 
 #define MAX_TICS	14

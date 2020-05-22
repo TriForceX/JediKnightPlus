@@ -7,6 +7,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 */
 
 #include "../../code/cgame/cg_local.h"	// Original header
+#include "../../code/ui/ui_shared.h"	// Original header
 
 /*
 =====================================================================
@@ -19,6 +20,12 @@ void JKMod_CG_Draw2D(void)
 	if (jkcvar_cg_drawClock.integer)
 	{
 		JKMod_CG_DrawClock();
+	}
+
+	// Draw chat box
+	if (jkcvar_cg_chatBox.integer)
+	{
+		JKMod_CG_ChatBox_DrawStrings();
 	}
 }
 
@@ -222,4 +229,174 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 	VectorCopy(corners[4], verts[2].xyz);
 	VectorCopy(corners[5], verts[3].xyz);
 	trap_R_AddPolyToScene(hitboxShader_nocull, 4, verts);
+}
+
+/*
+=====================================================================
+Draw custom chat box
+=====================================================================
+*/
+void JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str)
+{
+	int insLen = strlen(str);
+	int i = strlen(buffer);
+	int k = 0;
+
+	buffer[i + insLen + 1] = 0; // Terminate the string at its new length
+	while (i >= place)
+	{
+		buffer[i + insLen] = buffer[i];
+		i--;
+	}
+
+	i++;
+	while (k < insLen)
+	{
+		buffer[i] = str[k];
+		i++;
+		k++;
+	}
+}
+
+void JKMod_CG_ChatBox_AddString(char *chatStr)
+{
+	jkmod_chatbox_t *chat = &cg.jkmodCG.chatItems[cg.jkmodCG.chatItemActive];
+	float chatLen;
+
+	if (jkcvar_cg_chatBoxTime.integer <= 0) // Don't bother then.
+	{ 
+		return;
+	}
+
+	memset(chat, 0, sizeof(jkmod_chatbox_t));
+
+	if (strlen(chatStr) > sizeof(chat->string)) // Too long, terminate at proper len.
+	{ 
+		chatStr[sizeof(chat->string) - 1] = 0;
+	}
+
+	strcpy(chat->string, chatStr);
+	chat->time = cg.time + (jkcvar_cg_chatBoxTime.integer*1000);
+
+	chat->lines = 1;
+	chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
+
+	if (chatLen > CHATBOX_CUTOFF_LEN) // We have to break it into segments...
+	{ 
+		int i = 0;
+		int lastLinePt = 0;
+		char s[2];
+
+		chatLen = 0;
+		while (chat->string[i])
+		{
+			s[0] = chat->string[i];
+			s[1] = 0;
+			chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
+
+			if (chatLen >= CHATBOX_CUTOFF_LEN)
+			{
+				int j = i;
+				while (j > 0 && j > lastLinePt)
+				{
+					if (chat->string[j] == ' ')
+					{
+						break;
+					}
+					j--;
+				}
+				if (chat->string[j] == ' ')
+				{
+					i = j;
+				}
+
+				chat->lines++;
+				JKMod_CG_ChatBox_StrInsert(chat->string, i, "\n");
+				i++;
+				chatLen = 0;
+				lastLinePt = i + 1;
+			}
+			i++;
+		}
+	}
+
+	cg.jkmodCG.chatItemActive++;
+	if (cg.jkmodCG.chatItemActive >= MAX_CHATBOX_ITEMS)
+	{
+		cg.jkmodCG.chatItemActive = 0;
+	}
+}
+
+void JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item)
+{
+	if (array[insPoint]) // Recursively call, to move everything up to the top
+	{ 
+		if (insPoint + 1 >= maxNum)
+		{
+			CG_Error("JKMod_CG_ChatBox_ArrayInsert: Exceeded array size");
+		}
+		JKMod_CG_ChatBox_ArrayInsert(array, insPoint + 1, maxNum, array[insPoint]);
+	}
+
+	// Now that we have moved anything that would be in this slot up, insert what we want into the slot
+	array[insPoint] = item;
+}
+
+void JKMod_CG_ChatBox_DrawStrings(void)
+{
+	jkmod_chatbox_t *drawThese[MAX_CHATBOX_ITEMS];
+	int numToDraw = 0;
+	int linesToDraw = 0;
+	int i = 0;
+	int x = 30;
+	int y = cg.scoreBoardShowing ? 475 : jkcvar_cg_chatBoxHeight.integer;
+	float fontScale = 0.65f;
+
+	if (!jkcvar_cg_chatBoxTime.integer)
+	{
+		return;
+	}
+
+	memset(drawThese, 0, sizeof(drawThese));
+
+	while (i < MAX_CHATBOX_ITEMS)
+	{
+		if (cg.jkmodCG.chatItems[i].time >= cg.time)
+		{
+			int check = numToDraw;
+			int insertionPoint = numToDraw;
+
+			while (check >= 0)
+			{
+				if (drawThese[check] &&
+					cg.jkmodCG.chatItems[i].time < drawThese[check]->time)
+				{ 
+					// Insert here
+					insertionPoint = check;
+				}
+				check--;
+			}
+			JKMod_CG_ChatBox_ArrayInsert(drawThese, insertionPoint, MAX_CHATBOX_ITEMS, &cg.jkmodCG.chatItems[i]);
+			numToDraw++;
+			linesToDraw += cg.jkmodCG.chatItems[i].lines;
+		}
+		i++;
+	}
+
+	if (!numToDraw) // Nothing, then, just get out of here now.
+	{ 
+		return;
+	}
+
+	// Move initial point up so we draw bottom-up (visually)
+	y -= (CHATBOX_FONT_HEIGHT*fontScale)*linesToDraw;
+
+	// We have the items we want to draw, just quickly loop through them now
+	i = 0;
+	while (i < numToDraw)
+	{
+		CG_Text_Paint(x, y, fontScale, colorWhite, drawThese[i]->string, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
+		y += ((CHATBOX_FONT_HEIGHT*fontScale)*drawThese[i]->lines);
+		i++;
+	}
 }

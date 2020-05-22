@@ -1263,7 +1263,15 @@ static void CG_ServerCommand( void ) {
 			trap_S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
 			Q_strncpyz( text, CG_Argv(1), MAX_SAY_TEXT );
 			CG_RemoveChatEscapeChar( text );
-			CG_Printf( "%s\n", text );
+			// Tr!Force: [ChatBox] Add line to chat box
+			if (jkcvar_cg_chatBox.integer)
+			{
+				JKMod_CG_ChatBox_AddString( text ); 
+				// CG_Printf("%s\n", text); // Fix me
+			}
+			else {
+				CG_Printf("%s\n", text);
+			}
 		}
 		return;
 	}
@@ -1273,7 +1281,15 @@ static void CG_ServerCommand( void ) {
 		Q_strncpyz( text, CG_Argv(1), MAX_SAY_TEXT );
 		CG_RemoveChatEscapeChar( text );
 		CG_AddToTeamChat( text );
-		CG_Printf( "%s\n", text );
+		// Tr!Force: [ChatBox] Add line to chat box
+		if (jkcvar_cg_chatBox.integer)
+		{
+			JKMod_CG_ChatBox_AddString( text );
+			// CG_Printf("%s\n", text); // Fix me
+		}
+		else {
+			CG_Printf("%s\n", text);
+		}
 		return;
 	}
 	if ( !strcmp( cmd, "vchat" ) ) {
