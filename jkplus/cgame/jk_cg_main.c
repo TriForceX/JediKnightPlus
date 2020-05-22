@@ -34,6 +34,7 @@ vmCvar_t	jkcvar_cg_damageBlend;
 vmCvar_t	jkcvar_cg_chatBox;
 vmCvar_t	jkcvar_cg_chatBoxTime;
 vmCvar_t	jkcvar_cg_chatBoxHeight;
+vmCvar_t	jkcvar_cg_chatBoxHistory;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
@@ -50,7 +51,8 @@ static cvarTable_t	JKModCGCvarTable[] = {
 
 	{ &jkcvar_cg_chatBox,			"jk_cg_chatBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatBoxTime,		"jk_cg_chatBoxTime",		"10",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatBoxHeight,		"jk_cg_chatBoxHeight",		"350",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_chatBoxHeight,		"jk_cg_chatBoxHeight",		"360",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_chatBoxHistory,	"jk_cg_chatBoxHistory",		"1",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },

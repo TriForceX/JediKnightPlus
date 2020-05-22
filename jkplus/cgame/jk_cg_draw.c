@@ -351,17 +351,18 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 	int x = 30;
 	int y = cg.scoreBoardShowing ? 475 : jkcvar_cg_chatBoxHeight.integer;
 	float fontScale = 0.65f;
+	qboolean drawAnyway = qfalse;
 
-	if (!jkcvar_cg_chatBoxTime.integer)
+	if (jkcvar_cg_chatBoxHistory.integer)
 	{
-		return;
+		drawAnyway = (qboolean)(trap_Key_GetCatcher() & KEYCATCH_CONSOLE);
 	}
 
 	memset(drawThese, 0, sizeof(drawThese));
 
 	while (i < MAX_CHATBOX_ITEMS)
 	{
-		if (cg.jkmodCG.chatItems[i].time >= cg.time)
+		if (cg.jkmodCG.chatItems[i].time >= cg.time || drawAnyway)
 		{
 			int check = numToDraw;
 			int insertionPoint = numToDraw;

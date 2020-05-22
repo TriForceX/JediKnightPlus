@@ -78,6 +78,7 @@ extern vmCvar_t						jkcvar_cg_damageBlend;
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;
 extern vmCvar_t						jkcvar_cg_chatBoxHeight;
+extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
