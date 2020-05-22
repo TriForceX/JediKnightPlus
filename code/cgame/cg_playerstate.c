@@ -93,6 +93,11 @@ void CG_DamageFeedback( int yawByte, int pitchByte, int damage ) {
 	// show the attacking player's head and name in corner
 	cg.attackerTime = cg.time;
 
+	// Tr!Force: [DamageBlend] Don't show in low damage
+	if (jkcvar_cg_damageBlend.integer == 2 && damage <= 5) {
+		return;
+	}
+
 	// the lower on health you are, the greater the view kick will be
 	health = cg.snap->ps.stats[STAT_HEALTH];
 	if ( health < 40 ) {

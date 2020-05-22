@@ -1613,7 +1613,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	CG_CalcScreenEffects();
 
 	// first person blend blobs, done after AnglesToAxis
-	if ( !cg.renderingThirdPerson ) {
+	if ( !cg.renderingThirdPerson || jkcvar_cg_damageBlend.integer ) { // Tr!Force: [DamageBlend] Enable in 3rd person too
 		CG_DamageBlendBlob();
 	}
 
