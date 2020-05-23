@@ -2136,12 +2136,24 @@ static void CG_DrawUpperRight( void ) {
 	if ( cg_drawTimer.integer ) {
 		y = CG_DrawTimer( y );
 	}
-	
+	if (jkcvar_cg_drawInventory.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)) { // Tr!Force: [DrawInventory] Adjust powerup position
+		JKMod_CG_DrawPowerupIcons( y );
+	}
+
 	y = CG_DrawEnemyInfo ( y );
 
 	y = CG_DrawMiniScoreboard ( y );
 
-	CG_DrawPowerupIcons(y);
+	// Tr!Force: [DrawInventory] Draw inventory and powerups
+	if (jkcvar_cg_drawInventory.integer) {
+		if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY) {
+			y = JKMod_CG_DrawPowerupIcons( y );
+		}
+		JKMod_CG_DrawInventory( y ); 
+	}
+	else {
+		CG_DrawPowerupIcons( y );
+	}
 }
 
 /*

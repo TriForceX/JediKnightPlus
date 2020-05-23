@@ -71,6 +71,7 @@ extern vmCvar_t						jkcvar_cg_privateDuel;
 extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
+extern vmCvar_t						jkcvar_cg_drawInventory;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
@@ -98,5 +99,7 @@ void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);
 void		JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item);
 void		JKMod_CG_ChatBox_DrawStrings(void);
+void		JKMod_CG_DrawInventory(int y);
+float		JKMod_CG_DrawPowerupIcons(int y);
 
 #endif // __JK_CG_LOCAL_H__

@@ -401,3 +401,119 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 		i++;
 	}
 }
+
+/*
+=====================================================================
+Draw inventory
+=====================================================================
+*/
+void JKMod_CG_DrawInventory(int y)
+{
+	int i;
+	int ico_size = 32;
+	float xAlign = cgs.screenWidth - ico_size * 1.1f;
+
+	if (!cg.snap)
+		return;
+
+	if (cg.snap->ps.pm_type == PM_SPECTATOR)
+		return;
+
+	if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
+		return;
+
+	y += 8;
+
+	if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_TRIP_MINE) && cg.snap->ps.ammo[weaponData[WP_TRIP_MINE].ammoIndex] > 0) {
+		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.media.weaponIcons[WP_TRIP_MINE]);
+		CG_DrawNumField(xAlign, y, 2, cg.snap->ps.ammo[weaponData[WP_TRIP_MINE].ammoIndex], 6, 12, NUM_FONT_SMALL, qfalse);
+		y += ico_size;
+	}
+
+	if (!cg.snap->ps.stats[STAT_HOLDABLE_ITEM] || !cg.snap->ps.stats[STAT_HOLDABLE_ITEMS])
+		return;
+
+	for (i = 0; i < HI_NUM_HOLDABLE; i++)
+	{
+		if (i && cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i))
+		{
+			CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.media.invenIcons[i]);
+			y += ico_size;
+		}
+	}
+}
+
+/*
+=====================================================================
+Custom draw powerup to work together with draw inventory
+=====================================================================
+*/
+float JKMod_CG_DrawPowerupIcons(int y) 
+{
+	int j;
+	int ico_size = 64;
+	float xAlign = cgs.screenWidth - ico_size * 1.1f;
+	float yAlign = 8;
+	gitem_t	*item;
+
+	if (!cg.snap)
+	{
+		return y;
+	}
+
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) { 
+		return y;
+	}
+
+	if (jkcvar_cg_drawInventory.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)) { 
+		ico_size = ICON_SIZE * 1.25;
+		xAlign = (xAlign - ico_size);
+		yAlign = (ICON_SIZE / 2);
+		y += 5;
+	}
+	else {
+		y += 16;
+	}
+
+	for (j = 0; j < PW_NUM_POWERUPS; j++)
+	{
+		if (cg.snap->ps.powerups[j] > cg.time)
+		{
+			int secondsleft = (cg.snap->ps.powerups[j] - cg.time) / 1000;
+
+			item = BG_FindItemForPowerup(j);
+
+			if (item)
+			{
+				int icoShader = 0;
+				if (cgs.gametype == GT_CTY && (j == PW_REDFLAG || j == PW_BLUEFLAG))
+				{
+					if (j == PW_REDFLAG)
+					{
+						icoShader = trap_R_RegisterShaderNoMip("gfx/hud/mpi_rflag_ys");
+					}
+					else
+					{
+						icoShader = trap_R_RegisterShaderNoMip("gfx/hud/mpi_bflag_ys");
+					}
+				}
+				else
+				{
+					icoShader = trap_R_RegisterShader(item->icon);
+				}
+
+				CG_DrawPic(xAlign, y, ico_size, ico_size, icoShader);
+
+				y += ico_size;
+
+				if (j != PW_REDFLAG && j != PW_BLUEFLAG && secondsleft < 999)
+				{
+					UI_DrawProportionalString(xAlign + (ico_size / 2), y - yAlign, va("%i", secondsleft), UI_CENTER | UI_BIGFONT | UI_DROPSHADOW, colorTable[CT_WHITE]);
+				}
+
+				y += (ico_size / 3);
+			}
+		}
+	}
+	return y;
+}
