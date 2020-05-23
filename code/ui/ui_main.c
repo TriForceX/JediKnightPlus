@@ -6601,7 +6601,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 				if (!noIconHead.name)
 				{
 					noIconHead.next = NULL;
-					noIconHead.icon = trap_R_RegisterShaderNoMip("menu/art/unknownmap");
+					noIconHead.icon = trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon"); // Tr!Force: [MissingIcon] Add new one
 					noIconHead.name = noIconHeadName;
 
 					UI_InsertHeadRaw(&noIconHead);

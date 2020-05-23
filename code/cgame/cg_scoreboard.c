@@ -152,7 +152,20 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		CG_FillRect( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, largeFormat?SB_NORMAL_HEIGHT:SB_INTER_HEIGHT, hcolor );
 	}
 
-	CG_Text_Paint (SB_NAME_X, y, 0.9f * scale, colorWhite, ci->name,0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+	// Tr!Force: [ScoreboardIcons] Show players icons
+	if (jkcvar_cg_scoreboardIcons.integer) {
+		if (largeFormat) {
+			CG_DrawPic(SB_NAME_X - 5, y + 2, 25, 25, (ci->modelIcon ? ci->modelIcon : trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon")));
+			CG_Text_Paint(SB_NAME_X + 24, y, 0.9f * scale, colorWhite, ci->name, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM);
+		}
+		else {
+			CG_DrawPic(SB_NAME_X - 5, y + 2, 15, 15, (ci->modelIcon ? ci->modelIcon : trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon")));
+			CG_Text_Paint(SB_NAME_X + 12, y, 0.9f * scale, colorWhite, ci->name, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM);
+		}
+	}
+	else {
+		CG_Text_Paint(SB_NAME_X, y, 0.9f * scale, colorWhite, ci->name, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM);
+	}
 
 	if ( ci->team != TEAM_SPECTATOR || cgs.gametype == GT_TOURNAMENT )
 	{

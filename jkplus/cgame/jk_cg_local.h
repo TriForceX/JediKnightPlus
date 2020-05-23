@@ -72,6 +72,7 @@ extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
 extern vmCvar_t						jkcvar_cg_drawInventory;
+extern vmCvar_t						jkcvar_cg_scoreboardIcons;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
