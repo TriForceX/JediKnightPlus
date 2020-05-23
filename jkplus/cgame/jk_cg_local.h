@@ -74,6 +74,7 @@ extern vmCvar_t						jkcvar_cg_drawForcePoints;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
+extern vmCvar_t						jkcvar_cg_customAnims;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;

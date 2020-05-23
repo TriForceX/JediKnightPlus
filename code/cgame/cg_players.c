@@ -6186,6 +6186,16 @@ void CG_Player( centity_t *cent ) {
 		cent->ghoul2weapon = NULL; //be sure to update after respawning/getting limb regrown
 	}
 
+	// Tr!Force: [CustomAnims] Use different animations
+	if (jkcvar_cg_customAnims.integer)
+	{
+		// Run
+		if ((ci->jk2gameplay != VERSION_1_02) && cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && cent->saberLength > 0)
+		{
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_RUN2;
+			if ((cent->currentState.legsAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.legsAnim = BOTH_RUN2;
+		}
+	}
 	
 	memset (&legs, 0, sizeof(legs));
 

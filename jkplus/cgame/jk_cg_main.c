@@ -30,6 +30,7 @@ vmCvar_t	jkcvar_cg_drawForcePoints;
 vmCvar_t	jkcvar_cg_chatIcon;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
 vmCvar_t	jkcvar_cg_damageBlend;
+vmCvar_t	jkcvar_cg_customAnims;
 
 vmCvar_t	jkcvar_cg_chatBox;
 vmCvar_t	jkcvar_cg_chatBoxTime;
@@ -48,6 +49,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_saberTrailSpeed,	"jk_cg_saberTrailSpeed",	"40",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_damageBlend,		"jk_cg_damageBlend",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_chatBox,			"jk_cg_chatBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatBoxTime,		"jk_cg_chatBoxTime",		"10",	CVAR_ARCHIVE },
