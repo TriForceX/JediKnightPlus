@@ -7316,7 +7316,7 @@ stillDoSaber:
 			legs.shaderRGBA[2] = 50;
 			legs.renderfx |= RF_RGB_TINT;
 		}
-		else
+		else if (jkcvar_cg_duelGlow.integer) // Tr!Force: [DuelGlow] Enable it
 		{ //adjust the glow by how far away you are from your dueling partner
 			centity_t *duelEnt;
 

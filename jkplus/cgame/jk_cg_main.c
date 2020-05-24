@@ -24,6 +24,7 @@ typedef struct { // Cvar table struct
 } cvarTable_t;
 
 vmCvar_t	jkcvar_cg_privateDuel;
+vmCvar_t	jkcvar_cg_duelGlow;
 vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
 vmCvar_t	jkcvar_cg_drawForcePoints;
@@ -45,6 +46,7 @@ vmCvar_t	jkcvar_cg_test2;
 static cvarTable_t	JKModCGCvarTable[] = {
 
 	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_duelGlow,			"jk_cg_duelGlow",			"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawForcePoints,	"jk_cg_drawForcePoints",	"0",	CVAR_ARCHIVE },

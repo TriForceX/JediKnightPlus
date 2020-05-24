@@ -68,6 +68,7 @@ Cvar registration
 */
 
 extern vmCvar_t						jkcvar_cg_privateDuel;
+extern vmCvar_t						jkcvar_cg_duelGlow;
 extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
