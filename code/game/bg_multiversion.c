@@ -143,6 +143,7 @@ extern int (*forcePowerNeeded)[NUM_FORCE_POWERS];
 void MV_SetGamePlay( mvversion_t version )
 { /* Set weaponData (ammo costs, ...), forcePowerNeeded (force costs) and the gameplay value according to the new version. */
 #ifdef JK2_GAME
+	char userinfo[MAX_INFO_STRING]; // Tr!Force: [JKMod] Gameplay clean client g2 instances
 	gentity_t *saberent;
 	gentity_t *ent;
 	int		   i;
@@ -175,7 +176,7 @@ void MV_SetGamePlay( mvversion_t version )
 	{
 		ent = &g_entities[i];
 
-		if ( ent && ent->client && ent->inuse )
+		if ( ent->client && ent->inuse ) // Tr!Force: [JKMod] Gameplay clean client g2 instances
 		{
 			/* Adjust the size of the saberbox (8.0f in 1.02, 16.0f in 1.03 and 1.04). The define for SABER_BOX_SIZE already contains the check for the current version, so we can just use the same code for all 3 versions here. */
 			saberent = &g_entities[ent->client->ps.saberEntityNum];
@@ -183,6 +184,20 @@ void MV_SetGamePlay( mvversion_t version )
 			{
 				VectorSet( saberent->r.mins, -SABER_BOX_SIZE, -SABER_BOX_SIZE, -SABER_BOX_SIZE );
 				VectorSet( saberent->r.maxs, SABER_BOX_SIZE, SABER_BOX_SIZE, SABER_BOX_SIZE );
+			}
+			
+			// Tr!Force: [JKMod] Gameplay clean client g2 instances
+			trap_GetUserinfo( i, userinfo, sizeof(userinfo) );
+			SetupGameGhoul2Model( ent->client, Info_ValueForKey(userinfo, "model") );
+			if ( ent->client->ghoul2 )
+			{
+				ent->bolt_Head = trap_G2API_AddBolt( ent->client->ghoul2, 0, "cranium" );
+				ent->bolt_Waist = trap_G2API_AddBolt( ent->client->ghoul2, 0, "thoracic" );
+				ent->bolt_LArm = trap_G2API_AddBolt( ent->client->ghoul2, 0, "lradius" );
+				ent->bolt_RArm = trap_G2API_AddBolt( ent->client->ghoul2, 0, "rradius" );
+				ent->bolt_LLeg = trap_G2API_AddBolt( ent->client->ghoul2, 0, "ltibia" );
+				ent->bolt_RLeg = trap_G2API_AddBolt( ent->client->ghoul2, 0, "rtibia" );
+				ent->bolt_Motion = trap_G2API_AddBolt( ent->client->ghoul2, 0, "Motion" );
 			}
 		}
 	}

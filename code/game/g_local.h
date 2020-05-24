@@ -850,6 +850,7 @@ void MV_BBoxToTime2( gentity_t *ent );
 // g_client.c
 //
 char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot );
+void SetupGameGhoul2Model( gclient_t *client, char *modelname ); // Tr!Force: [JKMod] Gameplay clean client g2 instances
 void ClientUserinfoChanged( int clientNum );
 void ClientDisconnect( int clientNum );
 void ClientBegin( int clientNum, qboolean allowTeamReset );
