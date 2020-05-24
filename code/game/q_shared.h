@@ -281,6 +281,8 @@ typedef enum {
 
 #define ARRAY_LEN(x) (sizeof (x) / sizeof( *(x) ))
 
+#define VALID_INDEX(x,y) (y >= 0 && y < ARRAY_LEN(x))
+
 //
 // these aren't needed by any of the VMs.  put in another header?
 //
