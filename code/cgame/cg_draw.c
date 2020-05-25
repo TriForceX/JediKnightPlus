@@ -2369,8 +2369,8 @@ static void CG_DrawLagometer( void ) {
 	//
 	// draw the graph
 	//
-	x = cgs.screenWidth - 48;
-	y = cgs.screenHeight - 144;
+	x = cgs.screenWidth - (jkcvar_cg_drawClock.integer ? 53 : 48); // Tr!Force: [DrawClock] Adjust for clock
+	y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 140 : 144); // Tr!Force: [DrawClock] Adjust for clock
 
 	trap_R_SetColor( NULL );
 	CG_DrawPic( x, y, 48, 48, cgs.media.lagometerShader );

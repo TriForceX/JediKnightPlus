@@ -43,8 +43,8 @@ void JKMod_CG_DrawClock(void)
 	trap_RealTime(&serverTime);
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
-	x = cgs.screenWidth - 66;
-	y = cgs.screenHeight - 178;
+	x = cgs.screenWidth - (cg_lagometer.integer ? 68 : 68);
+	y = cgs.screenHeight - (cg_lagometer.integer ? 175 : 123);
 
 	CG_DrawPic(x, y, 64, 32, trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg"));
 
