@@ -6079,6 +6079,36 @@ void CG_Player( centity_t *cent ) {
 		JKMod_CG_AddHitBox(cent);
 	}
 
+	// Tr!Force: [DrawBactaModel] Render model
+	if (jkcvar_cg_drawBactaModel.integer)
+	{
+		if (cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)))
+		{
+			vec3_t jkmod_itemModelDetails = { 0, -5, 0.5 };
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
+		}
+	}
+
+	// Tr!Force: [CustomHats] Render model
+	if (jkcvar_cg_customHats.integer)
+	{
+		if (cent->currentState.number == cg.predictedPlayerState.clientNum)
+		{
+			vec3_t jkmod_hatModelDetails = { 0, -2, 1 };
+			char *jkmod_hatModel;
+
+			if (jkcvar_cg_customHats.integer == 2) jkmod_hatModel = "models/players/hats/pumpkin.md3";
+			else if (jkcvar_cg_customHats.integer == 3) jkmod_hatModel = "models/players/hats/cap.md3";
+			else if (jkcvar_cg_customHats.integer == 4) jkmod_hatModel = "models/players/hats/fedora.md3";
+			else if (jkcvar_cg_customHats.integer == 5) jkmod_hatModel = "models/players/hats/cringe.md3";
+			else if (jkcvar_cg_customHats.integer == 6) jkmod_hatModel = "models/players/hats/sombrero.md3";
+			else if (jkcvar_cg_customHats.integer == 7) jkmod_hatModel = "models/players/hats/tophat.md3";
+			else jkmod_hatModel = "models/players/hats/santahat.md3";
+
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel(jkmod_hatModel), "*head_top", jkmod_hatModelDetails);
+		}
+	}
+
 	//If this client has tricked you.
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,
 		cent->currentState.trickedentindex2,

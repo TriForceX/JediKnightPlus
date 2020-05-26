@@ -73,11 +73,14 @@ extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
 extern vmCvar_t						jkcvar_cg_drawInventory;
+extern vmCvar_t						jkcvar_cg_drawBactaModel;
 extern vmCvar_t						jkcvar_cg_scoreboardIcons;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
+
 extern vmCvar_t						jkcvar_cg_customAnims;
+extern vmCvar_t						jkcvar_cg_customHats;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;
@@ -96,12 +99,15 @@ Common / new functions
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);
 void		JKMod_CG_DrawClock(void);
-void		JKMod_CG_AddHitBox(centity_t *cent);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);
 void		JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item);
 void		JKMod_CG_ChatBox_DrawStrings(void);
 void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
+
+// jk_cg_players.c
+void		JKMod_CG_AddHitBox(centity_t *cent);
+void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t hatModel, char *modelBolt, vec3_t modelDetails);
 
 #endif // __JK_CG_LOCAL_H__

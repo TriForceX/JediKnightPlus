@@ -52,6 +52,7 @@ set(MVCGAMESOURCES
 	"${SRCDir}/cgame/cg_marks.c"
 	"${SRCDir}/cgame/cg_newDraw.c"
 	"${SRCDir}/cgame/cg_players.c"
+	"${JKModDir}/cgame/jk_cg_players.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_playerstate.c"
 	"${SRCDir}/cgame/cg_predict.c"
 	"${SRCDir}/cgame/cg_saga.c"
