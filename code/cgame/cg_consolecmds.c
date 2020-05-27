@@ -554,4 +554,6 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("teamtask");
 	trap_AddCommand ("loaddefered");	// spelled wrong, but not changing for demo
 	trap_AddCommand ("jk_ui_macroscan");	// Tr!Force: [MacroScan] Force scan of key binds to purge macros
+	trap_AddCommand ("dropflag");			// Tr!Force: [JKMod] Add command for menus
+	trap_AddCommand ("engage_duel_force");	// Tr!Force: [JKMod] Add command for menus
 }

@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.10.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.11.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)1
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -105,14 +105,14 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Client Side
 **Description:** Additional features using the clientside plugin
 
-- [ ] Atmospheric effects (Rain, snow, sun, etc...)
+- [x] Atmospheric effects (Rain, snow, etc...)
 - [ ] Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
 - [ ] Mini keyboard display to see key presses on screen
-- [ ] Jedi Academy chat display mode (At left bottom)
-- [ ] Three chat display icons (BaseJK2, BaseJKA and user customizable)
+- [x] Jedi Academy chat display mode
+- [x] Two chat icons (Jedi Outcast & Jedi Academy)
 - [x] Fixed 2D aspect ratio for non 4:3 screens
 - [ ] Fire lightsaber style, to add real fire effects to the lightsaber
-- [ ] Jet pack to fly around the map
+- [ ] Jetpack to fly around the map
 - [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [x] Ingame clock showing the real time hours, minutes and seconds
@@ -120,24 +120,28 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Speed-o-meter to display player speed in-game and best record
 - [ ] Strafe jumping helper/efficiency meter
 - [ ] Custom lightsaber hilt support
+- [x] Enabled 3rd person damage blend
+- [x] Show player bounding hit boxes
 - [ ] Two alternative huds (Jedi Academy and basic lite)
 - [ ] Alternative FPS and server time style
-- [ ] Alternative Force points display with numbers
-- [ ] Display bacta indicator (3D model)
+- [x] Alternative force points display on hud
+- [x] Display bacta indicator on belt (3D model)
 - [ ] Display current weapon in back (3D model)
-- [ ] Enable custom item indicator
+- [x] Enable custom item indicator
 - [ ] Enable push/pull force effect color to match with the color of lightsaber
 - [ ] Enable the color for the second blade with dual blade lightsabers
-- [ ] Custom saber trail length
+- [x] Custom saber trail speed/length
 - [ ] Custom ingame duel challenge music
-- [ ] Custom flag transparency (For CTF & CTY game type)
-- [ ] Show player icons on scoreboard
+- [x] Custom flag transparency (For CTF & CTY game type)
+- [x] Custom flag angles (Experimental)
+- [x] Custom player hats
+- [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
-- [ ] Unlockd some client commands and cvars (Camera range, distance, etc...)
-- [ ] Enable first person lightsaber
+- [x] Unlockd some client commands and cvars (Camera range, distance, etc...)
+- [x] Enable first person on menus
 - [ ] Enable first person turret chair view
 - [x] Enable 23 custom BaseJK2 player skins by surf files
-- [ ] Increased some limits (Fov, camera range, name length, etc...)
+- [x] Increased some limits on menus (Fov, camera range, name length, etc...)
 - [x] Enable invisible private duels
 - [x] Smooth client dimensions
 
@@ -158,7 +162,7 @@ The following people supported and helped me directly on this project.
 
 - [DeathSpike](https://github.com/Deathspike) _(Client plugin support)_
 - Lee Oates _(Anti-script base code)_
-- Nerevar _(Ingame effects, atmospherics and santa hat)_
+- Nerevar _(Ingame effects, serverlist and santa hat)_
 - Kaiser / TVpath _(General modding support)_
 - [Rich Whitehouse](https://www.richwhitehouse.com) _(Melee weapon from Hydroball)_
 - NTxC / Reality~ _(1.02 gameplay support)_
@@ -170,15 +174,15 @@ The following people supported and helped me directly on this project.
 - [Xycaleth](https://github.com/xycaleth) _(LeagueMod tweaks)_
 - [Daggolin](https://github.com/Daggolin) _(Map modding and coding support)_
 - [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
-- Kameleon _(3D model draw angles fix)_
+- [Kameleon](https://github.com/KevinFoged) _(3D model draw angles fix)_
 - [Fau](https://github.com/aufau) _(2D aspect ratio fix & SaberMod tweaks)_
-- [Bucky](https://github.com/Bucky21659) _(EternalJK mod tweaks)_
+- [Bucky](https://github.com/Bucky21659) _(EternalJK2 tweaks)_
 - BarryHit _(Support and testing)_
 - Player _(Support and testing)_
 - [Flendo](https://github.com/FlendoJK2) _(Support and testing)_
 - Padaget _(vVv mod tweaks)_
-- [VideoP / Loda](https://github.com/videoP) _(Strafe helper)_
-- Noodle _(User interface support)_
+- [VideoP / Loda](https://github.com/videoP) _(JAPro tweaks and cosmetics)_
+- Noodle _(User interface & modeling support)_
 - QK-Lite / Effect.ve _(General coding support)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_

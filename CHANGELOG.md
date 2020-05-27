@@ -9,6 +9,27 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.1
+- Added reset cvars and commands for menus
+- Added flag opacity option
+- Added flag custom alignment
+
+## 0.11.0
+- Fixed net/lag icon showing through walls
+- Enabled 3rd person damage blend
+- Clean client g2 instances on gameplay change
+- Added force points on hud
+- Added custom chat style (JKA)
+- Added custom chat icon (JKA)
+- Added custom anims (Only run anim for now)
+- Added draw inventory option & custom 
+- Added scoreboard icons & missing icon
+- Added player bounding hit boxes
+- Added duel glow option
+- Added custom hats
+- Added draw bacta model
+- Merge updates from mvsdk
+
 ## 0.10.5
 - Added private duel option
 - Added real time clock options

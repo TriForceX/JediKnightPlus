@@ -4425,11 +4425,44 @@ static void UI_Update(const char *name) {
 		}
 	}
 	// Tr!Force: [JKMod] Reset client menu options
-	else if (!Q_stricmp(name, "jk_ui_r_client")) {
-		trap_Cvar_Set("jk_cg_privateDuel", "0");
+	else if (!Q_stricmp(name, "jk_ui_r_client"))
+	{
+		// Interface
 		trap_Cvar_Set("jk_cg_drawClock", "0");
+		trap_Cvar_Set("jk_cg_drawForcePoints", "0");
+		trap_Cvar_Set("jk_cg_drawInventory", "0");
+		trap_Cvar_Set("jk_cg_scoreboardIcons", "0");
+		trap_Cvar_Set("jk_cg_chatBox", "0");
+		trap_Cvar_Set("jk_cg_chatBoxTime", "10");
+		trap_Cvar_Set("jk_cg_chatBoxHeight", "360");
+		trap_Cvar_Set("jk_cg_chatBoxHistory", "1");
+		trap_Cvar_Set("cg_drawTimer", "0");
+		trap_Cvar_Set("cg_drawFPS", "0");
+		trap_Cvar_Set("cg_lagometer", "0");
+		trap_Cvar_Set("cg_hudFiles", "0");
+
+		// Visuals
+		trap_Cvar_Set("jk_cg_privateDuel", "0");
+		trap_Cvar_Set("jk_cg_duelGlow", "1");
+		trap_Cvar_Set("jk_cg_drawHitBox", "0");
+		trap_Cvar_Set("jk_cg_drawBactaModel", "0");
+		trap_Cvar_Set("jk_cg_chatIcon", "0");
+		trap_Cvar_Set("jk_cg_saberTrailSpeed", "40");
+		trap_Cvar_Set("jk_cg_damageBlend", "0");
+		trap_Cvar_Set("jk_cg_flagOpacity", "255");
+		trap_Cvar_Set("jk_cg_flagAlignment", "0");
+		trap_Cvar_Set("cg_simpleItems", "0");
+		trap_Cvar_Set("cg_shadows", "1");
+		trap_Cvar_Set("cg_scorePlums", "1");
+
+		// Camera
+		trap_Cvar_Set("cg_fpls", "0");
 		trap_Cvar_Set("cg_fov", "80");
 		trap_Cvar_Set("cg_thirdPersonRange", "80");
+
+		// Others
+		trap_Cvar_Set("jk_cg_customAnims", "0");
+		trap_Cvar_Set("jk_cg_customHats", "0");
 	}
 	// screen resolutions
 	else if (!Q_stricmp(name, "ui_r_aspectratio")) {
