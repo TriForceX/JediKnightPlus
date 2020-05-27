@@ -172,7 +172,7 @@ The following people supported and helped me directly on this project.
 - [NewAge](https://github.com/erfg12) _(Admin management support)_
 - Mr.Wonko _(JK2 base improvements support)_
 - [Xycaleth](https://github.com/xycaleth) _(LeagueMod tweaks)_
-- [Daggolin](https://github.com/Daggolin) _(Map modding and coding support)_
+- [Daggolin](https://github.com/Daggolin) _(Coding support and gameplay fixes)_
 - [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
 - [Kameleon](https://github.com/KevinFoged) _(3D model draw angles fix)_
 - [Fau](https://github.com/aufau) _(2D aspect ratio fix & SaberMod tweaks)_

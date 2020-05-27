@@ -1176,6 +1176,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		MV_SetGamePlay( newInfo.jk2gameplay );
 	}
 
+	// Tr!Force: [JKMod] Custom client info
+	v = Info_ValueForKey( configstring, "jkhat" );
+	newInfo.jkmod_hat = atoi(v);
+
 	newInfo.ATST = wasATST;
 
 	if (cgs.gametype >= GT_TEAM	&& !cgs.jediVmerc )
@@ -6106,32 +6110,37 @@ void CG_Player( centity_t *cent ) {
 	}
 
 	// Tr!Force: [DrawBactaModel] Render model
-	if (jkcvar_cg_drawBactaModel.integer)
+	if (jkcvar_cg_drawBactaModel.integer && cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC))) 
 	{
-		if (cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)))
-		{
-			vec3_t jkmod_itemModelDetails = { 0, -5, 0.5 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
-		}
+		vec3_t jkmod_itemModelDetails = { 0, -5, 0.5 };
+		JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
 	}
 
 	// Tr!Force: [CustomHats] Render model
-	if (jkcvar_cg_customHats.integer)
+	if (cgs.jkmodCvar.customHats) 
 	{
-		if (cent->currentState.number == cg.predictedPlayerState.clientNum)
-		{
-			vec3_t jkmod_hatModelDetails = { 0, -2, 1 };
-			char *jkmod_hatModel;
+		vec3_t jkmod_hatDetails = { 0, -2, 1 };
 
-			if (jkcvar_cg_customHats.integer == 2) jkmod_hatModel = "models/players/hats/pumpkin.md3";
-			else if (jkcvar_cg_customHats.integer == 3) jkmod_hatModel = "models/players/hats/cap.md3";
-			else if (jkcvar_cg_customHats.integer == 4) jkmod_hatModel = "models/players/hats/fedora.md3";
-			else if (jkcvar_cg_customHats.integer == 5) jkmod_hatModel = "models/players/hats/cringe.md3";
-			else if (jkcvar_cg_customHats.integer == 6) jkmod_hatModel = "models/players/hats/sombrero.md3";
-			else if (jkcvar_cg_customHats.integer == 7) jkmod_hatModel = "models/players/hats/tophat.md3";
-			else jkmod_hatModel = "models/players/hats/santahat.md3";
-
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel(jkmod_hatModel), "*head_top", jkmod_hatModelDetails);
+		if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 1) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/santahat.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 2) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/pumpkin.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 3) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/cap.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 4) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/fedora.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 5) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/cringe.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 6) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/sombrero.md3"), "*head_top", jkmod_hatDetails);
+		}
+		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 7) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/tophat.md3"), "*head_top", jkmod_hatDetails);
 		}
 	}
 

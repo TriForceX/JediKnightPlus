@@ -59,6 +59,7 @@ vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_damagePlums;
 vmCvar_t	jkcvar_pauseGame;
+vmCvar_t	jkcvar_customHats;
 
 vmCvar_t	jkcvar_emotesEnabled;
 vmCvar_t	jkcvar_emotesBreak;
@@ -107,6 +108,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",		CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_customHats,				"jk_customHats",			"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",		CVAR_ARCHIVE,						0, qtrue },

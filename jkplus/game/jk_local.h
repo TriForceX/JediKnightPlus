@@ -167,6 +167,7 @@ extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_damagePlums;
 extern	vmCvar_t					jkcvar_pauseGame;
+extern	vmCvar_t					jkcvar_customHats;
 
 extern	vmCvar_t					jkcvar_emotesEnabled;
 extern	vmCvar_t					jkcvar_emotesBreak;

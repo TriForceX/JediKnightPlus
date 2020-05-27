@@ -148,6 +148,7 @@ static void CG_ParseServerinfo( const char *info ) {
 
 	cgs.jkmodCvar.altDimensions = atoi(Info_ValueForKey(info, "jk_altDimensions")); // Tr!Force: [Dimensions] Main cvar
 	cgs.jkmodCvar.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));			// Tr!Force: [MacroScan] Main cvar
+	cgs.jkmodCvar.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));		// Tr!Force: [CustomHats] Main cvar
 
 	mapname = Info_ValueForKey( info, "mapname" );
 

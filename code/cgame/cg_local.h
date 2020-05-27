@@ -541,6 +541,8 @@ typedef struct {
 	int				torsoAnim;
 
 	mvversion_t		jk2gameplay;
+	// Tr!Force: [JKMod] Custom client info
+	int				jkmod_hat;
 } clientInfo_t;
 
 
