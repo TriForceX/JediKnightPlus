@@ -182,7 +182,7 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 Show custom model on player
 =====================================================================
 */
-void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t hatModel,  char *modelBolt, vec3_t modelDetails)
+void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile,  char *modelBolt, vec3_t modelDetails)
 {
 	int newBolt;
 	mdxaBone_t matrix;
@@ -241,7 +241,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		VectorMA(boltOrg, modelDetails[0], re.axis[1], boltOrg);
 		VectorMA(boltOrg, modelDetails[1], re.axis[2], boltOrg);
 
-		re.hModel = hatModel;
+		re.hModel = modelFile;
 		VectorCopy(boltOrg, re.lightingOrigin);
 		VectorCopy(boltOrg, re.origin);
 

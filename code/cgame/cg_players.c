@@ -3223,49 +3223,75 @@ static void CG_PlayerFlag( centity_t *cent, qhandle_t hModel ) {
 		return;
 	}
 
-	VectorSet( tAng, cent->turAngles[PITCH], cent->turAngles[YAW], cent->turAngles[ROLL] );
+	// Tr!Force: [FlagAlignment] Custom alignment (Experimental)
+	if (jkcvar_cg_flagAlignment.integer)
+	{
+		memset(&ent, 0, sizeof(ent));
 
-	trap_G2API_GetBoltMatrix(cent->ghoul2, 0, cgs.clientinfo[cent->currentState.number].bolt_llumbar, &boltMatrix, tAng, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
-	trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, boltOrg);
+		VectorCopy(cent->lerpAngles, angles);
+		angles[PITCH] = 5;
+		angles[YAW] = cent->turAngles[YAW];
+		angles[ROLL] = 0;
 
-	trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_X, tAng);
-	vectoangles(tAng, tAng);
+		trap_G2API_GetBoltMatrix(cent->ghoul2, 0, trap_G2API_AddBolt(cent->ghoul2, 0, "*chestg"), &boltMatrix, angles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, boltOrg);
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, NEGATIVE_X, ent.axis[0]);
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_Y, ent.axis[1]);
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_Z, ent.axis[2]);
+		VectorMA(boltOrg, 8, ent.axis[0], boltOrg);
+		VectorMA(boltOrg, 0, ent.axis[1], boltOrg);
+		VectorMA(boltOrg, -35, ent.axis[2], boltOrg);
 
-	VectorCopy(cent->lerpAngles, angles);
+		ent.hModel = hModel;
+		VectorCopy(boltOrg, ent.lightingOrigin);
+		VectorCopy(boltOrg, ent.origin);
+	}
+	else
+	{
+		VectorSet(tAng, cent->turAngles[PITCH], cent->turAngles[YAW], cent->turAngles[ROLL]);
 
-	boltOrg[2] -= 12;
-	VectorSet(getAng, 0, cent->lerpAngles[1], 0);
-	AngleVectors(getAng, 0, right, 0);
-	boltOrg[0] += right[0]*8;
-	boltOrg[1] += right[1]*8;
-	boltOrg[2] += right[2]*8;
+		trap_G2API_GetBoltMatrix(cent->ghoul2, 0, cgs.clientinfo[cent->currentState.number].bolt_llumbar, &boltMatrix, tAng, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, boltOrg);
 
-	angles[PITCH] = -cent->lerpAngles[PITCH]/2-30;
-	angles[YAW] = tAng[YAW]+270;
+		trap_G2API_GiveMeVectorFromMatrix(&boltMatrix, POSITIVE_X, tAng);
+		vectoangles(tAng, tAng);
 
-	AnglesToAxis(angles, axis);
+		VectorCopy(cent->lerpAngles, angles);
 
-	memset( &ent, 0, sizeof( ent ) );
-	VectorMA( boltOrg, 24, axis[0], ent.origin );
+		boltOrg[2] -= 12;
+		VectorSet(getAng, 0, cent->lerpAngles[1], 0);
+		AngleVectors(getAng, 0, right, 0);
+		boltOrg[0] += right[0] * 8;
+		boltOrg[1] += right[1] * 8;
+		boltOrg[2] += right[2] * 8;
 
-	angles[ROLL] += 20;
-	AnglesToAxis( angles, ent.axis );
+		angles[PITCH] = -cent->lerpAngles[PITCH] / 2 - 30;
+		angles[YAW] = tAng[YAW] + 270;
 
-	ent.hModel = hModel;
+		AnglesToAxis(angles, axis);
+
+		memset(&ent, 0, sizeof(ent));
+		VectorMA(boltOrg, 24, axis[0], ent.origin);
+
+		angles[ROLL] += 20;
+		AnglesToAxis(angles, ent.axis);
+
+		ent.hModel = hModel;
+	}
 
 	ent.modelScale[0] = 0.5;
 	ent.modelScale[1] = 0.5;
 	ent.modelScale[2] = 0.5;
 	ScaleModelAxis(&ent);
 
-	/*
-	if (cent->currentState.number == cg.snap->ps.clientNum)
-	{ //If we're the current client (in third person), render the flag on our back transparently
+	// Tr!Force: [FlagOpacity] Make it transparent
+	if (jkcvar_cg_flagOpacity.value < 255 && cent->currentState.number == cg.snap->ps.clientNum)
+	{ 
+		float alpha = jkcvar_cg_flagOpacity.value;
+		if (alpha >= 0 && alpha <= 255) ent.shaderRGBA[3] = alpha;
+		else ent.shaderRGBA[3] = 255;
 		ent.renderfx |= RF_FORCE_ENT_ALPHA;
-		ent.shaderRGBA[3] = 100;
 	}
-	*/
-	//FIXME: Not doing this at the moment because sorting totally messes up
 
 	trap_R_AddRefEntityToScene( &ent );
 }

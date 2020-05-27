@@ -26,15 +26,6 @@ jkmod_chat_icon
         blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     }
 }
-gfx/2d/net
-{
-    nopicmip
-    nomipmaps
-    {
-        map gfx/2d/net
-        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
-    }
-}
 models/players/hats/cap
 {
 	q3map_nolightmap
@@ -65,4 +56,50 @@ models/players/hats/cringe_prop
 		rgbGen vertex
 		tcMod rotate 300
 	}
+}
+gfx/2d/net
+{
+    nopicmip
+    nomipmaps
+    {
+        map gfx/2d/net
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+    }
+}
+models/map_objects/mp/flag_post
+{
+	q3map_nolightmap
+	q3map_onlyvertexlighting
+	sort seeThrough
+	cull	disable
+	{
+		map models/map_objects/mp/flag_post
+		blendFunc GL_ONE GL_ZERO
+		rgbGen lightingDiffuse
+	}
+}
+models/map_objects/mp/flag
+{
+	q3map_nolightmap
+	q3map_onlyvertexlighting
+	sort seeThrough
+	cull	disable
+    {
+        map models/map_objects/mp/flag
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}
+
+models/map_objects/mp/flag2
+{
+	q3map_nolightmap
+	q3map_onlyvertexlighting
+	sort seeThrough
+	cull	disable
+    {
+        map models/map_objects/mp/flag2
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
 }
