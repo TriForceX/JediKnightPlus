@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.11.1-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)1
+[![version](https://img.shields.io/badge/Current%20Version-0.11.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -65,7 +65,6 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
-- [x] Macro scanning feature (anti script)
 - [x] Prevent player warping or lag scripts
 
 ---
@@ -138,11 +137,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
 - [x] Unlockd some client commands and cvars (Camera range, distance, etc...)
-- [x] Enable first person on menus
+- [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
-- [x] Enable 23 custom BaseJK2 player skins by surf files
+- [x] Enable 23 custom BaseJK player skins by surf files
 - [x] Increased some limits on menus (Fov, camera range, name length, etc...)
 - [x] Enable invisible private duels
+- [x] Macro scanning feature (anti script)
 - [x] Smooth client dimensions
 
 ---
@@ -150,7 +150,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Cheats
 **Description:** Some features available when cheats are enabled
 
-- [ ] Free backstabs & dfa combos usage
+- [ ] Free backstabs & DFA combos usage
 - [ ] Use force grip on items
 - [ ] NPC spawn like in single player game
 

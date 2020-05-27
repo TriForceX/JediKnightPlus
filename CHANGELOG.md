@@ -9,6 +9,9 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.2
+- Merge updates from mvsdk
+
 ## 0.11.1
 - Added reset cvars and commands for menus
 - Added flag opacity option
@@ -22,7 +25,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - Added custom chat style (JKA)
 - Added custom chat icon (JKA)
 - Added custom anims (Only run anim for now)
-- Added draw inventory option & custom 
+- Added draw inventory option
 - Added scoreboard icons & missing icon
 - Added player bounding hit boxes
 - Added duel glow option
