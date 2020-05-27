@@ -10,6 +10,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 ---
 
 ## 0.11.2
+- Some text cleanups
 - Added custom hats as user info
 - Merge updates from mvsdk
 
@@ -21,7 +22,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 ## 0.11.0
 - Fixed net/lag icon showing through walls
 - Enabled 3rd person damage blend
-- Clean client g2 instances on gameplay change
+- Clean client G2 instances on gameplay changes
 - Added force points on hud
 - Added custom chat style (JKA)
 - Added custom chat icon (JKA)

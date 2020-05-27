@@ -143,7 +143,7 @@ extern int (*forcePowerNeeded)[NUM_FORCE_POWERS];
 void MV_SetGamePlay( mvversion_t version )
 { /* Set weaponData (ammo costs, ...), forcePowerNeeded (force costs) and the gameplay value according to the new version. */
 #ifdef JK2_GAME
-	char userinfo[MAX_INFO_STRING]; // Tr!Force: [JKMod] Gameplay clean client g2 instances
+	char userinfo[MAX_INFO_STRING]; // Tr!Force: [Gameplay] Clean client G2 instances
 	gentity_t *saberent;
 	gentity_t *ent;
 	int		   i;
@@ -176,7 +176,7 @@ void MV_SetGamePlay( mvversion_t version )
 	{
 		ent = &g_entities[i];
 
-		if ( ent->client && ent->inuse ) // Tr!Force: [JKMod] Gameplay clean client g2 instances
+		if ( ent->client && ent->inuse ) // Tr!Force: [Gameplay] Clean client G2 instances
 		{
 			/* Adjust the size of the saberbox (8.0f in 1.02, 16.0f in 1.03 and 1.04). The define for SABER_BOX_SIZE already contains the check for the current version, so we can just use the same code for all 3 versions here. */
 			saberent = &g_entities[ent->client->ps.saberEntityNum];
@@ -186,7 +186,7 @@ void MV_SetGamePlay( mvversion_t version )
 				VectorSet( saberent->r.maxs, SABER_BOX_SIZE, SABER_BOX_SIZE, SABER_BOX_SIZE );
 			}
 			
-			// Tr!Force: [JKMod] Gameplay clean client g2 instances
+			// Tr!Force: [Gameplay] Clean client G2 instances
 			trap_GetUserinfo( i, userinfo, sizeof(userinfo) );
 			SetupGameGhoul2Model( ent->client, Info_ValueForKey(userinfo, "model") );
 			if ( ent->client->ghoul2 )

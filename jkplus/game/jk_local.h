@@ -65,7 +65,7 @@ typedef struct
 typedef struct
 {
 	qboolean	MotdSeen;			// Server motd seen
-	char		ClientIP[64];			// Client IP
+	char		ClientIP[64];		// Client IP
 	int			IgnoredPlayer[2];	// Client ignored player chats & duels
 	int			IgnoredAll[2];		// Client ignored all chats & duels
 

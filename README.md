@@ -49,7 +49,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Show damage plums on hits
 - [ ] Clan system (Tag protection, member role, etc...)
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
-- [x] Anti lamer feature (Players can't kill during chat)
+- [x] Chat protect feature (Players can't kill during chat)
 - [ ] Dual blade lightsaber gameplay (Fixed damages, custom combos, etc...)
 - [ ] Custom melee weapon
 - [x] Items get affected by force physics (Push, pull, etc...)
@@ -200,7 +200,7 @@ E-Mail: triforce@gznetwork.com
 
 # License
 
-> This mod is based on *MVSDK* and is licensed under GPLv2 as free software. Some files in `assets` directory are modified assets from the original, non-free JK2 1.04 release and licensed under *JK2 Editing Tools 2.0* EULA.
+> This mod is based on *MVSDK* and is licensed under GPLv2 as free software. Some files in `assets` directory are modified assets from the original, non-free JK2 1.04 release and licensed under *JK2 Editing Tools 2.0* EULA. As stated in the main description, most parts of this mod are from other mods and games, i tried to keep all credits on [special thanks](#special-thanks).
 
 > LCC 4.1 is Copyright (c) 1991-1998 by AT&T, Christopher W. Fraser and David R. Hanson, and available under a non-copyleft license. You can find it in code/tools/lcc/COPYRIGHT. LCC version bundled with this SDK comes from ioquake3 and it has been slightly modified by its developers.
 
