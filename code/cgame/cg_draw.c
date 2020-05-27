@@ -3355,10 +3355,11 @@ CG_DrawTeamVote
 static void CG_DrawTeamVote(void) {
 	char	*s;
 	int		sec, cs_offset;
+	team_t	team = cgs.clientinfo[cg.snap->ps.clientNum].team;
 
-	if ( cgs.clientinfo->team == TEAM_RED )
+	if ( team == TEAM_RED )
 		cs_offset = 0;
-	else if ( cgs.clientinfo->team == TEAM_BLUE )
+	else if ( team == TEAM_BLUE )
 		cs_offset = 1;
 	else
 		return;

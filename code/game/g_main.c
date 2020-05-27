@@ -590,6 +590,9 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		}
 	}
 
+	trap_Cvar_Set("gamename", GAME_VERSION);
+	trap_Cvar_Set("gamedate", __DATE__);
+
 	if (remapped) {
 		G_RemapTeamShaders();
 	}
