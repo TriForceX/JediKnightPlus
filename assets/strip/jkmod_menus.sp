@@ -130,16 +130,16 @@ INDEX 13
 }
 INDEX 14
 {
-   REFERENCE MAIN_OPTION_RANDOM
-   TEXT_LANGUAGE1 "Random"
-   TEXT_LANGUAGE2 "Au hasard"
-   TEXT_LANGUAGE3 "Zufällig"
-   TEXT_LANGUAGE6 "Random"
-   TEXT_LANGUAGE8 "Aleatorio"
+   REFERENCE MAIN_OPTION_OTHERS
+   TEXT_LANGUAGE1 "Others"
+   TEXT_LANGUAGE2 "Autres"
+   TEXT_LANGUAGE3 "Andere"
+   TEXT_LANGUAGE6 "Others"
+   TEXT_LANGUAGE8 "Otros"
 }
 INDEX 15
 {
-   REFERENCE MAIN_OPTION_RANDOM_INFO
+   REFERENCE MAIN_OPTION_OTHERS_INFO
    TEXT_LANGUAGE1 "Custom settings non related with Star Wars."
    TEXT_LANGUAGE2 "Paramètres personnalisés non liés à Star Wars."
    TEXT_LANGUAGE3 "Benutzerdefinierte einstellungen, die sich nicht auf Star Wars beziehen."

@@ -10,6 +10,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 ---
 
 ## 0.11.2
+- Updated client menus (Translation pending)
 - Some text cleanups
 - Added custom hats as user info
 - Merge updates from mvsdk

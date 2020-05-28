@@ -4020,6 +4020,10 @@ static bind_t g_bindings[] =
 	{"cg_thirdperson !",-1,					-1,		-1,	-1},
 	{"saveDemo",		-1,					-1,		-1,	-1},
 	{"saveDemoLast",	-1,					-1,		-1,	-1},
+
+	// Tr!Force: [JKMod] Add command for menus
+	{"dropflag", 			-1,				-1,		-1,	-1},
+	{"engage_duel_force",	-1,				-1,		-1,	-1},
 };
 
 
