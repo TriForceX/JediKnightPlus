@@ -6110,14 +6110,17 @@ void CG_Player( centity_t *cent ) {
 	}
 
 	// Tr!Force: [DrawBactaModel] Render model
-	if (jkcvar_cg_drawBactaModel.integer && cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC))) 
+	if (jkcvar_cg_drawBactaModel.integer && jk2gameplay != VERSION_1_02) // Fix me
 	{
-		vec3_t jkmod_itemModelDetails = { 0, -5, 0.5 };
-		JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
+		if (cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)))
+		{
+			vec3_t jkmod_itemModelDetails = { 0, -5, 0.5 };
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
+		}
 	}
 
 	// Tr!Force: [CustomHats] Render model
-	if (cgs.jkmodCvar.customHats) 
+	if (cgs.jkmodCvar.customHats && jk2gameplay != VERSION_1_02) // Fix me
 	{
 		vec3_t jkmod_hatDetails = { 0, -2, 1 };
 
