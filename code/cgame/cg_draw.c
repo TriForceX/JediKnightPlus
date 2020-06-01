@@ -2366,6 +2366,8 @@ static void CG_DrawLagometer( void ) {
 		return;
 	}
 
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return; // Tr!Force: [Lagometer] Don't draw on UI
+
 	//
 	// draw the graph
 	//

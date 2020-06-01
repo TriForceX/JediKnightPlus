@@ -40,6 +40,8 @@ void JKMod_CG_DrawClock(void)
 	char		*serverTimeType;
 	int			x, y;
 
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+
 	trap_RealTime(&serverTime);
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
