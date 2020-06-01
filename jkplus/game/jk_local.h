@@ -231,6 +231,11 @@ void		JKMod_emoteDoHug(gentity_t *ent);
 void		JKMod_emoteDoKiss(gentity_t *ent);
 void		JKMod_emoteDoPunch(gentity_t *ent);
 
+// jk_main.c
+void		JKMod_randomBeginInit(void);
+void		JKMod_serverNewsInit(void);
+void		JKMod_teleportChatInit(void);
+
 // jk_misc.c
 gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
 void		JKMod_PushBox(gentity_t *ent);

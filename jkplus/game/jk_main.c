@@ -400,6 +400,7 @@ void JKMod_teleportChatInit(void)
 {
 	static char		*linestart;
 
+	level.jkmodLevel.TeleportChatsCount = 0;
 	linestart = JKMod_ReadFile("config/teleport_chats.cfg");
 
 	if (linestart)

@@ -48,6 +48,26 @@ static void JKMod_svCmd_gamePlay(void)
 	trap_Cvar_Set("jk_gamePlay", arg1);
 }
 
+static void JKMod_svCmd_reload(void)
+{
+	char	arg1[MAX_TOKEN_CHARS];
+
+	trap_Argv(1, arg1, sizeof(arg1));
+
+	if (!Q_stricmp(arg1, "randombegin"))
+	{
+		JKMod_randomBeginInit();
+	}
+	else if (!Q_stricmp(arg1, "servernews"))
+	{
+		JKMod_serverNewsInit();
+	}
+	else if (!Q_stricmp(arg1, "teleportchat"))
+	{
+		JKMod_teleportChatInit();
+	}
+}
+
 /*
 =====================================================================
 Pause game command functions
@@ -84,6 +104,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "pausegame"))
 	{
 		JKMod_svCmd_pauseGame();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "reload"))
+	{
+		JKMod_svCmd_reload();
 		return qtrue;
 	}
 
