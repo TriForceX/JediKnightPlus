@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.3
+- Workaround for hitbox height on rolling
+- Added option to reload custom configs
+- Disable custom model render on 1.02 (Temporary)
+- Disable draw clock & lagometer on UI
+- Merge updates from mvsdk
+
 ## 0.11.2
 - Updated client menus (Translation pending)
 - Compress size on hats textures

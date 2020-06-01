@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.11.2-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.11.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -44,7 +44,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Teleport chat commands (Map areas, save & load, etc...)
 - [x] Welcome message on client begin (MOTD)
 - [x] Server news messages displayed constantly
-- [ ] Custom in-game modes (Instant kill, survival, last man standing, etc...)
+- [ ] Custom ingame modes (Instant kill, survival, last man standing, etc...)
 - [ ] Custom player private chat rooms
 - [x] Show damage plums on hits
 - [ ] Clan system (Tag protection, member role, etc...)
@@ -70,10 +70,10 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ---
 
 ### Administration
-**Description:** In-game server management features for administrators
+**Description:** Ingame server management features for administrators
 
 - [ ] Custom user roles (Administrator, moderator, builder, etc...)
-- [ ] In-game player statistics (Banned, kicked, reports, scripters, etc...)
+- [ ] Ingame player statistics (Banned, kicked, reports, scripters, etc...)
 - [ ] Helpful commands for players (Teleport, weapons, force powers, etc...)
 - [ ] Punish commands for players (Slay, silence, sleep, rename, lock, etc...)
 - [ ] Ability to control bots actions (Fake chat, movements, emotes, etc...)
@@ -85,7 +85,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ---
 
 ### Map Modding
-**Description:** In-game maps modification tools
+**Description:** Ingame maps modification tools
 
 - [ ] Map auto fix to convert most of single player maps to be playable
 - [ ] Over 15 custom entities for maps (Including entities from Single Player)
@@ -116,7 +116,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [x] Ingame clock showing the real time hours, minutes and seconds
 - [x] Ingame server list to join another server without disconnect
-- [ ] Speed-o-meter to display player speed in-game and best record
+- [ ] Speed-o-meter to display player speed ingame and best record
 - [ ] Strafe jumping helper/efficiency meter
 - [ ] Custom lightsaber hilt support
 - [x] Enabled 3rd person damage blend
@@ -132,7 +132,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom saber trail speed/length
 - [ ] Custom ingame duel challenge music
 - [x] Custom flag transparency (For CTF & CTY game type)
-- [x] Custom flag angles (Experimental)
+- [x] Custom flag alignment (Experimental)
 - [x] Custom player hats
 - [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding

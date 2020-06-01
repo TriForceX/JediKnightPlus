@@ -59,7 +59,7 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 	// If it's us
 	if (cent->currentState.number == cg.predictedPlayerState.clientNum)
 	{
-		maxs[2] = cg.predictedPlayerState.viewheight + 5;
+		maxs[2] = (CG_InRollAnim(cent) ? CROUCH_MAXS_2 : cg.predictedPlayerState.viewheight) + 5;
 	}
 	else
 	{
