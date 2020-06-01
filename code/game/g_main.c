@@ -127,6 +127,9 @@ vmCvar_t	g_saberDebugPrint;
 
 vmCvar_t	g_austrian;
 
+vmCvar_t	g_gamename;
+vmCvar_t	g_gamedate;
+
 // Fixes and multiversion cvars
 vmCvar_t	g_mv_fixgalaking;
 vmCvar_t	g_mv_fixbrokenmodels;
@@ -152,8 +155,8 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_cheats, "sv_cheats", "", 0, 0, qfalse },
 
 	// noset vars
-	{ NULL, "gamename", GAMEVERSION , CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
-	{ NULL, "gamedate", __DATE__ , CVAR_ROM, 0, qfalse  },
+	{ &g_gamename, "gamename", GAMEVERSION , CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
+	{ &g_gamedate, "gamedate", __DATE__ , CVAR_ROM, 0, qfalse  },
 	{ &g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse  },
 	{ NULL, "sv_mapname", "", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
 
@@ -590,8 +593,15 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		}
 	}
 
-	trap_Cvar_Set("gamename", GAMEVERSION);
-	trap_Cvar_Set("gamedate", __DATE__);
+	if ( strcmp(g_gamename.string, GAMEVERSION) || strcmp(g_gamedate.string, __DATE__) ) {
+		// Inform the host about the unexpected change
+		G_Printf( S_COLOR_YELLOW "WARNING: The gamename or gamedate changed after mapchange.\n"
+		          S_COLOR_YELLOW "         This could indiciate unexpected side-effects due to module updates at runtime.\n"
+		          S_COLOR_YELLOW "         You might want to restart the server.\n" );
+
+		trap_Cvar_Set( "gamename", GAMEVERSION );
+		trap_Cvar_Set( "gamedate", __DATE__ );
+	}
 
 	if (remapped) {
 		G_RemapTeamShaders();
