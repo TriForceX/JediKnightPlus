@@ -1892,7 +1892,7 @@ void FinishSpawningItem( gentity_t *ent ) {
 	*/
 
 	// Tr!Force: [Items] Reset original item position
-	if (jkcvar_itemForcePhysics.integer == 1 && !ent->jkmodEnt.ItemSpawnedBefore)
+	if (!ent->jkmodEnt.ItemSpawnedBefore)
 	{
 		ent->jkmodEnt.ItemSpawnedBefore = qtrue;
 		VectorCopy(tr.endpos, ent->jkmodEnt.ItemFirstOrigin);
