@@ -176,7 +176,7 @@
 			name				controlsButton
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				215 0 70 32
+			rect				220 0 70 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -189,7 +189,7 @@
 			text				@MENUS0_CONTROLS2
 			type				1
 			style				WINDOW_STYLE_FILLED
-			rect				215 0 70 32
+			rect				220 0 70 32
 			font				2
 			textscale			.8
 			textstyle			3
@@ -219,7 +219,7 @@
 			name				setupButton
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				285 0 70 32
+			rect				295 0 70 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -232,7 +232,7 @@
 			text				@MENUS3_SETUP_INGAME
 			type				1
 			style				WINDOW_STYLE_FILLED
-			rect				285 0 70 32
+			rect				295 0 70 32
 			font				2
 			textscale			.8
 			textstyle			3
@@ -259,10 +259,10 @@
 		
 		itemDef 
 		{
-			name				callvoteButton
+			name				jkmodButton
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				355 0 70 32
+			rect				365 0 60 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -271,8 +271,8 @@
 
 		itemDef 
 		{
-			name				callvote
-			text				@MENUS1_CALL_VOTE
+			name				jkmod
+			text				"Mod"
 			type				1
 			style				WINDOW_STYLE_FILLED
 			cvarTest			"ui_singleplayeractive"
@@ -281,12 +281,12 @@
 				"1" 
 			}
 
-			rect				355 0 70 32
+			rect				365 0 60 32
 			font				2
 			textscale			.8
 			textstyle			3
 			textalign			ITEM_ALIGN_CENTER
-			textalignx          35
+			textalignx          30
 			textaligny			2
 			forecolor			1 1 1 1
 			backcolor			0 0 0 0
@@ -294,15 +294,15 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_callvote 
+				open			ingame_jkmod 
 			}
 			mouseenter 
 			{ 
-				show			callvoteButton
+				show			jkmodButton
 			}
 			mouseexit 
 			{ 
-				hide			callvoteButton
+				hide			jkmodButton
 			}
 		}
 
