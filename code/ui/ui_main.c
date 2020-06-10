@@ -4424,8 +4424,13 @@ static void UI_Update(const char *name) {
 			trap_Cvar_SetValue( "m_pitch", -0.022f );
 		}
 	}
+	// Tr!Force: [JKMod] Parse vote poll message
+	else if (!Q_stricmp(name, "JKMod_votePoll"))
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("callvote poll \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_votePoll")));
+	}
 	// Tr!Force: [JKMod] Reset client menu options
-	else if (!Q_stricmp(name, "jk_ui_r_client"))
+	else if (!Q_stricmp(name, "JKMod_resetClient"))
 	{
 		// Interface
 		trap_Cvar_Set("jk_cg_drawClock", "0");
@@ -5198,11 +5203,16 @@ static void UI_RunMenuScript(const char **args)
 				trap_UI_DeleteDLFile(&uiInfo.downloadsList[uiInfo.downloadsIndex]);
 				UI_LoadDLFiles();
 			}
-		} else if (Q_stricmp(name, "JKMod_emoteCamera") == 0) { // Tr!Force: [JKMod] Rotate camera when using emotes menu
+		} 
+		// Tr!Force: [JKMod] Rotate camera when using emotes menu
+		else if (Q_stricmp(name, "JKMod_emoteCamera") == 0) 
+		{ 
 			int cameraAngle = trap_Cvar_VariableValue("cg_thirdPersonAngle") ? 0 : 180;
 			trap_Cvar_SetValue("cg_thirdPersonAngle", cameraAngle);
 			trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
-		} else {
+		}
+		else 
+		{
 			Com_Printf("unknown UI script %s\n", name);
 		}
 	}

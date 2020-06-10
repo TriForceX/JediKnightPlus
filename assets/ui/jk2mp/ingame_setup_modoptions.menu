@@ -302,7 +302,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_admin ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -337,7 +336,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_client ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -372,7 +370,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_build ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -407,7 +404,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_emotes ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -442,7 +438,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_server ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -477,7 +472,6 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				open			ingame_jkmod_others ;
-				close			ingame_jkmod ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 

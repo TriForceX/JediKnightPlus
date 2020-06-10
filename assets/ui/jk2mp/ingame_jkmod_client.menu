@@ -1671,7 +1671,7 @@
 				play			"sound/interface/button1.wav" ;
 				close			all ; 
 				hide			default_glow ;
-				uiScript		update "jk_ui_r_client"
+				uiScript		update "JKMod_resetClient"
 			}
 			mouseEnter 
 			{ 
