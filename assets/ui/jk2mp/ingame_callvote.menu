@@ -271,8 +271,8 @@
 		{
 			name				pollbutton
 			group				grpbutton
-			text				"Poll"
-			descText			"Call a vote poll"
+			text				@JKMENUS_VOTE_POLL
+			descText			@JKMENUS_VOTE_POLL_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				10 163 103 30
@@ -380,7 +380,7 @@
 		{
 			name				misc
 			group				grpCallVote
-			text				"Gameplay:"
+			text				@JKMENUS_VOTE_GAMEPLAY
 			style				WINDOW_STYLE_FILLED
 			rect				120 145 230 25
 			textalign			ITEM_ALIGN_CENTER
@@ -397,7 +397,7 @@
 			name				misc
 			group				grpCallVote
 			text				"1.02"
-			descText			"Change the gameplay to 1.02 style."
+			descText			@JKMENUS_VOTE_GAMEPLAY_102
 			rect				158 168 50 25
 			type				1
 			textalign			ITEM_ALIGN_CENTER
@@ -420,7 +420,7 @@
 			name				misc
 			group				grpCallVote
 			text				"1.03"
-			descText			"Change the gameplay to 1.03 style."
+			descText			@JKMENUS_VOTE_GAMEPLAY_103
 			rect				213 168 50 25
 			type				1
 			textalign			ITEM_ALIGN_CENTER
@@ -443,7 +443,7 @@
 			name				misc
 			group				grpCallVote
 			text				"1.04"
-			descText			"Change the gameplay to 1.04 style."
+			descText			@JKMENUS_VOTE_GAMEPLAY_104
 			rect				268 168 50 25
 			type				1
 			textalign			ITEM_ALIGN_CENTER
@@ -472,7 +472,7 @@
 			rect				120 75 230 30
 			style				0
 			textalign			ITEM_ALIGN_LEFT	
-			text				"Current:"
+			text				@JKMENUS_VOTE_CURRENT
 			type				ITEM_TYPE_MULTI	
 			cvar				"ui_about_gametype"	
 			cvarFloatList 
@@ -747,7 +747,7 @@
 		{
 			name				poll
 			group				grpCallVote
-			text				"Type your question:"
+			text				@JKMENUS_VOTE_POLL_TITLE
 			style				WINDOW_STYLE_FILLED
 			rect				120 75 230 30
 			textalign			ITEM_ALIGN_CENTER
@@ -765,7 +765,7 @@
 			group				grpCallVote
 			style				1
 			text				@MENUS2_BLANK_1
-			descText			"Enter a question for your poll."
+			descText			@JKMENUS_INPUT_EDITFIELD_DESC
 			maxchars			30
 			font				2
 			textscale			.9
@@ -788,7 +788,7 @@
 			name				poll
 			group				grpCallVote
 			text				@MENUS0_OK
-			descText			"Begin vote for this poll question."
+			descText			@JKMENUS_VOTE_POLL_OK
 			type				1
 			style				WINDOW_STYLE_FILLED
 			rect				280 170 80 30

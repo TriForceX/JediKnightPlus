@@ -12,7 +12,7 @@
 		focusColor				1 1 1 1				// Focus color for text and items
 		style					1
 		border					1
-		descX					305
+		descX					320
 		descY					335
 		descScale				0.7
 		descColor				.235 .882 .847 1	// Focus color for text and items
@@ -69,7 +69,7 @@
 			name				playerconfigtitle
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
-			text				@JKMODMENUS_MAIN_OPTION_CLIENT
+			text				@JKMENUS_MOD_OPTIONS_CLIENT
 			rect				20 5 510 28
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			255
@@ -116,7 +116,8 @@
 		{
 			name				clientInterfaceControlButton
 			group				none
-			text				"Interface"
+			text				@JKMENUS_CLIENT_SIDE_INTERFACE
+			descText			@JKMENUS_CLIENT_SIDE_INTERFACE_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 43 170 30
@@ -128,7 +129,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Custom options for 2D render ingame"
 
 			mouseEnter 
 			{ 
@@ -174,7 +174,8 @@
 		{
 			name				clientVisualsControlButton
 			group				none
-			text				"Visuals"
+			text				@JKMENUS_CLIENT_SIDE_VISUALS
+			descText			@JKMENUS_CLIENT_SIDE_VISUALS_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 73 170 30
@@ -186,7 +187,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Custom options for 3D render ingame"
 
 			mouseEnter 
 			{ 
@@ -231,7 +231,8 @@
 		itemDef 
 		{
 			name				clientCameraControlButton
-			text				"Camera"
+			text				@JKMENUS_CLIENT_SIDE_CAMERA
+			descText			@JKMENUS_CLIENT_SIDE_CAMERA_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 103 170 30
@@ -243,7 +244,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Custom player camera controls"
 
 			mouseEnter 
 			{ 
@@ -289,7 +289,8 @@
 		{
 			name				clientBindsControlButton
 			group				none
-			text				"Controls"
+			text				@JKMENUS_CLIENT_SIDE_CONTROLS
+			descText			@JKMENUS_CLIENT_SIDE_CONTROLS_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 133 170 30
@@ -301,7 +302,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Custom controls assignments"
 
 			mouseEnter 
 			{ 
@@ -347,7 +347,8 @@
 		{
 			name				clientOtherControlButton
 			group				none
-			text				"Others"
+			text				@JKMENUS_CLIENT_SIDE_OTHERS
+			descText			@JKMENUS_CLIENT_SIDE_OTHERS_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 163 170 30
@@ -359,7 +360,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Other custom options"
 
 			mouseEnter 
 			{ 
@@ -405,7 +405,8 @@
 		{
 			name				clientDefaultsControlButton
 			group				none
-			text				"Defaults"
+			text				@JKMENUS_CLIENT_SIDE_DEFAULTS
+			descText			@JKMENUS_CLIENT_SIDE_DEFAULTS_DESC
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
 			rect				20 193 170 30
@@ -417,7 +418,6 @@
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
-			descText			"Reset all client options to its defaults"
 
 			mouseEnter 
 			{ 
@@ -558,6 +558,42 @@
 			decoration
 		}
 		
+		itemDef
+		{
+			name				highlight10
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				180 221 300 20
+			background			"gfx/menus/menu_blendbox"
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+		
+		itemDef
+		{
+			name				highlight11
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				180 241 300 20
+			background			"gfx/menus/menu_blendbox"
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+		
+		itemDef
+		{
+			name				highlight12
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				180 261 300 20
+			background			"gfx/menus/menu_blendbox"
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+		
 		//---------------------------------------------
 		//	INTERFACE OPTIONS
 		//---------------------------------------------
@@ -567,7 +603,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_DRAWCLOCK
+			text				@JKMENUS_CLIENT_DRAWCLOCK
+			descText			@JKMENUS_CLIENT_DRAWCLOCK_DESC
 			cvar				"jk_cg_drawClock"
 			cvarFloatList
 			{
@@ -583,7 +620,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_DRAWCLOCK_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -605,7 +641,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw force points:"
+			text				@JKMENUS_CLIENT_DRAWFORCEPOINTS
+			descText			@JKMENUS_CLIENT_DRAWFORCEPOINTS_DESC
 			cvar				"jk_cg_drawForcePoints"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -615,7 +652,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows force points on hud."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -637,7 +673,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw inventory:"
+			text				@JKMENUS_CLIENT_DRAWINVENTORY
+			descText			@JKMENUS_CLIENT_DRAWINVENTORY_DESC
 			cvar				"jk_cg_drawInventory"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -647,7 +684,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows inventory items on hud."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -670,7 +706,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Scoreboard icons:"
+			text				@JKMENUS_CLIENT_SCOREICONS
+			descText			@JKMENUS_CLIENT_SCOREICONS_DESC
 			cvar				"jk_cg_scoreboardIcons"
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -680,7 +717,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows player icons on scoreboard."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -703,7 +739,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				"Chat box style:"
+			text				@JKMENUS_CLIENT_CHATBOX
+			descText			@JKMENUS_CLIENT_CHATBOX_DESC
 			cvar				"jk_cg_chatBox"
 			cvarFloatList
 			{
@@ -718,7 +755,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose a chat box style."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -740,7 +776,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw server time:"
+			text				@JKMENUS_CLIENT_DRAWTIMER
+			descText			@JKMENUS_CLIENT_DRAWTIMER_DESC
 			cvar				"cg_drawTimer"
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -750,7 +787,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows the game timer."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -772,7 +808,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw FPS:"
+			text				@JKMENUS_CLIENT_DRAWFPS
+			descText			@JKMENUS_CLIENT_DRAWFPS_DESC
 			cvar				"cg_drawFPS"
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -782,7 +819,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows your current frames per seconds."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -804,7 +840,8 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw lagometer:"
+			text				@JKMENUS_CLIENT_DRAWLAG
+			descText			@JKMENUS_CLIENT_DRAWLAG_DESC
 			cvar				"cg_lagometer"
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -814,7 +851,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows your ping/lag status."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -836,12 +872,13 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				"Status HUD style:"
+			text				@JKMENUS_CLIENT_HUDSTYLE
+			descText			@JKMENUS_CLIENT_HUDSTYLE_DESC
 			cvar				"cg_hudFiles"
 			cvarFloatList
 			{
-				"Normal"  		0
-				"Simple"  		1
+				"Normal"  							0
+				@JKMENUS_CLIENT_HUDSTYLE_SIMPLE		1
 			}
 			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -851,7 +888,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose the status HUD style."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -878,7 +914,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_PRIVATEDUEL
+			text				@JKMENUS_CLIENT_PRIVATEDUEL
+			descText			@JKMENUS_CLIENT_PRIVATEDUEL_DESC
 			cvar				"jk_cg_privateDuel"
 			rect				220 41 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -888,7 +925,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_PRIVATEDUEL_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -910,7 +946,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				"Duel glow:"
+			text				@JKMENUS_CLIENT_DUELGLOW
+			descText			@JKMENUS_CLIENT_DUELGLOW_DESC
 			cvar				"jk_cg_duelGlow"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -920,7 +957,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows a glow effect during private duel."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -942,7 +978,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw hit box:"
+			text				@JKMENUS_CLIENT_HITBOX
+			descText			@JKMENUS_CLIENT_HITBOX_DESC
 			cvar				"jk_cg_drawHitBox"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -952,7 +989,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows the players hit box."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -974,7 +1010,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				"Draw Bacta model:"
+			text				@JKMENUS_CLIENT_DRAWBACTA
+			descText			@JKMENUS_CLIENT_DRAWBACTA_DESC
 			cvar				"jk_cg_drawBactaModel"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -984,7 +1021,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows a 3D bacta model on player if is equipped."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1007,7 +1043,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_MULTI
-			text				"Chat icon style:"
+			text				@JKMENUS_CLIENT_CHATICON
+			descText			@JKMENUS_CLIENT_CHATICON_DESC
 			cvar				"jk_cg_chatIcon"
 			cvarFloatList
 			{
@@ -1022,7 +1059,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose the chat icon style."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1045,7 +1081,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				"Damage blend:"
+			text				@JKMENUS_CLIENT_DMGBLEND
+			descText			@JKMENUS_CLIENT_DMGBLEND_DESC
 			cvar				"jk_cg_damageBlend"
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1055,7 +1092,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Shows a damage blend effect when you get a hit."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1078,7 +1114,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_MULTI
-			text				"Items style:"
+			text				@JKMENUS_CLIENT_SIMPLEITEMS
+			descText			@JKMENUS_CLIENT_SIMPLEITEMS_DESC
 			cvar				"cg_simpleItems"
 			cvarFloatList
 			{
@@ -1093,7 +1130,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose the map items style."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1116,13 +1152,14 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_MULTI
-			text				"Shadows style:"
+			text				@JKMENUS_CLIENT_SHADOWS
+			descText			@JKMENUS_CLIENT_SHADOWS_DESC
 			cvar				"cg_shadows"
 			cvarFloatList
 			{
 				"2D"  			1
 				"3D"  			3
-				"Off"  			0
+				@MENUS0_OFF		0
 			}
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1132,7 +1169,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose the player shadows style."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1155,7 +1191,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_DAMAGEPLUMS
+			text				@JKMENUS_CLIENT_DAMAGEPLUMS
+			descText			@JKMENUS_CLIENT_DAMAGEPLUMS_DESC
 			cvar				"cg_scorePlums"
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1165,7 +1202,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_DAMAGEPLUMS_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1188,12 +1224,13 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_MULTI
-			text				"Flag alignment:"
+			text				@JKMENUS_CLIENT_FLAGALIGN
+			descText			@JKMENUS_CLIENT_FLAGALIGN_DESC
 			cvar				"jk_cg_flagAlignment"
 			cvarFloatList
 			{
-				"Original"  	0
-				"Enhanced"  	1
+				"Original"  						0
+				@JKMENUS_CLIENT_FLAGALIGN_ENHANCED	1
 			}
 			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1203,7 +1240,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Choose flag alignment for CTF & CTY game types (Experimental)."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1226,7 +1262,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_SLIDER
-			text				"Flag transparency:"
+			text				@JKMENUS_CLIENT_FLAGOPACITY
+			descText			@JKMENUS_CLIENT_FLAGOPACITY_DESC
 			cvarfloat			"jk_cg_flagOpacity" 10 0 255
 			rect				220 241 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1236,7 +1273,6 @@
 			textscale			0.8 
 			forecolor			1 1 1 1
 			visible				0
-			descText			"modify the flag transparency on CTF & CTY game types."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1268,7 +1304,8 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_SLIDER
-			text				"Saber trail speed:"
+			text				@JKMENUS_CLIENT_SABERTRAIL
+			descText			@JKMENUS_CLIENT_SABERTRAIL_DESC
 			cvarfloat			"jk_cg_saberTrailSpeed" 10 0 150
 			rect				220 261 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1278,7 +1315,6 @@
 			textscale			0.8 
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Modufy the saber trail speed effect."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1314,7 +1350,8 @@
 			name				none
 			group				clientCameraControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_FPLS
+			text				@JKMENUS_CLIENT_FPLS
+			descText			@JKMENUS_CLIENT_FPLS_DESC
 			cvar				"cg_fpls"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1324,7 +1361,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_FPLS_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1332,12 +1368,12 @@
 
 			mouseenter 
 			{ 
-				show			highlight10
+				show			highlight2
 				show			keybindstatus
 			}
 			mouseexit 
 			{ 
-				hide			highlight10
+				hide			highlight2
 				hide			keybindstatus
 			} 
 		}
@@ -1347,7 +1383,8 @@
 			name				none
 			group				clientCameraControls
 			type				ITEM_TYPE_SLIDER
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_FOV
+			text				@JKMENUS_CLIENT_FOV
+			descText			@JKMENUS_CLIENT_FOV_DESC
 			cvarfloat			"cg_fov" 10 50 200
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1357,7 +1394,6 @@
 			textscale			0.8 
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_FOV_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1389,7 +1425,8 @@
 			name				none
 			group				clientCameraControls
 			type				ITEM_TYPE_SLIDER
-			text				@JKMODMENUS_MAIN_MENU_CLIENT_THIRDCAMERA
+			text				@JKMENUS_CLIENT_THIRDCAMERA
+			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
 			cvarfloat			"cg_thirdPersonRange" 10 0 150
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1399,7 +1436,6 @@
 			textscale			0.8 
 			forecolor			1 1 1 1
 			visible				0
-			descText			@JKMODMENUS_MAIN_MENU_CLIENT_THIRDCAMERA_DESC
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1435,7 +1471,8 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				"Force duel challenge:"
+			text				@JKMENUS_CLIENT_FORCEDUEL
+			descText			@JKMENUS_CLIENT_FORCEDUEL_DESC
 			cvar				"engage_duel_force"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1445,7 +1482,6 @@
 			textscale			0.8        
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Engage a force duel challenge."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1468,7 +1504,8 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				"Drop flag:"
+			text				@JKMENUS_CLIENT_DROPFLAG
+			descText			@JKMENUS_CLIENT_DROPFLAG_DESC
 			cvar				"dropflag"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1478,7 +1515,6 @@
 			textscale			0.8        
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Drop flag in CTF & CTY game types."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1505,7 +1541,8 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_YESNO
-			text				"Custon animations:"
+			text				@JKMENUS_CLIENT_CUSTOMANIMS
+			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
 			cvar				"jk_cg_customAnims"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1515,7 +1552,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Custom animations such as some from single player game."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1539,11 +1575,12 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				"Custom hats:"
+			text				@JKMENUS_CLIENT_CUSTOMHATS
+			descText			@JKMENUS_CLIENT_CUSTOMHATS_DESC
 			cvar				"jk_cg_customHats"
 			cvarFloatList
 			{
-				"None"  		0
+				@MENUS0_OFF  	0
 				"Santa"  		1
 				"Pumpkin"  		2
 				"Cap"  			3
@@ -1560,7 +1597,6 @@
 			textscale			0.8
 			forecolor			1 1 1 1
 			visible				0
-			descText			"Custom hats to wear on player."
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
@@ -1584,7 +1620,7 @@
 		
 		itemDef 
 		{
-			name				vidrestart_background
+			name				defaults_background
 			group				clientDefaultsControls
 			style				WINDOW_STYLE_SHADER
 			rect				200 41 300 250	
@@ -1598,50 +1634,22 @@
 		{
 			name				options
 			group				clientDefaultsControls
-			text				@MENUS0_WARNING
+			text				@JKMENUS_CLIENT_DEFAULTS_WARNING
 			rect				220 61 300 20
-			font				2
-			textscale			1    
-			forecolor			1 1 0 1
-			visible				0
-			decoration
-		}
-
-		itemDef 
-		{
-			name				options
-			group				clientDefaultsControls
-			text				@MENUS2_THIS_WILL_SET_ALL_GAME
-			text2				@MENUS2_TO_THEIR_FACTORY_SETTINGS
-			rect				220 101 300 20
 			text2aligny			20
 			font				2
-			textscale			1    
+			textscale			0.9  
 			forecolor			1 1 0 1
 			visible				0
 			decoration
 		}
-
-		itemDef 
-		{
-			name				options
-			group				clientDefaultsControls
-			text				@MENUS0_VID_RESTART3
-			rect				220 161 300 20
-			font				2
-			textscale			1    
-			forecolor			1 1 0 1
-			visible				0
-			decoration
-		}
-
 
 		itemDef 
 		{
 			name				default_yes_button
 			group				default_glow
 			style				WINDOW_STYLE_SHADER
-			rect				347 241 120 32 
+			rect				357 241 120 32 
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -1655,7 +1663,7 @@
 			text				@MENUS0_YES
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				347 241 120 32 
+			rect				357 241 120 32 
 			font				2
 			textscale			1
 			textalign			ITEM_ALIGN_CENTER
@@ -1689,7 +1697,7 @@
 			name				default_no_button
 			group				default_glow
 			style				WINDOW_STYLE_SHADER
-			rect				220 241 120 32 
+			rect				230 241 120 32 
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -1703,7 +1711,7 @@
 			text				@MENUS0_NO
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				220 241 120 32 
+			rect				230 241 120 32 
 			font				2
 			textscale			1
 			textalign			ITEM_ALIGN_CENTER

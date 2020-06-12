@@ -347,7 +347,7 @@
 		{
 			name                    modoptionsbutton
 			group                   setup_submenu
-			text                    @JKMODMENUS_MOD_OPTIONS
+			text                    @JKMENUS_MOD_OPTIONS
 			type                    ITEM_TYPE_BUTTON
 			style                   WINDOW_STYLE_EMPTY
 			rect                    20 163 170 30
@@ -359,7 +359,7 @@
 			textstyle               3
 			forecolor               0.65 0.65 1 1
 			visible                 1
-			descText                @JKMODMENUS_MOD_OPTIONS_INFO
+			descText                @JKMENUS_MOD_OPTIONS_DESC
 
 			mouseEnter
 			{

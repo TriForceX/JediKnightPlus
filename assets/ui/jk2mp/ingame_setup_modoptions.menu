@@ -195,7 +195,7 @@
 		// Intro
 		itemDef
 		{
-			text				@JKMODMENUS_MOD_OPTIONS_INTRO
+			text				@JKMENUS_MOD_OPTIONS_INTRO
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
 			rect				150 45 290 0
@@ -282,8 +282,8 @@
 		itemdef
 		{
 			name				button1text
-			text				@JKMODMENUS_MAIN_OPTION_ADMIN
-			descText            @JKMODMENUS_MAIN_OPTION_ADMIN_INFO
+			text				@JKMENUS_MOD_OPTIONS_EMOTES
+			descText            @JKMENUS_MOD_OPTIONS_EMOTES_DESC
 			rect				0 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -301,7 +301,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				open			ingame_jkmod_admin ;
+				open			ingame_jkmod_emotes ;
 				close			ingame_setup_modoptions ;
 			}
 			mouseenter 
@@ -316,8 +316,8 @@
 		itemdef
 		{
 			name				button2text
-			text				@JKMODMENUS_MAIN_OPTION_CLIENT
-			descText            @JKMODMENUS_MAIN_OPTION_CLIENT_INFO
+			text				@JKMENUS_MOD_OPTIONS_CLIENT
+			descText            @JKMENUS_MOD_OPTIONS_CLIENT_DESC
 			rect				103 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -350,8 +350,8 @@
 		itemdef
 		{
 			name				button3text
-			text				@JKMODMENUS_MAIN_OPTION_BUILD
-			descText            @JKMODMENUS_MAIN_OPTION_BUILD_INFO
+			text				@JKMENUS_MOD_OPTIONS_SERVER
+			descText            @JKMENUS_MOD_OPTIONS_SERVER_DESC
 			rect				206 115 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -368,9 +368,9 @@
 			visible				1
 			action 
 			{ 
-				play			"sound/interface/button1.wav" ;
-				open			ingame_jkmod_build ;
-				close			ingame_setup_modoptions ;
+				play			"sound/weapons/noammo.mp3" ;
+				//open			ingame_jkmod_server ;
+				//close			ingame_setup_modoptions ;
 			}
 			mouseenter 
 			{ 
@@ -384,8 +384,8 @@
 		itemdef
 		{
 			name				button4text
-			text				@JKMODMENUS_MAIN_OPTION_EMOTES
-			descText            @JKMODMENUS_MAIN_OPTION_EMOTES_INFO
+			text				@JKMENUS_MOD_OPTIONS_ADMIN
+			descText            @JKMENUS_MOD_OPTIONS_ADMIN_DESC
 			rect				0 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -402,9 +402,9 @@
 			visible				1
 			action 
 			{ 
-				play			"sound/interface/button1.wav" ;
-				open			ingame_jkmod_emotes ;
-				close			ingame_setup_modoptions ;
+				play			"sound/weapons/noammo.mp3" ;
+				//open			ingame_jkmod_admin ;
+				//close			ingame_setup_modoptions ;
 			}
 			mouseenter 
 			{ 
@@ -418,8 +418,8 @@
 		itemdef
 		{
 			name				button5text
-			text				@JKMODMENUS_MAIN_OPTION_SERVER
-			descText            @JKMODMENUS_MAIN_OPTION_SERVER_INFO
+			text				@JKMENUS_MOD_OPTIONS_BUILD
+			descText            @JKMENUS_MOD_OPTIONS_BUILD_DESC
 			rect				103 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -436,9 +436,9 @@
 			visible				1
 			action 
 			{ 
-				play			"sound/interface/button1.wav" ;
-				open			ingame_jkmod_server ;
-				close			ingame_setup_modoptions ;
+				play			"sound/weapons/noammo.mp3" ;
+				//open			ingame_jkmod_build ;
+				//close			ingame_setup_modoptions ;
 			}
 			mouseenter 
 			{ 
@@ -452,8 +452,8 @@
 		itemdef
 		{
 			name				button6text
-			text				@JKMODMENUS_MAIN_OPTION_OTHERS
-			descText            @JKMODMENUS_MAIN_OPTION_OTHERS_INFO
+			text				@JKMENUS_MOD_OPTIONS_OTHERS
+			descText            @JKMENUS_MOD_OPTIONS_OTHERS_DESC
 			rect				206 155 95 32
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED
@@ -470,9 +470,9 @@
 			visible				1
 			action 
 			{ 
-				play			"sound/interface/button1.wav" ;
-				open			ingame_jkmod_others ;
-				close			ingame_setup_modoptions ;
+				play			"sound/weapons/noammo.mp3" ;
+				//open			ingame_jkmod_others ;
+				//close			ingame_setup_modoptions ;
 			}
 			mouseenter 
 			{ 
@@ -512,7 +512,7 @@
 		itemDef
 		{
 			name				aboutWebsite
-			text				@JKMODMENUS_MOD_OPTIONS_WEBSITE
+			text				@JKMENUS_MOD_OPTIONS_WEBSITE
 			type				ITEM_TYPE_TEXT
 			textalign           ITEM_ALIGN_CENTER
 			rect				150 225 300 0

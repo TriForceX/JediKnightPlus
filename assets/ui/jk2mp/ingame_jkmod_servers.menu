@@ -32,7 +32,7 @@
 			name				serverListTitle
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
-			text				@JKMODMENUS_MAIN_MENU_SERVERS_TITLE
+			text				@JKMENUS_SERVERS_TITLE
 			rect				0 5 365 15
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			182
@@ -368,7 +368,7 @@
 		itemDef 
 		{
 			name				addFavoriteButton
-			text 				@JKMODMENUS_MAIN_MENU_SERVERS_FAVORITE
+			text 				@JKMENUS_SERVERS_FAVORITE
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
@@ -409,7 +409,7 @@
 		itemDef 
 		{
 			name				serverInfoButton
-			text				@JKMODMENUS_MAIN_MENU_SERVERS_INFO
+			text				@JKMENUS_SERVERS_DESC
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
@@ -450,7 +450,7 @@
 		itemDef 
 		{
 			name				filterButton
-			text 				@JKMODMENUS_MAIN_MENU_SERVERS_FILTER
+			text 				@JKMENUS_SERVERS_FILTER
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
@@ -631,7 +631,7 @@
 		{
 			name				attributesTab
 			group				groupTabs
-			text				@JKMODMENUS_MAIN_MENU_SERVERS_ATTR
+			text				@JKMENUS_SERVERS_ATTR
 			textscale			.70
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_FILLED

@@ -118,7 +118,7 @@ void JKMod_CG_UpdateCvars(void)
 	{
 		if (!(cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)))
 		{
-			if (!jkmod_duel_warning) Com_Printf("WARNING: Duel dimension is not available, you may collide with a non-dueling player during private duels\n");
+			if (!jkmod_duel_warning) Com_Printf("%s\n", CG_GetStripEdString("JKINGAME", "DIMENSION_WARNING"));
 			jkmod_duel_warning = qtrue;
 		}
 		else jkmod_duel_warning = qfalse;

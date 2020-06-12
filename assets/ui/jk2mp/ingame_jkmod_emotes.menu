@@ -260,7 +260,7 @@
 			name				emoteTitle
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
-			text				@JKMODMENUS_MAIN_OPTION_EMOTES
+			text				@JKMENUS_MOD_OPTIONS_EMOTES
 			rect				0 5 165 15
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			83

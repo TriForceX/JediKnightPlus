@@ -45,7 +45,7 @@
 		itemDef 
 		{
 			name				screenTitle
-			text				@JKMODMENUS_MAIN_MENU_SERVERS_FILTER
+			text				@JKMENUS_SERVERS_FILTER
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
 			rect				10 5 180 20

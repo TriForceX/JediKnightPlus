@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.4
+- Updated clientside translations
+- Updated mod game version
+- Updated general and poll callvote menus
+- Updated mod options and callvote on main menu
+- Fixed item force physics spawn
+
 ## 0.11.3
 - Workaround for hitbox height on rolling
 - Added option to reload custom configs
