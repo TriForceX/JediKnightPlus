@@ -1038,9 +1038,9 @@ void JKMod_ClientCommand(int clientNum)
 			"^7Client plugin status: ^2Updated^7, ^3Outdated^7, ^1No plugin\n"
 			"^7\""));
 
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ----------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 		Q_strcat(status, sizeof(status), "^7Num Name                         Type  Plugin\n");
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ----------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 
 		for (i = 0; i < level.maxclients; i++)
 		{
@@ -1077,7 +1077,7 @@ void JKMod_ClientCommand(int clientNum)
 			));
 		}
 
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ----------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
 	}
 	// Illegal macro announce
