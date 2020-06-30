@@ -1,0 +1,8 @@
+; Autodownload Blacklist
+; ------------------------
+; If you want to use the blacklist, remove the [disabled] on the start
+; and add all disallowed pk3 files in the following format into it
+; base/mymap.pk3
+; mymod/plugin.pk3
+
+[disabled]
