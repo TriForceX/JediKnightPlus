@@ -17,21 +17,36 @@ void JKMod_gamePlay(char *gameplay)
 {
 	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
 	{
-		MV_SetGamePlay(VERSION_1_02);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
+		if (jk2gameplay != VERSION_1_02) {
+			MV_SetGamePlay(VERSION_1_02);
+			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
+			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
+		}
+		if (jk2startversion == VERSION_1_02) {
+			trap_Cvar_Set("jk_gamePlay", "0");
+		}
 	}
 	else if (!Q_stricmp(gameplay, "3") || !Q_stricmp(gameplay, "1.03"))
 	{
-		MV_SetGamePlay(VERSION_1_03);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
+		if (jk2gameplay != VERSION_1_03) {
+			MV_SetGamePlay(VERSION_1_03);
+			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
+			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
+		}
+		if (jk2startversion == VERSION_1_03) {
+			trap_Cvar_Set("jk_gamePlay", "0");
+		}
 	}
 	else if (!Q_stricmp(gameplay, "4") || !Q_stricmp(gameplay, "1.04"))
 	{
-		MV_SetGamePlay(VERSION_1_04);
-		trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
-		trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
+		if (jk2gameplay != VERSION_1_04) {
+			MV_SetGamePlay(VERSION_1_04);
+			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
+			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
+		}
+		if (jk2startversion == VERSION_1_04) {
+			trap_Cvar_Set("jk_gamePlay", "0");
+		}
 	}
 	else
 	{
