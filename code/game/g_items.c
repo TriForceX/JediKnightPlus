@@ -1334,7 +1334,7 @@ void RespawnItem( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [Items] Reset original item position
-	if (jkcvar_itemForcePhysics.integer == 1) 
+	if (jkcvar_itemForcePhysics.integer <= 1)
 	{
 		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
 		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.pos.trBase);
@@ -2043,7 +2043,8 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	if ( G_ItemDisabled(item) )
 		return;
 
-	if (jkcvar_itemForcePhysics.integer == 1 && ent->jkmodEnt.ItemSpawnedBefore)
+	// Tr!Force: [Items] Reset original item position
+	if (jkcvar_itemForcePhysics.integer <= 1 && ent->jkmodEnt.ItemSpawnedBefore)
 	{
 		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
 	}
