@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.5
+- Fixed custom model alignment on 1.02
+- Fix item position reset on force physics disable
+- Don't change gameplay cvar if is the same as the server
+- Added example server config & basic launcher
+- Moved client & server assets folders
+- Revert mod name changes
+
 ## 0.11.4
 - Updated clientside translations
 - Updated mod game version

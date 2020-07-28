@@ -111,6 +111,6 @@ float		JKMod_CG_DrawPowerupIcons(int y);
 
 // jk_cg_players.c
 void		JKMod_CG_AddHitBox(centity_t *cent);
-void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec3_t modelDetails);
+void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec4_t modelDetails);
 
 #endif // __JK_CG_LOCAL_H__

@@ -5,4 +5,4 @@
 ; base/mymap.pk3
 ; mymod/plugin.pk3
 
-JediKnightPlus/jkmod_plugin_0.11.4.pk3
+JediKnightPlus/jkmod_plugin_0.11.5.pk3

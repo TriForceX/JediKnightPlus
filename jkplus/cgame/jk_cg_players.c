@@ -182,7 +182,7 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 Show custom model on player
 =====================================================================
 */
-void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile,  char *modelBolt, vec3_t modelDetails)
+void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile,  char *modelBolt, vec4_t modelDetails)
 {
 	int newBolt;
 	mdxaBone_t matrix;
@@ -230,25 +230,27 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		memset(&re, 0, sizeof(refEntity_t));
 
 		VectorCopy(cent->lerpAngles, bAngles);
-		bAngles[PITCH] = 0;
+		bAngles[PITCH] = (jk2gameplay == VERSION_1_02) ? cent->turAngles[PITCH] : 0;
 		bAngles[YAW] = cent->turAngles[YAW];
+		bAngles[ROLL] = 0;
 
 		trap_G2API_GetBoltMatrix(cent->ghoul2, 0, newBolt, &matrix, bAngles, cent->lerpOrigin, time, gameModels, cent->modelScale);
 		trap_G2API_GiveMeVectorFromMatrix(&matrix, ORIGIN, boltOrg);
 		trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_X, re.axis[0]);
 		trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_Y, re.axis[1]);
 		trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, re.axis[2]);
-		VectorMA(boltOrg, modelDetails[0], re.axis[1], boltOrg);
-		VectorMA(boltOrg, modelDetails[1], re.axis[2], boltOrg);
+		VectorMA(boltOrg, modelDetails[0], re.axis[0], boltOrg);
+		VectorMA(boltOrg, modelDetails[1], re.axis[1], boltOrg);
+		VectorMA(boltOrg, modelDetails[2], re.axis[2], boltOrg);
 
 		re.hModel = modelFile;
 		VectorCopy(boltOrg, re.lightingOrigin);
 		VectorCopy(boltOrg, re.origin);
 
-		if (modelDetails[2] != 1) {
-			re.modelScale[0] = modelDetails[2];
-			re.modelScale[1] = modelDetails[2];
-			re.modelScale[2] = modelDetails[2];
+		if (modelDetails[3] != 1) {
+			re.modelScale[0] = modelDetails[3];
+			re.modelScale[1] = modelDetails[3];
+			re.modelScale[2] = modelDetails[3];
 			ScaleModelAxis(&re);
 		}
 
