@@ -614,7 +614,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		}
 	}
 	// Teleport chat (from file)
-	if (jkcvar_teleportChat.integer && (level.jkmodLevel.TeleportChats[0] || p || p[0]))
+	if (jkcvar_teleportChat.integer && level.jkmodLevel.TeleportChats[0] && (p[0] == '!') && p[1] && (p[1] != '!'))
 	{
 		int			i = 0;
 		char		command[MAX_TOKEN_CHARS];
