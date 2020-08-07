@@ -1842,19 +1842,14 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 		}
 
 		// Tr!Force: [Dimensions] Check saber clash
-		if (jkcvar_chatProtect.integer >= 2)
-		{
-			if (otherOwner && otherOwner->client &&
-				otherOwner->client->ps.eFlags & JK_CHAT_PROTECT)
-			{
-				return qfalse;
-			}
-			if (otherOwner && otherOwner->client &&
-				self->client->ps.eFlags & JK_CHAT_PROTECT)
-			{
-				return qfalse;
-			}
-		}
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
 
 		didHit = qtrue;
 
@@ -2375,19 +2370,14 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 		}
 
 		// Tr!Force: [Dimensions] Check saber clash
-		if (jkcvar_chatProtect.integer >= 2)
-		{
-			if (otherOwner && otherOwner->client &&
-				otherOwner->client->ps.eFlags & JK_CHAT_PROTECT)
-			{
-				return qfalse;
-			}
-			if (otherOwner && otherOwner->client &&
-				self->client->ps.eFlags & JK_CHAT_PROTECT)
-			{
-				return qfalse;
-			}
-		}
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
 
 		didHit = qtrue;
 		self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
@@ -3634,7 +3624,9 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 		}
 	}
 	else if (!self->client->ps.saberHolstered &&
-		!((jkcvar_chatProtect.integer >= 2) && (self->client->ps.eFlags & JK_CHAT_PROTECT)) ) // Tr!Force: [Dimensions] Check saber hit and block
+			// Tr!Force: [Dimensions] Check saber hit and block
+			!(self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) &&
+			!(self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 	{
 		gentity_t *saberent = &g_entities[self->client->ps.saberEntityNum];
 

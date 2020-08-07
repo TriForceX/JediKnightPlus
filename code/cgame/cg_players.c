@@ -7450,7 +7450,8 @@ stillDoSaber:
 	}
 	else
 	{
-		if (cent->currentState.bolt1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+		// Tr!Force: [Dimensions] Check dimensions (By bolt1)
+		if (cent->currentState.bolt1 == 1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 		{
 			legs.shaderRGBA[0] = 50;
 			legs.shaderRGBA[1] = 50;
@@ -7604,7 +7605,8 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene(&legs);
 	}
 
-	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+	// Tr!Force: [Dimensions] Check dimensions (By bolt1)
+	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 == 1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 	{
 		legs.shaderRGBA[0] = 50;
 		legs.shaderRGBA[1] = 50;
@@ -7615,6 +7617,20 @@ doEssentialThree:
 		legs.customShader = cgs.media.forceSightBubble;
 		
 		trap_R_AddRefEntityToScene( &legs );
+	}
+	// Tr!Force: [Dimensions] Check dimensions (Race player color)
+	if (cent->currentState.bolt1 == 4 && cg.snap->ps.clientNum != cent->currentState.number)
+	{
+		legs.shaderRGBA[0] = 128;
+		legs.shaderRGBA[1] = 0;
+		legs.shaderRGBA[2] = 128;
+		legs.shaderRGBA[3] = 255;
+
+		legs.renderfx &= ~RF_RGB_TINT;
+		legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
+		legs.customShader = cgs.media.forceSightBubble;
+
+		trap_R_AddRefEntityToScene(&legs);
 	}
 
 	//For now, these two are using the old shield shader. This is just so that you

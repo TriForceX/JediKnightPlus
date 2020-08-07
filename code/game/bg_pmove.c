@@ -2525,7 +2525,7 @@ static void PM_CheckDuck (void)
 		pm->ps->viewheight = DEFAULT_VIEWHEIGHT;
 	}
 	// Tr!Force: [Emotes] Check emote height
-	else if (pm->ps->eFlags & JK_EMOTE_IN)
+	else if (pm->ps->stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
 		if ((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_SIT2)
 		{
@@ -3486,7 +3486,7 @@ static void PM_Weapon( void )
 			desiredAnim = pm->ps->forceDodgeAnim;
 
 			// Tr!Force: [Emotes] prediction
-			if (pm->ps->eFlags & JK_EMOTE_IN
+			if ((pm->ps->stats[JK_PLAYER] & JK_EMOTE_IN)
 				&& pm->ps->velocity[0] == 0
 				&& pm->ps->velocity[1] == 0
 				&& pm->ps->velocity[2] == 0

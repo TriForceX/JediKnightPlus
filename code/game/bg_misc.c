@@ -2154,7 +2154,15 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	}
 	else
 	{
-		s->bolt1 = 0;
+		// Tr!Force: [Dimensions] Check dimensions
+		if (ps->stats[JK_DIMENSION] & JK_CHAT_IN)
+			s->bolt1 = 2;
+		else if (ps->stats[JK_DIMENSION] & JK_GUNS_IN)
+			s->bolt1 = 3;
+		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
+			s->bolt1 = 4;
+		else
+			s->bolt1 = 0;
 	}
 
 	if (ps->dualBlade)
@@ -2296,7 +2304,15 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	}
 	else
 	{
-		s->bolt1 = 0;
+		// Tr!Force: [Dimensions] Check dimensions
+		if (ps->stats[JK_DIMENSION] & JK_CHAT_IN)
+			s->bolt1 = 2;
+		else if (ps->stats[JK_DIMENSION] & JK_GUNS_IN)
+			s->bolt1 = 3;
+		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
+			s->bolt1 = 4;
+		else
+			s->bolt1 = 0;
 	}
 
 	if (ps->dualBlade)

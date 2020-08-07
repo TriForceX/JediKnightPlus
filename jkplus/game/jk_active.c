@@ -57,7 +57,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			if (client->jkmodClient.ChatTime >= jkcvar_chatProtectTime.integer)
 			{
 				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
-				client->ps.eFlags |= JK_CHAT_PROTECT;
+				client->ps.stats[JK_DIMENSION] |= JK_CHAT_IN; // Used for dimension and protect
 				ent->takedamage = qfalse;
 			}
 			else
@@ -68,8 +68,14 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		else
 		{
 			if (client->jkmodClient.ChatTime != 0) client->jkmodClient.ChatTime = 0;
-			if (client->ps.eFlags & JK_CHAT_PROTECT) client->ps.eFlags &= ~JK_CHAT_PROTECT;
+			if (client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
 			if (!ent->health <= 0) ent->takedamage = qtrue;
+		}
+
+		// Check dimension damage
+		if (client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+		{
+			ent->takedamage = qfalse;
 		}
 
 		// Show server motd
@@ -151,14 +157,14 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 
 		// Keep the client informed about to predict the emote leg timers
-		if (!(ent->client->ps.eFlags & JK_EMOTE_IN))
+		if (!(ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN))
 		{
-			ent->client->ps.eFlags |= JK_EMOTE_IN;
+			ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 		}
 	}
-	else if (ent->client->ps.eFlags & JK_EMOTE_IN)
+	else if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
-		ent->client->ps.eFlags &= ~JK_EMOTE_IN;
+		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
 	// Launch original client think real function

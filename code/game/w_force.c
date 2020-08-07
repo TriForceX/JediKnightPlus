@@ -630,7 +630,6 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 				return 0;
 			}
 		}
-
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
 			if ((other->client->pers.jkmodPers.CustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
@@ -646,7 +645,6 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		{
 			return 0;
 		}
-
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
 			return 0;
@@ -654,7 +652,12 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	}
 
 	// Tr!Force: [ChatProtect] Prevent force usage
-	if (jkcvar_chatProtect.integer >= 2 && (other->client->ps.eFlags & JK_CHAT_PROTECT))
+	if ((other->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 2)
+	{
+		return 0;
+	}
+	// Tr!Force: [Dimensions] Prevent force usage
+	if ((other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) || (attacker->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 	{
 		return 0;
 	}

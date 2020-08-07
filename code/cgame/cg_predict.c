@@ -85,6 +85,41 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 		}
 
+		// Tr!Force: [Dimensions] Check dimensions
+		if (cgs.jkmodCvar.altDimensions)
+		{
+			// Check duels dimension
+			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))
+			{
+				if (cg.predictedPlayerState.duelInProgress && ent->number != cg.predictedPlayerState.duelIndex && ent->eType != ET_MOVER)
+					continue;
+				else if (!cg.predictedPlayerState.duelInProgress && ent->bolt1 == 1)
+					continue;
+			}
+			// Check race dimension
+			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT))
+			{
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
+					continue;
+				else if (cg_entities[ent->number].currentState.bolt1 == 2)
+					continue;
+			}
+			// Check race dimension
+			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE))
+			{
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) 
+				{
+					if (ent->eType == ET_MOVER && ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE))
+						continue;
+					else
+						continue;
+				}
+				else if (cg_entities[ent->number].currentState.bolt1 == 4) {
+					continue;
+				}
+			}
+		}
+
 		if ( ent->solid == SOLID_BMODEL ) {
 			// special value for bmodel
 
@@ -149,41 +184,6 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 
 		trap_CM_TransformedBoxTrace ( &trace, start, end,
 			mins, maxs, cmodel,  mask, origin, angles);
-
-		// Tr!Force: [Dimensions] Check dimensions
-		if (cgs.jkmodCvar.altDimensions)
-		{
-			if (trace.fraction < 1.0 && ent->number < MAX_CLIENTS)
-			{
-				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) & cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != ent->number)
-				{ 
-					// If you are dueling and this client is not your partner, skip it
-					continue;
-				}
-				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) & !cg.snap->ps.duelInProgress && ent->bolt1)
-				{ 
-					// If the entity is dueling, but not with you, skip it (bolt1 contains the duelinprogress info)
-					continue;
-				}
-				if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && (cg_entities[ent->number].currentState.eFlags & JK_CHAT_PROTECT))
-				{ 
-					// Client is in the chat zone so skip it
-					continue;
-				}
-			}
-			else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) && trace.fraction < 1.0 && cg.snap->ps.duelInProgress)
-			{
-				if (ent->weapon == WP_TURRET || ent->modelindex == HI_SHIELD)
-				{ 
-					// This is a sentry gun or portable shield, check for owner info
-					if (ent->otherEntityNum != cg.snap->ps.clientNum && ent->otherEntityNum != cg.snap->ps.duelIndex)
-					{ 
-						// Not part of your duel
-						continue;
-					}
-				}
-			}
-		}
 
 		if (trace.allsolid || trace.fraction < tr->fraction) {
 			trace.entityNum = ent->number;

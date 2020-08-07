@@ -1098,6 +1098,30 @@ void JKMod_ClientCommand(int clientNum)
 			}
 		}
 	}
+	// Race mode (WIP)
+	else if (Q_stricmp(cmd, "race") == 0)
+	{
+		if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE))) 
+		{
+			trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+			return;
+		}
+		else
+		{
+			// Disable
+			if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+			{
+				ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+				trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
+			}
+			// Enable
+			else 
+			{
+				ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+				trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
+			}
+		}
+	}
 	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)
 	{

@@ -1656,7 +1656,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		gentity_t *faceKicked = &g_entities[client->ps.forceKickFlip-1];
 
 		// Tr!Force: [ChatProtect] Prevent kicks
-		if (jkcvar_chatProtect.integer >= 2 && (faceKicked->client->ps.eFlags & JK_CHAT_PROTECT))
+		if ((faceKicked->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 2)
+		{
+			faceKicked = NULL;
+		}
+		// Tr!Force: [Dimensions] Prevent kicks
+		if (faceKicked->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 		{
 			faceKicked = NULL;
 		}
