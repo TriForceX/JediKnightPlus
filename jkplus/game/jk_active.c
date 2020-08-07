@@ -59,6 +59,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
 				client->ps.stats[JK_DIMENSION] |= JK_CHAT_IN; // Used for dimension and protect
 				ent->takedamage = qfalse;
+				if (!client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			}
 			else
 			{
@@ -165,6 +166,12 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	else if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
+	}
+
+	// Check dimensions
+	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+	{
+		if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 	}
 
 	// Launch original client think real function

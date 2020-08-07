@@ -256,6 +256,13 @@ void JKMod_emoteDo(gentity_t *ent, int emoteIndex)
 		return;
 	}
 
+	// Exception for dimensions
+	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this dimension\n\"");
+		return;
+	}
+
 	// Bit values for emotes! Let the people choose!
 	if(!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
