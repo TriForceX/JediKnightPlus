@@ -1773,6 +1773,9 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
 
+	// Tr!Force: [RaceMode] Don't remove race flag
+	qboolean jksave_racemode = qfalse;
+
 	index = ent - g_entities;
 	client = ent->client;
 
@@ -1879,7 +1882,13 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 
 	saveSaberNum = client->ps.saberEntityNum;
 
+	// Tr!Force: [RaceMode] Don't remove race flag
+	jksave_racemode = (client->ps.stats[JK_DIMENSION] & JK_RACE_IN);
+
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
+
+	// Tr!Force: [RaceMode] Don't remove race flag
+	if (jksave_racemode) client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
