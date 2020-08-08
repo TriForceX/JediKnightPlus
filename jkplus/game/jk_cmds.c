@@ -70,6 +70,30 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 	LaunchItem(item, org, velocity);
 }
 
+static void JKMod_raceMode(gentity_t *ent, int clientNum)
+{
+	if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)))
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+		return;
+	}
+	else
+	{
+		// Disable
+		if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+		{
+			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
+		}
+		// Enable
+		else
+		{
+			ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
+		}
+	}
+}
+
 /*
 =====================================================================
 Instructs all chat & duels to be ignored by the given
@@ -591,6 +615,10 @@ extern qboolean SaberAttacking(gentity_t *self);
 void JKMod_Say(gentity_t *ent, int mode, qboolean arg0) 
 { 
 	char		*p;
+	int			clientNum;
+
+	// Get client number
+	clientNum = ent - g_entities;
 
 	if (trap_Argc() < 2 && !arg0) {
 		return;
@@ -612,6 +640,12 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		{
 			ent->client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
 		}
+	}
+	// Race mode trigger
+	else if (Q_stricmp(p, "!race") == 0)
+	{
+		JKMod_raceMode(ent, clientNum);
+		return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)
@@ -1098,28 +1132,51 @@ void JKMod_ClientCommand(int clientNum)
 			}
 		}
 	}
-	// Race mode (WIP)
-	else if (Q_stricmp(cmd, "race") == 0)
+	// Dimension change
+	else if (Q_stricmp(cmd, "dimension") == 0)
 	{
-		if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE))) 
+		char    arg1[MAX_TOKEN_CHARS];
+
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (trap_Argc() < 2)
 		{
-			trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+			qtime_t		serverTime;
+			char		*serverTimeType;
+
+			trap_RealTime(&serverTime);
+			serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
+
+			trap_SendServerCommand(ent - g_entities, va("print \""
+				"^5[^7 Dimension ^5]^7\n"
+				"^7Change between server dimensions\n"
+				"^7You can use this feature using the following command: ^2/dimension <option>\n"
+				"^5----------\n"
+				"^7Option list:\n"
+				"^3guns\n"
+				"^3race\n"
+				"^5----------\n"
+				"^2Note 1: ^7Is highly recommended to use the client plugin for a better experience\n"
+				"^2Note 2: ^7You also will be able to beign in ^5Duel ^7and ^5Chat ^7dimensions automatically\n"
+				"^7\""));
 			return;
 		}
-		else
+		if (!Q_stricmp(arg1, "guns"))
 		{
-			// Disable
-			if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)))
 			{
-				ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
-				trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return;
 			}
-			// Enable
-			else 
+			else
 			{
-				ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
-				trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is not available\n\"");
+				return;
 			}
+		}
+		if (!Q_stricmp(arg1, "race"))
+		{
+			JKMod_raceMode(ent, clientNum);
 		}
 	}
 	// Test command
