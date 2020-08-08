@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.11.6
+- Added check for custom teleports chats
+- Reorder say commands by preference
+- Changed custom player flags & dimensions code cleanup
+- Prevent lightsaber usage and emotes in race dimension
+- Moved race command into dimension and say commands
+- Prevent race mode beign disabled on respawn
+- Disable force powers on race mode
+
 ## 0.11.5
 - Fixed custom model alignment on 1.02
 - Fix item position reset on force physics disable
