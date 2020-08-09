@@ -84,6 +84,8 @@ static void JKMod_raceMode(gentity_t *ent, int clientNum)
 		{
 			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 			ent->client->ps.forceRestricted = qfalse;
+			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.racerSavedJump;
+
 			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
 		}
@@ -92,6 +94,9 @@ static void JKMod_raceMode(gentity_t *ent, int clientNum)
 		{
 			ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
 			ent->client->ps.forceRestricted = qtrue;
+			ent->client->pers.jkmodPers.racerSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
+			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
+
 			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Race ^7dimension\n\"", ent->client->pers.netname));
 		}

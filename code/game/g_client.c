@@ -1888,7 +1888,10 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
 	// Tr!Force: [RaceMode] Don't remove race flag
-	if (jksave_racemode) client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+	if (jksave_racemode) {
+		client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+		client->ps.forceRestricted = qtrue;
+	}
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
