@@ -299,7 +299,7 @@ Finds the spawn function for the entity and calls it,
 returning qfalse if not found
 ===============
 */
-qboolean G_CallSpawn( gentity_t *ent ) {
+qboolean BaseJK2_G_CallSpawn( gentity_t *ent ) { // Tr!Force: [BaseJK2] Call spawn function
 	spawn_t	*s;
 	gitem_t	*item;
 

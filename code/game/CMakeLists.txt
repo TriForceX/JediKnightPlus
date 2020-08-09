@@ -84,11 +84,13 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_session.c"
 	"${JKModDir}/game/jk_session.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_spawn.c"
+	"${JKModDir}/game/jk_spawn.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_svcmds.c"
 	"${JKModDir}/game/jk_svcmds.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_target.c"
 	"${SRCDir}/game/g_team.c"
 	"${SRCDir}/game/g_trigger.c"
+	"${JKModDir}/game/jk_trigger.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_utils.c"
 	"${SRCDir}/game/g_weapon.c"
 	"${SRCDir}/game/q_math.c"

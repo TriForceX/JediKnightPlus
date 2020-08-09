@@ -105,6 +105,7 @@ typedef struct
 	int			ServerNewsNum;									// News timer
 	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
 	int			TeleportChatsCount;								// Chat teleport counter
+	int			racerStartTime[MAX_CLIENTS];					// Start time for racers
 
 } jkmod_locals_t;
 
@@ -128,6 +129,7 @@ Re-routed functions
 #define ClientCleanName(a, b, c)	JKMod_ClientCleanName(ent, a, b, c)
 #define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
+#define G_CallSpawn 				JKMod_G_CallSpawn
 
 /*
 =====================================================================
@@ -196,6 +198,9 @@ char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
 // g_main.c
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
+
+// g_spawn.c
+qboolean	BaseJK2_G_CallSpawn(gentity_t *ent);
 
 // jk_active.c
 void		JKMod_ClientThink_real(gentity_t *ent);
