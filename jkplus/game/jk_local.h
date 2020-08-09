@@ -197,6 +197,9 @@ Common / new functions
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
 
+// g_cmds.c
+void		BaseJK2_ClientCommand(int clientNum);
+
 // g_main.c
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
 
