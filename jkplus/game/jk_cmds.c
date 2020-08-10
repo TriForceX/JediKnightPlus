@@ -290,6 +290,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, int clientNum, char *text)
 			}
 		}
 	}
+	return qtrue;
 }
 
 /*
@@ -1261,6 +1262,32 @@ void JKMod_ClientCommand(int clientNum)
 	{
 		JKMod_loadPosition(ent, clientNum);
 		return;
+	}
+	// Jetpack command
+	else if (Q_stricmp(cmd, "jetpack") == 0)
+	{
+		if (!jkcvar_jetPack.integer)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
+			return;
+		}
+		else
+		{
+			// Disable
+			if (ent->client->ps.stats[JK_JETPACK] & JK_JETPACK_IN)
+			{
+				ent->client->ps.stats[JK_JETPACK] &= ~JK_JETPACK_IN;
+				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack disabled\n\""));
+				return;
+			}
+			// Enable
+			else
+			{
+				ent->client->ps.stats[JK_JETPACK] |= JK_JETPACK_IN;
+				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack enabled\n\""));
+				return;
+			}
+		}
 	}
 	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)

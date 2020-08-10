@@ -33,6 +33,7 @@ typedef struct
 	int			altDimensions;	// Tr!Force: [Dimensions] Main cvar
 	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
 	int			customHats;		// Tr!Force: [CustomHats] Main cvar
+	int			jetPack;		// Tr!Force: [JetPack] Main cvar
 
 } jkmod_cvar_t;
 

@@ -25,7 +25,7 @@ Global definitions
 #define JK_RACE_IN				( 1 << 3 )
 
 // Jetpack stuff
-#define JK_JETPACK				( 1 << 0 )
+#define JK_JETPACK_IN			( 1 << 0 )
 #define JK_JETPACK_THRUST		( 1 << 1 )
 #define JK_JETPACK_GROUND		( 1 << 2 )
 

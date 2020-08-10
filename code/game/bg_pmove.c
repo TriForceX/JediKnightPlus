@@ -34,6 +34,11 @@ float	pm_waterfriction = 1.0f;
 float	pm_flightfriction = 3.0f;
 float	pm_spectatorfriction = 5.0f;
 
+// Tr!Force: [JetPack] Physics details
+float	jkmod_pm_jetPackFriction = 0.4f;
+float	jkmod_pm_jetPackAccelerate = 0.3f;
+float	jkmod_pm_jetPackSpeed = 5.0f;
+
 int		c_pmove = 0;
 
 float forceSpeedLevels[4] = 
@@ -383,11 +388,16 @@ static void PM_Friction( void ) {
 		drop += speed*pm_waterfriction*pm->waterlevel*pml.frametime;
 	}
 
-	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT )
+	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT || (pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN) ) // Tr!Force: [JetPack] Check jetpack
 	{
 		if (pm->ps->pm_type == PM_FLOAT)
 		{ //almost no friction while floating
 			drop += speed*0.1*pml.frametime;
+		}
+		// Tr!Force: [JetPack] Set jetpack friction
+		else if (pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN)
+		{ 
+			drop += speed*jkmod_pm_jetPackFriction*pml.frametime;
 		}
 		else
 		{
@@ -4445,6 +4455,74 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 }
 
 /*
+=====================================================================
+Tr!Force: [JetPack] movement function
+=====================================================================
+*/
+void JKMod_PM_JetPack(void)
+{
+	int		i;
+	vec3_t	wishVel;
+	float	wishSpeed;
+	vec3_t	wishDir;
+	float	scale;
+	int		anim = BOTH_FORCEINAIR1;
+
+	// Set height
+	pm->maxs[2] = DEFAULT_MAXS_2;
+	pm->ps->viewheight = DEFAULT_VIEWHEIGHT;
+
+	// Normal slowdown
+	PM_Friction();
+	scale = PM_CmdScale(&pm->cmd);
+	PM_SetMovementDir();
+
+	// User actions
+	if (!scale && !pm->cmd.upmove)
+	{
+		wishVel[0] = 0;
+		wishVel[1] = 0;
+		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
+		pm->ps->stats[JK_JETPACK] &= ~JK_JETPACK_THRUST;
+	}
+	else if (!scale)
+	{
+		wishVel[0] = 0;
+		wishVel[1] = 0;
+		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
+		pm->ps->stats[JK_JETPACK] |= JK_JETPACK_THRUST;
+	}
+	else
+	{
+		for (i = 0; i < 3; i++) {
+			wishVel[i] = scale * pml.forward[i] * pm->cmd.forwardmove + scale * pml.right[i] * pm->cmd.rightmove;
+		}
+		wishVel[2] += scale * pm->cmd.upmove;
+		pm->ps->stats[JK_JETPACK] |= JK_JETPACK_THRUST;
+	}
+
+	if (pm->cmd.rightmove)
+	{
+		if (pm->cmd.rightmove > 0) anim = BOTH_INAIRRIGHT1;
+		else if (pm->cmd.rightmove < 0) anim = BOTH_INAIRLEFT1;
+	}
+	else
+	{
+		anim = BOTH_INAIRBACK1;
+	}
+
+	PM_SetAnim(SETANIM_LEGS, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD, 300);
+
+	VectorCopy(wishVel, wishDir);
+	wishSpeed = VectorNormalize(wishDir);
+
+	PM_Accelerate(wishDir, wishSpeed * jkmod_pm_jetPackSpeed, jkmod_pm_jetPackAccelerate);
+	PM_SlideMove(qfalse);
+
+	if (pml.previous_origin[2] < pm->ps->origin[2]) pml.previous_origin[2] = pm->ps->origin[2];
+}
+
+/*
 ================
 PmoveSingle
 
@@ -4727,6 +4805,11 @@ void PmoveSingle (pmove_t *pmove) {
 	if (pm->ps->pm_type == PM_FLOAT)
 	{
 		PM_FlyMove ();
+	}
+	// Tr!Force: [Jetpack] Load jetpack function
+	else if ((pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN) && !pml.groundPlane)
+	{
+		JKMod_PM_JetPack();
 	}
 	else
 	{
