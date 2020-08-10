@@ -911,9 +911,9 @@ void JKMod_ClientCommand(int clientNum)
 				"^3Emotes         Commands       Duels\n"
 				"^3Build          About          Credits\n"
 				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, jk2gameplay, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
-				return;
+			return;
 		}
-		if (!Q_stricmp(arg1, "commands"))
+		else if (!Q_stricmp(arg1, "commands"))
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Command ^5]^7\n"
@@ -949,7 +949,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^3ThumbsDown     TossBack       TossOver      TossUp      Type        Type2\n"
 				"^3Victory        Victory2       Waiting       WatchOut    Writing     Writing2\n"
 				"^7\""));
-				return;
+			return;
 		}
 		else if (!Q_stricmp(arg1, "duels"))
 		{
@@ -961,6 +961,8 @@ void JKMod_ClientCommand(int clientNum)
 				"^7Command list:\n"
 				"^3engage_duel\n"
 				"^3engage_duel_force\n"
+				"^5----------\n"
+				"^2Note: ^7You also can use ^5engage_ff ^7for force duel challenge\n"
 				"^7\""));
 			return;
 		}
@@ -982,24 +984,23 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
 			return;
 		}
-		else 
+		else if (!JKMod_emoteCheck(arg1, ent))
 		{
-			if (!JKMod_emoteCheck(arg1, ent))
-			{
-				trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote for ^3%s\n\"", arg1));
-				return;
-			}
+			trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote for ^3%s\n\"", arg1));
+			return;
 		}
 	}
 	// Drop flag command
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
 		JKMod_dropFlag(ent, clientNum);
+		return;
 	}
 	// Show motd command
 	else if (Q_stricmp(cmd, "motd") == 0)
 	{
 		JKMod_showMotd(ent, clientNum);
+		return;
 	}
 	// Ignore command
 	else if (Q_stricmp(cmd, "ignore") == 0)
@@ -1022,8 +1023,7 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
 			return;
 		}
-
-		if (trap_Argc() < 3)
+		else if (trap_Argc() < 3)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Ignore ^5]^7\n"
@@ -1040,92 +1040,95 @@ void JKMod_ClientCommand(int clientNum)
 				"^7\""));
 			return;
 		}
+		else if (!(!Q_stricmp(arg1, "chat") || !Q_stricmp(arg1, "duel")))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is not valid\n\"", arg1));
+			return;
+		}
 		else 
 		{
-			if (!(!Q_stricmp(arg1, "chat") || !Q_stricmp(arg1, "duel")))
-			{
-				trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is not valid\n\"", arg1));
-				return;
-			}
-			else 
-			{
-				option = !Q_stricmp(arg1, "chat") ? 0 : 1;
+			option = !Q_stricmp(arg1, "chat") ? 0 : 1;
 
-				if (!Q_stricmp(arg2, "all"))
+			if (!Q_stricmp(arg2, "all"))
+			{
+				ent->client->sess.jkmodSess.IgnoredAll[option] = ent->client->sess.jkmodSess.IgnoredAll[option] ? qfalse : qtrue;
+
+				if (ent->client->sess.jkmodSess.IgnoredAll[option])
 				{
-					ent->client->sess.jkmodSess.IgnoredAll[option] = ent->client->sess.jkmodSess.IgnoredAll[option] ? qfalse : qtrue;
-
-					if (ent->client->sess.jkmodSess.IgnoredAll[option])
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring all ^3%ss ^7now\n\"", arg1));
-					}
-					else
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring ^3%ss\n\"", arg1));
-					}
+					trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring all ^3%ss ^7now\n\"", arg1));
+					return;
 				}
 				else
 				{
-					ignored = JKMod_ClientNumberFromArg(arg2);
+					trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring ^3%ss\n\"", arg1));
+					return;
+				}
+			}
+			else
+			{
+				ignored = JKMod_ClientNumberFromArg(arg2);
 
-					if (ignored == -1)
+				if (ignored == -1)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored == -2)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"There are more names that contains ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored >= MAX_CLIENTS || ignored < 0)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", arg2));
+					return;
+				}
+				else if (ignored == ent->client->ps.clientNum)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
+					return;
+				}
+				else if (!g_entities[ignored].inuse || g_entities[ignored].client->pers.connected != CON_CONNECTED)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
+					return;
+				}
+				else
+				{
+					ignore = JKMod_IsClientIgnored(option, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
+
+					JKMod_IgnoreClient(option, ent->client->ps.clientNum, ignored, ignore);
+
+					if (ignore)
 					{
-						trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", arg2));
-						return;
-					}
-					else if (ignored == -2)
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"There are more names that contains ^3%s\n\"", arg2));
-						return;
-					}
-					else if (ignored >= MAX_CLIENTS || ignored < 0)
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", arg2));
-						return;
-					}
-					else if (ignored == ent->client->ps.clientNum)
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
-						return;
-					}
-					else if (!g_entities[ignored].inuse || g_entities[ignored].client->pers.connected != CON_CONNECTED)
-					{
-						trap_SendServerCommand(ent - g_entities, va("print \"The user ^3%s ^7is not active\n\"", arg2));
+						trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring ^3%s ^7%ss now\n\"", g_entities[ignored].client->pers.netname, arg1));
 						return;
 					}
 					else
 					{
-						ignore = JKMod_IsClientIgnored(option, ent->client->ps.clientNum, ignored) ? qfalse : qtrue;
-
-						JKMod_IgnoreClient(option, ent->client->ps.clientNum, ignored, ignore);
-
-						if (ignore)
-						{
-							trap_SendServerCommand(ent - g_entities, va("print \"You are ignoring ^3%s ^7%ss now\n\"", g_entities[ignored].client->pers.netname, arg1));
-						}
-						else
-						{
-							trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring %ss from ^3%s\n\"", arg1, g_entities[ignored].client->pers.netname));
-						}
+						trap_SendServerCommand(ent - g_entities, va("print \"You are no longer ignoring %ss from ^3%s\n\"", arg1, g_entities[ignored].client->pers.netname));
+						return;
 					}
 				}
 			}
 		}
 	}
-	// Engage duel force command
-	else if (Q_stricmp(cmd, "engage_duel_force") == 0)
+	// Engage force duel command
+	else if (Q_stricmp(cmd, "engage_duel_force") == 0 || Q_stricmp(cmd, "engage_ff") == 0)
 	{
 		if (!jkcvar_allowCustomDuel.integer)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"^3Force duel ^7is disabled by the server\n\""));
 			JKMod_EngageDuel(ent, 0);
+			return;
 		}
 		else
 		{
 			JKMod_EngageDuel(ent, 1);
+			return;
 		}
 	}
-	// Engage duel force command
+	// Who is command
 	else if (Q_stricmp(cmd, "whois") == 0)
 	{
 		char	status[MAX_STRING_CHARS] = "";
@@ -1178,6 +1181,7 @@ void JKMod_ClientCommand(int clientNum)
 
 		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
 		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
+		return;
 	}
 	// Illegal macro announce
 	else if (Q_stricmp(cmd, "macroused") == 0)
@@ -1189,10 +1193,12 @@ void JKMod_ClientCommand(int clientNum)
 			if (jkcvar_macroScan.integer == 2)
 			{
 				SetTeam(ent, "spectator");
+				return;
 			}
 			else if (jkcvar_macroScan.integer == 3)
 			{
 				trap_DropClient(clientNum, va("%s", G_GetStripEdString("SVINGAME", "WAS_KICKED")));
+				return;
 			}
 		}
 	}
@@ -1225,7 +1231,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^7\""));
 			return;
 		}
-		if (!Q_stricmp(arg1, "guns"))
+		else if (!Q_stricmp(arg1, "guns"))
 		{
 			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)))
 			{
@@ -1238,20 +1244,23 @@ void JKMod_ClientCommand(int clientNum)
 				return;
 			}
 		}
-		if (!Q_stricmp(arg1, "race"))
+		else if (!Q_stricmp(arg1, "race"))
 		{
 			JKMod_raceMode(ent, clientNum);
+			return;
 		}
 	}
 	// Save position command
 	else if (Q_stricmp(cmd, "savepos") == 0)
 	{
 		JKMod_savePosition(ent, clientNum);
+		return;
 	}
 	// Load position command
 	else if (Q_stricmp(cmd, "loadpos") == 0)
 	{
 		JKMod_loadPosition(ent, clientNum);
+		return;
 	}
 	// Test command
 	else if (Q_stricmp(cmd, "testcmd") == 0)
@@ -1268,6 +1277,7 @@ void JKMod_ClientCommand(int clientNum)
 		if (arg1[0] == '\0') strcpy(arg1, "empty");
 
 		trap_SendServerCommand(ent - g_entities, va("print \"Cvar1: %s Cvar2: %i Arg1: %s Arg2: %i\n\"", jkcvar_test1.string, jkcvar_test2.integer, arg1, atoi(arg2)));
+		return;
 	}
 	// Launch original client command function
 	else
