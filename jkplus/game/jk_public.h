@@ -25,13 +25,8 @@ Global definitions
 #define JK_RACE_IN				( 1 << 3 )
 
 // Jetpack stuff
-#define JK_JETPACK_IN			( 1 << 0 )
-#define JK_JETPACK_THRUST		( 1 << 1 )
-#define JK_JETPACK_GROUND		( 1 << 2 )
-
-// Grapple hook stuff
-#define JK_HOOK_FIRED			( 1 << 0 )
-#define JK_HOOK_ANCHORED		( 1 << 1 )
+#define JK_JETPACK_ACTIVE		( 1 << 28 )
+#define JK_JETPACK_FLAMING		( 1 << 29 )
 
 /*
 =====================================================================

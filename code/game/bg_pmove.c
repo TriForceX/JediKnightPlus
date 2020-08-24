@@ -388,14 +388,14 @@ static void PM_Friction( void ) {
 		drop += speed*pm_waterfriction*pm->waterlevel*pml.frametime;
 	}
 
-	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT || (pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN) ) // Tr!Force: [JetPack] Check jetpack
+	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT || (pm->ps->eFlags & JK_JETPACK_ACTIVE) ) // Tr!Force: [JetPack] Check jetpack
 	{
 		if (pm->ps->pm_type == PM_FLOAT)
 		{ //almost no friction while floating
 			drop += speed*0.1*pml.frametime;
 		}
 		// Tr!Force: [JetPack] Set jetpack friction
-		else if (pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN)
+		else if (pm->ps->eFlags & JK_JETPACK_ACTIVE)
 		{ 
 			drop += speed*jkmod_pm_jetPackFriction*pml.frametime;
 		}
@@ -4483,14 +4483,12 @@ void JKMod_PM_JetPack(void)
 		wishVel[0] = 0;
 		wishVel[1] = 0;
 		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
-		pm->ps->stats[JK_JETPACK] &= ~JK_JETPACK_THRUST;
 	}
 	else if (!scale)
 	{
 		wishVel[0] = 0;
 		wishVel[1] = 0;
 		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
-		pm->ps->stats[JK_JETPACK] |= JK_JETPACK_THRUST;
 	}
 	else
 	{
@@ -4498,7 +4496,6 @@ void JKMod_PM_JetPack(void)
 			wishVel[i] = scale * pml.forward[i] * pm->cmd.forwardmove + scale * pml.right[i] * pm->cmd.rightmove;
 		}
 		wishVel[2] += scale * pm->cmd.upmove;
-		pm->ps->stats[JK_JETPACK] |= JK_JETPACK_THRUST;
 	}
 
 	if (pm->cmd.rightmove)
@@ -4806,8 +4803,8 @@ void PmoveSingle (pmove_t *pmove) {
 	{
 		PM_FlyMove ();
 	}
-	// Tr!Force: [Jetpack] Load jetpack function
-	else if ((pm->ps->stats[JK_JETPACK] & JK_JETPACK_IN) && !pml.groundPlane)
+	// Tr!Force: [JetPack] Load jetpack function
+	else if ((pm->ps->eFlags & JK_JETPACK_ACTIVE) && !pml.groundPlane)
 	{
 		JKMod_PM_JetPack();
 	}
@@ -4825,6 +4822,15 @@ void PmoveSingle (pmove_t *pmove) {
 			// airborne
 			PM_AirMove();
 		}
+	}
+
+	// Tr!Force: [JetPack] Check jetpack flaming
+	if (pm->ps->eFlags & JK_JETPACK_ACTIVE)
+	{
+		if (!pml.groundPlane)
+			pm->ps->eFlags |= JK_JETPACK_FLAMING;
+		else
+			pm->ps->eFlags &= ~JK_JETPACK_FLAMING;
 	}
 
 	PM_Animate();

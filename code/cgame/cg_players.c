@@ -6153,6 +6153,16 @@ void CG_Player( centity_t *cent ) {
 		}
 	}
 
+	// Tr!Force: [JetPack] Render model
+	if (cgs.jkmodCvar.jetPack)
+	{
+		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
+		{
+			vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/weapons2/jetpack/jetpack.md3"), "*chestg", jkmod_jetPackDetails);
+		}
+	}
+
 	//If this client has tricked you.
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,
 		cent->currentState.trickedentindex2,

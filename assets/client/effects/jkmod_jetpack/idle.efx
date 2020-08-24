@@ -1,0 +1,159 @@
+Particle
+{
+	count				6
+	life				55 70
+	origin				-4 0 0 -15 0 0
+	rotation			-180 180
+	rotationDelta		-50 50
+	velocity			0 0 0 -80 0 0
+
+	alpha
+	{
+		start			0.4 0.7
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			1.5 3
+		end				6 10
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/fire2
+		gfx/effects/fire3
+		gfx/effects/fire4
+	]
+}
+
+Tail
+{
+	life				15
+	origin				-6 0 0 -10 0 0
+	velocity			-1 0 0
+
+	size
+	{
+		start			4 8
+	}
+
+	length
+	{
+		start			-15 -30
+	}
+
+	shaders
+	[
+		gfx/effects/flamejet
+	]
+}
+
+Particle
+{
+	flags				useAlpha
+	spawnFlags			rgbComponentInterpolation
+	count				2 3
+	life				200 400
+	origin				-25 0 0 -30 0 0
+	rotation			-180 180
+	rotationDelta		-20 20
+	velocity			-10 -10 -10 -80 10 10
+	gravity				-150 10
+
+	rgb
+	{
+		start			0.8431 0.8431 0.7569
+		end				0.2353 0.2353 0.2353
+		flags			linear
+	}
+
+	alpha
+	{
+		start			0.7 0.8
+		end				0.1
+		flags			linear
+	}
+
+	size
+	{
+		start			6 8
+		end				12 24
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/alpha_smoke
+	]
+}
+
+Tail
+{
+	flags				useAlpha
+	spawnFlags			rgbComponentInterpolation
+	life				350 400
+	origin				-15 0 0 -30 0 0
+	velocity			-1 0 0
+
+	rgb
+	{
+		start			0.7059 0.6863 0.3608 1 0.8392 0.1843
+		end				0.2353 0.2353 0.2353 0 0 0
+		parm			20
+		flags			clamp
+	}
+
+	alpha
+	{
+		start			0.7 0.9
+		end				0.2
+		flags			linear
+	}
+
+	size
+	{
+		start			2 6
+		end				8 24
+		flags			linear
+	}
+
+	length
+	{
+		start			-40 -55
+	}
+
+	shaders
+	[
+		gfx/effects/alpha_smoke
+	]
+}
+
+Particle
+{
+	spawnFlags			rgbComponentInterpolation
+	life				2
+	origin				-5 0 0
+
+	rgb
+	{
+		start			1 1 0.749 1 1 0.549
+	}
+
+	alpha
+	{
+		start			0.25 0.35
+	}
+
+	size
+	{
+		start			24 30
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}

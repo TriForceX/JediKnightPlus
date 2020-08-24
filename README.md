@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.11.6-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.12.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -60,7 +60,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Closed server feature (Allow by password)
-- [x] Alternative dimensions (Duel, chat, etc...)
+- [x] Alternative dimensions (Duel, chat, race, etc...)
 - [x] Custom call vote system
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
@@ -105,13 +105,13 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 **Description:** Additional features using the clientside plugin
 
 - [x] Atmospheric effects (Rain, snow, etc...)
-- [ ] Rank icons for the scoreboard (Also show wins, losses, flag captures, etc...)
+- [ ] Extra info for scoreboard (Wins, losses, flag captures, etc...)
 - [ ] Mini keyboard display to see key presses on screen
 - [x] Jedi Academy chat display mode
 - [x] Two chat icons (Jedi Outcast & Jedi Academy)
 - [x] Fixed 2D aspect ratio for non 4:3 screens
 - [ ] Fire lightsaber style, to add real fire effects to the lightsaber
-- [ ] Jetpack to fly around the map
+- [x] Jetpack to fly around the map
 - [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [x] Ingame clock showing the real time hours, minutes and seconds

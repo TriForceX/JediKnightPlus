@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.12.0
+- Added basic support for race maps
+- Prevent force powers on racer respawn & save jump level
+- Moved say functions to being used also by console commands
+- Client commands cleanup
+- Added jetpack serverside functions
+- Added jetpack clientside functions
+
 ## 0.11.6
 - Added check for custom teleports chats
 - Reorder say commands by preference

@@ -254,6 +254,39 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 			ScaleModelAxis(&re);
 		}
 
+		// Special case
+		if (modelFile == trap_R_RegisterModel("models/weapons2/jetpack/jetpack.md3"))
+		{
+			vec3_t flamePos, flameDir;
+			vec3_t flamePos2, flameDir2;
+			vec_t *flameSound = (cg.snap->ps.clientNum == cent->currentState.number) ? cg.refdef.vieworg : cent->lerpOrigin;
+
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, ORIGIN, flamePos);
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, ORIGIN, flamePos2);
+
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, NEGATIVE_Y, flameDir);
+			VectorMA(flamePos, -10, flameDir, flamePos);
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_X, flameDir);
+			VectorMA(flamePos, -6, flameDir, flamePos);
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, flameDir);
+			VectorMA(flamePos, -6, flameDir, flamePos);
+
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_Y, flameDir2);
+			VectorMA(flamePos2, -10, flameDir2, flamePos2);
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_X, flameDir2);
+			VectorMA(flamePos2, -6, flameDir2, flamePos2);
+			trap_G2API_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, flameDir2);
+			VectorMA(flamePos2, -6, flameDir2, flamePos2);
+
+			if (cent->currentState.eFlags & JK_JETPACK_FLAMING)
+			{
+				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/idle"), flamePos, flameDir);
+				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/idle"), flamePos2, flameDir2);
+
+				trap_S_AddLoopingSound(cent->currentState.number, flameSound, vec3_origin, trap_S_RegisterSound("sound/effects/fire_lp.wav"));
+			}
+		}
+
 		// if (cent->currentState.isJediMaster) re.renderfx |= RF_DEPTHHACK;
 
 		trap_R_AddRefEntityToScene(&re);

@@ -1274,16 +1274,16 @@ void JKMod_ClientCommand(int clientNum)
 		else
 		{
 			// Disable
-			if (ent->client->ps.stats[JK_JETPACK] & JK_JETPACK_IN)
+			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 			{
-				ent->client->ps.stats[JK_JETPACK] &= ~JK_JETPACK_IN;
+				ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack disabled\n\""));
 				return;
 			}
 			// Enable
 			else
 			{
-				ent->client->ps.stats[JK_JETPACK] |= JK_JETPACK_IN;
+				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack enabled\n\""));
 				return;
 			}

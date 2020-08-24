@@ -323,9 +323,7 @@ typedef enum {
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
 	// Tr!Force: [Stats] Custom player flags
 	JK_PLAYER,
-	JK_DIMENSION,
-	JK_JETPACK,
-	JK_HOOK
+	JK_DIMENSION
 } statIndex_t;
 
 
