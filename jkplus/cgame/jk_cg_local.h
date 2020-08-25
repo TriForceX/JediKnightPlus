@@ -82,6 +82,7 @@ extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
 extern vmCvar_t						jkcvar_cg_flagOpacity;
 extern vmCvar_t						jkcvar_cg_flagAlignment;
+extern vmCvar_t						jkcvar_cg_jetPackGround;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;

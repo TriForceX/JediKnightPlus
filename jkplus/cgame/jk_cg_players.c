@@ -285,6 +285,13 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 
 				trap_S_AddLoopingSound(cent->currentState.number, flameSound, vec3_origin, trap_S_RegisterSound("sound/effects/fire_lp.wav"));
 			}
+			else if (jkcvar_cg_jetPackGround.integer)
+			{
+				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/ground"), flamePos, flameDir);
+				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/ground"), flamePos2, flameDir2);
+
+				trap_S_AddLoopingSound(cent->currentState.number, flameSound, vec3_origin, trap_S_RegisterSound("sound/effects/torch_burning_lp.wav"));
+			}
 		}
 
 		// if (cent->currentState.isJediMaster) re.renderfx |= RF_DEPTHHACK;

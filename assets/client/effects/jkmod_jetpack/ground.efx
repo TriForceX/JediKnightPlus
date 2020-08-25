@@ -1,0 +1,44 @@
+Particle
+{
+	flags				usePhysics impactKills impactFx useAlpha
+	spawnFlags			absoluteAccel evenDistribution
+	count				2 3
+	life				200 400
+	origin				-5 0 0 -30 0 0
+	rotation			-180 180
+	rotationDelta		-20 20
+	velocity			-10 -10 -10 -80 10 10
+	gravity				-150 10
+
+	rgb
+	{
+		start			1 0.8078 0.5176 0.9961 0.9882 0.6471
+		parm			25 35
+		flags			clamp
+	}
+
+	alpha
+	{
+		start			0.5
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			5
+		end				2 5
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/alpha_smoke
+		gfx/effects/alpha_smoke2
+	]
+
+	impactfx
+	[
+		env/thruster_spray
+	]
+}
