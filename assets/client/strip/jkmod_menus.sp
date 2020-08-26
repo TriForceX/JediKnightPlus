@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 103
+COUNT 107
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -928,4 +928,40 @@ INDEX 102
    TEXT_LANGUAGE3 "WARNUNG!\n\nDadurch werden alle mod-optionen\nauf die werkseinstellungen\nzurückgesetzt\n\nFortsetzen?"
    TEXT_LANGUAGE6 "WARNING!\n\nThis will set all mod options\nto their factory settings\n\nContinue?"
    TEXT_LANGUAGE8 "¡ADVERTENCIA!\n\nEsto configurará todas las opciones\ndel mod según el modo de fábrica\n\n¿Continuar?"
+}
+INDEX 103
+{
+   REFERENCE CLIENT_JETPACK
+   TEXT_LANGUAGE1 "Jetpack:"
+   TEXT_LANGUAGE2 "Jetpack:"
+   TEXT_LANGUAGE3 "Jetpack:"
+   TEXT_LANGUAGE6 "Jetpack:"
+   TEXT_LANGUAGE8 "Jetpack:"
+}
+INDEX 104
+{
+   REFERENCE CLIENT_JETPACK_DESC
+   TEXT_LANGUAGE1 "Enable jetpack usage."
+   TEXT_LANGUAGE2 "Activer l'utilisation du jetpack."
+   TEXT_LANGUAGE3 "Aktivieren sie die Jetpack-verwendung."
+   TEXT_LANGUAGE6 "Enable jetpack usage."
+   TEXT_LANGUAGE8 "Habilitar el uso de jetpack."
+}
+INDEX 105
+{
+   REFERENCE CLIENT_JETPACKGROUND
+   TEXT_LANGUAGE1 "Jetpack extra effect:"
+   TEXT_LANGUAGE2 "Effet extra Jetpack:"
+   TEXT_LANGUAGE3 "Jetpack extra-effekt:"
+   TEXT_LANGUAGE6 "Jetpack extra effect:"
+   TEXT_LANGUAGE8 "Efecto extra Jetpack:"
+}
+INDEX 106
+{
+   REFERENCE CLIENT_JETPACKGROUND_DESC
+   TEXT_LANGUAGE1 "Show an additional jetpack effect while the player is on the ground."
+   TEXT_LANGUAGE2 "Affichez un effet jetpack supplémentaire lorsque le joueur est au sol."
+   TEXT_LANGUAGE3 "Zeigen sie einen zusätzlichen Jetpack-effekt, während sich der spieler am boden befindet."
+   TEXT_LANGUAGE6 "Show an additional jetpack effect while the player is on the ground."
+   TEXT_LANGUAGE8 "Muestra un efecto de jetpack adicional mientras el jugador está en el suelo."
 }

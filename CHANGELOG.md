@@ -9,6 +9,11 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.12.1
+- Prevent jetpack usage on race mode
+- Added alternative effect for jetpack on ground
+- Added jetpack menu options
+
 ## 0.12.0
 - Added basic support for race maps
 - Prevent force powers on racer respawn & save jump level

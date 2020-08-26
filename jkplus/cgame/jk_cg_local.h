@@ -82,15 +82,15 @@ extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
 extern vmCvar_t						jkcvar_cg_flagOpacity;
 extern vmCvar_t						jkcvar_cg_flagAlignment;
-extern vmCvar_t						jkcvar_cg_jetPackGround;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;
 extern vmCvar_t						jkcvar_cg_chatBoxHeight;
 extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
-extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_customHats;
+extern vmCvar_t						jkcvar_cg_customAnims;
+extern vmCvar_t						jkcvar_cg_jetPackGround;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;

@@ -1531,6 +1531,39 @@
 				hide			keybindstatus
 			}
 		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_JETPACK
+			descText			@JKMENUS_CLIENT_JETPACK_DESC
+			cvar				"jetpack"
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseenter 
+			{ 
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseexit 
+			{ 
+				hide			highlight4
+				hide			keybindstatus
+			}
+		}
 
 		//---------------------------------------------
 		//	OTHERS OPTIONS
@@ -1540,10 +1573,21 @@
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_CUSTOMANIMS
-			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
-			cvar				"jk_cg_customAnims"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_CUSTOMHATS
+			descText			@JKMENUS_CLIENT_CUSTOMHATS_DESC
+			cvar				"jk_cg_customHats"
+			cvarFloatList
+			{
+				@MENUS0_OFF  	0
+				"Santa"  		1
+				"Pumpkin"  		2
+				"Cap"  			3
+				"Fedora"  		4
+				"Cringe"  		5
+				"Sombrero"  	6
+				"Tophat"  		7
+			}
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -1568,27 +1612,15 @@
 				hide			keybindstatus
 			}
 		}
-
-
+		
 		itemDef 
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_CUSTOMHATS
-			descText			@JKMENUS_CLIENT_CUSTOMHATS_DESC
-			cvar				"jk_cg_customHats"
-			cvarFloatList
-			{
-				@MENUS0_OFF  	0
-				"Santa"  		1
-				"Pumpkin"  		2
-				"Cap"  			3
-				"Fedora"  		4
-				"Cringe"  		5
-				"Sombrero"  	6
-				"Tophat"  		7
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_CUSTOMANIMS
+			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
+			cvar				"jk_cg_customAnims"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -1610,6 +1642,39 @@
 			mouseexit 
 			{ 
 				hide			highlight3
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_JETPACKGROUND
+			descText			@JKMENUS_CLIENT_JETPACKGROUND_DESC
+			cvar				"jk_cg_jetPackGround"
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseenter 
+			{
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseexit 
+			{ 
+				hide			highlight4
 				hide			keybindstatus
 			}
 		}

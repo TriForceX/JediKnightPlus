@@ -4456,7 +4456,6 @@ static void UI_Update(const char *name) {
 		trap_Cvar_Set("jk_cg_damageBlend", "0");
 		trap_Cvar_Set("jk_cg_flagOpacity", "255");
 		trap_Cvar_Set("jk_cg_flagAlignment", "0");
-		trap_Cvar_Set("jk_cg_jetPackGround", "0");
 		trap_Cvar_Set("cg_simpleItems", "0");
 		trap_Cvar_Set("cg_shadows", "1");
 		trap_Cvar_Set("cg_scorePlums", "1");
@@ -4467,8 +4466,9 @@ static void UI_Update(const char *name) {
 		trap_Cvar_Set("cg_thirdPersonRange", "80");
 
 		// Others
-		trap_Cvar_Set("jk_cg_customAnims", "0");
 		trap_Cvar_Set("jk_cg_customHats", "0");
+		trap_Cvar_Set("jk_cg_customAnims", "0");
+		trap_Cvar_Set("jk_cg_jetPackGround", "0");
 	}
 	// screen resolutions
 	else if (!Q_stricmp(name, "ui_r_aspectratio")) {

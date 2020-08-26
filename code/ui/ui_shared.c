@@ -4024,6 +4024,7 @@ static bind_t g_bindings[] =
 	// Tr!Force: [JKMod] Add command for menus
 	{"dropflag", 			-1,				-1,		-1,	-1},
 	{"engage_duel_force",	-1,				-1,		-1,	-1},
+	{"jetpack",				-1,				-1,		-1,	-1},
 };
 
 
