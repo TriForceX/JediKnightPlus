@@ -89,6 +89,11 @@ static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
 		trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 		return qfalse;
 	}
+	else if (ent->client->ps.duelInProgress)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't change in a private duel\n\""));
+		return;
+	}
 	else
 	{
 		// Disable
@@ -737,6 +742,9 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
+			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+
 			// Tr!Force: [Duel] Default start health and shield
 			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0)
 			{
@@ -1272,9 +1280,14 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
 			return;
 		}
-		else if(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+		else if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in this dimension\n\""));
+			return;
+		}
+		else if (ent->client->ps.duelInProgress)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in a private duel\n\""));
 			return;
 		}
 		else
@@ -1289,9 +1302,21 @@ void JKMod_ClientCommand(int clientNum)
 			// Enable
 			else
 			{
-				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack enabled\n\""));
-				return;
+				if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
+					|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
+					|| ent->client->ps.saberInFlight
+					|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
+					|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
+				{
+					trap_SendServerCommand(ent - g_entities, va("cp \"You can't enable jetpack while moving\n\""));
+					return;
+				}
+				else
+				{
+					ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+					trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack enabled\n\""));
+					return;
+				}
 			}
 		}
 	}
