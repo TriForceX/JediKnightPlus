@@ -36,6 +36,7 @@ vmCvar_t	jkcvar_cg_saberTrailSpeed;
 vmCvar_t	jkcvar_cg_damageBlend;
 vmCvar_t	jkcvar_cg_flagOpacity;
 vmCvar_t	jkcvar_cg_flagAlignment;
+vmCvar_t	jkcvar_cg_chatPlayerOpacity;
 
 vmCvar_t	jkcvar_cg_chatBox;
 vmCvar_t	jkcvar_cg_chatBoxTime;
@@ -64,6 +65,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_damageBlend,		"jk_cg_damageBlend",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_flagOpacity,		"jk_cg_flagOpacity",		"255",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_flagAlignment,		"jk_cg_flagAlignment",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_chatPlayerOpacity,	"jk_cg_chatPlayerOpacity",	"1",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_chatBox,			"jk_cg_chatBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatBoxTime,		"jk_cg_chatBoxTime",		"10",	CVAR_ARCHIVE },

@@ -4456,6 +4456,7 @@ static void UI_Update(const char *name) {
 		trap_Cvar_Set("jk_cg_damageBlend", "0");
 		trap_Cvar_Set("jk_cg_flagOpacity", "255");
 		trap_Cvar_Set("jk_cg_flagAlignment", "0");
+		trap_Cvar_Set("jk_cg_chatPlayerOpacity", "1");
 		trap_Cvar_Set("cg_simpleItems", "0");
 		trap_Cvar_Set("cg_shadows", "1");
 		trap_Cvar_Set("cg_scorePlums", "1");

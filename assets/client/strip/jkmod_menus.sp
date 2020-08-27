@@ -720,7 +720,7 @@ INDEX 79
    TEXT_LANGUAGE2 "Style d'icône de chat:"
    TEXT_LANGUAGE3 "Stil des chat-ikone:"
    TEXT_LANGUAGE6 "Chat icon style:"
-   TEXT_LANGUAGE8 "Estilo de icono de chat:"
+   TEXT_LANGUAGE8 "Estilo icono de chat:"
 }
 INDEX 80
 {
@@ -733,6 +733,24 @@ INDEX 80
 }
 INDEX 81
 {
+   REFERENCE CLIENT_CHATOPACITY
+   TEXT_LANGUAGE1 "Chat transparency:"
+   TEXT_LANGUAGE2 "Transparence du chat:"
+   TEXT_LANGUAGE3 "Chat-transparenz:"
+   TEXT_LANGUAGE6 "Chat transparency:"
+   TEXT_LANGUAGE8 "Transparencia chat:"
+}
+INDEX 82
+{
+   REFERENCE CLIENT_CHATOPACITY_DESC
+   TEXT_LANGUAGE1 "Make chatting players transparent (Only works if the dimension is enabled)."
+   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents (Ne fonctionne que si la dimension est activée)."
+   TEXT_LANGUAGE3 "Chatten sie spieler transparent (Funktioniert nur, wenn die Dimension aktiviert ist)."
+   TEXT_LANGUAGE6 "Make chatting players transparent (Only works if the dimension is enabled)."
+   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes (Solo si la dimensión está habilitada)."
+}
+INDEX 83
+{
    REFERENCE CLIENT_DMGBLEND
    TEXT_LANGUAGE1 "Damage blend:"
    TEXT_LANGUAGE2 "Mélange de dommages:"
@@ -740,7 +758,7 @@ INDEX 81
    TEXT_LANGUAGE6 "Damage blend:"
    TEXT_LANGUAGE8 "Mezcla de daños:"
 }
-INDEX 82
+INDEX 84
 {
    REFERENCE CLIENT_DMGBLEND_DESC
    TEXT_LANGUAGE1 "Shows a damage blend effect when you get a hit."
@@ -748,24 +766,6 @@ INDEX 82
    TEXT_LANGUAGE3 "Zeigt einen Schadensmischungseffekt, wenn Sie einen Treffer erhalten."
    TEXT_LANGUAGE6 "Shows a damage blend effect when you get a hit."
    TEXT_LANGUAGE8 "Muestra un efecto de mezcla de daño cuando recibes un golpe."
-}
-INDEX 83
-{
-   REFERENCE CLIENT_SIMPLEITEMS
-   TEXT_LANGUAGE1 "Items style:"
-   TEXT_LANGUAGE2 "Style d'articles:"
-   TEXT_LANGUAGE3 "Artikelstil:"
-   TEXT_LANGUAGE6 "Items style:"
-   TEXT_LANGUAGE8 "Estilo ítems:"
-}
-INDEX 84
-{
-   REFERENCE CLIENT_SIMPLEITEMS_DESC
-   TEXT_LANGUAGE1 "Choose the map items style."
-   TEXT_LANGUAGE2 "Choisissez le style des éléments de la carte."
-   TEXT_LANGUAGE3 "Wählen sie den stil der kartenelemente."
-   TEXT_LANGUAGE6 "Choose the map items style."
-   TEXT_LANGUAGE8 "Elija el estilo de los ítems del mapa."
 }
 INDEX 85
 {

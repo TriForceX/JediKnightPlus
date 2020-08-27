@@ -254,6 +254,13 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 			ScaleModelAxis(&re);
 		}
 
+		// Check chat player transparency
+		if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && cent->currentState.bolt1 == 2 && jkcvar_cg_chatPlayerOpacity.integer)
+		{
+			re.renderfx |= RF_FORCE_ENT_ALPHA;
+			re.shaderRGBA[3] = 100; // Fixed ?
+		}
+
 		// Special case
 		if (modelFile == trap_R_RegisterModel("models/weapons2/jetpack/jetpack.md3"))
 		{

@@ -6856,6 +6856,17 @@ doEssentialTwo:
 			legs.shaderRGBA[3] = 1;
 		}
 	}
+	// Tr!Force: [Dimensions] Check dimensions (Chat player transparency)
+	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && cent->currentState.bolt1 == 2 && jkcvar_cg_chatPlayerOpacity.integer)
+	{
+		legs.renderfx |= RF_FORCE_ENT_ALPHA;
+		legs.shaderRGBA[3] = 100; // Fixed ?
+
+		if (legs.shaderRGBA[3] < 1)
+		{ //don't cancel it out even if it's < 1
+			legs.shaderRGBA[3] = 1;
+		}
+	}
 
 	if (cg_entities[cent->currentState.number].teamPowerEffectTime > cg.time)
 	{

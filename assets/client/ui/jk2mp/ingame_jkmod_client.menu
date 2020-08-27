@@ -1075,15 +1075,15 @@
 				hide			keybindstatus
 			}
 		}
-
+		
 		itemDef 
 		{
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DMGBLEND
-			descText			@JKMENUS_CLIENT_DMGBLEND_DESC
-			cvar				"jk_cg_damageBlend"
+			text				@JKMENUS_CLIENT_CHATOPACITY
+			descText			@JKMENUS_CLIENT_CHATOPACITY_DESC
+			cvar				"jk_cg_chatPlayerOpacity"
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1108,20 +1108,15 @@
 				hide			keybindstatus
 			}
 		}
-		
+
 		itemDef 
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_SIMPLEITEMS
-			descText			@JKMENUS_CLIENT_SIMPLEITEMS_DESC
-			cvar				"cg_simpleItems"
-			cvarFloatList
-			{
-				"3D"  			0
-				"2D"  			1
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_DMGBLEND
+			descText			@JKMENUS_CLIENT_DMGBLEND_DESC
+			cvar				"jk_cg_damageBlend"
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
