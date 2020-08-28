@@ -1302,21 +1302,9 @@ void JKMod_ClientCommand(int clientNum)
 			// Enable
 			else
 			{
-				if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
-					|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
-					|| ent->client->ps.saberInFlight
-					|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
-					|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
-				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't enable jetpack while moving\n\""));
-					return;
-				}
-				else
-				{
-					ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-					trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack enabled\n\""));
-					return;
-				}
+				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack equiped\nPress USE button on air to enable\""));
+				return;
 			}
 		}
 	}

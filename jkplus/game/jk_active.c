@@ -73,12 +73,6 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			if (!ent->health <= 0) ent->takedamage = qtrue;
 		}
 
-		// Check dimension damage
-		if (client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
-		{
-			ent->takedamage = qfalse;
-		}
-
 		// Show server motd
 		if (client->jkmodClient.MotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 		{
@@ -172,6 +166,13 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 	{
 		if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
+		ent->takedamage = qfalse;
+	}
+
+	// Check jetpack
+	if (!(ent->client->ps.eFlags & JK_JETPACK_ACTIVE) || ent->client->ps.pm_type == PM_DEAD)
+	{
+		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
 	}
 
 	// Launch original client think real function

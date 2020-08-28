@@ -388,14 +388,14 @@ static void PM_Friction( void ) {
 		drop += speed*pm_waterfriction*pm->waterlevel*pml.frametime;
 	}
 
-	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT || (pm->ps->eFlags & JK_JETPACK_ACTIVE) ) // Tr!Force: [JetPack] Check jetpack
+	if ( pm->ps->pm_type == PM_SPECTATOR || pm->ps->pm_type == PM_FLOAT || pm->ps->eFlags & JK_JETPACK_FLAMING) // Tr!Force: [JetPack] Check jetpack
 	{
 		if (pm->ps->pm_type == PM_FLOAT)
 		{ //almost no friction while floating
 			drop += speed*0.1*pml.frametime;
 		}
 		// Tr!Force: [JetPack] Set jetpack friction
-		else if (pm->ps->eFlags & JK_JETPACK_ACTIVE)
+		else if (pm->ps->eFlags & JK_JETPACK_FLAMING)
 		{ 
 			drop += speed*jkmod_pm_jetPackFriction*pml.frametime;
 		}
@@ -4804,12 +4804,18 @@ void PmoveSingle (pmove_t *pmove) {
 		PM_FlyMove ();
 	}
 	// Tr!Force: [JetPack] Load jetpack function
-	else if ((pm->ps->eFlags & JK_JETPACK_ACTIVE) && !pml.groundPlane)
+	else if ((pm->ps->eFlags & JK_JETPACK_FLAMING) && !pml.groundPlane)
 	{
 		JKMod_PM_JetPack();
 	}
 	else
 	{
+		// Tr!Force: [JetPack] Check jetpack flaming
+		if ((pm->ps->eFlags & JK_JETPACK_FLAMING) && pml.groundPlane)
+		{
+			pm->ps->eFlags &= ~JK_JETPACK_FLAMING;
+		}
+
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP) {
 			PM_WaterJumpMove();
 		} else if ( pm->waterlevel > 1 ) {
@@ -4822,15 +4828,6 @@ void PmoveSingle (pmove_t *pmove) {
 			// airborne
 			PM_AirMove();
 		}
-	}
-
-	// Tr!Force: [JetPack] Check jetpack flaming
-	if (pm->ps->eFlags & JK_JETPACK_ACTIVE)
-	{
-		if (!pml.groundPlane)
-			pm->ps->eFlags |= JK_JETPACK_FLAMING;
-		else
-			pm->ps->eFlags &= ~JK_JETPACK_FLAMING;
 	}
 
 	PM_Animate();
