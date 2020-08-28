@@ -752,6 +752,12 @@ static qboolean PM_CheckJump( void )
 		return qfalse;
 	}
 
+	// Tr!Force: [JetPack] JKA physics
+	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
+	{
+		return qfalse;
+	}
+
 	//Don't allow jump until all buttons are up
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;		
@@ -2336,6 +2342,15 @@ static void PM_GroundTrace( void ) {
 	}
 
 	if (pm->ps->pm_type == PM_FLOAT)
+	{
+		PM_GroundTraceMissed();
+		pml.groundPlane = qfalse;
+		pml.walking = qfalse;
+		return;
+	}
+
+	// Tr!Force: [JetPack] JKA physics
+	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
 	{
 		PM_GroundTraceMissed();
 		pml.groundPlane = qfalse;
@@ -4477,46 +4492,116 @@ void JKMod_PM_JetPack(void)
 	scale = PM_CmdScale(&pm->cmd);
 	PM_SetMovementDir();
 
-	// User actions
-	if (!scale && !pm->cmd.upmove)
+	// JKA physics
+	if (pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA)
 	{
-		wishVel[0] = 0;
-		wishVel[1] = 0;
-		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
-	}
-	else if (!scale)
-	{
-		wishVel[0] = 0;
-		wishVel[1] = 0;
-		wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
-	}
-	else
-	{
-		for (i = 0; i < 3; i++) {
-			wishVel[i] = scale * pml.forward[i] * pm->cmd.forwardmove + scale * pml.right[i] * pm->cmd.rightmove;
+		float groundDist = 0;
+		int hoverHeight = 64;
+
+		groundDist = PM_GroundDistance();
+
+		// Project moves down to flat plane
+		pml.forward[2] = 0;
+		pml.right[2] = 0;
+		VectorNormalize(pml.forward);
+		VectorNormalize(pml.right);
+
+		if (groundDist < hoverHeight + 64)
+			pm->ps->gravity *= 0.1f;
+		else
+			pm->ps->gravity *= 0.25f;
+
+		// User actions
+		if (pm->cmd.rightmove > 0)
+			PM_ContinueLegsAnim(BOTH_INAIRRIGHT1);
+		else if (pm->cmd.rightmove < 0)
+			PM_ContinueLegsAnim(BOTH_INAIRLEFT1);
+		else if (pm->cmd.forwardmove > 0)
+			PM_ContinueLegsAnim(BOTH_INAIR1);
+		else if (pm->cmd.forwardmove < 0)
+			PM_ContinueLegsAnim(BOTH_INAIRBACK1);
+		else
+			PM_ContinueLegsAnim(BOTH_INAIR1);
+
+		// Cap upward velocity off at 256. Seems reasonable. 
+		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < 256)
+		{ 
+			float addIn = 12.0f;
+
+			if (pm->ps->velocity[2] > 0) addIn = 12.0f - (groundDist / 64.0f);
+			if (addIn > 0.0f) pm->ps->velocity[2] += addIn;
 		}
-		wishVel[2] += scale * pm->cmd.upmove;
-	}
+		else
+		{
+			if (pm->ps->velocity[2] < 256)
+			{
+				if (pm->ps->velocity[2] < -100) pm->ps->velocity[2] = -100;
+				if (groundDist < hoverHeight) pm->ps->velocity[2] += 2;
+			}
+		}
 
-	if (pm->cmd.rightmove)
-	{
-		if (pm->cmd.rightmove > 0) anim = BOTH_INAIRRIGHT1;
-		else if (pm->cmd.rightmove < 0) anim = BOTH_INAIRLEFT1;
+		for (i = 0; i < 2; i++)
+		{
+			wishVel[i] = pml.forward[i] * pm->cmd.forwardmove + pml.right[i] * pm->cmd.rightmove;
+		}
+		wishVel[2] = 0;
+
+		if (pm->cmd.upmove <= 0)
+			VectorScale(wishVel, 0.8f, wishVel);
+		else
+			VectorScale(wishVel, 2.0f, wishVel);
+
+		VectorCopy(wishVel, wishDir);
+		wishSpeed = VectorNormalize(wishDir);
+		wishSpeed *= scale;
+
+		PM_Accelerate(wishDir, wishSpeed, pm_airaccelerate);
+		PM_StepSlideMove(qtrue);
 	}
+	// Regular Q3 mods
 	else
 	{
-		anim = BOTH_INAIRBACK1;
+		// User actions
+		if (!scale && !pm->cmd.upmove)
+		{
+			wishVel[0] = 0;
+			wishVel[1] = 0;
+			wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
+		}
+		else if (!scale)
+		{
+			wishVel[0] = 0;
+			wishVel[1] = 0;
+			wishVel[2] = pm->ps->speed * (pm->cmd.upmove / 127.0f);
+		}
+		else
+		{
+			for (i = 0; i < 3; i++) {
+				wishVel[i] = scale * pml.forward[i] * pm->cmd.forwardmove + scale * pml.right[i] * pm->cmd.rightmove;
+			}
+			wishVel[2] += scale * pm->cmd.upmove;
+		}
+
+		if (pm->cmd.rightmove)
+		{
+			if (pm->cmd.rightmove > 0) anim = BOTH_INAIRRIGHT1;
+			else if (pm->cmd.rightmove < 0) anim = BOTH_INAIRLEFT1;
+		}
+		else
+		{
+			anim = BOTH_INAIRBACK1;
+		}
+
+		PM_SetAnim(SETANIM_LEGS, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD, 300);
+
+		VectorCopy(wishVel, wishDir);
+		wishSpeed = VectorNormalize(wishDir);
+
+		PM_Accelerate(wishDir, wishSpeed * jkmod_pm_jetPackSpeed, jkmod_pm_jetPackAccelerate);
+		PM_SlideMove(qfalse);
+
+		if (pml.previous_origin[2] < pm->ps->origin[2]) pml.previous_origin[2] = pm->ps->origin[2];
 	}
-
-	PM_SetAnim(SETANIM_LEGS, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD, 300);
-
-	VectorCopy(wishVel, wishDir);
-	wishSpeed = VectorNormalize(wishDir);
-
-	PM_Accelerate(wishDir, wishSpeed * jkmod_pm_jetPackSpeed, jkmod_pm_jetPackAccelerate);
-	PM_SlideMove(qfalse);
-
-	if (pml.previous_origin[2] < pm->ps->origin[2]) pml.previous_origin[2] = pm->ps->origin[2];
 }
 
 /*

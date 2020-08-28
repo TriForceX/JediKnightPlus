@@ -78,6 +78,7 @@ vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
 
 vmCvar_t	jkcvar_jetPack;
+vmCvar_t	jkcvar_jetPackPhysics;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
@@ -129,6 +130,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_antiWarpTime,				"jk_antiWarpTime",			"1",		CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_jetPack,					"jk_jetPack",				"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_jetPackPhysics,			"jk_jetPackPhysics",		"0",		CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_test1,					"jk_test1",					"0",		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,					"jk_test2",					"0",		CVAR_ARCHIVE,						0, qtrue },

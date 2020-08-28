@@ -24,6 +24,9 @@ Global definitions
 #define JK_GUNS_IN				( 1 << 2 )
 #define JK_RACE_IN				( 1 << 3 )
 
+// Movement stuff
+#define JK_JETPACK_JKA			( 1 << 0 )
+
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 28 )
 #define JK_JETPACK_FLAMING		( 1 << 29 )
