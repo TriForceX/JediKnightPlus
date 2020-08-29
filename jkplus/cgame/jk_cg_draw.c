@@ -27,6 +27,12 @@ void JKMod_CG_Draw2D(void)
 	{
 		JKMod_CG_ChatBox_DrawStrings();
 	}
+
+	// Draw Jetpack Fuel
+	if (cgs.jkmodCvar.jetPack == 1)
+	{
+		JKMod_CG_DrawJetPackFuel();
+	}
 }
 
 /*
@@ -350,4 +356,50 @@ float JKMod_CG_DrawPowerupIcons(int y)
 		}
 	}
 	return y;
+}
+
+/*
+=====================================================================
+Draw jetpack fuel function
+=====================================================================
+*/
+void JKMod_CG_DrawJetPackFuel(void)
+{
+	vec4_t aColor, bColor, cColor;
+	int	x, y;
+	int width = 20;
+	int height = 100;
+	float percent;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (!(cg.snap->ps.eFlags & JK_JETPACK_ACTIVE))  return;
+	if (!(cg.snap->ps.stats[JK_FUEL] < 100)) return;
+	
+	x = 5;
+	y = (cgs.screenHeight / 2) - (height / 2);
+	percent = ((float)cg.snap->ps.stats[JK_FUEL] / 100.0f)*height;
+
+	if (percent < 5.0f) percent = 1.3f;
+
+	// Fuel
+	aColor[0] = 0.5f;
+	aColor[1] = 0.0f;
+	aColor[2] = 0.0f;
+	aColor[3] = 0.8f;
+
+	// Border
+	bColor[0] = 0.0f;
+	bColor[1] = 0.0f;
+	bColor[2] = 0.0f;
+	bColor[3] = 0.3f;
+
+	// Background
+	cColor[0] = 0.5f;
+	cColor[1] = 0.5f;
+	cColor[2] = 0.5f;
+	cColor[3] = 0.2f;
+	
+	CG_DrawRect(x, y, width, height, 1.0f, colorTable[CT_BLACK]);
+	CG_FillRect(x + 0.8f, y + 1.3f + (height - percent), width - 1.5f, height - 2.0f - (height - percent), aColor);
+	CG_FillRect(x + 1.0f, y + 1.0f, width - 1.0f, height - percent, cColor);
 }

@@ -111,6 +111,7 @@ void		JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int ma
 void		JKMod_CG_ChatBox_DrawStrings(void);
 void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
+void		JKMod_CG_DrawJetPackFuel(void);
 
 // jk_cg_players.c
 void		JKMod_CG_AddHitBox(centity_t *cent);

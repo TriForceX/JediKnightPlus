@@ -324,7 +324,8 @@ typedef enum {
 	// Tr!Force: [Stats] Custom player flags
 	JK_PLAYER,
 	JK_DIMENSION,
-	JK_MOVEMENT
+	JK_MOVEMENT,
+	JK_FUEL
 } statIndex_t;
 
 

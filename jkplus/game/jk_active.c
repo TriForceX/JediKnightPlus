@@ -101,6 +101,20 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 				}
 			}
 		}
+
+		// Check jetpack fuel
+		if (jkcvar_jetPack.integer == 1 && (ent->client->ps.eFlags & JK_JETPACK_ACTIVE))
+		{
+			if (ent->client->ps.eFlags & JK_JETPACK_FLAMING)
+			{
+				if (ent->client->ps.stats[JK_FUEL] > 0) ent->client->ps.stats[JK_FUEL] -= 5;
+				else ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
+			}
+			else
+			{
+				if (ent->client->ps.stats[JK_FUEL] < 100) ent->client->ps.stats[JK_FUEL] += 5;
+			}
+		}
 	}
 }
 

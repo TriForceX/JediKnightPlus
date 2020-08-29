@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.12.2
+- Added jetpack restriction while moving or private duel
+- Set player transparency on chat dimension
+- Changed jetpack equipment with +use button
+- Added JKA jetpack physics style
+- Added jetpack fuel main functions
+
 ## 0.12.1
 - Prevent jetpack usage on race mode
 - Added alternative effect for jetpack on ground

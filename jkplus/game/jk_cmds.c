@@ -92,7 +92,7 @@ static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
 	else if (ent->client->ps.duelInProgress)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"You can't change in a private duel\n\""));
-		return;
+		return qfalse;
 	}
 	else
 	{
@@ -161,7 +161,6 @@ static qboolean JKMod_savePosition(gentity_t *ent, int clientNum)
 		ent->client->pers.jkmodPers.TeleportChatOrigin[1] = ent->client->ps.origin[1];
 		ent->client->pers.jkmodPers.TeleportChatOrigin[2] = ent->client->ps.origin[2];
 		ent->client->pers.jkmodPers.TeleportChatOrigin[3] = ent->client->ps.viewangles[1];
-
 
 		trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
 
@@ -1303,6 +1302,7 @@ void JKMod_ClientCommand(int clientNum)
 			else
 			{
 				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+				if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
 				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack equiped\nPress USE button on air to enable\""));
 				return;
 			}
