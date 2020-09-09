@@ -199,6 +199,7 @@ Common / new functions
 
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
+void		BaseJK2_ClientSpawn(gentity_t *ent);
 
 // g_cmds.c
 void		BaseJK2_ClientCommand(int clientNum);

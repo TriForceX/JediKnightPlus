@@ -58,7 +58,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			{
 				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
 				client->ps.stats[JK_DIMENSION] |= JK_CHAT_IN; // Used for dimension and protect
-				ent->takedamage = qfalse;
+				if (ent->takedamage) ent->takedamage = qfalse;
 				if (!client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			}
 			else
@@ -68,9 +68,12 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		}
 		else
 		{
-			if (client->jkmodClient.ChatTime != 0) client->jkmodClient.ChatTime = 0;
-			if (client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
-			if (!ent->health <= 0) ent->takedamage = qtrue;
+			if (client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) 
+			{
+				if (client->jkmodClient.ChatTime != 0) client->jkmodClient.ChatTime = 0;
+				if (!ent->takedamage) ent->takedamage = qtrue;
+				client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
+			}
 		}
 
 		// Show server motd
@@ -180,7 +183,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 	{
 		if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
-		ent->takedamage = qfalse;
+		if (ent->takedamage) ent->takedamage = qfalse;
 	}
 
 	// Check jetpack

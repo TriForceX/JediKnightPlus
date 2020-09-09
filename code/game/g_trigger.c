@@ -431,7 +431,10 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 	int		dflags;
 
 	if ( !other->takedamage ) {
-		return;
+		// Tr!Force: [RaceMode] Allow world hurt
+		if (!other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) {
+			return;
+		}
 	}
 
 	if ( self->timestamp > level.time ) {

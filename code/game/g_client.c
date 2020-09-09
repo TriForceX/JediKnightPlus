@@ -2205,8 +2205,12 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR ) {
 
 	} else {
-		G_KillBox( ent );
-		trap_LinkEntity (ent);
+		// Tr!Force: [RaceMode] Don't kill non-racers on spawn
+		if (!(client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+		{
+			G_KillBox(ent);
+			trap_LinkEntity(ent);
+		}
 
 		// force the base weapon up
 		client->ps.weapon = WP_BRYAR_PISTOL;
@@ -2256,7 +2260,7 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 		trap_LinkEntity( ent );
 	}
 
-	if (g_spawnInvulnerability.integer)
+	if (g_spawnInvulnerability.integer && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) // Tr!Force: [RaceMode] Don't set invulnerable flag
 	{
 		ent->client->ps.eFlags |= EF_INVULNERABLE;
 		ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;

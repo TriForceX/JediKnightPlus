@@ -3052,7 +3052,22 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	}
 
 	if (!targ->takedamage) {
-		return;
+		// Tr!Force: [RaceMode] Allow world hurt
+		if (targ->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+		{ 
+			if(!(
+				mod == MOD_WATER ||
+				mod == MOD_SLIME ||
+				mod == MOD_LAVA ||
+				mod == MOD_CRUSH ||
+				mod == MOD_TARGET_LASER ||
+				mod == MOD_TRIGGER_HURT )) {
+				return;
+			}
+		}
+		else {
+			return;
+		}
 	}
 
 	if (jkcvar_allowCustomDuel.integer) 

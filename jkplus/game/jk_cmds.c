@@ -91,7 +91,12 @@ static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
 	}
 	else if (ent->client->ps.duelInProgress)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't change in a private duel\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in a private duel\n\"");
+		return qfalse;
+	}
+	else if (g_gametype.integer != GT_FFA)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in this game type\n\"");
 		return qfalse;
 	}
 	else
@@ -102,6 +107,7 @@ static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
 			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 			ent->client->ps.forceRestricted = qfalse;
 			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.racerSavedJump;
+			if (!ent->takedamage) ent->takedamage = qtrue;
 
 			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
