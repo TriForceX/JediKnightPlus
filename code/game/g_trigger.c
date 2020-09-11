@@ -471,15 +471,24 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 
 	if (self->damage == -1 && other && other->client)
 	{
-		if (other->client->ps.otherKillerTime > level.time)
-		{ //we're as good as dead, so if someone pushed us into this then remember them
-			other->client->ps.otherKillerTime = level.time + 20000;
-			other->client->ps.otherKillerDebounceTime = level.time + 10000;
+		// Tr!Force: [RaceMode] Don't die, respawn
+		if (other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+		{
+			trap_UnlinkEntity(other);
+			ClientSpawn(other);
 		}
-		other->client->ps.fallingToDeath = level.time;
+		else
+		{
+			if (other->client->ps.otherKillerTime > level.time)
+			{ //we're as good as dead, so if someone pushed us into this then remember them
+				other->client->ps.otherKillerTime = level.time + 20000;
+				other->client->ps.otherKillerDebounceTime = level.time + 10000;
+			}
+			other->client->ps.fallingToDeath = level.time;
 
-		self->timestamp = 0; //do not ignore others
-		G_EntitySound(other, CHAN_VOICE, G_SoundIndex("*falling1.wav"));
+			self->timestamp = 0; //do not ignore others
+			G_EntitySound(other, CHAN_VOICE, G_SoundIndex("*falling1.wav"));
+		}
 	}
 	else	
 	{
