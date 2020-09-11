@@ -79,17 +79,12 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 
 /*
 =====================================================================
-Race mode function
+Set dimension function
 =====================================================================
 */
-static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
+static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNum)
 {
-	if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)))
-	{
-		trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
-		return qfalse;
-	}
-	else if (ent->client->ps.duelInProgress)
+	if (ent->client->ps.duelInProgress)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in a private duel\n\"");
 		return qfalse;
@@ -101,30 +96,70 @@ static qboolean JKMod_raceMode(gentity_t *ent, int clientNum)
 	}
 	else
 	{
-		// Disable
-		if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+		// Set guns dimension
+		if (!Q_stricmp(dimension, "guns"))
 		{
-			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
-			ent->client->ps.forceRestricted = qfalse;
-			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.racerSavedJump;
-			if (!ent->takedamage) ent->takedamage = qtrue;
-
-			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
-			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
-			return qfalse;
+			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return qfalse;
+			}
+			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_RACE_IN))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"You need to leave the current dimension first\n\"");
+				return qfalse;
+			}
+			else
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is not available yet\n\"");
+				return qfalse;
+			}
 		}
-		// Enable
-		else
+		// Set race dimension
+		else if (!Q_stricmp(dimension, "race"))
 		{
-			ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
-			ent->client->ps.forceRestricted = qtrue;
-			ent->client->pers.jkmodPers.racerSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
-			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
-			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return qfalse;
+			}
+			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_GUNS_IN))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"You need to leave the current dimension first\n\"");
+				return qfalse;
+			}
+			else
+			{
+				// Disable
+				if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+				{
+					ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+					ent->client->ps.forceRestricted = qfalse;
+					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.racerSavedJump;
+					if (!ent->takedamage) ent->takedamage = qtrue;
 
-			trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
-			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Race ^7dimension\n\"", ent->client->pers.netname));
-			return qtrue;
+					trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
+					return qfalse;
+				}
+				// Enable
+				else
+				{
+					ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+					ent->client->ps.forceRestricted = qtrue;
+					ent->client->pers.jkmodPers.racerSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
+					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
+					if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+
+					trap_SendServerCommand(ent - g_entities, va("cp \"Race mode enabled\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Race ^7dimension\n\"", ent->client->pers.netname));
+					return qtrue;
+				}
+			}
+		}
+		else {
+			trap_SendServerCommand(ent - g_entities, "print \"This dimension doesn't exist\n\"");
+			return qfalse;
 		}
 	}
 }
@@ -844,10 +879,25 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		JKMod_showMotd(ent, clientNum);
 	}
-	// Race mode trigger
-	else if (Q_stricmp(p, "!race") == 0)
+	// Dimension trigger
+	else if (Q_stricmpn(p, "!dimension", strlen("!dimension")) == 0)
 	{
-		if (!JKMod_raceMode(ent, clientNum)) return;
+		char arg1[MAX_STRING_CHARS] = "";
+		int i = 0, pos = 0, part = 0;
+
+		for (i = 0; i < strlen(p); i++)
+		{
+			if (p[i] == ' ') part = 1;
+			else if (part == 1) {
+				arg1[pos] = p[i];
+				pos++;
+			}
+		}
+
+		if (!strlen(arg1)) {
+			trap_SendServerCommand(ent - g_entities, "cp \"Say !dimension <option>\n\""); return;
+		}
+		else if (!JKMod_setDimension(arg1, ent, clientNum)) return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)
@@ -1246,22 +1296,9 @@ void JKMod_ClientCommand(int clientNum)
 				"^7\""));
 			return;
 		}
-		else if (!Q_stricmp(arg1, "guns"))
+		else
 		{
-			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)))
-			{
-				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
-				return;
-			}
-			else
-			{
-				trap_SendServerCommand(ent - g_entities, "print \"This dimension is not available\n\"");
-				return;
-			}
-		}
-		else if (!Q_stricmp(arg1, "race"))
-		{
-			JKMod_raceMode(ent, clientNum);
+			JKMod_setDimension(arg1, ent, clientNum);
 			return;
 		}
 	}
