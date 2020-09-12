@@ -84,7 +84,12 @@ Set dimension function
 */
 static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNum)
 {
-	if (ent->client->ps.duelInProgress)
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) 
+	{
+		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\n\"");
+		return qfalse;
+	}
+	else if (ent->client->ps.duelInProgress)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in a private duel\n\"");
 		return qfalse;
@@ -106,7 +111,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 			}
 			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_RACE_IN))
 			{
-				trap_SendServerCommand(ent - g_entities, "print \"You need to leave the current dimension first\n\"");
+				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
 			}
 			else
@@ -125,7 +130,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 			}
 			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_GUNS_IN))
 			{
-				trap_SendServerCommand(ent - g_entities, "print \"You need to leave the current dimension first\n\"");
+				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
 			}
 			else
@@ -894,10 +899,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 			}
 		}
 
-		if (!strlen(arg1)) {
-			trap_SendServerCommand(ent - g_entities, "cp \"Say !dimension <option>\n\""); return;
-		}
-		else if (!JKMod_setDimension(arg1, ent, clientNum)) return;
+		if (!JKMod_setDimension(arg1, ent, clientNum)) return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)

@@ -79,6 +79,7 @@
 
 #define FEEDER_DOWNLOADS					0x11			// list of downloaded / blocked files
 #define FEEDER_JK_EMOTES					0x12			// Tr!Force: [Emotes] Feeder
+#define FEEDER_JK_DIMENSIONS				0x13			// Tr!Force: [Dimensions] Feeder
 
 // display flags
 #define CG_SHOW_BLUE_TEAM_HAS_REDFLAG     0x00000001

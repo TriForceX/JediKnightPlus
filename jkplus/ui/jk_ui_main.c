@@ -99,7 +99,21 @@ jkmod_emotes_table_t jkmodEmotesTable[] =
 	{ "writing2",		"Writing 2" },
 };
 
-jkmod_emotes_t jkmodEmotes;
+jkmod_emotes_list_t jkmodEmotes;
+
+/*
+=====================================================================
+Dimensions table list
+=====================================================================
+*/
+jkmod_dimensions_table_t jkmodDimensionsTable[] =
+{
+	// cmd				title
+	{ "guns",			"Guns Only" },
+	{ "race",			"Race Mode" },
+};
+
+jkmod_dimensions_list_t jkmodDimensions;
 
 /*
 =====================================================================
@@ -161,6 +175,31 @@ static char *JKMod_UI_EmotesList(int index, int *actual)
 
 /*
 =====================================================================
+Dimensions functions
+=====================================================================
+*/
+static char *JKMod_UI_DimensionsList(int index, int *actual)
+{
+	int i, c = 0;
+	*actual = 0;
+
+	for (i = 0; i < jkmodDimensions.count; i++)
+	{
+		if (c == index)
+		{
+			*actual = i;
+			return jkmodDimensionsTable[i].title;
+		}
+		else
+		{
+			c++;
+		}
+	}
+	return "";
+}
+
+/*
+=====================================================================
 Feeder item text function
 =====================================================================
 */
@@ -179,6 +218,12 @@ const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhand
 		int actual;
 		return JKMod_UI_EmotesList(index, &actual);
 	}
+	else if (feederID == FEEDER_JK_DIMENSIONS)
+	{
+		int actual;
+		trap_Cvar_Set("jk_ui_cmd_joinDimension", va("%s", jkmodDimensionsTable[actual].cmd)); // Default
+		return JKMod_UI_DimensionsList(index, &actual);
+	}
 
 	// Final return, probably NULL
 	return BaseJK2_UI_FeederItemText(feederID, index, column, handle1, handle2, handle3, handle4, handle5, handle6);
@@ -196,6 +241,9 @@ int JKMod_UI_FeederCount(float feederID)
 		case FEEDER_JK_EMOTES:
 			jkmodEmotes.count = (sizeof(jkmodEmotesTable) / sizeof(jkmodEmotesTable[0]));
 			return jkmodEmotes.count;
+		case FEEDER_JK_DIMENSIONS:
+			jkmodDimensions.count = (sizeof(jkmodDimensionsTable) / sizeof(jkmodDimensionsTable[0]));
+			return jkmodDimensions.count;
 	}
 
 	// Launch original feeder count function
@@ -214,6 +262,10 @@ qboolean JKMod_UI_FeederSelection(float feederID, int index)
 	if (feederID == FEEDER_JK_EMOTES)
 	{
 		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", jkmodEmotesTable[index].cmd));
+	}
+	else if (feederID == FEEDER_JK_DIMENSIONS)
+	{
+		trap_Cvar_Set("jk_ui_cmd_joinDimension", va("%s", jkmodDimensionsTable[index].cmd));
 	}
 
 	// Final return, probably NULL

@@ -5213,6 +5213,11 @@ static void UI_RunMenuScript(const char **args)
 			trap_Cvar_SetValue("cg_thirdPersonAngle", cameraAngle);
 			trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
 		}
+		// Tr!Force: [JKMod] Change dimension from menu
+		else if (Q_stricmp(name, "JKMod_joinDimension") == 0)
+		{
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_joinDimension")));
+		}
 		else 
 		{
 			Com_Printf("unknown UI script %s\n", name);

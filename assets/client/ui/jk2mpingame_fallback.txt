@@ -15,6 +15,7 @@
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_info.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_filter.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_find.menu" }
+	loadMenu { "ui/jk2mp/ingame_jkmod_dimensions.menu" }
 	loadMenu { "ui/jk2mp/ingame_leave.menu" }
 	loadMenu { "ui/jk2mp/ingame_player.menu" }
 	loadMenu { "ui/jk2mp/ingame_playerforce.menu" }

@@ -35,7 +35,7 @@ typedef struct
 	int				count;	// Emotes count
 	char			*cmd;	// Emotes command
 
-} jkmod_emotes_t;
+} jkmod_emotes_list_t;
 
 // Emotes table
 typedef struct
@@ -44,6 +44,22 @@ typedef struct
 	char			*title;	// Emotes title
 
 } jkmod_emotes_table_t;
+
+// Dimensions data
+typedef struct
+{
+	int				count;	// Dimensions count
+	char			*cmd;	// Dimensions command
+
+} jkmod_dimensions_list_t;
+
+// Dimensions table
+typedef struct
+{
+	char			*cmd;	// Dimensions command
+	char			*title;	// Dimensions title
+
+} jkmod_dimensions_table_t;
 
 /*
 =====================================================================

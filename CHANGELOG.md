@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.12.3
+- Added some race restrictions and damage fixes
+- Updated dimension commands
+- Don't kill racers on falling
+- Added dimension options to main menus
+
 ## 0.12.2
 - Added jetpack restriction while moving or private duel
 - Set player transparency on chat dimension

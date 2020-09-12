@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 107
+COUNT 110
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -964,4 +964,31 @@ INDEX 106
    TEXT_LANGUAGE3 "Zeigen sie einen zusätzlichen Jetpack-effekt, während sich der spieler am boden befindet."
    TEXT_LANGUAGE6 "Show an additional jetpack effect while the player is on the ground."
    TEXT_LANGUAGE8 "Muestra un efecto de jetpack adicional mientras el jugador está en el suelo."
+}
+INDEX 107
+{
+   REFERENCE MOD_LEAVE
+   TEXT_LANGUAGE1 "Leave"
+   TEXT_LANGUAGE2 "Sortie"
+   TEXT_LANGUAGE3 "Abreisen"
+   TEXT_LANGUAGE6 "Leave"
+   TEXT_LANGUAGE8 "Salir"
+}
+INDEX 108
+{
+   REFERENCE MOD_OPTIONS_DIMENSION
+   TEXT_LANGUAGE1 "Switch Dimension"
+   TEXT_LANGUAGE2 "Changer Dimension"
+   TEXT_LANGUAGE3 "Dimension Ändern"
+   TEXT_LANGUAGE6 "Switch Dimension"
+   TEXT_LANGUAGE8 "Cambiar Dimensión"
+}
+INDEX 109
+{
+   REFERENCE MOD_OPTIONS_DIMENSION_TITLE
+   TEXT_LANGUAGE1 "Dimension"
+   TEXT_LANGUAGE2 "Dimension"
+   TEXT_LANGUAGE3 "Dimension"
+   TEXT_LANGUAGE6 "Dimension"
+   TEXT_LANGUAGE8 "Dimensión"
 }
