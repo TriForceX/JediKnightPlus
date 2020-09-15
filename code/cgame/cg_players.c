@@ -6131,25 +6131,25 @@ void CG_Player( centity_t *cent ) {
 		}
 
 		if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 1) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/santahat.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/santa.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 2) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/pumpkin.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/pumpkin.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 3) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/cap.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cap.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 4) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/fedora.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cowboy.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 5) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/cringe.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cringe.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 6) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/sombrero.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3"), "*head_top", jkmod_hatDetails);
 		}
 		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 7) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/players/hats/tophat.md3"), "*head_top", jkmod_hatDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3"), "*head_top", jkmod_hatDetails);
 		}
 	}
 
@@ -6159,7 +6159,7 @@ void CG_Player( centity_t *cent ) {
 		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
 		{
 			vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/weapons2/jetpack/jetpack.md3"), "*chestg", jkmod_jetPackDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_jetpack.md3"), "*chestg", jkmod_jetPackDetails);
 		}
 	}
 

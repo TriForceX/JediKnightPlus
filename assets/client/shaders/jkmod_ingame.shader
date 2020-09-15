@@ -26,32 +26,32 @@ jkmod_chat_icon
         blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     }
 }
-models/players/hats/cap
+models/items/jkmod_hats/cap
 {
 	q3map_nolightmap
 	cull	twosided
 	{
-		map models/players/hats/cap
+		map models/items/jkmod_hats/cap
 		rgbGen lightingDiffuse
 	}
 }
 
-models/players/hats/cringe
+models/items/jkmod_hats/cringe
 {
 	q3map_nolightmap
 	cull	twosided
 	{
-		map models/players/hats/cringe
+		map models/items/jkmod_hats/cringe
 		rgbGen lightingDiffuse
 	}
 }
 
-models/players/hats/cringe_prop
+models/items/jkmod_hats/cringe_extra
 {
 	q3map_nolightmap
 	cull	twosided
 	{
-		map models/players/hats/cringe_prop
+		map models/items/jkmod_hats/cringe_extra
 		alphaFunc GE128
 		rgbGen vertex
 		tcMod rotate 300

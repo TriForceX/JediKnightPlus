@@ -1578,10 +1578,10 @@
 				"Santa"  		1
 				"Pumpkin"  		2
 				"Cap"  			3
-				"Fedora"  		4
+				"Cowboy"  		4
 				"Cringe"  		5
 				"Sombrero"  	6
-				"Tophat"  		7
+				"Gentleman"  	7
 			}
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT

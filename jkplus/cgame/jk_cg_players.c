@@ -262,7 +262,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		}
 
 		// Special case
-		if (modelFile == trap_R_RegisterModel("models/weapons2/jetpack/jetpack.md3"))
+		if (modelFile == trap_R_RegisterModel("models/items/jkmod_jetpack.md3"))
 		{
 			vec3_t flamePos, flameDir;
 			vec3_t flamePos2, flameDir2;
