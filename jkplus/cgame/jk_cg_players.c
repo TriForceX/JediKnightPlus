@@ -11,6 +11,16 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
+Check player emote UI
+=====================================================================
+*/
+qboolean JKMod_CG_InEmoteUI(centity_t *cent)
+{
+	return (trap_Key_GetCatcher() & KEYCATCH_UI) && cg_thirdPersonAngle.integer == 180 && cent->currentState.number == cg.predictedPlayerState.clientNum ? qtrue : qfalse;
+}
+
+/*
+=====================================================================
 Show player bounding hit boxes
 =====================================================================
 */
@@ -257,8 +267,11 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		// Check chat player transparency
 		if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && cent->currentState.bolt1 == 2 && jkcvar_cg_chatPlayerOpacity.integer)
 		{
-			re.renderfx |= RF_FORCE_ENT_ALPHA;
-			re.shaderRGBA[3] = 100; // Fixed ?
+			if (!JKMod_CG_InEmoteUI(cent))
+			{
+				re.renderfx |= RF_FORCE_ENT_ALPHA;
+				re.shaderRGBA[3] = 100; // Fixed ?
+			}
 		}
 
 		// Special case
