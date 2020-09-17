@@ -32,6 +32,8 @@ vmCvar_t	jkcvar_test2;
 
 vmCvar_t	jkcvar_serverMotd;
 vmCvar_t	jkcvar_serverMotdTime;
+vmCvar_t	jkcvar_serverIdle;
+vmCvar_t	jkcvar_serverIdleFile;
 vmCvar_t	jkcvar_serverClosed;
 vmCvar_t	jkcvar_serverClosedText;
 
@@ -82,58 +84,60 @@ vmCvar_t	jkcvar_jetPackPhysics;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
-	{ &jkcvar_serverMotd,				"jk_serverMotd",			"0",		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverMotdTime,			"jk_serverMotdTime",		"5",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverClosed,				"jk_serverClosed",			"0",		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverClosedText,			"jk_serverClosedText",		"Closed.",	CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverMotd,			"jk_serverMotd",			"0",					CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverMotdTime,		"jk_serverMotdTime",		"5",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverIdle,			"jk_serverIdle",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverIdleFile,		"jk_serverIdleFile",		"jkmod_server.cfg",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverClosed,			"jk_serverClosed",			"0",					CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverClosedText,		"jk_serverClosedText",		"Closed.",				CVAR_ARCHIVE,						0, qfalse },
 
-	{ &jkcvar_allowBlackNames,			"jk_allowBlackNames",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowMultiDuel,			"jk_allowMultiDuel",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowCustomDuel,			"jk_allowCustomDuel",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowDuelChat,			"jk_allowDuelChat",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_noDuplicatedNames,		"jk_noDuplicatedNames",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_chatProtect,				"jk_chatProtect",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_chatProtectTime,			"jk_chatProtectTime",		"10",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_playerIgnore,				"jk_playerIgnore",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_teleportChat,				"jk_teleportChat",			"0",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowBlackNames,		"jk_allowBlackNames",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowMultiDuel,		"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowCustomDuel,		"jk_allowCustomDuel",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowDuelChat,		"jk_allowDuelChat",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_noDuplicatedNames,	"jk_noDuplicatedNames",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_chatProtect,			"jk_chatProtect",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_voteCustomMap,			"jk_voteCustomMap",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteControl,				"jk_voteControl",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteResults,				"jk_voteResults",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteWaitTime,				"jk_voteWaitTime",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteMinPlayers,			"jk_voteMinPlayers",		"2",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_itemForcePhysics,			"jk_itemForcePhysics",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelStartHealth,			"jk_duelStartHealth",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelStartArmor,			"jk_duelStartArmor",		"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelEndStats,				"jk_duelEndStats",			"0",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteCustomMap,		"jk_voteCustomMap",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteControl,			"jk_voteControl",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteResults,			"jk_voteResults",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteWaitTime,			"jk_voteWaitTime",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteMinPlayers,		"jk_voteMinPlayers",		"2",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_itemForcePhysics,		"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelStartHealth,		"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelStartArmor,		"jk_duelStartArmor",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelEndStats,			"jk_duelEndStats",			"0",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_dropFlag,					"jk_dropFlag",				"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_dropFlagTime,				"jk_dropFlagTime",			"15",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_damagePlums,				"jk_damagePlums",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_pauseGame,				"jk_pauseGame",				"0",		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_customHats,				"jk_customHats",			"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_pauseGame,			"jk_pauseGame",				"0",					CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_customHats,			"jk_customHats",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
-	{ &jkcvar_emotesEnabled,			"jk_emotesEnabled",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesBreak,				"jk_emotesBreak",			"1",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesFreeze,				"jk_emotesFreeze",			"1",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesPunchDamage,		"jk_emotesPunchDamage",		"0",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesEnabled,		"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesBreak,			"jk_emotesBreak",			"1",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesFreeze,			"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_gamePlay,					"jk_gamePlay",				"0",		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimensions,			"jk_altDimensions",			"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_randomBegin,				"jk_randomBegin",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverNews,				"jk_serverNews",			"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverNewsTime,			"jk_serverNewsTime",		"60",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_altDimensions,		"jk_altDimensions",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_forcePlugin,				"jk_forcePlugin",			"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_macroScan,				"jk_macroScan",				"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_antiWarp,					"jk_antiWarp",				"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_antiWarpTime,				"jk_antiWarpTime",			"1",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_forcePlugin,			"jk_forcePlugin",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_jetPack,					"jk_jetPack",				"0",		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_jetPackPhysics,			"jk_jetPackPhysics",		"0",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_jetPackPhysics,		"jk_jetPackPhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_test1,					"jk_test1",					"0",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_test2,					"jk_test2",					"0",		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_test1,				"jk_test1",					"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_test2,				"jk_test2",					"0",					CVAR_ARCHIVE,						0, qtrue },
 };
 
 static int JKModCvarTableSize = sizeof(JKModCvarTable) / sizeof(JKModCvarTable[0]);
@@ -422,6 +426,39 @@ void JKMod_teleportChatInit(void)
 
 /*
 =====================================================================
+Server idle check
+=====================================================================
+*/
+void JKMod_serverIdleCheck(void)
+{
+	if (level.numVotingClients == 0 && jkcvar_serverIdle.integer) 
+	{
+		if (level.jkmodLevel.ServerIdleTime > 0)
+		{
+			if (level.jkmodLevel.ServerIdleTime + jkcvar_serverIdle.integer*60000 < level.time + 15000)
+			{
+				trap_SendServerCommand(-1, "print \"Server idle, changing to defaults in 15 seconds...\n\"");
+				level.jkmodLevel.ServerIdleTime =- level.jkmodLevel.ServerIdleTime;
+			}
+		}
+		else 
+		{
+			if (-level.jkmodLevel.ServerIdleTime + jkcvar_serverIdle.integer*60000 < level.time)
+			{
+				trap_SendConsoleCommand(EXEC_APPEND, va("exec %s\n", jkcvar_serverIdleFile.string));
+				level.jkmodLevel.ServerIdleTime = level.time;
+			}
+		}
+	}
+	else 
+	{
+		if (level.jkmodLevel.ServerIdleTime < 0) trap_SendServerCommand(-1, "print \"Server idle reset aborted!\n\"");
+		level.jkmodLevel.ServerIdleTime = level.time;
+	}
+}
+
+/*
+=====================================================================
 Main initialization functions
 =====================================================================
 */
@@ -461,5 +498,11 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) {
 		{
 			trap_Cvar_Set("jk_teleportChat", "1");
 		}
+	}
+
+	// Check server idle
+	if (jkcvar_serverIdle.integer)
+	{
+		G_Printf("%i minutes set for server idle\n", jkcvar_serverIdle.integer);
 	}
 }

@@ -104,6 +104,7 @@ typedef struct
 	char		ServerNews[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
 	int			ServerNewsCount;								// News counter
 	int			ServerNewsNum;									// News timer
+	int			ServerIdleTime;									// Server idle time
 	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
 	int			TeleportChatsCount;								// Chat teleport counter
 	int			racerStartTime[MAX_CLIENTS];					// Start time for racers
@@ -143,6 +144,8 @@ extern	vmCvar_t					jkcvar_test2;
 
 extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
+extern	vmCvar_t					jkcvar_serverIdle;
+extern	vmCvar_t					jkcvar_serverIdleFile;
 extern	vmCvar_t					jkcvar_serverClosed;
 extern	vmCvar_t					jkcvar_serverClosedText;
 
@@ -248,6 +251,7 @@ void		JKMod_emoteDoPunch(gentity_t *ent);
 void		JKMod_randomBeginInit(void);
 void		JKMod_serverNewsInit(void);
 void		JKMod_teleportChatInit(void);
+void		JKMod_serverIdleCheck(void);
 
 // jk_misc.c
 gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);

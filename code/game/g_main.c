@@ -2742,6 +2742,9 @@ start = trap_Milliseconds();
 	}
 end = trap_Milliseconds();
 
+	// Tr!Force: [JKMod] Check server idle
+	JKMod_serverIdleCheck();
+
 	// see if it is time to do a tournement restart
 	CheckTournament();
 
