@@ -5214,9 +5214,14 @@ static void UI_RunMenuScript(const char **args)
 			trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
 		}
 		// Tr!Force: [JKMod] Change dimension from menu
-		else if (Q_stricmp(name, "JKMod_joinDimension") == 0)
+		else if (Q_stricmp(name, "JKMod_emoteToggle") == 0)
 		{
-			trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_joinDimension")));
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("emote \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_emoteToggle")));
+		}
+		// Tr!Force: [JKMod] Change dimension from menu
+		else if (Q_stricmp(name, "JKMod_dimensionToggle") == 0)
+		{
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_dimensionToggle")));
 		}
 		else 
 		{

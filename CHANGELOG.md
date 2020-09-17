@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.12.4
+- Merge updates from mvsdk
+- Changed custom models path
+- Added server idle reset
+- Disable player transparency when using emote menu
+- Fixed emote play & stop on menus
+
 ## 0.12.3
 - Added some race restrictions and damage fixes
 - Updated dimension commands

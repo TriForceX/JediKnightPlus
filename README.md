@@ -6,7 +6,7 @@ https://jkmod.github.io
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.12.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.12.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -66,6 +66,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
 - [x] Prevent player warping or lag scripts
+- [x] Custom server idle reset
 
 ---
 
@@ -107,7 +108,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 
 - [x] Atmospheric effects (Rain, snow, etc...)
 - [ ] Extra info for scoreboard (Wins, losses, flag captures, etc...)
-- [ ] Mini keyboard display to see key presses on screen
+- [ ] On-screen keyboard display to see key presses on screen
 - [x] Jedi Academy chat display mode
 - [x] Two chat icons (Jedi Outcast & Jedi Academy)
 - [x] Fixed 2D aspect ratio for non 4:3 screens

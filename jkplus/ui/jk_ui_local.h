@@ -29,7 +29,7 @@ Player / world information
 =====================================================================
 */
 
-// Emotes data
+// Emotes list
 typedef struct 
 {
 	int				count;	// Emotes count
@@ -45,7 +45,7 @@ typedef struct
 
 } jkmod_emotes_table_t;
 
-// Dimensions data
+// Dimensions list
 typedef struct
 {
 	int				count;	// Dimensions count

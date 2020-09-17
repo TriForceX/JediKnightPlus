@@ -10,8 +10,6 @@
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
 		rect					40 40 148 138
 		focusColor				1 .75 0 1
-		style					1
-		border					1
 
 		// Overall window backdrop
 		itemDef 
@@ -143,7 +141,7 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				close			ingame_jkmod_dimensions ;  
-				uiScript		JKMod_joinDimension ;
+				uiScript		JKMod_dimensionToggle ;
 			}
 			mouseenter 
 			{ 
@@ -184,7 +182,7 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				close			ingame_jkmod_dimensions ;  
-				uiScript		JKMod_joinDimension ;
+				uiScript		JKMod_dimensionToggle ;
 			}
 			mouseenter 
 			{ 

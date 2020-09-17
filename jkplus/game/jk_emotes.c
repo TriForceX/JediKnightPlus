@@ -238,35 +238,35 @@ void JKMod_emoteDo(gentity_t *ent, int emoteIndex)
 	// Check version compatibility
 	if (emotes[emoteIndex].compatible == qfalse && jk2gameplay == VERSION_1_02)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"You can't use this emote in JK2 1.02 version\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote in JK2 1.02 version\n\"");
 		return;
 	}
 
 	// Exception for duel gametype
 	if(g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this gametype\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes are disabled in this gametype\n\"");
 		return;
 	}
 
 	// Exception for when you are moving
 	if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0) && !emotes[emoteIndex].special)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"Please stop moving before you attempt an emote\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Please stop moving before you attempt an emote\n\"");
 		return;
 	}
 
 	// Exception for dimensions
 	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"Emotes are disabled in this dimension\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes are disabled in this dimension\n\"");
 		return;
 	}
 
 	// Bit values for emotes! Let the people choose!
 	if(!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
-		trap_SendServerCommand(ent - g_entities, "print \"This emote has been disabled by the server\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"This emote has been disabled by the server\n\"");
 		return;
 	}
 

@@ -8,7 +8,7 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
-		rect					10 40 165 420
+		rect					10 40 165 422
 		focusColor				1 .75 0 1
 		style					1
 		border					1
@@ -27,7 +27,7 @@
 			name				background_pic
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 0 165 420
+			rect				0 0 165 422
 			background			"gfx/menus/menu_box_ingame"
 			forecolor			1 1 1 1
 			visible				1
@@ -278,7 +278,7 @@
 		itemDef 
 		{
 			name				emoteList
-			rect				9 29 145 380
+			rect				9 29 145 362
 			type				ITEM_TYPE_LISTBOX
 			style				WINDOW_STYLE_FILLED
 			elementwidth		90
@@ -299,6 +299,86 @@
 			mouseexit 
 			{ 
 				setitemcolor	emotelist bordercolor .265 .824 .886 .3
+			}
+		}
+		// Play button
+		itemDef 
+		{
+			name				emotePlayHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				9 393 72 25
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				emotePlayButton
+			text 				@JKMENUS_MOD_PLAY
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				9 390 72 32
+			textalign			1
+			textalignx			36 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				uiScript		JKMod_emoteToggle ;
+			}
+			mouseenter 
+			{ 
+				show			emotePlayHover
+			}
+			mouseexit 
+			{ 
+				hide			emotePlayHover
+			}
+		}
+		// Stop button
+		itemDef 
+		{
+			name				emoteStopHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				82 393 72 25
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				emoteStopButton
+			text 				@JKMENUS_MOD_STOP
+			type				ITEM_TYPE_BUTTON
+			textscale			.80
+			style				WINDOW_STYLE_FILLED
+			rect				82 390 72 32
+			textalign			1
+			textalignx			36 // w/2 center
+			textaligny			4
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				uiScript		JKMod_emoteToggle ;
+			}
+			mouseenter 
+			{ 
+				show			emoteStopHover
+			}
+			mouseexit 
+			{ 
+				hide			emoteStopHover
 			}
 		}
 	}

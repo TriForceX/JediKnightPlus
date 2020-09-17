@@ -1053,7 +1053,7 @@ void JKMod_ClientCommand(int clientNum)
 		}
 		else if (!JKMod_emoteCheck(arg1, ent))
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote for ^3%s\n\"", arg1));
+			trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));
 			return;
 		}
 	}

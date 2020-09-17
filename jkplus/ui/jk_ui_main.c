@@ -130,6 +130,10 @@ void JKMod_UI_RegisterCvars(void)
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 	}
 
+	// Set default temp cvars
+	trap_Cvar_Set("jk_ui_cmd_emoteToggle", va("%s", jkmodEmotesTable[0].cmd));
+	trap_Cvar_Set("jk_ui_cmd_dimensionToggle", va("%s", jkmodDimensionsTable[0].cmd));
+
 	// Launch original register cvars function
 	BaseJK2_UI_RegisterCvars();
 }
@@ -221,7 +225,6 @@ const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhand
 	else if (feederID == FEEDER_JK_DIMENSIONS)
 	{
 		int actual;
-		trap_Cvar_Set("jk_ui_cmd_joinDimension", va("%s", jkmodDimensionsTable[actual].cmd)); // Default
 		return JKMod_UI_DimensionsList(index, &actual);
 	}
 
@@ -261,11 +264,11 @@ qboolean JKMod_UI_FeederSelection(float feederID, int index)
 
 	if (feederID == FEEDER_JK_EMOTES)
 	{
-		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote %s\n", jkmodEmotesTable[index].cmd));
+		trap_Cvar_Set("jk_ui_cmd_emoteToggle", va("%s", jkmodEmotesTable[index].cmd));
 	}
 	else if (feederID == FEEDER_JK_DIMENSIONS)
 	{
-		trap_Cvar_Set("jk_ui_cmd_joinDimension", va("%s", jkmodDimensionsTable[index].cmd));
+		trap_Cvar_Set("jk_ui_cmd_dimensionToggle", va("%s", jkmodDimensionsTable[index].cmd));
 	}
 
 	// Final return, probably NULL
