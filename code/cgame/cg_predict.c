@@ -96,10 +96,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 				else if (!cg.predictedPlayerState.duelInProgress && ent->bolt1 == 1)
 					continue;
 			}
-			// Check race dimension
+			// Check chat dimension
 			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT))
 			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_CHAT_IN)
 					continue;
 				else if (cg_entities[ent->number].currentState.bolt1 == 2)
 					continue;
