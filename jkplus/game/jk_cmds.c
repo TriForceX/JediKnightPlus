@@ -787,6 +787,9 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
+			ent->client->ps.stats[JK_DIMENSION] |= JK_DUEL_IN;
+			challenged->client->ps.stats[JK_DIMENSION] |= JK_DUEL_IN;
+
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 
@@ -1207,9 +1210,9 @@ void JKMod_ClientCommand(int clientNum)
 			"^7Client plugin status: ^2Updated^7, ^3Outdated^7, ^1No plugin\n"
 			"^7\""));
 
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
-		Q_strcat(status, sizeof(status), "^7Num Name                         Type  Plugin\n");
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
+		Q_strcat(status, sizeof(status), "^7Num Name                         Type  Dimension Plugin\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
 
 		for (i = 0; i < level.maxclients; i++)
 		{
@@ -1217,6 +1220,7 @@ void JKMod_ClientCommand(int clientNum)
 			char		name[MAX_STRING_CHARS] = "";
 			char		userinfo[MAX_INFO_STRING];
 			char		*type;
+			char		*dimension;
 			char		*valid;
 			char		*plugin;
 
@@ -1236,17 +1240,23 @@ void JKMod_ClientCommand(int clientNum)
 				plugin = Info_ValueForKey(userinfo, "jkmod_clientversion");
 				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 			}
+
+			if (ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) dimension = "Duel";
+			else if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) dimension = "Guns";
+			else if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) dimension = "Race";
+			else dimension = "Normal";
 			
-			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %s%9s\n",
+			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %9s %s%9s\n",
 				i,
 				Q_CleanStr(name, qfalse),
 				type,
+				dimension,
 				valid,
 				plugin[0] == '\0' ? "No plugin" : plugin
 			));
 		}
 
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- ---------------\n");
+		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
 		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
 		return;
 	}
