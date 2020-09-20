@@ -64,6 +64,7 @@ void JKMod_PushBox(gentity_t *ent) {
 		JKMod_TeleportPlayer(hit, temporigin, tempangles, qfalse, qfalse, 0, "none", NULL);
 	}
 }
+
 /*
 =====================================================================
 Teleport player function
@@ -161,4 +162,30 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 			trap_LinkEntity(player);
 		}
 	}
+}
+
+/*
+=====================================================================
+Check other clients in box
+=====================================================================
+*/
+qboolean JKMod_OthersInBox(gentity_t *ent) {
+	int			i, num;
+	int			touch[MAX_GENTITIES];
+	gentity_t	*other;
+	vec3_t		mins, maxs;
+
+	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
+	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
+
+	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+	for (i = 0; i < num; i++)
+	{
+		other = &g_entities[touch[i]];
+		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) {
+			return qtrue;
+		}
+	}
+	return qfalse;
 }

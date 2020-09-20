@@ -66,15 +66,6 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 				client->jkmodClient.ChatTime++;
 			}
 		}
-		else
-		{
-			if (client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) 
-			{
-				if (client->jkmodClient.ChatTime != 0) client->jkmodClient.ChatTime = 0;
-				if (!ent->takedamage) ent->takedamage = qtrue;
-				client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
-			}
-		}
 
 		// Show server motd
 		if (client->jkmodClient.MotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
@@ -179,7 +170,18 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
-	// Check dimensions
+	// Check chat dimension
+	if ((ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && !(ent->client->ps.eFlags & EF_TALK))
+	{
+		if (!JKMod_OthersInBox(ent))
+		{
+			if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
+			if (!ent->takedamage) ent->takedamage = qtrue;
+			ent->client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
+		}
+	}
+
+	// Check race dimension
 	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 	{
 		if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
