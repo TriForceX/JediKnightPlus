@@ -78,7 +78,7 @@ typedef struct
 	int			CustomDuel;				// Client is in force duel
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
-	int			racerSavedJump;			// Saved racer jump level
+	int			customSavedJump;		// Saved custom jump level
 
 } jkmod_pers_t;
 

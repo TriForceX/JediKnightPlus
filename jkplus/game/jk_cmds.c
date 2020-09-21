@@ -104,20 +104,111 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 		// Set guns dimension
 		if (!Q_stricmp(dimension, "guns"))
 		{
+			int i;
+			int wDisable = g_weaponDisable.integer;
+
 			if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)))
 			{
 				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 				return qfalse;
 			}
-			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_RACE_IN))
+			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN | JK_RACE_IN))
 			{
 				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
 			}
 			else
 			{
-				trap_SendServerCommand(ent - g_entities, "print \"This dimension is not available yet\n\"");
-				return qfalse;
+				// Disable
+				if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
+				{
+					ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
+					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_STUN_BATON) 
+						& ~(1 << WP_BRYAR_PISTOL)
+						& ~(1 << WP_BLASTER) 
+						& ~(1 << WP_DISRUPTOR)
+						& ~(1 << WP_BOWCASTER) 
+						& ~(1 << WP_REPEATER) 
+						& ~(1 << WP_DEMP2) 
+						& ~(1 << WP_FLECHETTE) 
+						& ~(1 << WP_ROCKET_LAUNCHER) 
+						& ~(1 << WP_THERMAL)
+						& ~(1 << WP_TRIP_MINE) 
+						& ~(1 << WP_DET_PACK);
+					ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_BINOCULARS) 
+						& ~(1 << HI_SEEKER) 
+						& ~(1 << HI_MEDPAC) 
+						& ~(1 << HI_SHIELD) 
+						& ~(1 << HI_SENTRY_GUN);
+
+					for (i = 0; i < MAX_WEAPONS; i++) ent->client->ps.ammo[i] = 0;
+
+					if (WP_HasForcePowers(&ent->client->ps)) 
+					{
+						ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
+						ent->client->ps.weapon = WP_SABER;
+					}
+					else if (!wDisable || !(wDisable & (1 << WP_BRYAR_PISTOL))) 
+					{
+						ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+						ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_BRYAR_PISTOL);
+						ent->client->ps.ammo[AMMO_POWERCELL] = ammoData[AMMO_POWERCELL].max;
+						ent->client->ps.weapon = WP_BRYAR_PISTOL;
+					}
+					else 
+					{
+						ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+						ent->client->ps.weapon = WP_STUN_BATON;
+					}
+
+					ent->client->ps.forceRestricted = qfalse;
+					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
+					ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+
+					trap_SendServerCommand(ent - g_entities, va("cp \"Guns mode disabled\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
+					return qfalse;
+				}
+				// Enable
+				else
+				{
+					ent->client->ps.stats[JK_DIMENSION] |= JK_GUNS_IN;
+					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_SABER);
+					ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON)
+						| (1 << WP_BRYAR_PISTOL)
+						| (1 << WP_BLASTER) 
+						| (1 << WP_DISRUPTOR)
+						| (1 << WP_BOWCASTER) 
+						| (1 << WP_REPEATER) 
+						| (1 << WP_DEMP2) 
+						| (1 << WP_FLECHETTE) 
+						| (1 << WP_ROCKET_LAUNCHER) 
+						| (1 << WP_THERMAL)
+						| (1 << WP_TRIP_MINE) 
+						| (1 << WP_DET_PACK);
+					ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_BINOCULARS) 
+						| (1 << HI_SEEKER) 
+						| (1 << HI_MEDPAC) 
+						| (1 << HI_SHIELD) 
+						| (1 << HI_SENTRY_GUN);
+					
+					for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
+
+					ent->client->ps.weapon = WP_STUN_BATON;
+					ent->client->ps.forceRestricted = qtrue;
+					ent->client->pers.jkmodPers.customSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
+					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
+
+					if (jkcvar_jetPack.integer)
+					{
+						ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+						if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+					}
+					
+					trap_SendServerCommand(ent - g_entities, va("cp \"Guns mode enabled\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
+					return qtrue;
+				}
 			}
 		}
 		// Set race dimension
@@ -128,7 +219,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 				return qfalse;
 			}
-			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN + JK_GUNS_IN))
+			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN | JK_GUNS_IN))
 			{
 				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
@@ -140,7 +231,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				{
 					ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 					ent->client->ps.forceRestricted = qfalse;
-					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.racerSavedJump;
+					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
 					if (!ent->takedamage) ent->takedamage = qtrue;
 
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
@@ -152,7 +243,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				{
 					ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
 					ent->client->ps.forceRestricted = qtrue;
-					ent->client->pers.jkmodPers.racerSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
+					ent->client->pers.jkmodPers.customSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
 					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
 					if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 
@@ -737,6 +828,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 	}
 
+	// Tr!Force: [Dimensions] Check duel challenge
+	if (ent->client->ps.stats[JK_DIMENSION] & (JK_GUNS_IN | JK_RACE_IN))
+	{
+		return;
+	}
+
 	AngleVectors(ent->client->ps.viewangles, forward, NULL, NULL);
 
 	fwdOrg[0] = ent->client->ps.origin[0] + forward[0] * 256;
@@ -758,6 +855,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		if (g_gametype.integer >= GT_TEAM && OnSameTeam(ent, challenged))
+		{
+			return;
+		}
+
+		// Tr!Force: [Dimensions] Check duel challenge
+		if (challenged->client->ps.stats[JK_DIMENSION] & (JK_GUNS_IN | JK_RACE_IN))
 		{
 			return;
 		}

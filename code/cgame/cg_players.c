@@ -6019,6 +6019,16 @@ void CG_Player( centity_t *cent ) {
 	{
 		return;
 	}
+	// Tr!Force: [Dimensions] Don't render players outside dimension
+	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && cent->currentState.bolt1 != 3)
+	{
+		return;
+	}
+	// Tr!Force: [Dimensions] Don't render players outside dimension
+	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && cent->currentState.bolt1 != 4)
+	{
+		return;
+	}
 
 	cent->ghoul2 = cg_entities[cent->currentState.number].ghoul2;
 
@@ -7642,8 +7652,22 @@ doEssentialThree:
 		
 		trap_R_AddRefEntityToScene( &legs );
 	}
+	// Tr!Force: [Dimensions] Check dimensions (Guns player color)
+	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && cent->currentState.bolt1 == 3)
+	{
+		legs.shaderRGBA[0] = 255;
+		legs.shaderRGBA[1] = 255;
+		legs.shaderRGBA[2] = 0;
+		legs.shaderRGBA[3] = 255;
+
+		legs.renderfx &= ~RF_RGB_TINT;
+		legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
+		legs.customShader = cgs.media.forceSightBubble;
+
+		trap_R_AddRefEntityToScene(&legs);
+	}
 	// Tr!Force: [Dimensions] Check dimensions (Race player color)
-	if (cent->currentState.bolt1 == 4 && cg.snap->ps.clientNum != cent->currentState.number)
+	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && cent->currentState.bolt1 == 4)
 	{
 		legs.shaderRGBA[0] = 128;
 		legs.shaderRGBA[1] = 0;

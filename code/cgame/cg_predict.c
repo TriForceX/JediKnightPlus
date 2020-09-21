@@ -104,6 +104,17 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 				else if (cg_entities[ent->number].currentState.bolt1 == 2)
 					continue;
 			}
+			// Check guns dimension
+			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS))
+			{
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
+				{
+					if (!(ent->number != cg.snap->ps.clientNum && cg_entities[ent->number].currentState.bolt1 == 3))
+						continue;
+				}
+				else if (cg_entities[ent->number].currentState.bolt1 == 3)
+					continue;
+			}
 			// Check race dimension
 			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE))
 			{

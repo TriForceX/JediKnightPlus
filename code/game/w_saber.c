@@ -1684,6 +1684,20 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 			return qfalse;
 		}
 
+		// Tr!Force: [Dimensions] Check saber clash
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+
 		didHit = qtrue;
 
 		if (self->client->ps.saberMove == LS_A_BACK ||
@@ -1845,6 +1859,10 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
 			return qfalse;
 		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 			return qfalse;
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 			return qfalse;
@@ -2237,6 +2255,20 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			return qfalse;
 		}
 
+		// Tr!Force: [Dimensions] Check saber clash
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+
 		self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
 
 		didHit = qtrue;
@@ -2373,6 +2405,10 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
 			return qfalse;
 		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 			return qfalse;
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 			return qfalse;
@@ -2742,6 +2778,20 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 		{
 			return qfalse;
 		}
+
+		// Tr!Force: [Dimensions] Check saber clash (throw)
+		if (ent->inuse && ent->client && (ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (ent->inuse && ent->client && (saberOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
+			return qfalse;
+		if (ent->inuse && ent->client && (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(saberOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (ent->inuse && ent->client && (saberOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+			return qfalse;
+		if (ent->inuse && ent->client && (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
+		if (ent->inuse && ent->client && (saberOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+			return qfalse;
 
 		VectorSubtract(saberent->r.currentOrigin, ent->client->ps.origin, vecsub);
 		veclen = VectorLength(vecsub);
@@ -3623,10 +3673,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			}
 		}
 	}
-	else if (!self->client->ps.saberHolstered &&
-			// Tr!Force: [Dimensions] Check saber hit and block
-			!(self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) &&
-			!(self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+	else if (!self->client->ps.saberHolstered)
 	{
 		gentity_t *saberent = &g_entities[self->client->ps.saberEntityNum];
 

@@ -1327,8 +1327,8 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 
 	if ( ps->forceRestricted || ps->trueNonJedi )
 	{
-		// Tr!Force: [RaceMode] Allow force jump?
-		if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
+		// Tr!Force: [Dimensions] Allow force jump?
+		if (ps->stats[JK_DIMENSION] & (JK_GUNS_IN | JK_RACE_IN))
 		{
 			if (power != FP_LEVITATION)
 			{

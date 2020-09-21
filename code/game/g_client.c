@@ -1773,8 +1773,10 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
 
-	// Tr!Force: [RaceMode] Don't remove race flag
-	qboolean jksave_racemode = qfalse;
+	// Tr!Force: [Dimensions] Don't remove flags
+	int jksave_dimensions;
+	int jksave_weapons;
+	int jksave_items;
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1882,16 +1884,16 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 
 	saveSaberNum = client->ps.saberEntityNum;
 
-	// Tr!Force: [RaceMode] Don't remove race flag
-	jksave_racemode = (client->ps.stats[JK_DIMENSION] & JK_RACE_IN);
+	// Tr!Force: [Dimensions] Don't remove flags
+	jksave_dimensions = client->ps.stats[JK_DIMENSION];
+	// Tr!Force: [Dimensions] Don't remove weapons and items
+	jksave_weapons = client->ps.stats[STAT_WEAPONS];
+	jksave_items = client->ps.stats[STAT_HOLDABLE_ITEMS];
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
-	// Tr!Force: [RaceMode] Don't remove race flag
-	if (jksave_racemode) {
-		client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
-		client->ps.forceRestricted = qtrue;
-	}
+	// Tr!Force: [Dimensions] Don't remove flags
+	if (jksave_dimensions) client->ps.stats[JK_DIMENSION] = jksave_dimensions;
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
@@ -2264,6 +2266,23 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	{
 		ent->client->ps.eFlags |= EF_INVULNERABLE;
 		ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
+	}
+
+	// Tr!Force: [Dimensions] Don't remove weapons and items
+	if (client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
+	{
+		int i;
+		client->ps.stats[STAT_WEAPONS] = jksave_weapons;
+		client->ps.stats[STAT_HOLDABLE_ITEMS] = jksave_items;
+		for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
+		client->ps.weapon = WP_STUN_BATON;
+		client->ps.forceRestricted = qtrue;
+		client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
+		if (jkcvar_jetPack.integer)
+		{
+			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+		}
 	}
 
 	// run the presend to set anything else

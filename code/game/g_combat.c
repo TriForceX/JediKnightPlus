@@ -661,7 +661,7 @@ void TossClientItems( gentity_t *self ) {
 
 	if ( weapon > WP_BRYAR_PISTOL && 
 		weapon != WP_EMPLACED_GUN &&
-		weapon != WP_TURRET &&
+		weapon != WP_TURRET && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && // Tr!Force: [Dimensions] Don't drop weapon
 		self->client->ps.ammo[ weaponData[weapon].ammoIndex ] ) {
 		gentity_t *te;
 
@@ -3120,6 +3120,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			{
 				return;
 			}
+		}
+	}
+
+	// Tr!Force: [Dimensions] Prevent ouside damage
+	if (targ->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN || (attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+	{
+		if (!(targ->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) || !(attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+		{
+			return;
 		}
 	}
 
