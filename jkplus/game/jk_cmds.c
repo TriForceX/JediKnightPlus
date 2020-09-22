@@ -122,7 +122,8 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				// Disable
 				if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
 				{
-					ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
+					ent->client->pers.jkmodPers.inDimension &= ~JK_GUNS_IN;
+					if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
 					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_STUN_BATON) 
 						& ~(1 << WP_BRYAR_PISTOL)
 						& ~(1 << WP_BLASTER) 
@@ -172,6 +173,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				// Enable
 				else
 				{
+					ent->client->pers.jkmodPers.inDimension |= JK_GUNS_IN;
 					ent->client->ps.stats[JK_DIMENSION] |= JK_GUNS_IN;
 					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_SABER);
 					ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON)
@@ -229,7 +231,8 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				// Disable
 				if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 				{
-					ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+					ent->client->pers.jkmodPers.inDimension &= ~JK_RACE_IN;
+					if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 					ent->client->ps.forceRestricted = qfalse;
 					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
 					if (!ent->takedamage) ent->takedamage = qtrue;
@@ -241,6 +244,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 				// Enable
 				else
 				{
+					ent->client->pers.jkmodPers.inDimension |= JK_RACE_IN;
 					ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
 					ent->client->ps.forceRestricted = qtrue;
 					ent->client->pers.jkmodPers.customSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];

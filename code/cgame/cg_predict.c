@@ -91,9 +91,12 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			// Check duels dimension
 			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))
 			{
-				if (cg.predictedPlayerState.duelInProgress && ent->number != cg.predictedPlayerState.duelIndex && ent->eType != ET_MOVER)
-					continue;
-				else if (!cg.predictedPlayerState.duelInProgress && ent->bolt1 == 1)
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
+				{
+					if (!(ent->number != cg.snap->ps.clientNum && cg_entities[ent->number].currentState.bolt1 == 1))
+						continue;
+				}
+				else if (cg_entities[ent->number].currentState.bolt1 == 1)
 					continue;
 			}
 			// Check chat dimension

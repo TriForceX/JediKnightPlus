@@ -1219,8 +1219,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 			// Tr!Force: [Dimensions] Remove duel flag
-			ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
-			duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+			if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+			if (!JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1281,8 +1281,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
-				ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
-				duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+				if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+				if (!JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);

@@ -27,10 +27,10 @@ static void trap_Trace_Start(int entityNum)
 	if (0 <= entityNum && entityNum < MAX_CLIENTS)
 	{
 		// Check duel dimension
-		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && level.clients[entityNum].ps.duelInProgress) {
+		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[entityNum].client && (level.clients[entityNum].ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
-				if (i != entityNum && i != level.clients[entityNum].ps.duelIndex) {
+				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
 					if (g_entities[i].inuse &&
 						(g_entities[i].s.eType == ET_PLAYER ||
 						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack"))))) 
@@ -94,15 +94,20 @@ static void trap_Trace_Start(int entityNum)
 			int i;
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
-				if (g_entities[saberOwner].client && g_entities[saberOwner].client->ps.duelInProgress) return;
+				if (g_entities[saberOwner].client && 
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) )
+				{
+					return;
+				}
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
 					if (g_entities[i].inuse && g_entities[i].client &&
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[i].client->ps.duelInProgress ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN))) 
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ) 
 					{
 						g_entities_dimension[i] = g_entities[i].r.ownerNum;
 						g_entities[i].r.ownerNum = entityNum;
@@ -123,10 +128,10 @@ static void trap_Trace_End(int entityNum)
 	if (0 <= entityNum && entityNum < MAX_CLIENTS)
 	{
 		// Check duel dimension
-		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && level.clients[entityNum].ps.duelInProgress) {
+		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[entityNum].client && (level.clients[entityNum].ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
-				if (i != entityNum && i != level.clients[entityNum].ps.duelIndex) {
+				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
 					if (g_entities[i].inuse &&
 						(g_entities[i].s.eType == ET_PLAYER ||
 						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack"))))) 
@@ -186,15 +191,20 @@ static void trap_Trace_End(int entityNum)
 			int i;
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
-				if (g_entities[saberOwner].client && g_entities[saberOwner].client->ps.duelInProgress) return;
+				if (g_entities[saberOwner].client &&
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) )
+				{
+					return;
+				}
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
 					if (g_entities[i].inuse && g_entities[i].client &&
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[i].client->ps.duelInProgress ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN))) 
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ) 
 					{
 						g_entities[i].r.ownerNum = g_entities_dimension[i];
 					}

@@ -79,6 +79,7 @@ typedef struct
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
 	int			customSavedJump;		// Saved custom jump level
+	int			inDimension;			// Check current dimension
 
 } jkmod_pers_t;
 
