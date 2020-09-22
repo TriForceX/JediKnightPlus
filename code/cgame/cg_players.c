@@ -6015,7 +6015,7 @@ void CG_Player( centity_t *cent ) {
 	}
 
 	// Tr!Force: [PrivateDuel] Don't render players outside of duel
-	if (jkcvar_cg_privateDuel.integer && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	if ((jkcvar_cg_privateDuel.integer || (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
 	{
 		return;
 	}

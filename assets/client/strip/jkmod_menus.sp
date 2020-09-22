@@ -410,11 +410,11 @@ INDEX 44
 INDEX 45
 {
    REFERENCE CLIENT_PRIVATEDUEL_DESC
-   TEXT_LANGUAGE1 "Hide other players when duelling."
-   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel."
-   TEXT_LANGUAGE3 "Verstecke andere spieler beim duellieren."
-   TEXT_LANGUAGE6 "Hide other players when duelling."
-   TEXT_LANGUAGE8 "Esconde a otros jugadores cuando estés en duelo."
+   TEXT_LANGUAGE1 "Hide other players when duelling. (If the dimension is available it will always be enabled)"
+   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel. (Si la dimension est disponible elle sera toujours activée)"
+   TEXT_LANGUAGE3 "Verstecke andere spieler beim duell. (Wenn die dimension verfügbar ist wird sie immer aktiviert)"
+   TEXT_LANGUAGE6 "Hide other players when duelling. (If the dimension is available it will always be enabled)"
+   TEXT_LANGUAGE8 "Esconde otros jugadores si estas en duelo. (Si la dimensión está habilitada se activará siempre)"
 }
 INDEX 46
 {
@@ -745,7 +745,7 @@ INDEX 82
    REFERENCE CLIENT_CHATOPACITY_DESC
    TEXT_LANGUAGE1 "Make chatting players transparent (Only works if the dimension is enabled)."
    TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents (Ne fonctionne que si la dimension est activée)."
-   TEXT_LANGUAGE3 "Chatten sie spieler transparent (Funktioniert nur, wenn die Dimension aktiviert ist)."
+   TEXT_LANGUAGE3 "Chatten sie spieler transparent (Funktioniert nur, wenn die dimension aktiviert ist)."
    TEXT_LANGUAGE6 "Make chatting players transparent (Only works if the dimension is enabled)."
    TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes (Solo si la dimensión está habilitada)."
 }
