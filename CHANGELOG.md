@@ -9,6 +9,16 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.0
+- Updated whois command to show current dimension
+- Fixed wrong check on chat dimension
+- Fixed player stuck when leaving chat dimension
+- Added guns dimension
+- Re-routed main trace function for dimensions
+- Prevent stuck when leaving other dimensions
+- Always hide non duelers if dimension is enabled
+- Added check for missile impact on dimensions (WIP)
+
 ## 0.12.4
 - Merge updates from mvsdk
 - Changed custom models path
