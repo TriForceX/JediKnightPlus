@@ -132,6 +132,7 @@ Re-routed functions
 #define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
+#define trap_Trace					JKMod_Dimensions
 
 /*
 =====================================================================

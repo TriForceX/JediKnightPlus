@@ -612,7 +612,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		pm.ps = &client->ps;
 		pm.cmd = *ucmd;
 		pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;	// spectators can fly through bodies
-		pm.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
+		pm.trace = trap_Trace;
 		pm.pointcontents = trap_PointContents;
 
 		pm.animations = NULL;
@@ -1370,7 +1370,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	else {
 		pm.tracemask = MASK_PLAYERSOLID;
 	}
-	pm.trace = JKMod_Dimensions; // Tr!Force: [Dimensions] Main trace
+	pm.trace = trap_Trace;
 	pm.pointcontents = trap_PointContents;
 	pm.debugLevel = g_debugMove.integer;
 	pm.noFootsteps = ( g_dmflags.integer & DF_NO_FOOTSTEPS ) > 0;

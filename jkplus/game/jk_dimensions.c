@@ -8,6 +8,12 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Main header
 
+// Undo re-routing for calls made from here
+#undef trap_Trace
+
+// Re-declare trace function
+void trap_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
+
 // Save entity owners nums
 static int g_entities_dimension[MAX_GENTITIES];
 
