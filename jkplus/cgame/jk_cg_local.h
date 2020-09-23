@@ -112,6 +112,7 @@ void		JKMod_CG_ChatBox_DrawStrings(void);
 void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);
+void		JKMod_CG_DrawDimensionString(void);
 
 // jk_cg_players.c
 qboolean	JKMod_CG_InEmoteUI(centity_t *cent);

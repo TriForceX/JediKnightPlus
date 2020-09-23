@@ -33,6 +33,12 @@ void JKMod_CG_Draw2D(void)
 	{
 		JKMod_CG_DrawJetPackFuel();
 	}
+
+	// Draw Dimension indicator
+	if (cgs.jkmodCvar.altDimensions)
+	{
+		JKMod_CG_DrawDimensionString();
+	}
 }
 
 /*
@@ -402,4 +408,25 @@ void JKMod_CG_DrawJetPackFuel(void)
 	CG_DrawRect(x, y, width, height, 1.0f, colorTable[CT_BLACK]);
 	CG_FillRect(x + 0.8f, y + 1.3f + (height - percent), width - 1.5f, height - 2.0f - (height - percent), aColor);
 	CG_FillRect(x + 1.0f, y + 1.0f, width - 1.0f, height - percent, cColor);
+}
+
+/*
+=====================================================================
+Draw dimension indicator
+=====================================================================
+*/
+void JKMod_CG_DrawDimensionString(void)
+{
+	const char *dimensionStr = NULL;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+
+	if (cg.snap->ps.stats[JK_DIMENSION] & JK_DUEL_IN) dimensionStr = "Duel";
+	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_CHAT_IN) dimensionStr = "Chat";
+	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_GUNS_IN) dimensionStr = "Guns";
+	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_RACE_IN) dimensionStr = "Race";
+
+	if (dimensionStr) {
+		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s Dimension]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
+	}
 }
