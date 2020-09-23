@@ -3595,6 +3595,17 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				VectorCopy( dir, targ->pos2 );
 			}
 
+			// Tr!Force: [RaceMode] Don't die, respawn
+			if (targ->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+			{
+				if (targ->health < 50) 
+				{
+					trap_UnlinkEntity(targ);
+					ClientSpawn(targ);
+					return;
+				}
+			}
+
 			targ->enemy = attacker;
 			targ->die (targ, inflictor, attacker, take, mod);
 			return;
