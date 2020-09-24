@@ -171,22 +171,22 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check temp dimension
-	if (ent->client->ps.stats[JK_DIMENSION] & JK_TEMP_IN)
+	if (ent->client->ps.eFlags & JK_PASS_THROUGH)
 	{
-		if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_TEMP_IN;
+		if (!JKMod_OthersInBox(ent)) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
 	}
 
 	// Check duel dimension
 	if ((ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !ent->client->ps.duelInProgress)
 	{
-		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
 	}
 
 	// Check chat dimension
 	if ((ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && !(ent->client->ps.eFlags & EF_TALK))
 	{
-		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 		if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
 		if (!ent->takedamage) ent->takedamage = qtrue;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
@@ -195,7 +195,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	// Check guns dimension
 	if ((ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(ent->client->pers.jkmodPers.inDimension & JK_GUNS_IN))
 	{
-		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
 	}
 
@@ -209,7 +209,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 		else
 		{
-			if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 		}
 	}

@@ -19,7 +19,6 @@ Global definitions
 #define JK_EMOTE_IN				( 1 << 0 )
 
 // Dimension stuff
-#define JK_TEMP_IN				( 1 << 0 )
 #define JK_DUEL_IN				( 1 << 1 )
 #define JK_CHAT_IN				( 1 << 2 )
 #define JK_GUNS_IN				( 1 << 3 )
@@ -31,6 +30,9 @@ Global definitions
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 28 )
 #define JK_JETPACK_FLAMING		( 1 << 29 )
+
+// Other stuff
+#define JK_PASS_THROUGH			( 1 << 30 )
 
 /*
 =====================================================================

@@ -27,14 +27,14 @@ static void trap_Trace_Start(int entityNum)
 	if (0 <= entityNum && entityNum < MAX_CLIENTS)
 	{
 		// Check temp dimension
-		if (g_entities[entityNum].client && (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_TEMP_IN)) {
+		if (g_entities[entityNum].client && (g_entities[entityNum].client->ps.eFlags & JK_PASS_THROUGH)) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
 					if (g_entities[i].inuse &&
 						(g_entities[i].s.eType == ET_PLAYER ||
 						(g_entities[i].s.eType == ET_MOVER && ((!Q_stricmp(g_entities[i].classname, "func_door") || !Q_stricmp(g_entities[i].classname, "func_plat")))) ||
-							(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
+						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
 					{
 						g_entities_dimension[i] = g_entities[i].r.ownerNum;
 						g_entities[i].r.ownerNum = entityNum;
@@ -119,7 +119,7 @@ static void trap_Trace_Start(int entityNum)
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
-					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_TEMP_IN) ||
+					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
@@ -144,14 +144,14 @@ static void trap_Trace_End(int entityNum)
 	if (0 <= entityNum && entityNum < MAX_CLIENTS)
 	{
 		// Check temp dimension
-		if (g_entities[entityNum].client && (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_TEMP_IN)) {
+		if (g_entities[entityNum].client && (g_entities[entityNum].client->ps.eFlags & JK_PASS_THROUGH)) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
 					if (g_entities[i].inuse &&
 						(g_entities[i].s.eType == ET_PLAYER ||
 						(g_entities[i].s.eType == ET_MOVER && ((!Q_stricmp(g_entities[i].classname, "func_door") || !Q_stricmp(g_entities[i].classname, "func_plat")))) ||
-							(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
+						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
 					{
 						g_entities[i].r.ownerNum = g_entities_dimension[i];
 					}
@@ -231,7 +231,7 @@ static void trap_Trace_End(int entityNum)
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
-					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_TEMP_IN) ||
+					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||

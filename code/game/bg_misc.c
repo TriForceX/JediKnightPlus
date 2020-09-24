@@ -2174,8 +2174,6 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 			s->bolt1 = 3;
 		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
 			s->bolt1 = 4;
-		else if (ps->stats[JK_DIMENSION] & JK_TEMP_IN)
-			s->bolt1 = 5;
 		else
 			s->bolt1 = 0;
 	}
@@ -2328,8 +2326,6 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 			s->bolt1 = 3;
 		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
 			s->bolt1 = 4;
-		else if (ps->stats[JK_DIMENSION] & JK_TEMP_IN)
-			s->bolt1 = 5;
 		else
 			s->bolt1 = 0;
 	}

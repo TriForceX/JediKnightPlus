@@ -166,7 +166,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
 					ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 
-					if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+					if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 
 					trap_SendServerCommand(ent - g_entities, va("cp \"Guns mode disabled\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
@@ -238,7 +238,7 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 					ent->client->ps.forceRestricted = qfalse;
 					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
 					if (!ent->takedamage) ent->takedamage = qtrue;
-					if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
+					if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
