@@ -88,7 +88,13 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 		// Tr!Force: [Dimensions] Check dimensions
 		if (cgs.jkmodCvar.altDimensions)
 		{
-			// Check duels dimension
+			// Check temp dimension
+			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_TEMP_IN)
+				continue;
+			else if (cg_entities[ent->number].currentState.bolt1 == 5)
+				continue;
+
+			// Check duel dimension
 			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))
 			{
 				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)

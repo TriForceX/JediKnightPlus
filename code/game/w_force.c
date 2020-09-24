@@ -657,7 +657,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 	// Tr!Force: [Dimensions] Prevent force usage
-	if (other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN || (attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+	if ((other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) || (attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 	{
 		if (!(other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) || !(attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 		{

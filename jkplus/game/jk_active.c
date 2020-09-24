@@ -170,23 +170,32 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
-	// Check duel dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !ent->client->ps.duelInProgress && !JKMod_OthersInBox(ent))
+	// Check temp dimension
+	if (ent->client->ps.stats[JK_DIMENSION] & JK_TEMP_IN)
 	{
+		if (!JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] &= ~JK_TEMP_IN;
+	}
+
+	// Check duel dimension
+	if ((ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !ent->client->ps.duelInProgress)
+	{
+		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
 	}
 
 	// Check chat dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && !(ent->client->ps.eFlags & EF_TALK) && !JKMod_OthersInBox(ent))
+	if ((ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && !(ent->client->ps.eFlags & EF_TALK))
 	{
+		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
 		if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
 		if (!ent->takedamage) ent->takedamage = qtrue;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
 	}
 
 	// Check guns dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(ent->client->pers.jkmodPers.inDimension & JK_GUNS_IN) && !JKMod_OthersInBox(ent))
+	if ((ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(ent->client->pers.jkmodPers.inDimension & JK_GUNS_IN))
 	{
+		if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
 	}
 
@@ -198,8 +207,9 @@ void JKMod_ClientThink_real(gentity_t *ent)
 			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			if (ent->takedamage) ent->takedamage = qfalse;
 		}
-		else if (!JKMod_OthersInBox(ent))
+		else
 		{
+			if (JKMod_OthersInBox(ent)) ent->client->ps.stats[JK_DIMENSION] |= JK_TEMP_IN;
 			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
 		}
 	}
