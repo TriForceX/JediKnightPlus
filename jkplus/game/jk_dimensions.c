@@ -110,20 +110,20 @@ static void trap_Trace_Start(int entityNum)
 			int i;
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
-				if (g_entities[saberOwner].client && 
+				if (g_entities[saberOwner].client && ( // Dimensions with interaction
 					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) )
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ))
 				{
 					return;
 				}
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
-					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
+					if (g_entities[i].inuse && g_entities[i].client && ((g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ) 
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ))
 					{
 						g_entities_dimension[i] = g_entities[i].r.ownerNum;
 						g_entities[i].r.ownerNum = entityNum;
@@ -222,20 +222,20 @@ static void trap_Trace_End(int entityNum)
 			int i;
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
-				if (g_entities[saberOwner].client &&
+				if (g_entities[saberOwner].client && ( // Dimensions with interaction
 					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) )
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ))
 				{
 					return;
 				}
 			}
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
-					if (g_entities[i].inuse && g_entities[i].client && (g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
+					if (g_entities[i].inuse && g_entities[i].client && ((g_entities[i].client->ps.eFlags & JK_PASS_THROUGH) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_CHAT)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_CHAT_IN)) ||
 						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ) 
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ))
 					{
 						g_entities[i].r.ownerNum = g_entities_dimension[i];
 					}
