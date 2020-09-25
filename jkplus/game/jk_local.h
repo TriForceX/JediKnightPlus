@@ -160,6 +160,7 @@ extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_teleportChat;
+extern	vmCvar_t					jkcvar_teleportFrag;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
 extern	vmCvar_t					jkcvar_voteControl;
@@ -260,8 +261,8 @@ void		JKMod_serverIdleCheck(void);
 
 // jk_misc.c
 gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
-void		JKMod_PushBox(gentity_t *ent);
-void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean telefrag, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
+void		JKMod_PassBox(gentity_t *ent);
+void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 
 // jk_session.c

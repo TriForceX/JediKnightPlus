@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.1
+- Draw dimension indicator on hud
+- Prevent die on race dimension
+- Added temporary dimension for future purposes
+- Changed temp dimension check to eFlags type
+- Fixed wrong check on custom trace functions
+- Changed bolt1 assignment to allow multiple values
+- Added option to allow or prevent kill when telefrag
+
 ## 0.13.0
 - Updated whois command to show current dimension
 - Fixed wrong check on chat dimension

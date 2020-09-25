@@ -2210,8 +2210,14 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 		// Tr!Force: [RaceMode] Don't kill non-racers on spawn
 		if (!(client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 		{
-			G_KillBox(ent);
-			trap_LinkEntity(ent);
+			// Tr!Force: [TeleFrag] Allow kill and unlink
+			if (jkcvar_teleportFrag.integer) {
+				G_KillBox(ent);
+				trap_LinkEntity(ent);
+			}
+			else {
+				JKMod_PassBox(ent);
+			}
 		}
 
 		// force the base weapon up

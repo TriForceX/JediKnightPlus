@@ -27,41 +27,26 @@ gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 
 /*
 =====================================================================
-Push box function
+Pass-through box function
 =====================================================================
 */
-void JKMod_PushBox(gentity_t *ent) {
+void JKMod_PassBox(gentity_t *ent) {
 	int			i, num;
 	int			touch[MAX_GENTITIES];
-	gentity_t	*hit;
+	gentity_t	*other;
 	vec3_t		mins, maxs;
-	vec3_t		temporigin, tempangles;
 
 	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
 	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
 
 	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
 
-	for (i = 0; i < num; i++) 
+	for (i = 0; i < num; i++)
 	{
-		hit = &g_entities[touch[i]];
-		if (!hit->client) {
-			continue;
+		other = &g_entities[touch[i]];
+		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) {
+			ent->client->ps.eFlags |= JK_PASS_THROUGH;
 		}
-
-		// push it
-		VectorClear(temporigin);
-		VectorClear(tempangles);
-
-		tempangles[ROLL] = 0;
-		tempangles[PITCH] = 0;
-		tempangles[YAW] = hit->client->ps.viewangles[YAW];
-
-		temporigin[0] = hit->client->ps.origin[0];
-		temporigin[1] = hit->client->ps.origin[1];
-		temporigin[2] = hit->client->ps.origin[2] + DEFAULT_MAXS_2;
-
-		JKMod_TeleportPlayer(hit, temporigin, tempangles, qfalse, qfalse, 0, "none", NULL);
 	}
 }
 
@@ -70,7 +55,7 @@ void JKMod_PushBox(gentity_t *ent) {
 Teleport player function
 =====================================================================
 */
-void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean telefrag, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound)
+void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound)
 {
 	gentity_t	*tent;
 
@@ -111,11 +96,8 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 		}
 	}
 
-	if (telefrag)
-	{
-		// unlink to make sure it can't possibly interfere with G_KillBox
-		trap_UnlinkEntity(player);
-	}
+	// unlink to make sure it can't possibly interfere with G_KillBox
+	if (jkcvar_teleportFrag.integer) trap_UnlinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
 
 	VectorCopy(origin, player->client->ps.origin);
 	player->client->ps.origin[2] += 1;
@@ -136,18 +118,12 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	SetClientViewAngle(player, angles);
 
 	// kill anything at the destination
-	if (telefrag)
-	{
-		if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		// Tr!Force: [TeleFrag] Allow kill and unlink
+		if (jkcvar_teleportFrag.integer)
 			G_KillBox(player);
-		}
-	}
-	// If not, push them
-	else
-	{
-		if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
-			JKMod_PushBox(player);
-		}
+		else
+			JKMod_PassBox(player);
 	}
 
 	// save results of pmove
@@ -156,11 +132,8 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	// use the precise origin for linking
 	VectorCopy(player->client->ps.origin, player->r.currentOrigin);
 
-	if (telefrag)
-	{
-		if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
-			trap_LinkEntity(player);
-		}
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		if (jkcvar_teleportFrag.integer) trap_LinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
 	}
 }
 

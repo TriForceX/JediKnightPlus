@@ -351,7 +351,7 @@ static qboolean JKMod_loadPosition(gentity_t *ent, int clientNum)
 		tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatOrigin[3];
 		tempangles[ROLL] = 0.0f;
 
-		JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
+		JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
 
 		if (ent->client->pers.jkmodPers.TeleportChatSaved == "true") {
 			ent->client->pers.jkmodPers.TeleportChatSaved = va("%i %i %i", temporigin[0], temporigin[1], temporigin[2]);
@@ -422,7 +422,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, int clientNum, char *text)
 					tempangles[YAW] = realrotation;
 					tempangles[ROLL] = 0.0f;
 
-					JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, qtrue, 300, "cinematics/hugesparks", NULL);
+					JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, 300, "cinematics/hugesparks", NULL);
 					ent->client->jkmodClient.TeleportChatUsed = qtrue;
 					return qtrue;
 				}

@@ -83,7 +83,7 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	}
 
 	// unlink to make sure it can't possibly interfere with G_KillBox
-	trap_UnlinkEntity (player);
+	if (jkcvar_teleportFrag.integer) trap_UnlinkEntity (player); // Tr!Force: [TeleFrag] Allow kill and unlink
 
 	VectorCopy ( origin, player->client->ps.origin );
 	player->client->ps.origin[2] += 1;
@@ -102,7 +102,11 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 
 	// kill anything at the destination
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		G_KillBox (player);
+		// Tr!Force: [TeleFrag] Allow kill and unlink
+		if (jkcvar_teleportFrag.integer)
+			G_KillBox(player);
+		else
+			JKMod_PassBox(player); 
 	}
 
 	// save results of pmove
@@ -112,7 +116,7 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	VectorCopy( player->client->ps.origin, player->r.currentOrigin );
 
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		trap_LinkEntity (player);
+		if (jkcvar_teleportFrag.integer) trap_LinkEntity (player); // Tr!Force: [TeleFrag] Allow kill and unlink
 	}
 }
 
