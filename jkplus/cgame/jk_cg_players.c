@@ -265,7 +265,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		}
 
 		// Check chat player transparency
-		if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && cent->currentState.bolt1 == 2 && jkcvar_cg_chatPlayerOpacity.integer)
+		if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && (cent->currentState.bolt1 & JK_CHAT_IN) && jkcvar_cg_chatPlayerOpacity.integer)
 		{
 			if (!JKMod_CG_InEmoteUI(cent))
 			{

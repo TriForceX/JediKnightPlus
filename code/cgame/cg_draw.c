@@ -2637,7 +2637,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 						ecolor[2] = 0.4;
 					}
 				}
-				else if (crossEnt->currentState.bolt1 == 1) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
+				else if (crossEnt->currentState.bolt1 & JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
 				{ //this fellow is in a duel. We just checked if we were in a duel above, so
 				  //this means we aren't and he is. Which of course means our crosshair greys out over him.
 					ecolor[0] = 0.4;
@@ -3242,7 +3242,7 @@ static void CG_DrawCrosshairNames( void ) {
 			baseColor = CT_BLACK;
 		}
 	}
-	else if (cg_entities[cg.crosshairClientNum].currentState.bolt1 == 1) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
+	else if (cg_entities[cg.crosshairClientNum].currentState.bolt1 & JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
 	{ //this fellow is in a duel. We just checked if we were in a duel above, so
 	  //this means we aren't and he is. Which of course means our crosshair greys out over him.
 		baseColor = CT_BLACK;

@@ -2159,24 +2159,17 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	s->saberMove = ps->saberMove;
 	s->forcePowersActive = ps->fd.forcePowersActive;
 
-	if (ps->duelInProgress)
-	{
-		s->bolt1 = 1;
-	}
-	else
-	{
-		// Tr!Force: [Dimensions] Check dimensions
-		if (ps->stats[JK_DIMENSION] & JK_DUEL_IN)
-			s->bolt1 = 1;
-		else if (ps->stats[JK_DIMENSION] & JK_CHAT_IN)
-			s->bolt1 = 2;
-		else if (ps->stats[JK_DIMENSION] & JK_GUNS_IN)
-			s->bolt1 = 3;
-		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
-			s->bolt1 = 4;
-		else
-			s->bolt1 = 0;
-	}
+	// Tr!Force: [Dimensions] Check dimensions
+	if ((ps->stats[JK_DIMENSION] & JK_DUEL_IN) || ps->duelInProgress) s->bolt1 |= JK_DUEL_IN;
+	else s->bolt1 &= ~JK_DUEL_IN;
+	if (ps->stats[JK_DIMENSION] & JK_CHAT_IN) s->bolt1 |= JK_CHAT_IN;
+	else s->bolt1 &= ~JK_CHAT_IN;
+	if (ps->stats[JK_DIMENSION] & JK_GUNS_IN) s->bolt1 |= JK_GUNS_IN;
+	else s->bolt1 &= ~JK_GUNS_IN;
+	if (ps->stats[JK_DIMENSION] & JK_RACE_IN) s->bolt1 |= JK_RACE_IN;
+	else s->bolt1 &= ~JK_RACE_IN;
+	if (!ps->stats[JK_DIMENSION])
+		s->bolt1 = 0;
 
 	if (ps->dualBlade)
 	{
@@ -2311,24 +2304,17 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->saberMove = ps->saberMove;
 	s->forcePowersActive = ps->fd.forcePowersActive;
 
-	if (ps->duelInProgress)
-	{
-		s->bolt1 = 1;
-	}
-	else
-	{
-		// Tr!Force: [Dimensions] Check dimensions
-		if (ps->stats[JK_DIMENSION] & JK_DUEL_IN)
-			s->bolt1 = 1;
-		else if (ps->stats[JK_DIMENSION] & JK_CHAT_IN)
-			s->bolt1 = 2;
-		else if (ps->stats[JK_DIMENSION] & JK_GUNS_IN)
-			s->bolt1 = 3;
-		else if (ps->stats[JK_DIMENSION] & JK_RACE_IN)
-			s->bolt1 = 4;
-		else
-			s->bolt1 = 0;
-	}
+	// Tr!Force: [Dimensions] Check dimensions
+	if ((ps->stats[JK_DIMENSION] & JK_DUEL_IN) || ps->duelInProgress) s->bolt1 |= JK_DUEL_IN;
+	else s->bolt1 &= ~JK_DUEL_IN;
+	if (ps->stats[JK_DIMENSION] & JK_CHAT_IN) s->bolt1 |= JK_CHAT_IN;
+	else s->bolt1 &= ~JK_CHAT_IN;
+	if (ps->stats[JK_DIMENSION] & JK_GUNS_IN) s->bolt1 |= JK_GUNS_IN;
+	else s->bolt1 &= ~JK_GUNS_IN;
+	if (ps->stats[JK_DIMENSION] & JK_RACE_IN) s->bolt1 |= JK_RACE_IN;
+	else s->bolt1 &= ~JK_RACE_IN;
+	if (!ps->stats[JK_DIMENSION])
+		s->bolt1 = 0;
 
 	if (ps->dualBlade)
 	{

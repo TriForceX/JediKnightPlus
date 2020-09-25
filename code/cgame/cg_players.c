@@ -6020,12 +6020,12 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && cent->currentState.bolt1 != 3)
+	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && !(cent->currentState.bolt1 & JK_GUNS_IN))
 	{
 		return;
 	}
 	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && cent->currentState.bolt1 != 4)
+	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && !(cent->currentState.bolt1 & JK_RACE_IN))
 	{
 		return;
 	}
@@ -6867,7 +6867,7 @@ doEssentialTwo:
 		}
 	}
 	// Tr!Force: [Dimensions] Check dimensions (Chat player transparency)
-	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && cent->currentState.bolt1 == 2 && jkcvar_cg_chatPlayerOpacity.integer)
+	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && (cent->currentState.bolt1 & JK_CHAT_IN) && jkcvar_cg_chatPlayerOpacity.integer)
 	{
 		if (!JKMod_CG_InEmoteUI(cent))
 		{
@@ -7485,7 +7485,7 @@ stillDoSaber:
 	else
 	{
 		// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-		if (cent->currentState.bolt1 == 1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+		if ((cent->currentState.bolt1 & JK_DUEL_IN) && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 		{
 			legs.shaderRGBA[0] = 50;
 			legs.shaderRGBA[1] = 50;
@@ -7640,7 +7640,7 @@ doEssentialThree:
 	}
 
 	// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 == 1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+	if (!cg.snap->ps.duelInProgress && (cent->currentState.bolt1 & JK_DUEL_IN) && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 	{
 		legs.shaderRGBA[0] = 50;
 		legs.shaderRGBA[1] = 50;
@@ -7653,7 +7653,7 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene( &legs );
 	}
 	// Tr!Force: [Dimensions] Check dimensions (Guns player color)
-	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && cent->currentState.bolt1 == 3)
+	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && (cent->currentState.bolt1 & JK_GUNS_IN) && !(cent->currentState.eFlags & EF_DEAD))
 	{
 		legs.shaderRGBA[0] = 255;
 		legs.shaderRGBA[1] = 255;
@@ -7667,7 +7667,7 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene(&legs);
 	}
 	// Tr!Force: [Dimensions] Check dimensions (Race player color)
-	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && cent->currentState.bolt1 == 4)
+	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && (cent->currentState.bolt1 & JK_RACE_IN) && !(cent->currentState.eFlags & EF_DEAD))
 	{
 		legs.shaderRGBA[0] = 128;
 		legs.shaderRGBA[1] = 0;

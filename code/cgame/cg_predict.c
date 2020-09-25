@@ -86,12 +86,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 		}
 
 		// Tr!Force: [Dimensions] Check pass through
-		if (cg.predictedPlayerState.eFlags & JK_PASS_THROUGH) 
-		{
+		if (cg.predictedPlayerState.eFlags & JK_PASS_THROUGH) {
 			continue;
 		}
-		else if (cg_entities[ent->number].currentState.eFlags & JK_PASS_THROUGH) 
-		{
+		else if (cg_entities[ent->number].currentState.eFlags & JK_PASS_THROUGH) {
 			continue;
 		}
 
@@ -103,10 +101,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			{
 				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
 				{
-					if (!(ent->number != cg.snap->ps.clientNum && cg_entities[ent->number].currentState.bolt1 == 1))
+					if (!(ent->number != cg.snap->ps.clientNum && (cg_entities[ent->number].currentState.bolt1 & JK_DUEL_IN)))
 						continue;
 				}
-				else if (cg_entities[ent->number].currentState.bolt1 == 1)
+				else if (cg_entities[ent->number].currentState.bolt1 & JK_DUEL_IN)
 					continue;
 			}
 			// Check chat dimension
@@ -114,7 +112,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			{
 				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_CHAT_IN)
 					continue;
-				else if (cg_entities[ent->number].currentState.bolt1 == 2)
+				else if (cg_entities[ent->number].currentState.bolt1 & JK_CHAT_IN)
 					continue;
 			}
 			// Check guns dimension
@@ -122,10 +120,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			{
 				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
 				{
-					if (!(ent->number != cg.snap->ps.clientNum && cg_entities[ent->number].currentState.bolt1 == 3))
+					if (!(ent->number != cg.snap->ps.clientNum && (cg_entities[ent->number].currentState.bolt1 & JK_GUNS_IN)))
 						continue;
 				}
-				else if (cg_entities[ent->number].currentState.bolt1 == 3)
+				else if (cg_entities[ent->number].currentState.bolt1 & JK_GUNS_IN)
 					continue;
 			}
 			// Check race dimension
@@ -138,7 +136,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 					else
 						continue;
 				}
-				else if (cg_entities[ent->number].currentState.bolt1 == 4) {
+				else if (cg_entities[ent->number].currentState.bolt1 & JK_RACE_IN) {
 					continue;
 				}
 			}
@@ -559,7 +557,7 @@ void CG_EntityStateToPlayerState( entityState_t *s, playerState_t *ps ) {
 	ps->saberMove = s->saberMove;
 	ps->fd.forcePowersActive = s->forcePowersActive;
 
-	if (s->bolt1)
+	if (s->bolt1 & JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
 	{
 		ps->duelInProgress = qtrue;
 	}
