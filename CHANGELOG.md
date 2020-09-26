@@ -9,6 +9,10 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.2
+- Reduce trace functions code on dimensions
+- Allow solid platforms in race dimension
+
 ## 0.13.1
 - Draw dimension indicator on hud
 - Prevent die on race dimension

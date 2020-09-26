@@ -129,16 +129,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			// Check race dimension
 			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE))
 			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) 
-				{
-					if (ent->eType == ET_MOVER && ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE))
-						continue;
-					else
-						continue;
-				}
-				else if (cg_entities[ent->number].currentState.bolt1 & JK_RACE_IN) {
+				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
 					continue;
-				}
+				else if (cg_entities[ent->number].currentState.bolt1 & JK_RACE_IN)
+					continue;
 			}
 		}
 
