@@ -27,6 +27,34 @@ gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 
 /*
 =====================================================================
+Check other clients in box
+=====================================================================
+*/
+qboolean JKMod_OthersInBox(gentity_t *ent) {
+	int			i, num;
+	int			touch[MAX_GENTITIES];
+	gentity_t	*other;
+	vec3_t		mins, maxs;
+
+	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
+	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
+
+	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
+
+	for (i = 0; i < num; i++)
+	{
+		other = &g_entities[touch[i]];
+		if (other->client && 
+			other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) {
+			return qtrue;
+		}
+	}
+	// G_Printf("^5Client %i checking others in box\n", ent->client->ps.clientNum);
+	return qfalse;
+}
+
+/*
+=====================================================================
 Pass-through box function
 =====================================================================
 */
@@ -44,10 +72,13 @@ void JKMod_PassBox(gentity_t *ent) {
 	for (i = 0; i < num; i++)
 	{
 		other = &g_entities[touch[i]];
-		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) {
-			ent->client->ps.eFlags |= JK_PASS_THROUGH;
+		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) 
+		{
+			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+			if (!(other->client->ps.eFlags & JK_PASS_THROUGH)) other->client->ps.eFlags |= JK_PASS_THROUGH;
 		}
 	}
+	// G_Printf("^3Client %i checking pass box\n", ent->client->ps.clientNum);
 }
 
 /*
@@ -135,30 +166,4 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
 		if (jkcvar_teleportFrag.integer) trap_LinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
 	}
-}
-
-/*
-=====================================================================
-Check other clients in box
-=====================================================================
-*/
-qboolean JKMod_OthersInBox(gentity_t *ent) {
-	int			i, num;
-	int			touch[MAX_GENTITIES];
-	gentity_t	*other;
-	vec3_t		mins, maxs;
-
-	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
-	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
-
-	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
-
-	for (i = 0; i < num; i++)
-	{
-		other = &g_entities[touch[i]];
-		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) {
-			return qtrue;
-		}
-	}
-	return qfalse;
 }

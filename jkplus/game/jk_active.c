@@ -170,10 +170,17 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
-	// Check temp dimension
-	if (ent->client->ps.eFlags & JK_PASS_THROUGH)
+	// Check player pass-through
+	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 	{
-		if (!JKMod_OthersInBox(ent)) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		if (JKMod_OthersInBox(ent)) {
+			if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
+			JKMod_PassBox(ent);
+		}
+		else {
+			if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
+			ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		}
 	}
 
 	// Check duel dimension
