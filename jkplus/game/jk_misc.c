@@ -45,7 +45,9 @@ qboolean JKMod_OthersInBox(gentity_t *ent) {
 	{
 		other = &g_entities[touch[i]];
 		if (other->client && 
-			other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && !(other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) {
+			other->client->ps.clientNum != ent->client->ps.clientNum && 
+			!(((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || (other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))) 
+		{
 			return qtrue;
 		}
 	}

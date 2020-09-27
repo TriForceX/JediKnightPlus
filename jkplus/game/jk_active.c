@@ -167,11 +167,12 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 	else if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
+		if (JKMod_OthersInBox(ent)) JKMod_PassBox(ent);
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
 	// Check player pass-through
-	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)))
 	{
 		if (JKMod_OthersInBox(ent)) {
 			if (ent->r.contents & CONTENTS_BODY) {
@@ -190,12 +191,15 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	{
 		if(ent->client->ps.eFlags & EF_TALK)
 		{
-			if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
-			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+			if (jkcvar_chatProtect.integer == 3) 
+			{
+				if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
+				if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+			}
 		}
 		else 
 		{
-			if (JKMod_OthersInBox(ent)) JKMod_PassBox(ent);
+			if (JKMod_OthersInBox(ent) && jkcvar_chatProtect.integer == 3) JKMod_PassBox(ent);
 			if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
 			if (!ent->takedamage) ent->takedamage = qtrue;
 			ent->client->ps.stats[JK_PLAYER] &= ~JK_CHAT_IN;
