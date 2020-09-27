@@ -174,8 +174,10 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 	{
 		if (JKMod_OthersInBox(ent)) {
-			if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
-			JKMod_PassBox(ent);
+			if (ent->r.contents & CONTENTS_BODY) {
+				ent->r.contents &= ~CONTENTS_BODY;
+				JKMod_PassBox(ent);
+			}
 		}
 		else {
 			if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
