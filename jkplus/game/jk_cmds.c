@@ -208,6 +208,8 @@ static qboolean JKMod_setDimension(char *dimension, gentity_t *ent, int clientNu
 						ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 						if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
 					}
+
+					if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 					
 					trap_SendServerCommand(ent - g_entities, va("cp \"Guns mode enabled\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
