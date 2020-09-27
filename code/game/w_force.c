@@ -652,7 +652,7 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	}
 
 	// Tr!Force: [ChatProtect] Prevent force usage
-	if ((other->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 2)
+	if ((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer >= 2)
 	{
 		return 0;
 	}

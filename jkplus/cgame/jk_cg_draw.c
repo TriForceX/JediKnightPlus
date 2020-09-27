@@ -422,7 +422,6 @@ void JKMod_CG_DrawDimensionString(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 
 	if (cg.snap->ps.stats[JK_DIMENSION] & JK_DUEL_IN) dimensionStr = "Duel";
-	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_CHAT_IN) dimensionStr = "Chat";
 	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_GUNS_IN) dimensionStr = "Guns";
 	else if (cg.snap->ps.stats[JK_DIMENSION] & JK_RACE_IN) dimensionStr = "Race";
 

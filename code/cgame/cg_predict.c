@@ -85,7 +85,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 		}
 
-		// Tr!Force: [Dimensions] Check pass through
+		// Tr!Force: [PassThrough] Check pass through
 		if (cg.predictedPlayerState.eFlags & JK_PASS_THROUGH) {
 			continue;
 		}
@@ -105,14 +105,6 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 						continue;
 				}
 				else if (cg_entities[ent->number].currentState.bolt1 & JK_DUEL_IN)
-					continue;
-			}
-			// Check chat dimension
-			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT))
-			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_CHAT_IN)
-					continue;
-				else if (cg_entities[ent->number].currentState.bolt1 & JK_CHAT_IN)
 					continue;
 			}
 			// Check guns dimension

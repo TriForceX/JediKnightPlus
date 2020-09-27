@@ -57,7 +57,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			if (client->jkmodClient.ChatTime >= jkcvar_chatProtectTime.integer)
 			{
 				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
-				client->ps.stats[JK_DIMENSION] |= JK_CHAT_IN; // Used for dimension and protect
+				client->ps.stats[JK_PLAYER] |= JK_CHAT_IN;
 				if (ent->takedamage) ent->takedamage = qfalse;
 				if (!client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			}
@@ -171,7 +171,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check player pass-through
-	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
 	{
 		if (JKMod_OthersInBox(ent)) {
 			if (ent->r.contents & CONTENTS_BODY) {
@@ -185,20 +185,28 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 	}
 
+	// Check chat pass-through
+	if (ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN)
+	{
+		if(ent->client->ps.eFlags & EF_TALK)
+		{
+			if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
+			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+		}
+		else 
+		{
+			if (JKMod_OthersInBox(ent)) JKMod_PassBox(ent);
+			if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
+			if (!ent->takedamage) ent->takedamage = qtrue;
+			ent->client->ps.stats[JK_PLAYER] &= ~JK_CHAT_IN;
+		}
+	}
+
 	// Check duel dimension
 	if ((ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !ent->client->ps.duelInProgress)
 	{
 		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 		ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
-	}
-
-	// Check chat dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && !(ent->client->ps.eFlags & EF_TALK))
-	{
-		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-		if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
-		if (!ent->takedamage) ent->takedamage = qtrue;
-		ent->client->ps.stats[JK_DIMENSION] &= ~JK_CHAT_IN;
 	}
 
 	// Check guns dimension

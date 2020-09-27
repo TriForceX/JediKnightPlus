@@ -6866,8 +6866,8 @@ doEssentialTwo:
 			legs.shaderRGBA[3] = 1;
 		}
 	}
-	// Tr!Force: [Dimensions] Check dimensions (Chat player transparency)
-	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_CHAT)) && (cent->currentState.bolt1 & JK_CHAT_IN) && jkcvar_cg_chatPlayerOpacity.integer)
+	// Tr!Force: [ChatProtect] Chat player transparency
+	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 	{
 		if (!JKMod_CG_InEmoteUI(cent))
 		{

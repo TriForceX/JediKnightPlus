@@ -1221,6 +1221,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Dimensions] Remove duel flag
 			ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
 			duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+
+			// Tr!Force: [PassThrough] Check pass through
 			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 			if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_PASS_THROUGH;
 
@@ -1283,6 +1285,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
+				ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+				duelAgainst->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+
+				// Tr!Force: [PassThrough] Check pass through
 				if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 				if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_PASS_THROUGH;
 
@@ -1666,7 +1672,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		gentity_t *faceKicked = &g_entities[client->ps.forceKickFlip-1];
 
 		// Tr!Force: [ChatProtect] Prevent kicks
-		if ((faceKicked->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 2)
+		if ((faceKicked->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer >= 2)
 		{
 			faceKicked = NULL;
 		}

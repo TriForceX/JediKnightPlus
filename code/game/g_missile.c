@@ -317,14 +317,15 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	{
 		gentity_t *otherOwner = &g_entities[other->r.ownerNum];
 
+		// Tr!Force: [ChatProtect] Check missile impact
+		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
+			goto killProj;
+		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
+			goto killProj;
 		// Tr!Force: [Dimensions] Check missile impact
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
 			goto killProj;
 		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(otherOwner->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
 			goto killProj;
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 			goto killProj;
@@ -337,14 +338,15 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	}
 	else
 	{
+		// Tr!Force: [ChatProtect] Check missile impact
+		if (other && other->client && (other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
+			goto killProj;
+		if (other && other->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
+			goto killProj;
 		// Tr!Force: [Dimensions] Check missile impact
 		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
 			goto killProj;
 		if (other && other->client && (self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
-			goto killProj;
-		if (other && other->client && (self->client->ps.stats[JK_DIMENSION] & JK_CHAT_IN))
 			goto killProj;
 		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
 			goto killProj;
