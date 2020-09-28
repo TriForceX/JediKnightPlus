@@ -1,8 +1,10 @@
 # Jedi Knight Plus
 
+<img align="left" width="110" height="110" src="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png">
+
 https://jkmod.github.io
 
-> Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games.
+Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games.
 
 <div align="center">
 
@@ -54,19 +56,22 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom melee weapon
 - [x] Items get affected by force physics (Push, pull, etc...)
 - [x] Enable multiple duel challenges
-- [x] Custom duel challenge modes (Full force, no force,etc...)
+- [x] Custom duel challenge modes (Full force, no force, etc...)
 - [x] Custom duel challenge start health and armor
 - [x] Custom duel stats (Health, armor and body hits)
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Closed server feature (Allow by password)
-- [x] Alternative dimensions (Duel, chat, race, etc...)
-- [x] Custom call vote system
+- [x] Alternative dimensions (Duel, guns, race, etc...)
+- [x] Custom call vote system (Custom control, vote results, etc...)
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
+- [x] Force client plugin usage (Optional)
 - [x] Prevent player warping or lag scripts
 - [x] Custom server idle reset
+- [x] Disable kill when player teleport or spawn inside another player
+- [ ] Portal gun (Experimental)
 
 ---
 
@@ -113,7 +118,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Two chat icons (Jedi Outcast & Jedi Academy)
 - [x] Fixed 2D aspect ratio for non 4:3 screens
 - [ ] Fire lightsaber style, to add real fire effects to the lightsaber
-- [x] Jetpack to fly around the map
+- [x] Jetpack to fly around the map (Quake 3 & Jedi Academy style)
 - [ ] Grapple hook to climb on the walls
 - [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [x] Ingame clock showing the real time hours, minutes and seconds
@@ -123,12 +128,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom lightsaber hilt support
 - [x] Enabled 3rd person damage blend
 - [x] Show player bounding hit boxes
-- [ ] Two alternative huds (Jedi Academy and basic lite)
+- [ ] Two alternative huds (Jedi Academy and basic)
 - [ ] Alternative FPS and server time style
 - [x] Alternative force points display on hud
 - [x] Display bacta indicator on belt (3D model)
 - [ ] Display current weapon in back (3D model)
-- [x] Enable custom item indicator
+- [x] Enable custom item indicator on hud
 - [ ] Enable push/pull force effect color to match with the color of lightsaber
 - [ ] Enable the color for the second blade with dual blade lightsabers
 - [x] Custom saber trail speed/length
@@ -138,7 +143,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom player hats
 - [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
-- [x] Unlocked some client commands and cvars (Camera range, distance, etc...)
+- [x] Disable duel glow
 - [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
 - [x] Enable 23 custom BaseJK player skins by surf files
@@ -146,6 +151,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Enable invisible private duels
 - [x] Macro scanning feature (anti script)
 - [x] Smooth client dimensions
+- [ ] Show server maps on callvote menus
 
 ---
 
