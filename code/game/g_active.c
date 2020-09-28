@@ -1369,7 +1369,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 	pm.ps = &client->ps;
 	pm.cmd = *ucmd;
-	if ( pm.ps->pm_type == PM_DEAD ) {
+	if ( pm.ps->pm_type == PM_DEAD || (ent->client->ps.eFlags & JK_PASS_THROUGH)) { // Tr!Force: [PassThrough] Check pass through
 		pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;
 	}
 	else if ( ent->r.svFlags & SVF_BOT ) {

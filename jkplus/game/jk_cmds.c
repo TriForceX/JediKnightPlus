@@ -1416,7 +1416,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^3race\n"
 				"^5----------\n"
 				"^2Note 1: ^7Is highly recommended to use the client plugin for a better experience\n"
-				"^2Note 2: ^7You also will be able to beign in ^5Duel ^7and ^5Chat ^7dimensions automatically\n"
+				"^2Note 2: ^7You also will be able to beign in ^5duel ^7dimension if is available by the server\n"
 				"^7\""));
 			return;
 		}

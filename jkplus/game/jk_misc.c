@@ -51,7 +51,6 @@ qboolean JKMod_OthersInBox(gentity_t *ent) {
 			return qtrue;
 		}
 	}
-	// G_Printf("^5Client %i checking others in box\n", ent->client->ps.clientNum);
 	return qfalse;
 }
 
@@ -80,7 +79,6 @@ void JKMod_PassBox(gentity_t *ent) {
 			if (!(other->client->ps.eFlags & JK_PASS_THROUGH)) other->client->ps.eFlags |= JK_PASS_THROUGH;
 		}
 	}
-	// G_Printf("^3Client %i checking pass box\n", ent->client->ps.clientNum);
 }
 
 /*

@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.3
+- Changed player pass-through method
+- Check pass through only on solid players
+- Added player pass through check when join guns dimension
+- Removed chat dimension and moved to pass through method
+- Check player pass through on emote and chat protect only
+- Fixed missing check for player pass through
+
 ## 0.13.2
 - Reduce trace functions code on dimensions
 - Allow solid platforms in race dimension
