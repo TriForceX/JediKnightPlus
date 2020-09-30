@@ -6014,20 +6014,38 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
-	// Tr!Force: [PrivateDuel] Don't render players outside of duel
-	if ((jkcvar_cg_privateDuel.integer || (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	// Tr!Force: [Dimensions] Don't render players outside dimension
+	if (((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) || jkcvar_cg_privateDuel.integer) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 	{
-		return;
+		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
+		{
+			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)))
+				return;
+		}
+		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)
+			return;
 	}
 	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && !(cent->currentState.bolt1 & JK_GUNS_IN))
+	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 	{
-		return;
+		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
+		{
+			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)))
+				return;
+		}
+		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)
+			return;
 	}
 	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if ((cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && !(cent->currentState.bolt1 & JK_RACE_IN))
+	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 	{
-		return;
+		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
+		{
+			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)))
+				return;
+		}
+		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)
+			return;
 	}
 
 	cent->ghoul2 = cg_entities[cent->currentState.number].ghoul2;
