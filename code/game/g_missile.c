@@ -309,54 +309,8 @@ G_MissileImpact
 */
 void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	gentity_t		*other;
-	gentity_t		*self = &g_entities[ent->r.ownerNum]; // Tr!Force: [Dimensions] Check missile impact
 	qboolean		hitClient = qfalse;
 	other = &g_entities[trace->entityNum];
-
-	if (other->r.contents & CONTENTS_LIGHTSABER)
-	{
-		gentity_t *otherOwner = &g_entities[other->r.ownerNum];
-
-		// Tr!Force: [ChatProtect] Check missile impact
-		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
-			goto killProj;
-		// Tr!Force: [Dimensions] Check missile impact
-		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(otherOwner->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(otherOwner->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
-			goto killProj;
-		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
-			goto killProj;
-	}
-	else
-	{
-		// Tr!Force: [ChatProtect] Check missile impact
-		if (other && other->client && (other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
-			goto killProj;
-		if (other && other->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
-			goto killProj;
-		// Tr!Force: [Dimensions] Check missile impact
-		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (other && other->client && (self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN))
-			goto killProj;
-		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
-			goto killProj;
-		if (other && other->client && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
-			goto killProj;
-		if (other && other->client && (other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
-			goto killProj;
-		if (other && other->client && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
-			goto killProj;
-	}
 
 	// check for bounce
 	if ( !other->takedamage &&
@@ -401,11 +355,21 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		{
 			goto killProj;
 		}
+		// Tr!Force: [ChatProtect] Check missile impact
+		else if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
+		{
+			goto killProj;
+		}
 	}
 	else
 	{
 		if (other->takedamage && other->client && other->client->ps.duelInProgress &&
 			other->client->ps.duelIndex != ent->r.ownerNum)
+		{
+			goto killProj;
+		}
+		// Tr!Force: [ChatProtect] Check missile impact
+		else if (other && other->client && (other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 		{
 			goto killProj;
 		}
