@@ -8,7 +8,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.13.3-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.13.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -99,7 +99,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Add effects (EFX format)
 - [ ] Add any entity based on classname and parameters
 - [ ] Add pre-made useful utilities (NPC spawner, message consoles, assister, etc...)
-- [ ] Change any shader or texture
+- [x] Change any shader or texture
+- [x] Change map background music
 - [ ] Modify entities properties
 - [ ] Delete entities
 - [ ] Clone entities

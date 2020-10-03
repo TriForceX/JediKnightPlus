@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.4
+- Don't render players from other dimensions (Except for spectator)
+- Keep missile impact check only for chat protect
+- Workaround for missile impact on dimensions (WIP)
+- Disable duel glow if dimension is available
+- Added shader remap & change music commands
+
 ## 0.13.3
 - Changed player pass-through method
 - Check pass through only on solid players

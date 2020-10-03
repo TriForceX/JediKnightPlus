@@ -54,6 +54,11 @@ void JKMod_gamePlay(char *gameplay)
 	}
 }
 
+/*
+=====================================================================
+Gameplay command function
+=====================================================================
+*/
 static void JKMod_svCmd_gamePlay(void)
 {
 	char	arg1[MAX_TOKEN_CHARS];
@@ -63,6 +68,11 @@ static void JKMod_svCmd_gamePlay(void)
 	trap_Cvar_Set("jk_gamePlay", arg1);
 }
 
+/*
+=====================================================================
+Reload info command function
+=====================================================================
+*/
 static void JKMod_svCmd_reload(void)
 {
 	char	arg1[MAX_TOKEN_CHARS];
@@ -85,7 +95,7 @@ static void JKMod_svCmd_reload(void)
 
 /*
 =====================================================================
-Pause game command functions
+Pause game command function
 =====================================================================
 */
 static void JKMod_svCmd_pauseGame(void)
@@ -97,6 +107,60 @@ static void JKMod_svCmd_pauseGame(void)
 	else
 	{
 		trap_Cvar_Set("jk_pauseGame", "0");
+	}
+}
+
+/*
+=====================================================================
+Remap shader command function
+=====================================================================
+*/
+static void JKMod_svCmd_remapShader(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+
+	float f = level.time * 0.001;
+
+	if (trap_Argc() < 3)
+	{
+		G_Printf("Usage: remapshader <original> <replacement>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
+		Com_sprintf(arg2, sizeof(arg1), "%s", arg2);
+
+		AddRemap(arg1, arg2, f);
+
+		trap_SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
+	}
+}
+
+/*
+=====================================================================
+Change music command function
+=====================================================================
+*/
+static void JKMod_svCmd_changeMusic(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	*music;
+
+	if (trap_Argc() < 2)
+	{
+		G_Printf("Usage: changemusic <music>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
+
+		G_SpawnString("music", arg1, &music);
+		trap_SetConfigstring(CS_MUSIC, music);
 	}
 }
 
@@ -124,6 +188,16 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "reload"))
 	{
 		JKMod_svCmd_reload();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "remapshader"))
+	{
+		JKMod_svCmd_remapShader();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "changemusic"))
+	{
+		JKMod_svCmd_changeMusic();
 		return qtrue;
 	}
 
