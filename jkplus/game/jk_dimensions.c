@@ -90,8 +90,8 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
 				if (g_entities[saberOwner].client && ( // Dimensions with interaction
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ))
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[saberOwner].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[saberOwner].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ))
 				{
 					return;
 				}
