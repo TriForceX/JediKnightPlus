@@ -110,6 +110,32 @@ qboolean JKMod_CG_Player(centity_t *cent)
 		}
 	}
 
+	// Play custom animations
+	if (jkcvar_cg_customAnims.integer)
+	{
+		// Running
+		if (cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && cent->saberLength > 0)
+		{
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_RUN2;
+			if ((cent->currentState.legsAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.legsAnim = BOTH_RUN2;
+		}
+		// Thermal detonator
+		if (cent->currentState.weapon == WP_THERMAL)
+		{
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == TORSO_WEAPONREADY10) cent->currentState.torsoAnim = TORSO_WEAPONIDLE10;
+		}
+		// Lightning force
+		if (cent->currentState.forcePowersActive & (1 << FP_LIGHTNING))
+		{
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_FORCEGRIP_HOLD) cent->currentState.torsoAnim = BOTH_FORCELIGHTNING_HOLD;
+		}
+		// Mind trick force
+		if (cent->currentState.forcePowersActive & (1 << FP_TELEPATHY))
+		{
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_FORCEPUSH) cent->currentState.torsoAnim = BOTH_MINDTRICK1;
+		}
+	}
+
 	// Final pass
 	return qtrue;
 }
