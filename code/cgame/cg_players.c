@@ -6014,40 +6014,6 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
-	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if (((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) || jkcvar_cg_privateDuel.integer) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)))
-				return;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)
-			return;
-	}
-	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)))
-				return;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)
-			return;
-	}
-	// Tr!Force: [Dimensions] Don't render players outside dimension
-	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)))
-				return;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)
-			return;
-	}
-
 	cent->ghoul2 = cg_entities[cent->currentState.number].ghoul2;
 
 	if (!cent->ghoul2)
@@ -6131,65 +6097,8 @@ void CG_Player( centity_t *cent ) {
 		cent->trickAlphaTime = cg.time;
 	}
 
-	// Tr!Force: [HitBox] Draw the hitbox
-	if (jkcvar_cg_drawHitBox.integer) 
-	{
-		JKMod_CG_AddHitBox(cent);
-	}
-
-	// Tr!Force: [DrawBactaModel] Render model
-	if (jkcvar_cg_drawBactaModel.integer) 
-	{
-		if (cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)))
-		{
-			vec4_t jkmod_itemModelDetails = { 0, 0, -5, 0.5 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
-		}
-	}
-
-	// Tr!Force: [CustomHats] Render model
-	if (cgs.jkmodCvar.customHats) 
-	{
-		vec4_t jkmod_hatDetails = { -0.3, 0, -2, 1 };
-
-		// Special case
-		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann")) {
-			jkmod_hatDetails[0] = 2;
-			jkmod_hatDetails[2] = -3;
-		}
-
-		if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 1) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/santa.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 2) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/pumpkin.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 3) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cap.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 4) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cowboy.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 5) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cringe.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 6) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 7) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3"), "*head_top", jkmod_hatDetails);
-		}
-	}
-
-	// Tr!Force: [JetPack] Render model
-	if (cgs.jkmodCvar.jetPack)
-	{
-		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
-		{
-			vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_jetpack.md3"), "*chestg", jkmod_jetPackDetails);
-		}
-	}
+	// Tr!Force: [Player] Load custom player functions
+	if (!JKMod_CG_Player(cent)) return;
 
 	//If this client has tricked you.
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,

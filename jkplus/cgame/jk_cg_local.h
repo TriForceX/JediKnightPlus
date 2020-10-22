@@ -115,6 +115,7 @@ void		JKMod_CG_DrawJetPackFuel(void);
 void		JKMod_CG_DrawDimensionString(void);
 
 // jk_cg_players.c
+qboolean	JKMod_CG_Player(centity_t *cent);
 qboolean	JKMod_CG_InEmoteUI(centity_t *cent);
 void		JKMod_CG_AddHitBox(centity_t *cent);
 void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec4_t modelDetails);
