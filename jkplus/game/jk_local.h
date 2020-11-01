@@ -216,9 +216,6 @@ void		BaseJK2_ClientCommand(int clientNum);
 // g_main.c
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
 
-// g_spawn.c
-qboolean	BaseJK2_G_CallSpawn(gentity_t *ent);
-
 // jk_active.c
 void		JKMod_ClientThink_real(gentity_t *ent);
 
@@ -269,6 +266,9 @@ qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_InitSessionData(gclient_t *client);
 void		JKMod_ReadSessionData(gclient_t *client);
 void		JKMod_WriteSessionData(gclient_t *client);
+
+// jk_spawn.c
+qboolean	JKMod_G_CallSpawn(gentity_t *ent);
 
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);

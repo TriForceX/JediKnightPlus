@@ -20,6 +20,9 @@ typedef struct {
 	void(*spawn)(gentity_t *ent);
 } spawn_t;
 
+// Base spawn list
+extern	spawn_t	spawns[];
+
 // Spawn functions list
 void JKMod_SP_TimerStart(gentity_t *self);
 void JKMod_SP_TimerStop(gentity_t *self);
@@ -50,6 +53,29 @@ Call spawn function
 qboolean JKMod_G_CallSpawn(gentity_t *ent) 
 { 
 	spawn_t	*s;
+	gitem_t	*item;
+
+	if (!ent->classname) {
+		G_Printf("G_CallSpawn: NULL classname\n");
+		return qfalse;
+	}
+
+	// check item spawn functions
+	for (item = bg_itemlist + 1; item->classname; item++) {
+		if (!strcmp(item->classname, ent->classname)) {
+			G_SpawnItem(ent, item);
+			return qtrue;
+		}
+	}
+
+	// check normal spawn functions
+	for (s = spawns; s->name; s++) {
+		if (!strcmp(s->name, ent->classname)) {
+			// found it
+			s->spawn(ent);
+			return qtrue;
+		}
+	}
 
 	// Check custom spawn functions
 	for (s = jkmod_spawns; s->name; s++) {
@@ -60,6 +86,6 @@ qboolean JKMod_G_CallSpawn(gentity_t *ent)
 		}
 	}
 
-	// Launch original call spawn function
-	return BaseJK2_G_CallSpawn(ent);
+	G_Printf("%s doesn't have a spawn function\n", ent->classname);
+	return qfalse;
 }
