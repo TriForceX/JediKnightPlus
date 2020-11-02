@@ -94,38 +94,8 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 		}
 
 		// Tr!Force: [Dimensions] Check dimensions
-		if (cgs.jkmodCvar.altDimensions)
-		{
-			// Check duel dimension
-			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL))
-			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
-				{
-					if (!(ent->number != cg.snap->ps.clientNum && (cg_entities[ent->number].currentState.bolt1 & JK_DUEL_IN)))
-						continue;
-				}
-				else if (cg_entities[ent->number].currentState.bolt1 & JK_DUEL_IN)
-					continue;
-			}
-			// Check guns dimension
-			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS))
-			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
-				{
-					if (!(ent->number != cg.snap->ps.clientNum && (cg_entities[ent->number].currentState.bolt1 & JK_GUNS_IN)))
-						continue;
-				}
-				else if (cg_entities[ent->number].currentState.bolt1 & JK_GUNS_IN)
-					continue;
-			}
-			// Check race dimension
-			if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE))
-			{
-				if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
-					continue;
-				else if (cg_entities[ent->number].currentState.bolt1 & JK_RACE_IN)
-					continue;
-			}
+		if (!JKMod_CG_CheckDimension(ent->number)) {
+			continue;
 		}
 
 		if ( ent->solid == SOLID_BMODEL ) {

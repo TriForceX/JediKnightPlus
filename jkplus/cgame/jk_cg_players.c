@@ -14,42 +14,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Custom player functions
 =====================================================================
 */
-qboolean JKMod_CG_Player(centity_t *cent)
+void JKMod_CG_Player(centity_t *cent)
 {
-	// Don't render players outside dimension
-	if (((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) || jkcvar_cg_privateDuel.integer) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)))
-				return qfalse;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_DUEL_IN)
-			return qfalse;
-	}
-	// Don't render players outside dimension
-	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)))
-				return qfalse;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_GUNS_IN)
-			return qfalse;
-	}
-	// Don't render players outside dimension
-	if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE) && cent->currentState.number != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-	{
-		if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
-		{
-			if (!(cent->currentState.number != cg.snap->ps.clientNum && (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)))
-				return qfalse;
-		}
-		else if (cg_entities[cent->currentState.number].currentState.bolt1 & JK_RACE_IN)
-			return qfalse;
-	}
-
 	// Draw the hitbox
 	if (jkcvar_cg_drawHitBox.integer)
 	{
@@ -133,6 +99,52 @@ qboolean JKMod_CG_Player(centity_t *cent)
 		if (cent->currentState.forcePowersActive & (1 << FP_TELEPATHY))
 		{
 			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_FORCEPUSH) cent->currentState.torsoAnim = BOTH_MINDTRICK1;
+		}
+	}
+}
+
+/*
+=====================================================================
+Check player dimension
+=====================================================================
+*/
+qboolean JKMod_CG_CheckDimension(int entNumber)
+{
+	// Check server cvar
+	if (cgs.jkmodCvar.altDimensions)
+	{
+		// Duel dimension
+		if (((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) || jkcvar_cg_privateDuel.integer) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+		{
+			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
+			{
+				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_DUEL_IN)))
+					return qfalse;
+			}
+			else if (cg_entities[entNumber].currentState.bolt1 & JK_DUEL_IN)
+				return qfalse;
+		}
+		// Guns dimension
+		if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+		{
+			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
+			{
+				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_GUNS_IN)))
+					return qfalse;
+			}
+			else if (cg_entities[entNumber].currentState.bolt1 & JK_GUNS_IN)
+				return qfalse;
+		}
+		// Race dimension
+		if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+		{
+			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
+			{
+				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_RACE_IN)))
+					return qfalse;
+			}
+			else if (cg_entities[entNumber].currentState.bolt1 & JK_RACE_IN)
+				return qfalse;
 		}
 	}
 

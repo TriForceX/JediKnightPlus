@@ -6091,14 +6091,19 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
+	// Tr!Force: [Dimensions] Check dimensions
+	if (!JKMod_CG_CheckDimension(cent->currentState.number)) {
+		return;
+	}
+
+	// Tr!Force: [Player] Load custom player functions
+	JKMod_CG_Player(cent);
+
 	if (!cent->trickAlphaTime || (cg.time - cent->trickAlphaTime) > 1000)
 	{ //things got out of sync, perhaps a new client is trying to fill in this slot
 		cent->trickAlpha = 255;
 		cent->trickAlphaTime = cg.time;
 	}
-
-	// Tr!Force: [Player] Load custom player functions
-	if (!JKMod_CG_Player(cent)) return;
 
 	//If this client has tricked you.
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,
