@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.5
+- Moved custom clientside player functions
+- Updated custom player animations
+- Fix re-routed map spawn function
+- Fix re-routed main trace function
+- Moved clientside dimension checks
+- Added weapon and effects checks for dimensions
+
 ## 0.13.4
 - Don't render players from other dimensions (Except for spectator)
 - Keep missile impact check only for chat protect

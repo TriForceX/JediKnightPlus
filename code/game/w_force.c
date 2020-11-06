@@ -1950,6 +1950,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 					tent = G_TempEntity( impactPoint, EV_FORCE_DRAINED);
 					tent->s.eventParm = DirToByte(dir);
 					tent->s.owner = traceEnt->s.number;
+					tent->s.otherEntityNum = traceEnt->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 					if ( jk2gameplay != VERSION_1_02 ) traceEnt->client->forcePowerSoundDebounce = level.time + 400;
 				}
@@ -4290,7 +4291,7 @@ void SeekerDroneUpdate(gentity_t *self)
 		a[YAW] = 0;
 		a[PITCH] = 1;
 
-		G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a);
+		JKMod_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		self->client->ps.eFlags -= EF_SEEKERDRONE;
 		self->client->ps.genericEnemyIndex = -1;
@@ -4337,7 +4338,7 @@ void SeekerDroneUpdate(gentity_t *self)
 		a[YAW] = 0;
 		a[PITCH] = 1;
 
-		G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a);
+		JKMod_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		self->client->ps.eFlags -= EF_SEEKERDRONE;
 		self->client->ps.genericEnemyIndex = -1;

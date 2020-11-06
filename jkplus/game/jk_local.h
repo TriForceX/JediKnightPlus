@@ -257,7 +257,8 @@ void		JKMod_teleportChatInit(void);
 void		JKMod_serverIdleCheck(void);
 
 // jk_misc.c
-gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
+gentity_t	*JKMod_PlayEffect(int fxID, vec3_t org, vec3_t ang, int ownerNum);
+gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang, int ownerNum);
 void		JKMod_PassBox(gentity_t *ent);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 qboolean	JKMod_OthersInBox(gentity_t *ent);

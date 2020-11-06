@@ -282,6 +282,7 @@ gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life,
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	missile->parent = owner;
 	missile->r.ownerNum = owner->s.number;
+	missile->s.otherEntityNum = owner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	if (altFire)
 	{
@@ -394,6 +395,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		VectorCopy(ent->r.currentOrigin, te->s.origin);
 		VectorCopy(trace->plane.normal, te->s.angles);
 		te->s.eventParm = 0;
+		te->s.otherEntityNum = ent->r.ownerNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		/*if (other->client->ps.velocity[2] > 0 ||
 			other->client->pers.cmd.forwardmove ||
@@ -460,6 +462,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			VectorCopy(ent->r.currentOrigin, te->s.origin);
 			VectorCopy(trace->plane.normal, te->s.angles);
 			te->s.eventParm = 0;
+			te->s.otherEntityNum = ent->r.ownerNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 			/*if (otherOwner->client->ps.velocity[2] > 0 ||
 				otherOwner->client->pers.cmd.forwardmove ||

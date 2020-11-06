@@ -1441,6 +1441,15 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_SABER_HIT:
 		DEBUGNAME("EV_SABER_HIT");
+
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		if (es->eventParm == 16)
 		{ //Make lots of sparks, something special happened
 			vec3_t fxDir;
@@ -1483,6 +1492,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_SABER_BLOCK:
 		DEBUGNAME("EV_SABER_BLOCK");
+
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
 
 		if (es->eventParm)
 		{ //saber block
@@ -1550,6 +1567,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_MAIN_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_MAIN_SHOT");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		if (cent->currentState.eventParm != cg.snap->ps.clientNum ||
 			cg.renderingThirdPerson)
 		{ //h4q3ry
@@ -1567,6 +1592,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_SNIPER_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_SNIPER_SHOT");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		if (cent->currentState.eventParm != cg.snap->ps.clientNum ||
 			cg.renderingThirdPerson)
 		{ //h4q3ry
@@ -1584,6 +1617,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_SNIPER_MISS:
 		DEBUGNAME("EV_DISRUPTOR_SNIPER_MISS");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		ByteToDir( es->eventParm, dir );
 		if (es->weapon)
 		{ //primary
@@ -1597,6 +1638,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_HIT:
 		DEBUGNAME("EV_DISRUPTOR_HIT");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+			break;
+		}
+		else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		ByteToDir( es->eventParm, dir );
 		if (es->weapon)
 		{ //client
@@ -1806,6 +1855,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			vec3_t playerMaxs = {15, 15, DEFAULT_MAXS_2};
 			vec3_t ang, pos, dpos;
 
+			// Tr!Force: [Dimensions] Check dimensions
+			if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+				break;
+			}
+			else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+				break;
+			}
+
 			VectorClear(ang);
 			ang[ROLL] = 1;
 
@@ -1832,6 +1889,14 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			vec3_t playerMins = {-15, -15, DEFAULT_MINS_2+8};
 			vec3_t playerMaxs = {15, 15, DEFAULT_MAXS_2};
 			vec3_t ang, pos, dpos;
+
+			// Tr!Force: [Dimensions] Check dimensions
+			if (es->number >= 0 && es->number < MAX_CLIENTS && !JKMod_CG_CheckDimension(es->number)) {
+				break;
+			}
+			else if (es->number >= MAX_CLIENTS && es->otherEntityNum != ENTITYNUM_NONE && !JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+				break;
+			}
 
 			VectorClear(ang);
 			ang[ROLL] = 1;
@@ -1958,6 +2023,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_HIT:
 		DEBUGNAME("EV_MISSILE_HIT");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		ByteToDir( es->eventParm, dir );
 		if (cent->currentState.eFlags & EF_ALT_FIRING)
 		{
@@ -1971,6 +2041,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS:
 		DEBUGNAME("EV_MISSILE_MISS");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		ByteToDir( es->eventParm, dir );
 		if (cent->currentState.eFlags & EF_ALT_FIRING)
 		{
@@ -1984,6 +2059,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS_METAL:
 		DEBUGNAME("EV_MISSILE_MISS_METAL");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+			break;
+		}
+
 		ByteToDir( es->eventParm, dir );
 		if (cent->currentState.eFlags & EF_ALT_FIRING)
 		{
@@ -1997,6 +2077,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_PLAY_EFFECT:
 		DEBUGNAME("EV_PLAY_EFFECT");
+		// Tr!Force: [Dimensions] Check dimensions
+		if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum) && es->otherEntityNum != ENTITYNUM_NONE) {
+			break;
+		}
+
 		switch(es->eventParm)
 		{ //it isn't a hack, it's ingenuity!
 		case EFFECT_SMOKE:
@@ -2051,6 +2136,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME("EV_PLAY_EFFECT_ID");
 		{
 			vec3_t fxDir;
+
+			// Tr!Force: [Dimensions] Check dimensions
+			if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum) && es->otherEntityNum != ENTITYNUM_NONE) {
+				break;
+			}
 
 			AngleVectors(es->angles, fxDir, 0, 0);
 			

@@ -471,6 +471,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 					te->s.angles[1] = 1;
 				}
 				te->s.eventParm = 0;
+				te->s.otherEntityNum = tr.entityNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				return;
 			}
@@ -488,6 +489,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_MAIN_SHOT );
 	VectorCopy( muzzle, tent->s.origin2 );
 	tent->s.eventParm = ent->s.number;
+	tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	traceEnt = &g_entities[tr.entityNum];
 
@@ -507,6 +509,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 			
 			tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
 			tent->s.eventParm = DirToByte( tr.plane.normal );
+			tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 			if (traceEnt->client)
 			{
 				tent->s.weapon = 1;
@@ -517,6 +520,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 			 // Hmmm, maybe don't make any marks on things that could break
 			tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS );
 			tent->s.eventParm = DirToByte( tr.plane.normal );
+			tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 			tent->s.weapon = 1;
 		}
 	}
@@ -629,6 +633,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 				VectorCopy( muzzle, tent->s.origin2 );
 				tent->s.shouldtarget = fullCharge;
 				tent->s.eventParm = ent->s.number;
+				tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
 				VectorCopy(tr.endpos, te->s.origin);
@@ -638,6 +643,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 					te->s.angles[1] = 1;
 				}
 				te->s.eventParm = 0;
+				te->s.otherEntityNum = tr.entityNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				return;
 			}
@@ -648,6 +654,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 		VectorCopy( muzzle, tent->s.origin2 );
 		tent->s.shouldtarget = fullCharge;
 		tent->s.eventParm = ent->s.number;
+		tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		// If the beam hits a skybox, etc. it would look foolish to add impact effects
 		if ( render_impact ) 
@@ -684,6 +691,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 
 						tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
 						tent->s.eventParm = DirToByte( tr.plane.normal );
+						tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 					}
 				 }
 				 else
@@ -691,6 +699,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 					 // Hmmm, maybe don't make any marks on things that could break
 					tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS );
 					tent->s.eventParm = DirToByte( tr.plane.normal );
+					tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 				 }
 				break; // and don't try any more traces
 			}
@@ -728,6 +737,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 
 				tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
 				tent->s.eventParm = DirToByte( tr.plane.normal );
+				tent->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 				if (traceEnt->client)
 				{
 					tent->s.weapon = 1;
@@ -1158,7 +1168,7 @@ void DEMP2_AltDetonate( gentity_t *ent )
 		ent->pos1[1] = 1;
 	}
 	//Let's just save ourself some bandwidth and play both the effect and sphere spawn in 1 event
-	efEnt = G_PlayEffect( EFFECT_EXPLOSION_DEMP2ALT, ent->r.currentOrigin, ent->pos1 );
+	efEnt = JKMod_PlayEffect( EFFECT_EXPLOSION_DEMP2ALT, ent->r.currentOrigin, ent->pos1, ent->r.ownerNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	if (efEnt)
 	{
@@ -1804,6 +1814,7 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	bolt->s.pos.trType = TR_GRAVITY;
 	bolt->parent = ent;
 	bolt->r.ownerNum = ent->s.number;
+	bolt->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	VectorScale( dir, TD_VELOCITY * chargeAmount, bolt->s.pos.trDelta );
 
 	if ( ent->health >= 0 )
@@ -1896,11 +1907,11 @@ void laserTrapExplode( gentity_t *self )
 
 	if (self->s.weapon == WP_FLECHETTE)
 	{
-		G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, v);
+		JKMod_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, v, self->r.ownerNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	}
 	else
 	{
-		G_PlayEffect(EFFECT_EXPLOSION_TRIPMINE, self->r.currentOrigin, v);
+		JKMod_PlayEffect(EFFECT_EXPLOSION_TRIPMINE, self->r.currentOrigin, v, self->r.ownerNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	}
 
 	self->think = G_FreeEntity;
@@ -2062,6 +2073,7 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->parent = owner;
 	laserTrap->activator = owner;
 	laserTrap->r.ownerNum = owner->s.number;
+	laserTrap->s.otherEntityNum = owner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	VectorSet( laserTrap->r.mins, -LT_SIZE, -LT_SIZE, -LT_SIZE );
 	VectorSet( laserTrap->r.maxs, LT_SIZE, LT_SIZE, LT_SIZE );
 	laserTrap->clipmask = MASK_SHOT;
@@ -2250,7 +2262,7 @@ void charge_stick (gentity_t *self, gentity_t *other, trace_t *trace)
 		VectorCopy(trace->plane.normal, v);
 		VectorCopy(v, self->pos2);
 		self->count = -1;
-		G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v);
+		JKMod_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v, self->r.ownerNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		self->think = G_FreeEntity;
 		self->nextthink = level.time;
@@ -2313,7 +2325,7 @@ void DetPackBlow(gentity_t *self)
 		VectorCopy(self->pos2, v);
 	}
 
-	G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v);
+	JKMod_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v, self->r.ownerNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	self->think = G_FreeEntity;
 	self->nextthink = level.time;
@@ -2351,6 +2363,7 @@ void drop_charge (gentity_t *self, vec3_t start, vec3_t dir)
 	//bolt->playerTeam = self->client->playerTeam;
 	bolt->parent = self;
 	bolt->r.ownerNum = self->s.number;
+	bolt->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	bolt->damage = 100;
 	bolt->splashDamage = 200;
 	bolt->splashRadius = 200;
@@ -2582,7 +2595,7 @@ void WP_FireStunBaton( gentity_t *ent, qboolean alt_fire )
 
 	if ( tr_ent && tr_ent->takedamage )
 	{
-		G_PlayEffect( EFFECT_STUNHIT, tr.endpos, tr.plane.normal );
+		JKMod_PlayEffect( EFFECT_STUNHIT, tr.endpos, tr.plane.normal, ent->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		// TEMP!
 		G_Sound( tr_ent, CHAN_WEAPON, G_SoundIndex( va("sound/weapons/melee/punch%d", Q_irand(1, 4)) ) );
@@ -3255,7 +3268,7 @@ void emplaced_gun_update(gentity_t *self)
 		explOrg[2] += 16;
 
 		//G_PlayEffect(EFFECT_EXPLOSION, explOrg, /*self->r.currentAngles*/puffAngle);
-		G_PlayEffect(EFFECT_EXPLOSION_DETPACK, explOrg, /*self->r.currentAngles*/puffAngle);
+		JKMod_PlayEffect(EFFECT_EXPLOSION_DETPACK, explOrg, /*self->r.currentAngles*/puffAngle, self->s.otherEntityNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		self->boltpoint3 = level.time + Q_irand(2500, 3500);
 
@@ -3276,7 +3289,7 @@ void emplaced_gun_update(gentity_t *self)
 			smokeOrg[2] += 60;
 
 			//What.. was I thinking?
-			G_PlayEffect(EFFECT_SMOKE, smokeOrg, puffAngle);
+			JKMod_PlayEffect(EFFECT_SMOKE, smokeOrg, puffAngle, self->s.otherEntityNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 			self->boltpoint2 = level.time + Q_irand(250, 400);
 			//This would be much better if we checked a value on the entity on the client

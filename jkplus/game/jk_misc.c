@@ -10,10 +10,28 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
+Play effect by owner number function
+=====================================================================
+*/
+gentity_t *JKMod_PlayEffect(int fxID, vec3_t org, vec3_t ang, int ownerNum)
+{
+	gentity_t	*te;
+
+	te = G_TempEntity(org, EV_PLAY_EFFECT);
+	VectorCopy(ang, te->s.angles);
+	VectorCopy(org, te->s.origin);
+	te->s.eventParm = fxID;
+	te->s.otherEntityNum = ownerNum;
+
+	return te;
+}
+
+/*
+=====================================================================
 Play effect by ID function
 =====================================================================
 */
-gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
+gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang, int ownerNum)
 {
 	gentity_t	*te;
 
@@ -21,6 +39,7 @@ gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 	VectorCopy(ang, te->s.angles);
 	VectorCopy(org, te->s.origin);
 	te->s.eventParm = fxID;
+	te->s.otherEntityNum = ownerNum;
 
 	return te;
 }
@@ -104,9 +123,11 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 		{
 			tent = G_TempEntity(player->client->ps.origin, EV_PLAYER_TELEPORT_OUT);
 			tent->s.clientNum = player->s.clientNum;
+			tent->s.otherEntityNum = player->s.clientNum;
 
 			tent = G_TempEntity(origin, EV_PLAYER_TELEPORT_IN);
 			tent->s.clientNum = player->s.clientNum;
+			tent->s.otherEntityNum = player->s.clientNum;
 		}
 		else
 		{
@@ -118,10 +139,10 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 				temporigin[PITCH] = -90;
 				temporigin[ROLL] = 0;
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin);
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin, player->s.clientNum);
 				G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")));
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin);
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin, player->s.clientNum);
 				G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")));
 			}
 		}

@@ -2616,6 +2616,7 @@ void G_GetDismemberBolt(gentity_t *self, vec3_t boltPoint, int limbType)
 			}
 
 			te->s.eventParm = 16; //lots of sparks
+			te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 		}
 	}
 }
@@ -2729,6 +2730,7 @@ void G_Dismember( gentity_t *ent, vec3_t point, int limbType, float limbRollBase
 
 	limb->s.modelGhoul2 = /*limbType*/MV_VersionMagic_g2ModelParts(limbType); // MVSDK: As we don't need the "modelGhoul2" of this limb on the serverside anymore we can just convert it to the appropriate value of the jk2version we are running in, without the need to convert it back later...
 	limb->s.g2radius = 200;
+	limb->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	if (ent->client)
 	{
 		limb->s.modelindex = ent->s.number;

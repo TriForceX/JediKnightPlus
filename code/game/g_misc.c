@@ -77,9 +77,11 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
 		tent = G_TempEntity( player->client->ps.origin, EV_PLAYER_TELEPORT_OUT );
 		tent->s.clientNum = player->s.clientNum;
+		tent->s.otherEntityNum = player->s.clientNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		tent = G_TempEntity( origin, EV_PLAYER_TELEPORT_IN );
 		tent->s.clientNum = player->s.clientNum;
+		tent->s.otherEntityNum = player->s.clientNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	}
 
 	// unlink to make sure it can't possibly interfere with G_KillBox
