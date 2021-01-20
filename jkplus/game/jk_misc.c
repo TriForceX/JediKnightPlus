@@ -102,6 +102,32 @@ void JKMod_PassBox(gentity_t *ent) {
 
 /*
 =====================================================================
+Remove entity by classname
+=====================================================================
+*/
+void JKMod_RemoveByClass(gentity_t *ent, char *name)
+{
+	gentity_t *found = NULL;
+
+	while ((found = G_Find(found, FOFS(classname), name)) != NULL)
+	{
+		if (found->parent == ent)
+		{
+			if (!Q_stricmp(name, "sentryGun") && ent->client->ps.fd.sentryDeployed) {
+				ent->client->ps.fd.sentryDeployed = qfalse;
+			}
+			if (!Q_stricmp(name, "detpack") && ent->client->ps.hasDetPackPlanted) {
+				ent->client->ps.hasDetPackPlanted = qfalse;
+			}
+			VectorCopy(found->r.currentOrigin, found->s.origin);
+			found->think = G_FreeEntity;
+			found->nextthink = level.time;
+		}
+	}
+}
+
+/*
+=====================================================================
 Teleport player function
 =====================================================================
 */

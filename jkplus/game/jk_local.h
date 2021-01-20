@@ -240,6 +240,7 @@ void		JKMod_sRand(unsigned seed);
 int			JKMod_Rand(void);
 
 // jk_dimensions.c
+qboolean	JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum);
 void		JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
 
 // jk_emotes.c
@@ -259,9 +260,10 @@ void		JKMod_serverIdleCheck(void);
 // jk_misc.c
 gentity_t	*JKMod_PlayEffect(int fxID, vec3_t org, vec3_t ang, int ownerNum);
 gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang, int ownerNum);
-void		JKMod_PassBox(gentity_t *ent);
-void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
+void		JKMod_PassBox(gentity_t *ent);
+void		JKMod_RemoveByClass(gentity_t *ent, char *name);
+void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 
 // jk_session.c
 void		JKMod_InitSessionData(gclient_t *client);

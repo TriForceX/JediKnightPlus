@@ -1019,7 +1019,10 @@ Ghoul2 Insert End
 		}
 		else if (cent->currentState.bolt1)
 		{
-			TurretClientRun(cent);
+			// Tr!Force: [Dimensions] Check dimensions
+			if (JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
+				TurretClientRun(cent);
+			}
 		}
 
 		if (cent->ghoul2)
