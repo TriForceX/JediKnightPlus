@@ -105,55 +105,6 @@ void JKMod_CG_Player(centity_t *cent)
 
 /*
 =====================================================================
-Check player dimension
-=====================================================================
-*/
-qboolean JKMod_CG_CheckDimension(int entNumber)
-{
-	// Check server cvar
-	if (cgs.jkmodCvar.altDimensions)
-	{
-		// Duel dimension
-		if (((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) || jkcvar_cg_privateDuel.integer) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-		{
-			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_DUEL_IN)
-			{
-				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_DUEL_IN)))
-					return qfalse;
-			}
-			else if (cg_entities[entNumber].currentState.bolt1 & JK_DUEL_IN)
-				return qfalse;
-		}
-		// Guns dimension
-		if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-		{
-			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN)
-			{
-				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_GUNS_IN)))
-					return qfalse;
-			}
-			else if (cg_entities[entNumber].currentState.bolt1 & JK_GUNS_IN)
-				return qfalse;
-		}
-		// Race dimension
-		if (cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE) && entNumber != cg.predictedPlayerState.clientNum && cg.snap->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR)
-		{
-			if (cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN)
-			{
-				if (!(entNumber != cg.snap->ps.clientNum && (cg_entities[entNumber].currentState.bolt1 & JK_RACE_IN)))
-					return qfalse;
-			}
-			else if (cg_entities[entNumber].currentState.bolt1 & JK_RACE_IN)
-				return qfalse;
-		}
-	}
-
-	// Final pass
-	return qtrue;
-}
-
-/*
-=====================================================================
 Check player emote UI
 =====================================================================
 */

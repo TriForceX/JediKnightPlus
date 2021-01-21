@@ -60,8 +60,11 @@ Re-routed functions
 =====================================================================
 */
 
-#define CG_RegisterCvars 			JKMod_CG_RegisterCvars
-#define CG_UpdateCvars				JKMod_CG_UpdateCvars
+#define CG_RegisterCvars 						JKMod_CG_RegisterCvars
+#define CG_UpdateCvars							JKMod_CG_UpdateCvars
+#define trap_S_StartSound(a,b,c,d)				JKMod_trap_S_StartSound(a,b,c,d)
+#define trap_S_AddLoopingSound(a,b,c,d)			JKMod_trap_S_AddLoopingSound(a,b,c,d)
+#define trap_S_AddRealLoopingSound(a,b,c,d)		JKMod_trap_S_AddRealLoopingSound(a,b,c,d)
 
 /*
 =====================================================================
@@ -116,9 +119,14 @@ void		JKMod_CG_DrawDimensionString(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);
-qboolean	JKMod_CG_CheckDimension(int entNumber);
 qboolean	JKMod_CG_InEmoteUI(centity_t *cent);
 void		JKMod_CG_AddHitBox(centity_t *cent);
 void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec4_t modelDetails);
+
+// jk_cg_dimensions.c
+qboolean	JKMod_CG_CheckDimension(int entNumber);
+void		JKMod_trap_S_StartSound(vec3_t origin, int entityNum, int entchannel, sfxHandle_t sfx);
+void		JKMod_trap_S_AddLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx);
+void		JKMod_trap_S_AddRealLoopingSound(int entityNum, const vec3_t origin, const vec3_t velocity, sfxHandle_t sfx);
 
 #endif // __JK_CG_LOCAL_H__

@@ -827,7 +827,7 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 	//play sound indicating that attack was absorbed
 	if (attacked->client->forcePowerSoundDebounce < level.time && jk2gameplay != VERSION_1_02)
 	{
-		abSound = G_PreDefSound(attacked->client->ps.origin, PDSOUND_ABSORBHIT);
+		abSound = JKMod_PreDefSound(attacked->client->ps.origin, PDSOUND_ABSORBHIT, attacked->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 		abSound->s.trickedentindex = attacked->s.number;
 
 		attacked->client->forcePowerSoundDebounce = level.time + 400;
@@ -835,7 +835,7 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 
 	if ( jk2gameplay == VERSION_1_02 )
 	{
-		G_PreDefSound(attacker->client->ps.origin, PDSOUND_ABSORBHIT);
+		JKMod_PreDefSound(attacker->client->ps.origin, PDSOUND_ABSORBHIT, attacker->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	}
 
 	return getLevel;
@@ -1493,7 +1493,7 @@ void ForceProtect( gentity_t *self )
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 
 	WP_ForcePowerStart( self, FP_PROTECT, 0 );
-	G_PreDefSound(self->client->ps.origin, PDSOUND_PROTECT);
+	JKMod_PreDefSound(self->client->ps.origin, PDSOUND_PROTECT, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	G_Sound( self, TRACK_CHANNEL_3, protectLoopSound );
 }
 
@@ -1529,7 +1529,7 @@ void ForceAbsorb( gentity_t *self )
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 
 	WP_ForcePowerStart( self, FP_ABSORB, 0 );
-	G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
+	JKMod_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	G_Sound( self, TRACK_CHANNEL_3, absorbLoopSound );
 }
 
@@ -2205,7 +2205,7 @@ int WP_GetVelocityForForceJump( gentity_t *self, vec3_t jumpVel, usercmd_t *ucmd
 
 	G_MuteSound(self->client->ps.fd.killSoundEntIndex[TRACK_CHANNEL_1-50], CHAN_VOICE);
 
-	G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+	JKMod_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	if (self->client->ps.fd.forceJumpCharge < JUMP_VELOCITY+40)
 	{ //give him at least a tiny boost from just a tap
@@ -4413,7 +4413,7 @@ void SeekerDroneUpdate(gentity_t *self)
 				VectorNormalize(endir);
 
 				WP_FireGenericBlasterMissile(self, org, endir, 0, 15, 2000, MOD_BLASTER);
-				G_SoundAtLoc( org, CHAN_WEAPON, G_SoundIndex("sound/weapons/bryar/fire.wav") );
+				JKMod_SoundAtLoc( org, CHAN_WEAPON, G_SoundIndex("sound/weapons/bryar/fire.wav"), self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				self->client->ps.droneFireTime = level.time + Q_irand(400, 700);
 			}
@@ -4688,7 +4688,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 					if (self->client->pers.cmd.upmove &&
 						self->client->ps.fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1)
 					{ //force getup
-						G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+						JKMod_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 						self->client->ps.forceDodgeAnim = 2;
 						self->client->ps.forceHandExtendTime = level.time + 500;
 
@@ -4726,7 +4726,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if (self->client->pers.cmd.upmove &&
 					self->client->ps.fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1)
 				{ //force getup
-					G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+					JKMod_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 					self->client->ps.forceDodgeAnim = 2;
 					self->client->ps.forceHandExtendTime = level.time + 800;//1000;
 
@@ -4881,7 +4881,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 
 	if (self->client->ps.fd.forceJumpSound)
 	{
-		G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+		JKMod_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 		self->client->ps.fd.forceJumpSound = 0;
 	}
 
@@ -4889,7 +4889,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	{
 		if (self->client->ps.fd.forceGripSoundTime < level.time)
 		{
-			G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEGRIP);
+			JKMod_PreDefSound(self->client->ps.origin, PDSOUND_FORCEGRIP, self->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 			self->client->ps.fd.forceGripSoundTime = level.time + 1000;
 		}
 	}

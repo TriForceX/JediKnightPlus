@@ -3447,13 +3447,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			//G_Sound(targ, CHAN_AUTO, protectHitSound);
 			if (targ->client->forcePowerSoundDebounce < level.time && jk2gameplay != VERSION_1_02)
 			{
-				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
+				JKMod_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 				targ->client->forcePowerSoundDebounce = level.time + 400;
 			}
 
 			if ( jk2gameplay == VERSION_1_02 )
 			{
-				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
+				JKMod_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 			}
 
 			if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
