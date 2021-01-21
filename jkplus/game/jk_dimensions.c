@@ -254,9 +254,7 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
-					if (g_entities[i].inuse &&
-						(g_entities[i].s.eType == ET_PLAYER ||
-						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack"))))) 
+					if (g_entities[i].inuse && g_entities[i].s.eType == ET_PLAYER) 
 					{
 						if (start) {
 							g_entities_dimension[i] = g_entities[i].r.ownerNum;
@@ -273,9 +271,7 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) {
-					if (g_entities[i].inuse &&
-						(g_entities[i].s.eType == ET_PLAYER ||
-						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
+					if (g_entities[i].inuse && g_entities[i].s.eType == ET_PLAYER)
 					{
 						if (start) {
 							g_entities_dimension[i] = g_entities[i].r.ownerNum;
@@ -294,8 +290,12 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 				if (i != entityNum) {
 					if (g_entities[i].inuse &&
 						(g_entities[i].s.eType == ET_PLAYER ||
-						(g_entities[i].s.eType == ET_MOVER && ((!Q_stricmp(g_entities[i].classname, "func_door")))) ||
-						(g_entities[i].s.eType == ET_GENERAL && (!Q_stricmp(g_entities[i].classname, "laserTrap")) || (!Q_stricmp(g_entities[i].classname, "detpack")))))
+						(g_entities[i].s.eType == ET_MOVER && !Q_stricmp(g_entities[i].classname, "func_door")) ||
+						(g_entities[i].s.eType == ET_GENERAL 
+							&& !Q_stricmp(g_entities[i].classname, "laserTrap") 
+							|| !Q_stricmp(g_entities[i].classname, "detpack") 
+							|| !Q_stricmp(g_entities[i].classname, "sentryGun") 
+							|| !Q_stricmp(g_entities[i].classname, "item_shield"))))
 					{
 						if (start) {
 							g_entities_dimension[i] = g_entities[i].r.ownerNum;
