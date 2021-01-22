@@ -79,6 +79,7 @@ vmCvar_t	jkcvar_forcePlugin;
 vmCvar_t	jkcvar_macroScan;
 vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
+vmCvar_t	jkcvar_mapFixes;
 
 vmCvar_t	jkcvar_jetPack;
 vmCvar_t	jkcvar_jetPackPhysics;
@@ -134,6 +135,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_jetPackPhysics,		"jk_jetPackPhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },

@@ -193,6 +193,7 @@ extern	vmCvar_t					jkcvar_forcePlugin;
 extern	vmCvar_t					jkcvar_macroScan;
 extern	vmCvar_t					jkcvar_antiWarp;
 extern	vmCvar_t					jkcvar_antiWarpTime;
+extern	vmCvar_t					jkcvar_mapFixes;
 
 extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_jetPackPhysics;
