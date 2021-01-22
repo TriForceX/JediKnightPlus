@@ -80,6 +80,7 @@ typedef struct
 	char		*TeleportChatSaved;		// Player saved pos saved
 	int			customSavedJump;		// Saved custom jump level
 	int			inDimension;			// Check current dimension
+	int			jetackUseDelay;			// Jetpack usage delay
 
 } jkmod_pers_t;
 

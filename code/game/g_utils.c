@@ -1015,15 +1015,17 @@ void TryUse( gentity_t *ent )
 	// Tr!Force: [JetPack] Use button
 	if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 	{
-		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING)
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING && (ent->client->pers.jkmodPers.jetackUseDelay <= level.time))
 		{
 			ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
+			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
 		}
-		else if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE && 
+		else if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE && (ent->client->pers.jkmodPers.jetackUseDelay <= level.time) &&
 			!( BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
 			|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
 			|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent)))
 		{
+			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
 			ent->client->ps.eFlags |= JK_JETPACK_FLAMING;
 		}
 	}

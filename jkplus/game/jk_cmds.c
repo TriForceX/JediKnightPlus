@@ -1270,7 +1270,7 @@ void JKMod_ClientCommand(int clientNum)
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 			{
 				ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
-				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack disabled\n\""));
+				trap_SendServerCommand(ent - g_entities, va("print \"Jetpack disabled\n\""));
 				return;
 			}
 			// Enable
@@ -1278,7 +1278,8 @@ void JKMod_ClientCommand(int clientNum)
 			{
 				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 				if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
-				trap_SendServerCommand(ent - g_entities, va("cp \"Jetpack equiped\nPress USE button on air to enable\""));
+				trap_SendServerCommand(ent - g_entities, va("print \"Jetpack equiped\n\""));
+				trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
 				return;
 			}
 		}
