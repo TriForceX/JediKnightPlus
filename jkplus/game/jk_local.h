@@ -274,6 +274,7 @@ void		JKMod_WriteSessionData(gclient_t *client);
 
 // jk_spawn.c
 qboolean	JKMod_G_CallSpawn(gentity_t *ent);
+void		JKMod_AddSpawnField(char *field, char *value);
 
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);
