@@ -81,6 +81,7 @@ typedef struct
 	int			customSavedJump;		// Saved custom jump level
 	int			inDimension;			// Check current dimension
 	int			jetackUseDelay;			// Jetpack usage delay
+	int			buttonUseAnim;				// Button use animation
 
 } jkmod_pers_t;
 
@@ -195,6 +196,7 @@ extern	vmCvar_t					jkcvar_macroScan;
 extern	vmCvar_t					jkcvar_antiWarp;
 extern	vmCvar_t					jkcvar_antiWarpTime;
 extern	vmCvar_t					jkcvar_mapFixes;
+extern	vmCvar_t					jkcvar_useAnim;
 
 extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_jetPackPhysics;

@@ -119,6 +119,8 @@ Client think real function
 */
 void JKMod_ClientThink_real(gentity_t *ent)
 {
+	usercmd_t	*cmd = &ent->client->pers.cmd;
+
 	// Already in an emote
 	if (JKMod_emoteIn(ent, -1))
 	{
@@ -249,6 +251,26 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	else
 	{
 		if (ent->client->ps.stats[JK_MOVEMENT] & JK_JETPACK_JKA) ent->client->ps.stats[JK_MOVEMENT] &= ~JK_JETPACK_JKA;
+	}
+
+	// Tr!Force: [JKMod] Button use animation
+	if (jkcvar_useAnim.integer && cmd->buttons & BUTTON_USE && !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) && 
+		!((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE))
+	{
+		ent->client->pers.jkmodPers.buttonUseAnim = 1;
+		ent->client->ps.saberMove = LS_NONE;
+		ent->client->ps.saberBlocked = 0;
+		ent->client->ps.saberBlocking = 0;
+		ent->client->ps.forceHandExtend = HANDEXTEND_TAUNT;
+		ent->client->ps.forceDodgeAnim = BOTH_BUTTON_HOLD;
+		ent->client->ps.forceHandExtendTime = level.time + INFINITE;
+	}
+	else if (ent->client->pers.jkmodPers.buttonUseAnim)
+	{
+		ent->client->pers.jkmodPers.buttonUseAnim = 0;
+		ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+		ent->client->ps.forceDodgeAnim = 0;
+		ent->client->ps.forceHandExtendTime = 0;
 	}
 
 	// Launch original client think real function
