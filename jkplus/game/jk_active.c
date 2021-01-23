@@ -51,6 +51,13 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			else client->jkmodClient.VoteWaitTime = 0;
 		}
 
+		// Dimension time check
+		if (client->jkmodClient.DimensionTime)
+		{
+			if (client->jkmodClient.DimensionTime > 0) client->jkmodClient.DimensionTime--;
+			else client->jkmodClient.DimensionTime = 0;
+		}
+
 		// Chat protect check
 		if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
 		{

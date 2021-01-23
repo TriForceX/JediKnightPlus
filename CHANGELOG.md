@@ -9,6 +9,16 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.13.6
+- Remove powerups and projectiles when leave guns dimension
+- Added check for Sentry Gun and Item Shield in race dimension
+- Check effects and weapons sounds through dimensions
+- Added custom energy stations to map entities
+- Fixed turret chair map entity model
+- Added delay for jetpack usage
+- Added delay for dimension change
+- Added button-use player animation
+
 ## 0.13.5
 - Moved custom clientside player functions
 - Updated custom player animations

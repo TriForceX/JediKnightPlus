@@ -39,6 +39,11 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in this game type\n\"");
 		return qfalse;
 	}
+	if (ent->client->jkmodClient.DimensionTime > 0)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds before change dimension\n\"", ent->client->jkmodClient.DimensionTime));
+		return qfalse;
+	}
 	else
 	{
 		// Set guns dimension
@@ -59,6 +64,9 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 			}
 			else
 			{
+				// Delay
+				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionsTime.integer;
+
 				// Disable
 				if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
 				{
@@ -201,6 +209,9 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 			}
 			else
 			{
+				// Delay
+				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionsTime.integer;
+
 				// Disable
 				if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
 				{

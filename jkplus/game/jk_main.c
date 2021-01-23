@@ -71,6 +71,7 @@ vmCvar_t	jkcvar_emotesPunchDamage;
 
 vmCvar_t	jkcvar_gamePlay;
 vmCvar_t	jkcvar_altDimensions;
+vmCvar_t	jkcvar_altDimensionsTime;
 vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
@@ -128,6 +129,7 @@ static cvarTable_t	JKModCvarTable[] =
 
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensions,		"jk_altDimensions",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_altDimensionsTime,	"jk_altDimensionsTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					CVAR_ARCHIVE,						0, qtrue },

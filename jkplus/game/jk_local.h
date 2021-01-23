@@ -91,6 +91,7 @@ typedef struct
 	vec3_t		PauseSavedView;		// Player saved view angles
 	int			TimeResidual;		// Player time residual
 	int			DropFlagTime;		// Player time
+	int			DimensionTime;		// Dimension change time
 	int			ConnectTime;		// Client connect time
 	int			ChatTime;			// Chat protect time
 	int			MotdTime;			// Server motd time
@@ -187,6 +188,7 @@ extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
 extern	vmCvar_t					jkcvar_gamePlay;
 extern	vmCvar_t					jkcvar_altDimensions;
+extern	vmCvar_t					jkcvar_altDimensionsTime;
 extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
