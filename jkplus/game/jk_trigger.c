@@ -27,7 +27,7 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	if (!activator->client) return;
 
 	// Check mode
-	if (!(activator->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {
@@ -60,7 +60,7 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	if (!activator->client) return;
 
 	// Check mode
-	if (!(activator->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {
@@ -105,7 +105,7 @@ void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activato
 	if (!activator->client) return;
 
 	// Check mode
-	if (!(activator->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {

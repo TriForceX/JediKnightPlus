@@ -640,12 +640,12 @@ void G_RunMissile( gentity_t *ent ) {
 		gentity_t *self = &g_entities[ent->r.ownerNum];
 
 		if (other && other->client &&
-			((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && !(other->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && (self->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && !(other->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && (self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) || 
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (self->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)))
+			((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && other->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN && self->client->ps.stats[JK_DIMENSION] != JK_DUEL_IN ||
+			(jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && other->client->ps.stats[JK_DIMENSION] != JK_DUEL_IN && self->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN ||
+			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && other->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN ||
+			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && other->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN ||
+			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && other->client->ps.stats[JK_DIMENSION] == JK_RACE_IN || 
+			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN))
 		{
 			VectorCopy(origin, ent->r.currentOrigin);
 			trap_LinkEntity(ent);

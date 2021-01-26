@@ -432,7 +432,7 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 
 	if ( !other->takedamage ) {
 		// Tr!Force: [RaceMode] Allow world hurt
-		if (!other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) {
+		if (other->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) {
 			return;
 		}
 	}
@@ -472,7 +472,7 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 	if (self->damage == -1 && other && other->client)
 	{
 		// Tr!Force: [RaceMode] Don't die, respawn
-		if (other->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+		if (other->client->ps.stats[JK_DIMENSION] == JK_RACE_IN) 
 		{
 			trap_UnlinkEntity(other);
 			ClientSpawn(other);

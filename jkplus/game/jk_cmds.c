@@ -646,7 +646,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	}
 
 	// Tr!Force: [Dimensions] Check duel challenge
-	if (ent->client->ps.stats[JK_DIMENSION] & (JK_GUNS_IN | JK_RACE_IN))
+	if (ent->client->ps.stats[JK_DIMENSION])
 	{
 		return;
 	}
@@ -677,7 +677,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Dimensions] Check duel challenge
-		if (challenged->client->ps.stats[JK_DIMENSION] & (JK_GUNS_IN | JK_RACE_IN))
+		if (challenged->client->ps.stats[JK_DIMENSION])
 		{
 			return;
 		}
@@ -707,8 +707,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
-			ent->client->ps.stats[JK_DIMENSION] |= JK_DUEL_IN;
-			challenged->client->ps.stats[JK_DIMENSION] |= JK_DUEL_IN;
+			ent->client->ps.stats[JK_DIMENSION] = JK_DUEL_IN;
+			challenged->client->ps.stats[JK_DIMENSION] = JK_DUEL_IN;
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
@@ -1161,9 +1161,9 @@ void JKMod_ClientCommand(int clientNum)
 				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 			}
 
-			if (ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) dimension = "Duel";
-			else if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) dimension = "Guns";
-			else if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) dimension = "Race";
+			if (ent->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN) dimension = "Duel";
+			else if (ent->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) dimension = "Guns";
+			else if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN) dimension = "Race";
 			else dimension = "Normal";
 			
 			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %9s %s%9s\n",
@@ -1254,7 +1254,7 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
 			return;
 		}
-		else if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+		else if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in this dimension\n\""));
 			return;

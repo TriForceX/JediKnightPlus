@@ -513,7 +513,7 @@ void CG_EntityStateToPlayerState( entityState_t *s, playerState_t *ps ) {
 	ps->saberMove = s->saberMove;
 	ps->fd.forcePowersActive = s->forcePowersActive;
 
-	if (s->bolt1 & JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
+	if (s->bolt1 == JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
 	{
 		ps->duelInProgress = qtrue;
 	}

@@ -661,7 +661,7 @@ void TossClientItems( gentity_t *self ) {
 
 	if ( weapon > WP_BRYAR_PISTOL && 
 		weapon != WP_EMPLACED_GUN &&
-		weapon != WP_TURRET && !(self->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && // Tr!Force: [Dimensions] Don't drop weapon
+		weapon != WP_TURRET && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN && // Tr!Force: [Dimensions] Don't drop weapon
 		self->client->ps.ammo[ weaponData[weapon].ammoIndex ] ) {
 		gentity_t *te;
 
@@ -3055,7 +3055,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	if (!targ->takedamage) {
 		// Tr!Force: [RaceMode] Allow world hurt
-		if (targ->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) 
+		if (targ->client->ps.stats[JK_DIMENSION] == JK_RACE_IN) 
 		{ 
 			if(!(
 				mod == MOD_WATER ||
@@ -3126,9 +3126,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	}
 
 	// Tr!Force: [Dimensions] Prevent ouside damage
-	if (targ->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN || (attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+	if (targ->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN || attacker->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)
 	{
-		if (!(targ->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) || !(attacker->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN))
+		if (targ->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN || attacker->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
 		{
 			return;
 		}
@@ -3598,7 +3598,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 
 			// Tr!Force: [RaceMode] Don't die, respawn
-			if (targ->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+			if (targ->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
 			{
 				if (targ->health < 50) 
 				{

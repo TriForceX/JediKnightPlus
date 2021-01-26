@@ -2210,7 +2210,7 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 
 	} else {
 		// Tr!Force: [RaceMode] Don't kill non-racers on spawn
-		if (!(client->ps.stats[JK_DIMENSION] & JK_RACE_IN))
+		if (client->ps.stats[JK_DIMENSION] != JK_RACE_IN)
 		{
 			// Tr!Force: [TeleFrag] Allow kill and unlink
 			if (jkcvar_teleportFrag.integer) {
@@ -2270,14 +2270,14 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 		trap_LinkEntity( ent );
 	}
 
-	if (g_spawnInvulnerability.integer && !(ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) // Tr!Force: [RaceMode] Don't set invulnerable flag
+	if (g_spawnInvulnerability.integer && ent->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) // Tr!Force: [RaceMode] Don't set invulnerable flag
 	{
 		ent->client->ps.eFlags |= EF_INVULNERABLE;
 		ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
 	}
 
 	// Tr!Force: [Dimensions] Don't remove weapons and items
-	if (client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
+	if (client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)
 	{
 		int i;
 		client->ps.stats[STAT_WEAPONS] = jksave_weapons;

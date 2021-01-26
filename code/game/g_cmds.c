@@ -502,7 +502,7 @@ void Cmd_Kill_f( gentity_t *ent ) {
 		trap_SendServerCommand(ent - g_entities, va("print \"You can't kill yourself during pause mode\n\""));
 		return;
 	}
-	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN) // Tr!Force: [RaceMode] Don't kill, respawn
+	if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN) // Tr!Force: [RaceMode] Don't kill, respawn
 	{
 		trap_UnlinkEntity(ent);
 		ClientSpawn(ent);

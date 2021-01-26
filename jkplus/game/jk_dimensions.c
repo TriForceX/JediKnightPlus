@@ -57,7 +57,7 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 				return qfalse;
 			}
-			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN | JK_RACE_IN))
+			else if (ent->client->ps.stats[JK_DIMENSION] && ent->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
 			{
 				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
@@ -68,7 +68,7 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionsTime.integer;
 
 				// Disable
-				if (ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)
+				if (ent->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)
 				{
 					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_STUN_BATON)
 						& ~(1 << WP_BRYAR_PISTOL)
@@ -141,8 +141,8 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 
 					if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 
-					ent->client->pers.jkmodPers.inDimension &= ~JK_GUNS_IN;
-					ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
+					ent->client->pers.jkmodPers.inDimension = 0;
+					ent->client->ps.stats[JK_DIMENSION] = 0;
 
 					trap_SendServerCommand(ent - g_entities, va("cp \"Guns mode disabled\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
@@ -151,8 +151,8 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				// Enable
 				else
 				{
-					ent->client->pers.jkmodPers.inDimension |= JK_GUNS_IN;
-					ent->client->ps.stats[JK_DIMENSION] |= JK_GUNS_IN;
+					ent->client->pers.jkmodPers.inDimension = JK_GUNS_IN;
+					ent->client->ps.stats[JK_DIMENSION] = JK_GUNS_IN;
 
 					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_SABER);
 					ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON)
@@ -202,7 +202,7 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 				return qfalse;
 			}
-			else if (ent->client->ps.stats[JK_DIMENSION] & (JK_DUEL_IN | JK_GUNS_IN))
+			else if (ent->client->ps.stats[JK_DIMENSION] && ent->client->ps.stats[JK_DIMENSION] != JK_RACE_IN)
 			{
 				trap_SendServerCommand(ent - g_entities, "cp \"You need to leave the current dimension first\n\"");
 				return qfalse;
@@ -213,15 +213,15 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionsTime.integer;
 
 				// Disable
-				if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+				if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
 				{
 					ent->client->ps.forceRestricted = qfalse;
 					ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->pers.jkmodPers.customSavedJump;
 					if (!ent->takedamage) ent->takedamage = qtrue;
 					if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
 
-					ent->client->pers.jkmodPers.inDimension &= ~JK_RACE_IN;
-					ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+					ent->client->pers.jkmodPers.inDimension = 0;
+					ent->client->ps.stats[JK_DIMENSION] = 0;
 
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race mode disabled\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
@@ -230,8 +230,8 @@ qboolean JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum)
 				// Enable
 				else
 				{
-					ent->client->pers.jkmodPers.inDimension |= JK_RACE_IN;
-					ent->client->ps.stats[JK_DIMENSION] |= JK_RACE_IN;
+					ent->client->pers.jkmodPers.inDimension = JK_RACE_IN;
+					ent->client->ps.stats[JK_DIMENSION] = JK_RACE_IN;
 
 					ent->client->ps.forceRestricted = qtrue;
 					ent->client->pers.jkmodPers.customSavedJump = ent->client->ps.fd.forcePowerLevel[FP_LEVITATION];
@@ -261,10 +261,10 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 	if (0 <= entityNum && entityNum < MAX_CLIENTS)
 	{
 		// Check duel dimension
-		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[entityNum].client && (level.clients[entityNum].ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
+		if ((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[entityNum].client && level.clients[entityNum].ps.stats[JK_DIMENSION] == JK_DUEL_IN) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
-				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) {
+				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] == JK_DUEL_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] == JK_DUEL_IN)) {
 					if (g_entities[i].inuse && g_entities[i].s.eType == ET_PLAYER) 
 					{
 						if (start) {
@@ -278,10 +278,10 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			}
 		}
 		// Check guns dimension
-		else if ((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[entityNum].client && (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) {
+		else if ((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[entityNum].client && g_entities[entityNum].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
-				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) {
+				if (i != entityNum && (g_entities[i].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) != (g_entities[entityNum].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)) {
 					if (g_entities[i].inuse && g_entities[i].s.eType == ET_PLAYER)
 					{
 						if (start) {
@@ -295,7 +295,7 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			}
 		}
 		// Check race dimension
-		else if ((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && g_entities[entityNum].client && (g_entities[entityNum].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) {
+		else if ((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && g_entities[entityNum].client && g_entities[entityNum].client->ps.stats[JK_DIMENSION] == JK_RACE_IN) {
 			int i;
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
@@ -324,8 +324,8 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			if (g_entities[entityNum].inuse) {
 				const int saberOwner = g_entities[entityNum].r.ownerNum;
 				if (g_entities[saberOwner].client && ( // Dimensions with interaction
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[saberOwner].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
-					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[saberOwner].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ))
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[saberOwner].client->ps.stats[JK_DIMENSION] == JK_DUEL_IN) ||
+					((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[saberOwner].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) ))
 				{
 					return;
 				}
@@ -333,9 +333,9 @@ static void trap_Trace_Parse(int entityNum, qboolean start)
 			for (i = 0; i < level.num_entities; i++) {
 				if (i != entityNum) {
 					if (g_entities[i].inuse && g_entities[i].client && (
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) ||
-						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && (g_entities[i].client->ps.stats[JK_DIMENSION] & JK_RACE_IN)) ))
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && g_entities[i].client->ps.stats[JK_DIMENSION] == JK_DUEL_IN) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && g_entities[i].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) ||
+						((jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && g_entities[i].client->ps.stats[JK_DIMENSION] == JK_RACE_IN) ))
 					{
 						if (start) {
 							g_entities_dimension[i] = g_entities[i].r.ownerNum;

@@ -7406,7 +7406,7 @@ stillDoSaber:
 	else
 	{
 		// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-		if ((cent->currentState.bolt1 & JK_DUEL_IN) && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+		if (cent->currentState.bolt1 == JK_DUEL_IN && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 		{
 			legs.shaderRGBA[0] = 50;
 			legs.shaderRGBA[1] = 50;
@@ -7561,7 +7561,7 @@ doEssentialThree:
 	}
 
 	// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-	if (!cg.snap->ps.duelInProgress && (cent->currentState.bolt1 & JK_DUEL_IN) && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 == JK_DUEL_IN && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 	{
 		legs.shaderRGBA[0] = 50;
 		legs.shaderRGBA[1] = 50;
@@ -7574,7 +7574,7 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene( &legs );
 	}
 	// Tr!Force: [Dimensions] Check dimensions (Guns player color)
-	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_GUNS_IN) && (cent->currentState.bolt1 & JK_GUNS_IN) && !(cent->currentState.eFlags & EF_DEAD))
+	if (cg.predictedPlayerState.stats[JK_DIMENSION] != JK_GUNS_IN && cent->currentState.bolt1 == JK_GUNS_IN && !(cent->currentState.eFlags & EF_DEAD))
 	{
 		legs.shaderRGBA[0] = 255;
 		legs.shaderRGBA[1] = 255;
@@ -7588,7 +7588,7 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene(&legs);
 	}
 	// Tr!Force: [Dimensions] Check dimensions (Race player color)
-	if (!(cg.predictedPlayerState.stats[JK_DIMENSION] & JK_RACE_IN) && (cent->currentState.bolt1 & JK_RACE_IN) && !(cent->currentState.eFlags & EF_DEAD))
+	if (!cg.predictedPlayerState.stats[JK_DIMENSION] != JK_RACE_IN && cent->currentState.bolt1 == JK_RACE_IN && !(cent->currentState.eFlags & EF_DEAD))
 	{
 		legs.shaderRGBA[0] = 128;
 		legs.shaderRGBA[1] = 0;

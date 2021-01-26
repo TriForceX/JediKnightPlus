@@ -421,9 +421,9 @@ void JKMod_CG_DrawDimensionString(void)
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 
-	if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) && (cg.snap->ps.stats[JK_DIMENSION] & JK_DUEL_IN)) dimensionStr = "Duel";
-	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS)) && (cg.snap->ps.stats[JK_DIMENSION] & JK_GUNS_IN)) dimensionStr = "Guns";
-	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE)) && (cg.snap->ps.stats[JK_DIMENSION] & JK_RACE_IN)) dimensionStr = "Race";
+	if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_DUEL)) && cg.snap->ps.stats[JK_DIMENSION] == JK_DUEL_IN) dimensionStr = "Duel";
+	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_GUNS)) && cg.snap->ps.stats[JK_DIMENSION] == JK_GUNS_IN) dimensionStr = "Guns";
+	else if ((cgs.jkmodCvar.altDimensions & (1 << DIMENSION_RACE)) && cg.snap->ps.stats[JK_DIMENSION] == JK_RACE_IN) dimensionStr = "Race";
 
 	if (dimensionStr) {
 		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s Dimension]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);

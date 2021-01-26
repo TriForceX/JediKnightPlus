@@ -181,7 +181,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check player pass-through
-	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)))
+	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN))
 	{
 		if (JKMod_OthersInBox(ent)) {
 			if (ent->r.contents & CONTENTS_BODY) {
@@ -216,23 +216,23 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check duel dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_DUEL_IN) && !ent->client->ps.duelInProgress)
+	if (ent->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN && !ent->client->ps.duelInProgress)
 	{
 		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-		ent->client->ps.stats[JK_DIMENSION] &= ~JK_DUEL_IN;
+		ent->client->ps.stats[JK_DIMENSION] = 0;
 	}
 
 	// Check guns dimension
-	if ((ent->client->ps.stats[JK_DIMENSION] & JK_GUNS_IN) && !(ent->client->pers.jkmodPers.inDimension & JK_GUNS_IN))
+	if (ent->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && ent->client->pers.jkmodPers.inDimension != JK_GUNS_IN)
 	{
 		if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-		ent->client->ps.stats[JK_DIMENSION] &= ~JK_GUNS_IN;
+		ent->client->ps.stats[JK_DIMENSION] = 0;
 	}
 
 	// Check race dimension
-	if (ent->client->ps.stats[JK_DIMENSION] & JK_RACE_IN)
+	if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
 	{
-		if (ent->client->pers.jkmodPers.inDimension & JK_RACE_IN)
+		if (ent->client->pers.jkmodPers.inDimension == JK_RACE_IN)
 		{
 			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			if (ent->takedamage) ent->takedamage = qfalse;
@@ -240,7 +240,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		else
 		{
 			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-			ent->client->ps.stats[JK_DIMENSION] &= ~JK_RACE_IN;
+			ent->client->ps.stats[JK_DIMENSION] = 0;
 		}
 	}
 
