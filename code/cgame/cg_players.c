@@ -6091,11 +6091,6 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
-	// Tr!Force: [Dimensions] Check dimensions
-	if (!JKMod_CG_CheckDimension(cent->currentState.number)) {
-		return;
-	}
-
 	// Tr!Force: [Player] Load custom player functions
 	JKMod_CG_Player(cent);
 
@@ -7405,8 +7400,7 @@ stillDoSaber:
 	}
 	else
 	{
-		// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-		if (cent->currentState.bolt1 == JK_DUEL_IN && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+		if (cent->currentState.bolt1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 		{
 			legs.shaderRGBA[0] = 50;
 			legs.shaderRGBA[1] = 50;
@@ -7560,8 +7554,7 @@ doEssentialThree:
 		trap_R_AddRefEntityToScene(&legs);
 	}
 
-	// Tr!Force: [Dimensions] Check dimensions (By bolt1)
-	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 == JK_DUEL_IN && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+	if (!cg.snap->ps.duelInProgress && cent->currentState.bolt1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
 	{
 		legs.shaderRGBA[0] = 50;
 		legs.shaderRGBA[1] = 50;
@@ -7573,35 +7566,7 @@ doEssentialThree:
 		
 		trap_R_AddRefEntityToScene( &legs );
 	}
-	// Tr!Force: [Dimensions] Check dimensions (Guns player color)
-	if (cg.predictedPlayerState.stats[JK_DIMENSION] != JK_GUNS_IN && cent->currentState.bolt1 == JK_GUNS_IN && !(cent->currentState.eFlags & EF_DEAD))
-	{
-		legs.shaderRGBA[0] = 255;
-		legs.shaderRGBA[1] = 255;
-		legs.shaderRGBA[2] = 0;
-		legs.shaderRGBA[3] = 255;
-
-		legs.renderfx &= ~RF_RGB_TINT;
-		legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
-		legs.customShader = cgs.media.forceSightBubble;
-
-		trap_R_AddRefEntityToScene(&legs);
-	}
-	// Tr!Force: [Dimensions] Check dimensions (Race player color)
-	if (!cg.predictedPlayerState.stats[JK_DIMENSION] != JK_RACE_IN && cent->currentState.bolt1 == JK_RACE_IN && !(cent->currentState.eFlags & EF_DEAD))
-	{
-		legs.shaderRGBA[0] = 128;
-		legs.shaderRGBA[1] = 0;
-		legs.shaderRGBA[2] = 128;
-		legs.shaderRGBA[3] = 255;
-
-		legs.renderfx &= ~RF_RGB_TINT;
-		legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
-		legs.customShader = cgs.media.forceSightBubble;
-
-		trap_R_AddRefEntityToScene(&legs);
-	}
-
+	
 	//For now, these two are using the old shield shader. This is just so that you
 	//can tell it apart from the JM/duel shaders, but it's still very obvious.
 	if (cent->currentState.forcePowersActive & (1 << FP_PROTECT))

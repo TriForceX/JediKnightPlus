@@ -3,10 +3,6 @@
 // cg_syscalls.c -- this file is only included when building a dll
 // cg_syscalls.asm is included instead when building a qvm
 #include "cg_local.h"
-// Tr!Force: [Dimensions] Undo re-routing for calls made from here
-#undef trap_S_StartSound
-#undef trap_S_AddLoopingSound
-#undef trap_S_AddRealLoopingSound
 
 static int (QDECL *syscall)( int arg, ... ) = (int (QDECL *)( int, ...))-1;
 

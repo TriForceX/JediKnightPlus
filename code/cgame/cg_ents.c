@@ -306,12 +306,8 @@ void CG_Special( centity_t *cent ) {
 
 	if (s1->modelindex == HI_SHIELD) 
 	{	// The portable shield should go through a different rendering function.
-
-		// Tr!Force: [Dimensions] Check dimensions
-		if (JKMod_CG_CheckDimension(s1->otherEntityNum)) {
-			FX_DrawPortableShield(cent);
-		}
-		// return;
+		FX_DrawPortableShield(cent);
+		return;
 	}
 }
 
@@ -509,11 +505,6 @@ static void CG_General( centity_t *cent ) {
 		{
 			trap_G2API_CleanGhoul2Models(&(cent->ghoul2));
 		}
-	}
-
-	// Tr!Force: [Dimensions] Check dimensions
-	if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum) && (cent->currentState.weapon == WP_SABER || cent->currentState.eType & ET_BODY || cent->currentState.weapon == G2_MODEL_PART)) {
-		return;
 	}
 
 	if (cent->currentState.modelGhoul2 >= G2_MODELPART_HEAD &&
@@ -1019,10 +1010,7 @@ Ghoul2 Insert End
 		}
 		else if (cent->currentState.bolt1)
 		{
-			// Tr!Force: [Dimensions] Check dimensions
-			if (JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
-				TurretClientRun(cent);
-			}
+			TurretClientRun(cent);
 		}
 
 		if (cent->ghoul2)
@@ -1158,20 +1146,8 @@ Ghoul2 Insert End
 		return;
 	}
 
-	// Tr!Force: [Dimensions] Check dimensions
-	if (cent->currentState.weapon == WP_TRIP_MINE ||
-		cent->currentState.weapon == WP_DET_PACK ||
-		cent->currentState.bolt1)
-	{
-		if (JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
-			trap_R_AddRefEntityToScene(&ent);
-		}
-	}
-	else
-	{
-		// add to refresh list
-		trap_R_AddRefEntityToScene(&ent);
-	}
+	// add to refresh list
+	trap_R_AddRefEntityToScene (&ent);
 
 	if (cent->bolt3 == 999)
 	{ //this is an in-flight saber being rendered manually
@@ -1326,34 +1302,22 @@ Ghoul2 Insert End
 	{ //if force sight is active, render the laser multiple times up to the force sight level to increase visibility
 		int i = 0;
 
-		// Tr!Force: [Dimensions] Check dimensions
-		if (JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
-			if (cent->currentState.bolt2 == 1)
+		VectorMA( ent.origin, 6.6f, ent.axis[0], beamOrg );// forward
+		beamID = cgs.effects.tripmineLaserFX;
+
+		if (cg.snap->ps.fd.forcePowersActive & (1 << FP_SEE))
+		{
+			i = cg.snap->ps.fd.forcePowerLevel[FP_SEE];
+
+			while (i > 0)
 			{
-				VectorMA(ent.origin, 6.6f, ent.axis[0], beamOrg);// forward
-				beamID = cgs.effects.tripmineLaserFX;
-				trap_FX_PlayEffectID(beamID, beamOrg, cent->currentState.pos.trDelta);
-			}
-			else
-			{
-				VectorMA(ent.origin, 6.6f, ent.axis[0], beamOrg);// forward
-				beamID = cgs.effects.tripmineLaserFX;
-
-				if (cg.snap->ps.fd.forcePowersActive & (1 << FP_SEE))
-				{
-					i = cg.snap->ps.fd.forcePowerLevel[FP_SEE];
-
-					while (i > 0)
-					{
-						trap_FX_PlayEffectID(beamID, beamOrg, cent->currentState.pos.trDelta);
-						trap_FX_PlayEffectID(beamID, beamOrg, cent->currentState.pos.trDelta);
-						i--;
-					}
-				}
-
-				trap_FX_PlayEffectID(beamID, beamOrg, cent->currentState.pos.trDelta);
+				trap_FX_PlayEffectID( beamID, beamOrg, cent->currentState.pos.trDelta );
+				trap_FX_PlayEffectID( beamID, beamOrg, cent->currentState.pos.trDelta );
+				i--;
 			}
 		}
+
+		trap_FX_PlayEffectID( beamID, beamOrg, cent->currentState.pos.trDelta );
 	}
 /*
 Ghoul2 Insert Start
@@ -1881,11 +1845,6 @@ static void CG_Missile( centity_t *cent ) {
 	entityState_t		*s1;
 	const weaponInfo_t		*weapon;
 //	int	col;
-
-	// Tr!Force: [Dimensions] Check dimensions
-	if (!JKMod_CG_CheckDimension(cent->currentState.otherEntityNum)) {
-		return;
-	}
 
 	s1 = &cent->currentState;
 	if ( s1->weapon > WP_NUM_WEAPONS && s1->weapon != G2_MODEL_PART ) {

@@ -93,11 +93,6 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 		}
 
-		// Tr!Force: [Dimensions] Check dimensions
-		if (!JKMod_CG_CheckDimension(ent->number)) {
-			continue;
-		}
-
 		if ( ent->solid == SOLID_BMODEL ) {
 			// special value for bmodel
 
@@ -513,7 +508,7 @@ void CG_EntityStateToPlayerState( entityState_t *s, playerState_t *ps ) {
 	ps->saberMove = s->saberMove;
 	ps->fd.forcePowersActive = s->forcePowersActive;
 
-	if (s->bolt1 == JK_DUEL_IN) // Tr!Force: [Dimensions] Check dimensions (By bolt1)
+	if (s->bolt1)
 	{
 		ps->duelInProgress = qtrue;
 	}

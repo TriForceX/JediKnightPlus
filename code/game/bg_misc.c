@@ -2163,11 +2163,6 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	{
 		s->bolt1 = 1;
 	}
-	// Tr!Force: [Dimensions] Check dimensions
-	if (ps->stats[JK_DIMENSION])
-	{
-		s->bolt1 = ps->stats[JK_DIMENSION];
-	}
 	else
 	{
 		s->bolt1 = 0;
@@ -2309,11 +2304,6 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	if (ps->duelInProgress)
 	{
 		s->bolt1 = 1;
-	}
-	// Tr!Force: [Dimensions] Check dimensions
-	if (ps->stats[JK_DIMENSION])
-	{
-		s->bolt1 = ps->stats[JK_DIMENSION];
 	}
 	else
 	{
