@@ -282,7 +282,6 @@ gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life,
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 	missile->parent = owner;
 	missile->r.ownerNum = owner->s.number;
-	missile->s.otherEntityNum = owner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	if (altFire)
 	{
@@ -395,7 +394,6 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		VectorCopy(ent->r.currentOrigin, te->s.origin);
 		VectorCopy(trace->plane.normal, te->s.angles);
 		te->s.eventParm = 0;
-		te->s.otherEntityNum = ent->r.ownerNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		/*if (other->client->ps.velocity[2] > 0 ||
 			other->client->pers.cmd.forwardmove ||
@@ -462,7 +460,6 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			VectorCopy(ent->r.currentOrigin, te->s.origin);
 			VectorCopy(trace->plane.normal, te->s.angles);
 			te->s.eventParm = 0;
-			te->s.otherEntityNum = ent->r.ownerNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 			/*if (otherOwner->client->ps.velocity[2] > 0 ||
 				otherOwner->client->pers.cmd.forwardmove ||
@@ -631,26 +628,6 @@ void G_RunMissile( gentity_t *ent ) {
 		VectorCopy( origin, ent->r.currentOrigin );
 		trap_LinkEntity( ent );
 		goto passthrough;
-	}
-
-	// Tr!Force: [Dimensions] Check missile impact (WIP)
-	if (g_entities[tr.entityNum].r.contents & CONTENTS_LIGHTSABER)
-	{
-		gentity_t *other = &g_entities[g_entities[tr.entityNum].r.ownerNum];
-		gentity_t *self = &g_entities[ent->r.ownerNum];
-
-		if (other && other->client &&
-			((jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && other->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN && self->client->ps.stats[JK_DIMENSION] != JK_DUEL_IN ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_DUEL)) && other->client->ps.stats[JK_DIMENSION] != JK_DUEL_IN && self->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && other->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_GUNS)) && other->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN ||
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && other->client->ps.stats[JK_DIMENSION] == JK_RACE_IN || 
-			(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE)) && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN))
-		{
-			VectorCopy(origin, ent->r.currentOrigin);
-			trap_LinkEntity(ent);
-			goto passthrough;
-		}
 	}
 
 	trap_LinkEntity( ent );

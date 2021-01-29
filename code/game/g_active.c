@@ -1676,11 +1676,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		{
 			faceKicked = NULL;
 		}
-		// Tr!Force: [Dimensions] Prevent kicks
-		if (faceKicked->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-		{
-			faceKicked = NULL;
-		}
 
 		if (faceKicked && faceKicked->client && (!OnSameTeam(ent, faceKicked) || g_friendlyFire.integer) &&
 			(!faceKicked->client->ps.duelInProgress || faceKicked->client->ps.duelIndex == ent->s.number) &&

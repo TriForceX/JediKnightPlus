@@ -62,9 +62,6 @@ Re-routed functions
 
 #define CG_RegisterCvars 						JKMod_CG_RegisterCvars
 #define CG_UpdateCvars							JKMod_CG_UpdateCvars
-#define trap_S_StartSound(a,b,c,d)				JKMod_trap_S_StartSound(a,b,c,d)
-#define trap_S_AddLoopingSound(a,b,c,d)			JKMod_trap_S_AddLoopingSound(a,b,c,d)
-#define trap_S_AddRealLoopingSound(a,b,c,d)		JKMod_trap_S_AddRealLoopingSound(a,b,c,d)
 
 /*
 =====================================================================

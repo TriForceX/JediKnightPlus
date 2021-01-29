@@ -405,7 +405,6 @@ qboolean PlaceShield(gentity_t *playerent)
 
 			shield->s.eFlags &= ~EF_NODRAW;
 			shield->r.svFlags &= ~SVF_NOCLIENT;
-			shield->s.otherEntityNum = playerent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 			trap_LinkEntity (shield);
 
@@ -920,7 +919,7 @@ void turret_die(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int 
 	// hack the effect angle so that explode death can orient the effect properly
 	VectorSet( self->s.angles, 0, 0, 1 );
 
-	JKMod_PlayEffect(EFFECT_EXPLOSION_PAS, self->s.pos.trBase, self->s.angles, self->s.otherEntityNum); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+	G_PlayEffect(EFFECT_EXPLOSION_PAS, self->s.pos.trBase, self->s.angles);
 	G_RadiusDamage(self->s.pos.trBase, &g_entities[self->boltpoint3], 30, 256, self, MOD_UNKNOWN);
 
 	g_entities[self->boltpoint3].client->ps.fd.sentryDeployed = qfalse;
@@ -1036,7 +1035,6 @@ void ItemUse_Sentry( gentity_t *ent )
 	trap_LinkEntity(sentry);
 
 	sentry->s.owner = ent->s.number;
-	sentry->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	sentry->s.shouldtarget = qtrue;
 	if (g_gametype.integer >= GT_TEAM)
 	{

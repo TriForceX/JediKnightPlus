@@ -1689,15 +1689,6 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 			return qfalse;
 		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 			return qfalse;
-		// Tr!Force: [Dimensions] Check saber clash
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
 
 		didHit = qtrue;
 
@@ -1860,15 +1851,6 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 		if (otherOwner && otherOwner->client && (otherOwner->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 			return qfalse;
 		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
-			return qfalse;
-		// Tr!Force: [Dimensions] Check saber clash
-		if (otherOwner && otherOwner->client && otherOwner->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && otherOwner->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && otherOwner->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
 			return qfalse;
 
 		didHit = qtrue;
@@ -2262,15 +2244,6 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			return qfalse;
 		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 			return qfalse;
-		// Tr!Force: [Dimensions] Check saber clash
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && g_entities[tr.entityNum].client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
-		if (g_entities[tr.entityNum].inuse && g_entities[tr.entityNum].client && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
 
 		self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
 
@@ -2286,7 +2259,6 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			VectorCopy(tr.endpos, te->s.origin);
 			VectorCopy(tr.plane.normal, te->s.angles);
 			te->s.eventParm = 1;
-			te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 			if (dmg > SABER_NONATTACK_DAMAGE)
 			{
@@ -2371,7 +2343,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			{
 				te->s.eventParm = 0;
 			}
-			te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+			
 			self->client->ps.saberAttackWound = level.time + 100;
 		}
 	}
@@ -2410,15 +2382,6 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			return qfalse;
 		if (otherOwner && otherOwner->client && (self->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 			return qfalse;
-		// Tr!Force: [Dimensions] Check saber clash
-		if (otherOwner && otherOwner->client && otherOwner->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && self->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && self->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && otherOwner->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && otherOwner->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
-		if (otherOwner && otherOwner->client && self->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
 
 		didHit = qtrue;
 		self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
@@ -2432,7 +2395,6 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 		VectorCopy(tr.endpos, te->s.origin);
 		VectorCopy(tr.plane.normal, te->s.angles);
 		te->s.eventParm = 1;
-		te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		sabersClashed = qtrue;
 
@@ -2790,15 +2752,6 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 			return qfalse;
 		if (ent->inuse && ent->client && (saberOwner->client->ps.stats[JK_PLAYER] & JK_CHAT_IN))
 			return qfalse;
-		// Tr!Force: [Dimensions] Check saber clash (throw)
-		if (ent->inuse && ent->client && ent->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && saberOwner->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (ent->inuse && ent->client && saberOwner->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN && ent->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-			return qfalse;
-		if (ent->inuse && ent->client && ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
-		if (ent->inuse && ent->client && saberOwner->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
-			return qfalse;
 
 		VectorSubtract(saberent->r.currentOrigin, ent->client->ps.origin, vecsub);
 		veclen = VectorLength(vecsub);
@@ -2823,7 +2776,6 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 						te->s.angles[1] = 1;
 					}
 					te->s.eventParm = 1;
-					te->s.otherEntityNum = saberOwner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 					if (!returning)
 					{ //return to owner if blocked
@@ -2863,7 +2815,6 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 					}
 
 					te->s.eventParm = 1;
-					te->s.otherEntityNum = saberOwner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 					if (!returning)
 					{ //return to owner if blocked
@@ -2912,7 +2863,6 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 				}
 
 				te->s.eventParm = 1;
-				te->s.otherEntityNum = saberOwner->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				if (!returning)
 				{ //return to owner if blocked
@@ -3102,7 +3052,6 @@ void MakeDeadSaber(gentity_t *ent)
 	saberent->speed = level.time + 4000;
 
 	saberent->bounceCount = 12;
-	saberent->s.otherEntityNum = ent->r.ownerNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	//fall off in the direction the real saber was headed
 	VectorCopy(ent->s.pos.trDelta, saberent->s.pos.trDelta);
@@ -3665,8 +3614,6 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 				self->client->ps.eFlags &= ~EF_INVULNERABLE;
 				self->client->invulnerableTimer = 0;
 
-				saberent->s.otherEntityNum = self->client->ps.clientNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
-
 				trap_LinkEntity(saberent);
 			}
 			else
@@ -3710,7 +3657,6 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 				VectorCopy(g_entities[self->client->ps.saberEntityNum].r.currentOrigin, te->s.origin);
 				VectorCopy(dir, te->s.angles);
 				te->s.eventParm = 1;
-				te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 				self->client->ps.saberIdleWound = level.time + Q_irand(400, 600);
 			}

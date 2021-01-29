@@ -669,7 +669,6 @@ gentity_t *G_TempEntity( vec3_t origin, int event ) {
 
 	e = G_Spawn();
 	e->s.eType = ET_EVENTS + event;
-	e->s.otherEntityNum = ENTITYNUM_NONE; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	e->classname = "tempEntity";
 	e->eventTime = level.time;
@@ -722,7 +721,6 @@ gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel ) {
 
 	e->s.eType = ET_EVENTS + event;
 	e->inuse = qtrue;
-	e->s.otherEntityNum = ENTITYNUM_NONE; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	e->classname = "tempEntity";
 	e->eventTime = level.time;
@@ -911,14 +909,6 @@ void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 	te = G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel );
 	te->s.eventParm = soundIndex;
 
-	// Tr!Force: [Dimensions] Tag owner info into state for dimensions
-	if (ent->s.number < MAX_CLIENTS) {
-		te->s.otherEntityNum = ent->s.number;
-	}
-	else {
-		te->s.otherEntityNum = ent->s.otherEntityNum;
-	}
-
 	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
 	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
 		te->s.saberEntityNum = channel;
@@ -964,7 +954,6 @@ void G_EntitySound( gentity_t *ent, int channel, int soundIndex ) {
 	te = G_TempEntity( ent->r.currentOrigin, EV_ENTITY_SOUND );
 	te->s.eventParm = soundIndex;
 	te->s.weapon = ent->s.number;
-	te->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	te->s.trickedentindex = channel;
 }
 

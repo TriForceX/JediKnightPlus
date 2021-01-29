@@ -2615,8 +2615,7 @@ void G_GetDismemberBolt(gentity_t *self, vec3_t boltPoint, int limbType)
 				te->s.angles[1] = 1;
 			}
 
-			te->s.eventParm = 16; //lots of sparks
-			te->s.otherEntityNum = self->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+			te->s.eventParm = 16; //lots of sparkss
 		}
 	}
 }
@@ -2730,7 +2729,6 @@ void G_Dismember( gentity_t *ent, vec3_t point, int limbType, float limbRollBase
 
 	limb->s.modelGhoul2 = /*limbType*/MV_VersionMagic_g2ModelParts(limbType); // MVSDK: As we don't need the "modelGhoul2" of this limb on the serverside anymore we can just convert it to the appropriate value of the jk2version we are running in, without the need to convert it back later...
 	limb->s.g2radius = 200;
-	limb->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 	if (ent->client)
 	{
 		limb->s.modelindex = ent->s.number;
@@ -3125,15 +3123,6 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
-	// Tr!Force: [Dimensions] Prevent ouside damage
-	if (targ->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN || attacker->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)
-	{
-		if (targ->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN || attacker->client->ps.stats[JK_DIMENSION] != JK_GUNS_IN)
-		{
-			return;
-		}
-	}
-
 	if (targ && targ->client && (targ->client->ps.fd.forcePowersActive & (1 << FP_RAGE)))
 	{
 		damage *= 0.5;
@@ -3447,13 +3436,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			//G_Sound(targ, CHAN_AUTO, protectHitSound);
 			if (targ->client->forcePowerSoundDebounce < level.time && jk2gameplay != VERSION_1_02)
 			{
-				JKMod_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
 				targ->client->forcePowerSoundDebounce = level.time + 400;
 			}
 
 			if ( jk2gameplay == VERSION_1_02 )
 			{
-				JKMod_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
 			}
 
 			if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)

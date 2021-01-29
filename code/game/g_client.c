@@ -723,7 +723,6 @@ void CopyToBodyQue( gentity_t *ent ) {
 	body->clipmask = CONTENTS_SOLID | CONTENTS_PLAYERCLIP;
 	body->r.contents = CONTENTS_CORPSE;
 	body->r.ownerNum = ent->s.number;
-	body->s.otherEntityNum = ent->s.number; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 	body->nextthink = level.time + BODY_SINK_TIME;
 	body->think = BodySink;
@@ -789,7 +788,6 @@ void respawn( gentity_t *ent ) {
 	// add a teleportation effect
 	tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN );
 	tent->s.clientNum = ent->s.clientNum;
-	tent->s.otherEntityNum = ent->s.clientNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 }
 
 /*
@@ -2369,7 +2367,6 @@ void ClientDisconnect( int clientNum ) {
 		&& ent->client->sess.sessionTeam != TEAM_SPECTATOR ) {
 		tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_OUT );
 		tent->s.clientNum = ent->s.clientNum;
-		tent->s.otherEntityNum = ent->s.clientNum; // Tr!Force: [Dimensions] Tag owner info into state for dimensions
 
 		// They don't get to take powerups with them!
 		// Especially important for stuff like CTF flags

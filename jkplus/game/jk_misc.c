@@ -10,28 +10,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
-Play effect by owner number function
-=====================================================================
-*/
-gentity_t *JKMod_PlayEffect(int fxID, vec3_t org, vec3_t ang, int ownerNum)
-{
-	gentity_t	*te;
-
-	te = G_TempEntity(org, EV_PLAY_EFFECT);
-	VectorCopy(ang, te->s.angles);
-	VectorCopy(org, te->s.origin);
-	te->s.eventParm = fxID;
-	te->s.otherEntityNum = ownerNum;
-
-	return te;
-}
-
-/*
-=====================================================================
 Play effect by ID function
 =====================================================================
 */
-gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang, int ownerNum)
+gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
 {
 	gentity_t	*te;
 
@@ -39,40 +21,8 @@ gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang, int ownerNum)
 	VectorCopy(ang, te->s.angles);
 	VectorCopy(org, te->s.origin);
 	te->s.eventParm = fxID;
-	te->s.otherEntityNum = ownerNum;
 
 	return te;
-}
-
-/*
-=====================================================================
-Predef sound by owner number function
-=====================================================================
-*/
-gentity_t *JKMod_PreDefSound(vec3_t org, int pdSound, int ownerNum)
-{
-	gentity_t	*te;
-
-	te = G_TempEntity(org, EV_PREDEFSOUND);
-	te->s.eventParm = pdSound;
-	te->s.otherEntityNum = ownerNum;
-	VectorCopy(org, te->s.origin);
-
-	return te;
-}
-
-/*
-=====================================================================
-Sound at loc by owner number function
-=====================================================================
-*/
-void JKMod_SoundAtLoc(vec3_t loc, int channel, int soundIndex, int ownerNum)
-{
-	gentity_t	*te;
-
-	te = G_TempEntity(loc, EV_GENERAL_SOUND);
-	te->s.eventParm = soundIndex;
-	te->s.otherEntityNum = ownerNum;
 }
 
 /*
@@ -196,11 +146,11 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 				temporigin[PITCH] = -90;
 				temporigin[ROLL] = 0;
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin, player->s.clientNum);
-				JKMod_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")), player->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin);
+				G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")));
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin, player->s.clientNum);
-				JKMod_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")), player->s.number); // Tr!Force: [Dimensions] Tag owner info into state for dimensions
+				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin);
+				G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")));
 			}
 		}
 	}
