@@ -1421,7 +1421,7 @@ void PM_WeaponLightsaber(void)
 			PM_SetAnim(SETANIM_TORSO,BOTH_STAND1,SETANIM_FLAG_OVERRIDE, 100);
 		}
 
-		if (pm->ps->weaponTime < 1 && ((pm->cmd.buttons & BUTTON_ALT_ATTACK) || (pm->cmd.buttons & BUTTON_ATTACK)))
+		if (pm->ps->weaponTime < 1 && ((pm->cmd.buttons & BUTTON_ALT_ATTACK) || (pm->cmd.buttons & BUTTON_ATTACK)) && pm->ps->stats[JK_DIMENSION] != DIMENSION_RACE) // Tr!Force: [Dimensions] Don't allow saber toggle on race dimension
 		{
 			if (pm->ps->duelTime < pm->cmd.serverTime)
 			{

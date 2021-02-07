@@ -78,10 +78,9 @@ typedef struct
 	int			CustomDuel;				// Client is in force duel
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
-	int			customSavedJump;		// Saved custom jump level
-	int			inDimension;			// Check current dimension
 	int			jetackUseDelay;			// Jetpack usage delay
-	int			buttonUseAnim;				// Button use animation
+	int			buttonUseAnim;			// Button use animation
+	qboolean	invulnerability;		// Persistant take damage
 
 } jkmod_pers_t;
 
@@ -129,14 +128,13 @@ Re-routed functions
 #define G_UpdateCvars				JKMod_G_UpdateCvars
 #define ClientConnect				JKMod_ClientConnect
 #define ClientBegin					JKMod_ClientBegin
-#define ClientSpawn					JKMod_ClientSpawn
 #define ConsoleCommand				JKMod_ConsoleCommand
 #define G_InitGame					JKMod_G_InitGame
 #define ClientCleanName(a, b, c)	JKMod_ClientCleanName(ent, a, b, c)
 #define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
-#define trap_Trace					JKMod_Dimensions
+#define trap_Trace					JKMod_DimensionsTrace
 
 /*
 =====================================================================
@@ -187,8 +185,8 @@ extern	vmCvar_t					jkcvar_emotesFreeze;
 extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
 extern	vmCvar_t					jkcvar_gamePlay;
-extern	vmCvar_t					jkcvar_altDimensions;
-extern	vmCvar_t					jkcvar_altDimensionsTime;
+extern	vmCvar_t					jkcvar_altDimension;
+extern	vmCvar_t					jkcvar_altDimensionTime;
 extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
@@ -214,7 +212,7 @@ void		BaseJK2_ClientTimerActions(gentity_t *ent, int msec);
 
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
-void		BaseJK2_ClientSpawn(gentity_t *ent);
+void		BaseJK2_ClientBegin(int clientNum, qboolean allowTeamReset);
 
 // g_cmds.c
 void		BaseJK2_ClientCommand(int clientNum);
@@ -246,8 +244,9 @@ void		JKMod_sRand(unsigned seed);
 int			JKMod_Rand(void);
 
 // jk_dimensions.c
-qboolean	JKMod_SetDimension(char *dimension, gentity_t *ent, int clientNum);
-void		JKMod_Dimensions(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
+void		JKMod_DimensionSettings(gentity_t *ent, int dimension);
+qboolean	JKMod_DimensionCmd(gentity_t *ent, char *dimension);
+void		JKMod_DimensionsTrace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
 
 // jk_emotes.c
 int			JKMod_emoteCheck(char *cmd, gentity_t *ent);
@@ -268,7 +267,10 @@ gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_PassBox(gentity_t *ent);
 void		JKMod_RemoveByClass(gentity_t *ent, char *name);
+qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
+qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
+void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity);
 
 // jk_session.c
 void		JKMod_InitSessionData(gclient_t *client);

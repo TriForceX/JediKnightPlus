@@ -15,11 +15,6 @@ Global definitions
 =====================================================================
 */
 
-// Dimension stuff
-#define JK_DUEL_IN				1
-#define JK_GUNS_IN				2
-#define JK_RACE_IN				3
-
 // Player stuff
 #define JK_EMOTE_IN				( 1 << 0 )
 #define JK_CHAT_IN				( 1 << 1 )
@@ -43,7 +38,8 @@ Player / world information
 // Dimension options
 typedef enum
 {
-	DIMENSION_DUEL = 0,
+	DIMENSION_FREE = 0,
+	DIMENSION_DUEL,
 	DIMENSION_GUNS,
 	DIMENSION_RACE
 

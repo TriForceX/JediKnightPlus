@@ -1753,7 +1753,7 @@ Initializes all non-persistant parts of playerState
 ============
 */
 extern qboolean WP_HasForcePowers( const playerState_t *ps );
-void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn function
+void ClientSpawn(gentity_t *ent) {
 	int		index;
 	vec3_t	spawn_origin, spawn_angles;
 	gclient_t	*client;
@@ -1772,11 +1772,7 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	void		*ghoul2save;
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
-
-	// Tr!Force: [Dimensions] Don't remove flags
-	int jksave_dimensions;
-	int jksave_weapons;
-	int jksave_items;
+	int		jksave_dimensions; // Tr!Force: [Dimensions] Don't remove flags
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1886,9 +1882,6 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 
 	// Tr!Force: [Dimensions] Don't remove flags
 	jksave_dimensions = client->ps.stats[JK_DIMENSION];
-	// Tr!Force: [Dimensions] Don't remove weapons and items
-	jksave_weapons = client->ps.stats[STAT_WEAPONS];
-	jksave_items = client->ps.stats[STAT_HOLDABLE_ITEMS];
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
@@ -2207,8 +2200,8 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR ) {
 
 	} else {
-		// Tr!Force: [RaceMode] Don't kill non-racers on spawn
-		if (client->ps.stats[JK_DIMENSION] != JK_RACE_IN)
+		// Tr!Force: [Dimensions] Don't kill racers on spawn
+		if (client->ps.stats[JK_DIMENSION] != DIMENSION_RACE)
 		{
 			// Tr!Force: [TeleFrag] Allow kill and unlink
 			if (jkcvar_teleportFrag.integer) {
@@ -2268,27 +2261,16 @@ void BaseJK2_ClientSpawn(gentity_t *ent) { // Tr!Force: [BaseJK2] Client spawn f
 		trap_LinkEntity( ent );
 	}
 
-	if (g_spawnInvulnerability.integer && ent->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) // Tr!Force: [RaceMode] Don't set invulnerable flag
+	if (g_spawnInvulnerability.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) // Tr!Force: [Dimensions] Don't set invulnerable flag
 	{
 		ent->client->ps.eFlags |= EF_INVULNERABLE;
 		ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
 	}
 
-	// Tr!Force: [Dimensions] Don't remove weapons and items
-	if (client->ps.stats[JK_DIMENSION] == JK_GUNS_IN)
+	// Tr!Force: [Dimensions] Set dimension settings
+	if (client->ps.stats[JK_DIMENSION])
 	{
-		int i;
-		client->ps.stats[STAT_WEAPONS] = jksave_weapons;
-		client->ps.stats[STAT_HOLDABLE_ITEMS] = jksave_items;
-		for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
-		client->ps.weapon = WP_STUN_BATON;
-		client->ps.forceRestricted = qtrue;
-		client->ps.fd.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_1;
-		if (jkcvar_jetPack.integer)
-		{
-			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
-		}
+		JKMod_DimensionSettings(ent, client->ps.stats[JK_DIMENSION]);
 	}
 
 	// run the presend to set anything else

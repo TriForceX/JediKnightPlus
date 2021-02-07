@@ -747,23 +747,6 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 	return WP_ForcePowerAvailable( self, forcePower );
 }
 
-// Tr!Force: [CustomDuel] Force power valid on force duel
-qboolean JKModForcePowerValid(forcePowers_t power, playerState_t *ps)
-{
-	gentity_t	*ent = &g_entities[ps->clientNum];
-
-	if (!ent || !ent->client || ent->s.number > 31)
-	{
-		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
-		return qfalse;
-	}
-	if (ent->client->pers.jkmodPers.CustomDuel == 0)
-	{
-		return qfalse;
-	}
-	return qtrue;
-}
-
 int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacker, int atPower, int atPowerLevel, int atForceSpent)
 {
 	int getLevel = 0;

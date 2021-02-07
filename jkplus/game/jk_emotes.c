@@ -257,7 +257,7 @@ void JKMod_emoteDo(gentity_t *ent, int emoteIndex)
 	}
 
 	// Exception for dimensions
-	if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
+	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emotes are disabled in this dimension\n\"");
 		return;

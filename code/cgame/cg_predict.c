@@ -85,14 +85,6 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 		}
 
-		// Tr!Force: [PassThrough] Check pass through
-		if (cg.predictedPlayerState.eFlags & JK_PASS_THROUGH) {
-			continue;
-		}
-		else if (cg_entities[ent->number].currentState.eFlags & JK_PASS_THROUGH) {
-			continue;
-		}
-
 		if ( ent->solid == SOLID_BMODEL ) {
 			// special value for bmodel
 

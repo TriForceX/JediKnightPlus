@@ -109,8 +109,8 @@ Dimensions table list
 jkmod_dimensions_table_t jkmodDimensionsTable[] =
 {
 	// cmd				title
-	{ "guns",			"Guns Only" },
-	{ "race",			"Race Mode" },
+	{ "guns",			"Guns Arena" },
+	{ "race",			"Race Challenge" },
 };
 
 jkmod_dimensions_list_t jkmodDimensions;

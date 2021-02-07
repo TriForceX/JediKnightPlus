@@ -595,16 +595,14 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 	client = ent->client;
 
 	if ( client->sess.spectatorState != SPECTATOR_FOLLOW ) {
-		// Tr!Force: [Plugin] Don't allow
-		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) 
+		client->ps.pm_type = PM_SPECTATOR;
+		client->ps.speed = 400;	// faster than normal
+		client->ps.basespeed = 400;
+
+		// Tr!Force: [Plugin] Don't allow user actions
+		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin)
 		{
-			client->ps.pm_type = PM_SPINTERMISSION;
-		}
-		else
-		{
-			client->ps.pm_type = PM_SPECTATOR;
-			client->ps.speed = 400;	// faster than normal
-			client->ps.basespeed = 400;
+			client->ps.fallingToDeath = 1;
 		}
 
 		// set up for pmove
@@ -1219,8 +1217,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 			// Tr!Force: [Dimensions] Remove duel flag
-			ent->client->ps.stats[JK_DIMENSION] = 0;
-			duelAgainst->client->ps.stats[JK_DIMENSION] = 0;
+			ent->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+			duelAgainst->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
 
 			// Tr!Force: [PassThrough] Check pass through
 			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
@@ -1285,8 +1283,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
-				ent->client->ps.stats[JK_DIMENSION] = 0;
-				duelAgainst->client->ps.stats[JK_DIMENSION] = 0;
+				ent->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+				duelAgainst->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
 
 				// Tr!Force: [PassThrough] Check pass through
 				if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;

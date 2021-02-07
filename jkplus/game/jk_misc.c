@@ -8,6 +8,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+extern qboolean SaberAttacking(gentity_t *self);
+
 /*
 =====================================================================
 Play effect by ID function
@@ -46,7 +48,7 @@ qboolean JKMod_OthersInBox(gentity_t *ent) {
 		other = &g_entities[touch[i]];
 		if (other->client && 
 			other->client->ps.clientNum != ent->client->ps.clientNum && 
-			!(((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || other->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)) 
+			!(((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || other->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)) 
 		{
 			return qtrue;
 		}
@@ -104,6 +106,65 @@ void JKMod_RemoveByClass(gentity_t *ent, char *name)
 			found->think = G_FreeEntity;
 			found->nextthink = level.time;
 		}
+	}
+}
+
+/*
+=====================================================================
+Custom force power valid check
+=====================================================================
+*/
+qboolean JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps)
+{
+	gentity_t	*ent = &g_entities[ps->clientNum];
+
+	if (!ent || !ent->client || ent->s.number > 31)
+	{
+		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
+		return qfalse;
+	}
+	if (ent->client->pers.jkmodPers.CustomDuel == 0)
+	{
+		return qfalse;
+	}
+	return qtrue;
+}
+
+/*
+=====================================================================
+Player moving check function
+=====================================================================
+*/
+qboolean JKMod_PlayerMoving(gentity_t *ent, int move, int attack)
+{
+	qboolean checkMove = qfalse;
+	qboolean checkAttack = qfalse;
+
+	checkMove = (ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0) || BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim);
+	checkAttack = ent->client->ps.saberInFlight || 
+				ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN || 
+				ent->client->ps.weapon == WP_SABER && SaberAttacking(ent) || 
+				ent->client->ps.saberMove != LS_READY && ent->client->ps.saberMove != LS_NONE ||
+				(ent->client->ps.eFlags & EF_FIRING) || 
+				(ent->client->ps.eFlags & EF_ALT_FIRING);
+
+	if (move && attack) {
+		if (checkMove || checkAttack)
+			return qtrue;
+		else
+			return qfalse;
+	}
+	else if (move && !attack) {
+		if (checkMove)
+			return qtrue;
+		else
+			return qfalse;
+	}
+	else if (!move && attack) {
+		if (checkAttack)
+			return qtrue;
+		else
+			return qfalse;
 	}
 }
 
@@ -194,6 +255,162 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
 		if (jkcvar_teleportFrag.integer) trap_LinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
 	}
+}
+
+/*
+=====================================================================
+Custom & default game settings function
+=====================================================================
+*/
+extern qboolean WP_HasForcePowers( const playerState_t *ps );
+
+// Custom settings
+void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity)
+{
+	// Force
+	if (forcepowers != g_forcePowerDisable.integer)
+	{
+		int i;
+
+		i = 0;
+		while (i < NUM_FORCE_POWERS)
+		{
+			if (forcepowers & (1 << i))
+			{
+				ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
+				ent->client->ps.fd.forcePowerLevel[i] = FORCE_LEVEL_0;
+			}
+			else {
+				ent->client->ps.fd.forcePowersKnown |= (1 << i);
+				ent->client->ps.fd.forcePowerLevel[i] = forcelevel;
+			}
+			i++;
+		}
+	}
+	else
+	{
+		WP_InitForcePowers(ent);
+	}
+
+	// Weapons
+	if (weapons != g_weaponDisable.integer)
+	{
+		int i;
+		int firstWeapon = 0;
+
+		i = 0;
+		while (i < WP_NUM_WEAPONS)
+		{
+			if (!(weapons & (1 << i)) && i != WP_NONE && i != WP_EMPLACED_GUN && i != WP_TURRET)
+			{
+				ent->client->ps.stats[STAT_WEAPONS] |= (1 << i);
+				if (!firstWeapon) firstWeapon = i;
+			}
+			else 
+			{
+				ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << i);
+			}
+			i++;
+		}
+
+		for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
+
+		ent->client->ps.weapon = firstWeapon;
+	}
+	else
+	{
+		ent->client->ps.stats[STAT_WEAPONS] = 0;
+
+		if (WP_HasForcePowers(&ent->client->ps))
+		{
+			ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
+			ent->client->ps.weapon = WP_SABER;
+		}
+		else if (!g_weaponDisable.integer || !(g_weaponDisable.integer & (1 << WP_BRYAR_PISTOL)))
+		{
+			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_BRYAR_PISTOL);
+			ent->client->ps.ammo[AMMO_POWERCELL] = ammoData[AMMO_POWERCELL].max;
+			ent->client->ps.weapon = WP_BRYAR_PISTOL;
+		}
+		else
+		{
+			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+			ent->client->ps.weapon = WP_STUN_BATON;
+		}
+	}
+
+	JKMod_RemoveByClass(ent, "bryar_proj");
+	JKMod_RemoveByClass(ent, "generic_proj");
+	JKMod_RemoveByClass(ent, "blaster_proj");
+	JKMod_RemoveByClass(ent, "emplaced_gun_proj");
+	JKMod_RemoveByClass(ent, "bowcaster_proj");
+	JKMod_RemoveByClass(ent, "bowcaster_alt_proj");
+	JKMod_RemoveByClass(ent, "repeater_proj");
+	JKMod_RemoveByClass(ent, "repeater_alt_proj");
+	JKMod_RemoveByClass(ent, "demp2_proj");
+	JKMod_RemoveByClass(ent, "demp2_alt_proj");
+	JKMod_RemoveByClass(ent, "flech_proj");
+	JKMod_RemoveByClass(ent, "flech_alt");
+	JKMod_RemoveByClass(ent, "rocket_proj");
+	JKMod_RemoveByClass(ent, "thermal_detonator");
+	JKMod_RemoveByClass(ent, "detpack");
+	JKMod_RemoveByClass(ent, "laserTrap");
+	JKMod_RemoveByClass(ent, "sentryGun");
+	JKMod_RemoveByClass(ent, "item_shield");
+
+	if (ent->client->ps.eFlags & EF_SEEKERDRONE) 
+	{
+		ent->client->ps.eFlags -= EF_SEEKERDRONE;
+		ent->client->ps.genericEnemyIndex = -1;
+	}
+
+	// Holdables
+	if (holdables)
+	{
+		int i;
+
+		i = 0;
+		while (i < HI_NUM_HOLDABLE)
+		{
+			if (i != HI_DATAPAD) ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << i);
+			i++;
+		}
+	}
+	else
+	{
+		ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
+	}
+
+	// Jetpack
+	if (jetpack) 
+	{
+		if (jkcvar_jetPack.integer) {
+			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+		}
+	}
+	else 
+	{
+		if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+	}
+
+	// Invulnerability
+	if (invulnerability)
+	{
+		ent->client->pers.jkmodPers.invulnerability = qtrue;
+	}
+	else
+	{
+		ent->client->pers.jkmodPers.invulnerability = qfalse;
+	}
+
+	// Speed
+	ent->client->ps.speed = speed;
+	ent->client->ps.basespeed = speed;
+
+	// Gravity
+	ent->client->ps.gravity = gravity;
 }
 
 /*

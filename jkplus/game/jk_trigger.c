@@ -21,13 +21,13 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	int	clientNum = -1;
 
 	// Check dimension
-	if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE))) return;
+	if (!(jkcvar_altDimension.integer & (1 << DIMENSION_RACE))) return;
 
 	// Check client
 	if (!activator->client) return;
 
 	// Check mode
-	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {
@@ -54,13 +54,13 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	int	timeSec, timeMin, timeMsec;
 
 	// Check dimension
-	if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE))) return;
+	if (!(jkcvar_altDimension.integer & (1 << DIMENSION_RACE))) return;
 
 	// Check client
 	if (!activator->client) return;
 
 	// Check mode
-	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {
@@ -99,13 +99,13 @@ void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activato
 	int	timeSec, timeMin, timeMsec;
 
 	// Check dimension
-	if (!(jkcvar_altDimensions.integer & (1 << DIMENSION_RACE))) return;
+	if (!(jkcvar_altDimension.integer & (1 << DIMENSION_RACE))) return;
 
 	// Check client
 	if (!activator->client) return;
 
 	// Check mode
-	if (activator->client->ps.stats[JK_DIMENSION] != JK_RACE_IN) return;
+	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
 	// Find client
 	for (i = 0; i < MAX_CLIENTS; i++) {

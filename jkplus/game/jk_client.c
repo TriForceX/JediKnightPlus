@@ -87,25 +87,19 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	const char	*serverVersion;
 	const char	*clientVersion;
 
-	// Check and modify allowed teams
-	if (g_gametype.integer < GT_TEAM && (ent->client->sess.sessionTeam == TEAM_RED || ent->client->sess.sessionTeam == TEAM_BLUE))
-	{
-		ent->client->sess.sessionTeam = TEAM_FREE;
-	}
-	else if (g_gametype.integer >= GT_TEAM && 
-		ent->client->sess.sessionTeam != TEAM_RED && 
-		ent->client->sess.sessionTeam != TEAM_BLUE && 
-		ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-	{
-		ent->client->sess.sessionTeam = TEAM_SPECTATOR;
-	}
-
 	// Launch original client begin function
 	BaseJK2_ClientBegin(clientNum, allowTeamReset);
 
 	// Set and get user info
 	client = level.clients + clientNum;
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
+
+	// Set default dimension
+	if (client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+		JKMod_DimensionSettings(ent, DIMENSION_FREE);
+	}
 
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
@@ -117,7 +111,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (client->pers.jkmodPers.ClientPlugin || !jkcvar_forcePlugin.integer)
 	{
 		// Show a welcome message
-		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+		if (client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
 			// Show base client begin message
 			if (g_gametype.integer != GT_TOURNAMENT)
@@ -189,19 +183,6 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 				"\"", serverVersion));
 		}
 	}
-}
-
-/*
-=====================================================================
-Client spawn function
-=====================================================================
-*/
-void JKMod_ClientSpawn(gentity_t *ent)
-{
-	// Launch original client spawn function
-	BaseJK2_ClientSpawn(ent);
-	
-	// Stuff here...
 }
 
 /*

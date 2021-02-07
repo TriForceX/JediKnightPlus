@@ -13,14 +13,13 @@ extern int saberOffSound;
 extern int saberOnSound;
 extern char *ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
-extern qboolean SaberAttacking(gentity_t *self);
 
 /*
 =====================================================================
 Drop flag function
 =====================================================================
 */
-static void JKMod_dropFlag(gentity_t *ent, int clientNum)
+static void JKMod_dropFlag(gentity_t *ent)
 {
 	gitem_t		*item = ent->client->sess.sessionTeam == TEAM_RED ? BG_FindItem("team_CTF_blueflag") : BG_FindItem("team_CTF_redflag");
 	vec3_t		angles, velocity, org, offset, mins, maxs;
@@ -82,7 +81,7 @@ static void JKMod_dropFlag(gentity_t *ent, int clientNum)
 Motd function
 =====================================================================
 */
-static void JKMod_showMotd(gentity_t *ent, int clientNum)
+static void JKMod_showMotd(gentity_t *ent)
 {
 	if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
 	{
@@ -95,7 +94,7 @@ static void JKMod_showMotd(gentity_t *ent, int clientNum)
 Save position for teleport
 =====================================================================
 */
-static qboolean JKMod_savePosition(gentity_t *ent, int clientNum)
+static qboolean JKMod_savePosition(gentity_t *ent)
 {
 	if (jkcvar_teleportChat.integer != 2)
 	{
@@ -133,7 +132,7 @@ static qboolean JKMod_savePosition(gentity_t *ent, int clientNum)
 Load position for teleport
 =====================================================================
 */
-static qboolean JKMod_loadPosition(gentity_t *ent, int clientNum)
+static qboolean JKMod_loadPosition(gentity_t *ent)
 {
 	if (jkcvar_teleportChat.integer != 2)
 	{
@@ -178,7 +177,7 @@ static qboolean JKMod_loadPosition(gentity_t *ent, int clientNum)
 Custom teleport say commands
 =====================================================================
 */
-static qboolean JKMod_teleportChat(gentity_t *ent, int clientNum, char *text)
+static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 {
 	int			i = 0;
 	char		command[MAX_TOKEN_CHARS];
@@ -209,11 +208,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, int clientNum, char *text)
 					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
 					return qfalse;
 				}
-				else if ((ent->client->ps.velocity[0] != 0 || ent->client->ps.velocity[1] != 0 || ent->client->ps.velocity[2] != 0)
-					|| BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
-					|| ent->client->ps.saberInFlight
-					|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
-					|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent))
+				else if (JKMod_PlayerMoving(ent, qtrue, qtrue))
 				{
 					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
 					return qfalse;
@@ -707,8 +702,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
-			ent->client->ps.stats[JK_DIMENSION] = JK_DUEL_IN;
-			challenged->client->ps.stats[JK_DIMENSION] = JK_DUEL_IN;
+			ent->client->ps.stats[JK_DIMENSION] = DIMENSION_DUEL;
+			challenged->client->ps.stats[JK_DIMENSION] = DIMENSION_DUEL;
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
@@ -805,39 +800,39 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	// Show motd
 	if (Q_stricmp(p, "!motd") == 0)
 	{
-		JKMod_showMotd(ent, clientNum);
+		JKMod_showMotd(ent);
 	}
 	// Dimension trigger
 	else if (Q_stricmpn(p, "!dimension", strlen("!dimension")) == 0)
 	{
-		char arg1[MAX_STRING_CHARS] = "";
+		char dimension[MAX_STRING_CHARS] = "";
 		int i = 0, pos = 0, part = 0;
 
 		for (i = 0; i < strlen(p); i++)
 		{
 			if (p[i] == ' ') part = 1;
 			else if (part == 1) {
-				arg1[pos] = p[i];
+				dimension[pos] = p[i];
 				pos++;
 			}
 		}
 
-		if (!JKMod_SetDimension(arg1, ent, clientNum)) return;
+		if (!JKMod_DimensionCmd(ent, dimension)) return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)
 	{
-		if (!JKMod_savePosition(ent, clientNum)) return;
+		if (!JKMod_savePosition(ent)) return;
 	}
 	// Teleport chat (Load position)
 	else if (Q_stricmp(p, "!loadpos") == 0)
 	{
-		if (!JKMod_loadPosition(ent, clientNum)) return;
+		if (!JKMod_loadPosition(ent)) return;
 	}
 	// Teleport chat (Load from file)
 	else if (jkcvar_teleportChat.integer && level.jkmodLevel.TeleportChats[0] && (p[0] == '!') && p[1] && (p[1] != '!'))
 	{
-		if (!JKMod_teleportChat(ent, clientNum, p)) return;
+		if (!JKMod_teleportChat(ent, p)) return;
 	}
 
 	G_Say(ent, NULL, mode, p);
@@ -983,13 +978,13 @@ void JKMod_ClientCommand(int clientNum)
 	// Drop flag command
 	else if (Q_stricmp(cmd, "dropflag") == 0)
 	{
-		JKMod_dropFlag(ent, clientNum);
+		JKMod_dropFlag(ent);
 		return;
 	}
 	// Show motd command
 	else if (Q_stricmp(cmd, "motd") == 0)
 	{
-		JKMod_showMotd(ent, clientNum);
+		JKMod_showMotd(ent);
 		return;
 	}
 	// Ignore command
@@ -1161,9 +1156,9 @@ void JKMod_ClientCommand(int clientNum)
 				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 			}
 
-			if (ent->client->ps.stats[JK_DIMENSION] == JK_DUEL_IN) dimension = "Duel";
-			else if (ent->client->ps.stats[JK_DIMENSION] == JK_GUNS_IN) dimension = "Guns";
-			else if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN) dimension = "Race";
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimension = "Duel";
+			else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimension = "Guns";
+			else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimension = "Race";
 			else dimension = "Normal";
 			
 			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %9s %s%9s\n",
@@ -1230,20 +1225,20 @@ void JKMod_ClientCommand(int clientNum)
 		}
 		else
 		{
-			JKMod_SetDimension(arg1, ent, clientNum);
+			JKMod_DimensionCmd(ent, arg1);
 			return;
 		}
 	}
 	// Save position command
 	else if (Q_stricmp(cmd, "savepos") == 0)
 	{
-		JKMod_savePosition(ent, clientNum);
+		JKMod_savePosition(ent);
 		return;
 	}
 	// Load position command
 	else if (Q_stricmp(cmd, "loadpos") == 0)
 	{
-		JKMod_loadPosition(ent, clientNum);
+		JKMod_loadPosition(ent);
 		return;
 	}
 	// Jetpack command
@@ -1254,7 +1249,12 @@ void JKMod_ClientCommand(int clientNum)
 			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
 			return;
 		}
-		else if (ent->client->ps.stats[JK_DIMENSION] == JK_RACE_IN)
+		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in spectator\n\""));
+			return;
+		}
+		else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in this dimension\n\""));
 			return;
