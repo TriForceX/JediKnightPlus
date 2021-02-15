@@ -146,7 +146,6 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
 
-	cgs.jkmodCvar.altDimension = atoi(Info_ValueForKey(info, "jk_altDimension")); // Tr!Force: [Dimensions] Main cvar
 	cgs.jkmodCvar.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));			// Tr!Force: [MacroScan] Main cvar
 	cgs.jkmodCvar.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));		// Tr!Force: [CustomHats] Main cvar
 	cgs.jkmodCvar.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));				// Tr!Force: [JetPack] Main cvar

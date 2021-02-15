@@ -609,7 +609,7 @@ void InitBodyQue (void) {
 
 	level.bodyQueIndex = 0;
 	for (i=0; i<BODY_QUEUE_SIZE ; i++) {
-		ent = G_Spawn();
+		ent = JKMod_G_Spawn( ENTITYNUM_NONE ); // Tr!Force: [Dimensions] Tag owner info
 		ent->classname = "bodyque";
 		ent->neverFree = qtrue;
 		level.bodyQue[i] = ent;
@@ -737,6 +737,7 @@ void CopyToBodyQue( gentity_t *ent ) {
 	}
 
 	VectorCopy ( body->s.pos.trBase, body->r.currentOrigin );
+	JKMod_DimensionOwnerCheck( ent->s.number, body ); // Tr!Force: [Dimensions] Entity owner check
 	trap_LinkEntity (body);
 }
 
@@ -786,7 +787,7 @@ void respawn( gentity_t *ent ) {
 	ClientSpawn(ent);
 
 	// add a teleportation effect
-	tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN );
+	tent = JKMod_G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	tent->s.clientNum = ent->s.clientNum;
 }
 
@@ -1528,7 +1529,7 @@ char *BaseJK2_ClientConnect( int clientNum, qboolean firstTime, qboolean isBot )
 	// count current clients and rank for scoreboard
 	CalculateRanks();
 
-	te = G_TempEntity( vec3_origin, EV_CLIENTJOIN );
+	te = JKMod_G_TempEntity( vec3_origin, EV_CLIENTJOIN, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	te->r.svFlags |= SVF_BROADCAST;
 	te->s.eventParm = clientNum;
 
@@ -1558,6 +1559,8 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	gentity_t	*tent;
 	int			flags, i;
 	char		userinfo[MAX_INFO_VALUE], *modelname;
+	int			jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
+	int			jksave_movement; // Tr!Force: [JKMod] Don't remove flags
 
 	ent = g_entities + clientNum;
 	
@@ -1636,7 +1639,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	if ( ent->r.linked ) {
 		trap_UnlinkEntity( ent );
 	}
-	G_InitGentity( ent );
+	JKMod_G_InitGentity( ent, clientNum ); // Tr!Force: [Dimensions] Tag owner info
 	ent->touch = 0;
 	ent->pain = 0;
 	ent->client = client;
@@ -1651,6 +1654,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	// so the viewpoint doesn't interpolate through the
 	// world to the new position
 	flags = client->ps.eFlags;
+
+	jksave_dimension = client->ps.stats[JK_DIMENSION]; // Tr!Force: [Dimensions] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [JKMod] Don't remove flags
 
 	i = 0;
 
@@ -1677,6 +1683,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	memset( &client->ps, 0, sizeof( client->ps ) );
 	client->ps.eFlags = flags;
+
+	client->ps.stats[JK_DIMENSION] = jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [JKMod] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1707,7 +1716,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	if ( client->sess.sessionTeam != TEAM_SPECTATOR ) {
 		// send event
-		tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN );
+		tent = JKMod_G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_IN, clientNum ); // Tr!Force: [DImensions] Tag owner info
 		tent->s.clientNum = ent->s.clientNum;
 
 		// Tr!Force: [Welcome] Don't show on client begin
@@ -1772,7 +1781,8 @@ void ClientSpawn(gentity_t *ent) {
 	void		*ghoul2save;
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
-	int		jksave_dimensions; // Tr!Force: [Dimensions] Don't remove flags
+	int		jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
+	int		jksave_movement; // Tr!Force: [JKMod] Don't remove flags
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1880,13 +1890,13 @@ void ClientSpawn(gentity_t *ent) {
 
 	saveSaberNum = client->ps.saberEntityNum;
 
-	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_dimensions = client->ps.stats[JK_DIMENSION];
+	jksave_dimension = client->ps.stats[JK_DIMENSION]; // Tr!Force: [Dimensions] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [Dimensions] Don't remove flags
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
-	// Tr!Force: [Dimensions] Don't remove flags
-	if (jksave_dimensions) client->ps.stats[JK_DIMENSION] = jksave_dimensions;
+	client->ps.stats[JK_DIMENSION] = jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [Dimensions] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
@@ -2209,7 +2219,7 @@ void ClientSpawn(gentity_t *ent) {
 				trap_LinkEntity(ent);
 			}
 			else {
-				JKMod_PassBox(ent);
+				JKMod_AntiStuckBox(ent);
 			}
 		}
 
@@ -2268,7 +2278,7 @@ void ClientSpawn(gentity_t *ent) {
 	}
 
 	// Tr!Force: [Dimensions] Set dimension settings
-	if (client->ps.stats[JK_DIMENSION])
+	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE && client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		JKMod_DimensionSettings(ent, client->ps.stats[JK_DIMENSION]);
 	}
@@ -2347,7 +2357,7 @@ void ClientDisconnect( int clientNum ) {
 	// send effect if they were completely connected
 	if ( ent->client->pers.connected == CON_CONNECTED 
 		&& ent->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		tent = G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_OUT );
+		tent = JKMod_G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_OUT, clientNum ); // Tr!Force: [DImensions] Tag owner info
 		tent->s.clientNum = ent->s.clientNum;
 
 		// They don't get to take powerups with them!
@@ -2390,6 +2400,13 @@ void ClientDisconnect( int clientNum ) {
 	}
 
 	G_ClearClientLog(clientNum);
+
+	// Tr!Force: [Dimensions] Entity owner check
+	for ( i = 0; i < level.num_entities; i++ ) {
+		if ( g_entities[i].inuse && g_entities[i].jkmodEnt.dimensionOwner == clientNum ) {
+			JKMod_DimensionOwnerCheck( ENTITYNUM_NONE, &g_entities[i] );
+		}
+	}
 }
 
 #define MAX_CLIENT_CENTERPRINT_LINELENGTH 50

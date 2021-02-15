@@ -117,18 +117,6 @@ void JKMod_CG_UpdateCvars(void)
 		trap_Cvar_Update(cv->vmCvar);
 	}
 
-	// Warning private duel dimiension
-	if (jkcvar_cg_privateDuel.integer)
-	{
-		if (!(cgs.jkmodCvar.altDimension & (1 << DIMENSION_DUEL)))
-		{
-			if (!jkmod_duel_warning) Com_Printf("%s\n", CG_GetStripEdString("JKINGAME", "DIMENSION_WARNING"));
-			jkmod_duel_warning = qtrue;
-		}
-		else jkmod_duel_warning = qfalse;
-	}
-	else jkmod_duel_warning = qfalse;
-
 	// Launch original update cvars function
 	BaseJK2_CG_UpdateCvars();
 }

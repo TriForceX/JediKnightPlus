@@ -100,7 +100,7 @@ void multi_trigger( gentity_t *ent, gentity_t *activator ) {
 			VectorCopy(rofftarget->s.pos.trBase, rofftarget->s.origin2);
 			VectorCopy(rofftarget->s.apos.trBase, rofftarget->s.angles2);
 
-			te = G_TempEntity( rofftarget->s.pos.trBase, EV_PLAY_ROFF );
+			te = JKMod_G_TempEntity( rofftarget->s.pos.trBase, EV_PLAY_ROFF, rofftarget->s.number ); // Tr!Force: [Dimensions] Tag owner info
 			te->s.eventParm = ent->roffid;
 			te->s.weapon = rofftarget->s.number;
 			te->s.trickedentindex = 0;

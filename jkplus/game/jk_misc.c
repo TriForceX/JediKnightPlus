@@ -12,105 +12,6 @@ extern qboolean SaberAttacking(gentity_t *self);
 
 /*
 =====================================================================
-Play effect by ID function
-=====================================================================
-*/
-gentity_t *JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang)
-{
-	gentity_t	*te;
-
-	te = G_TempEntity(org, EV_PLAY_EFFECT_ID);
-	VectorCopy(ang, te->s.angles);
-	VectorCopy(org, te->s.origin);
-	te->s.eventParm = fxID;
-
-	return te;
-}
-
-/*
-=====================================================================
-Check other clients in box
-=====================================================================
-*/
-qboolean JKMod_OthersInBox(gentity_t *ent) {
-	int			i, num;
-	int			touch[MAX_GENTITIES];
-	gentity_t	*other;
-	vec3_t		mins, maxs;
-
-	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
-	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
-
-	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
-
-	for (i = 0; i < num; i++)
-	{
-		other = &g_entities[touch[i]];
-		if (other->client && 
-			other->client->ps.clientNum != ent->client->ps.clientNum && 
-			!(((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || other->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)) 
-		{
-			return qtrue;
-		}
-	}
-	return qfalse;
-}
-
-/*
-=====================================================================
-Pass-through box function
-=====================================================================
-*/
-void JKMod_PassBox(gentity_t *ent) {
-	int			i, num;
-	int			touch[MAX_GENTITIES];
-	gentity_t	*other;
-	vec3_t		mins, maxs;
-
-	VectorAdd(ent->client->ps.origin, ent->r.mins, mins);
-	VectorAdd(ent->client->ps.origin, ent->r.maxs, maxs);
-
-	num = trap_EntitiesInBox(mins, maxs, touch, MAX_GENTITIES);
-
-	for (i = 0; i < num; i++)
-	{
-		other = &g_entities[touch[i]];
-		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) 
-		{
-			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-			if (!(other->client->ps.eFlags & JK_PASS_THROUGH)) other->client->ps.eFlags |= JK_PASS_THROUGH;
-		}
-	}
-}
-
-/*
-=====================================================================
-Remove entity by classname
-=====================================================================
-*/
-void JKMod_RemoveByClass(gentity_t *ent, char *name)
-{
-	gentity_t *found = NULL;
-
-	while ((found = G_Find(found, FOFS(classname), name)) != NULL)
-	{
-		if (found->parent == ent)
-		{
-			if (!Q_stricmp(name, "sentryGun") && ent->client->ps.fd.sentryDeployed) {
-				ent->client->ps.fd.sentryDeployed = qfalse;
-			}
-			if (!Q_stricmp(name, "detpack") && ent->client->ps.hasDetPackPlanted) {
-				ent->client->ps.hasDetPackPlanted = qfalse;
-			}
-			VectorCopy(found->r.currentOrigin, found->s.origin);
-			found->think = G_FreeEntity;
-			found->nextthink = level.time;
-		}
-	}
-}
-
-/*
-=====================================================================
 Custom force power valid check
 =====================================================================
 */
@@ -149,22 +50,19 @@ qboolean JKMod_PlayerMoving(gentity_t *ent, int move, int attack)
 				(ent->client->ps.eFlags & EF_ALT_FIRING);
 
 	if (move && attack) {
-		if (checkMove || checkAttack)
-			return qtrue;
-		else
-			return qfalse;
+		if (checkMove || checkAttack) return qtrue;
+		else return qfalse;
 	}
 	else if (move && !attack) {
-		if (checkMove)
-			return qtrue;
-		else
-			return qfalse;
+		if (checkMove) return qtrue;
+		else return qfalse;
 	}
 	else if (!move && attack) {
-		if (checkAttack)
-			return qtrue;
-		else
-			return qfalse;
+		if (checkAttack) return qtrue;
+		else return qfalse;
+	}
+	else {
+		return qfalse;
 	}
 }
 
@@ -189,11 +87,11 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
 		if (efxfile[0] == '\0')
 		{
-			tent = G_TempEntity(player->client->ps.origin, EV_PLAYER_TELEPORT_OUT);
+			tent = JKMod_G_TempEntity(player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number);
 			tent->s.clientNum = player->s.clientNum;
 			tent->s.otherEntityNum = player->s.clientNum;
 
-			tent = G_TempEntity(origin, EV_PLAYER_TELEPORT_IN);
+			tent = JKMod_G_TempEntity(origin, EV_PLAYER_TELEPORT_IN, player->s.number);
 			tent->s.clientNum = player->s.clientNum;
 			tent->s.otherEntityNum = player->s.clientNum;
 		}
@@ -207,11 +105,11 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 				temporigin[PITCH] = -90;
 				temporigin[ROLL] = 0;
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin);
-				G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")));
+				JKMod_G_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin, player->s.number);
+				JKMod_G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")), player->s.number);
 
-				JKMod_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin);
-				G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")));
+				JKMod_G_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin, player->s.number);
+				JKMod_G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")), player->s.number);
 			}
 		}
 	}
@@ -243,7 +141,7 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 		if (jkcvar_teleportFrag.integer)
 			G_KillBox(player);
 		else
-			JKMod_PassBox(player);
+			JKMod_AntiStuckBox(player);
 	}
 
 	// save results of pmove
@@ -267,150 +165,152 @@ extern qboolean WP_HasForcePowers( const playerState_t *ps );
 // Custom settings
 void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity)
 {
-	// Force
-	if (forcepowers != g_forcePowerDisable.integer)
+	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
-		int i;
-
-		i = 0;
-		while (i < NUM_FORCE_POWERS)
+		// Force
+		if (forcepowers != g_forcePowerDisable.integer)
 		{
-			if (forcepowers & (1 << i))
+			int i;
+
+			i = 0;
+			while (i < NUM_FORCE_POWERS)
 			{
-				ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
-				ent->client->ps.fd.forcePowerLevel[i] = FORCE_LEVEL_0;
+				if (forcepowers & (1 << i))
+				{
+					ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
+					ent->client->ps.fd.forcePowerLevel[i] = FORCE_LEVEL_0;
+				}
+				else {
+					ent->client->ps.fd.forcePowersKnown |= (1 << i);
+					ent->client->ps.fd.forcePowerLevel[i] = forcelevel;
+				}
+				i++;
 			}
-			else {
-				ent->client->ps.fd.forcePowersKnown |= (1 << i);
-				ent->client->ps.fd.forcePowerLevel[i] = forcelevel;
-			}
-			i++;
-		}
-	}
-	else
-	{
-		WP_InitForcePowers(ent);
-	}
-
-	// Weapons
-	if (weapons != g_weaponDisable.integer)
-	{
-		int i;
-		int firstWeapon = 0;
-
-		i = 0;
-		while (i < WP_NUM_WEAPONS)
-		{
-			if (!(weapons & (1 << i)) && i != WP_NONE && i != WP_EMPLACED_GUN && i != WP_TURRET)
-			{
-				ent->client->ps.stats[STAT_WEAPONS] |= (1 << i);
-				if (!firstWeapon) firstWeapon = i;
-			}
-			else 
-			{
-				ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << i);
-			}
-			i++;
-		}
-
-		for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
-
-		ent->client->ps.weapon = firstWeapon;
-	}
-	else
-	{
-		ent->client->ps.stats[STAT_WEAPONS] = 0;
-
-		if (WP_HasForcePowers(&ent->client->ps))
-		{
-			ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
-			ent->client->ps.weapon = WP_SABER;
-		}
-		else if (!g_weaponDisable.integer || !(g_weaponDisable.integer & (1 << WP_BRYAR_PISTOL)))
-		{
-			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
-			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_BRYAR_PISTOL);
-			ent->client->ps.ammo[AMMO_POWERCELL] = ammoData[AMMO_POWERCELL].max;
-			ent->client->ps.weapon = WP_BRYAR_PISTOL;
 		}
 		else
 		{
-			ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
-			ent->client->ps.weapon = WP_STUN_BATON;
+			WP_InitForcePowers(ent);
 		}
-	}
 
-	JKMod_RemoveByClass(ent, "bryar_proj");
-	JKMod_RemoveByClass(ent, "generic_proj");
-	JKMod_RemoveByClass(ent, "blaster_proj");
-	JKMod_RemoveByClass(ent, "emplaced_gun_proj");
-	JKMod_RemoveByClass(ent, "bowcaster_proj");
-	JKMod_RemoveByClass(ent, "bowcaster_alt_proj");
-	JKMod_RemoveByClass(ent, "repeater_proj");
-	JKMod_RemoveByClass(ent, "repeater_alt_proj");
-	JKMod_RemoveByClass(ent, "demp2_proj");
-	JKMod_RemoveByClass(ent, "demp2_alt_proj");
-	JKMod_RemoveByClass(ent, "flech_proj");
-	JKMod_RemoveByClass(ent, "flech_alt");
-	JKMod_RemoveByClass(ent, "rocket_proj");
-	JKMod_RemoveByClass(ent, "thermal_detonator");
-	JKMod_RemoveByClass(ent, "detpack");
-	JKMod_RemoveByClass(ent, "laserTrap");
-	JKMod_RemoveByClass(ent, "sentryGun");
-	JKMod_RemoveByClass(ent, "item_shield");
-
-	if (ent->client->ps.eFlags & EF_SEEKERDRONE) 
-	{
-		ent->client->ps.eFlags -= EF_SEEKERDRONE;
-		ent->client->ps.genericEnemyIndex = -1;
-	}
-
-	// Holdables
-	if (holdables)
-	{
-		int i;
-
-		i = 0;
-		while (i < HI_NUM_HOLDABLE)
+		// Weapons
+		if (weapons != g_weaponDisable.integer)
 		{
-			if (i != HI_DATAPAD) ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << i);
-			i++;
+			int i;
+			int firstWeapon = 0;
+
+			i = 0;
+			while (i < WP_NUM_WEAPONS)
+			{
+				if (!(weapons & (1 << i)) && i != WP_NONE && i != WP_EMPLACED_GUN && i != WP_TURRET)
+				{
+					ent->client->ps.stats[STAT_WEAPONS] |= (1 << i);
+					if (!firstWeapon) firstWeapon = i;
+				}
+				else 
+				{
+					ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << i);
+				}
+				i++;
+			}
+
+			for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
+
+			ent->client->ps.weapon = firstWeapon;
 		}
-	}
-	else
-	{
-		ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
-	}
+		else
+		{
+			ent->client->ps.stats[STAT_WEAPONS] = 0;
 
-	// Jetpack
-	if (jetpack) 
-	{
-		if (jkcvar_jetPack.integer) {
-			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+			if (WP_HasForcePowers(&ent->client->ps))
+			{
+				ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
+				ent->client->ps.weapon = WP_SABER;
+			}
+			else if (!g_weaponDisable.integer || !(g_weaponDisable.integer & (1 << WP_BRYAR_PISTOL)))
+			{
+				ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+				ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_BRYAR_PISTOL);
+				ent->client->ps.ammo[AMMO_POWERCELL] = ammoData[AMMO_POWERCELL].max;
+				ent->client->ps.weapon = WP_BRYAR_PISTOL;
+			}
+			else
+			{
+				ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
+				ent->client->ps.weapon = WP_STUN_BATON;
+			}
 		}
-	}
-	else 
-	{
-		if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
-	}
 
-	// Invulnerability
-	if (invulnerability)
-	{
-		ent->client->pers.jkmodPers.invulnerability = qtrue;
-	}
-	else
-	{
-		ent->client->pers.jkmodPers.invulnerability = qfalse;
-	}
+		// Holdables
+		if (holdables)
+		{
+			int i;
 
-	// Speed
-	ent->client->ps.speed = speed;
-	ent->client->ps.basespeed = speed;
+			i = 0;
+			while (i < HI_NUM_HOLDABLE)
+			{
+				if (i != HI_DATAPAD) ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << i);
+				i++;
+			}
+		}
+		else
+		{
+			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
+		}
 
-	// Gravity
-	ent->client->ps.gravity = gravity;
+		// Projectiles
+		JKMod_RemoveByClass(ent, "bryar_proj");
+		JKMod_RemoveByClass(ent, "generic_proj");
+		JKMod_RemoveByClass(ent, "blaster_proj");
+		JKMod_RemoveByClass(ent, "emplaced_gun_proj");
+		JKMod_RemoveByClass(ent, "bowcaster_proj");
+		JKMod_RemoveByClass(ent, "bowcaster_alt_proj");
+		JKMod_RemoveByClass(ent, "repeater_proj");
+		JKMod_RemoveByClass(ent, "repeater_alt_proj");
+		JKMod_RemoveByClass(ent, "demp2_proj");
+		JKMod_RemoveByClass(ent, "demp2_alt_proj");
+		JKMod_RemoveByClass(ent, "flech_proj");
+		JKMod_RemoveByClass(ent, "flech_alt");
+		JKMod_RemoveByClass(ent, "rocket_proj");
+		JKMod_RemoveByClass(ent, "thermal_detonator");
+		JKMod_RemoveByClass(ent, "detpack");
+		JKMod_RemoveByClass(ent, "laserTrap");
+		JKMod_RemoveByClass(ent, "sentryGun");
+		JKMod_RemoveByClass(ent, "item_shield");
+
+		if (ent->client->ps.eFlags & EF_SEEKERDRONE) 
+		{
+			ent->client->ps.eFlags -= EF_SEEKERDRONE;
+			ent->client->ps.genericEnemyIndex = -1;
+		}
+
+		// Jetpack
+		if (jetpack) 
+		{
+			if (jkcvar_jetPack.integer) {
+				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+				if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+			}
+		}
+		else 
+		{
+			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+		}
+
+		// Invulnerability
+		if (invulnerability) {
+			ent->client->pers.jkmodPers.invulnerability = qtrue;
+		}
+		else {
+			ent->client->pers.jkmodPers.invulnerability = qfalse;
+		}
+
+		// Speed
+		ent->client->ps.speed = speed;
+		ent->client->ps.basespeed = speed;
+
+		// Gravity
+		ent->client->ps.gravity = gravity;
+	}
 }
 
 /*
@@ -628,7 +528,7 @@ void JKMod_SP_ShieldPowerConverter(gentity_t *ent)
 void JKMod_SP_HealthPowerConverter(gentity_t *ent)
 {
 	vec3_t angles;
-	gentity_t *effect = G_Spawn();
+	gentity_t *effect = JKMod_G_Spawn(ent->s.number);
 
 	if (!ent->health)
 	{

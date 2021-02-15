@@ -370,7 +370,7 @@ qboolean PlaceShield(gentity_t *playerent)
 		if ( !tr.startsolid && !tr.allsolid )
 		{
 			// got enough room so place the portable shield
-			shield = G_Spawn();
+			shield = JKMod_G_Spawn( playerent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 			// Figure out what direction the shield is facing.
 			if (fabs(fwd[0]) > fabs(fwd[1]))
@@ -688,7 +688,7 @@ void pas_think( gentity_t *ent )
 	testMaxs[1] = ent->r.currentOrigin[1] + ent->r.maxs[1]-4;
 	testMaxs[2] = ent->r.currentOrigin[2] + ent->r.maxs[2]-4;
 
-	numListedEntities = trap_EntitiesInBox( testMins, testMaxs, iEntityList, MAX_GENTITIES );
+	numListedEntities = JKMod_DimensionEntitiesInBox( testMins, testMaxs, iEntityList, MAX_GENTITIES, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	while (i < numListedEntities)
 	{
@@ -696,7 +696,7 @@ void pas_think( gentity_t *ent )
 		{ //client stuck inside me. go nonsolid.
 			int clNum = iEntityList[i];
 
-			numListedEntities = trap_EntitiesInBox( g_entities[clNum].r.absmin, g_entities[clNum].r.absmax, iEntityList, MAX_GENTITIES );
+			numListedEntities = JKMod_DimensionEntitiesInBox( g_entities[clNum].r.absmin, g_entities[clNum].r.absmax, iEntityList, MAX_GENTITIES, clNum ); // Tr!Force: [Dimensions] Tag owner info
 
 			i = 0;
 			while (i < numListedEntities)
@@ -919,7 +919,7 @@ void turret_die(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int 
 	// hack the effect angle so that explode death can orient the effect properly
 	VectorSet( self->s.angles, 0, 0, 1 );
 
-	G_PlayEffect(EFFECT_EXPLOSION_PAS, self->s.pos.trBase, self->s.angles);
+	JKMod_G_PlayEffect(EFFECT_EXPLOSION_PAS, self->s.pos.trBase, self->s.angles, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 	G_RadiusDamage(self->s.pos.trBase, &g_entities[self->boltpoint3], 30, 256, self, MOD_UNKNOWN);
 
 	g_entities[self->boltpoint3].client->ps.fd.sentryDeployed = qfalse;
@@ -994,7 +994,7 @@ void ItemUse_Sentry( gentity_t *ent )
 	fwdorg[1] = ent->client->ps.origin[1] + fwd[1]*64;
 	fwdorg[2] = ent->client->ps.origin[2] + fwd[2]*64;
 
-	sentry = G_Spawn();
+	sentry = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	sentry->classname = "sentryGun";
 	sentry->s.modelindex = G_ModelIndex("models/items/psgun.glm"); //replace ASAP
@@ -1354,10 +1354,10 @@ void RespawnItem( gentity_t *ent ) {
 
 		// if the powerup respawn sound should Not be global
 		if (ent->speed) {
-			te = G_TempEntity( ent->s.pos.trBase, EV_GENERAL_SOUND );
+			te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GENERAL_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 		}
 		else {
-			te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND );
+			te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 		}
 		te->s.eventParm = G_SoundIndex( "sound/items/respawn1" );
 		te->r.svFlags |= SVF_BROADCAST;
@@ -1513,13 +1513,13 @@ void Touch_Item (gentity_t *ent, gentity_t *other, trace_t *trace) {
 		if (!ent->speed) {
 			gentity_t	*te;
 
-			te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_ITEM_PICKUP );
+			te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_ITEM_PICKUP, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 			te->s.eventParm = ent->s.modelindex;
 			te->r.svFlags |= SVF_BROADCAST;
 		} else {
 			gentity_t	*te;
 
-			te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_ITEM_PICKUP );
+			te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_ITEM_PICKUP, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 			te->s.eventParm = ent->s.modelindex;
 			// only send this temp entity to a single client
 			te->r.svFlags |= SVF_SINGLECLIENT;
@@ -1599,7 +1599,7 @@ Spawns an item and tosses it forward
 gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	gentity_t	*dropped;
 
-	dropped = G_Spawn();
+	dropped = JKMod_G_Spawn( ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 
 	dropped->s.eType = ET_ITEM;
 	dropped->s.modelindex = item - bg_itemlist;	// store item number in modelindex

@@ -6783,7 +6783,7 @@ doEssentialTwo:
 		}
 	}
 	// Tr!Force: [ChatProtect] Chat player transparency
-	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
+	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_ANTI_STUCK) && jkcvar_cg_chatPlayerOpacity.integer)
 	{
 		if (!JKMod_CG_InEmoteUI(cent))
 		{
@@ -7340,7 +7340,7 @@ stillDoSaber:
 			legs.shaderRGBA[2] = 50;
 			legs.renderfx |= RF_RGB_TINT;
 		}
-		else if (jkcvar_cg_duelGlow.integer && !(cgs.jkmodCvar.altDimension & (1 << DIMENSION_DUEL))) // Tr!Force: [DuelGlow] Enable and disable
+		else if (jkcvar_cg_duelGlow.integer) // Tr!Force: [DuelGlow] Enable and disable
 		{ //adjust the glow by how far away you are from your dueling partner
 			centity_t *duelEnt;
 

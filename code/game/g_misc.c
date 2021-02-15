@@ -75,10 +75,10 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	// use temp events at source and destination to prevent the effect
 	// from getting dropped by a second player event
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		tent = G_TempEntity( player->client->ps.origin, EV_PLAYER_TELEPORT_OUT );
+		tent = JKMod_G_TempEntity( player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number ); // Tr!Force: [Dimension] Tag owner info
 		tent->s.clientNum = player->s.clientNum;
 
-		tent = G_TempEntity( origin, EV_PLAYER_TELEPORT_IN );
+		tent = JKMod_G_TempEntity( origin, EV_PLAYER_TELEPORT_IN, player->s.number ); // Tr!Force: [Dimension] Tag owner info
 		tent->s.clientNum = player->s.clientNum;
 	}
 
@@ -106,7 +106,7 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 		if (jkcvar_teleportFrag.integer)
 			G_KillBox(player);
 		else
-			JKMod_PassBox(player); 
+			JKMod_AntiStuckBox(player); 
 	}
 
 	// save results of pmove
@@ -1242,7 +1242,7 @@ gentity_t *CreateNewDamageBox( gentity_t *ent )
 
 	//We do not want the client to have any real knowledge of the entity whatsoever. It will only
 	//ever be used on the server.
-	dmgBox = G_Spawn();
+	dmgBox = JKMod_G_Spawn( ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	dmgBox->classname = "dmg_box";
 			
 	dmgBox->r.svFlags = SVF_USE_CURRENT_ORIGIN;
@@ -2822,7 +2822,7 @@ void G_SpawnExampleAnimEnt(vec3_t pos, int aeType, animentCustomInfo_t *aeInfo)
 		}
 	}
 
-	animEnt = G_Spawn();
+	animEnt = JKMod_G_Spawn( ENTITYNUM_NONE ); // Tr!Force: [Dimensions] Tag owner info
 
 	animEnt->watertype = aeType; //set the animent type
 

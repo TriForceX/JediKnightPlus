@@ -112,7 +112,7 @@ void PrintCTFMessage(int plIndex, int teamIndex, int ctfMessage)
 		teamIndex = 50;
 	}
 
-	te = G_TempEntity(vec3_origin, EV_CTFMESSAGE);
+	te = JKMod_G_TempEntity(vec3_origin, EV_CTFMESSAGE, ENTITYNUM_WORLD); // Tr!Force: [Dimensions] Tag owner info
 	te->r.svFlags |= SVF_BROADCAST;
 	te->s.eventParm = ctfMessage;
 	te->s.trickedentindex = plIndex;
@@ -144,7 +144,7 @@ AddTeamScore
 void AddTeamScore(vec3_t origin, int team, int score) {
 	gentity_t	*te;
 
-	te = G_TempEntity(origin, EV_GLOBAL_TEAM_SOUND );
+	te = JKMod_G_TempEntity(origin, EV_GLOBAL_TEAM_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	te->r.svFlags |= SVF_BROADCAST;
 
 	if ( team == TEAM_RED ) {
@@ -572,7 +572,7 @@ void Team_ReturnFlagSound( gentity_t *ent, int team ) {
 		return;
 	}
 
-	te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND );
+	te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	if( team == TEAM_BLUE ) {
 		te->s.eventParm = GTS_RED_RETURN;
 	}
@@ -610,7 +610,7 @@ void Team_TakeFlagSound( gentity_t *ent, int team ) {
 			break;
 	}
 
-	te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND );
+	te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	if( team == TEAM_BLUE ) {
 		te->s.eventParm = GTS_RED_TAKEN;
 	}
@@ -628,7 +628,7 @@ void Team_CaptureFlagSound( gentity_t *ent, int team ) {
 		return;
 	}
 
-	te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND );
+	te = JKMod_G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	if( team == TEAM_BLUE ) {
 		te->s.eventParm = GTS_BLUE_CAPTURE;
 	}

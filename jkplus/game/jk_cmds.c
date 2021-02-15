@@ -641,7 +641,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	}
 
 	// Tr!Force: [Dimensions] Check duel challenge
-	if (ent->client->ps.stats[JK_DIMENSION])
+	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 	{
 		return;
 	}
@@ -672,7 +672,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Dimensions] Check duel challenge
-		if (challenged->client->ps.stats[JK_DIMENSION])
+		if (challenged->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 		{
 			return;
 		}
@@ -691,6 +691,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
+			unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
+
 			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
 
 			ent->client->ps.duelInProgress = qtrue;
@@ -702,8 +704,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
-			ent->client->ps.stats[JK_DIMENSION] = DIMENSION_DUEL;
-			challenged->client->ps.stats[JK_DIMENSION] = DIMENSION_DUEL;
+			JKMod_DimensionSet(ent, DIMENSION_DUEL_FREE);
+			JKMod_DimensionSet(challenged, DIMENSION_DUEL_FREE);
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
@@ -907,6 +909,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^5----------\n"
 				"^7Command list:\n"
 				"^3emote\n"
+				"^3dimension\n"
 				"^3ignore\n"
 				"^3dropflag\n"
 				"^3callvote\n"
@@ -1218,8 +1221,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^3guns\n"
 				"^3race\n"
 				"^5----------\n"
-				"^2Note 1: ^7Is highly recommended to use the client plugin for a better experience\n"
-				"^2Note 2: ^7You also will be able to beign in ^5duel ^7dimension if is available by the server\n"
+				"^2Note: ^7You will join in ^5duel ^7dimension automatically if is available in the server\n"
 				"^7\""));
 			return;
 		}

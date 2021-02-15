@@ -446,7 +446,7 @@ void	G_TouchTriggers( gentity_t *ent ) {
 	VectorSubtract( ent->client->ps.origin, range, mins );
 	VectorAdd( ent->client->ps.origin, range, maxs );
 
-	num = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+	num = JKMod_DimensionEntitiesInBox( mins, maxs, touch, MAX_GENTITIES, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	// can't use ent->r.absmin, because that has a one unit pad
 	VectorAdd( ent->client->ps.origin, ent->r.mins, mins );
@@ -542,7 +542,7 @@ void G_MoverTouchPushTriggers( gentity_t *ent, vec3_t oldOrg )
 		VectorSubtract( checkSpot, range, mins );
 		VectorAdd( checkSpot, range, maxs );
 
-		num = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+		num =  JKMod_DimensionEntitiesInBox( mins, maxs, touch, MAX_GENTITIES, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		// can't use ent->r.absmin, because that has a one unit pad
 		VectorAdd( checkSpot, ent->r.mins, mins );
@@ -600,10 +600,10 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		client->ps.basespeed = 400;
 
 		// Tr!Force: [Plugin] Don't allow user actions
-		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin)
-		{
-			client->ps.fallingToDeath = 1;
-		}
+		client->ps.fallingToDeath = (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) ? 1 : 0;
+
+		// Tr!Force: [Dimensions] Check dimension
+		if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 
 		// set up for pmove
 		memset (&pm, 0, sizeof(pm));
@@ -855,7 +855,7 @@ void SendPendingPredictableEvents( playerState_t *ps ) {
 		extEvent = ps->externalEvent;
 		ps->externalEvent = 0;
 		// create temporary entity for event
-		t = G_TempEntity( ps->origin, event );
+		t = JKMod_G_TempEntity( ps->origin, (entity_event_t)event, ps->clientNum ); // Tr!Force: [Dimensions] Tag owner info
 		number = t->s.number;
 		BG_PlayerStateToEntityState( ps, &t->s, qtrue );
 		t->s.number = number;
@@ -1217,12 +1217,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 			// Tr!Force: [Dimensions] Remove duel flag
-			ent->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
-			duelAgainst->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+			JKMod_DimensionSet(ent, DIMENSION_FREE);
+			JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
-			// Tr!Force: [PassThrough] Check pass through
-			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-			if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_PASS_THROUGH;
+			// Tr!Force: [AntiStuck] Check player anti stuck
+			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
+			if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_ANTI_STUCK;
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1283,12 +1283,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
-				ent->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
-				duelAgainst->client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+				JKMod_DimensionSet(ent, DIMENSION_FREE);
+				JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
-				// Tr!Force: [PassThrough] Check pass through
-				if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-				if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_PASS_THROUGH;
+				// Tr!Force: [AntiStuck] Check player anti stuck
+				if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
+				if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_ANTI_STUCK;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1367,7 +1367,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 	pm.ps = &client->ps;
 	pm.cmd = *ucmd;
-	if ( pm.ps->pm_type == PM_DEAD || (ent->client->ps.eFlags & JK_PASS_THROUGH)) { // Tr!Force: [PassThrough] Check pass through
+	if ( pm.ps->pm_type == PM_DEAD || (ent->client->ps.eFlags & JK_ANTI_STUCK)) { // Tr!Force: [AntiStuck] Check player anti stuck
 		pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;
 	}
 	else if ( ent->r.svFlags & SVF_BOT ) {

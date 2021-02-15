@@ -27,7 +27,7 @@ Global definitions
 #define JK_JETPACK_FLAMING		( 1 << 29 )
 
 // Other stuff
-#define JK_PASS_THROUGH			( 1 << 30 )
+#define JK_ANTI_STUCK			( 1 << 30 )
 
 /*
 =====================================================================
@@ -38,10 +38,13 @@ Player / world information
 // Dimension options
 typedef enum
 {
-	DIMENSION_FREE = 0,
-	DIMENSION_DUEL,
-	DIMENSION_GUNS,
-	DIMENSION_RACE
+	DIMENSION_ALL = -1,
+
+	/* List */
+	DIMENSION_FREE = ( 1 << 0 ),
+	DIMENSION_DUEL = ( 1 << 1 ),
+	DIMENSION_GUNS = ( 1 << 2 ),
+	DIMENSION_RACE = ( 1 << 3 )
 
 } jkmod_dimensions_t;
 

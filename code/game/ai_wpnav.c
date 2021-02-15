@@ -207,7 +207,7 @@ void G_TestLine(vec3_t start, vec3_t end, int color, int time)
 {
 	gentity_t *te;
 
-	te = G_TempEntity( start, EV_TESTLINE );
+	te = JKMod_G_TempEntity( start, EV_TESTLINE, ENTITYNUM_WORLD); // Tr!Force: [Dimensions] Tag owner info
 	VectorCopy(start, te->s.origin);
 	VectorCopy(end, te->s.origin2);
 	te->s.time2 = time;
@@ -249,7 +249,7 @@ void BotWaypointRender(void)
 	{
 		if (gWPArray[i] && gWPArray[i]->inuse)
 		{
-			plum = G_TempEntity( gWPArray[i]->origin, EV_SCOREPLUM );
+			plum = JKMod_G_TempEntity( gWPArray[i]->origin, EV_SCOREPLUM, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 			plum->r.svFlags |= SVF_BROADCAST;
 			plum->s.time = i;
 			
@@ -330,7 +330,7 @@ checkprint:
 		//GetFlagStr allocates 128 bytes for this, if it's changed then obviously this must be as well
 		B_TempFree(128); //flagstr
 
-		plum = G_TempEntity( gWPArray[bestindex]->origin, EV_SCOREPLUM );
+		plum = JKMod_G_TempEntity( gWPArray[bestindex]->origin, EV_SCOREPLUM, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 		plum->r.svFlags |= SVF_BROADCAST;
 		plum->s.time = bestindex; //render it once
 	}

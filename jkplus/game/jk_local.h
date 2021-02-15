@@ -58,6 +58,8 @@ typedef struct
 {
 	vec3_t		ItemFirstOrigin;		// First original item position
 	qboolean    ItemSpawnedBefore;		// Reset original item position
+	int			dimensionOwner;			// Dimension owner number
+	unsigned	dimensionNumber;		// Current dimension number 
 
 } jkmod_ent_t;
 
@@ -134,7 +136,7 @@ Re-routed functions
 #define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
-#define trap_Trace					JKMod_DimensionsTrace
+#define trap_Trace					JKMod_DimensionTrace
 
 /*
 =====================================================================
@@ -244,9 +246,15 @@ void		JKMod_sRand(unsigned seed);
 int			JKMod_Rand(void);
 
 // jk_dimensions.c
-void		JKMod_DimensionSettings(gentity_t *ent, int dimension);
+void		JKMod_DimensionSettings(gentity_t *ent, unsigned dimension);
 qboolean	JKMod_DimensionCmd(gentity_t *ent, char *dimension);
-void		JKMod_DimensionsTrace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
+qboolean	JKMod_DimensionCheck(int ent1, int ent2);
+void		JKMod_DimensionOwnerCheck(int owner, gentity_t *ent);
+unsigned	JKMod_DimensionGetFree(void);
+void		JKMod_DimensionSet(gentity_t *ent, unsigned dimension);
+qboolean	JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2);
+void		JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
+int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount, int entityNum);
 
 // jk_emotes.c
 int			JKMod_emoteCheck(char *cmd, gentity_t *ent);
@@ -263,14 +271,23 @@ void		JKMod_teleportChatInit(void);
 void		JKMod_serverIdleCheck(void);
 
 // jk_misc.c
-gentity_t	*JKMod_PlayEffect_ID(int fxID, vec3_t org, vec3_t ang);
-qboolean	JKMod_OthersInBox(gentity_t *ent);
-void		JKMod_PassBox(gentity_t *ent);
-void		JKMod_RemoveByClass(gentity_t *ent, char *name);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity);
+
+// jk_utils.c
+qboolean	JKMod_OthersInBox(gentity_t *ent);
+void		JKMod_AntiStuckBox(gentity_t *ent);
+void		JKMod_RemoveByClass(gentity_t *ent, char *name);
+void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);
+gentity_t	*JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
+gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
+gentity_t	*JKMod_G_Spawn(int dimensionOwner);
+gentity_t	*JKMod_G_TempEntity(const vec3_t origin, entity_event_t event, int dimensionOwner);
+gentity_t	*JKMod_G_SoundTempEntity(const vec3_t origin, int event, int channel, int dimensionOwner);
+gentity_t	*JKMod_G_PreDefSound(vec3_t org, pdSounds_t pdSound, int dimensionOwner);
+void		JKMod_G_SoundAtLoc(vec3_t loc, soundChannel_t channel, int soundIndex, int dimensionOwner);
 
 // jk_session.c
 void		JKMod_InitSessionData(gclient_t *client);

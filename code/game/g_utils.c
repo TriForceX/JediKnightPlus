@@ -203,7 +203,7 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 		maxs[i] = origin[i] + radius;
 	}
 
-	numListedEntities = trap_EntitiesInBox( mins, maxs, entityList, MAX_GENTITIES );
+	numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, entityList, MAX_GENTITIES, ignore->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	for ( e = 0 ; e < numListedEntities ; e++ ) 
 	{
@@ -762,7 +762,7 @@ void G_KillBox (gentity_t *ent) {
 
 	VectorAdd( ent->client->ps.origin, ent->r.mins, mins );
 	VectorAdd( ent->client->ps.origin, ent->r.maxs, maxs );
-	num = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+	num =  JKMod_DimensionEntitiesInBox( mins, maxs, touch, MAX_GENTITIES, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	for (i=0 ; i<num ; i++) {
 		hit = &g_entities[touch[i]];
@@ -853,7 +853,7 @@ gentity_t *G_ScreenShake(vec3_t org, gentity_t *target, float intensity, int dur
 {
 	gentity_t	*te;
 
-	te = G_TempEntity( org, EV_SCREENSHAKE );
+	te = JKMod_G_TempEntity( org, EV_SCREENSHAKE, target ? target->s.number : ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	VectorCopy(org, te->s.origin);
 	te->s.angles[0] = intensity;
 	te->s.time = duration;
@@ -884,7 +884,7 @@ void G_MuteSound( int entnum, int channel )
 {
 	gentity_t	*te, *e;
 
-	te = G_TempEntity( vec3_origin, EV_MUTE_SOUND );
+	te = JKMod_G_TempEntity( vec3_origin, EV_MUTE_SOUND, entnum ); // Tr!Force: [Dimensions] Tag owner info
 	te->r.svFlags = SVF_BROADCAST;
 	te->s.trickedentindex2 = entnum;
 	te->s.trickedentindex = channel;
@@ -906,7 +906,7 @@ G_Sound
 void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 	gentity_t	*te;
 
-	te = G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel );
+	te = JKMod_G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	te->s.eventParm = soundIndex;
 
 	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
@@ -951,7 +951,7 @@ G_EntitySound
 void G_EntitySound( gentity_t *ent, int channel, int soundIndex ) {
 	gentity_t	*te;
 
-	te = G_TempEntity( ent->r.currentOrigin, EV_ENTITY_SOUND );
+	te = JKMod_G_TempEntity( ent->r.currentOrigin, EV_ENTITY_SOUND, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	te->s.eventParm = soundIndex;
 	te->s.weapon = ent->s.number;
 	te->s.trickedentindex = channel;

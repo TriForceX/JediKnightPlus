@@ -358,26 +358,26 @@ void WP_InitForcePowers( gentity_t *ent )
 
 	if (HasSetSaberOnly())
 	{
-		gentity_t *te = G_TempEntity( vec3_origin, EV_SET_FREE_SABER );
+		gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_SET_FREE_SABER, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = 1;
 	}
 	else
 	{
-		gentity_t *te = G_TempEntity( vec3_origin, EV_SET_FREE_SABER );
+		gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_SET_FREE_SABER, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = 0;
 	}
 
 	if (g_forcePowerDisable.integer)
 	{
-		gentity_t *te = G_TempEntity( vec3_origin, EV_SET_FORCE_DISABLE );
+		gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_SET_FORCE_DISABLE, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = 1;
 	}
 	else
 	{
-		gentity_t *te = G_TempEntity( vec3_origin, EV_SET_FORCE_DISABLE );
+		gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_SET_FORCE_DISABLE, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = 0;
 	}
@@ -395,7 +395,7 @@ void WP_InitForcePowers( gentity_t *ent )
 		if (g_gametype.integer != GT_HOLOCRON && g_gametype.integer != GT_JEDIMASTER)
 		{
 #ifdef EVENT_FORCE_RANK
-			gentity_t *te = G_TempEntity( vec3_origin, EV_GIVE_NEW_RANK );
+			gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_GIVE_NEW_RANK, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 			te->r.svFlags |= SVF_BROADCAST;
 			te->s.trickedentindex = ent->s.number;
@@ -437,7 +437,7 @@ void WP_InitForcePowers( gentity_t *ent )
 	if (!didEvent)
 	{
 #ifdef EVENT_FORCE_RANK
-		gentity_t *te = G_TempEntity( vec3_origin, EV_GIVE_NEW_RANK );
+		gentity_t *te = JKMod_G_TempEntity( vec3_origin, EV_GIVE_NEW_RANK, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.trickedentindex = ent->s.number;
@@ -620,6 +620,12 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
+	// Tr!Force: [Dimensions] Check collide
+	if (!JKMod_DimensionCollide(attacker, other))
+	{
+		return 0;
+	}
+
 	// Tr!Force: [CustomDuel] Check usage in force duel
 	if (jkcvar_allowCustomDuel.integer)
 	{
@@ -797,7 +803,7 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 	//play sound indicating that attack was absorbed
 	if (attacked->client->forcePowerSoundDebounce < level.time && jk2gameplay != VERSION_1_02)
 	{
-		abSound = G_PreDefSound(attacked->client->ps.origin, PDSOUND_ABSORBHIT);
+		abSound = JKMod_G_PreDefSound(attacked->client->ps.origin, PDSOUND_ABSORBHIT, attacked->s.number); // Tr!Force: [Dimensions] Tag owner info
 		abSound->s.trickedentindex = attacked->s.number;
 
 		attacked->client->forcePowerSoundDebounce = level.time + 400;
@@ -805,7 +811,7 @@ int WP_AbsorbConversion(gentity_t *attacked, int atdAbsLevel, gentity_t *attacke
 
 	if ( jk2gameplay == VERSION_1_02 )
 	{
-		G_PreDefSound(attacker->client->ps.origin, PDSOUND_ABSORBHIT);
+		JKMod_G_PreDefSound(attacker->client->ps.origin, PDSOUND_ABSORBHIT, attacked->s.number); // Tr!Force: [Dimensions] Tag owner info
 	}
 
 	return getLevel;
@@ -1208,7 +1214,7 @@ void ForceTeamHeal( gentity_t *self )
 			//At this point we know we got one, so add him into the collective event client bitflag
 			if (!te)
 			{
-				te = G_TempEntity( self->client->ps.origin, EV_TEAM_POWER);
+				te = JKMod_G_TempEntity( self->client->ps.origin, EV_TEAM_POWER, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				te->s.eventParm = 1; //eventParm 1 is heal, eventParm 2 is force regen
 
 				//since we had an extra check above, do the drain now because we got at least one guy
@@ -1304,7 +1310,7 @@ void ForceTeamForceReplenish( gentity_t *self )
 		//At this point we know we got one, so add him into the collective event client bitflag
 		if (!te)
 		{
-			te = G_TempEntity( self->client->ps.origin, EV_TEAM_POWER);
+			te = JKMod_G_TempEntity( self->client->ps.origin, EV_TEAM_POWER, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 			te->s.eventParm = 2; //eventParm 1 is heal, eventParm 2 is force regen
 		}
 
@@ -1463,7 +1469,7 @@ void ForceProtect( gentity_t *self )
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 
 	WP_ForcePowerStart( self, FP_PROTECT, 0 );
-	G_PreDefSound(self->client->ps.origin, PDSOUND_PROTECT);
+	JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_PROTECT, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 	G_Sound( self, TRACK_CHANNEL_3, protectLoopSound );
 }
 
@@ -1499,7 +1505,7 @@ void ForceAbsorb( gentity_t *self )
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 
 	WP_ForcePowerStart( self, FP_ABSORB, 0 );
-	G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
+	JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 	G_Sound( self, TRACK_CHANNEL_3, absorbLoopSound );
 }
 
@@ -1678,7 +1684,7 @@ void ForceShootLightning( gentity_t *self )
 			mins[i] = center[i] - radius;
 			maxs[i] = center[i] + radius;
 		}
-		numListedEntities = trap_EntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES );
+		numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		i = 0;
 		while (i < numListedEntities)
@@ -1917,7 +1923,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 
 				if (traceEnt->client->forcePowerSoundDebounce < level.time || jk2gameplay == VERSION_1_02)
 				{
-					tent = G_TempEntity( impactPoint, EV_FORCE_DRAINED);
+					tent = JKMod_G_TempEntity( impactPoint, EV_FORCE_DRAINED, traceEnt->s.number); // Tr!Force: [Dimensions] Tag owner info
 					tent->s.eventParm = DirToByte(dir);
 					tent->s.owner = traceEnt->s.number;
 
@@ -1956,7 +1962,7 @@ int ForceShootDrain( gentity_t *self )
 			mins[i] = center[i] - radius;
 			maxs[i] = center[i] + radius;
 		}
-		numListedEntities = trap_EntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES );
+		numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		i = 0;
 		while (i < numListedEntities)
@@ -2174,7 +2180,7 @@ int WP_GetVelocityForForceJump( gentity_t *self, vec3_t jumpVel, usercmd_t *ucmd
 
 	G_MuteSound(self->client->ps.fd.killSoundEntIndex[TRACK_CHANNEL_1-50], CHAN_VOICE);
 
-	G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+	JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 	if (self->client->ps.fd.forceJumpCharge < JUMP_VELOCITY+40)
 	{ //give him at least a tiny boost from just a tap
@@ -2454,7 +2460,7 @@ void ForceTelepathy(gentity_t *self)
 	}
 	else
 	{
-		numListedEntities = trap_EntitiesInBox( mins, maxs, entityList, MAX_GENTITIES );
+		numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, entityList, MAX_GENTITIES, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		e = 0;
 
@@ -2863,7 +2869,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 	}
 	else
 	{
-		numListedEntities = trap_EntitiesInBox( mins, maxs, entityList, MAX_GENTITIES );
+		numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, entityList, MAX_GENTITIES, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 		e = 0;
 
@@ -4206,7 +4212,8 @@ void FindGenericEnemyIndex(gentity_t *self)
 	{
 		ent = &g_entities[i];
 
-		if (ent && ent->client && ent->s.number != self->s.number && ent->health > 0 && !OnSameTeam(self, ent) && ent->client->ps.pm_type != PM_INTERMISSION && ent->client->ps.pm_type != PM_SPECTATOR)
+		// Tr!Force: [Dimensions] Check collide
+		if (ent && ent->client && ent->s.number != self->s.number && JKMod_DimensionCollide(self, ent) && ent->health > 0 && !OnSameTeam(self, ent) && ent->client->ps.pm_type != PM_INTERMISSION && ent->client->ps.pm_type != PM_SPECTATOR)
 		{
 			VectorSubtract(ent->client->ps.origin, self->client->ps.origin, a);
 			tlen = VectorLength(a);
@@ -4260,7 +4267,7 @@ void SeekerDroneUpdate(gentity_t *self)
 		a[YAW] = 0;
 		a[PITCH] = 1;
 
-		G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a);
+		JKMod_G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 		self->client->ps.eFlags -= EF_SEEKERDRONE;
 		self->client->ps.genericEnemyIndex = -1;
@@ -4307,7 +4314,7 @@ void SeekerDroneUpdate(gentity_t *self)
 		a[YAW] = 0;
 		a[PITCH] = 1;
 
-		G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a);
+		JKMod_G_PlayEffect(EFFECT_SPARK_EXPLOSION, org, a, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 		self->client->ps.eFlags -= EF_SEEKERDRONE;
 		self->client->ps.genericEnemyIndex = -1;
@@ -4382,7 +4389,7 @@ void SeekerDroneUpdate(gentity_t *self)
 				VectorNormalize(endir);
 
 				WP_FireGenericBlasterMissile(self, org, endir, 0, 15, 2000, MOD_BLASTER);
-				G_SoundAtLoc( org, CHAN_WEAPON, G_SoundIndex("sound/weapons/bryar/fire.wav") );
+				JKMod_G_SoundAtLoc( org, CHAN_WEAPON, G_SoundIndex("sound/weapons/bryar/fire.wav"), self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 				self->client->ps.droneFireTime = level.time + Q_irand(400, 700);
 			}
@@ -4657,7 +4664,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 					if (self->client->pers.cmd.upmove &&
 						self->client->ps.fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1)
 					{ //force getup
-						G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+						JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 						self->client->ps.forceDodgeAnim = 2;
 						self->client->ps.forceHandExtendTime = level.time + 500;
 
@@ -4695,7 +4702,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if (self->client->pers.cmd.upmove &&
 					self->client->ps.fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1)
 				{ //force getup
-					G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+					JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 					self->client->ps.forceDodgeAnim = 2;
 					self->client->ps.forceHandExtendTime = level.time + 800;//1000;
 
@@ -4850,7 +4857,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 
 	if (self->client->ps.fd.forceJumpSound)
 	{
-		G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP);
+		JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEJUMP, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 		self->client->ps.fd.forceJumpSound = 0;
 	}
 
@@ -4858,7 +4865,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	{
 		if (self->client->ps.fd.forceGripSoundTime < level.time)
 		{
-			G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEGRIP);
+			JKMod_G_PreDefSound(self->client->ps.origin, PDSOUND_FORCEGRIP, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 			self->client->ps.fd.forceGripSoundTime = level.time + 1000;
 		}
 	}

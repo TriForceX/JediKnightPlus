@@ -94,10 +94,10 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	client = level.clients + clientNum;
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
-	// Set default dimension
-	if (client->sess.sessionTeam == TEAM_SPECTATOR)
+	// Set default dimension and refresh
+	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 	{
-		client->ps.stats[JK_DIMENSION] = DIMENSION_FREE;
+		JKMod_DimensionSet(ent, DIMENSION_FREE);
 		JKMod_DimensionSettings(ent, DIMENSION_FREE);
 	}
 
@@ -190,7 +190,8 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 Client clean name function
 =====================================================================
 */
-void JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) {
+void JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) 
+{
 	int		len, colorlessLen;
 	char	ch;
 	char	*p;

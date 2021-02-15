@@ -92,6 +92,7 @@ set(MVGAMESOURCES
 	"${SRCDir}/game/g_trigger.c"
 	"${JKModDir}/game/jk_trigger.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_utils.c"
+	"${JKModDir}/game/jk_utils.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_weapon.c"
 	"${SRCDir}/game/q_math.c"
 	"${SRCDir}/game/q_shared.c"

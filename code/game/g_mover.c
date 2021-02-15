@@ -252,7 +252,7 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 	// unlink the pusher so we don't get it in the entityList
 	trap_UnlinkEntity( pusher );
 
-	listedEntities = trap_EntitiesInBox( totalMins, totalMaxs, entityList, MAX_GENTITIES );
+	listedEntities = JKMod_DimensionEntitiesInBox( totalMins, totalMaxs, entityList, MAX_GENTITIES, pusher->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	// move the pusher to it's final position
 	VectorAdd( pusher->r.currentOrigin, move, pusher->r.currentOrigin );
@@ -754,7 +754,7 @@ void Blocked_Door( gentity_t *ent, gentity_t *other ) {
 		}
 		else
 		{
-			G_TempEntity( other->s.origin, EV_ITEM_POP );
+			JKMod_G_TempEntity( other->s.origin, EV_ITEM_POP, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 			G_FreeEntity( other );
 		}
 		return;
@@ -869,7 +869,7 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent ) {
 	mins[best] -= 120;
 
 	// create a trigger with this size
-	other = G_Spawn ();
+	other = JKMod_G_Spawn ( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	other->classname = "door_trigger";
 	VectorCopy (mins, other->r.mins);
 	VectorCopy (maxs, other->r.maxs);
@@ -1067,7 +1067,7 @@ void SpawnPlatTrigger( gentity_t *ent ) {
 
 	// the middle trigger will be a thin trigger just
 	// above the starting position
-	trigger = G_Spawn();
+	trigger = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	trigger->classname = "plat_trigger";
 	trigger->touch = Touch_PlatCenterTrigger;
 	trigger->r.contents = CONTENTS_TRIGGER;
@@ -1688,7 +1688,7 @@ void BreakableBrushDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacke
 
 	if (self->boltpoint2)
 	{
-		te = G_TempEntity( dif, EV_DEBRIS );
+		te = JKMod_G_TempEntity( dif, EV_DEBRIS, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 		te->s.eventParm = self->s.number;
 		te->s.weapon = self->boltpoint1;
 		te->s.trickedentindex = self->boltpoint2; //debris model index
@@ -1709,7 +1709,7 @@ void BreakableBrushDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacke
 		u[YAW] = 0;
 		u[PITCH] = 1;
 		u[ROLL] = 0;
-		G_PlayEffect(EFFECT_EXPLOSION, dif, u);
+		JKMod_G_PlayEffect(EFFECT_EXPLOSION, dif, u, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 		G_Sound(self, CHAN_BODY, gExplSound);
 	}
 
@@ -1899,7 +1899,7 @@ void GlassDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int da
 
 	self->splashRadius = 40; // ?? some random number, maybe it's ok?
 
-	te = G_TempEntity( dif, EV_GLASS_SHATTER );
+	te = JKMod_G_TempEntity( dif, EV_GLASS_SHATTER, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	te->s.genericenemyindex = self->s.number;
 	VectorCopy(self->pos1, te->s.origin);
 	VectorCopy(self->pos2, te->s.angles);
@@ -1920,7 +1920,7 @@ void GlassDie_Old(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, in
 
 	G_UseTargets(self, attacker);
 
-	te = G_TempEntity( dif, EV_GLASS_SHATTER );
+	te = JKMod_G_TempEntity( dif, EV_GLASS_SHATTER, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	te->s.genericenemyindex = self->s.number;
 	VectorCopy(self->r.maxs, te->s.origin);
 	VectorCopy(self->r.mins, te->s.angles);

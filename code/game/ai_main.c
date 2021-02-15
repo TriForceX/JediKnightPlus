@@ -1663,6 +1663,12 @@ int PassStandardEnemyChecks(bot_state_t *bs, gentity_t *en)
 		return 0;
 	}
 
+	// Tr!Force: [Dimensions] Check collide
+	if (!JKMod_DimensionCollide(en, &g_entities[bs->client]))
+	{
+		return 0;
+	}
+
 	if (en->health < 1)
 	{
 		return 0;
@@ -2273,10 +2279,16 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 	float factor = 0;
 	gentity_t *ent;
 	trace_t tr;
+	// Tr!Force: [Dimensions] Tag owner info
+	int touch[MAX_GENTITIES];
+	int num;
+	vec3_t mins, maxs;
+	static const vec3_t box = { 800, 800, 800 };
+	num = JKMod_DimensionEntitiesInBox(mins, maxs, touch, MAX_GENTITIES, bs->client);  // Tr!Force: [Dimensions] Tag owner info
 
-	while (i < MAX_GENTITIES)
+	for (i = 0; i < num; i++)
 	{
-		ent = &g_entities[i];
+		ent = &g_entities[touch[i]]; // Tr!Force: [Dimensions] Tag owner info
 
 		if ( (ent &&
 			!ent->client &&
@@ -2358,8 +2370,6 @@ gentity_t *GetNearestBadThing(bot_state_t *bs)
 				}
 			}
 		}
-
-		i++;
 	}
 
 	if (foundindex)

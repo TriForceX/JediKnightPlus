@@ -176,22 +176,22 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 	else if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
-		if (JKMod_OthersInBox(ent)) JKMod_PassBox(ent);
+		if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
 	}
 
 	// Check player pass-through
-	if ((ent->client->ps.eFlags & JK_PASS_THROUGH) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE))
+	if ((ent->client->ps.eFlags & JK_ANTI_STUCK) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE))
 	{
 		if (JKMod_OthersInBox(ent)) {
 			if (ent->r.contents & CONTENTS_BODY) {
 				ent->r.contents &= ~CONTENTS_BODY;
-				JKMod_PassBox(ent);
+				JKMod_AntiStuckBox(ent);
 			}
 		}
 		else {
 			if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
-			ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+			ent->client->ps.eFlags &= ~JK_ANTI_STUCK;
 		}
 	}
 
@@ -203,12 +203,12 @@ void JKMod_ClientThink_real(gentity_t *ent)
 			if (jkcvar_chatProtect.integer == 3) 
 			{
 				if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
-				if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+				if (!(ent->client->ps.eFlags & JK_ANTI_STUCK)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
 			}
 		}
 		else 
 		{
-			if (JKMod_OthersInBox(ent) && jkcvar_chatProtect.integer == 3) JKMod_PassBox(ent);
+			if (JKMod_OthersInBox(ent) && jkcvar_chatProtect.integer == 3) JKMod_AntiStuckBox(ent);
 			if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
 			if (ent->client->pers.jkmodPers.invulnerability) ent->client->pers.jkmodPers.invulnerability = qfalse;
 			ent->client->ps.stats[JK_PLAYER] &= ~JK_CHAT_IN;
@@ -249,7 +249,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Tr!Force: [JKMod] Button use animation
-	if (jkcvar_useAnim.integer && cmd->buttons & BUTTON_USE && !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) && 
+	if (jkcvar_useAnim.integer && cmd->buttons & BUTTON_USE && !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) && !(ent->r.svFlags & SVF_BOT) &&
 		!((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE) && !JKMod_PlayerMoving(ent, qfalse, qtrue))
 	{
 		ent->client->pers.jkmodPers.buttonUseAnim = 1;

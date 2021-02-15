@@ -146,7 +146,8 @@ void WP_SaberInitBladeData( gentity_t *ent )
 
 	//We do not want the client to have any real knowledge of the entity whatsoever. It will only
 	//ever be used on the server.
-	saberent = G_Spawn();
+	saberent = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+	saberent->jkmodEnt.dimensionNumber = ent->jkmodEnt.dimensionNumber; // Tr!Force: [Dimensions] Tag owner info
 	ent->client->ps.saberEntityNum = saberent->s.number;
 	saberent->classname = "lightsaber";
 			
@@ -1710,7 +1711,7 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 
 		if (g_entities[tr.entityNum].client && !unblockable && WP_SaberCanBlock(&g_entities[tr.entityNum], tr.endpos, 0, MOD_SABER, qfalse, attackStr))
 		{
-			te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+			te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 			VectorCopy(tr.endpos, te->s.origin);
 			VectorCopy(tr.plane.normal, te->s.angles);
 			te->s.eventParm = 1;
@@ -1796,7 +1797,7 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 
 			G_Damage(&g_entities[tr.entityNum], self, self, dir, tr.endpos, dmg, 0, MOD_SABER);
 
-			te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+			te = JKMod_G_TempEntity( tr.endpos, EV_SABER_HIT, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 			VectorCopy(tr.endpos, te->s.origin);
 			VectorCopy(tr.plane.normal, te->s.angles);
 			
@@ -1855,7 +1856,7 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 
 		didHit = qtrue;
 
-		te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+		te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 
 		VectorCopy(tr.endpos, te->s.origin);
 		VectorCopy(tr.plane.normal, te->s.angles);
@@ -2251,7 +2252,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 
 		if (g_entities[tr.entityNum].client && !unblockable && WP_SaberCanBlock(&g_entities[tr.entityNum], tr.endpos, 0, MOD_SABER, qfalse, attackStr))
 		{
-			te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+			te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 			if (dmg <= SABER_NONATTACK_DAMAGE)
 			{
 				self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
@@ -2325,7 +2326,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 
 			G_Damage(&g_entities[tr.entityNum], self, self, dir, tr.endpos, dmg, 0, MOD_SABER);
 
-			te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+			te = JKMod_G_TempEntity( tr.endpos, EV_SABER_HIT, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 
 			VectorCopy(tr.endpos, te->s.origin);
 			VectorCopy(tr.plane.normal, te->s.angles);
@@ -2386,7 +2387,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 		didHit = qtrue;
 		self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
 
-		te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+		te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 		if (dmg <= SABER_NONATTACK_DAMAGE)
 		{
 			self->client->ps.saberIdleWound = level.time + g_saberDmgDelay_Idle.integer;
@@ -2768,7 +2769,7 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 				{ //they blocked it
 					if ( jk2gameplay != VERSION_1_02 ) WP_SaberBlockNonRandom(ent, tr.endpos, qfalse);
 
-					te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+					te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 					VectorCopy(tr.endpos, te->s.origin);
 					VectorCopy(tr.plane.normal, te->s.angles);
 					if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -2806,7 +2807,7 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 						G_Damage(ent, saberOwner, saberOwner, dir, tr.endpos, saberent->damage, 0, MOD_SABER);
 					}
 
-					te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+					te = JKMod_G_TempEntity( tr.endpos, EV_SABER_HIT, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 					VectorCopy(tr.endpos, te->s.origin);
 					VectorCopy(tr.plane.normal, te->s.angles);
 					if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -2854,7 +2855,7 @@ qboolean CheckThrownSaberDamaged(gentity_t *saberent, gentity_t *saberOwner, gen
 					G_Damage(ent, saberOwner, saberOwner, dir, tr.endpos, 5, 0, MOD_SABER);
 				}
 
-				te = G_TempEntity( tr.endpos, EV_SABER_HIT );
+				te = JKMod_G_TempEntity( tr.endpos, EV_SABER_HIT, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy(tr.endpos, te->s.origin);
 				VectorCopy(tr.plane.normal, te->s.angles);
 				if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -2883,6 +2884,10 @@ void saberCheckRadiusDamage(gentity_t *saberent, int returning)
 	int dist = 0;
 	gentity_t *ent;
 	gentity_t *saberOwner = &g_entities[saberent->r.ownerNum];
+	// Tr!Force: [Dimensions] Tag owner info
+	int num;
+	int touch[MAX_GENTITIES];
+	vec3_t mins, maxs;
 
 	if (returning && returning != 2)
 	{
@@ -2903,13 +2908,24 @@ void saberCheckRadiusDamage(gentity_t *saberent, int returning)
 		return;
 	}
 
-	while (i < MAX_GENTITIES)
+	// Tr!Force: [Dimensions] Tag owner info
+	VectorSet( mins, -dist, -dist, -dist );
+	VectorSet( maxs,  dist,  dist,  dist );
+	VectorAdd( mins, saberent->r.currentOrigin, mins );
+	VectorAdd( maxs, saberent->r.currentOrigin, maxs );
+
+	num = JKMod_DimensionEntitiesInBox( mins, maxs, touch, MAX_GENTITIES, saberent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+
+	for (i = 0; i < num; i++)
 	{
-		ent = &g_entities[i];
+		ent = &g_entities[touch[i]];
+
+		if (!ent->inuse || !ent->takedamage || ent->health <= 0)
+		{
+			continue;
+		}
 
 		CheckThrownSaberDamaged(saberent, saberOwner, ent, dist, returning);
-
-		i++;
 	}
 }
 
@@ -3003,7 +3019,7 @@ void MakeDeadSaber(gentity_t *ent)
 		return;
 	}
 
-	saberent = G_Spawn();
+	saberent = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	VectorCopy(ent->r.currentOrigin, startorg);
 	VectorCopy(ent->r.currentAngles, startang);
@@ -3652,7 +3668,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			{
 				gentity_t *te;
 				vec3_t dir;
-				te = G_TempEntity( g_entities[self->client->ps.saberEntityNum].r.currentOrigin, EV_SABER_BLOCK );
+				te = JKMod_G_TempEntity( g_entities[self->client->ps.saberEntityNum].r.currentOrigin, EV_SABER_BLOCK, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorSet( dir, 0, 1, 0 );
 				VectorCopy(g_entities[self->client->ps.saberEntityNum].r.currentOrigin, te->s.origin);
 				VectorCopy(dir, te->s.angles);

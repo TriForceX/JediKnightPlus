@@ -521,7 +521,7 @@ ScorePlum
 void ScorePlum( gentity_t *ent, vec3_t origin, int score ) {
 	gentity_t *plum;
 
-	plum = G_TempEntity( origin, EV_SCOREPLUM );
+	plum = JKMod_G_TempEntity( origin, EV_SCOREPLUM, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	// only send this temp entity to a single client
 	plum->r.svFlags |= SVF_SINGLECLIENT;
 	plum->r.singleClient = ent->s.number;
@@ -669,7 +669,7 @@ void TossClientItems( gentity_t *self ) {
 		item = BG_FindItemForWeapon( weapon );
 
 		// tell all clients to remove the weapon model on this guy until he respawns
-		te = G_TempEntity( vec3_origin, EV_DESTROY_WEAPON_MODEL );
+		te = JKMod_G_TempEntity( vec3_origin, EV_DESTROY_WEAPON_MODEL, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 		te->r.svFlags |= SVF_BROADCAST;
 		te->s.eventParm = self->s.number;
 
@@ -1902,7 +1902,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// broadcast the death event to everyone
-	ent = G_TempEntity( self->r.currentOrigin, EV_OBITUARY );
+	ent = JKMod_G_TempEntity( self->r.currentOrigin, EV_OBITUARY, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	ent->s.eventParm = meansOfDeath;
 	ent->s.otherEntityNum = self->s.number;
 	ent->s.otherEntityNum2 = killer;
@@ -2605,7 +2605,7 @@ void G_GetDismemberBolt(gentity_t *self, vec3_t boltPoint, int limbType)
 			boltAngles[1] = -boltMatrix.matrix[1][1];
 			boltAngles[2] = -boltMatrix.matrix[2][1];
 
-			te = G_TempEntity( boltPoint, EV_SABER_HIT );
+			te = JKMod_G_TempEntity( boltPoint, EV_SABER_HIT, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 			VectorCopy(boltPoint, te->s.origin);
 			VectorCopy(boltAngles, te->s.angles);
@@ -2626,7 +2626,7 @@ void G_Dismember( gentity_t *ent, vec3_t point, int limbType, float limbRollBase
 	gentity_t *limb;
 
 	VectorCopy( point, newPoint );
-	limb = G_Spawn();
+	limb = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info 
 	limb->classname = "playerlimb";
 	G_SetOrigin( limb, newPoint );
 	VectorCopy( newPoint, limb->s.pos.trBase );
@@ -3436,13 +3436,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			//G_Sound(targ, CHAN_AUTO, protectHitSound);
 			if (targ->client->forcePowerSoundDebounce < level.time && jk2gameplay != VERSION_1_02)
 			{
-				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
+				JKMod_G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info
 				targ->client->forcePowerSoundDebounce = level.time + 400;
 			}
 
 			if ( jk2gameplay == VERSION_1_02 )
 			{
-				G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT);
+				JKMod_G_PreDefSound(targ->client->ps.origin, PDSOUND_PROTECTHIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info
 			}
 
 			if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
@@ -3507,7 +3507,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		gentity_t	*evEnt;
 
 		// Send off an event to show a shield shell on the player, pointing in the right direction.
-		evEnt = G_TempEntity(targ->r.currentOrigin, EV_SHIELD_HIT);
+		evEnt = JKMod_G_TempEntity(targ->r.currentOrigin, EV_SHIELD_HIT, targ->s.number); // Tr!Force: [Dimensions] Tag owner info
 		evEnt->s.otherEntityNum = targ->s.number;
 		evEnt->s.eventParm = DirToByte(dir);
 		evEnt->s.time2=shieldAbsorbed;
@@ -3715,7 +3715,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 		maxs[i] = origin[i] + radius;
 	}
 
-	numListedEntities = trap_EntitiesInBox( mins, maxs, entityList, MAX_GENTITIES );
+	numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, entityList, MAX_GENTITIES, attacker->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	for ( e = 0 ; e < numListedEntities ; e++ ) {
 		ent = &g_entities[entityList[ e ]];

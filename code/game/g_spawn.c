@@ -434,7 +434,7 @@ void G_SpawnGEntityFromSpawnVars( void ) {
 	static char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
 
 	// get the next free entity
-	ent = G_Spawn();
+	ent = JKMod_G_Spawn( ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 
 	for ( i = 0 ; i < level.numSpawnVars ; i++ ) {
 		G_ParseField( level.spawnVars[i][0], level.spawnVars[i][1], ent );

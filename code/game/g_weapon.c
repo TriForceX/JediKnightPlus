@@ -459,11 +459,11 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 			{ //broadcast and stop the shot because it was blocked
 				gentity_t *te = NULL;
 
-				tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_MAIN_SHOT );
+				tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_MAIN_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy( muzzle, tent->s.origin2 );
 				tent->s.eventParm = ent->s.number;
 
-				te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+				te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy(tr.endpos, te->s.origin);
 				VectorCopy(tr.plane.normal, te->s.angles);
 				if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -485,7 +485,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	}
 
 	// always render a shot beam, doing this the old way because I don't much feel like overriding the effect.
-	tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_MAIN_SHOT );
+	tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_MAIN_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	VectorCopy( muzzle, tent->s.origin2 );
 	tent->s.eventParm = ent->s.number;
 
@@ -505,7 +505,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 
 			G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NORMAL, MOD_DISRUPTOR );
 			
-			tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
+			tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 			tent->s.eventParm = DirToByte( tr.plane.normal );
 			if (traceEnt->client)
 			{
@@ -515,7 +515,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 		else 
 		{
 			 // Hmmm, maybe don't make any marks on things that could break
-			tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS );
+			tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 			tent->s.eventParm = DirToByte( tr.plane.normal );
 			tent->s.weapon = 1;
 		}
@@ -625,12 +625,12 @@ void WP_DisruptorAltFire( gentity_t *ent )
 			{ //broadcast and stop the shot because it was blocked
 				gentity_t *te = NULL;
 
-				tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT );
+				tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy( muzzle, tent->s.origin2 );
 				tent->s.shouldtarget = fullCharge;
 				tent->s.eventParm = ent->s.number;
 
-				te = G_TempEntity( tr.endpos, EV_SABER_BLOCK );
+				te = JKMod_G_TempEntity( tr.endpos, EV_SABER_BLOCK, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy(tr.endpos, te->s.origin);
 				VectorCopy(tr.plane.normal, te->s.angles);
 				if (!te->s.angles[0] && !te->s.angles[1] && !te->s.angles[2])
@@ -644,7 +644,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 		}
 
 		// always render a shot beam, doing this the old way because I don't much feel like overriding the effect.
-		tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT );
+		tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		VectorCopy( muzzle, tent->s.origin2 );
 		tent->s.shouldtarget = fullCharge;
 		tent->s.eventParm = ent->s.number;
@@ -658,7 +658,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 
 				// Create a simple impact type mark
 //				G_PlayEffect( G_EffectIndex( "disruptor/alt_hit" ), tr.endpos, tr.plane.normal );
-				tent = G_TempEntity(tr.endpos, EV_MISSILE_MISS);
+				tent = JKMod_G_TempEntity(tr.endpos, EV_MISSILE_MISS, ent->s.number); // Tr!Force: [Dimensions] Tag owner info
 				tent->s.eventParm = DirToByte(tr.plane.normal);
 				tent->s.eFlags |= EF_ALT_FIRING;
 	
@@ -682,14 +682,14 @@ void WP_DisruptorAltFire( gentity_t *ent )
 						G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, 
 								DAMAGE_NO_KNOCKBACK/*|DAMAGE_HALF_ARMOR_REDUCTION*/, MOD_DISRUPTOR_SNIPER );
 
-						tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
+						tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 						tent->s.eventParm = DirToByte( tr.plane.normal );
 					}
 				 }
 				 else
 				 {
 					 // Hmmm, maybe don't make any marks on things that could break
-					tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS );
+					tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 					tent->s.eventParm = DirToByte( tr.plane.normal );
 				 }
 				break; // and don't try any more traces
@@ -726,7 +726,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 					VectorClear(traceEnt->client->ps.velocity);
 				}
 
-				tent = G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT );
+				tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_HIT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				tent->s.eventParm = DirToByte( tr.plane.normal );
 				if (traceEnt->client)
 				{
@@ -1066,7 +1066,7 @@ void DEMP2_AltRadiusDamage( gentity_t *ent )
 		maxs[i] = ent->r.currentOrigin[i] + radius;
 	}
 
-	numListedEntities = trap_EntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES );
+	numListedEntities = JKMod_DimensionEntitiesInBox( mins, maxs, iEntityList, MAX_GENTITIES, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	i = 0;
 	while (i < numListedEntities)
@@ -1158,7 +1158,7 @@ void DEMP2_AltDetonate( gentity_t *ent )
 		ent->pos1[1] = 1;
 	}
 	//Let's just save ourself some bandwidth and play both the effect and sphere spawn in 1 event
-	efEnt = G_PlayEffect( EFFECT_EXPLOSION_DEMP2ALT, ent->r.currentOrigin, ent->pos1 );
+	efEnt = JKMod_G_PlayEffect( EFFECT_EXPLOSION_DEMP2ALT, ent->r.currentOrigin, ent->pos1, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 
 	if (efEnt)
 	{
@@ -1219,7 +1219,7 @@ static void WP_DEMP2_AltFire( gentity_t *ent )
 	// we treat the trace fraction like it's a time value, meaning that the shot can travel a whopping 4096 units in 1 second
 
 	//missile = CreateMissile( start, forward, DEMP2_ALT_RANGE, tr.fraction * 1000/*time*/, ent, qtrue );
-	missile = G_Spawn();
+	missile = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	G_SetOrigin(missile, tr.endpos);
 	//rww - I guess it's rather pointless making it a missile anyway, at least for MP.
 
@@ -1765,7 +1765,7 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	VectorCopy( forward, dir );
 	VectorCopy( muzzle, start );
 
-	bolt = G_Spawn();
+	bolt = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	
 	bolt->physicsObject = qtrue;
 
@@ -1896,11 +1896,11 @@ void laserTrapExplode( gentity_t *self )
 
 	if (self->s.weapon == WP_FLECHETTE)
 	{
-		G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, v);
+		JKMod_G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, v, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 	}
 	else
 	{
-		G_PlayEffect(EFFECT_EXPLOSION_TRIPMINE, self->r.currentOrigin, v);
+		JKMod_G_PlayEffect(EFFECT_EXPLOSION_TRIPMINE, self->r.currentOrigin, v, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 	}
 
 	self->think = G_FreeEntity;
@@ -2117,7 +2117,7 @@ void WP_PlaceLaserTrap( gentity_t *ent, qboolean alt_fire )
 	VectorCopy( forward, dir );
 	VectorCopy( muzzle, start );
 
-	laserTrap = G_Spawn();
+	laserTrap = JKMod_G_Spawn( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	
 	//limit to 10 placed at any one time
 	//see how many there are now
@@ -2250,7 +2250,7 @@ void charge_stick (gentity_t *self, gentity_t *other, trace_t *trace)
 		VectorCopy(trace->plane.normal, v);
 		VectorCopy(v, self->pos2);
 		self->count = -1;
-		G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v);
+		JKMod_G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 		self->think = G_FreeEntity;
 		self->nextthink = level.time;
@@ -2285,7 +2285,7 @@ void charge_stick (gentity_t *self, gentity_t *other, trace_t *trace)
 
 	G_Sound(self, CHAN_VOICE, G_SoundIndex("sound/weapons/detpack/stick.wav"));
 		
-	tent = G_TempEntity( self->r.currentOrigin, EV_MISSILE_MISS );
+	tent = JKMod_G_TempEntity( self->r.currentOrigin, EV_MISSILE_MISS, self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	tent->s.weapon = 0;
 	tent->parent = self;
 	tent->r.ownerNum = self->s.number;
@@ -2313,7 +2313,7 @@ void DetPackBlow(gentity_t *self)
 		VectorCopy(self->pos2, v);
 	}
 
-	G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v);
+	JKMod_G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, v, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 	self->think = G_FreeEntity;
 	self->nextthink = level.time;
@@ -2339,7 +2339,7 @@ void drop_charge (gentity_t *self, vec3_t start, vec3_t dir)
 
 	VectorNormalize (dir);
 
-	bolt = G_Spawn();
+	bolt = JKMod_G_Spawn( self->s.number ); // Tr!Force: [Dimensions] Tag owner info
 	bolt->classname = "detpack";
 	bolt->nextthink = level.time + FRAMETIME;
 	bolt->think = G_RunObject;
@@ -2582,7 +2582,7 @@ void WP_FireStunBaton( gentity_t *ent, qboolean alt_fire )
 
 	if ( tr_ent && tr_ent->takedamage )
 	{
-		G_PlayEffect( EFFECT_STUNHIT, tr.endpos, tr.plane.normal );
+		JKMod_G_PlayEffect( EFFECT_STUNHIT, tr.endpos, tr.plane.normal, tr.entityNum ); // Tr!Force: [Dimensions] Tag owner info
 
 		// TEMP!
 		G_Sound( tr_ent, CHAN_WEAPON, G_SoundIndex( va("sound/weapons/melee/punch%d", Q_irand(1, 4)) ) );
@@ -3255,7 +3255,7 @@ void emplaced_gun_update(gentity_t *self)
 		explOrg[2] += 16;
 
 		//G_PlayEffect(EFFECT_EXPLOSION, explOrg, /*self->r.currentAngles*/puffAngle);
-		G_PlayEffect(EFFECT_EXPLOSION_DETPACK, explOrg, /*self->r.currentAngles*/puffAngle);
+		JKMod_G_PlayEffect(EFFECT_EXPLOSION_DETPACK, explOrg, /*self->r.currentAngles*/puffAngle, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 		self->boltpoint3 = level.time + Q_irand(2500, 3500);
 
@@ -3276,7 +3276,7 @@ void emplaced_gun_update(gentity_t *self)
 			smokeOrg[2] += 60;
 
 			//What.. was I thinking?
-			G_PlayEffect(EFFECT_SMOKE, smokeOrg, puffAngle);
+			JKMod_G_PlayEffect(EFFECT_SMOKE, smokeOrg, puffAngle, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 			self->boltpoint2 = level.time + Q_irand(250, 400);
 			//This would be much better if we checked a value on the entity on the client

@@ -128,8 +128,8 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimension,		"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_altDimensionTime,	"jk_altDimensionTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue },
+	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					CVAR_ARCHIVE,						0, qtrue },

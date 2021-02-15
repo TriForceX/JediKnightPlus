@@ -671,11 +671,11 @@ INDEX 73
 INDEX 74
 {
    REFERENCE CLIENT_DUELGLOW_DESC
-   TEXT_LANGUAGE1 "Shows a glow effect when duelling. (If the dimension is available it will always be disabled)"
-   TEXT_LANGUAGE2 "Montre un effet lumineux en duel. (Si la dimension est disponible elle sera toujours désactivée)"
-   TEXT_LANGUAGE3 "Zeigt einen glow-effekt im duell. (Wenn die dimension verfügbar ist wird sie immer deaktiviert)"
-   TEXT_LANGUAGE6 "Shows a glow effect when duelling. (If the dimension is available it will always be disabled)"
-   TEXT_LANGUAGE8 "Mostrar efecto de brillo en duelos. (Si la dimensión está habilitada se desactivará siempre)"
+   TEXT_LANGUAGE1 "Shows a glow effect when duelling."
+   TEXT_LANGUAGE2 "Montre un effet lumineux en duel."
+   TEXT_LANGUAGE3 "Zeigt einen glow-effekt im duell."
+   TEXT_LANGUAGE6 "Shows a glow effect when duelling."
+   TEXT_LANGUAGE8 "Mostrar efecto de brillo en duelos."
 }
 INDEX 75
 {
