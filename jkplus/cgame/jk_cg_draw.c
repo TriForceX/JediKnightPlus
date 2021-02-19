@@ -60,7 +60,7 @@ void JKMod_CG_DrawClock(void)
 	x = cgs.screenWidth - (cg_lagometer.integer ? 68 : 68);
 	y = cgs.screenHeight - (cg_lagometer.integer ? 175 : 123);
 
-	CG_DrawPic(x, y, 64, 32, trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg"));
+	CG_DrawPic(x, y, 64, 32, cgs.jkmodMedia.clockBg);
 
 	CG_Text_Paint(x + 8, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_hour), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
 	CG_Text_Paint(x + 29, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_min), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
@@ -270,21 +270,20 @@ void JKMod_CG_DrawInventory(int y)
 
 	y += 8;
 
-	if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_TRIP_MINE) && cg.snap->ps.ammo[weaponData[WP_TRIP_MINE].ammoIndex] > 0) {
-		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.media.weaponIcons[WP_TRIP_MINE]);
-		CG_DrawNumField(xAlign, y, 2, cg.snap->ps.ammo[weaponData[WP_TRIP_MINE].ammoIndex], 6, 12, NUM_FONT_SMALL, qfalse);
+	if (!cg.renderingThirdPerson && (cg.snap->ps.eFlags & JK_JETPACK_ACTIVE)) {
+		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.jkmodMedia.jetpackIcon);
 		y += ico_size;
 	}
 
-	if (!cg.snap->ps.stats[STAT_HOLDABLE_ITEM] || !cg.snap->ps.stats[STAT_HOLDABLE_ITEMS])
-		return;
-
-	for (i = 0; i < HI_NUM_HOLDABLE; i++)
+	if (cg.snap->ps.stats[STAT_HOLDABLE_ITEM] || cg.snap->ps.stats[STAT_HOLDABLE_ITEMS])
 	{
-		if (i && cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i))
+		for (i = 0; i < HI_NUM_HOLDABLE; i++)
 		{
-			CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.media.invenIcons[i]);
-			y += ico_size;
+			if (i && cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i) && i != HI_DATAPAD)
+			{
+				CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.media.invenIcons[i]);
+				y += ico_size;
+			}
 		}
 	}
 }

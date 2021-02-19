@@ -128,7 +128,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue },
+	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_LATCH,			0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
@@ -470,10 +470,9 @@ void JKMod_serverIdleCheck(void)
 Main initialization functions
 =====================================================================
 */
-void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) {
-	int					i;
-
-	G_Printf(S_COLOR_CYAN "------ JKMod Initialization ------\n");
+void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) 
+{
+	G_Printf(S_COLOR_CYAN "------ JKPlus Initialization ------\n");
 
 	// Launch original init game function
 	BaseJK2_G_InitGame(levelTime, randomSeed, restart);

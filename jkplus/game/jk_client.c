@@ -95,11 +95,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
 	// Set default dimension and refresh
-	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
-	{
-		JKMod_DimensionSet(ent, DIMENSION_FREE);
-		JKMod_DimensionSettings(ent, DIMENSION_FREE);
-	}
+	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
@@ -153,13 +149,13 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		// Show center print message
 		if (clientVersion[0] == '\0')
 		{
-			trap_SendServerCommand(clientNum, va("cp \"Please download\n" S_COLOR_CYAN "%s" S_COLOR_WHITE " client plugin\"", serverVersion));
+			trap_SendServerCommand(clientNum, va("cp \"Please download\n" S_COLOR_CYAN "%s" S_COLOR_WHITE " client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
 			G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
 
 		}
 		else
 		{
-			trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n" S_COLOR_YELLOW "%s\nThe server version is " S_COLOR_CYAN "%s" S_COLOR_WHITE "\nPlease download again\"", clientVersion, serverVersion));
+			trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n" S_COLOR_YELLOW "%s\nThe server version is " S_COLOR_CYAN "%s" S_COLOR_WHITE "\nCheck the console or enable downloads in main menu\"", clientVersion, serverVersion));
 			G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", clientVersion, serverVersion);
 		}
 
@@ -167,13 +163,13 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		if (trap_Cvar_VariableIntegerValue("mv_httpdownloads") && Info_ValueForKey(userinfo, "JK2MV")[0])
 		{
 			trap_SendServerCommand(clientNum, va("print \""
-				"To update your client plugin type " S_COLOR_GREEN "/mv_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
+				"Update your client plugin typing " S_COLOR_GREEN "/mv_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
 				"\""));
 		}
 		else if (trap_Cvar_VariableIntegerValue("sv_allowDownload"))
 		{
 			trap_SendServerCommand(clientNum, va("print \""
-				"To update your client plugin type " S_COLOR_GREEN "/cl_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
+				"Update your client plugin typing " S_COLOR_GREEN "/cl_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
 				"\""));
 		}
 		else
@@ -190,7 +186,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 Client clean name function
 =====================================================================
 */
-void JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize) 
+void JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *ent) 
 {
 	int		len, colorlessLen;
 	char	ch;
@@ -310,7 +306,7 @@ void JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSiz
 		if (num)
 		{
 			memset(multiBuffer, 0, sizeof(multiBuffer));
-			strcpy(multiBuffer, va("%s" S_COLOR_WHITE "[%i]", outBuffer, num));
+			strcpy(multiBuffer, va("%s" S_COLOR_WHITE "(%i)", outBuffer, num));
 			Q_strncpyz(outBuffer, multiBuffer, sizeof(outBuffer));
 		}
 	}

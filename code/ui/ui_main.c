@@ -4469,7 +4469,7 @@ static void UI_Update(const char *name) {
 		// Others
 		trap_Cvar_Set("jk_cg_customHats", "0");
 		trap_Cvar_Set("jk_cg_customAnims", "0");
-		trap_Cvar_Set("jk_cg_jetPackGround", "0");
+		trap_Cvar_Set("jk_cg_jetPackIdle", "0");
 	}
 	// screen resolutions
 	else if (!Q_stricmp(name, "ui_r_aspectratio")) {

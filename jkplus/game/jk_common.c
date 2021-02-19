@@ -10,6 +10,25 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
+Only print when "developer 1"
+=====================================================================
+*/
+void QDECL JKMod_Printf( const char *fmt, ... ) 
+{
+	if (trap_Cvar_VariableIntegerValue("developer"))
+	{
+		va_list		argptr;
+		char		text[1024];
+
+		va_start (argptr, fmt);
+		Q_vsnprintf (text, sizeof(text), fmt, argptr);
+		va_end (argptr);
+
+		trap_Printf( text );
+	}
+}
+/*
+=====================================================================
 Compare the given command with another
 =====================================================================
 */
@@ -193,7 +212,7 @@ int JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName)
 					if (!Q_stricmp(cleanOther, cleanEnt))
 					{
 						num++;
-						Q_strncpyz(newName, va("%s[%i]", clientName, num), sizeof(newName));
+						Q_strncpyz(newName, va("%s(%i)", clientName, num), sizeof(newName));
 					}
 				}
 			}
@@ -360,10 +379,10 @@ Concatenate arguments
 */
 char *JKMod_ConcatArgs(int start) 
 {
-	int		i, c, tlen;
+	int			i, c, tlen;
 	static char	line[MAX_STRING_CHARS];
-	int		len;
-	char	arg[MAX_STRING_CHARS];
+	int			len;
+	char		arg[MAX_STRING_CHARS];
 
 	len = 0;
 	c = trap_Argc();
@@ -394,32 +413,42 @@ Read file
 */
 char *JKMod_ReadFile(char *filename)
 {
-	static fileHandle_t	f;
-	static int			filefound = 1;
-	static char			buf[MAX_FILE_TEXT];
-	static int			len;
+	fileHandle_t	f;
+	char			*buf = (char *)BG_TempAlloc(MAX_FILE_LENGTH);
+	int				len, rlen;
 
 	// File check
 	len = trap_FS_FOpenFile(filename, &f, FS_READ);
-	if (!f) {
-		G_Printf("File not found: %s\n", filename);
-		filefound = 0;
-	}
-	if (len >= MAX_FILE_TEXT) {
-		G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_TEXT);
-		trap_FS_FCloseFile(f);
-		filefound = 0;
-	}
-	if (!filefound) {
-		return qfalse;
-	}
-	else {
-		trap_FS_Read(buf, len, f);
-		buf[len] = 0;
-		trap_FS_FCloseFile(f);
 
-		return buf;
+	if (!f) {
+		BG_TempFree(MAX_FILE_LENGTH);
+		return 0;
 	}
+	if (len == 0) {
+		BG_TempFree(MAX_FILE_LENGTH);
+		return 0;
+	}
+	if (len >= MAX_FILE_LENGTH) {
+		G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_LENGTH);
+		BG_TempFree(MAX_FILE_LENGTH);
+		trap_FS_FCloseFile(f);
+		return 0;
+	}
+	
+	trap_FS_Read(buf, len, f);
+	rlen = len;
+
+	// Kill all characters after the file length, since sometimes FS_Read doesn't do that entirely (or so it seems)
+	while (len < MAX_FILE_LENGTH) { 
+		buf[len] = '\0';
+		len++;
+	}
+
+	len = rlen;
+	buf[len] = 0;
+	BG_TempFree(MAX_FILE_LENGTH);
+	trap_FS_FCloseFile(f);
+	return buf;
 }
 
 /*

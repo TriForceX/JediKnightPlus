@@ -64,7 +64,8 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			if (client->jkmodClient.ChatTime >= jkcvar_chatProtectTime.integer)
 			{
 				client->jkmodClient.ChatTime = jkcvar_chatProtectTime.integer;
-				client->ps.stats[JK_PLAYER] |= JK_CHAT_IN;
+				if (!(client->ps.stats[JK_PLAYER] & JK_CHAT_IN)) client->ps.stats[JK_PLAYER] |= JK_CHAT_IN;
+				if (!(client->ps.eFlags & JK_PASS_THROUGH) && jkcvar_chatProtect.integer == 3) client->ps.eFlags |= JK_PASS_THROUGH;
 				if (!client->pers.jkmodPers.invulnerability) client->pers.jkmodPers.invulnerability = qtrue;
 				if (!client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			}
@@ -181,7 +182,18 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check player pass-through
-	if ((ent->client->ps.eFlags & JK_ANTI_STUCK) && !(((ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE))
+	if (ent->client->ps.eFlags & JK_PASS_THROUGH)
+	{
+		if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
+		if (!ent->client->pers.jkmodPers.passThrough) ent->client->pers.jkmodPers.passThrough = qtrue;
+	}
+	else if (ent->client->pers.jkmodPers.passThrough) {
+		if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
+		ent->client->pers.jkmodPers.passThrough = qfalse;
+	}
+
+	// Check player anti-stuck
+	if ((ent->client->ps.stats[JK_PLAYER] & JK_ANTI_STUCK) && !(ent->client->ps.eFlags & JK_PASS_THROUGH))
 	{
 		if (JKMod_OthersInBox(ent)) {
 			if (ent->r.contents & CONTENTS_BODY) {
@@ -191,24 +203,21 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 		else {
 			if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
-			ent->client->ps.eFlags &= ~JK_ANTI_STUCK;
+			ent->client->ps.stats[JK_PLAYER] &= ~JK_ANTI_STUCK;
 		}
 	}
 
-	// Check chat pass-through
+	// Check chat off
 	if (ent->client->ps.stats[JK_PLAYER] & JK_CHAT_IN)
 	{
-		if(ent->client->ps.eFlags & EF_TALK)
+		if(!(ent->client->ps.eFlags & EF_TALK))
 		{
-			if (jkcvar_chatProtect.integer == 3) 
+			if (!ent->client->pers.jkmodPers.passThroughPerm) 
 			{
-				if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY;
-				if (!(ent->client->ps.eFlags & JK_ANTI_STUCK)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
+				if (ent->client->ps.groundEntityNum != ENTITYNUM_WORLD) { ent->client->ps.origin[2] += 2; ent->client->ps.eFlags ^= EF_TELEPORT_BIT; } // Fix me
+				if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+				if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 			}
-		}
-		else 
-		{
-			if (JKMod_OthersInBox(ent) && jkcvar_chatProtect.integer == 3) JKMod_AntiStuckBox(ent);
 			if (ent->client->jkmodClient.ChatTime != 0) ent->client->jkmodClient.ChatTime = 0;
 			if (ent->client->pers.jkmodPers.invulnerability) ent->client->pers.jkmodPers.invulnerability = qfalse;
 			ent->client->ps.stats[JK_PLAYER] &= ~JK_CHAT_IN;
@@ -222,7 +231,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.weaponTime = 400;
 	}
 
-	// Check jetpack
+	// Check jetpack flaming
 	if (!(ent->client->ps.eFlags & JK_JETPACK_ACTIVE) || ent->client->ps.pm_type == PM_DEAD)
 	{
 		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;

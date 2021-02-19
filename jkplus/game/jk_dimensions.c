@@ -21,48 +21,54 @@ Dimension settings function
 */
 void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 {
-	switch(dimension)
+	if (jkcvar_altDimension.integer)
 	{
-		case DIMENSION_GUNS:
+		switch (dimension)
 		{
-			JKMod_CustomGameSettings(ent, 
-				6,				// Weapons
-				262141,			// Force
-				FORCE_LEVEL_1,	// Force level
-				qtrue,			// Holdable items
-				qtrue,			// Jetpack
-				qfalse,			// Invulnerability
-				g_speed.value,	// Speed
-				g_gravity.value	// Gravity
-			);
-		}
-		break;
-		case DIMENSION_RACE:
-		{
-			JKMod_CustomGameSettings(ent, 
-				65531,			// Weapons
-				229373,			// Force
-				FORCE_LEVEL_1,	// Force level
-				qfalse,			// Holdable items
-				qfalse,			// Jetpack
-				qtrue,			// Invulnerability
-				g_speed.value,	// Speed
-				g_gravity.value	// Gravity
-			);
-		}
-		break;
-		case DIMENSION_FREE:
-		{
-			JKMod_CustomGameSettings(ent, 
-				g_weaponDisable.integer,		// Weapons
-				g_forcePowerDisable.integer,	// Force
-				qfalse,							// Force level
-				qfalse,							// Holdable items
-				qfalse,							// Jetpack
-				qfalse,							// Invulnerability
-				g_speed.value,					// Speed
-				g_gravity.value					// Gravity
-			);
+			case DIMENSION_GUNS:
+			{
+				JKMod_CustomGameSettings(ent, 
+					6,				// Weapons
+					262141,			// Force
+					FORCE_LEVEL_1,	// Force level
+					qtrue,			// Holdable items
+					qtrue,			// Jetpack
+					qfalse,			// Invulnerability
+					qfalse,			// Pass-through
+					g_speed.value,	// Speed
+					g_gravity.value	// Gravity
+				);
+			}
+			break;
+			case DIMENSION_RACE:
+			{
+				JKMod_CustomGameSettings(ent, 
+					65531,			// Weapons
+					229373,			// Force
+					FORCE_LEVEL_1,	// Force level
+					qfalse,			// Holdable items
+					qfalse,			// Jetpack
+					qtrue,			// Invulnerability
+					qtrue,			// Pass-through
+					g_speed.value,	// Speed
+					g_gravity.value	// Gravity
+				);
+			}
+			break;
+			case DIMENSION_FREE:
+			{
+				JKMod_CustomGameSettings(ent, 
+					g_weaponDisable.integer,		// Weapons
+					g_forcePowerDisable.integer,	// Force
+					qfalse,							// Force level
+					qfalse,							// Holdable items
+					qfalse,							// Jetpack
+					qfalse,							// Invulnerability
+					qfalse,							// Pass-through
+					g_speed.value,					// Speed
+					g_gravity.value					// Gravity
+				);
+			}
 		}
 	}
 }
@@ -113,8 +119,6 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_GUNS)
 				{
 					JKMod_DimensionSet(ent, DIMENSION_FREE);
-					JKMod_DimensionSettings(ent, DIMENSION_FREE);
-
 					trap_SendServerCommand(ent - g_entities, va("cp \"Guns dimension left\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
 					return qfalse;
@@ -123,8 +127,6 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				else
 				{
 					JKMod_DimensionSet(ent, DIMENSION_GUNS);
-					JKMod_DimensionSettings(ent, DIMENSION_GUNS);
-
 					trap_SendServerCommand(ent - g_entities, va("cp \"Guns dimension\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Guns ^7dimension\n\"", ent->client->pers.netname));
 					return qtrue;
@@ -148,8 +150,6 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 				{
 					JKMod_DimensionSet(ent, DIMENSION_FREE);
-					JKMod_DimensionSettings(ent, DIMENSION_FREE);
-
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race dimension left\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Race ^7dimension\n\"", ent->client->pers.netname));
 					return qfalse;
@@ -158,10 +158,6 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				else
 				{
 					JKMod_DimensionSet(ent, DIMENSION_RACE);
-					JKMod_DimensionSettings(ent, DIMENSION_RACE);
-
-					if (ent->r.contents & CONTENTS_BODY) ent->r.contents &= ~CONTENTS_BODY; // Check body
-
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race dimension\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Race ^7dimension\n\"", ent->client->pers.netname));
 					return qtrue;
@@ -270,7 +266,6 @@ unsigned JKMod_DimensionGetFree(void)
 	{
 		return 0;
 	}
-	
 }
 
 /*
@@ -290,14 +285,17 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 
 		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
-			// Check body
-			if (!(ent->r.contents & CONTENTS_BODY)) ent->r.contents = CONTENTS_BODY;
+			// Check pass-trough
+			if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
 
 			// Check stuck
-			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
+			if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 
 			// Check saber
 			if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
+
+			// Check settings
+			JKMod_DimensionSettings(ent, dimension);
 		}
 
 		for (i = 0; i < level.num_entities; i++) {
@@ -323,6 +321,8 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 				}
 			}
 		}
+
+		JKMod_Printf(S_COLOR_YELLOW "Client %i changed dimension to %i\n", clientNum, dimension);
 	}
 }
 

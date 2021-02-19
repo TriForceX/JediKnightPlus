@@ -22,7 +22,7 @@ Global definitions
 #define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
 #define MAX_FILE_VARS				64
 #define MAX_FILE_CHARS				1024
-#define MAX_FILE_TEXT				8192
+#define MAX_FILE_LENGTH				131072
 #define MAX_LINES					64
 
 #define	ITEM_RESPAWN_ARMOR			20
@@ -83,6 +83,8 @@ typedef struct
 	int			jetackUseDelay;			// Jetpack usage delay
 	int			buttonUseAnim;			// Button use animation
 	qboolean	invulnerability;		// Persistant take damage
+	qboolean	passThrough;			// Check for pass-through
+	qboolean	passThroughPerm;		// Check for permanent pass-through
 
 } jkmod_pers_t;
 
@@ -132,7 +134,6 @@ Re-routed functions
 #define ClientBegin					JKMod_ClientBegin
 #define ConsoleCommand				JKMod_ConsoleCommand
 #define G_InitGame					JKMod_G_InitGame
-#define ClientCleanName(a, b, c)	JKMod_ClientCleanName(ent, a, b, c)
 #define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
@@ -226,19 +227,22 @@ void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
 void		JKMod_ClientThink_real(gentity_t *ent);
 
 // jk_client.c
-void		JKMod_ClientCleanName(gentity_t *ent, const char *in, char *out, int outSize);
+void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *ent);
 
 // jk_cmds.c
 qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
 void		JKMod_CallVote(gentity_t *ent);
 
 // jk_common.c
-const char	*JKMod_msToString(const int ms, qboolean abbr);
+void QDECL	JKMod_Printf( const char *fmt, ... ) __attribute__ ((format (printf, 1, 2)));
 int			JKMod_compareCmd(char *cmd, char *required);
 void		JKMod_stringEscape(char *in, char *out, int outSize);
 void		JKMod_cleanString(char *in, char *out);
+char		*JKMod_sanitizeString(char *dest, char *source, int destSize);
+int			JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName);
 void		JKMod_dropPlayer(gentity_t *ent, char *msg);
 void		JKMod_sendCommand(int target, char *cmd, char *string);
+const char	*JKMod_msToString(const int ms, qboolean abbr);
 int			JKMod_ClientNumberFromArg(char* name);
 char		*JKMod_ConcatArgs(int start);
 char		*JKMod_ReadFile(char *filename);
@@ -274,7 +278,7 @@ void		JKMod_serverIdleCheck(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
-void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity);
+void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, int speed, int gravity);
 
 // jk_utils.c
 qboolean	JKMod_OthersInBox(gentity_t *ent);

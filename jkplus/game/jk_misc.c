@@ -163,7 +163,7 @@ Custom & default game settings function
 extern qboolean WP_HasForcePowers( const playerState_t *ps );
 
 // Custom settings
-void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, int speed, int gravity)
+void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, int speed, int gravity)
 {
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
@@ -296,6 +296,18 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 		}
 
+		// Pass-through
+		if (passthrough)
+		{
+			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+			if (!ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qtrue;
+		}
+		else
+		{
+			if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+			if (ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qfalse;
+		}
+
 		// Invulnerability
 		if (invulnerability) {
 			ent->client->pers.jkmodPers.invulnerability = qtrue;
@@ -361,12 +373,15 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 {
 	int dif, add, give;
 	int stop = 1;
-	int currentAmmo = weaponData[activator->client->ps.weapon].ammoIndex;
-	qboolean typeAmmo = (self->classname == "jkmod_ammo_power_converter");
-	qboolean typeHealth = (self->classname == "jkmod_health_power_converter");
-	qboolean typeShield = (self->classname == "jkmod_shield_power_converter");
+	int currentAmmo;
+	qboolean typeAmmo;
+	qboolean typeHealth;
+	qboolean typeShield;
 
 	give = typeHealth ? 5 : 2;
+	typeAmmo = (self->classname == "jkmod_ammo_power_converter");
+	typeHealth = (self->classname == "jkmod_health_power_converter");
+	typeShield = (self->classname == "jkmod_shield_power_converter");
 
 	if (!activator || !activator->client)
 	{
@@ -377,6 +392,9 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	{
 		return;
 	}
+
+	// Set ammo
+	currentAmmo = weaponData[activator->client->ps.weapon].ammoIndex;
 
 	if (self->setTime < level.time)
 	{
@@ -529,6 +547,7 @@ void JKMod_SP_HealthPowerConverter(gentity_t *ent)
 {
 	vec3_t angles;
 	gentity_t *effect = JKMod_G_Spawn(ent->s.number);
+	int smoke;
 
 	if (!ent->health)
 	{
@@ -558,16 +577,20 @@ void JKMod_SP_HealthPowerConverter(gentity_t *ent)
 	trap_LinkEntity(ent);
 
 	G_SoundIndex("sound/movers/objects/useshieldstation.wav");
+	G_SpawnInt( "smoke", "0", &smoke );
 
-	JKMod_AddSpawnField("fxFile", "smoke");
+	if (smoke)
+	{
+		JKMod_AddSpawnField("fxFile", "smoke");
 
-	effect->s.origin[2] = (int)ent->s.origin[2] + 45;
-	effect->s.origin[1] = (int)ent->s.origin[1];
-	effect->s.origin[0] = (int)ent->s.origin[0];
-	SP_fx_runner(effect);
+		effect->s.origin[2] = (int)ent->s.origin[2] + 45;
+		effect->s.origin[1] = (int)ent->s.origin[1];
+		effect->s.origin[0] = (int)ent->s.origin[0];
+		SP_fx_runner(effect);
 
-	VectorCopy(ent->s.angles, angles);
-	G_SetAngles(effect, angles);
+		VectorCopy(ent->s.angles, angles);
+		G_SetAngles(effect, angles);
+	}
 }
 
 // Ammo power converter function

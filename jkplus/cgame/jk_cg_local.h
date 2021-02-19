@@ -53,6 +53,32 @@ typedef struct
 
 } jkmod_cg_t;
 
+// Media
+typedef struct 
+{
+	qhandle_t	bactaModel;
+	qhandle_t	jetpackModel;
+	qhandle_t	hatSanta;
+	qhandle_t	hatPumpkin;
+	qhandle_t	hatCap;
+	qhandle_t	hatCowboy;
+	qhandle_t	hatCringe;
+	qhandle_t	hatSombrero;
+	qhandle_t	hatGentleman;
+	
+	qhandle_t	hitBox;
+	qhandle_t	hitBoxNoCull;
+	qhandle_t	clockBg;
+	qhandle_t	jetpackIcon;
+
+	sfxHandle_t	jetpackActiveSound;
+	sfxHandle_t	jetpackIdleSound;
+
+	fxHandle_t	jetpackActive;
+	fxHandle_t	jetpackIdle;
+
+} jkmod_media_t;
+
 /*
 =====================================================================
 Re-routed functions
@@ -90,7 +116,7 @@ extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
 extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
-extern vmCvar_t						jkcvar_cg_jetPackGround;
+extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
@@ -100,6 +126,9 @@ extern vmCvar_t						jkcvar_cg_test2;
 Common / new functions
 =====================================================================
 */
+
+// jk_cg_main.c
+void		JKMod_CG_RegisterMedia(void);
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);

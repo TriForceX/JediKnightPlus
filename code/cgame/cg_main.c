@@ -2749,6 +2749,10 @@ Ghoul2 Insert End
 
 	CG_RegisterGraphics();
 
+	CG_LoadingString( "client plugin" );	// Tr!Force: [JKMod] Register media
+
+	JKMod_CG_RegisterMedia();				// Tr!Force: [JKMod] Register media
+
 	CG_LoadingString( "clients" );
 
 	CG_RegisterClients();		// if low on memory, some clients will be deferred

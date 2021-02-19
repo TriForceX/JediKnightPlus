@@ -28,13 +28,13 @@ qboolean JKMod_OthersInBox(gentity_t *ent)
 	for (i = 0; i < num; i++)
 	{
 		other = &g_entities[touch[i]];
-		if (other->client && 
-			other->client->ps.clientNum != ent->client->ps.clientNum && 
-			!(((other->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer == 3) || other->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)) 
+		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.eFlags & JK_PASS_THROUGH)) 
 		{
 			return qtrue;
 		}
 	}
+
+	JKMod_Printf(S_COLOR_CYAN "Client %i checking others in box\n", ent->client->ps.clientNum);
 	return qfalse;
 }
 
@@ -58,12 +58,14 @@ void JKMod_AntiStuckBox(gentity_t *ent)
 	for (i = 0; i < num; i++)
 	{
 		other = &g_entities[touch[i]];
-		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum) 
+		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.eFlags & JK_PASS_THROUGH)) 
 		{
-			if (!(ent->client->ps.eFlags & JK_ANTI_STUCK)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
-			if (!(other->client->ps.eFlags & JK_ANTI_STUCK)) other->client->ps.eFlags |= JK_ANTI_STUCK;
+			if (!(ent->client->ps.stats[JK_PLAYER] & JK_ANTI_STUCK)) ent->client->ps.stats[JK_PLAYER] |= JK_ANTI_STUCK;
+			if (!(other->client->ps.stats[JK_PLAYER] & JK_ANTI_STUCK)) other->client->ps.stats[JK_PLAYER] |= JK_ANTI_STUCK;
 		}
 	}
+
+	JKMod_Printf(S_COLOR_YELLOW "Client %i checking pass box\n", ent->client->ps.clientNum);
 }
 
 /*

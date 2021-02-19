@@ -79,15 +79,15 @@ static void JKMod_svCmd_reload(void)
 
 	trap_Argv(1, arg1, sizeof(arg1));
 
-	if (!Q_stricmp(arg1, "randombegin"))
+	if (!Q_stricmp(arg1, "random_begin"))
 	{
 		JKMod_randomBeginInit();
 	}
-	else if (!Q_stricmp(arg1, "servernews"))
+	else if (!Q_stricmp(arg1, "server_news"))
 	{
 		JKMod_serverNewsInit();
 	}
-	else if (!Q_stricmp(arg1, "teleportchat"))
+	else if (!Q_stricmp(arg1, "teleport_chats"))
 	{
 		JKMod_teleportChatInit();
 	}

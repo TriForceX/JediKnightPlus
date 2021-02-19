@@ -641,7 +641,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	}
 
 	// Tr!Force: [Dimensions] Check duel challenge
-	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
+	if (jkcvar_altDimension.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 	{
 		return;
 	}
@@ -672,7 +672,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 
 		// Tr!Force: [Dimensions] Check duel challenge
-		if (challenged->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
+		if (jkcvar_altDimension.integer && challenged->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 		{
 			return;
 		}
@@ -691,8 +691,6 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
-			unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
-
 			trap_SendServerCommand( /*challenged-g_entities*/-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
 
 			ent->client->ps.duelInProgress = qtrue;
@@ -704,8 +702,13 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
-			JKMod_DimensionSet(ent, DIMENSION_DUEL_FREE);
-			JKMod_DimensionSet(challenged, DIMENSION_DUEL_FREE);
+			if (jkcvar_altDimension.integer & DIMENSION_DUEL)
+			{
+				unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
+
+				JKMod_DimensionSet(ent, DIMENSION_DUEL_FREE);
+				JKMod_DimensionSet(challenged, DIMENSION_DUEL_FREE);
+			}
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
@@ -1008,7 +1011,7 @@ void JKMod_ClientCommand(int clientNum)
 
 		if (!jkcvar_playerIgnore.integer) 
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
+			trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
 			return;
 		}
 		else if (trap_Argc() < 3)
@@ -1248,7 +1251,7 @@ void JKMod_ClientCommand(int clientNum)
 	{
 		if (!jkcvar_jetPack.integer)
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"This command is ^1disabled^7 by the server\n\""));
+			trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
 			return;
 		}
 		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)

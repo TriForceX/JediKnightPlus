@@ -949,21 +949,21 @@ INDEX 104
 }
 INDEX 105
 {
-   REFERENCE CLIENT_JETPACKGROUND
-   TEXT_LANGUAGE1 "Jetpack extra effect:"
-   TEXT_LANGUAGE2 "Effet extra Jetpack:"
-   TEXT_LANGUAGE3 "Jetpack extra-effekt:"
-   TEXT_LANGUAGE6 "Jetpack extra effect:"
-   TEXT_LANGUAGE8 "Efecto extra Jetpack:"
+   REFERENCE CLIENT_JETPACKIDLE
+   TEXT_LANGUAGE1 "Jetpack idle effect:"
+   TEXT_LANGUAGE2 "Effet jetpack inactif:"
+   TEXT_LANGUAGE3 "Jetpack-Leerlaufeffekt:"
+   TEXT_LANGUAGE6 "Jetpack idle effect:"
+   TEXT_LANGUAGE8 "Efecto jetpack inactivo:"
 }
 INDEX 106
 {
-   REFERENCE CLIENT_JETPACKGROUND_DESC
-   TEXT_LANGUAGE1 "Show an additional jetpack effect while the player is on the ground."
-   TEXT_LANGUAGE2 "Affichez un effet jetpack supplémentaire lorsque le joueur est au sol."
-   TEXT_LANGUAGE3 "Zeigen sie einen zusätzlichen Jetpack-effekt, während sich der spieler am boden befindet."
-   TEXT_LANGUAGE6 "Show an additional jetpack effect while the player is on the ground."
-   TEXT_LANGUAGE8 "Muestra un efecto de jetpack adicional mientras el jugador está en el suelo."
+   REFERENCE CLIENT_JETPACKIDLE_DESC
+   TEXT_LANGUAGE1 "Show an additional jetpack effect when is idle."
+   TEXT_LANGUAGE2 "Afficher un effet jetpack supplémentaire lorsqu'il est inactif."
+   TEXT_LANGUAGE3 "Zeigen Sie im Leerlauf einen zusätzlichen Jetpack-Effekt."
+   TEXT_LANGUAGE6 "Show an additional jetpack effect when is idle."
+   TEXT_LANGUAGE8 "Muestra un efecto de jetpack adicional mientras está inactivo."
 }
 INDEX 107
 {

@@ -891,7 +891,7 @@ static void ForceClientSkin( gclient_t *client, char *model, const char *skin ) 
 ClientCheckName
 ============
 */
-/*static*/ void BaseJK2_ClientCleanName( const char *in, char *out, int outSize ) { // Tr!Force: [BaseJK2] Client clean name function
+static void ClientCleanName( const char *in, char *out, int outSize ) {
 	int		len, colorlessLen;
 	char	ch;
 	char	*p;
@@ -1136,9 +1136,7 @@ void ClientUserinfoChanged( int clientNum ) {
 	char	redTeam[MAX_INFO_STRING];
 	char	blueTeam[MAX_INFO_STRING];
 	char	userinfo[MAX_INFO_STRING];
-
-	// Tr!Force: [JKMod] Custom client info
-	char	jkinfo_hat[MAX_INFO_STRING];
+	char	jkinfo_hat[MAX_INFO_STRING]; // Tr!Force: [JKMod] Custom client info
 
 	// NameCrashFix (whitelisted characters)
 	static const char	validChars[]  = " ~QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm1234567890<>?,./';:][{}`-=!@#$^&*()_+|";
@@ -1194,7 +1192,7 @@ void ClientUserinfoChanged( int clientNum ) {
 		ptr = strstr( s, "@@@" );
 	}
 	
-	ClientCleanName( s, ent->client->pers.netname, sizeof(ent->client->pers.netname) );
+	JKMod_ClientCleanName( s, ent->client->pers.netname, sizeof(ent->client->pers.netname), ent); // Tr!Force: [JKMod] Client clean name
 	Info_RemoveKey( userinfo, "name" );
 	Info_SetValueForKey( userinfo, "name", ent->client->pers.netname );
 	trap_SetUserinfo( clientNum, userinfo );
@@ -1559,8 +1557,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	gentity_t	*tent;
 	int			flags, i;
 	char		userinfo[MAX_INFO_VALUE], *modelname;
-	int			jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
-	int			jksave_movement; // Tr!Force: [JKMod] Don't remove flags
+	int			jksave_player;		// Tr!Force: [JKMod] Don't remove flags
+	int			jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
+	int			jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
 
 	ent = g_entities + clientNum;
 	
@@ -1655,8 +1654,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	// world to the new position
 	flags = client->ps.eFlags;
 
-	jksave_dimension = client->ps.stats[JK_DIMENSION]; // Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [JKMod] Don't remove flags
+	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [JKMod] Don't remove flags
+	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [JKMod] Don't remove flags
 
 	i = 0;
 
@@ -1684,8 +1684,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	memset( &client->ps, 0, sizeof( client->ps ) );
 	client->ps.eFlags = flags;
 
-	client->ps.stats[JK_DIMENSION] = jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;		// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_DIMENSION] = jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1781,8 +1782,9 @@ void ClientSpawn(gentity_t *ent) {
 	void		*ghoul2save;
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
-	int		jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
-	int		jksave_movement; // Tr!Force: [JKMod] Don't remove flags
+	int		jksave_player;		// Tr!Force: [JKMod] Don't remove flags
+	int		jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
+	int		jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1890,13 +1892,15 @@ void ClientSpawn(gentity_t *ent) {
 
 	saveSaberNum = client->ps.saberEntityNum;
 
+	jksave_player = client->ps.stats[JK_PLAYER]; // Tr!Force: [JKMod] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION]; // Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [Dimensions] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [JKMod] Don't remove flags
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
+	client->ps.stats[JK_PLAYER] = jksave_player; // Tr!Force: [JKMod] Don't remove flags
 	client->ps.stats[JK_DIMENSION] = jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [JKMod] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;

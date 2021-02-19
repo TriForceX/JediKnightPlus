@@ -600,7 +600,12 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		client->ps.basespeed = 400;
 
 		// Tr!Force: [Plugin] Don't allow user actions
-		client->ps.fallingToDeath = (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) ? 1 : 0;
+		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) {
+			client->ps.speed = 0;
+			client->ps.basespeed = 0;
+			client->pers.cmd.upmove = 0;
+			client->pers.cmd.buttons = 0;
+		}
 
 		// Tr!Force: [Dimensions] Check dimension
 		if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
@@ -1220,10 +1225,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			JKMod_DimensionSet(ent, DIMENSION_FREE);
 			JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
-			// Tr!Force: [AntiStuck] Check player anti stuck
-			if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
-			if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_ANTI_STUCK;
-
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
@@ -1285,10 +1286,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				// Tr!Force: [Dimensions] Remove duel flag
 				JKMod_DimensionSet(ent, DIMENSION_FREE);
 				JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
-
-				// Tr!Force: [AntiStuck] Check player anti stuck
-				if (JKMod_OthersInBox(ent)) ent->client->ps.eFlags |= JK_ANTI_STUCK;
-				if (JKMod_OthersInBox(duelAgainst)) duelAgainst->client->ps.eFlags |= JK_ANTI_STUCK;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1367,7 +1364,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 	pm.ps = &client->ps;
 	pm.cmd = *ucmd;
-	if ( pm.ps->pm_type == PM_DEAD || (ent->client->ps.eFlags & JK_ANTI_STUCK)) { // Tr!Force: [AntiStuck] Check player anti stuck
+	if ( pm.ps->pm_type == PM_DEAD ) {
 		pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;
 	}
 	else if ( ent->r.svFlags & SVF_BOT ) {

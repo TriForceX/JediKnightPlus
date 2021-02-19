@@ -6783,7 +6783,7 @@ doEssentialTwo:
 		}
 	}
 	// Tr!Force: [ChatProtect] Chat player transparency
-	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_ANTI_STUCK) && jkcvar_cg_chatPlayerOpacity.integer)
+	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 	{
 		if (!JKMod_CG_InEmoteUI(cent))
 		{
@@ -7305,6 +7305,12 @@ stillDoSaber:
 	else
 	{
 		cent->saberLength = 0;
+	}
+
+	// Tr!Force: [Dimension] Don't show saber on racers
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE && cent->ghoul2)
+	{
+		trap_G2API_RemoveGhoul2Model(&(cent->ghoul2), 1);
 	}
 
 	if (cent->currentState.eFlags & EF_DEAD)

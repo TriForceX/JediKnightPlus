@@ -45,7 +45,7 @@ vmCvar_t	jkcvar_cg_chatBoxHistory;
 
 vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
-vmCvar_t	jkcvar_cg_jetPackGround;
+vmCvar_t	jkcvar_cg_jetPackIdle;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
@@ -74,7 +74,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 
 	{ &jkcvar_cg_customHats,		"jk_cg_customHats",			"0",	CVAR_ARCHIVE | CVAR_USERINFO },
 	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_jetPackGround,		"jk_cg_jetPackGround",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_jetPackIdle,		"jk_cg_jetPackIdle",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
@@ -119,4 +119,32 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_CG_UpdateCvars();
+}
+
+void JKMod_CG_RegisterMedia(void) 
+{
+	cgs.jkmodMedia.bactaModel			= trap_R_RegisterModel("models/items/bacta.md3");
+	cgs.jkmodMedia.jetpackModel			= trap_R_RegisterModel("models/items/jkmod_jetpack.md3");
+	cgs.jkmodMedia.hatSanta				= trap_R_RegisterModel("models/items/jkmod_hats/santa.md3");
+	cgs.jkmodMedia.hatPumpkin			= trap_R_RegisterModel("models/items/jkmod_hats/pumpkin.md3");
+	cgs.jkmodMedia.hatCap				= trap_R_RegisterModel("models/items/jkmod_hats/cap.md3");
+	cgs.jkmodMedia.hatCowboy			= trap_R_RegisterModel("models/items/jkmod_hats/cowboy.md3");
+	cgs.jkmodMedia.hatCringe			= trap_R_RegisterModel("models/items/jkmod_hats/cringe.md3");
+	cgs.jkmodMedia.hatSombrero			= trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3");
+	cgs.jkmodMedia.hatGentleman			= trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3");
+
+	cgs.jkmodMedia.hitBox				= trap_R_RegisterShader("jkmod_hitbox");
+	cgs.jkmodMedia.hitBoxNoCull			= trap_R_RegisterShader("jkmod_hitbox_nocull");
+	cgs.jkmodMedia.clockBg				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg");
+	cgs.jkmodMedia.jetpackIcon			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_jetpack_icon");
+
+	
+	cgs.jkmodMedia.jetpackActive		= trap_FX_RegisterEffect("jkmod_jetpack/idle");
+	cgs.jkmodMedia.jetpackIdle			= trap_FX_RegisterEffect("jkmod_jetpack/ground");
+
+	cgs.jkmodMedia.jetpackActiveSound	= trap_S_RegisterSound("sound/effects/fire_lp.wav");
+	cgs.jkmodMedia.jetpackIdleSound		= trap_S_RegisterSound("sound/effects/torch_burning_lp.wav");
+
+	
+	Com_Printf( S_COLOR_CYAN "----------- JKPlus Media Complete -----------\n" );
 }

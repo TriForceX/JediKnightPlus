@@ -28,13 +28,14 @@ void JKMod_CG_Player(centity_t *cent)
 		if (cent->currentState.number == cg.predictedPlayerState.clientNum && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)))
 		{
 			vec4_t jkmod_itemModelDetails = { 0, 0, -5, 0.5 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/bacta.md3"), "*hip_bl", jkmod_itemModelDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.bactaModel, "*hip_bl", jkmod_itemModelDetails);
 		}
 	}
 
 	// Render custom hats models
 	if (cgs.jkmodCvar.customHats)
 	{
+		qhandle_t jkmod_hatFile = 0;
 		vec4_t jkmod_hatDetails = { -0.3, 0, -2, 1 };
 
 		// Special case
@@ -43,26 +44,26 @@ void JKMod_CG_Player(centity_t *cent)
 			jkmod_hatDetails[2] = -3;
 		}
 
-		if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 1) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/santa.md3"), "*head_top", jkmod_hatDetails);
+		switch (cgs.clientinfo[cent->currentState.number].jkmod_hat) 
+		{
+			case 1:
+				jkmod_hatFile = cgs.jkmodMedia.hatSanta; break;
+			case 2:
+				jkmod_hatFile = cgs.jkmodMedia.hatPumpkin; break;
+			case 3:
+				jkmod_hatFile = cgs.jkmodMedia.hatCap; break;
+			case 4:
+				jkmod_hatFile = cgs.jkmodMedia.hatCowboy; break;
+			case 5:
+				jkmod_hatFile = cgs.jkmodMedia.hatCringe; break;
+			case 6:
+				jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
+			case 7:
+				jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
 		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 2) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/pumpkin.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 3) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cap.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 4) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cowboy.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 5) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/cringe.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 6) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3"), "*head_top", jkmod_hatDetails);
-		}
-		else if (cgs.clientinfo[cent->currentState.number].jkmod_hat == 7) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3"), "*head_top", jkmod_hatDetails);
+
+		if (jkmod_hatFile) {
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, jkmod_hatFile, "*head_top", jkmod_hatDetails);
 		}
 	}
 
@@ -72,7 +73,7 @@ void JKMod_CG_Player(centity_t *cent)
 		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
 		{
 			vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, trap_R_RegisterModel("models/items/jkmod_jetpack.md3"), "*chestg", jkmod_jetPackDetails);
+			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.jetpackModel, "*chestg", jkmod_jetPackDetails);
 		}
 	}
 
@@ -149,8 +150,8 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 	}
 
 	// Get the shader handles
-	hitboxShader = trap_R_RegisterShader("jkmod_hitbox");
-	hitboxShader_nocull = trap_R_RegisterShader("jkmod_hitbox_nocull");
+	hitboxShader = cgs.jkmodMedia.hitBox;
+	hitboxShader_nocull = cgs.jkmodMedia.hitBoxNoCull;
 
 	// If they don't exist, forget it
 	if (!hitboxShader || !hitboxShader_nocull) {
@@ -313,7 +314,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		return;
 	}
 
-	if ((cg.snap->ps.duelIndex && cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != cent->currentState.number && cent->currentState.clientNum != cg.clientNum) && jkcvar_cg_privateDuel.integer)
+	if (cg.snap->ps.duelIndex && cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != cent->currentState.number && cent->currentState.clientNum != cg.clientNum)
 	{
 		return;
 	}
@@ -359,7 +360,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		}
 
 		// Check chat player transparency
-		if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_ANTI_STUCK) && jkcvar_cg_chatPlayerOpacity.integer)
+		if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 		{
 			if (!JKMod_CG_InEmoteUI(cent))
 			{
@@ -369,11 +370,10 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		}
 
 		// Special case
-		if (modelFile == trap_R_RegisterModel("models/items/jkmod_jetpack.md3"))
+		if (modelFile == cgs.jkmodMedia.jetpackModel)
 		{
 			vec3_t flamePos, flameDir;
 			vec3_t flamePos2, flameDir2;
-			vec_t *flameSound = (cg.snap->ps.clientNum == cent->currentState.number) ? cg.refdef.vieworg : cent->lerpOrigin;
 
 			trap_G2API_GiveMeVectorFromMatrix(&matrix, ORIGIN, flamePos);
 			trap_G2API_GiveMeVectorFromMatrix(&matrix, ORIGIN, flamePos2);
@@ -394,17 +394,17 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 
 			if (cent->currentState.eFlags & JK_JETPACK_FLAMING)
 			{
-				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/idle"), flamePos, flameDir);
-				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/idle"), flamePos2, flameDir2);
+				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackActive, flamePos, flameDir);
+				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackActive, flamePos2, flameDir2);
 
-				trap_S_AddLoopingSound(cent->currentState.number, flameSound, vec3_origin, trap_S_RegisterSound("sound/effects/fire_lp.wav"));
+				trap_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.jkmodMedia.jetpackActiveSound);
 			}
-			else if (jkcvar_cg_jetPackGround.integer)
+			else if (jkcvar_cg_jetPackIdle.integer)
 			{
-				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/ground"), flamePos, flameDir);
-				trap_FX_PlayEffectID(trap_FX_RegisterEffect("jkmod_jetpack/ground"), flamePos2, flameDir2);
+				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackIdle, flamePos, flameDir);
+				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackIdle, flamePos2, flameDir2);
 
-				trap_S_AddLoopingSound(cent->currentState.number, flameSound, vec3_origin, trap_S_RegisterSound("sound/effects/torch_burning_lp.wav"));
+				trap_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.jkmodMedia.jetpackIdleSound);
 			}
 		}
 

@@ -1646,9 +1646,9 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_JETPACKGROUND
-			descText			@JKMENUS_CLIENT_JETPACKGROUND_DESC
-			cvar				"jk_cg_jetPackGround"
+			text				@JKMENUS_CLIENT_JETPACKIDLE
+			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
+			cvar				"jk_cg_jetPackIdle"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 

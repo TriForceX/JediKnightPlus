@@ -1016,6 +1016,7 @@ void TryUse( gentity_t *ent )
 		{
 			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
 			ent->client->ps.eFlags |= JK_JETPACK_FLAMING;
+			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 		}
 	}
 
