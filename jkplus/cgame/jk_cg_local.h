@@ -50,6 +50,9 @@ typedef struct
 {
 	jkmod_chatbox_t		chatItems[MAX_CHATBOX_ITEMS];	// Chat items count
 	int					chatItemActive;					// Chat item active
+	qboolean			duelEnd;						// Duel end active
+	float				duelEndRange;					// Duel end original range
+	qboolean			duelEndLeader;					// Duel end leader check
 
 } jkmod_cg_t;
 
@@ -94,8 +97,10 @@ Cvar registration
 =====================================================================
 */
 
-extern vmCvar_t						jkcvar_cg_privateDuel;
 extern vmCvar_t						jkcvar_cg_duelGlow;
+extern vmCvar_t						jkcvar_cg_duelEnd;
+extern vmCvar_t						jkcvar_cg_duelEndOrbit;
+extern vmCvar_t						jkcvar_cg_duelEndDelay;
 extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
@@ -129,6 +134,7 @@ Common / new functions
 
 // jk_cg_main.c
 void		JKMod_CG_RegisterMedia(void);
+void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);

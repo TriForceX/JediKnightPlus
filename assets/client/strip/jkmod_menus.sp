@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 112
+COUNT 114
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1009,4 +1009,22 @@ INDEX 111
    TEXT_LANGUAGE3 "Dimension"
    TEXT_LANGUAGE6 "Dimension"
    TEXT_LANGUAGE8 "Dimensión"
+}
+INDEX 112
+{
+   REFERENCE CLIENT_DUELEND
+   TEXT_LANGUAGE1 "Duel end:"
+   TEXT_LANGUAGE2 "Fin du duel:"
+   TEXT_LANGUAGE3 "Ende des duells:"
+   TEXT_LANGUAGE6 "Duel end:"
+   TEXT_LANGUAGE8 "Fin de duelo:"
+}
+INDEX 113
+{
+   REFERENCE CLIENT_DUELEND_DESC
+   TEXT_LANGUAGE1 "Plays an animation at the end of a duel."
+   TEXT_LANGUAGE2 "Jouez une animation à la fin d'un duel."
+   TEXT_LANGUAGE3 "Spielt eine animation am ende eines duells ab."
+   TEXT_LANGUAGE6 "Plays an animation at the end of a duel."
+   TEXT_LANGUAGE8 "Reproduce una animación al finalizar un duelo."
 }

@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Only print when "developer 1"
 =====================================================================
 */
-void QDECL JKMod_Printf( const char *fmt, ... ) 
+void QDECL JKMod_Printf(const char *fmt, ...) 
 {
 	if (trap_Cvar_VariableIntegerValue("developer"))
 	{
@@ -24,7 +24,7 @@ void QDECL JKMod_Printf( const char *fmt, ... )
 		Q_vsnprintf (text, sizeof(text), fmt, argptr);
 		va_end (argptr);
 
-		trap_Printf( text );
+		trap_Printf(text);
 	}
 }
 /*
@@ -453,7 +453,7 @@ char *JKMod_ReadFile(char *filename)
 
 /*
 =====================================================================
-Rand alternative (Linux rand() behaves different than on Winodws or qvm
+Rand alternative Linux rand() behaves different than on Windows or qvm
 =====================================================================
 */
 static int JKModRandSeed = 0;

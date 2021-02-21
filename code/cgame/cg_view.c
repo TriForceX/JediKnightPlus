@@ -1238,6 +1238,25 @@ static int CG_CalcViewValues( void ) {
 			cg_thirdPersonAngle.value += cg_cameraOrbit.value;
 		}
 	}
+
+	// Tr!Force: [DuelEnd] Camera check
+	if (cg.jkmodCG.duelEnd && cg.renderingThirdPerson && !cg_cameraOrbit.integer) 
+	{
+		if (cg_thirdPersonAngle.value > -360)
+		{
+			if (cg.time > cg.nextOrbitTime) {
+				cg.nextOrbitTime = cg.time + jkcvar_cg_duelEndDelay.value;
+				cg_thirdPersonAngle.value -= jkcvar_cg_duelEndOrbit.value;
+				cg_thirdPersonRange.value = cg.jkmodCG.duelEndRange + 50;
+			}
+		}
+		else {
+			cg_thirdPersonAngle.value = 0;
+			cg.jkmodCG.duelEnd = qfalse;
+			cg_thirdPersonRange.value = cg.jkmodCG.duelEndRange;
+		}
+	}
+
 	// add error decay
 	if ( cg_errorDecay.value > 0 ) {
 		int		t;
@@ -1304,6 +1323,10 @@ CG_AddBufferedSound
 void CG_AddBufferedSound( sfxHandle_t sfx ) {
 	if ( !sfx )
 		return;
+
+	// Tr!Force: [DuelEnd] Sound check
+	if (jkcvar_cg_duelEnd.integer && cg.jkmodCG.duelEndLeader && sfx == cgs.media.winnerSound) return; 
+
 	cg.soundBuffer[cg.soundBufferIn] = sfx;
 	cg.soundBufferIn = (cg.soundBufferIn + 1) % MAX_SOUNDBUFFER;
 	if (cg.soundBufferIn == cg.soundBufferOut) {

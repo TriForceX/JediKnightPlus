@@ -234,7 +234,7 @@ qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
 void		JKMod_CallVote(gentity_t *ent);
 
 // jk_common.c
-void QDECL	JKMod_Printf( const char *fmt, ... ) __attribute__ ((format (printf, 1, 2)));
+void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 int			JKMod_compareCmd(char *cmd, char *required);
 void		JKMod_stringEscape(char *in, char *out, int outSize);
 void		JKMod_cleanString(char *in, char *out);

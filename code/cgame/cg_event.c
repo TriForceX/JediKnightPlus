@@ -1150,6 +1150,21 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		else
 		{ //ending the duel
 			CG_StartMusic(qtrue);
+
+			// Tr!Force: [DuelEnd] Main check
+			if(jkcvar_cg_duelEnd.integer) 
+			{
+				if (cg.snap->ps.stats[STAT_HEALTH] > 0) {
+					cg.jkmodCG.duelEnd = qtrue;
+					cg.jkmodCG.duelEndRange = cg_thirdPersonRange.value;
+					CG_AddBufferedSound(cgs.media.winnerSound);
+					cg.jkmodCG.duelEndLeader = qfalse;
+					JKMod_CG_Printf(S_COLOR_YELLOW "Client %i duel win", cg.snap->ps.clientNum);
+				} else {
+					cg.jkmodCG.duelEnd = qfalse;
+					JKMod_CG_Printf(S_COLOR_YELLOW "Client %i duel lose", cg.snap->ps.clientNum);
+				}
+			}
 		}
 		break;
 

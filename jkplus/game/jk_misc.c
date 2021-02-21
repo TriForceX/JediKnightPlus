@@ -378,10 +378,11 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	qboolean typeHealth;
 	qboolean typeShield;
 
-	give = typeHealth ? 5 : 2;
 	typeAmmo = (self->classname == "jkmod_ammo_power_converter");
 	typeHealth = (self->classname == "jkmod_health_power_converter");
 	typeShield = (self->classname == "jkmod_shield_power_converter");
+
+	give = typeHealth ? 5 : 2;
 
 	if (!activator || !activator->client)
 	{

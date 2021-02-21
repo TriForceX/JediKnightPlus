@@ -914,9 +914,9 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_PRIVATEDUEL
-			descText			@JKMENUS_CLIENT_PRIVATEDUEL_DESC
-			cvar				"jk_cg_privateDuel"
+			text				@JKMENUS_CLIENT_DUELGLOW
+			descText			@JKMENUS_CLIENT_DUELGLOW_DESC
+			cvar				"jk_cg_duelGlow"
 			rect				220 41 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -946,9 +946,9 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DUELGLOW
-			descText			@JKMENUS_CLIENT_DUELGLOW_DESC
-			cvar				"jk_cg_duelGlow"
+			text				@JKMENUS_CLIENT_DUELEND
+			descText			@JKMENUS_CLIENT_DUELEND_DESC
+			cvar				"jk_cg_duelEnd"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151

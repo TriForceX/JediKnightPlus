@@ -23,8 +23,10 @@ typedef struct { // Cvar table struct
 	int			cvarFlags;
 } cvarTable_t;
 
-vmCvar_t	jkcvar_cg_privateDuel;
 vmCvar_t	jkcvar_cg_duelGlow;
+vmCvar_t	jkcvar_cg_duelEnd;
+vmCvar_t	jkcvar_cg_duelEndOrbit;
+vmCvar_t	jkcvar_cg_duelEndDelay;
 vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
 vmCvar_t	jkcvar_cg_drawForcePoints;
@@ -52,8 +54,10 @@ vmCvar_t	jkcvar_cg_test2;
 
 static cvarTable_t	JKModCGCvarTable[] = {
 
-	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_duelGlow,			"jk_cg_duelGlow",			"1",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_duelEnd,			"jk_cg_duelEnd",			"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_duelEndOrbit,		"jk_cg_duelEndOrbit",		"1.5",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_duelEndDelay,		"jk_cg_duelEndDelay",		"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawForcePoints,	"jk_cg_drawForcePoints",	"0",	CVAR_ARCHIVE },
@@ -119,6 +123,29 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_CG_UpdateCvars();
+}
+
+/*
+=====================================================================
+Only print when "developer 1"
+=====================================================================
+*/
+void QDECL JKMod_CG_Printf(const char *msg, ...) 
+{
+	char var[MAX_TOKEN_CHARS];
+	trap_Cvar_VariableStringBuffer("developer", var, sizeof(var));
+
+	if (atoi(var))
+	{
+		va_list		argptr;
+		char		text[1024];
+
+		va_start (argptr, msg);
+		Q_vsnprintf (text, sizeof(text), msg, argptr);
+		va_end (argptr);
+
+		trap_Print(text);
+	}
 }
 
 void JKMod_CG_RegisterMedia(void) 

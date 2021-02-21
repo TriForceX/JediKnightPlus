@@ -4447,8 +4447,10 @@ static void UI_Update(const char *name) {
 		trap_Cvar_Set("cg_hudFiles", "0");
 
 		// Visuals
-		trap_Cvar_Set("jk_cg_privateDuel", "0");
 		trap_Cvar_Set("jk_cg_duelGlow", "1");
+		trap_Cvar_Set("jk_cg_duelEnd", "0");
+		trap_Cvar_Set("jk_cg_duelEndOrbit", "1.5");
+		trap_Cvar_Set("jk_cg_duelEndDelay", "1");
 		trap_Cvar_Set("jk_cg_drawHitBox", "0");
 		trap_Cvar_Set("jk_cg_drawBactaModel", "0");
 		trap_Cvar_Set("jk_cg_chatIcon", "0");
