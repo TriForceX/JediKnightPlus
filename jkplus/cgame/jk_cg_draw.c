@@ -420,11 +420,14 @@ void JKMod_CG_DrawDimensionString(void)
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 
-	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimensionStr = "Duel";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimensionStr = "Guns";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimensionStr = "Race";
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimensionStr = "Private Duel";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimensionStr = "Guns Arena";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimensionStr = "Race Challenge";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_SABER) dimensionStr = "Saber Only";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) dimensionStr = "Instant Kill";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT) dimensionStr = "Cheats Mode";
 
 	if (dimensionStr) {
-		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s Dimension]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
+		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
 	}
 }

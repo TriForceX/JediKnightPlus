@@ -73,7 +73,7 @@ static void JKMod_dropFlag(gentity_t *ent)
 	VectorCopy(tr.endpos, org);
 
 	ent->client->jkmodClient.DropFlagTime = jkcvar_dropFlagTime.integer;
-	LaunchItem(item, org, velocity);
+	JKMod_LaunchItem(item, org, velocity, ent->s.number);
 }
 
 /*
@@ -1223,6 +1223,9 @@ void JKMod_ClientCommand(int clientNum)
 				"^7Option list:\n"
 				"^3guns\n"
 				"^3race\n"
+				"^3saber\n"
+				"^3insta\n"
+				"^3cheats\n"
 				"^5----------\n"
 				"^2Note: ^7You will join in ^5duel ^7dimension automatically if is available in the server\n"
 				"^7\""));

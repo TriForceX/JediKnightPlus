@@ -150,6 +150,7 @@ void QDECL JKMod_CG_Printf(const char *msg, ...)
 
 void JKMod_CG_RegisterMedia(void) 
 {
+	cgs.jkmodMedia.saberModel			= trap_R_RegisterModel("models/weapons2/saber/saber_w.md3");
 	cgs.jkmodMedia.bactaModel			= trap_R_RegisterModel("models/items/bacta.md3");
 	cgs.jkmodMedia.jetpackModel			= trap_R_RegisterModel("models/items/jkmod_jetpack.md3");
 	cgs.jkmodMedia.hatSanta				= trap_R_RegisterModel("models/items/jkmod_hats/santa.md3");

@@ -255,7 +255,7 @@ void JKMod_G_UpdateCvars(void)
 						}
 
 						// Stop server news
-						if (Q_stricmp(jkcvar_serverNews.string, "1") == 0) trap_Cvar_Set("jk_serverNews", "paused"); // Fix me
+						if (Q_stricmp(jkcvar_serverNews.string, "1") == 0) trap_Cvar_Set("jk_serverNews", "paused"); // Workaround
 					}
 					else 
 					{
@@ -310,7 +310,7 @@ void JKMod_G_UpdateCvars(void)
 							}
 
 							// Reload server news
-							if (Q_stricmp(jkcvar_serverNews.string, "paused") == 0) trap_SendConsoleCommand(EXEC_APPEND, "jk_serverNews 1\n"); // Fix me
+							if (Q_stricmp(jkcvar_serverNews.string, "paused") == 0) trap_SendConsoleCommand(EXEC_APPEND, "jk_serverNews 1\n"); // Workaround
 						}
 					}
 				}

@@ -2171,6 +2171,9 @@ static void PM_CrashLand( void ) {
 			}
 			else
 			{
+				// Tr!Force: [Dimensions] No fall pain sound
+				if (pm->ps->stats[JK_DIMENSION] == DIMENSION_RACE && delta_send > 44) delta_send = 44;
+
 				PM_AddEventWithParm( EV_FALL, delta_send );
 			}
 		}

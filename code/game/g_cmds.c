@@ -99,6 +99,9 @@ CheatsOk
 ==================
 */
 qboolean	CheatsOk( gentity_t *ent ) {
+	if ( ent->client->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT ) { // Tr!Force: [Dimensions] Allow cheats for this one
+		return qtrue;
+	}
 	if ( !g_cheats.integer ) {
 		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOCHEATS")));
 		return qfalse;

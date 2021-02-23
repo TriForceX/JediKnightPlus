@@ -77,6 +77,13 @@ void JKMod_CG_Player(centity_t *cent)
 		}
 	}
 
+	// Render saber model
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	{
+		vec4_t jkmod_saberDetails = { 0, 0, -1.5, 0 };
+		JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.saberModel, "*hip_r", jkmod_saberDetails);
+	}
+
 	// Play custom animations
 	if (jkcvar_cg_customAnims.integer)
 	{

@@ -711,7 +711,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 
 				G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NO_KNOCKBACK, MOD_DISRUPTOR_SNIPER );
 
-				if (traceEnt->client && preHealth > 0 && traceEnt->health <= 0 && fullCharge)
+				if (traceEnt->client && preHealth > 0 && traceEnt->health <= 0 && (fullCharge || traceEnt->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA)) // Tr!Force: [Dimensions] Do instagib
 				{ //was killed by a fully charged sniper shot, so disintegrate
 					VectorCopy(preAng, traceEnt->client->ps.viewangles);
 
@@ -762,7 +762,7 @@ static void WP_FireDisruptor( gentity_t *ent, qboolean altFire )
 		return;
 	}
 
-	if ( altFire )
+	if ( altFire || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) // Tr!Force: [Dimensions] Do instagib
 	{
 		WP_DisruptorAltFire( ent );
 	}

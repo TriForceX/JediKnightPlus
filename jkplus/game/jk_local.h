@@ -30,6 +30,8 @@ Global definitions
 #define	ITEM_RESPAWN_AMMO			40
 #define	ITEM_RESPAWN_HOLDABLE		60
 
+#define DEFAULT						Q3_INFINITE // Workaround
+
 /*
 =====================================================================
 Player / world information
@@ -85,6 +87,10 @@ typedef struct
 	qboolean	invulnerability;		// Persistant take damage
 	qboolean	passThrough;			// Check for pass-through
 	qboolean	passThroughPerm;		// Check for permanent pass-through
+	int			customSettings;			// Custom settings check
+	int			customSettingsCount;	// Custom settings modification count
+	float		customGravity;			// Custom speed for custom settings
+	float		customSpeed;			// Custom gravity for custom settings
 
 } jkmod_pers_t;
 
@@ -278,7 +284,7 @@ void		JKMod_serverIdleCheck(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
-void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, int speed, int gravity);
+void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 
 // jk_utils.c
 qboolean	JKMod_OthersInBox(gentity_t *ent);
@@ -292,6 +298,7 @@ gentity_t	*JKMod_G_TempEntity(const vec3_t origin, entity_event_t event, int dim
 gentity_t	*JKMod_G_SoundTempEntity(const vec3_t origin, int event, int channel, int dimensionOwner);
 gentity_t	*JKMod_G_PreDefSound(vec3_t org, pdSounds_t pdSound, int dimensionOwner);
 void		JKMod_G_SoundAtLoc(vec3_t loc, soundChannel_t channel, int soundIndex, int dimensionOwner);
+gentity_t	*JKMod_LaunchItem(gitem_t *item, vec3_t origin, vec3_t velocity, int dimensionOwner);
 
 // jk_session.c
 void		JKMod_InitSessionData(gclient_t *client);

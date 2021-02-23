@@ -2275,14 +2275,14 @@ void ClientSpawn(gentity_t *ent) {
 		trap_LinkEntity( ent );
 	}
 
-	if (g_spawnInvulnerability.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) // Tr!Force: [Dimensions] Don't set invulnerable flag
+	if (g_spawnInvulnerability.integer && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_INSTA))) // Tr!Force: [Dimensions] Don't set invulnerable flag
 	{
 		ent->client->ps.eFlags |= EF_INVULNERABLE;
 		ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
 	}
 
 	// Tr!Force: [Dimensions] Set dimension settings
-	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE && client->sess.sessionTeam != TEAM_SPECTATOR)
+	if (client->pers.jkmodPers.customSettings && client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		JKMod_DimensionSettings(ent, client->ps.stats[JK_DIMENSION]);
 	}
@@ -2361,7 +2361,7 @@ void ClientDisconnect( int clientNum ) {
 	// send effect if they were completely connected
 	if ( ent->client->pers.connected == CON_CONNECTED 
 		&& ent->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		tent = JKMod_G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_OUT, clientNum ); // Tr!Force: [DImensions] Tag owner info
+		tent = JKMod_G_TempEntity( ent->client->ps.origin, EV_PLAYER_TELEPORT_OUT, clientNum ); // Tr!Force: [Dimensions] Tag owner info
 		tent->s.clientNum = ent->s.clientNum;
 
 		// They don't get to take powerups with them!

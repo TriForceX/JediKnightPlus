@@ -1599,7 +1599,7 @@ Spawns an item and tosses it forward
 gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	gentity_t	*dropped;
 
-	dropped = JKMod_G_Spawn( ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
+	dropped = G_Spawn();
 
 	dropped->s.eType = ET_ITEM;
 	dropped->s.modelindex = item - bg_itemlist;	// store item number in modelindex
@@ -1692,7 +1692,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle ) {
 	VectorScale( velocity, 150, velocity );
 	velocity[2] += 200 + crandom() * 50;
 	
-	return LaunchItem( item, ent->s.pos.trBase, velocity );
+	return JKMod_LaunchItem( item, ent->s.pos.trBase, velocity, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 }
 
 

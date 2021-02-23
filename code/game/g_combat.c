@@ -600,7 +600,7 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 	vel[1] = direction[1]*speed;
 	vel[2] = direction[2]*speed;
 
-	launched = LaunchItem(item, self->client->ps.origin, vel);
+	launched = JKMod_LaunchItem(item, self->client->ps.origin, vel, self->s.number); // Tr!Force: [Dimensions] Tag owner info
 
 	launched->s.generic1 = self->s.number;
 	launched->s.powerups = level.time + 1500;
@@ -661,7 +661,8 @@ void TossClientItems( gentity_t *self ) {
 
 	if ( weapon > WP_BRYAR_PISTOL && 
 		weapon != WP_EMPLACED_GUN &&
-		weapon != WP_TURRET && self->client->ps.stats[JK_DIMENSION] != DIMENSION_GUNS && // Tr!Force: [Dimensions] Don't drop weapon
+		weapon != WP_TURRET &&
+		self->client->ps.stats[JK_DIMENSION] != DIMENSION_INSTA && // Tr!Force: [Dimensions] Don't drop weapon
 		self->client->ps.ammo[ weaponData[weapon].ammoIndex ] ) {
 		gentity_t *te;
 
@@ -3265,6 +3266,26 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	// check for completely getting out of the damage
 	if ( !(dflags & DAMAGE_NO_PROTECTION) ) {
+
+		if ( targ->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ) { // Tr!Force: [Dimensions] 1 hit 1 kill
+
+			switch (mod) {
+			case MOD_FORCE_DARK:
+			case MOD_WATER:
+			case MOD_SLIME:
+			case MOD_LAVA:
+			case MOD_CRUSH:
+			case MOD_TELEFRAG:
+			case MOD_FALLING:
+			case MOD_SUICIDE:
+			case MOD_TARGET_LASER:
+			case MOD_TRIGGER_HURT:
+			case MOD_MELEE:
+				break;
+			default:
+				damage = 9999;
+			}
+		}
 
 		// if TF_NO_FRIENDLY_FIRE is set, don't do damage to the target
 		// if the attacker was on the same team

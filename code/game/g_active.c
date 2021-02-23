@@ -1115,11 +1115,22 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		}
 	}
 
-	client->ps.gravity = g_gravity.value;
+	if (client->pers.jkmodPers.customSettings) // Tr!Force: [JKMod] Apply custom settings
+	{
+		client->ps.gravity = client->pers.jkmodPers.customGravity;
 
-	// set speed
-	client->ps.speed = g_speed.value;
-	client->ps.basespeed = g_speed.value;
+		// set speed
+		client->ps.speed = client->pers.jkmodPers.customSpeed;
+		client->ps.basespeed = client->pers.jkmodPers.customSpeed;
+	}
+	else
+	{
+		client->ps.gravity = g_gravity.value;
+
+		// set speed
+		client->ps.speed = g_speed.value;
+		client->ps.basespeed = g_speed.value;
+	}
 
 	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow viewangles also
 	{

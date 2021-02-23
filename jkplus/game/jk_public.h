@@ -39,13 +39,16 @@ Player / world information
 // Dimension options
 typedef enum
 {
-	DIMENSION_ALL = -1,
+	DIMENSION_ALL		= -1,
 
 	/* List */
-	DIMENSION_FREE = ( 1 << 0 ),
-	DIMENSION_DUEL = ( 1 << 1 ),
-	DIMENSION_GUNS = ( 1 << 2 ),
-	DIMENSION_RACE = ( 1 << 3 )
+	DIMENSION_FREE		= ( 1 << 0 ),
+	DIMENSION_DUEL		= ( 1 << 1 ),
+	DIMENSION_GUNS		= ( 1 << 2 ),
+	DIMENSION_RACE		= ( 1 << 3 ),
+	DIMENSION_SABER		= ( 1 << 4 ),
+	DIMENSION_INSTA		= ( 1 << 5 ),
+	DIMENSION_CHEAT		= ( 1 << 6 )
 
 } jkmod_dimensions_t;
 

@@ -163,26 +163,48 @@ Custom & default game settings function
 extern qboolean WP_HasForcePowers( const playerState_t *ps );
 
 // Custom settings
-void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, int speed, int gravity)
+void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity)
 {
+	int customSettings = ent->client->pers.jkmodPers.customSettings;
+	int customSettingsCount = ent->client->pers.jkmodPers.customSettingsCount;
+
+	// Reset?
+	if (weapons == DEFAULT && forcepowers == DEFAULT && speed == DEFAULT && gravity == DEFAULT) { 
+		ent->client->pers.jkmodPers.customSettings = 0;
+		ent->client->pers.jkmodPers.customSettingsCount = 0;
+	}
+
+	// Default check
+	if (weapons == DEFAULT)		weapons		= g_weaponDisable.integer;
+	if (forcepowers == DEFAULT)	forcepowers	= g_forcePowerDisable.integer;
+	if (speed == DEFAULT)		speed		= g_speed.value;
+	if (gravity == DEFAULT)		gravity		= g_gravity.value;
+
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		// Force
-		if (forcepowers != g_forcePowerDisable.integer)
+		if (forcepowers != ent->client->ps.fd.forcePowersKnown && forcepowers != g_forcePowerDisable.integer)
 		{
 			int i;
+			int customLevel, customCheck = -1;
+
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_SABER) {
+				customCheck = 15; // Saber attack
+				customLevel = FORCE_LEVEL_3;
+			}
 
 			i = 0;
 			while (i < NUM_FORCE_POWERS)
 			{
 				if (forcepowers & (1 << i))
 				{
+					ent->client->ps.fd.forcePowerLevel[i] = 0;
 					ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
-					ent->client->ps.fd.forcePowerLevel[i] = FORCE_LEVEL_0;
 				}
-				else {
+				else 
+				{
 					ent->client->ps.fd.forcePowersKnown |= (1 << i);
-					ent->client->ps.fd.forcePowerLevel[i] = forcelevel;
+					if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = customCheck == i ? customLevel : forcelevel;
 				}
 				i++;
 			}
@@ -193,7 +215,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 		}
 
 		// Weapons
-		if (weapons != g_weaponDisable.integer)
+		if (weapons != ent->client->ps.stats[STAT_WEAPONS] && weapons != g_weaponDisable.integer)
 		{
 			int i;
 			int firstWeapon = 0;
@@ -256,73 +278,114 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 		{
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
 		}
+	}
 
-		// Projectiles
-		JKMod_RemoveByClass(ent, "bryar_proj");
-		JKMod_RemoveByClass(ent, "generic_proj");
-		JKMod_RemoveByClass(ent, "blaster_proj");
-		JKMod_RemoveByClass(ent, "emplaced_gun_proj");
-		JKMod_RemoveByClass(ent, "bowcaster_proj");
-		JKMod_RemoveByClass(ent, "bowcaster_alt_proj");
-		JKMod_RemoveByClass(ent, "repeater_proj");
-		JKMod_RemoveByClass(ent, "repeater_alt_proj");
-		JKMod_RemoveByClass(ent, "demp2_proj");
-		JKMod_RemoveByClass(ent, "demp2_alt_proj");
-		JKMod_RemoveByClass(ent, "flech_proj");
-		JKMod_RemoveByClass(ent, "flech_alt");
-		JKMod_RemoveByClass(ent, "rocket_proj");
-		JKMod_RemoveByClass(ent, "thermal_detonator");
-		JKMod_RemoveByClass(ent, "detpack");
-		JKMod_RemoveByClass(ent, "laserTrap");
-		JKMod_RemoveByClass(ent, "sentryGun");
-		JKMod_RemoveByClass(ent, "item_shield");
+	// Other stuff
+	if (customSettings != customSettingsCount)
+	{
+		int i;
+		int removeSize;
+		char *removeName[] = {
+			// Projectiles
+			"bryar_proj",
+			"generic_proj",
+			"blaster_proj",
+			"emplaced_gun_proj",
+			"bowcaster_proj",
+			"bowcaster_alt_proj",
+			"repeater_proj",
+			"repeater_alt_proj",
+			"demp2_proj",
+			"demp2_alt_proj",
+			"flech_proj",
+			"flech_alt",
+			"rocket_proj",
+			"thermal_detonator",
+			"detpack",
+			"laserTrap",
+			"sentryGun",
+			// Items
+			"item_shield",
+			"item_ysalimari",
+			"item_force_boon",
+			"item_force_enlighten_dark",
+			"item_force_enlighten_light",
+			// Dropped
+			"weapon_blaster",
+			"weapon_disruptor",
+			"weapon_bowcaster",
+			"weapon_repeater",
+			"weapon_demp2",
+			"weapon_flechette",
+			"weapon_rocket_launcher",
+			"weapon_thermal",
+			"weapon_trip_mine",
+			"weapon_det_pack",
+		};
+
+		removeSize = sizeof(removeName) / sizeof(removeName[0]);
+
+		i = 0;
+		while (i < removeSize)
+		{
+			JKMod_RemoveByClass(ent, removeName[i]);
+			i++;
+		}
 
 		if (ent->client->ps.eFlags & EF_SEEKERDRONE) 
 		{
 			ent->client->ps.eFlags -= EF_SEEKERDRONE;
 			ent->client->ps.genericEnemyIndex = -1;
 		}
-
-		// Jetpack
-		if (jetpack) 
-		{
-			if (jkcvar_jetPack.integer) {
-				ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-				if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
-			}
-		}
-		else 
-		{
-			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
-		}
-
-		// Pass-through
-		if (passthrough)
-		{
-			if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
-			if (!ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qtrue;
-		}
-		else
-		{
-			if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
-			if (ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qfalse;
-		}
-
-		// Invulnerability
-		if (invulnerability) {
-			ent->client->pers.jkmodPers.invulnerability = qtrue;
-		}
-		else {
-			ent->client->pers.jkmodPers.invulnerability = qfalse;
-		}
-
-		// Speed
-		ent->client->ps.speed = speed;
-		ent->client->ps.basespeed = speed;
-
-		// Gravity
-		ent->client->ps.gravity = gravity;
 	}
+		
+	// Jetpack
+	if (jetpack) 
+	{
+		if (jkcvar_jetPack.integer) {
+			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+		}
+	}
+	else 
+	{
+		if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+	}
+
+	// Pass-through
+	if (passthrough)
+	{
+		if (!(ent->client->ps.eFlags & JK_PASS_THROUGH)) ent->client->ps.eFlags |= JK_PASS_THROUGH;
+		if (!ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qtrue;
+	}
+	else
+	{
+		if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		if (ent->client->pers.jkmodPers.passThroughPerm) ent->client->pers.jkmodPers.passThroughPerm = qfalse;
+	}
+
+	// Invulnerability
+	if (invulnerability) {
+		ent->client->pers.jkmodPers.invulnerability = qtrue;
+	}
+	else {
+		ent->client->pers.jkmodPers.invulnerability = qfalse;
+	}
+
+	// Speed
+	ent->client->pers.jkmodPers.customSpeed = speed;
+
+	// Gravity
+	ent->client->pers.jkmodPers.customGravity = gravity;
+
+	// Cheats
+	ent->client->noclip = qfalse;
+	ent->flags &= ~FL_GODMODE;
+
+	// Modification count
+	if (customSettings != customSettingsCount) ent->client->pers.jkmodPers.customSettings = ent->client->pers.jkmodPers.customSettingsCount;
+
+	JKMod_Printf(S_COLOR_YELLOW "Custom settings for client %i\n", ent->client->ps.clientNum);
 }
 
 /*

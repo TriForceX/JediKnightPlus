@@ -111,6 +111,9 @@ jkmod_dimensions_table_t jkmodDimensionsTable[] =
 	// cmd				title
 	{ "guns",			"Guns Arena" },
 	{ "race",			"Race Challenge" },
+	{ "saber",			"Saber Only" },
+	{ "insta",			"Instant Kill" },
+	{ "cheats",			"Cheats Mode" },
 };
 
 jkmod_dimensions_list_t jkmodDimensions;

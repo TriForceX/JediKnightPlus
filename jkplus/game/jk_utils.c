@@ -90,6 +90,8 @@ void JKMod_RemoveByClass(gentity_t *ent, char *name)
 			VectorCopy(found->r.currentOrigin, found->s.origin);
 			found->think = G_FreeEntity;
 			found->nextthink = level.time;
+
+			JKMod_Printf(S_COLOR_CYAN "Check remove %s from client %i\n", name, ent->s.number);
 		}
 	}
 }
@@ -280,4 +282,98 @@ void JKMod_G_SoundAtLoc(vec3_t loc, soundChannel_t channel, int soundIndex, int 
 
 	te = JKMod_G_TempEntity( loc, EV_GENERAL_SOUND, dimensionOwner );
 	te->s.eventParm = soundIndex;
+}
+
+/*
+=====================================================================
+Spawns an item and tosses it forward with owner info
+=====================================================================
+*/
+extern gentity_t *droppedRedFlag;
+extern gentity_t *droppedBlueFlag;
+extern qboolean	itemRegistered[MAX_ITEMS];
+
+gentity_t *JKMod_LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity, int dimensionOwner ) {
+	gentity_t	*dropped;
+	
+	JKMod_Printf(S_COLOR_MAGENTA "Dropped %s from client %i\n", item->classname, dimensionOwner);
+
+	dropped = JKMod_G_Spawn( dimensionOwner );
+	dropped->parent = &g_entities[dimensionOwner]; // store parent number
+	dropped->s.eType = ET_ITEM;
+	dropped->s.modelindex = item - bg_itemlist;	// store item number in modelindex
+	if (dropped->s.modelindex < 0)
+	{
+		dropped->s.modelindex = 0;
+	}
+	dropped->s.modelindex2 = 1; // This is non-zero is it's a dropped item
+
+	dropped->classname = item->classname;
+	dropped->item = item;
+
+	if (!itemRegistered[dropped->s.modelindex]) { // Workaround
+		RegisterItem(item); 
+		SaveRegisteredItems();
+	}
+
+	VectorSet (dropped->r.mins, -ITEM_RADIUS, -ITEM_RADIUS, -ITEM_RADIUS);
+	VectorSet (dropped->r.maxs, ITEM_RADIUS, ITEM_RADIUS, ITEM_RADIUS);
+
+	dropped->r.contents = CONTENTS_TRIGGER;
+
+	dropped->touch = Touch_Item;
+
+	G_SetOrigin( dropped, origin );
+	dropped->s.pos.trType = TR_GRAVITY;
+	dropped->s.pos.trTime = level.time;
+	VectorCopy( velocity, dropped->s.pos.trDelta );
+
+	dropped->s.eFlags |= EF_BOUNCE_HALF;
+	if ((g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY) && item->giType == IT_TEAM) { // Special case for CTF flags
+		dropped->think = Team_DroppedFlagThink;
+		dropped->nextthink = level.time + 30000;
+		Team_CheckDroppedItem( dropped );
+
+		//rww - so bots know
+		if (strcmp(dropped->classname, "team_CTF_redflag") == 0)
+		{
+			droppedRedFlag = dropped;
+		}
+		else if (strcmp(dropped->classname, "team_CTF_blueflag") == 0)
+		{
+			droppedBlueFlag = dropped;
+		}
+	} else { // auto-remove after 30 seconds
+		dropped->think = G_FreeEntity;
+		dropped->nextthink = level.time + 30000;
+	}
+
+	dropped->flags = FL_DROPPED_ITEM;
+
+	if (item->giType == IT_WEAPON || item->giType == IT_POWERUP)
+	{
+		dropped->s.eFlags |= EF_DROPPEDWEAPON;
+	}
+
+	vectoangles(velocity, dropped->s.angles);
+	dropped->s.angles[PITCH] = 0;
+
+	if (item->giTag == WP_TRIP_MINE ||
+		item->giTag == WP_DET_PACK)
+	{
+		dropped->s.angles[PITCH] = -90;
+	}
+
+	if (item->giTag != WP_BOWCASTER &&
+		item->giTag != WP_DET_PACK &&
+		item->giTag != WP_THERMAL)
+	{
+		dropped->s.angles[ROLL] = -90;
+	}
+
+	dropped->physicsObject = qtrue;
+
+	trap_LinkEntity (dropped);
+
+	return dropped;
 }

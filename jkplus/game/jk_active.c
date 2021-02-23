@@ -214,7 +214,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		{
 			if (!ent->client->pers.jkmodPers.passThroughPerm) 
 			{
-				if (ent->client->ps.groundEntityNum != ENTITYNUM_WORLD) { ent->client->ps.origin[2] += 2; ent->client->ps.eFlags ^= EF_TELEPORT_BIT; } // Fix me
+				if (ent->client->ps.groundEntityNum != ENTITYNUM_WORLD) { ent->client->ps.origin[2] += 2; ent->client->ps.eFlags ^= EF_TELEPORT_BIT; } // Workaround
 				if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
 				if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 			}

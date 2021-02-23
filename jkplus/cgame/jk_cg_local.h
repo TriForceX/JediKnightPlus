@@ -59,6 +59,7 @@ typedef struct
 // Media
 typedef struct 
 {
+	qhandle_t	saberModel;
 	qhandle_t	bactaModel;
 	qhandle_t	jetpackModel;
 	qhandle_t	hatSanta;

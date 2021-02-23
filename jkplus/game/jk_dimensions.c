@@ -16,6 +16,40 @@ void trap_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const v
 
 /*
 =====================================================================
+Dimension settings structure
+=====================================================================
+*/
+typedef struct 
+{
+	unsigned	dimension;
+	int			weapons;
+	int			forcepowers;
+	int			forcelevel;
+	qboolean	holdables;
+	qboolean	jetpack;
+	qboolean	invulnerability;
+	qboolean	passthrough;
+	float		speed;
+	float		gravity;
+
+} jkmodDimSettings_t;
+
+// Setting list
+static jkmodDimSettings_t jkmodDimSettings[] =
+{
+	// dimension		weapons		forcepowers	forcelevel		holdables	jetpack		invulnerability	passthrough	speed	gravity
+    { DIMENSION_FREE,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		DEFAULT,	DEFAULT },
+    { DIMENSION_GUNS,	6,			262141,		FORCE_LEVEL_1,	qtrue,		qtrue,		qfalse,			qfalse,		250,		800 },
+	{ DIMENSION_RACE,	65531,		229373,		FORCE_LEVEL_1,	qfalse,		qfalse,		qtrue,			qtrue,		250,		800 },
+	{ DIMENSION_SABER,	65531,		229373,		FORCE_LEVEL_1,	qfalse,		qfalse,		qfalse,			qfalse,		250,		800 },
+	{ DIMENSION_INSTA,	65503,		262141,		FORCE_LEVEL_3,	qfalse,		qfalse,		qfalse,			qfalse,		415,		800 },
+	{ DIMENSION_CHEAT,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		250,		800 },
+};
+
+static int jkmodDimSettingsSize = sizeof(jkmodDimSettings) / sizeof(jkmodDimSettings[0]);
+
+/*
+=====================================================================
 Dimension settings function
 =====================================================================
 */
@@ -23,52 +57,28 @@ void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 {
 	if (jkcvar_altDimension.integer)
 	{
-		switch (dimension)
+		int i;
+		int selected;
+
+		i = 0;
+		while (i < jkmodDimSettingsSize)
 		{
-			case DIMENSION_GUNS:
+			if (jkmodDimSettings[i].dimension == dimension) 
 			{
 				JKMod_CustomGameSettings(ent, 
-					6,				// Weapons
-					262141,			// Force
-					FORCE_LEVEL_1,	// Force level
-					qtrue,			// Holdable items
-					qtrue,			// Jetpack
-					qfalse,			// Invulnerability
-					qfalse,			// Pass-through
-					g_speed.value,	// Speed
-					g_gravity.value	// Gravity
+					jkmodDimSettings[i].weapons,			// Weapons
+					jkmodDimSettings[i].forcepowers,		// Force
+					jkmodDimSettings[i].forcelevel,			// Force level
+					jkmodDimSettings[i].holdables,			// Holdable items
+					jkmodDimSettings[i].jetpack,			// Jetpack
+					jkmodDimSettings[i].invulnerability,	// Invulnerability
+					jkmodDimSettings[i].passthrough,		// Pass-through
+					jkmodDimSettings[i].speed,				// Speed
+					jkmodDimSettings[i].gravity				// Gravity
 				);
+				break;
 			}
-			break;
-			case DIMENSION_RACE:
-			{
-				JKMod_CustomGameSettings(ent, 
-					65531,			// Weapons
-					229373,			// Force
-					FORCE_LEVEL_1,	// Force level
-					qfalse,			// Holdable items
-					qfalse,			// Jetpack
-					qtrue,			// Invulnerability
-					qtrue,			// Pass-through
-					g_speed.value,	// Speed
-					g_gravity.value	// Gravity
-				);
-			}
-			break;
-			case DIMENSION_FREE:
-			{
-				JKMod_CustomGameSettings(ent, 
-					g_weaponDisable.integer,		// Weapons
-					g_forcePowerDisable.integer,	// Force
-					qfalse,							// Force level
-					qfalse,							// Holdable items
-					qfalse,							// Jetpack
-					qfalse,							// Invulnerability
-					qfalse,							// Pass-through
-					g_speed.value,					// Speed
-					g_gravity.value					// Gravity
-				);
-			}
+			i++;
 		}
 	}
 }
@@ -102,7 +112,7 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 	}
 	else
 	{
-		// Guns Arena
+		// Guns
 		if (!Q_stricmp(dimension, "guns"))
 		{
 			if (!(jkcvar_altDimension.integer & DIMENSION_GUNS))
@@ -133,7 +143,7 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				}
 			}
 		}
-		// Race Arena
+		// Race
 		else if (!Q_stricmp(dimension, "race"))
 		{
 			if (!(jkcvar_altDimension.integer & DIMENSION_RACE))
@@ -160,6 +170,99 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 					JKMod_DimensionSet(ent, DIMENSION_RACE);
 					trap_SendServerCommand(ent - g_entities, va("cp \"Race dimension\n\""));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Race ^7dimension\n\"", ent->client->pers.netname));
+					return qtrue;
+				}
+			}
+		}
+		// Saber
+		else if (!Q_stricmp(dimension, "saber"))
+		{
+			if (!(jkcvar_altDimension.integer & DIMENSION_SABER))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return qfalse;
+			}
+			else
+			{
+				// Delay
+				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionTime.integer;
+
+				// Disable
+				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_SABER)
+				{
+					JKMod_DimensionSet(ent, DIMENSION_FREE);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Saber only dimension left\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Saber only ^7dimension\n\"", ent->client->pers.netname));
+					return qfalse;
+				}
+				// Enable
+				else
+				{
+					JKMod_DimensionSet(ent, DIMENSION_SABER);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Saber only dimension\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Saber only ^7dimension\n\"", ent->client->pers.netname));
+					return qtrue;
+				}
+			}
+		}
+		// Insta
+		else if (!Q_stricmp(dimension, "insta"))
+		{
+			if (!(jkcvar_altDimension.integer & DIMENSION_INSTA))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return qfalse;
+			}
+			else
+			{
+				// Delay
+				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionTime.integer;
+
+				// Disable
+				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA)
+				{
+					JKMod_DimensionSet(ent, DIMENSION_FREE);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Instant kill dimension left\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Instant kill ^7dimension\n\"", ent->client->pers.netname));
+					return qfalse;
+				}
+				// Enable
+				else
+				{
+					JKMod_DimensionSet(ent, DIMENSION_INSTA);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Instant kill dimension\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Instant kill ^7dimension\n\"", ent->client->pers.netname));
+					return qtrue;
+				}
+			}
+		}
+		// Cheats
+		else if (!Q_stricmp(dimension, "cheats"))
+		{
+			if (!(jkcvar_altDimension.integer & DIMENSION_CHEAT))
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
+				return qfalse;
+			}
+			else
+			{
+				// Delay
+				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionTime.integer;
+
+				// Disable
+				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT)
+				{
+					JKMod_DimensionSet(ent, DIMENSION_FREE);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Cheats dimension left\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " left the ^3Cheats ^7dimension\n\"", ent->client->pers.netname));
+					return qfalse;
+				}
+				// Enable
+				else
+				{
+					JKMod_DimensionSet(ent, DIMENSION_CHEAT);
+					trap_SendServerCommand(ent - g_entities, va("cp \"Cheats dimension\n\""));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3Cheats ^7dimension\n\"", ent->client->pers.netname));
 					return qtrue;
 				}
 			}
@@ -283,20 +386,20 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
 		ent->jkmodEnt.dimensionNumber = dimension;
 
-		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-		{
-			// Check pass-trough
-			if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		// Check pass-trough
+		if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
 
-			// Check stuck
-			if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
+		// Check stuck
+		if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 
-			// Check saber
-			if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
+		// Check saber
+		if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
 
-			// Check settings
-			JKMod_DimensionSettings(ent, dimension);
-		}
+		// Update settings
+		ent->client->pers.jkmodPers.customSettingsCount++;
+
+		// Set settings
+		JKMod_DimensionSettings(ent, dimension);
 
 		for (i = 0; i < level.num_entities; i++) {
 			if (g_entities[i].inuse) {
