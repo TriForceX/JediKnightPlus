@@ -2120,7 +2120,11 @@ qboolean ExampleAnimEntClearLOS(gentity_t *self, vec3_t point)
 
 	trap_Trace(&tr, self->r.currentOrigin, 0, 0, point, self->s.number, self->clipmask);
 
-	if (ExampleAnimEntAlignment(self) == ANIMENT_ALIGNED_GOOD)
+	if (!(g_entities[tr.entityNum].r.contents & CONTENTS_BODY)) // Tr!Force: [JKMod] Ignore empty bodies
+	{
+		return qfalse;
+	}
+	else if (ExampleAnimEntAlignment(self) == ANIMENT_ALIGNED_GOOD)
 	{
 		if (tr.fraction == 1 ||
 			(g_entities[tr.entityNum].s.eType == ET_GRAPPLE && ExampleAnimEntAlignment(&g_entities[tr.entityNum]) != ANIMENT_ALIGNED_GOOD) ||
@@ -2752,7 +2756,7 @@ void ExampleAnimEntUpdateSelf(gentity_t *self)
 	VectorCopy(preserveAngles, self->s.apos.trBase);
 }
 
-void G_SpawnExampleAnimEnt(vec3_t pos, int aeType, animentCustomInfo_t *aeInfo)
+void G_SpawnExampleAnimEnt(vec3_t pos, int aeType, animentCustomInfo_t *aeInfo, int dimensionOwner) // Tr!Force: [Dimensions] Tag owner info
 {
 	gentity_t *animEnt;
 	vec3_t playerMins;
@@ -2822,7 +2826,8 @@ void G_SpawnExampleAnimEnt(vec3_t pos, int aeType, animentCustomInfo_t *aeInfo)
 		}
 	}
 
-	animEnt = JKMod_G_Spawn( ENTITYNUM_NONE ); // Tr!Force: [Dimensions] Tag owner info
+	animEnt = JKMod_G_Spawn( dimensionOwner ); // Tr!Force: [Dimensions] Tag owner info
+	animEnt->jkmodEnt.dimensionNumber = g_entities[dimensionOwner].jkmodEnt.dimensionNumber; // Tr!Force: [Dimensions] Tag owner info
 
 	animEnt->watertype = aeType; //set the animent type
 
@@ -2910,7 +2915,7 @@ void G_SpawnExampleAnimEnt(vec3_t pos, int aeType, animentCustomInfo_t *aeInfo)
 
 	animEnt->health = 60;
 
-	animEnt->s.owner = MAX_CLIENTS+1;
+	animEnt->s.owner = dimensionOwner; // Tr!Force: [Dimensions] Tag owner info
 	animEnt->s.shouldtarget = qtrue;
 	animEnt->s.teamowner = 0;
 
@@ -3070,7 +3075,7 @@ void AESpawner_Think(gentity_t *ent)
 					{
 						aeInfo = ExampleAnimEntCustomData(ent); //we can get this info from the spawner, because it has its waterlevel set too.
 					}
-					G_SpawnExampleAnimEnt(ent->s.origin, ent->watertype, aeInfo);
+					G_SpawnExampleAnimEnt(ent->s.origin, ent->watertype, aeInfo, ent->s.number); // Tr!Force: [Dimensions] Tag owner info
 				}
 			}
 		}
@@ -3280,6 +3285,35 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 	int		iArg = 0;
 	int		argNum = trap_Argc();
 
+	// Tr!Force: [Dimensions] Check maximum allowed
+	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT)
+	{
+		gentity_t *found = NULL;
+		int	current = 0;
+		int	owned = 0;
+		int	limit = 3;
+		int	maximum = 9;
+
+		// Find
+		while ((found = G_Find(found, FOFS(classname), "g2animent")) != NULL)
+		{
+			current++;
+			if (found->s.owner != ent->s.number) {
+				continue;
+			}
+			owned++;
+		}
+
+		// Check
+		if (owned == limit || current == maximum)
+		{
+			char *message = current == maximum ? "The maximum limit allowed has been reached" : "You have reached the maximum allowed per player";
+
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", message));
+			return;
+		}
+	}
+
 	memset(&aeInfo, 0, sizeof(aeInfo));
 
 	if (argNum > 1)
@@ -3349,7 +3383,7 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 		}
 	}
 
-	G_SpawnExampleAnimEnt(fwdPos, iArg, &aeInfo);
+	G_SpawnExampleAnimEnt(fwdPos, iArg, &aeInfo, ent->s.number); // Tr!Force: [Dimensions] Tag owner info
 }
 //rww - here ends the main example g2animent stuff
 

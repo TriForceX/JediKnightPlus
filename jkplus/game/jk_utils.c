@@ -79,7 +79,7 @@ void JKMod_RemoveByClass(gentity_t *ent, char *name)
 
 	while ((found = G_Find(found, FOFS(classname), name)) != NULL)
 	{
-		if (found->parent == ent)
+		if (found->parent == ent || (!Q_stricmp(name, "g2animent") && found->s.owner == ent->s.number))
 		{
 			if (!Q_stricmp(name, "sentryGun") && ent->client->ps.fd.sentryDeployed) {
 				ent->client->ps.fd.sentryDeployed = qfalse;

@@ -303,7 +303,9 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 			"thermal_detonator",
 			"detpack",
 			"laserTrap",
+			// Misc
 			"sentryGun",
+			"g2animent",
 			// Items
 			"item_shield",
 			"item_ysalimari",
