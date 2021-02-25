@@ -69,6 +69,7 @@ typedef struct
 	qhandle_t	hatCringe;
 	qhandle_t	hatSombrero;
 	qhandle_t	hatGentleman;
+	qhandle_t	hatPirate;
 	
 	qhandle_t	hitBox;
 	qhandle_t	hitBoxNoCull;

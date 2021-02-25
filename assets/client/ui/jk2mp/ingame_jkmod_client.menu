@@ -1582,6 +1582,7 @@
 				"Cringe"  		5
 				"Sombrero"  	6
 				"Gentleman"  	7
+				"Pirate"  		8
 			}
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT

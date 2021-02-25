@@ -60,6 +60,8 @@ void JKMod_CG_Player(centity_t *cent)
 				jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
 			case 7:
 				jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
+			case 8:
+				jkmod_hatFile = cgs.jkmodMedia.hatPirate; break;
 		}
 
 		if (jkmod_hatFile) {
