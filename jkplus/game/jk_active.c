@@ -237,16 +237,6 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
 	}
 
-	// Check jetpack JKA physics
-	if (jkcvar_jetPackPhysics.integer)
-	{
-		if (!(ent->client->ps.stats[JK_MOVEMENT] & JK_JETPACK_JKA)) ent->client->ps.stats[JK_MOVEMENT] |= JK_JETPACK_JKA;
-	}
-	else
-	{
-		if (ent->client->ps.stats[JK_MOVEMENT] & JK_JETPACK_JKA) ent->client->ps.stats[JK_MOVEMENT] &= ~JK_JETPACK_JKA;
-	}
-
 	// Check invulnerability
 	if (ent->client->pers.jkmodPers.invulnerability)
 	{

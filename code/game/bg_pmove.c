@@ -752,7 +752,7 @@ static qboolean PM_CheckJump( void )
 		return qfalse;
 	}
 
-	// Tr!Force: [JetPack] JKA physics
+	// Tr!Force: [PlayerMovement] JKA Jetpack Style
 	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
 	{
 		return qfalse;
@@ -2352,7 +2352,7 @@ static void PM_GroundTrace( void ) {
 		return;
 	}
 
-	// Tr!Force: [JetPack] JKA physics
+	// Tr!Force: [PlayerMovement] JKA Jetpack Style
 	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
 	{
 		PM_GroundTraceMissed();
@@ -3818,6 +3818,20 @@ static void PM_Weapon( void )
 		return;
 	}
 
+	// Tr!Force: [PlayerMovements] Weapon stand
+	if (pm->ps->stats[JK_MOVEMENT] & JK_WEAPON_STAND)
+	{
+		if (pm->ps->weaponstate == WEAPON_READY && pm->ps->weaponTime <= 0 
+			&& (pm->ps->weapon >= WP_BRYAR_PISTOL || pm->ps->weapon == WP_STUN_BATON) 
+			&& pm->ps->torsoTimer <= 0 
+			&& (pm->ps->torsoAnim) != WeaponReadyAnim[pm->ps->weapon] 
+			&& pm->ps->torsoAnim != TORSO_WEAPONIDLE3 
+			&& pm->ps->weapon != WP_EMPLACED_GUN)
+		{
+			PM_StartTorsoAnim( WeaponReadyAnim[pm->ps->weapon] );
+		}
+	}
+
 	if (((pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == TORSO_WEAPONREADY4 ||
 		(pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_ATTACK4) &&
 		(pm->ps->weapon != WP_DISRUPTOR || pm->ps->zoomMode != 1))
@@ -4495,7 +4509,7 @@ void JKMod_PM_JetPack(void)
 	scale = PM_CmdScale(&pm->cmd);
 	PM_SetMovementDir();
 
-	// JKA physics
+	// Tr!Force: [PlayerMovement] JKA Jetpack Style
 	if (pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA)
 	{
 		float groundDist = 0;
@@ -4561,7 +4575,7 @@ void JKMod_PM_JetPack(void)
 		PM_Accelerate(wishDir, wishSpeed, pm_airaccelerate);
 		PM_StepSlideMove(qtrue);
 	}
-	// Regular Q3 mods
+	// Regular Q3 style
 	else
 	{
 		// User actions

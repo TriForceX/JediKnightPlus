@@ -97,6 +97,9 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Set default dimension and refresh
 	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 
+	// Set player movements
+	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
+
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
 	clientVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");

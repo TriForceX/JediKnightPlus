@@ -208,7 +208,7 @@ extern	vmCvar_t					jkcvar_mapFixes;
 extern	vmCvar_t					jkcvar_useAnim;
 
 extern	vmCvar_t					jkcvar_jetPack;
-extern	vmCvar_t					jkcvar_jetPackPhysics;
+extern	vmCvar_t					jkcvar_playerMovement;
 
 /*
 =====================================================================
@@ -283,6 +283,7 @@ void		JKMod_serverIdleCheck(void);
 // jk_misc.c
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
+void		JKMod_PlayerMovementCheck(gentity_t *ent);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 

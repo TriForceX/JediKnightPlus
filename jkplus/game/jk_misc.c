@@ -21,7 +21,7 @@ qboolean JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps)
 
 	if (!ent || !ent->client || ent->s.number > 31)
 	{
-		G_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
+		JKMod_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
 	if (ent->client->pers.jkmodPers.CustomDuel == 0)
@@ -66,6 +66,27 @@ qboolean JKMod_PlayerMoving(gentity_t *ent, int move, int attack)
 	}
 }
 
+/*
+=====================================================================
+Player movements allowed
+=====================================================================
+*/
+void JKMod_PlayerMovementCheck(gentity_t *ent)
+{
+	// JKA Jetpack Style
+	if (jkcvar_playerMovement.integer & JK_JETPACK_JKA) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_JETPACK_JKA;
+	else
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_JETPACK_JKA;
+	
+	// Weapon Stand Fix
+	if (jkcvar_playerMovement.integer & JK_WEAPON_STAND) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_WEAPON_STAND;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_WEAPON_STAND;
+
+	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
+}
 /*
 =====================================================================
 Teleport player function

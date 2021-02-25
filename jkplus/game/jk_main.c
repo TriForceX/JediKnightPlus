@@ -84,7 +84,7 @@ vmCvar_t	jkcvar_mapFixes;
 vmCvar_t	jkcvar_useAnim;
 
 vmCvar_t	jkcvar_jetPack;
-vmCvar_t	jkcvar_jetPackPhysics;
+vmCvar_t	jkcvar_playerMovement;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
@@ -142,7 +142,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_useAnim,				"jk_useAnim",				"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_jetPackPhysics,		"jk_jetPackPhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_test1,				"jk_test1",					"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,				"jk_test2",					"0",					CVAR_ARCHIVE,						0, qtrue },
@@ -323,6 +323,21 @@ void JKMod_G_UpdateCvars(void)
 					if (strcmp(gameplay, "0") != 0)
 					{
 						JKMod_gamePlay(gameplay);
+					}
+				}
+
+				// Player movement
+				if (cv->vmCvar == &jkcvar_playerMovement)
+				{
+					gentity_t *ent;
+					int num;
+
+					for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent)
+					{
+						if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+						{
+							JKMod_PlayerMovementCheck(ent);
+						}
 					}
 				}
 			}

@@ -22,6 +22,7 @@ Global definitions
 
 // Movement stuff
 #define JK_JETPACK_JKA			( 1 << 0 )
+#define JK_WEAPON_STAND			( 1 << 1 )
 
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 28 )
