@@ -85,6 +85,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_WEAPON_STAND;
 
+	// Disruptor Zoom Always (Requires clientside)
+	if ((jkcvar_playerMovement.integer & JK_DISRUPTOR_WALK) && ent->client->pers.jkmodPers.ClientPlugin) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_DISRUPTOR_WALK;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DISRUPTOR_WALK;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 /*

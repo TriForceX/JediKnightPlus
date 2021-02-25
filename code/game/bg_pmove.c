@@ -4177,7 +4177,7 @@ void PM_AdjustAttackStates( pmove_t *pm )
 
 		if (pm->cmd.upmove > 0 || pm->cmd.forwardmove || pm->cmd.rightmove)
 		{
-			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime)
+			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_MOVEMENT] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerMovement] Disruptor zoom
 			{ //check for == 1 so we can't turn binoculars off with disruptor alt fire
 				pm->ps->zoomMode = 0;
 				pm->ps->zoomTime = pm->ps->commandTime;
@@ -4206,7 +4206,7 @@ void PM_AdjustAttackStates( pmove_t *pm )
 	{
 		if (pm->cmd.upmove > 0 || pm->cmd.forwardmove || pm->cmd.rightmove)
 		{
-			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime)
+			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_MOVEMENT] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerMovement] Disruptor zoom
 			{ //check for == 1 so we can't turn binoculars off with disruptor alt fire
 				pm->ps->zoomMode = 0;
 				pm->ps->zoomTime = pm->ps->commandTime;
