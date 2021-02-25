@@ -797,6 +797,14 @@ void SP_worldspawn( void )
 	trap_SetConfigstring( CS_LEVEL_START_TIME, va("%i", level.startTime ) );
 
 	G_SpawnString( "music", "", &text );
+
+	// Tr!Force: [JKMod] Set default music if empty
+	if (jkcvar_mapDefaultMusic.string[0] && strcmp(jkcvar_mapDefaultMusic.string, "0") != 0 && !text[0])
+	{
+		G_SpawnString( "music", jkcvar_mapDefaultMusic.string, &text );
+		JKMod_Printf(S_COLOR_GREEN "No map music, setting the default one: %s\n", jkcvar_mapDefaultMusic.string);
+	}
+
 	trap_SetConfigstring( CS_MUSIC, text );
 
 	G_SpawnString( "message", "", &text );

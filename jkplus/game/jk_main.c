@@ -81,6 +81,7 @@ vmCvar_t	jkcvar_macroScan;
 vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
 vmCvar_t	jkcvar_mapFixes;
+vmCvar_t	jkcvar_mapDefaultMusic;
 vmCvar_t	jkcvar_useAnim;
 
 vmCvar_t	jkcvar_jetPack;
@@ -139,6 +140,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapDefaultMusic,		"jk_mapDefaultMusic",		"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_useAnim,				"jk_useAnim",				"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
