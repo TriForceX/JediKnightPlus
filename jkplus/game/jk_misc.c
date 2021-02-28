@@ -411,6 +411,10 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	ent->client->noclip = qfalse;
 	ent->flags &= ~FL_GODMODE;
 
+	// Timers
+	ent->client->ps.duelTime = 0;
+	ent->client->pers.jkmodPers.raceStartTime = 0;
+
 	// Modification count
 	if (customSettings != customSettingsCount) ent->client->pers.jkmodPers.customSettings = ent->client->pers.jkmodPers.customSettingsCount;
 

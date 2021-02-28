@@ -28,6 +28,12 @@ void JKMod_CG_Draw2D(void)
 		JKMod_CG_ChatBox_DrawStrings();
 	}
 
+	// Draw race timer
+	if (jkcvar_cg_drawRaceTimer.integer)
+	{
+		JKMod_CG_DrawRaceTimer();
+	}
+
 	// Draw Jetpack Fuel
 	if (cgs.jkmodCvar.jetPack == 1)
 	{
@@ -430,4 +436,39 @@ void JKMod_CG_DrawDimensionString(void)
 	if (dimensionStr) {
 		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
 	}
+}
+
+/*
+=====================================================================
+Draw race timer
+=====================================================================
+*/
+void JKMod_CG_DrawRaceTimer(void)
+{
+	int			w1, w2;
+	int			timeSec, timeMin, timeMsec;
+	const char	*t1, *t2;
+	float		color[4];
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.snap->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
+	if (!cg.predictedPlayerState.duelTime) return;
+
+	timeMsec = cg.time - cg.predictedPlayerState.duelTime;
+	timeSec = timeMsec / 1000;
+	timeMsec -= timeSec * 1000;
+	timeMin = timeSec / 60;
+	timeSec -= timeMin * 60;
+
+	t1 = CG_GetStripEdString("JKINGAME", "RACE_TIME");
+	w1 = CG_DrawStrlen(t1) * SMALLCHAR_WIDTH;
+
+	t2 = va("%02i:%02i:%03i", timeMin, timeSec, timeMsec);
+	w2 = CG_DrawStrlen(t2) * BIGCHAR_WIDTH;
+
+	color[0] = color[1] = color[2] = 1.0;
+	color[3] = 1.0f;
+
+	CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
+	CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
 }

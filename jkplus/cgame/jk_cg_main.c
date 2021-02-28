@@ -31,6 +31,7 @@ vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
 vmCvar_t	jkcvar_cg_drawForcePoints;
 vmCvar_t	jkcvar_cg_drawInventory;
+vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
 vmCvar_t	jkcvar_cg_scoreboardIcons;
 vmCvar_t	jkcvar_cg_chatIcon;
@@ -62,6 +63,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawForcePoints,	"jk_cg_drawForcePoints",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawInventory,		"jk_cg_drawInventory",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_drawRaceTimer,		"jk_cg_drawRaceTimer",		"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawBactaModel,	"jk_cg_drawBactaModel",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_scoreboardIcons,	"jk_cg_scoreboardIcons",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },

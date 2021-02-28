@@ -8,7 +8,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.13.6-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.14.0-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -46,9 +46,10 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Teleport chat commands (Map areas, save & load, etc...)
 - [x] Welcome message on client begin (MOTD)
 - [x] Server news messages displayed constantly
+- [x] Alternate dimensions (Private duel, guns only, race defrag, etc...)
 - [ ] Custom ingame modes (Instant kill, survival, last man standing, etc...)
 - [ ] Custom player private chat rooms
-- [x] Show damage plums on hits
+- [x] Show damage plums on weapon hits
 - [ ] Clan system (Tag protection, member role, etc...)
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
 - [x] Chat protect feature (Players can't kill during chat)
@@ -62,7 +63,6 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
 - [x] Closed server feature (Allow by password)
-- [x] Alternative dimensions (Duel, guns, race, etc...)
 - [x] Custom call vote system (Custom control, vote results, etc...)
 - [ ] Improved slow-mo duel end functionally
 - [x] Drop flag command for CTF & CTY game types
@@ -70,6 +70,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Force client plugin usage (Optional)
 - [x] Prevent player warping or lag scripts
 - [x] Custom server idle reset
+- [x] Custom map default music
 - [x] Disable kill when player teleport or spawn inside another player
 - [ ] Portal gun (Experimental)
 
@@ -112,7 +113,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Client Side
 **Description:** Additional features using the clientside plugin
 
-- [x] Atmospheric effects (Rain, snow, etc...)
+- [ ] Atmospheric effects (Rain, snow, etc...)
 - [ ] Extra info for scoreboard (Wins, losses, flag captures, etc...)
 - [ ] On-screen keyboard display to see key presses on screen
 - [x] Jedi Academy chat display mode
@@ -134,6 +135,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Alternative force points display on hud
 - [x] Display bacta indicator on belt (3D model)
 - [ ] Display current weapon in back (3D model)
+- [x] Display race timer on race dimension
 - [x] Enable custom item indicator on hud
 - [ ] Enable push/pull force effect color to match with the color of lightsaber
 - [ ] Enable the color for the second blade with dual blade lightsabers
@@ -144,14 +146,15 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom player hats
 - [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
-- [x] Disable duel glow
+- [x] Custom private duel finish animation
+- [x] Toggle private duel glow
+- [x] Fixed force force rage recovery icon borders
 - [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
 - [x] Enable 23 custom BaseJK player skins by surf files
 - [x] Increased some limits on menus (Fov, camera range, name length, etc...)
-- [x] Enable invisible private duels
 - [x] Macro scanning feature (anti script)
-- [x] Smooth client dimensions
+- [x] Disruptor zoom walk and run enabled
 - [ ] Show server maps on callvote menus
 
 ---
@@ -180,17 +183,19 @@ The following people supported and helped me directly on this project.
 - JediDog~ _(1.03 gameplay support)_
 - [NewAge](https://github.com/erfg12) _(Admin management support)_
 - Mr.Wonko _(JK2 base improvements support)_
-- [Xycaleth](https://github.com/xycaleth) _(LeagueMod tweaks)_
+- [Xycaleth](https://github.com/xycaleth) _(Some LeagueMod tweaks)_
 - [Daggolin](https://github.com/Daggolin) _(Coding support and gameplay fixes)_
 - [Ouned / Twitch](https://github.com/ouned) _(Engine coding support)_
 - [Kameleon](https://github.com/KevinFoged) _(3D model draw angles fix)_
 - [Fau](https://github.com/aufau) _(2D aspect ratio fix & SaberMod tweaks)_
-- [Bucky](https://github.com/Bucky21659) _(EternalJK2 tweaks)_
+- [Bucky](https://github.com/Bucky21659) _(Some EternalJK2 tweaks)_
+- [EternalCodes](https://github.com/eternalcodes) _(Some EternalJK tweaks)_
+- Abrum _(Pirate hat base model)_
 - BarryHit _(Support and testing)_
 - Player _(Support and testing)_
 - [Flendo](https://github.com/FlendoJK2) _(Support and testing)_
-- Padaget _(vVv mod tweaks)_
-- [VideoP / Loda](https://github.com/videoP) _(JAPro tweaks and cosmetics)_
+- Padaget _(Some vVv mod tweaks)_
+- [VideoP / Loda](https://github.com/videoP) _(Some JAPro tweaks)_
 - Noodle _(User interface & modeling support)_
 - QK-Lite / Effect.ve _(General coding support)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_

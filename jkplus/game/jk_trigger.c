@@ -10,6 +10,54 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
+Check trigger contact
+=====================================================================
+*/
+qboolean JKMod_InTrigger(vec3_t interpOrigin, gentity_t *trigger)
+{
+	vec3_t	mins, maxs;
+	static const vec3_t	pmins = {-15, -15, DEFAULT_MINS_2};
+	static const vec3_t	pmaxs = {15, 15, DEFAULT_MAXS_2};
+
+	VectorAdd( interpOrigin, pmins, mins );
+	VectorAdd( interpOrigin, pmaxs, maxs );
+
+	if (trap_EntityContact(mins, maxs, trigger)) return qtrue;
+	
+	return qfalse;
+}
+
+/*
+=====================================================================
+Check interpolate touch time
+=====================================================================
+*/
+int JKMod_InterpolateTouchTime(gentity_t *activator, gentity_t *trigger)
+{
+	vec3_t	interpOrigin, delta;
+	int lessTime = -1;
+
+	qboolean touched = qfalse;
+	qboolean inTrigger;
+
+	VectorCopy(activator->client->ps.origin, interpOrigin);
+	VectorScale(activator->s.pos.trDelta, 0.001f, delta);
+
+	while ((inTrigger = JKMod_InTrigger(interpOrigin, trigger)) || !touched) 
+	{
+		if (inTrigger) touched = qtrue;
+
+		lessTime++;
+		VectorSubtract(interpOrigin, delta, interpOrigin);
+		
+		if (lessTime >= 250) break; 
+	}
+
+	return lessTime;
+}
+
+/*
+=====================================================================
 Race trigger functions
 =====================================================================
 */
@@ -19,6 +67,7 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
 	int	i;
 	int	clientNum = -1;
+	int	lessTime;
 
 	// Check dimension
 	if (!(jkcvar_altDimension.integer & DIMENSION_RACE)) return;
@@ -29,21 +78,13 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	// Check mode
 	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
-	// Find client
-	for (i = 0; i < MAX_CLIENTS; i++) {
-		if (activator->client == &level.clients[i]) {
-			clientNum = i;
-			break;
-		}
-	}
-	if (clientNum == -1) {
-		G_Printf("Couldn't find client\n");
-		return;
-	}
+	// Set info
+	lessTime = JKMod_InterpolateTouchTime(activator, ent);
 
-	// Set Info
+	activator->client->ps.duelTime = level.time - lessTime;
+	activator->client->pers.jkmodPers.raceStartTime = trap_Milliseconds() - lessTime;
+
 	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer started!\""));
-	level.jkmodLevel.racerStartTime[clientNum] = trap_Milliseconds();
 }
 
 // Stop race timer
@@ -62,23 +103,11 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	// Check mode
 	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
-	// Find client
-	for (i = 0; i < MAX_CLIENTS; i++) {
-		if (activator->client == &level.clients[i]) {
-			clientNum = i;
-			break;
-		}
-	}
-	if (clientNum == -1) {
-		G_Printf("Couldn't find client\n");
-		return;
-	}
-
 	// Check timer
-	if (!level.jkmodLevel.racerStartTime[clientNum]) return;
+	if (!activator->client->pers.jkmodPers.raceStartTime) return;
 
 	// Show info
-	timeMsec = trap_Milliseconds() - level.jkmodLevel.racerStartTime[clientNum];
+	timeMsec = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
 	timeSec = timeMsec / 1000;
 	timeMsec -= timeSec * 1000;
 	timeMin = timeSec / 60;
@@ -88,7 +117,8 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer finished!\""));
 
 	// Reset timer
-	level.jkmodLevel.racerStartTime[clientNum] = 0;
+	activator->client->ps.duelTime = 0;
+	activator->client->pers.jkmodPers.raceStartTime = 0;
 }
 
 // Checkpoint race timer
@@ -107,23 +137,11 @@ void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activato
 	// Check mode
 	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
-	// Find client
-	for (i = 0; i < MAX_CLIENTS; i++) {
-		if (activator->client == &level.clients[i]) {
-			clientNum = i;
-			break;
-		}
-	}
-	if (clientNum == -1) {
-		G_Printf("Couldn't find client\n");
-		return;
-	}
-
 	// Check timer
-	if (!level.jkmodLevel.racerStartTime[clientNum]) return;
+	if (!activator->client->pers.jkmodPers.raceStartTime) return;
 
 	// Show info
-	timeMsec = trap_Milliseconds() - level.jkmodLevel.racerStartTime[clientNum];
+	timeMsec = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
 	timeSec = timeMsec / 1000;
 	timeMsec -= timeSec * 1000;
 	timeMin = timeSec / 60;

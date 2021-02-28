@@ -871,15 +871,10 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_HUDSTYLE
-			descText			@JKMENUS_CLIENT_HUDSTYLE_DESC
-			cvar				"cg_hudFiles"
-			cvarFloatList
-			{
-				"Normal"  							0
-				@JKMENUS_CLIENT_HUDSTYLE_SIMPLE		1
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_RACETIMER
+			descText			@JKMENUS_CLIENT_RACETIMER_DESC
+			cvar				"jk_cg_drawRaceTimer"
 			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -901,6 +896,43 @@
 			mouseexit 
 			{ 
 				hide			highlight10
+				hide			keybindstatus
+			} 
+		}
+		itemDef 
+		{
+			name				none
+			group				clientInterfaceControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_HUDSTYLE
+			descText			@JKMENUS_CLIENT_HUDSTYLE_DESC
+			cvar				"cg_hudFiles"
+			cvarFloatList
+			{
+				"Normal"  							0
+				@JKMENUS_CLIENT_HUDSTYLE_SIMPLE		1
+			}
+			rect				220 241 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseenter 
+			{ 
+				show			highlight11
+				show			keybindstatus
+			}
+			mouseexit 
+			{ 
+				hide			highlight11
 				hide			keybindstatus
 			} 
 		}

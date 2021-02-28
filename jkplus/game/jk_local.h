@@ -84,6 +84,7 @@ typedef struct
 	char		*TeleportChatSaved;		// Player saved pos saved
 	int			jetackUseDelay;			// Jetpack usage delay
 	int			buttonUseAnim;			// Button use animation
+	int			raceStartTime;			// Start time for racers
 	qboolean	invulnerability;		// Persistant take damage
 	qboolean	passThrough;			// Check for pass-through
 	qboolean	passThroughPerm;		// Check for permanent pass-through
@@ -120,7 +121,6 @@ typedef struct
 	int			ServerIdleTime;									// Server idle time
 	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
 	int			TeleportChatsCount;								// Chat teleport counter
-	int			racerStartTime[MAX_CLIENTS];					// Start time for racers
 
 } jkmod_locals_t;
 

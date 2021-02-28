@@ -4436,6 +4436,7 @@ static void UI_Update(const char *name) {
 		trap_Cvar_Set("jk_cg_drawClock", "0");
 		trap_Cvar_Set("jk_cg_drawForcePoints", "0");
 		trap_Cvar_Set("jk_cg_drawInventory", "0");
+		trap_Cvar_Set("jk_cg_drawRaceTimer", "1");
 		trap_Cvar_Set("jk_cg_scoreboardIcons", "0");
 		trap_Cvar_Set("jk_cg_chatBox", "0");
 		trap_Cvar_Set("jk_cg_chatBoxTime", "10");

@@ -9,6 +9,22 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.14.0
+- Fix dimension flag to a single value
+- Removed clientside dimensions code
+- Removed serverside dimensions code (trace)
+- Moved and cleaned dimension stuff for easier usage
+- Added MV shared entity and custom trace for dimensions
+- Some general server and client code tweaks
+- Removed private duel cvar and added duel end cvar instead
+- Added saber only, instagib and cheats dimensions
+- Allow G2animent command in cheats dimension
+- Fixed weapon default stand & added player movements cvar
+- Allow walk and run while using Disruptor in zoom mode
+- Added new hat based on Abrum's Kyle pirate model
+- Added map default music option
+- Show race timer on race dimension
+
 ## 0.13.6
 - Remove powerups and projectiles when leave guns dimension
 - Added check for Sentry Gun and Item Shield in race dimension

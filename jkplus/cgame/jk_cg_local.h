@@ -107,6 +107,7 @@ extern vmCvar_t						jkcvar_cg_drawClock;
 extern vmCvar_t						jkcvar_cg_drawHitBox;
 extern vmCvar_t						jkcvar_cg_drawForcePoints;
 extern vmCvar_t						jkcvar_cg_drawInventory;
+extern vmCvar_t						jkcvar_cg_drawRaceTimer;
 extern vmCvar_t						jkcvar_cg_drawBactaModel;
 extern vmCvar_t						jkcvar_cg_scoreboardIcons;
 extern vmCvar_t						jkcvar_cg_chatIcon;
@@ -149,6 +150,7 @@ void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);
 void		JKMod_CG_DrawDimensionString(void);
+void		JKMod_CG_DrawRaceTimer(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);

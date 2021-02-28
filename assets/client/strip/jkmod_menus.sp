@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 114
+COUNT 116
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1027,4 +1027,22 @@ INDEX 113
    TEXT_LANGUAGE3 "Spielt eine animation am ende eines duells ab."
    TEXT_LANGUAGE6 "Plays an animation at the end of a duel."
    TEXT_LANGUAGE8 "Reproduce una animación al finalizar un duelo."
+}
+INDEX 114
+{
+   REFERENCE CLIENT_RACETIMER
+   TEXT_LANGUAGE1 "Draw race time:"
+   TEXT_LANGUAGE2 "Afficher temps course:"
+   TEXT_LANGUAGE3 "Rennzeit zeichnen:"
+   TEXT_LANGUAGE6 "Draw race time:"
+   TEXT_LANGUAGE8 "Mostrar tiempo carrera:"
+}
+INDEX 115
+{
+   REFERENCE CLIENT_RACETIMER_DESC
+   TEXT_LANGUAGE1 "Shows the elapsed time when a race start."
+   TEXT_LANGUAGE2 "Affiche le temps écoulé au départ d'une course."
+   TEXT_LANGUAGE3 "Zeigt die verstrichene zeit beim start eines rennens an."
+   TEXT_LANGUAGE6 "Shows the elapsed time when a race start."
+   TEXT_LANGUAGE8 "Muestra el tiempo transcurrido cuando comienza una carrera."
 }
