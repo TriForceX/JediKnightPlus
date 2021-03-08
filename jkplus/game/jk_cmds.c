@@ -1221,6 +1221,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^7You can use this feature using the following command: ^2/dimension <option>\n"
 				"^5----------\n"
 				"^7Option list:\n"
+				"^3normal\n"
 				"^3guns\n"
 				"^3race\n"
 				"^3saber\n"

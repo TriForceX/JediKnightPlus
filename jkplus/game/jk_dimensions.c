@@ -267,6 +267,27 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 				}
 			}
 		}
+		// Normal
+		else if (!Q_stricmp(dimension, "normal"))
+		{
+			// Delay
+			ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionTime.integer;
+
+			// Disable
+			if (ent->client->ps.stats[JK_DIMENSION] > 1) 
+			{
+				JKMod_DimensionSet(ent, DIMENSION_FREE);
+				trap_SendServerCommand(ent - g_entities, va("cp \"Normal dimension\n\""));
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " back to ^3Normal ^7dimension\n\"", ent->client->pers.netname));
+				return qfalse;
+			}
+			// Enable
+			else 
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"You are already in this dimension\n\"");
+				return qfalse;
+			}
+		}
 		// No dimensions
 		else 
 		{
