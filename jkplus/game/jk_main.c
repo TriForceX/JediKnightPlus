@@ -280,6 +280,7 @@ void JKMod_PauseTimeRestore(int msec)
 	ADJUST(level.intermissiontime);
 	ADJUST(level.intermissionQueued);
 	ADJUST(level.exitTime);
+	ADJUST(level.jkmodLevel.idleTime);
 
 	if(level.startTime < level.time) level.startTime += msec;
 
@@ -425,6 +426,7 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		if (!pauseLast)
 		{
 			pauseLast = levelTime;
+			level.jkmodLevel.idleTime = levelTime;
 			
 			if (level.jkmodLevel.pauseTimeCustom) {
 				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLevel.pauseTimeCustom));
@@ -600,27 +602,27 @@ void JKMod_serverIdleCheck(void)
 {
 	if (level.numVotingClients == 0 && jkcvar_serverIdle.integer) 
 	{
-		if (level.jkmodLevel.ServerIdleTime > 0)
+		if (level.jkmodLevel.idleTime > 0)
 		{
-			if (level.jkmodLevel.ServerIdleTime + jkcvar_serverIdle.integer*60000 < level.time + 15000)
+			if (level.jkmodLevel.idleTime + jkcvar_serverIdle.integer*60000 < level.time + 15000)
 			{
 				trap_SendServerCommand(-1, "print \"Server idle, changing to defaults in 15 seconds...\n\"");
-				level.jkmodLevel.ServerIdleTime =- level.jkmodLevel.ServerIdleTime;
+				level.jkmodLevel.idleTime =- level.jkmodLevel.idleTime;
 			}
 		}
 		else 
 		{
-			if (-level.jkmodLevel.ServerIdleTime + jkcvar_serverIdle.integer*60000 < level.time)
+			if (-level.jkmodLevel.idleTime + jkcvar_serverIdle.integer*60000 < level.time)
 			{
 				trap_SendConsoleCommand(EXEC_APPEND, va("exec %s\n", jkcvar_serverIdleFile.string));
-				level.jkmodLevel.ServerIdleTime = level.time;
+				level.jkmodLevel.idleTime = level.time;
 			}
 		}
 	}
 	else 
 	{
-		if (level.jkmodLevel.ServerIdleTime < 0) trap_SendServerCommand(-1, "print \"Server idle reset aborted!\n\"");
-		level.jkmodLevel.ServerIdleTime = level.time;
+		if (level.jkmodLevel.idleTime < 0) trap_SendServerCommand(-1, "print \"Server idle reset aborted!\n\"");
+		level.jkmodLevel.idleTime = level.time;
 	}
 }
 
@@ -669,6 +671,7 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Check server idle
 	if (jkcvar_serverIdle.integer)
 	{
+		level.jkmodLevel.idleTime = levelTime;
 		G_Printf("%i minutes set for server idle\n", jkcvar_serverIdle.integer);
 	}
 }

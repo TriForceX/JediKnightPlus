@@ -120,9 +120,9 @@ typedef struct
 	char		ServerNews[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
 	int			ServerNewsCount;								// News counter
 	int			ServerNewsNum;									// News timer
-	int			ServerIdleTime;									// Server idle time
 	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
 	int			TeleportChatsCount;								// Chat teleport counter
+	int			idleTime;										// Server idle time
 	int			pauseTime;										// Pause time stop
 	unsigned	pauseTimeCustom;								// Pause custom seconds
 
