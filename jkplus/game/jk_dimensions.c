@@ -105,7 +105,12 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension)
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in this game type\n\"");
 		return qfalse;
 	}
-	if (ent->client->jkmodClient.DimensionTime > 0)
+	else if (level.jkmodLevel.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension during pause mode\n\"");
+		return qfalse;
+	}
+	else if (ent->client->jkmodClient.DimensionTime > 0)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds before change dimension\n\"", ent->client->jkmodClient.DimensionTime));
 		return qfalse;

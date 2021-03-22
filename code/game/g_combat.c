@@ -2373,7 +2373,7 @@ void LimbTouch( gentity_t *self, gentity_t *other, trace_t *trace )
 
 void LimbThink( gentity_t *ent )
 {
-	if (ent->speed < level.time)
+	if (ent->jkmodEnt.time1/*speed*/ < level.time) // Tr!Force: [Pause] Think time
 	{
 		ent->think = G_FreeEntity;
 		ent->nextthink = level.time;
@@ -2382,7 +2382,7 @@ void LimbThink( gentity_t *ent )
 
 	if (ent->s.pos.trType != TR_GRAVITY)
 	{
-		int addamt = (ent->speed - level.time);
+		int addamt = (ent->jkmodEnt.time1/*ent->speed*/ - level.time); // Tr!Force: [Pause] Think time
 
 		if (addamt > 5000)
 		{
@@ -2633,7 +2633,7 @@ void G_Dismember( gentity_t *ent, vec3_t point, int limbType, float limbRollBase
 	VectorCopy( newPoint, limb->s.pos.trBase );
 	limb->think = LimbThink;
 	limb->touch = LimbTouch;
-	limb->speed = level.time + Q_irand(4000, 8000);
+	limb->jkmodEnt.time1/*speed*/ = level.time + Q_irand(4000, 8000); // Tr!Force: [Pause] Think time
 	limb->nextthink = level.time + FRAMETIME;
 
 	//need size, contents, clipmask

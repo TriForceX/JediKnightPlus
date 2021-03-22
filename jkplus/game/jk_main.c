@@ -8,13 +8,14 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern void SpectatorClientEndFrame(gentity_t *ent);
+
 /*
 =====================================================================
 Cvar table list and variables
 =====================================================================
 */
-
-int pauseGameStartTime = 0;
 
 typedef struct { // Cvar table struct
 
@@ -61,7 +62,6 @@ vmCvar_t	jkcvar_duelEndStats;
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_damagePlums;
-vmCvar_t	jkcvar_pauseGame;
 vmCvar_t	jkcvar_customHats;
 
 vmCvar_t	jkcvar_emotesEnabled;
@@ -120,7 +120,6 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_pauseGame,			"jk_pauseGame",				"0",					CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_customHats,			"jk_customHats",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_emotesEnabled,		"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,						0, qtrue },
@@ -233,90 +232,6 @@ void JKMod_G_UpdateCvars(void)
 					}
 				}
 
-				// Pause game
-				if (cv->vmCvar == &jkcvar_pauseGame) 
-				{
-					int pause = cv->vmCvar->integer ? 1 : 0;
-					int num;
-
-					if (pause)
-					{
-						gentity_t *ent;
-						pauseGameStartTime = level.time;
-
-						trap_SendServerCommand(-1, "cp \"Game paused by the server\n\"");
-						trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
-
-						// Save player viewangles
-						for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent) 
-						{
-							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED) 
-							{
-								VectorCopy(ent->client->ps.viewangles, ent->client->jkmodClient.PauseSavedView);
-							}
-						}
-
-						// Stop server news
-						if (Q_stricmp(jkcvar_serverNews.string, "1") == 0) trap_Cvar_Set("jk_serverNews", "paused"); // Workaround
-					}
-					else 
-					{
-						// Set unpause
-						if (pauseGameStartTime > 0 && pauseGameStartTime < level.time) 
-						{
-							gentity_t *ent;
-							const int pausedGameTime = level.time - pauseGameStartTime;
-
-							// Postpone think functions that were blocked during pause
-							for (num = MAX_CLIENTS; num < MAX_GENTITIES; ++num)	
-							{
-								ent = &g_entities[num];
-
-								if (ent && ent->inuse && ent->think && ent->nextthink > 0)
-								{
-									ent->nextthink += pausedGameTime;
-								}
-							}
-
-							trap_SendServerCommand(-1, va("cp \"Game unpaused after %s\n\"", JKMod_msToString(pausedGameTime, qtrue)));
-							trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_msToString(pausedGameTime, qtrue)));
-
-							level.startTime += pausedGameTime;
-
-							// Roll back the time for cg_drawtimer
-							trap_SetConfigstring(CS_LEVEL_START_TIME, va("%i", level.startTime));
-
-							pauseGameStartTime = 0;
-
-							// Fix so times are correct on scoreboard
-							for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent) 
-							{
-								if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED) 
-								{
-									ent->client->pers.enterTime += pausedGameTime;
-
-									// If someone joined during pause ensure they don't get negative time
-									if (ent->client->pers.enterTime > level.time) ent->client->pers.enterTime = level.time;
-									if (ent->client->pers.teamState.flagsince) 
-									{
-										// If holding a flag update the timer so its not counting pause time
-										ent->client->pers.teamState.flagsince += pausedGameTime;
-										if (ent->client->pers.teamState.flagsince > level.time) ent->client->pers.teamState.flagsince = level.time;
-									}
-									if (ent->client->pers.teamState.lastreturnedflag) ent->client->pers.teamState.lastreturnedflag += pausedGameTime;
-									if (ent->client->pers.teamState.lastfraggedcarrier) ent->client->pers.teamState.lastfraggedcarrier += pausedGameTime;
-									if (ent->client->pers.teamState.lasthurtcarrier) ent->client->pers.teamState.lasthurtcarrier += pausedGameTime;
-									// Restore this player viewangles
-									if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) SetClientViewAngle(ent, ent->client->jkmodClient.PauseSavedView); 
-								}
-							}
-
-							// Reload server news
-							if (Q_stricmp(jkcvar_serverNews.string, "paused") == 0) trap_SendConsoleCommand(EXEC_APPEND, "jk_serverNews 1\n"); // Workaround
-						}
-					}
-				}
-
 				// Ingame gameplay
 				if (cv->vmCvar == &jkcvar_gamePlay)
 				{
@@ -348,6 +263,233 @@ void JKMod_G_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_G_UpdateCvars();
+}
+
+/*
+=====================================================================
+Check rewind time on check paused frame
+=====================================================================
+*/
+void JKMod_PauseTimeRestore(int msec)
+{
+	int		i, j;
+
+	#define ADJUST(x) if ((x) > 0) (x) += msec
+
+	ADJUST(level.warmupTime);
+	ADJUST(level.intermissiontime);
+	ADJUST(level.intermissionQueued);
+	ADJUST(level.exitTime);
+
+	if(level.startTime < level.time) level.startTime += msec;
+
+	trap_SetConfigstring(CS_LEVEL_START_TIME, va("%i", level.startTime));
+	trap_SetConfigstring(CS_WARMUP, va("%i", level.warmupTime));
+
+	for (i = 0; i < level.maxclients; i++) 
+	{
+		if (level.clients[i].pers.connected != CON_DISCONNECTED) 
+		{
+			gentity_t		*ent = &g_entities[i];
+			gclient_t		*client = ent->client;
+			playerState_t	*ps = &client->ps;
+
+			G_Sound(ent, CHAN_VOICE, G_SoundIndex("sound/chars/mothma/misc/40MOM038"));
+
+			ADJUST(ent->s.constantLight);
+			ADJUST(ent->s.emplacedOwner);
+
+			ADJUST(ps->weaponChargeTime);
+			ADJUST(ps->weaponChargeSubtractTime);
+			ADJUST(ps->externalEventTime);
+			ADJUST(ps->painTime);
+			ADJUST(ps->lastOnGround);
+			ADJUST(ps->saberLockTime);
+			ADJUST(ps->saberDidThrowTime);
+			ADJUST(ps->saberHitWallSoundDebounceTime);
+			ADJUST(ps->rocketLastValidTime);
+			ADJUST(ps->rocketLockTime);
+			ADJUST(ps->rocketTargetTime);
+			ADJUST(ps->emplacedTime);
+			ADJUST(ps->droneFireTime);
+			ADJUST(ps->droneExistTime);
+			ADJUST(ps->holocronCantTouchTime);
+			ADJUST(ps->electrifyTime);
+			ADJUST(ps->saberBlockTime);
+			ADJUST(ps->otherKillerTime);
+			ADJUST(ps->otherKillerDebounceTime);
+			ADJUST(ps->forceHandExtendTime);
+			ADJUST(ps->forceRageDrainTime);
+			ADJUST(ps->forceGripMoveInterval);
+			ADJUST(ps->footstepTime);
+			ADJUST(ps->otherSoundTime);
+			ADJUST(ps->duelTime);
+			ADJUST(ps->holdMoveTime);
+			ADJUST(ps->forceAllowDeactivateTime);
+			ADJUST(ps->zoomTime);
+			ADJUST(ps->zoomLockTime);
+			ADJUST(ps->useDelay);
+			ADJUST(ps->fallingToDeath);
+			ADJUST(ps->saberIdleWound);
+			ADJUST(ps->saberAttackWound);
+			ADJUST(ps->saberThrowDelay);
+
+			for (j = 0; j < MAX_POWERUPS; j++) {
+				if (ps->powerups[j] < INT_MAX) {
+					ADJUST(ps->powerups[j]);
+				}
+			}
+
+			for (j = 0; j < NUM_FORCE_POWERS; j++) {
+				ADJUST(ps->holocronsCarried[j]);
+			}
+
+			for (j = 0; j < NUM_FORCE_POWERS; j++) {
+				ADJUST(ps->fd.forcePowerDebounce[j]);
+			}
+
+			for (j = 0; j < NUM_FORCE_POWERS; j++) {
+				ADJUST(ps->fd.forcePowerDuration[j]);
+			}
+
+			ADJUST(ps->fd.forcePowerRegenDebounceTime);
+			ADJUST(ps->fd.forceJumpAddTime);
+			ADJUST(ps->fd.forceGripDamageDebounceTime);
+			ADJUST(ps->fd.forceGripStarted);
+			ADJUST(ps->fd.forceGripBeingGripped);
+			ADJUST(ps->fd.forceGripUseTime);
+			ADJUST(ps->fd.forceGripSoundTime);
+			ADJUST(ps->fd.forceHealTime);
+			ADJUST(ps->fd.forceRageRecoveryTime);
+			ADJUST(ps->fd.forceDrainTime);
+
+			ADJUST(client->invulnerableTimer);
+			ADJUST(client->respawnTime);
+			ADJUST(client->inactivityTime);
+			ADJUST(client->rewardTime);
+			ADJUST(client->airOutTime);
+			ADJUST(client->lastKillTime);
+			ADJUST(client->lastSaberStorageTime);
+			ADJUST(client->dangerTime);
+			ADJUST(client->forcePowerSoundDebounce);
+
+			ADJUST(client->pers.enterTime);
+			ADJUST(client->pers.teamState.lastfraggedcarrier);
+			ADJUST(client->pers.teamState.lasthurtcarrier);
+			ADJUST(client->pers.teamState.lastreturnedflag);
+			ADJUST(client->pers.teamState.flagsince);
+		}
+	}
+
+	for (i = 0; i < level.num_entities; i++) 
+	{
+		if (g_entities[i].inuse) {
+			gentity_t	*ent = &g_entities[i];
+
+			if (ent->s.pos.trType != TR_STATIONARY) {
+				ent->s.pos.trTime += msec;
+			}
+			if (ent->s.apos.trType != TR_STATIONARY) {
+				ent->s.apos.trTime += msec;
+			}
+
+			ADJUST(ent->nextthink);
+			ADJUST(ent->aimDebounceTime);
+			ADJUST(ent->painDebounceTime);
+			ADJUST(ent->attackDebounceTime);
+			ADJUST(ent->freetime);
+			ADJUST(ent->eventTime);
+			ADJUST(ent->timestamp);
+			ADJUST(ent->setTime);
+			ADJUST(ent->pain_debounce_time);
+			ADJUST(ent->fly_sound_debounce_time);
+			ADJUST(ent->last_move_time);
+			ADJUST(ent->jkmodEnt.time1);
+			ADJUST(ent->jkmodEnt.time2);
+		}
+	}
+}
+
+/*
+=====================================================================
+Check paused frame on main run frame
+=====================================================================
+*/
+qboolean JKMod_PauseFrameCheck(int levelTime) 
+{
+	static int	pauseLast = 0;
+	static int	pauseTime = 0;
+
+	if (level.jkmodLevel.pauseTime > levelTime)
+	{
+		if (!pauseLast)
+		{
+			pauseLast = levelTime;
+			
+			if (level.jkmodLevel.pauseTimeCustom) {
+				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLevel.pauseTimeCustom));
+				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\n\"", level.jkmodLevel.pauseTimeCustom));
+			}
+			else {
+				trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
+				trap_SendServerCommand(-1, "cp \"PAUSE\n\"");
+			}
+		}
+
+		if (pauseTime != level.jkmodLevel.pauseTime)
+		{
+			pauseTime = level.jkmodLevel.pauseTime;
+			trap_SetConfigstring(CS_PAUSE, va("%d", pauseTime));
+		}
+
+		return qtrue;
+	}
+	else if (pauseLast)
+	{
+		JKMod_PauseTimeRestore(levelTime - pauseLast);
+		trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_msToString((levelTime - pauseLast + 1000), qfalse)));
+		trap_SendServerCommand(-1, va("cp \"%s\n\"", G_GetStripEdString("SVINGAME", "BEGIN_DUEL")));
+		
+		pauseLast = 0;
+		pauseTime = 0;
+		
+		trap_SetConfigstring(CS_PAUSE, "");
+	}
+
+	return qfalse;
+}
+
+/*
+=====================================================================
+Run paused frame on main run frame
+=====================================================================
+*/
+void JKMod_PauseFrameRun(void) 
+{
+	int	i;
+
+	for (i = 0; i < level.maxclients; i++) 
+	{
+		gclient_t	*client = &level.clients[i];
+
+		if (client->pers.connected == CON_CONNECTED && client->sess.spectatorState != SPECTATOR_NOT)
+		{
+			SpectatorClientEndFrame(&g_entities[i]);
+		}
+	}
+
+	// Get any cvar changes
+	G_UpdateCvars();
+
+	// Cancel vote if timed out
+	CheckVote();
+
+	// Check team votes
+	CheckTeamVote(TEAM_RED);
+	CheckTeamVote(TEAM_BLUE);
+
+	// Tracking changes
+	CheckCvars();
 }
 
 /*

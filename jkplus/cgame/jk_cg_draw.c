@@ -9,6 +9,8 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/cgame/cg_local.h"	// Original header
 #include "../../code/ui/ui_shared.h"	// UI shared header
 
+int jkmod_pause_count = 0; // Pause announce counter
+
 /*
 =====================================================================
 Custom draw functions
@@ -44,6 +46,12 @@ void JKMod_CG_Draw2D(void)
 	if (cg.snap->ps.stats[JK_DIMENSION] > 1)
 	{
 		JKMod_CG_DrawDimensionString();
+	}
+
+	// Draw pause text
+	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime)
+	{
+		JKMod_CG_DrawPauseString();
 	}
 }
 
@@ -471,4 +479,57 @@ void JKMod_CG_DrawRaceTimer(void)
 
 	CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
 	CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
+}
+
+/*
+=====================================================================
+Draw pause texts
+=====================================================================
+*/
+void JKMod_CG_DrawPauseString(void)
+{
+	int			w1, w2;
+	int			sec;
+	const char	*t1, *t2;
+	float		color[4];
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+
+	color[0] = color[1] = color[2] = 1.0;
+	color[3] = 1.0f;
+
+	if (cgs.jkmodCvar.pauseTime != INT_MAX) 
+	{
+		sec = (cgs.jkmodCvar.pauseTime - cg.snap->serverTime) / 1000 + 1;
+
+		t1 = CG_GetStripEdString("JKINGAME", "PAUSE_GAME");
+		w1 = CG_DrawStrlen(t1) * SMALLCHAR_WIDTH;
+
+		t2 = va(CG_GetStripEdString("JKINGAME", "PAUSE_GAME_SEC"), sec);
+		w2 = CG_DrawStrlen(t2) * BIGCHAR_WIDTH;
+
+		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
+		CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
+		
+		if (sec <= 3 && sec != jkmod_pause_count) 
+		{
+			jkmod_pause_count = sec;
+			switch (sec) 
+			{
+				case 1:
+					trap_S_StartLocalSound(cgs.media.count1Sound, CHAN_ANNOUNCER); break;
+				case 2:
+					trap_S_StartLocalSound(cgs.media.count2Sound, CHAN_ANNOUNCER); break;
+				case 3:
+					trap_S_StartLocalSound(cgs.media.count3Sound, CHAN_ANNOUNCER); break;
+			}
+		}
+	}
+	else 
+	{
+		t1 = CG_GetStripEdString("JKINGAME", "PAUSE_GAME");
+		w1 = CG_DrawStrlen(t1) * BIGCHAR_WIDTH;
+
+		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
+	}
 }

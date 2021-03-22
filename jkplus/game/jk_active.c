@@ -26,9 +26,6 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	client = ent->client;
 	client->jkmodClient.TimeResidual += msec;
 
-	// Don't allow in pause mode
-	if (jkcvar_pauseGame.integer) return;
-
 	// Launch original client timer actions function
 	BaseJK2_ClientTimerActions(ent, msec);
 
@@ -283,11 +280,7 @@ void JKMod_RunClient(gentity_t *ent)
 		gclient_t	*client = ent->client;
 		usercmd_t	*cmd = &client->pers.cmd;
 
-		if (jkcvar_pauseGame.integer) // Don't allow in pause mode
-		{ 
-			return;
-		}
-		else if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
+		if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
 		{ 
 			ClientBegin(ent - g_entities, qtrue);
 			ent->client->pers.botDelayed = qfalse;
@@ -325,17 +318,47 @@ void JKMod_RunClient(gentity_t *ent)
 	}
 	else
 	{
-		if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer) { // Don't allow in pause mode
+		if (!(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer) 
+		{
 			return;
 		}
 
 		if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
-		{ 
-			ClientBegin(ent - g_entities, qtrue);
+		{
+			ClientBegin(ent-g_entities, qtrue);
 			ent->client->pers.botDelayed = qfalse;
 		}
 
 		ent->client->pers.cmd.serverTime = level.time;
 		ClientThink_real(ent);
 	}
+}
+
+/*
+=====================================================================
+Pause client think function
+=====================================================================
+*/
+void JKMod_PauseClientThink(gentity_t *ent) 
+{
+	gclient_t	*client = ent->client;
+	usercmd_t	*cmd = &client->pers.cmd;
+
+	// Stop command time
+	client->ps.commandTime = cmd->serverTime;
+
+	// Check chat flag
+	if ( cmd->buttons & BUTTON_TALK ) {
+		ent->s.eFlags |= EF_TALK;
+		client->ps.eFlags |= EF_TALK;
+	} else {
+		ent->s.eFlags &= ~EF_TALK;
+		client->ps.eFlags &= ~EF_TALK;
+	}
+
+	// Stop movement and prediction
+	client->ps.pm_type = PM_SPINTERMISSION;
+
+	// Force view angles
+	SetClientViewAngle(ent, client->ps.viewangles);
 }

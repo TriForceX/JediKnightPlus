@@ -708,10 +708,7 @@ passthrough:
 	}
 
 	// check think function after bouncing
-	if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-	{
-		G_RunThink( ent );
-	}
+	G_RunThink( ent );
 }
 
 

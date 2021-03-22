@@ -3647,14 +3647,6 @@ static void PM_Weapon( void )
 	if ( pm->cmd.buttons & BUTTON_USE_HOLDABLE ) {
 		if ( ! ( pm->ps->pm_flags & PMF_USE_ITEM_HELD ) ) {
 
-			#ifdef JK2_GAME
-			// Tr!Force: [Pause] Don't allow
-			if (jkcvar_pauseGame.integer)
-			{
-				return;
-			}
-			#endif
-
 			if (!pm->ps->stats[STAT_HOLDABLE_ITEM])
 			{
 				return;

@@ -61,7 +61,9 @@ typedef struct
 	vec3_t		ItemFirstOrigin;		// First original item position
 	qboolean    ItemSpawnedBefore;		// Reset original item position
 	int			dimensionOwner;			// Dimension owner number
-	unsigned	dimensionNumber;		// Current dimension number 
+	unsigned	dimensionNumber;		// Current dimension number
+	int			time1;					// Entity think time for pause
+	int			time2;					// Entity sync time for pause
 
 } jkmod_ent_t;
 
@@ -121,6 +123,8 @@ typedef struct
 	int			ServerIdleTime;									// Server idle time
 	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
 	int			TeleportChatsCount;								// Chat teleport counter
+	int			pauseTime;										// Pause time stop
+	unsigned	pauseTimeCustom;								// Pause custom seconds
 
 } jkmod_locals_t;
 
@@ -185,7 +189,6 @@ extern	vmCvar_t					jkcvar_duelEndStats;
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_damagePlums;
-extern	vmCvar_t					jkcvar_pauseGame;
 extern	vmCvar_t					jkcvar_customHats;
 
 extern	vmCvar_t					jkcvar_emotesEnabled;
@@ -229,9 +232,12 @@ void		BaseJK2_ClientCommand(int clientNum);
 
 // g_main.c
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
+qboolean	JKMod_PauseFrameCheck(int levelTime);
+void		JKMod_PauseFrameRun(void);
 
 // jk_active.c
 void		JKMod_ClientThink_real(gentity_t *ent);
+void		JKMod_PauseClientThink(gentity_t *ent);
 
 // jk_client.c
 void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *ent);

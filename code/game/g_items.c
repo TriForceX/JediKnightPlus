@@ -743,7 +743,7 @@ void pas_think( gentity_t *ent )
 		return;
 	}
 
-	if ((ent->bolt_LLeg+TURRET_LIFETIME) < level.time)
+	if ((ent->jkmodEnt.time1/*bolt_LLeg*/+TURRET_LIFETIME) < level.time) // Tr!Force: [Pause] Think time
 	{
 		G_Sound( ent, CHAN_BODY, G_SoundIndex( "sound/chars/turret/shutdown.wav" ));
 		ent->s.bolt2 = ENTITYNUM_NONE;
@@ -1026,7 +1026,7 @@ void ItemUse_Sentry( gentity_t *ent )
 
 	sentry->bolt_Head = 1000;
 
-	sentry->bolt_LLeg = level.time;
+	sentry->jkmodEnt.time1/*bolt_LLeg*/ = level.time; // Tr!Force: [Pause] Think time
 
 	sentry->noDamageTeam = ent->client->sess.sessionTeam;
 
@@ -2139,10 +2139,7 @@ void G_RunItem( gentity_t *ent ) {
 
 	if ( ent->s.pos.trType == TR_STATIONARY ) {
 		// check think function
-		if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-		{
-			G_RunThink( ent );
-		}
+		G_RunThink( ent );
 		return;
 	}
 
@@ -2167,10 +2164,7 @@ void G_RunItem( gentity_t *ent ) {
 	trap_LinkEntity( ent );	// FIXME: avoid this for stationary?
 
 	// check think function
-	if (!jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-	{
-		G_RunThink( ent );
-	}
+	G_RunThink( ent );
 
 	if ( tr.fraction == 1 ) {
 		return;

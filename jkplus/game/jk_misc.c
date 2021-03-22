@@ -485,11 +485,6 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 		return;
 	}
 
-	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
-	{
-		return;
-	}
-
 	// Set ammo
 	currentAmmo = weaponData[activator->client->ps.weapon].ammoIndex;
 

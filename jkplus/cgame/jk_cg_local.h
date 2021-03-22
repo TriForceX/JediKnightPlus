@@ -33,6 +33,7 @@ typedef struct
 	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
 	int			customHats;		// Tr!Force: [CustomHats] Main cvar
 	int			jetPack;		// Tr!Force: [JetPack] Main cvar
+	int			pauseTime;		// Tr!Force: [Pause] Server pause time
 
 } jkmod_cvar_t;
 
@@ -151,6 +152,7 @@ float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);
 void		JKMod_CG_DrawDimensionString(void);
 void		JKMod_CG_DrawRaceTimer(void);
+void		JKMod_CG_DrawPauseString(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);

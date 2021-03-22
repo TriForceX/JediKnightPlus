@@ -133,7 +133,7 @@ void ThrowSaberToAttacker(gentity_t *self, gentity_t *attacker)
 		VectorCopy(ent->s.origin2, ent->s.pos.trBase);
 		VectorCopy(ent->s.origin2, ent->s.origin);
 		VectorCopy(ent->s.origin2, ent->r.currentOrigin);
-		ent->pos2[0] = 0;
+		ent->jkmodEnt.time1/*pos2[0]*/ = 0; // Tr!Force: [Pause] Think time
 		trap_LinkEntity(ent);
 		return;
 	}
@@ -173,21 +173,21 @@ void JMSaberThink(gentity_t *ent)
 			ent->s.eType = ET_MISSILE;
 			ent->enemy = NULL;
 
-			ent->pos2[0] = 1;
-			ent->pos2[1] = 0; //respawn next think
+			// ent->pos2[0] = 1; // Tr!Force: [Pause] Skip this
+			ent->jkmodEnt.time1/*pos2[1]*/ = 0; //respawn next think // Tr!Force: [Pause] Think time
 			trap_LinkEntity(ent);
 		}
 		else
 		{
-			ent->pos2[1] = level.time + JMSABER_RESPAWN_TIME;
+			ent->jkmodEnt.time1/*pos2[1]*/ = level.time + JMSABER_RESPAWN_TIME; // Tr!Force: [Pause] Think time
 		}
 	}
-	else if (ent->pos2[0] && ent->pos2[1] < level.time)
+	else if (ent->jkmodEnt.time1/*pos2[0]*/ && ent->jkmodEnt.time1/*pos2[1]*/ < level.time) // Tr!Force: [Pause] Think time
 	{
 		VectorCopy(ent->s.origin2, ent->s.pos.trBase);
 		VectorCopy(ent->s.origin2, ent->s.origin);
 		VectorCopy(ent->s.origin2, ent->r.currentOrigin);
-		ent->pos2[0] = 0;
+		ent->jkmodEnt.time1/*pos2[0]*/ = 0; // Tr!Force: [Pause] Think time
 		trap_LinkEntity(ent);
 	}
 
@@ -263,8 +263,8 @@ void JMSaberTouch(gentity_t *self, gentity_t *other, trace_t *trace)
 		i++;
 	}
 
-	self->pos2[0] = 1;
-	self->pos2[1] = level.time + JMSABER_RESPAWN_TIME;
+	// self->pos2[0] = 1; // Tr!Force: [Pause] Skip this
+	self->jkmodEnt.time1/*pos2[1]*/ = level.time + JMSABER_RESPAWN_TIME; // Tr!Force: [Pause] Think time
 
 	self->s.modelindex = 0;
 	self->s.eFlags |= EF_NODRAW;

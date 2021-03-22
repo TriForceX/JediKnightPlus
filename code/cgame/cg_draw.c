@@ -3610,6 +3610,8 @@ static void CG_DrawWarmup( void ) {
 	// int			cw;
 	const char	*s;
 
+	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime) return; // Tr!Force: [Pause] Don't draw warmup
+
 	sec = cg.warmup;
 	if ( !sec ) {
 		return;

@@ -422,8 +422,8 @@ void HolocronTouch(gentity_t *self, gentity_t *other, trace_t *trace)
 	self->s.modelindex = 0;
 	self->enemy = other;
 
-	self->pos2[0] = 1;
-	self->pos2[1] = level.time + HOLOCRON_RESPAWN_TIME;
+	// self->pos2[0] = 1; // Tr!Force: [Pause] Skip this
+	self->jkmodEnt.time1/*pos2[1]*/ = level.time + HOLOCRON_RESPAWN_TIME; // Tr!Force: [Pause] Think time
 
 	/*
 	if (self->count == FP_SABERATTACK && !HasSetSaberOnly())
@@ -448,7 +448,7 @@ void HolocronTouch(gentity_t *self, gentity_t *other, trace_t *trace)
 
 void HolocronThink(gentity_t *ent)
 {
-	if (ent->pos2[0] && (!ent->enemy || !ent->enemy->client || ent->enemy->health < 1))
+	if (ent->jkmodEnt.time1/*pos2[0]*/ && (!ent->enemy || !ent->enemy->client || ent->enemy->health < 1)) // Tr!Force: [Pause] Think time
 	{
 		if (ent->enemy && ent->enemy->client)
 		{
@@ -464,9 +464,9 @@ void HolocronThink(gentity_t *ent)
 			goto justthink;
 		}
 	}
-	else if (ent->pos2[0] && ent->enemy && ent->enemy->client)
+	else if (ent->jkmodEnt.time1/*pos2[0]*/ && ent->enemy && ent->enemy->client) // Tr!Force: [Pause] Think time
 	{
-		ent->pos2[1] = level.time + HOLOCRON_RESPAWN_TIME;
+		ent->jkmodEnt.time1/*pos2[1]*/ = level.time + HOLOCRON_RESPAWN_TIME; // Tr!Force: [Pause] Think time
 	}
 
 	if (ent->enemy && ent->enemy->client)
@@ -502,7 +502,7 @@ void HolocronThink(gentity_t *ent)
 
 			ent->s.pos.trTime = level.time;
 
-			ent->pos2[0] = 0;
+			ent->jkmodEnt.time1/*pos2[0]*/ = 0; // Tr!Force: [Pause] Think time
 
 			trap_LinkEntity(ent);
 
@@ -510,7 +510,7 @@ void HolocronThink(gentity_t *ent)
 		}
 	}
 
-	if (ent->pos2[0] && ent->pos2[1] < level.time)
+	if (ent->jkmodEnt.time1/*pos2[0]*/ && ent->jkmodEnt.time1/*pos2[1]*/ < level.time) // Tr!Force: [Pause] Think time
 	{ //isn't in original place and has been there for (HOLOCRON_RESPAWN_TIME) seconds without being picked up, so respawn
 		VectorCopy(ent->s.origin2, ent->s.pos.trBase);
 		VectorCopy(ent->s.origin2, ent->s.origin);
@@ -518,7 +518,7 @@ void HolocronThink(gentity_t *ent)
 
 		ent->s.pos.trTime = level.time;
 
-		ent->pos2[0] = 0;
+		ent->jkmodEnt.time1/*pos2[0]*/ = 0; // Tr!Force: [Pause] Think time
 
 		trap_LinkEntity(ent);
 	}
@@ -763,11 +763,6 @@ void shield_power_converter_use( gentity_t *self, gentity_t *other, gentity_t *a
 	int stop = 1;
 
 	if (!activator || !activator->client)
-	{
-		return;
-	}
-
-	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
 	{
 		return;
 	}

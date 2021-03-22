@@ -100,13 +100,41 @@ Pause game command function
 */
 static void JKMod_svCmd_pauseGame(void)
 {
-	if (jkcvar_pauseGame.integer == 0)
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+
+	if (trap_Argc() < 2)
 	{
-		trap_Cvar_Set("jk_pauseGame", "1");
+		G_Printf("Usage: pause <on|seconds|off>\n");
 	}
-	else
+	else 
 	{
-		trap_Cvar_Set("jk_pauseGame", "0");
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (!Q_stricmp(arg1, "off")) 
+		{
+			if (level.jkmodLevel.pauseTime > level.time)
+			{
+				level.jkmodLevel.pauseTime = level.time;
+			}
+		}
+		else 
+		{
+			if (level.intermissionQueued || level.intermissiontime) {
+				return;
+			}
+
+			if (!Q_stricmp(arg1, "on")) 
+			{
+				level.jkmodLevel.pauseTime = INT_MAX;
+				level.jkmodLevel.pauseTimeCustom = 0;
+			}
+			else // Seconds
+			{
+				level.jkmodLevel.pauseTime = level.time + 1000 * atoi(arg1);
+				level.jkmodLevel.pauseTimeCustom = atoi(arg1);
+			}
+		}
 	}
 }
 
@@ -180,7 +208,7 @@ qboolean JKMod_ConsoleCommand(void)
 		JKMod_svCmd_gamePlay();
 		return qtrue;
 	}
-	if (!Q_stricmp(cmd, "pausegame"))
+	if (!Q_stricmp(cmd, "pause"))
 	{
 		JKMod_svCmd_pauseGame();
 		return qtrue;

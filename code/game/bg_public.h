@@ -89,6 +89,8 @@
 #define CS_CLIENT_DUELWINNER	29		// current duel round winner - needed for printing at top of scoreboard
 #define CS_CLIENT_DUELISTS		30		// client numbers for both current duelists. Needed for a number of client-side things.
 
+#define CS_PAUSE				31		// Tr!Force: [Pause] Set config string
+
 // these are also in be_aas_def.h - argh (rjr)
 #define	CS_MODELS				32
 #define	CS_SOUNDS				(CS_MODELS+MAX_MODELS)

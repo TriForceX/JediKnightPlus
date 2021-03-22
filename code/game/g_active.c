@@ -1080,9 +1080,16 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		return;
 	}
 
+	// Tr!Force: [Pause] Check pause think
+	if (level.jkmodLevel.pauseTime > level.time) 
+	{
+		JKMod_PauseClientThink(ent);
+		return;
+	}
+
 	if (ent && ent->client && (ent->client->ps.eFlags & EF_INVULNERABLE))
 	{
-		if (ent->client->invulnerableTimer <= level.time && !jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow
+		if (ent->client->invulnerableTimer <= level.time)
 		{
 			ent->client->ps.eFlags &= ~EF_INVULNERABLE;
 		}
@@ -1130,11 +1137,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		// set speed
 		client->ps.speed = g_speed.value;
 		client->ps.basespeed = g_speed.value;
-	}
-
-	if (jkcvar_pauseGame.integer) // Tr!Force: [Pause] Don't allow viewangles also
-	{
-		client->ps.pm_type = PM_SPINTERMISSION;
 	}
 
 	if (ent->client->ps.duelInProgress)
@@ -1543,7 +1545,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		break;
 	case GENCMD_USE_SEEKER:
 		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SEEKER)) &&
-			G_ItemUsable(&ent->client->ps, HI_SEEKER) && !jkcvar_pauseGame.integer ) // Tr!Force: [Pause] Don't allow
+			G_ItemUsable(&ent->client->ps, HI_SEEKER) )
 		{
 			ItemUse_Seeker(ent);
 			G_AddEvent(ent, EV_USE_ITEM0+HI_SEEKER, 0);
@@ -1552,7 +1554,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		break;
 	case GENCMD_USE_FIELD:
 		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SHIELD)) &&
-			G_ItemUsable(&ent->client->ps, HI_SHIELD) && !jkcvar_pauseGame.integer ) // Tr!Force: [Pause] Don't allow
+			G_ItemUsable(&ent->client->ps, HI_SHIELD) )
 		{
 			ItemUse_Shield(ent);
 			G_AddEvent(ent, EV_USE_ITEM0+HI_SHIELD, 0);
@@ -1561,7 +1563,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		break;
 	case GENCMD_USE_BACTA:
 		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)) &&
-			G_ItemUsable(&ent->client->ps, HI_MEDPAC) /*&& !jkcvar_pauseGame.integer*/ ) // Tr!Force: [Pause] Don't allow ?
+			G_ItemUsable(&ent->client->ps, HI_MEDPAC) )
 		{
 			ItemUse_MedPack(ent);
 			G_AddEvent(ent, EV_USE_ITEM0+HI_MEDPAC, 0);
@@ -1600,7 +1602,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		break;
 	case GENCMD_USE_SENTRY:
 		if ( (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_SENTRY_GUN)) &&
-			G_ItemUsable(&ent->client->ps, HI_SENTRY_GUN) && !jkcvar_pauseGame.integer ) // Tr!Force: [Pause] Don't allow
+			G_ItemUsable(&ent->client->ps, HI_SENTRY_GUN) )
 		{
 			ItemUse_Sentry(ent);
 			G_AddEvent(ent, EV_USE_ITEM0+HI_SENTRY_GUN, 0);
@@ -1787,11 +1789,6 @@ void G_CheckClientTimeouts ( gentity_t *ent )
 		return;
 	}
 
-	if ( jkcvar_pauseGame.integer ) // Tr!Force: [Pause] Don't allow
-	{
-		return;
-	}
-
 	// Already a spectator, no need to boot them to spectator
 	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR )
 	{
@@ -1823,7 +1820,7 @@ void ClientThink( int clientNum ) {
 	// phone jack if they don't get any for a while
 	ent->client->lastCmdTime = level.time;
 
-	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer || jkcvar_pauseGame.integer ) { // Tr!Force: [Pause] Don't allow
+	if ( !(ent->r.svFlags & SVF_BOT) && !g_synchronousClients.integer ) {
 		ClientThink_real( ent );
 	}
 }

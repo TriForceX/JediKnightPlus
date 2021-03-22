@@ -106,6 +106,11 @@ static qboolean JKMod_savePosition(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
 		return qfalse;
 	}
+	else if (level.jkmodLevel.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\n\""));
+		return qfalse;
+	}
 	else
 	{
 		ent->client->ps.viewangles[0] = 0.0f;
@@ -147,6 +152,11 @@ static qboolean JKMod_loadPosition(gentity_t *ent)
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
 		trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+		return qfalse;
+	}
+	else if (level.jkmodLevel.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\n\""));
 		return qfalse;
 	}
 	else
@@ -206,6 +216,11 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 				{
 					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+					return qfalse;
+				}
+				else if (level.jkmodLevel.pauseTime > level.time)
+				{
+					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\n\""));
 					return qfalse;
 				}
 				else if (JKMod_PlayerMoving(ent, qtrue, qtrue))
@@ -1261,6 +1276,11 @@ void JKMod_ClientCommand(int clientNum)
 		else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in spectator\n\""));
+			return;
+		}
+		else if (level.jkmodLevel.pauseTime > level.time)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"You can't teleport during pause mode\n\""));
 			return;
 		}
 		else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
