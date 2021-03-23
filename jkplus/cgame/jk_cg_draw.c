@@ -460,6 +460,7 @@ void JKMod_CG_DrawRaceTimer(void)
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.snap->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
+	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime) return;
 	if (!cg.predictedPlayerState.duelTime) return;
 
 	timeMsec = cg.time - cg.predictedPlayerState.duelTime;
