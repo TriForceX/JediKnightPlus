@@ -245,8 +245,12 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Tr!Force: [JKMod] Button use animation
-	if (jkcvar_useAnim.integer && cmd->buttons & BUTTON_USE && !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) && !(ent->r.svFlags & SVF_BOT) &&
-		!((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE) && !JKMod_PlayerMoving(ent, qfalse, qtrue))
+	if ((cmd->buttons & BUTTON_USE) 
+		&& (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) 
+		&& !(ent->r.svFlags & SVF_BOT) 
+		&& !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) 
+		&& !((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE) 
+		&& !JKMod_PlayerMoving(ent, qfalse, qtrue))
 	{
 		ent->client->pers.jkmodPers.buttonUseAnim = 1;
 		ent->client->ps.saberMove = LS_NONE;

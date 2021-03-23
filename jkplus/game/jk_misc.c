@@ -91,6 +91,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DISRUPTOR_WALK;
 
+	// Button Use Stand
+	if (jkcvar_playerMovement.integer & JK_USE_STAND) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_USE_STAND;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_USE_STAND;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 /*

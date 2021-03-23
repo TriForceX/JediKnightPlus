@@ -209,7 +209,6 @@ extern	vmCvar_t					jkcvar_antiWarp;
 extern	vmCvar_t					jkcvar_antiWarpTime;
 extern	vmCvar_t					jkcvar_mapFixes;
 extern	vmCvar_t					jkcvar_mapDefaultMusic;
-extern	vmCvar_t					jkcvar_useAnim;
 
 extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_playerMovement;
