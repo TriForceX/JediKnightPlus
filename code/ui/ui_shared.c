@@ -4025,6 +4025,7 @@ static bind_t g_bindings[] =
 	{"dropflag", 			-1,				-1,		-1,	-1},
 	{"engage_duel_force",	-1,				-1,		-1,	-1},
 	{"jetpack",				-1,				-1,		-1,	-1},
+	{"kill",				-1,				-1,		-1,	-1},
 };
 
 

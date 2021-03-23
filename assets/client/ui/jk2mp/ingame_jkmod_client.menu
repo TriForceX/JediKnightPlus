@@ -624,12 +624,13 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			mouseenter 
+			
+			mouseEnter 
 			{ 
 				show			highlight2
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight2
 				hide			keybindstatus
@@ -656,12 +657,13 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			mouseenter 
+			
+			mouseEnter 
 			{ 
 				show			highlight3
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight3
 				hide			keybindstatus
@@ -689,12 +691,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight4
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight4
 				hide			keybindstatus
@@ -722,12 +724,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight5
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight5
 				hide			keybindstatus
@@ -760,12 +762,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight6
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight6
 				hide			keybindstatus
@@ -792,12 +794,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight7
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight7
 				hide			keybindstatus
@@ -824,12 +826,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight8
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			keybindstatus
 				hide			highlight8
@@ -856,12 +858,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight9
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight9
 				hide			keybindstatus
@@ -888,12 +890,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight10
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight10
 				hide			keybindstatus
@@ -925,12 +927,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight11
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight11
 				hide			keybindstatus
@@ -961,12 +963,13 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			mouseenter 
+			
+			mouseEnter 
 			{ 
 				show			highlight1
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight1
 				hide			keybindstatus
@@ -993,12 +996,13 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			mouseenter 
+			
+			mouseEnter 
 			{ 
 				show			highlight2
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight2
 				hide			keybindstatus
@@ -1025,12 +1029,13 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			mouseenter 
+			
+			mouseEnter 
 			{ 
 				show			highlight3
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight3
 				hide			keybindstatus
@@ -1058,12 +1063,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight4
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight4
 				hide			keybindstatus
@@ -1096,12 +1101,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight5
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight5
 				hide			keybindstatus
@@ -1129,12 +1134,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight6
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight6
 				hide			keybindstatus
@@ -1162,12 +1167,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight7
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight7
 				hide			keybindstatus
@@ -1201,12 +1206,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight8
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			keybindstatus
 				hide			highlight8
@@ -1234,12 +1239,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight9
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight9
 				hide			keybindstatus
@@ -1272,12 +1277,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight10
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight10
 				hide			keybindstatus
@@ -1303,6 +1308,17 @@
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter
+			{ 
+				show			highlight11
+				show			keybindstatus
+			}
+			mouseExit
+			{ 
+				hide			highlight11
+				hide			keybindstatus
 			}
 		}
 		
@@ -1345,6 +1361,17 @@
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter
+			{ 
+				show			highlight12
+				show			keybindstatus
+			}
+			mouseExit
+			{ 
+				hide			highlight12
+				hide			keybindstatus
 			}
 		}
 		
@@ -1393,12 +1420,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight2
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight2
 				hide			keybindstatus
@@ -1424,6 +1451,17 @@
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter
+			{ 
+				show			highlight3
+				show			keybindstatus
+			}
+			mouseExit
+			{ 
+				hide			highlight3
+				hide			keybindstatus
 			}
 		}
 		
@@ -1466,6 +1504,17 @@
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter
+			{ 
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseExit
+			{ 
+				hide			highlight4
+				hide			keybindstatus
 			}
 		}
 		
@@ -1514,12 +1563,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{
 				show			highlight2
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight2
 				hide			keybindstatus
@@ -1547,12 +1596,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight3
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight3
 				hide			keybindstatus
@@ -1580,14 +1629,47 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{ 
 				show			highlight4
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight4
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_RESPAWN
+			descText			@JKMENUS_CLIENT_RESPAWN_DESC
+			cvar				"kill"
+			rect				220 121 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight5
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight5
 				hide			keybindstatus
 			}
 		}
@@ -1629,12 +1711,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{
 				show			highlight2
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight2
 				hide			keybindstatus
@@ -1662,12 +1744,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{
 				show			highlight3
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight3
 				hide			keybindstatus
@@ -1695,12 +1777,12 @@
 				play			"sound/interface/button1.wav" ; 
 			}
 
-			mouseenter 
+			mouseEnter 
 			{
 				show			highlight4
 				show			keybindstatus
 			}
-			mouseexit 
+			mouseExit 
 			{ 
 				hide			highlight4
 				hide			keybindstatus
@@ -1766,7 +1848,6 @@
 			descText			@MENUS0_USE_DEFAULT_SETTINGS
 			forecolor			0.65 0.65 1 1
 			visible				0
-
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
@@ -1774,6 +1855,7 @@
 				hide			default_glow ;
 				uiScript		update "JKMod_resetClient"
 			}
+			
 			mouseEnter 
 			{ 
 				show			default_yes_button 
@@ -1821,6 +1903,7 @@
 				hide			default_glow ;
 				open			ingame_jkmod_client ;
 			}
+			
 			mouseEnter 
 			{ 
 				show			default_no_button 
@@ -1829,6 +1912,26 @@
 			{ 
 				hide			default_no_button
 			}	  	  
+		}
+		
+		//---------------------------------------------
+		//	KEY BINDS TEXT
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				keyBindStatus
+			group				none
+			ownerdraw			250	// UI_KEYBINDSTATUS
+			text				""
+			rect				275 294 0 0
+			textStyle			0
+			font				2
+			textscale			.7
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.235 .882 .847 1
+			visible				0
+			decoration
 		}
 	}
 }

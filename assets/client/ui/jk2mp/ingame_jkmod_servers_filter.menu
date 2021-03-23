@@ -88,7 +88,6 @@
 			textalignx			0
 			textaligny			-2
 			textalign			ITEM_ALIGN_LEFT
-			textstyle			3
 			forecolor			1 1 1 1
 			visible				1 
 			action 
@@ -214,7 +213,6 @@
 			textalignx			0
 			textaligny			-2
 			textalign			ITEM_ALIGN_LEFT
-			textstyle			3
 			forecolor			1 1 1 1
 			visible				1 
 			action 
@@ -247,6 +245,7 @@
 		{
 			name				doneButton
 			text				@MENUS3_DONE_CAPS
+			descText			@MENUS3_DONE_DESC
 			type				1
 			font				3
 			textscale			.8

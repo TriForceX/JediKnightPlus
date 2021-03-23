@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 116
+COUNT 118
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1045,4 +1045,22 @@ INDEX 115
    TEXT_LANGUAGE3 "Zeigt die verstrichene zeit beim start eines rennens an."
    TEXT_LANGUAGE6 "Shows the elapsed time when a race start."
    TEXT_LANGUAGE8 "Muestra el tiempo transcurrido cuando comienza una carrera."
+}
+INDEX 116
+{
+   REFERENCE CLIENT_RESPAWN
+   TEXT_LANGUAGE1 "Respawn:"
+   TEXT_LANGUAGE2 "Réapparaître:"
+   TEXT_LANGUAGE3 "Respawn:"
+   TEXT_LANGUAGE6 "Respawn:"
+   TEXT_LANGUAGE8 "Reaparecer:"
+}
+INDEX 117
+{
+   REFERENCE CLIENT_RESPAWN_DESC
+   TEXT_LANGUAGE1 "Respawn in a new map place. (This takes away one score point)"
+   TEXT_LANGUAGE2 "Réapparaissez à un nouvel endroit sur la carte. (Cela supprime un point)"
+   TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Dies nimmt einen Punkt weg)"
+   TEXT_LANGUAGE6 "Respawn in a new map place. (This takes away one score point)"
+   TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Esto quita un punto)"
 }

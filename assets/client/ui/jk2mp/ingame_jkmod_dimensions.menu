@@ -9,7 +9,7 @@
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
 		rect					40 40 148 138
-		focusColor				1 .75 0 1
+		focusColor				1 1 1 1
 
 		// Overall window backdrop
 		itemDef 
