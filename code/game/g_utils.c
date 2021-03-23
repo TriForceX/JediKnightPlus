@@ -1041,6 +1041,9 @@ void TryUse( gentity_t *ent )
 	//Check for a use command
 	if ( ValidUseTarget( target ) )
 	{
+		// Tr!Force: [ButtonUse] Set valid target
+		if (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) ent->client->pers.jkmodPers.buttonUseAnimValid = qtrue;
+
 		/*
 		NPC_SetAnim( ent, SETANIM_TORSO, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );
 		if ( !VectorLengthSquared( ent->client->ps.velocity ) )

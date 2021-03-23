@@ -85,7 +85,8 @@ typedef struct
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
 	int			jetackUseDelay;			// Jetpack usage delay
-	int			buttonUseAnim;			// Button use animation
+	qboolean	buttonUseAnim;			// Button use animation use check
+	qboolean	buttonUseAnimValid;		// Button use animation valid target
 	int			raceStartTime;			// Start time for racers
 	qboolean	invulnerability;		// Persistant take damage
 	qboolean	passThrough;			// Check for pass-through

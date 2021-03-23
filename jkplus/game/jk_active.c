@@ -244,15 +244,16 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		if (!ent->takedamage && ent->health > 0) ent->takedamage = qtrue;
 	}
 
-	// Tr!Force: [JKMod] Button use animation
+	// Tr!Force: [ButtonUse] Trigger animation
 	if ((cmd->buttons & BUTTON_USE) 
 		&& (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) 
+		&& (ent->client->pers.jkmodPers.buttonUseAnimValid)
 		&& !(ent->r.svFlags & SVF_BOT) 
 		&& !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) 
 		&& !((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE) 
 		&& !JKMod_PlayerMoving(ent, qfalse, qtrue))
 	{
-		ent->client->pers.jkmodPers.buttonUseAnim = 1;
+		ent->client->pers.jkmodPers.buttonUseAnim = qtrue;
 		ent->client->ps.saberMove = LS_NONE;
 		ent->client->ps.saberBlocked = 0;
 		ent->client->ps.saberBlocking = 0;
@@ -262,7 +263,8 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 	else if (ent->client->pers.jkmodPers.buttonUseAnim)
 	{
-		ent->client->pers.jkmodPers.buttonUseAnim = 0;
+		ent->client->pers.jkmodPers.buttonUseAnim = qfalse;
+		ent->client->pers.jkmodPers.buttonUseAnimValid = qfalse;
 		ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 		ent->client->ps.forceDodgeAnim = 0;
 		ent->client->ps.forceHandExtendTime = 0;
