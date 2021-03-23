@@ -1,6 +1,6 @@
 # Jedi Knight Plus Changelog
 
-The next list is a resume of the changes registered on the project _(except readme or launcher)_. If you want see the details check the [commit history](https://github.com/TriForceX/JediKnightPlus/commits)
+The next list is a resume of the changes registered on the project. If you want see the details check the [commit history](https://github.com/TriForceX/JediKnightPlus/commits)
 
 The version control structure on this project is `<mayor>.<minor>.<patch>` where:
 - **Major:** The project is stable, tested and approved for a public release
@@ -8,6 +8,16 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - **Patch:** Small changes, code improvements, bug fixes or work in progress
 
 ---
+
+## 0.14.1
+- Added normal dimension command option
+- Rewritten pause game stuff
+- Fixed server idle on game type change and pause game
+- Fixed plugin check on custom player movements
+- Moved button use animation cvar to player movements
+- Allow button use animation only on valid targets
+- Added menu tweaks by Flendo
+- Added extra check for saber toggle on race dimension
 
 ## 0.14.0
 - Fix dimension flag to a single value

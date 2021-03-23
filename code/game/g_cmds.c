@@ -2159,6 +2159,12 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 		return;
 	}
 
+	// Tr!Force: [Dimensions] Don't allow saber toggle on race dimension
+	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	{
+		return;
+	}
+
 //	if (ent->client->ps.duelInProgress && !ent->client->ps.saberHolstered)
 //	{
 //		return;
