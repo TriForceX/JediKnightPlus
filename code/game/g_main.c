@@ -2592,36 +2592,58 @@ void G_RunFrame( int levelTime ) {
 			float timeDif = (level.time - gSlowMoDuelTime); //difference in time between when the slow motion was initiated and now
 			float useDif = 0; //the difference to use when actually setting the timescale
 
-			if (timeDif < 150)
-			{
-				trap_Cvar_Set("timescale", "0.1f");
-			}
-			else if (timeDif < 1150)
-			{
-				useDif = (timeDif/1000); //scale from 0.1 up to 1
-				if (useDif < 0.1)
-				{
-					useDif = 0.1;
-				}
-				if (useDif > 1.0)
-				{
-					useDif = 1.0;
-				}
-				trap_Cvar_Set("timescale", va("%f", useDif));
-			}
-			else
+			// Tr!Force: [JKMod] Slow-mo duel end workaround
+			if (jkcvar_duelEndSlowFix.integer)
 			{
 				char buf[128];
 				float tFVal = 0;
 
 				trap_Cvar_VariableStringBuffer("timescale", buf, sizeof(buf));
-
 				tFVal = atof(buf);
 
-				trap_Cvar_Set("timescale", "1");
-				if (timeDif > 1500 && tFVal == 1.0f)
+				if (timeDif < 1150)
 				{
-					gDoSlowMoDuel = qfalse;
+					if (tFVal != 0.5f) trap_Cvar_Set("timescale", "0.5f");
+				}
+				else
+				{
+					if (tFVal != 1.0f) trap_Cvar_Set("timescale", "1");
+					if (timeDif > 1500 && tFVal == 1.0f) gDoSlowMoDuel = qfalse;
+				}
+			}
+			else
+			{
+				if (timeDif < 150)
+				{
+					trap_Cvar_Set("timescale", "0.1f");
+				}
+				else if (timeDif < 1150)
+				{
+					useDif = (timeDif/1000); //scale from 0.1 up to 1
+					if (useDif < 0.1)
+					{
+						useDif = 0.1;
+					}
+					if (useDif > 1.0)
+					{
+						useDif = 1.0;
+					}
+					trap_Cvar_Set("timescale", va("%f", useDif));
+				}
+				else
+				{
+					char buf[128];
+					float tFVal = 0;
+
+					trap_Cvar_VariableStringBuffer("timescale", buf, sizeof(buf));
+
+					tFVal = atof(buf);
+
+					trap_Cvar_Set("timescale", "1");
+					if (timeDif > 1500 && tFVal == 1.0f)
+					{
+						gDoSlowMoDuel = qfalse;
+					}
 				}
 			}
 		}
