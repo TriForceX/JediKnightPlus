@@ -1222,10 +1222,16 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_YESNO
+			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_DAMAGEPLUMS
 			descText			@JKMENUS_CLIENT_DAMAGEPLUMS_DESC
 			cvar				"cg_scorePlums"
+			cvarFloatList
+			{
+				@JKMENUS_SPEED_FAST	2
+				@JKMENUS_SPEED_SLOW	1
+				@MENUS0_OFF			0
+			}
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151

@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 118
+COUNT 120
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -441,16 +441,16 @@ INDEX 48
    TEXT_LANGUAGE2 "Dégâts de prune:"
    TEXT_LANGUAGE3 "Pflaumen beschädigen:"
    TEXT_LANGUAGE6 "Damage plums:"
-   TEXT_LANGUAGE8 "Indicadores daño:"
+   TEXT_LANGUAGE8 "Indicadores de daño:"
 }
 INDEX 49
 {
    REFERENCE CLIENT_DAMAGEPLUMS_DESC
-   TEXT_LANGUAGE1 "Show damage indicators."
-   TEXT_LANGUAGE2 "Afficher les indicateurs de dommages."
-   TEXT_LANGUAGE3 "Schadensindikatoren anzeigen."
-   TEXT_LANGUAGE6 "Show damage indicators."
-   TEXT_LANGUAGE8 "Mostrar indicadores de daños."
+   TEXT_LANGUAGE1 "Show damage indicators when hit a player."
+   TEXT_LANGUAGE2 "Afficher les indicateurs de dégâts lorsque vous frappez un joueur."
+   TEXT_LANGUAGE3 "Schaden ndikatoren anzeigen wenn du einen spieler triffst."
+   TEXT_LANGUAGE6 "Show damage indicators when hit a player."
+   TEXT_LANGUAGE8 "Mostrar indicadores de daños al golpear a un jugador."
 }
 INDEX 50
 {
@@ -1063,4 +1063,22 @@ INDEX 117
    TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Dies nimmt einen Punkt weg)"
    TEXT_LANGUAGE6 "Respawn in a new map place. (This takes away one score point)"
    TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Esto quita un punto)"
+}
+INDEX 118
+{
+   REFERENCE SPEED_FAST
+   TEXT_LANGUAGE1 "Fast"
+   TEXT_LANGUAGE2 "Rapide"
+   TEXT_LANGUAGE3 "Fasten"
+   TEXT_LANGUAGE6 "Fast"
+   TEXT_LANGUAGE8 "Rápido"
+}
+INDEX 119
+{
+   REFERENCE SPEED_SLOW
+   TEXT_LANGUAGE1 "Slow"
+   TEXT_LANGUAGE2 "Lent"
+   TEXT_LANGUAGE3 "Langsam"
+   TEXT_LANGUAGE6 "Slow"
+   TEXT_LANGUAGE8 "Lento"
 }
