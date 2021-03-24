@@ -228,9 +228,17 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
 					return qfalse;
 				}
-				else if (!ent->client->jkmodClient.TeleportChatUsed)
+				else if (ent->client->jkmodClient.TeleportChatTime > 0)
+				{
+					trap_SendServerCommand(ent - g_entities,va("print \"You have to wait %d seconds before teleport again\n\"", ent->client->jkmodClient.TeleportChatTime));
+					return qfalse;
+				}
+				else if (!ent->client->jkmodClient.TeleportChatUsed || jkcvar_teleportChatTime.integer)
 				{
 					vec3_t		temporigin, tempangles;
+
+					// Delay
+					ent->client->jkmodClient.TeleportChatTime = jkcvar_teleportChatTime.integer;
 
 					VectorClear(temporigin);
 					VectorClear(tempangles);
@@ -243,7 +251,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 					tempangles[ROLL] = 0.0f;
 
 					JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, 300, "cinematics/hugesparks", NULL);
-					ent->client->jkmodClient.TeleportChatUsed = qtrue;
+					ent->client->jkmodClient.TeleportChatUsed = jkcvar_teleportChatTime.integer ? qfalse : qtrue;
 					return qtrue;
 				}
 				else

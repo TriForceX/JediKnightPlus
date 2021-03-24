@@ -55,6 +55,13 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			else client->jkmodClient.DimensionTime = 0;
 		}
 
+		// Teleport chat time check
+		if (client->jkmodClient.TeleportChatTime)
+		{
+			if (client->jkmodClient.TeleportChatTime > 0) client->jkmodClient.TeleportChatTime--;
+			else client->jkmodClient.TeleportChatTime = 0;
+		}
+
 		// Chat protect check
 		if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
 		{

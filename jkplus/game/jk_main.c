@@ -47,6 +47,7 @@ vmCvar_t	jkcvar_chatProtect;
 vmCvar_t	jkcvar_chatProtectTime;
 vmCvar_t	jkcvar_playerIgnore;
 vmCvar_t	jkcvar_teleportChat;
+vmCvar_t	jkcvar_teleportChatTime;
 vmCvar_t	jkcvar_teleportFrag;
 
 vmCvar_t	jkcvar_voteCustomMap;
@@ -104,6 +105,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportFrag,			"jk_teleportFrag",			"1",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_voteCustomMap,		"jk_voteCustomMap",			"0",					CVAR_ARCHIVE,						0, qtrue },

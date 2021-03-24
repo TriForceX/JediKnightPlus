@@ -109,7 +109,8 @@ typedef struct
 	int			ChatTime;			// Chat protect time
 	int			MotdTime;			// Server motd time
 	int			VoteWaitTime;		// Player callvote wait time
-	qboolean	TeleportChatUsed;	// Player check used
+	int			TeleportChatTime;	// Teleport chat wait time
+	qboolean	TeleportChatUsed;	// Teleport chat check used
 	
 } jkmod_client_t;
 
@@ -175,6 +176,7 @@ extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_teleportChat;
+extern	vmCvar_t					jkcvar_teleportChatTime;
 extern	vmCvar_t					jkcvar_teleportFrag;
 
 extern	vmCvar_t					jkcvar_voteCustomMap;
