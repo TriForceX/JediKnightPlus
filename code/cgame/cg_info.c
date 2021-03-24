@@ -245,7 +245,7 @@ void CG_DrawInformation( void ) {
 	}
 
 	if (cgs.gametype < GT_CTF ) {
-		value = atoi( Info_ValueForKey( info, "fraglimit" ) );
+		value = cgs.gametype == GT_TOURNAMENT && cgs.jkmodCvar.duelFragLimit ? cgs.jkmodCvar.duelFragLimit : atoi( Info_ValueForKey( info, "fraglimit" ) ); // Tr!Force: [JKMod] Custom duel fraglimit
 		if ( value ) {
 			UI_DrawProportionalString( x, y,
 				va( "%s %i", CG_GetStripEdString("INGAMETEXT", "FRAGLIMIT"), value ),

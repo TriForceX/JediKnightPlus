@@ -60,6 +60,7 @@ vmCvar_t	jkcvar_duelStartHealth;
 vmCvar_t	jkcvar_duelStartArmor;
 vmCvar_t	jkcvar_duelEndStats;
 vmCvar_t	jkcvar_duelEndSlowFix;
+vmCvar_t	jkcvar_duelFragLimit;
 
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
@@ -119,6 +120,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_duelStartArmor,		"jk_duelStartArmor",		"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndStats,			"jk_duelEndStats",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndSlowFix,		"jk_duelEndSlowFix",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelFragLimit,		"jk_duelFragLimit",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,						0, qtrue },

@@ -33,6 +33,7 @@ typedef struct
 	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
 	int			customHats;		// Tr!Force: [CustomHats] Main cvar
 	int			jetPack;		// Tr!Force: [JetPack] Main cvar
+	int			duelFragLimit;	// Tr!Force: [DuelFraglimit] Main cvar
 	int			pauseTime;		// Tr!Force: [Pause] Server pause time
 
 } jkmod_cvar_t;
