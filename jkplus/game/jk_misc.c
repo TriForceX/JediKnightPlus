@@ -414,6 +414,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	ent->client->pers.jkmodPers.customGravity = gravity;
 
 	// Cheats
+	ent->client->ps.dualBlade = qfalse;
 	ent->client->noclip = qfalse;
 	ent->flags &= ~FL_GODMODE;
 

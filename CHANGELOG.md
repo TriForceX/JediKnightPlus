@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.14.2
+- Fixed race timer on pause mode
+- Added teleport chat option for unlimited usage
+- Added slow-mo duel end workaround
+- Added custom fraglimit for duel gametype
+- Added faster score plums & fixed seeing through walls
+- Remove dual blade when left cheats dimension
+
 ## 0.14.1
 - Added normal dimension command option
 - Rewritten pause game stuff
