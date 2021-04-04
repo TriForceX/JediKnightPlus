@@ -3647,6 +3647,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		if (jkcvar_damagePlums.integer)
 			ScorePlum(attacker, client->ps.origin, take);
 
+		if (jkcvar_teleportChatTime.integer)
+			client->jkmodClient.TeleportChatTime = jkcvar_teleportChatTime.integer; // Tr!Force: [TeleportChat] Add delay on enemy hits
+
 		G_LogWeaponDamage(attacker->s.number, mod, take);
 	}
 }

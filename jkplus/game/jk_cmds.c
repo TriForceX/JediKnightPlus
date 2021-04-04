@@ -228,6 +228,11 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
 					return qfalse;
 				}
+				else if (ent->client->ps.pm_type == PM_DEAD)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"You can't teleport while dead\n\""));
+					return qfalse;
+				}
 				else if (ent->client->jkmodClient.TeleportChatTime > 0)
 				{
 					trap_SendServerCommand(ent - g_entities,va("print \"You have to wait %d seconds before teleport again\n\"", ent->client->jkmodClient.TeleportChatTime));
