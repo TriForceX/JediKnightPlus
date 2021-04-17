@@ -888,9 +888,7 @@ void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Fo
 
 	if ( g_gametype.integer == GT_TOURNAMENT )
 	{
-		int jkmod_duelfraglimit = jkcvar_duelFragLimit.integer ? jkcvar_duelFragLimit.integer : g_fraglimit.integer; // Tr!Force: [JKMod] Custom duel fraglimit
-
-		G_LogPrintf("Duel Tournament Begun: kill limit %d, win limit: %d\n", jkmod_duelfraglimit, g_duel_fraglimit.integer ); // Tr!Force: [JKMod] Custom duel fraglimit
+		G_LogPrintf("Duel Tournament Begun: kill limit %d, win limit: %d\n", g_fraglimit.integer, g_duel_fraglimit.integer );
 	}
 }
 
@@ -1841,8 +1839,6 @@ void CheckIntermissionExit( void ) {
 
 			if ( g_austrian.integer )
 			{
-				int jkmod_duelfraglimit = jkcvar_duelFragLimit.integer ? jkcvar_duelFragLimit.integer : g_fraglimit.integer; // Tr!Force: [JKMod] Custom duel fraglimit
-
 				G_LogPrintf("Duel Initiated: %s %d/%d vs %s %d/%d, kill limit: %d\n", 
 					level.clients[level.sortedClients[0]].pers.netname,
 					level.clients[level.sortedClients[0]].sess.wins,
@@ -1850,7 +1846,7 @@ void CheckIntermissionExit( void ) {
 					level.clients[level.sortedClients[1]].pers.netname,
 					level.clients[level.sortedClients[1]].sess.wins,
 					level.clients[level.sortedClients[1]].sess.losses,
-					jkmod_duelfraglimit ); // Tr!Force: [JKMod] Custom duel fraglimit
+					g_fraglimit.integer );
 			}
 			
 			if (level.numPlayingClients >= 2)
@@ -2103,7 +2099,7 @@ void CheckExitRules( void ) {
 				return;
 			}
 
-			if ( cl->ps.persistant[PERS_SCORE] >= (g_gametype.integer == GT_TOURNAMENT && jkcvar_duelFragLimit.integer ? jkcvar_duelFragLimit.integer : g_fraglimit.integer) ) { // Tr!Force: [JKMod] Custom duel fraglimit
+			if ( cl->ps.persistant[PERS_SCORE] >= g_fraglimit.integer ) {
 				LogExit( "Kill limit hit." );
 				gDuelExit = qfalse;
 				trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s.\n\"",
@@ -2180,8 +2176,6 @@ void CheckTournament( void ) {
 				gDuelist2 = level.sortedClients[1];
 				if ( g_austrian.integer )
 				{
-					int jkmod_duelfraglimit = jkcvar_duelFragLimit.integer ? jkcvar_duelFragLimit.integer : g_fraglimit.integer; // Tr!Force: [JKMod] Custom duel fraglimit
-
 					G_LogPrintf("Duel Initiated: %s %d/%d vs %s %d/%d, kill limit: %d\n", 
 						level.clients[level.sortedClients[0]].pers.netname,
 						level.clients[level.sortedClients[0]].sess.wins,
@@ -2189,7 +2183,7 @@ void CheckTournament( void ) {
 						level.clients[level.sortedClients[1]].pers.netname,
 						level.clients[level.sortedClients[1]].sess.wins,
 						level.clients[level.sortedClients[1]].sess.losses,
-						jkmod_duelfraglimit ); // Tr!Force: [JKMod] Custom duel fraglimit
+						g_fraglimit.integer );
 				}
 				//trap_SendConsoleCommand( EXEC_APPEND, "map_restart 0\n" );
 				//FIXME: This seems to cause problems. But we'd like to reset things whenever a new opponent is set.

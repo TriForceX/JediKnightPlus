@@ -149,7 +149,6 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCvar.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));			// Tr!Force: [MacroScan] Main cvar
 	cgs.jkmodCvar.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));		// Tr!Force: [CustomHats] Main cvar
 	cgs.jkmodCvar.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));				// Tr!Force: [JetPack] Main cvar
-	cgs.jkmodCvar.duelFragLimit = atoi(Info_ValueForKey(info, "jk_duelFragLimit"));	// Tr!Force: [DuelFraglimit] Main cvar
 
 	mapname = Info_ValueForKey( info, "mapname" );
 
