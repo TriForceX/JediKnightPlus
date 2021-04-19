@@ -127,6 +127,7 @@ typedef struct
 	int			idleTime;										// Server idle time
 	int			pauseTime;										// Pause time stop
 	unsigned	pauseTimeCustom;								// Pause custom seconds
+	qboolean	cvarTempUnlock;									// Temporary cvar latch unlock
 
 } jkmod_locals_t;
 
@@ -201,6 +202,7 @@ extern	vmCvar_t					jkcvar_emotesFreeze;
 extern	vmCvar_t					jkcvar_emotesPunchDamage;
 
 extern	vmCvar_t					jkcvar_gamePlay;
+extern	vmCvar_t					jkcvar_gameTypeConfig;
 extern	vmCvar_t					jkcvar_altDimension;
 extern	vmCvar_t					jkcvar_altDimensionTime;
 extern	vmCvar_t					jkcvar_randomBegin;
@@ -289,6 +291,7 @@ void		JKMod_randomBeginInit(void);
 void		JKMod_serverNewsInit(void);
 void		JKMod_teleportChatInit(void);
 void		JKMod_serverIdleCheck(void);
+void		JKMod_gameTypeConfig(void);
 
 // jk_misc.c
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);

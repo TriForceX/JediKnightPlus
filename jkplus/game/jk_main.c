@@ -72,6 +72,7 @@ vmCvar_t	jkcvar_emotesFreeze;
 vmCvar_t	jkcvar_emotesPunchDamage;
 
 vmCvar_t	jkcvar_gamePlay;
+vmCvar_t	jkcvar_gameTypeConfig;
 vmCvar_t	jkcvar_altDimension;
 vmCvar_t	jkcvar_altDimensionTime;
 vmCvar_t	jkcvar_randomBegin;
@@ -131,6 +132,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_LATCH,			0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
@@ -167,6 +169,14 @@ void JKMod_G_RegisterCvars(void)
 	// Register all the cvars
 	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
 	{
+		// Cvar latch temp unlock toggle
+		if (cv->cvarFlags & (CVAR_LATCH | CVAR_TEMP) && jkcvar_gameTypeConfig.integer) 
+		{
+			cv->cvarFlags ^= CVAR_LATCH;
+			cv->cvarFlags ^= CVAR_TEMP;
+			JKMod_Printf("%s%s latched from jkmod checked\n", (cv->cvarFlags & CVAR_LATCH ? S_COLOR_GREEN : S_COLOR_YELLOW), cv->cvarName);
+		}
+
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 
 		if(cv->vmCvar)
@@ -631,6 +641,39 @@ void JKMod_serverIdleCheck(void)
 
 /*
 =====================================================================
+Custom GameType Config
+=====================================================================
+*/
+void JKMod_gameTypeConfig(void)
+{
+	static char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
+	static char	s[MAX_STRING_CHARS];
+	static int	gt;
+	static fileHandle_t	f;
+
+	trap_Cvar_VariableStringBuffer("session", s, sizeof(s));
+	gt = atoi(s);
+
+	if (g_gametype.integer != gt)
+	{
+		if (trap_FS_FOpenFile(va("config/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
+		{
+			G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
+			trap_SendConsoleCommand(EXEC_APPEND, va("exec config/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
+			trap_FS_FCloseFile(f);
+		}
+		else
+		{
+			G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
+			trap_SendConsoleCommand(EXEC_APPEND, "exec config/game_type/default.cfg\n");
+		}
+	}
+
+	trap_SendConsoleCommand(EXEC_APPEND, "checkcvars\n");
+}
+
+/*
+=====================================================================
 Main initialization functions
 =====================================================================
 */
@@ -676,5 +719,11 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	{
 		level.jkmodLevel.idleTime = levelTime;
 		G_Printf("%i minutes set for server idle\n", jkcvar_serverIdle.integer);
+	}
+
+	// Check gametype config
+	if (jkcvar_gameTypeConfig.integer)
+	{
+		JKMod_gameTypeConfig();
 	}
 }

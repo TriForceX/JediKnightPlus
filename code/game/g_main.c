@@ -583,6 +583,15 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	qboolean remapped = qfalse;
 
 	for ( i = 0, cv = gameCvarTable ; i < gameCvarTableSize ; i++, cv++ ) {
+
+		// Tr!Force: [GameTypeConfig] Cvar latch temp unlock toggle
+		if (cv->vmCvar != &g_gametype && cv->cvarFlags & (CVAR_LATCH | CVAR_TEMP) && jkcvar_gameTypeConfig.integer) 
+		{
+			cv->cvarFlags ^= CVAR_LATCH;
+			cv->cvarFlags ^= CVAR_TEMP;
+			JKMod_Printf("%s%s latched from basejk checked\n", (cv->cvarFlags & CVAR_LATCH ? S_COLOR_GREEN : S_COLOR_YELLOW), cv->cvarName);
+		}
+
 		trap_Cvar_Register( cv->vmCvar, cv->cvarName,
 			cv->defaultString, cv->cvarFlags );
 		if ( cv->vmCvar )
@@ -591,6 +600,13 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		if (cv->teamShader) {
 			remapped = qtrue;
 		}
+	}
+
+	// Tr!Force: [GameTypeConfig] Cvar latch temp unlock finish
+	if (jkcvar_gameTypeConfig.integer && level.jkmodLevel.cvarTempUnlock) 
+	{
+		level.jkmodLevel.cvarTempUnlock = qfalse;
+		return;
 	}
 
 	if ( strcmp(g_gamename.string, GAMEVERSION) || strcmp(g_gamedate.string, __DATE__) ) {
