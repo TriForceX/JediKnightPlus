@@ -436,9 +436,9 @@ void JKMod_CG_DrawDimensionString(void)
 
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimensionStr = "Private Duel";
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimensionStr = "Guns Arena";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimensionStr = "Race Challenge";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimensionStr = "Race Defrag";
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_SABER) dimensionStr = "Saber Only";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) dimensionStr = "Instant Kill";
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) dimensionStr = "Insta Kill";
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT) dimensionStr = "Cheats Mode";
 
 	if (dimensionStr) {

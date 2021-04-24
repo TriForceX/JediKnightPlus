@@ -13,6 +13,7 @@ extern int saberOffSound;
 extern int saberOnSound;
 extern char *ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
+extern jkmod_dimension_data_t jkmod_dimension_data[];
 
 /*
 =====================================================================
@@ -850,7 +851,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 			}
 		}
 
-		if (!JKMod_DimensionCmd(ent, dimension)) return;
+		if (!JKMod_DimensionCmd(ent, dimension, qtrue)) return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)
@@ -925,7 +926,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 				"^5----------\n"
 				"^7Topic list:\n"
-				"^3Admin          Accounts       Ranking\n"
+				"^3Admin          Accounts       Dimensions\n"
 				"^3Emotes         Commands       Duels\n"
 				"^3Build          About          Credits\n"
 				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, jk2gameplay, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
@@ -982,6 +983,26 @@ void JKMod_ClientCommand(int clientNum)
 				"^3engage_duel_force\n"
 				"^5----------\n"
 				"^2Note: ^7You also can use ^5engage_ff ^7for force duel challenge\n"
+				"^7\""));
+			return;
+		}
+		else if (!Q_stricmp(arg1, "dimensions"))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \""
+				"^5[^7 Dimension ^5]^7\n"
+				"^7Change between server dimensions\n"
+				"^7You can use this feature using the following command: ^2/dimension <option>\n"
+				"^5----------\n"
+				"^7Option list:\n"
+				"^3normal\n"
+				"^3guns\n"
+				"^3race\n"
+				"^3saber\n"
+				"^3insta\n"
+				"^3cheats\n"
+				"^5----------\n"
+				"^2Note 1: ^7You will join in ^5duel ^7dimension automatically if is available in the server\n"
+				"^2Note 2: ^7You can also use this command on chat saying ^3!dimension <option>\n"
 				"^7\""));
 			return;
 		}
@@ -1150,63 +1171,52 @@ void JKMod_ClientCommand(int clientNum)
 	// Who is command
 	else if (Q_stricmp(cmd, "whois") == 0)
 	{
-		char	status[MAX_STRING_CHARS] = "";
 		int		i;
 
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
 			"^7List of all players connected on the server\n"
-			"^7Client plugin status: ^2Updated^7, ^3Outdated^7, ^1No plugin\n"
+			"^7Client plugin status: ^2Valid^7, ^3Invalid^7, ^1No plugin\n"
 			"^7\""));
-
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
-		Q_strcat(status, sizeof(status), "^7Num Name                         Type  Dimension Plugin\n");
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
+		
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"^5--- ---------------------------- ----- ----------- ---------------\n"
+			"^7Num Name                         Type  Dimension   Plugin\n"
+			"^5--- ---------------------------- ----- ----------- ---------------\n"
+			"^7\""));
 
 		for (i = 0; i < level.maxclients; i++)
 		{
-			gentity_t 	*ent = &g_entities[i];
+			gentity_t 	*user = &g_entities[i];
 			char		name[MAX_STRING_CHARS] = "";
-			char		userinfo[MAX_INFO_STRING];
 			char		*type;
 			char		*dimension;
-			char		*valid;
+			char		*status;
 			char		*plugin;
 
-			if (!ent || !ent->client || !ent->inuse) continue;
-			if (ent->client->pers.connected == CON_DISCONNECTED) continue;
-
-			strcpy(name, ent->client->pers.netname);
-			trap_GetUserinfo(i, userinfo, sizeof(userinfo));
-
-			if (ent->r.svFlags & SVF_BOT) {
-				type = "Bot";
-				plugin = JK_VERSION;
-				valid = S_COLOR_GREEN;
-			}
-			else {
-				type = "Human";
-				plugin = Info_ValueForKey(userinfo, "jkmod_clientversion");
-				valid = plugin[0] != '\0' ? (strcmp(plugin, JK_VERSION) == 0 ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
-			}
-
-			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimension = "Duel";
-			else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimension = "Guns";
-			else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimension = "Race";
-			else dimension = "Normal";
+			// Check
+			if (!user || !user->client || !user->inuse) continue;
+			if (user->client->pers.connected == CON_DISCONNECTED) continue;
 			
-			Q_strcat(status, sizeof(status), va(S_COLOR_WHITE "%3i %28s %5s %9s %s%9s\n",
+			// Set info
+			strcpy(name, user->client->pers.netname);
+			dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : va("%s", jkmod_dimension_data[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name);
+			type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
+			plugin = user->client->pers.jkmodPers.ClientVersion;
+			status = strcmp(plugin, "No plugin") ? (user->client->pers.jkmodPers.ClientPlugin ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
+
+			// Append info
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-11s %s%-15s\n\"",
 				i,
 				Q_CleanStr(name, qfalse),
 				type,
 				dimension,
-				valid,
-				plugin[0] == '\0' ? "No plugin" : plugin
+				status,
+				plugin
 			));
 		}
 
-		Q_strcat(status, sizeof(status), "^5--- ---------------------------- ----- --------- ---------------\n");
-		trap_SendServerCommand(clientNum, va("print \"%s\"", status));
+		trap_SendServerCommand(ent - g_entities, va("print \"^5--- ---------------------------- ----- ----------- ---------------\n\""));
 		return;
 	}
 	// Illegal macro announce
@@ -1234,37 +1244,8 @@ void JKMod_ClientCommand(int clientNum)
 		char    arg1[MAX_TOKEN_CHARS];
 
 		trap_Argv(1, arg1, sizeof(arg1));
-
-		if (trap_Argc() < 2)
-		{
-			qtime_t		serverTime;
-			char		*serverTimeType;
-
-			trap_RealTime(&serverTime);
-			serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
-
-			trap_SendServerCommand(ent - g_entities, va("print \""
-				"^5[^7 Dimension ^5]^7\n"
-				"^7Change between server dimensions\n"
-				"^7You can use this feature using the following command: ^2/dimension <option>\n"
-				"^5----------\n"
-				"^7Option list:\n"
-				"^3normal\n"
-				"^3guns\n"
-				"^3race\n"
-				"^3saber\n"
-				"^3insta\n"
-				"^3cheats\n"
-				"^5----------\n"
-				"^2Note: ^7You will join in ^5duel ^7dimension automatically if is available in the server\n"
-				"^7\""));
-			return;
-		}
-		else
-		{
-			JKMod_DimensionCmd(ent, arg1);
-			return;
-		}
+		JKMod_DimensionCmd(ent, arg1, qfalse);
+		return;
 	}
 	// Save position command
 	else if (Q_stricmp(cmd, "savepos") == 0)

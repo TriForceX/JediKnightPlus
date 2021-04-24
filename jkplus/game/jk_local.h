@@ -80,7 +80,8 @@ typedef struct
 // Client persistant
 typedef struct
 {
-	qboolean	ClientPlugin;			// Player client plugin
+	qboolean	ClientPlugin;			// Client plugin check
+	char		*ClientVersion;			// Client plugin version
 	int			CustomDuel;				// Client is in force duel
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
@@ -130,6 +131,24 @@ typedef struct
 	qboolean	cvarTempUnlock;									// Temporary cvar latch unlock
 
 } jkmod_locals_t;
+
+// Dimension data
+typedef struct 
+{
+	unsigned	dimension;
+	int			weapons;
+	int			forcepowers;
+	int			forcelevel;
+	qboolean	holdables;
+	qboolean	jetpack;
+	qboolean	invulnerability;
+	qboolean	passthrough;
+	float		speed;
+	float		gravity;
+	char		*command;
+	char		*name;
+
+} jkmod_dimension_data_t;
 
 /*
 =====================================================================
@@ -268,8 +287,9 @@ void		JKMod_sRand(unsigned seed);
 int			JKMod_Rand(void);
 
 // jk_dimensions.c
+int			JKMod_DimensionIndex(unsigned dimension);
 void		JKMod_DimensionSettings(gentity_t *ent, unsigned dimension);
-qboolean	JKMod_DimensionCmd(gentity_t *ent, char *dimension);
+qboolean	JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say);
 qboolean	JKMod_DimensionCheck(int ent1, int ent2);
 void		JKMod_DimensionOwnerCheck(int owner, gentity_t *ent);
 unsigned	JKMod_DimensionGetFree(void);

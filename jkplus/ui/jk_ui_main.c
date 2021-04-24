@@ -110,9 +110,9 @@ jkmod_dimensions_table_t jkmodDimensionsTable[] =
 {
 	// cmd				title
 	{ "guns",			"Guns Arena" },
-	{ "race",			"Race Challenge" },
+	{ "race",			"Race Defrag" },
 	{ "saber",			"Saber Only" },
-	{ "insta",			"Instant Kill" },
+	{ "insta",			"Insta Kill" },
 	{ "cheats",			"Cheats Mode" },
 };
 

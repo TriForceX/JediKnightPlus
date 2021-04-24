@@ -84,8 +84,8 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	gentity_t	*ent = &g_entities[clientNum];
 	gclient_t	*client;
 	char		userinfo[MAX_INFO_VALUE];
-	const char	*serverVersion;
-	const char	*clientVersion;
+	char		*serverVersion;
+	char		*clientVersion;
 
 	// Launch original client begin function
 	BaseJK2_ClientBegin(clientNum, allowTeamReset);
@@ -99,8 +99,9 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 
 	// Set and check client/server version
 	serverVersion = JK_VERSION;
-	clientVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
-	client->pers.jkmodPers.ClientPlugin = strcmp(clientVersion, serverVersion) == 0 || ent->r.svFlags & SVF_BOT ? qtrue : qfalse;
+	clientVersion = ent->r.svFlags & SVF_BOT ? serverVersion : Info_ValueForKey(userinfo, "jkmod_clientversion");
+	client->pers.jkmodPers.ClientPlugin = strcmp(clientVersion, serverVersion) == 0 ? qtrue : qfalse;
+	client->pers.jkmodPers.ClientVersion = clientVersion[0] != '\0' ? clientVersion : "No plugin";
 
 	// Set player movements
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
