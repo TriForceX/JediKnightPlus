@@ -294,12 +294,14 @@ void JKMod_PauseTimeRestore(int msec)
 	ADJUST(level.intermissiontime);
 	ADJUST(level.intermissionQueued);
 	ADJUST(level.exitTime);
+	ADJUST(level.voteTime);
 	ADJUST(level.jkmodLevel.idleTime);
 
-	if(level.startTime < level.time) level.startTime += msec;
+	level.startTime += msec;
 
 	trap_SetConfigstring(CS_LEVEL_START_TIME, va("%i", level.startTime));
 	trap_SetConfigstring(CS_WARMUP, va("%i", level.warmupTime));
+	trap_SetConfigstring(CS_VOTE_TIME, va("%i", level.voteTime));
 
 	for (i = 0; i < level.maxclients; i++) 
 	{
@@ -685,6 +687,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 
 	// Launch original init game function
 	BaseJK2_G_InitGame(levelTime, randomSeed, restart);
+
+	// Set random seed
+	JKMod_RandSeed(randomSeed);
 
 	// Check gameplay
 	if (strcmp(jkcvar_gamePlay.string, "0") != 0)

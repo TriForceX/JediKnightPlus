@@ -284,8 +284,9 @@ const char	*JKMod_msToString(const int ms, qboolean abbr);
 int			JKMod_ClientNumberFromArg(char* name);
 char		*JKMod_ConcatArgs(int start);
 char		*JKMod_ReadFile(char *filename);
-void		JKMod_sRand(unsigned seed);
+void		JKMod_RandSeed(unsigned seed);
 int			JKMod_Rand(void);
+float		JKMod_RandFloat(float min, float max);
 
 // jk_dimensions.c
 int			JKMod_DimensionIndex(unsigned dimension);

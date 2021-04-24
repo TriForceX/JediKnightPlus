@@ -2363,7 +2363,7 @@ void CheckVote( void ) {
 			level.votingGametypeTo = 0;
 		}
 	}
-	if ( !level.voteTime ) {
+	if ( !level.voteTime || level.jkmodLevel.pauseTime > level.time ) { // Tr!Force: [Pause] Check vote time
 		return;
 	}
 	if ( level.time - level.voteTime >= VOTE_TIME ) {

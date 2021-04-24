@@ -453,12 +453,12 @@ char *JKMod_ReadFile(char *filename)
 
 /*
 =====================================================================
-Rand alternative Linux rand() behaves different than on Windows or qvm
+Rand function (Linux rand() behaves different than on Windows or qvm)
 =====================================================================
 */
 static int JKModRandSeed = 0;
 
-void JKMod_sRand(unsigned seed) 
+void JKMod_RandSeed(unsigned seed) 
 {
 	JKModRandSeed = seed;
 }
@@ -467,4 +467,8 @@ int	JKMod_Rand(void)
 {
 	JKModRandSeed = (69069 * JKModRandSeed + 1);
 	return JKModRandSeed & 0x7fff;
+}
+
+float JKMod_RandFloat(float min, float max) {
+	return ((JKMod_Rand() * (max - min)) / 32768.0F) + min;
 }
