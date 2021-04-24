@@ -2613,13 +2613,16 @@ void G_RunFrame( int levelTime ) {
 			{
 				char buf[128];
 				float tFVal = 0;
+				float tScale = jkcvar_duelEndTimeScale.value;
 
 				trap_Cvar_VariableStringBuffer("timescale", buf, sizeof(buf));
 				tFVal = atof(buf);
 
+				if (tScale < 0.1 || tScale > 0.9) tScale = 0.5f;
+
 				if (timeDif < 1150)
 				{
-					if (tFVal != 0.5f) trap_Cvar_Set("timescale", "0.5f");
+					if (tFVal != tScale) trap_Cvar_Set("timescale", va("%f", tScale));
 				}
 				else
 				{

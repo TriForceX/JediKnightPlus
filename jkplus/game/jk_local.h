@@ -209,6 +209,7 @@ extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;
 extern	vmCvar_t					jkcvar_duelEndStats;
 extern	vmCvar_t					jkcvar_duelEndSlowFix;
+extern	vmCvar_t					jkcvar_duelEndTimeScale;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
