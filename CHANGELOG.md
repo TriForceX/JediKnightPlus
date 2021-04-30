@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.14.3
+- Added teleport chat cooldown on enemy hits
+- Removed custom fraglimit for duel gametype
+- Added per-gametype settings configs
+- Some dimension command changes and related tweaks
+- Added custom slow-mo duel end time scale
+- Added voteTime check for pause and rand function
+- Some client info checks and tweaks
+
 ## 0.14.2
 - Fixed race timer on pause mode
 - Added teleport chat option for unlimited usage

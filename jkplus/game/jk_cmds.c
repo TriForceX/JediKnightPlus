@@ -1171,7 +1171,7 @@ void JKMod_ClientCommand(int clientNum)
 	// Who is command
 	else if (Q_stricmp(cmd, "whois") == 0)
 	{
-		int		i;
+		int		num;
 
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
@@ -1185,10 +1185,12 @@ void JKMod_ClientCommand(int clientNum)
 			"^5--- ---------------------------- ----- ----------- ---------------\n"
 			"^7\""));
 
-		for (i = 0; i < level.maxclients; i++)
+		for (num = 0; num < level.maxclients; num++)
 		{
-			gentity_t 	*user = &g_entities[i];
+			gentity_t 	*user = &g_entities[num];
+			char		userinfo[MAX_INFO_VALUE] = { 0 };
 			char		name[MAX_STRING_CHARS] = "";
+			char		*value;
 			char		*type;
 			char		*dimension;
 			char		*status;
@@ -1197,17 +1199,27 @@ void JKMod_ClientCommand(int clientNum)
 			// Check
 			if (!user || !user->client || !user->inuse) continue;
 			if (user->client->pers.connected == CON_DISCONNECTED) continue;
-			
+
+			// Get info
+			trap_GetUserinfo(num, userinfo, sizeof(userinfo));
+
+			// Find info
+			value = Info_ValueForKey(userinfo, "jkmod_clientversion");
+			if (value[0]) {
+				plugin = value;
+			} else {
+				plugin = "No plugin";
+			}
+
 			// Set info
 			strcpy(name, user->client->pers.netname);
 			dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : va("%s", jkmod_dimension_data[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name);
 			type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
-			plugin = user->client->pers.jkmodPers.ClientVersion;
 			status = strcmp(plugin, "No plugin") ? (user->client->pers.jkmodPers.ClientPlugin ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
 
 			// Append info
 			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-11s %s%-15s\n\"",
-				i,
+				num,
 				Q_CleanStr(name, qfalse),
 				type,
 				dimension,

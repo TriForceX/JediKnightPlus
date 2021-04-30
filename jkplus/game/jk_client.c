@@ -18,7 +18,7 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 	char		userinfo[MAX_INFO_STRING];
 	char		*baseMessage;
 
-	// Set userinfo
+	// Get user info
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
 	// Launch original client connect function
@@ -81,27 +81,22 @@ Client begin function
 */
 void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 {
-	gentity_t	*ent = &g_entities[clientNum];
+	gentity_t	*ent;
 	gclient_t	*client;
 	char		userinfo[MAX_INFO_VALUE];
-	char		*serverVersion;
-	char		*clientVersion;
 
 	// Launch original client begin function
 	BaseJK2_ClientBegin(clientNum, allowTeamReset);
 
-	// Set and get user info
-	client = level.clients + clientNum;
+	// Set user data
+	ent	= &g_entities[clientNum];
+	client	= ent->client;
+
+	// Get user info
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
 	// Set default dimension and refresh
 	if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
-
-	// Set and check client/server version
-	serverVersion = JK_VERSION;
-	clientVersion = ent->r.svFlags & SVF_BOT ? serverVersion : Info_ValueForKey(userinfo, "jkmod_clientversion");
-	client->pers.jkmodPers.ClientPlugin = strcmp(clientVersion, serverVersion) == 0 ? qtrue : qfalse;
-	client->pers.jkmodPers.ClientVersion = clientVersion[0] != '\0' ? clientVersion : "No plugin";
 
 	// Set player movements
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
@@ -146,40 +141,39 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		if (client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
 			SetTeam(ent, "spectator");
-			return;
-		}
-
-		// Show center print message
-		if (clientVersion[0] == '\0')
-		{
-			trap_SendServerCommand(clientNum, va("cp \"Please download\n" S_COLOR_CYAN "%s" S_COLOR_WHITE " client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
-			G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
-
 		}
 		else
 		{
-			trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n" S_COLOR_YELLOW "%s\nThe server version is " S_COLOR_CYAN "%s" S_COLOR_WHITE "\nCheck the console or enable downloads in main menu\"", clientVersion, serverVersion));
-			G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", clientVersion, serverVersion);
-		}
+			char	*serverVersion = JK_VERSION;
+			char	*clientVersion;
+			char	*pluginVersion;
+			int		allowDownload;
 
-		// Show console print message
-		if (trap_Cvar_VariableIntegerValue("mv_httpdownloads") && Info_ValueForKey(userinfo, "JK2MV")[0])
-		{
-			trap_SendServerCommand(clientNum, va("print \""
-				"Update your client plugin typing " S_COLOR_GREEN "/mv_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
-				"\""));
-		}
-		else if (trap_Cvar_VariableIntegerValue("sv_allowDownload"))
-		{
-			trap_SendServerCommand(clientNum, va("print \""
-				"Update your client plugin typing " S_COLOR_GREEN "/cl_allowdownload 1" S_COLOR_WHITE " in the console and reconnect\n"
-				"\""));
-		}
-		else
-		{
-			trap_SendServerCommand(clientNum, va("print \""
-				"Download " S_COLOR_CYAN "%s" S_COLOR_WHITE " client plugin from " S_COLOR_GREEN "https://jkmod.github.io\n"
-				"\"", serverVersion));
+			clientVersion = Info_ValueForKey(userinfo, "JK2MV");
+			pluginVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
+			allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
+
+			// Show center print message
+			if (!pluginVersion[0])
+			{
+				trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
+				G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
+			}
+			else
+			{
+				trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, serverVersion));
+				G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, serverVersion);
+			}
+
+			// Show console print message
+			if (allowDownload)
+			{
+				trap_SendServerCommand(clientNum, va("print \"Update your client plugin typing ^2/%s_allowdownload 1^7 in the console and reconnect\n\"", (clientVersion[0] ? "mv" : "cl")));
+			}
+			else
+			{
+				trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2https://jkmod.github.io\n\"", serverVersion));
+			}
 		}
 	}
 }

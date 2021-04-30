@@ -764,7 +764,7 @@ qboolean G_BotConnect( int clientNum, qboolean restart ) {
 G_AddBot
 ===============
 */
-static void G_AddBot( const char *name, float skill, const char *team, int delay, char *altname) {
+static void G_AddBot( const char *name, float skill, const char *team, int delay, char *altname, int jkmod_hat ) { // Tr!Force: [Bots] Add custom hats
 	int				clientNum;
 	char			*botinfo;
 	gentity_t		*bot;
@@ -857,6 +857,12 @@ static void G_AddBot( const char *name, float skill, const char *team, int delay
 	{
 		Info_SetValueForKey( userinfo, "personality", s );
 	}
+
+	// Tr!Force: [Bots] Add custom hats
+	Info_SetValueForKey( userinfo, "jk_cg_customHats", va("%i", jkmod_hat) ); 
+
+	// Tr!Force: [Plugin] Validate bots
+	Info_SetValueForKey( userinfo, "jkmod_clientversion", JK_VERSION ); 
 
 	// have the server allocate a client slot
 	clientNum = trap_BotAllocateClient();
@@ -964,6 +970,7 @@ void Svcmd_AddBot_f( void ) {
 	char			altname[MAX_TOKEN_CHARS];
 	char			string[MAX_TOKEN_CHARS];
 	char			team[MAX_TOKEN_CHARS];
+	int				jkmod_hat;		// Tr!Force: [Bots] Add custom hats
 
 	// are bots enabled?
 	if ( !trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
@@ -973,7 +980,7 @@ void Svcmd_AddBot_f( void ) {
 	// name
 	trap_Argv( 1, name, sizeof( name ) );
 	if ( !name[0] ) {
-		trap_Printf( "Usage: Addbot <botname> [skill 1-5] [team] [msec delay] [altname]\n" );
+		trap_Printf( "Usage: Addbot <botname> [skill 1-5] [team] [msec delay] [altname] [hat 1-8]\n" ); // Tr!Force: [Bots] Add custom hats
 		return;
 	}
 
@@ -1001,7 +1008,16 @@ void Svcmd_AddBot_f( void ) {
 	// alternative name
 	trap_Argv( 5, altname, sizeof( altname ) );
 
-	G_AddBot( name, skill, team, delay, altname );
+	// Tr!Force: [Bots] Add custom hats
+	trap_Argv( 6, string, sizeof( string ) );
+	if ( !string[0] ) {
+		jkmod_hat = 0;
+	}
+	else {
+		jkmod_hat = atoi( string );
+	}
+	
+	G_AddBot( name, skill, team, delay, altname, jkmod_hat ); // Tr!Force: [Bots] Add custom hats
 
 	// if this was issued during gameplay and we are playing locally,
 	// go ahead and load the bot's media immediately

@@ -81,7 +81,6 @@ typedef struct
 typedef struct
 {
 	qboolean	ClientPlugin;			// Client plugin check
-	char		*ClientVersion;			// Client plugin version
 	int			CustomDuel;				// Client is in force duel
 	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
 	char		*TeleportChatSaved;		// Player saved pos saved

@@ -1136,7 +1136,7 @@ void ClientUserinfoChanged( int clientNum ) {
 	char	redTeam[MAX_INFO_STRING];
 	char	blueTeam[MAX_INFO_STRING];
 	char	userinfo[MAX_INFO_STRING];
-	char	jkinfo_hat[MAX_INFO_STRING]; // Tr!Force: [JKMod] Custom client info
+	int		jkmod_hat;		// Tr!Force: [JKMod] Custom client info
 
 	// NameCrashFix (whitelisted characters)
 	static const char	validChars[]  = " ~QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm1234567890<>?,./';:][{}`-=!@#$^&*()_+|";
@@ -1157,6 +1157,14 @@ void ClientUserinfoChanged( int clientNum ) {
 	s = Info_ValueForKey( userinfo, "ip" );
 	if ( !strcmp( s, "localhost" ) ) {
 		client->pers.localClient = qtrue;
+	}
+
+	// Tr!Force: [Plugin] Check plugin
+	s = Info_ValueForKey( userinfo, "jkmod_clientversion" );
+	if ( !strcmp( s, JK_VERSION ) ) {
+		client->pers.jkmodPers.ClientPlugin = qtrue;
+	} else {
+		client->pers.jkmodPers.ClientPlugin = qfalse;
 	}
 
 	// check the item prediction
@@ -1283,6 +1291,14 @@ void ClientUserinfoChanged( int clientNum ) {
 	}
 	*/
 
+	// Tr!Force: [JKMod] Custom user info
+	s = Info_ValueForKey( userinfo, "jk_cg_customHats" );
+	if ( ! *s || atoi( s ) != 0 ) {
+		jkmod_hat = atoi( s );
+	} else {
+		jkmod_hat = 0;
+	}
+
 	// team task (0 = none, 1 = offence, 2 = defence)
 	teamTask = atoi(Info_ValueForKey(userinfo, "teamtask"));
 	// team Leader (1 = leader, 0 is normal player)
@@ -1295,26 +1311,22 @@ void ClientUserinfoChanged( int clientNum ) {
 	strcpy(redTeam, Info_ValueForKey( userinfo, "g_redteam" ));
 	strcpy(blueTeam, Info_ValueForKey( userinfo, "g_blueteam" ));
 
-	// Tr!Force: [JKMod] Custom user info
-	strcpy(jkinfo_hat, Info_ValueForKey( userinfo, "jk_cg_customHats" ));
-	if(jkinfo_hat[0] == '\0') Q_strncpyz(jkinfo_hat, "0", sizeof(jkinfo_hat));
-
 	// send over a subset of the userinfo keys so other clients can
 	// print scoreboards, display models, and play custom sounds
 	if ( ent->r.svFlags & SVF_BOT ) {
-		s = va("n\\%s\\t\\%i\\model\\%s\\c1\\%s\\c2\\%s\\hc\\%i\\w\\%i\\l\\%i\\skill\\%s\\tt\\%d\\tl\\%d\\mvgp\\%i\\jkhat\\%s",
+		s = va("n\\%s\\t\\%i\\model\\%s\\c1\\%s\\c2\\%s\\hc\\%i\\w\\%i\\l\\%i\\skill\\%s\\tt\\%d\\tl\\%d\\mvgp\\%i\\jkhat\\%i",
 			client->pers.netname, team, model,  c1, c2, 
 			client->pers.maxHealth, client->sess.wins, client->sess.losses,
 			Info_ValueForKey( userinfo, "skill" ), teamTask, teamLeader, jk2gameplay, 
 			// Tr!Force: [JKMod] Custom user info
-			jkinfo_hat
+			jkmod_hat
 		);
 	} else {
-		s = va("n\\%s\\t\\%i\\model\\%s\\g_redteam\\%s\\g_blueteam\\%s\\c1\\%s\\c2\\%s\\hc\\%i\\w\\%i\\l\\%i\\tt\\%d\\tl\\%d\\mvgp\\%i\\jkhat\\%s",
+		s = va("n\\%s\\t\\%i\\model\\%s\\g_redteam\\%s\\g_blueteam\\%s\\c1\\%s\\c2\\%s\\hc\\%i\\w\\%i\\l\\%i\\tt\\%d\\tl\\%d\\mvgp\\%i\\jkhat\\%i",
 			client->pers.netname, client->sess.sessionTeam, model, redTeam, blueTeam, c1, c2, 
 			client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader, jk2gameplay, 
 			// Tr!Force: [JKMod] Custom user info
-			jkinfo_hat
+			jkmod_hat
 		);
 	}
 	
