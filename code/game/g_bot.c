@@ -353,19 +353,27 @@ static void G_LoadArenas( void ) {
 		G_LoadArenasFromFile("scripts/arenas.txt");
 	}
 
-	// get all arenas from .arena files
-	numdirs = trap_FS_GetFileList("scripts", ".arena", dirlist, 1024 );
-	dirptr  = dirlist;
-	for (i = 0; i < numdirs; i++, dirptr += dirlen+1) {
-		dirlen = strlen(dirptr);
-		strcpy(filename, "scripts/");
-		strcat(filename, dirptr);
-		G_LoadArenasFromFile(filename);
+	// Tr!Force; [MapCycle] Load only the maps from file
+	if (jkcvar_mapCycleFromFile.integer)
+	{
+		trap_Printf(va("%i arenas parsed (from file only)\n", g_numArenas));
 	}
-	trap_Printf( va( "%i arenas parsed\n", g_numArenas ) );
-	
-	for( n = 0; n < g_numArenas; n++ ) {
-		Info_SetValueForKey( g_arenaInfos[n], "num", va( "%i", n ) );
+	else
+	{
+		// get all arenas from .arena files
+		numdirs = trap_FS_GetFileList("scripts", ".arena", dirlist, 1024);
+		dirptr = dirlist;
+		for (i = 0; i < numdirs; i++, dirptr += dirlen + 1) {
+			dirlen = strlen(dirptr);
+			strcpy(filename, "scripts/");
+			strcat(filename, dirptr);
+			G_LoadArenasFromFile(filename);
+		}
+		trap_Printf(va("%i arenas parsed\n", g_numArenas));
+
+		for (n = 0; n < g_numArenas; n++) {
+			Info_SetValueForKey(g_arenaInfos[n], "num", va("%i", n));
+		}
 	}
 
 	G_RefreshNextMap(g_gametype.integer, qfalse);
@@ -493,7 +501,7 @@ G_RemoveRandomBot
 */
 int G_RemoveRandomBot( int team ) {
 	int i;
-	char netname[36];
+	char netname[MAX_NETNAME]; // Workaround
 	gclient_t	*cl;
 
 	for ( i=0 ; i< g_maxclients.integer ; i++ ) {
@@ -509,7 +517,7 @@ int G_RemoveRandomBot( int team ) {
 		}
 		strcpy(netname, cl->pers.netname);
 		Q_CleanStr(netname, (qboolean)(jk2startversion == VERSION_1_02));
-		trap_SendConsoleCommand( EXEC_INSERT, va("kick %s\n", netname) );
+		trap_SendConsoleCommand( EXEC_INSERT, va("kick \"%s\"\n", netname) ); // Workaround
 		return qtrue;
 	}
 	return qfalse;
