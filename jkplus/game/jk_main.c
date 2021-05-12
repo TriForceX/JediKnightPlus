@@ -653,14 +653,9 @@ Custom GameType Config
 void JKMod_gameTypeConfig(void)
 {
 	static char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
-	static char	s[MAX_STRING_CHARS];
-	static int	gt;
 	static fileHandle_t	f;
 
-	trap_Cvar_VariableStringBuffer("session", s, sizeof(s));
-	gt = atoi(s);
-
-	if (g_gametype.integer != gt)
+	if (level.newSession)
 	{
 		if (trap_FS_FOpenFile(va("config/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
 		{

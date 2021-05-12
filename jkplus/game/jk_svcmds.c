@@ -230,7 +230,7 @@ qboolean JKMod_ConsoleCommand(void)
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer) // Cvar latch temp unlock check
 	{
-		level.jkmodLevel.cvarTempUnlock = qtrue;
+		level.jkmodLevel.cvarTempUnlock = 1;
 		G_RegisterCvars();
 		return qtrue;
 	}

@@ -84,13 +84,21 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	gentity_t	*ent;
 	gclient_t	*client;
 	char		userinfo[MAX_INFO_VALUE];
-
-	// Launch original client begin function
-	BaseJK2_ClientBegin(clientNum, allowTeamReset);
+	qboolean	GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLevel.cvarTempUnlock == 2 : qtrue;
 
 	// Set user data
 	ent	= &g_entities[clientNum];
 	client	= ent->client;
+
+	// Delay bots on custom gametype config load
+	if ((ent->r.svFlags & SVF_BOT) && !ent->client->pers.botDelayed && !GTconfigLoaded) 
+	{
+		ent->client->pers.botDelayed = qtrue;
+		return;
+	}
+
+	// Launch original client begin function
+	BaseJK2_ClientBegin(clientNum, allowTeamReset);
 
 	// Get user info
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));

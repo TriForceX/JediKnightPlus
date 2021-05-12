@@ -127,7 +127,7 @@ typedef struct
 	int			idleTime;										// Server idle time
 	int			pauseTime;										// Pause time stop
 	unsigned	pauseTimeCustom;								// Pause custom seconds
-	qboolean	cvarTempUnlock;									// Temporary cvar latch unlock
+	unsigned	cvarTempUnlock;									// Cvar latch unlock status
 
 } jkmod_locals_t;
 

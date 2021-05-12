@@ -288,18 +288,22 @@ Run client function
 */
 void JKMod_RunClient(gentity_t *ent) 
 {
+	qboolean GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLevel.cvarTempUnlock == 2 : qtrue;
+
 	if (jkcvar_antiWarp.integer)
 	{
 		gclient_t	*client = ent->client;
 		usercmd_t	*cmd = &client->pers.cmd;
 
-		if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
-		{ 
-			ClientBegin(ent - g_entities, qtrue);
-			ent->client->pers.botDelayed = qfalse;
-		}
-		else if ((ent->r.svFlags & SVF_BOT) || g_synchronousClients.integer)
+		if ((ent->r.svFlags & SVF_BOT) || g_synchronousClients.integer)
 		{
+			// Call ClientBegin for delayed bots now
+			if (ent->client->pers.botDelayed && GTconfigLoaded)
+			{ 
+				ClientBegin(ent - g_entities, qtrue);
+				ent->client->pers.botDelayed = qfalse;
+			}
+
 			cmd->serverTime = level.time;
 			ClientThink_real(ent);
 		}
@@ -336,7 +340,7 @@ void JKMod_RunClient(gentity_t *ent)
 			return;
 		}
 
-		if (ent->client->pers.botDelayed) // Call ClientBegin for delayed bots now
+		if (ent->client->pers.botDelayed && GTconfigLoaded) // Call ClientBegin for delayed bots now
 		{
 			ClientBegin(ent-g_entities, qtrue);
 			ent->client->pers.botDelayed = qfalse;

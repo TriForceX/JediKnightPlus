@@ -603,9 +603,9 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	}
 
 	// Tr!Force: [GameTypeConfig] Cvar latch temp unlock finish
-	if (jkcvar_gameTypeConfig.integer && level.jkmodLevel.cvarTempUnlock) 
+	if (jkcvar_gameTypeConfig.integer && level.jkmodLevel.cvarTempUnlock == 1) 
 	{
-		level.jkmodLevel.cvarTempUnlock = qfalse;
+		level.jkmodLevel.cvarTempUnlock = 2;
 		return;
 	}
 
