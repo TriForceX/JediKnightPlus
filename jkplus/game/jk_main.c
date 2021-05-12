@@ -688,6 +688,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set random seed
 	JKMod_RandSeed(randomSeed);
 
+	// Set default timescale
+	trap_Cvar_Set("timescale", "1");
+
 	// Check gameplay
 	if (strcmp(jkcvar_gamePlay.string, "0") != 0)
 	{
