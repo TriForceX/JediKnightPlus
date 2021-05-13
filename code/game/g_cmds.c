@@ -819,6 +819,10 @@ void StopFollowing( gentity_t *ent ) {
 	ent->r.svFlags &= ~SVF_BOT;
 	ent->client->ps.clientNum = ent - g_entities;
 	ent->client->ps.weapon = WP_NONE;
+	ent->client->ps.duelInProgress = qfalse; // Workaround 
+
+	// Tr!Force: [Dimensions] Check dimension
+	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 }
 
 /*

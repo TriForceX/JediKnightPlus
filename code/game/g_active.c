@@ -607,9 +607,6 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 			client->pers.cmd.buttons = 0;
 		}
 
-		// Tr!Force: [Dimensions] Check dimension
-		if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
-
 		// set up for pmove
 		memset (&pm, 0, sizeof(pm));
 		pm.ps = &client->ps;
