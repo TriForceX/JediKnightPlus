@@ -874,6 +874,101 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 
 /*
 =====================================================================
+Who is / status function
+=====================================================================
+*/
+void JKMod_WhoIs(gentity_t *ent)
+{
+	int	num;
+
+	if (ent) 
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"^5[^7 Who is ^5]^7\n"
+			"^7List of all players connected on the server\n"
+			"^7Client plugin status: ^2Valid^7, ^3Invalid^7, ^1No plugin\n"
+			"^7\""));
+		
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"^5--- ---------------------------- ----- ------------ ---------------\n"
+			"^7Num Name                         Type  Dimension    Plugin\n"
+			"^5--- ---------------------------- ----- ------------ ---------------\n"
+			"^7\""));
+	}
+	else
+	{
+		G_Printf(""
+			"--- ---------------------------- ----- ------------ ---------------\n"
+			"Num Name                         Type  Dimension    Plugin\n"
+			"--- ---------------------------- ----- ------------ ---------------\n");
+	}
+
+	for (num = 0; num < level.maxclients; num++)
+	{
+		gentity_t 	*user = &g_entities[num];
+		char		userinfo[MAX_INFO_VALUE] = { 0 };
+		char		name[MAX_STRING_CHARS] = "";
+		char		*value;
+		char		*type;
+		char		*dimension;
+		char		*status;
+		char		*plugin;
+
+		// Check
+		if (!user || !user->client || !user->inuse) continue;
+		if (user->client->pers.connected == CON_DISCONNECTED) continue;
+
+		// Get info
+		trap_GetUserinfo(num, userinfo, sizeof(userinfo));
+
+		// Find info
+		value = Info_ValueForKey(userinfo, "jkmod_clientversion");
+		if (value[0]) {
+			plugin = value;
+		} else {
+			plugin = "No plugin";
+		}
+
+		// Set info
+		strcpy(name, user->client->pers.netname);
+		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : va("%s", jkmod_dimension_data[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name));
+		type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
+		status = strcmp(plugin, "No plugin") ? (user->client->pers.jkmodPers.ClientPlugin ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
+
+		// Append info
+		if (ent)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-12s %s%-15s\n\"",
+				num,
+				Q_CleanStr(name, qfalse),
+				type,
+				dimension,
+				status,
+				plugin
+			));
+		}
+		else
+		{
+			G_Printf("^7%-3i %-28s %-5s %-12s %-15s\n",
+				num,
+				Q_CleanStr(name, qfalse),
+				type,
+				dimension,
+				plugin
+			);
+		}
+	}
+
+	if (ent) {
+		trap_SendServerCommand(ent - g_entities, va("print \"^5--- ---------------------------- ----- ------------ ---------------\n\""));
+	}
+	else {
+		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
+	}
+}
+
+/*
+=====================================================================
 Client command function
 =====================================================================
 */
@@ -1171,64 +1266,7 @@ void JKMod_ClientCommand(int clientNum)
 	// Who is command
 	else if (Q_stricmp(cmd, "whois") == 0)
 	{
-		int		num;
-
-		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5[^7 Who is ^5]^7\n"
-			"^7List of all players connected on the server\n"
-			"^7Client plugin status: ^2Valid^7, ^3Invalid^7, ^1No plugin\n"
-			"^7\""));
-		
-		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5--- ---------------------------- ----- ----------- ---------------\n"
-			"^7Num Name                         Type  Dimension   Plugin\n"
-			"^5--- ---------------------------- ----- ----------- ---------------\n"
-			"^7\""));
-
-		for (num = 0; num < level.maxclients; num++)
-		{
-			gentity_t 	*user = &g_entities[num];
-			char		userinfo[MAX_INFO_VALUE] = { 0 };
-			char		name[MAX_STRING_CHARS] = "";
-			char		*value;
-			char		*type;
-			char		*dimension;
-			char		*status;
-			char		*plugin;
-
-			// Check
-			if (!user || !user->client || !user->inuse) continue;
-			if (user->client->pers.connected == CON_DISCONNECTED) continue;
-
-			// Get info
-			trap_GetUserinfo(num, userinfo, sizeof(userinfo));
-
-			// Find info
-			value = Info_ValueForKey(userinfo, "jkmod_clientversion");
-			if (value[0]) {
-				plugin = value;
-			} else {
-				plugin = "No plugin";
-			}
-
-			// Set info
-			strcpy(name, user->client->pers.netname);
-			dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : va("%s", jkmod_dimension_data[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name);
-			type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
-			status = strcmp(plugin, "No plugin") ? (user->client->pers.jkmodPers.ClientPlugin ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
-
-			// Append info
-			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-11s %s%-15s\n\"",
-				num,
-				Q_CleanStr(name, qfalse),
-				type,
-				dimension,
-				status,
-				plugin
-			));
-		}
-
-		trap_SendServerCommand(ent - g_entities, va("print \"^5--- ---------------------------- ----- ----------- ---------------\n\""));
+		JKMod_WhoIs(ent);
 		return;
 	}
 	// Illegal macro announce

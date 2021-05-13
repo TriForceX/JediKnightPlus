@@ -228,6 +228,11 @@ qboolean JKMod_ConsoleCommand(void)
 		JKMod_svCmd_changeMusic();
 		return qtrue;
 	}
+	if (!Q_stricmp(cmd, "whois"))
+	{
+		JKMod_WhoIs(NULL);
+		return qtrue;
+	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer) // Cvar latch temp unlock check
 	{
 		level.jkmodLevel.cvarTempUnlock = 1;

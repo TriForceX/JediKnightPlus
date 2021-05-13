@@ -270,6 +270,7 @@ void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *e
 // jk_cmds.c
 qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
 void		JKMod_CallVote(gentity_t *ent);
+void		JKMod_WhoIs(gentity_t *ent);
 
 // jk_common.c
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
