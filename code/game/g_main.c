@@ -606,6 +606,7 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	if (jkcvar_gameTypeConfig.integer && level.jkmodLevel.cvarTempUnlock == 1) 
 	{
 		level.jkmodLevel.cvarTempUnlock = 2;
+		if (level.newSession) JKMod_CheckValidMapItems();
 		return;
 	}
 

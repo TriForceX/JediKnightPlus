@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.14.4
+- Added custom map cycle from file only
+- Delay bots on custom game type config load
+- Prevent carry custom timescale on map change
+- Moved spectator follow dimension check
+- Allow whois as a server command
+- Check map items on custom game type config load
+
 ## 0.14.3
 - Added teleport chat cooldown on enemy hits
 - Removed custom fraglimit for duel gametype

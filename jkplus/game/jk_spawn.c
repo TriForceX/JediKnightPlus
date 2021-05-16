@@ -121,3 +121,120 @@ void JKMod_AddSpawnField(char *field, char *value)
 	level.spawnVars[level.numSpawnVars][1] = G_AddSpawnVarToken(value);
 	level.numSpawnVars++;
 }
+
+/*
+=====================================================================
+Check valid map items function
+=====================================================================
+*/
+void JKMod_CheckValidMapItems(void) 
+{
+	gentity_t	*check;
+	int			e;
+	int			wDisable = 0;
+
+	JKMod_Printf(S_COLOR_RED "Removing non valid map items...\n");
+
+	wDisable = g_gametype.integer == GT_TOURNAMENT ? g_duelWeaponDisable.integer : g_weaponDisable.integer;
+	check = g_entities + 1;
+
+	for (e = 0; e < level.num_entities; e++, check++)
+	{
+		if (!check->inuse) continue;
+
+		if (check->item->giType == IT_WEAPON && wDisable && (wDisable & (1 << check->item->giTag)))
+		{
+			if (g_gametype.integer != GT_JEDIMASTER)
+			{
+				G_FreeEntity(check);
+			}
+		}
+
+		if (g_gametype.integer != GT_JEDIMASTER)
+		{
+			if (HasSetSaberOnly())
+			{
+				if (check->item->giType == IT_AMMO)
+				{
+					G_FreeEntity(check);
+				}
+
+				if (check->item->giType == IT_HOLDABLE)
+				{
+					if (check->item->giTag == HI_SEEKER ||
+						check->item->giTag == HI_SHIELD ||
+						check->item->giTag == HI_SENTRY_GUN)
+					{
+						G_FreeEntity(check);
+					}
+				}
+			}
+		}
+		else
+		{ 
+			// No powerups in jedi master
+			if (check->item->giType == IT_POWERUP)
+			{
+				G_FreeEntity(check);
+			}
+		}
+
+		if (g_gametype.integer == GT_HOLOCRON)
+		{
+			if (check->item->giType == IT_POWERUP)
+			{
+				if (check->item->giTag == PW_FORCE_ENLIGHTENED_LIGHT ||
+					check->item->giTag == PW_FORCE_ENLIGHTENED_DARK)
+				{
+					G_FreeEntity(check);
+				}
+			}
+		}
+
+		if (g_forcePowerDisable.integer)
+		{ 
+			// If force powers disabled, don't add force powerups
+			if (check->item->giType == IT_POWERUP)
+			{
+				if (check->item->giTag == PW_FORCE_ENLIGHTENED_LIGHT ||
+					check->item->giTag == PW_FORCE_ENLIGHTENED_DARK ||
+					check->item->giTag == PW_FORCE_BOON)
+				{
+					G_FreeEntity(check);
+				}
+			}
+		}
+
+		if (g_gametype.integer == GT_TOURNAMENT)
+		{
+			if (check->item->giType == IT_ARMOR ||
+				check->item->giType == IT_HEALTH ||
+				(check->item->giType == IT_HOLDABLE && check->item->giTag == HI_MEDPAC))
+			{
+				G_FreeEntity(check);
+			}
+		}
+
+		if (g_gametype.integer != GT_CTF && g_gametype.integer != GT_CTY && check->item->giType == IT_TEAM)
+		{
+			int killMe = 0;
+
+			switch (check->item->giTag)
+			{
+				case PW_REDFLAG:
+					killMe = 1;
+					break;
+				case PW_BLUEFLAG:
+					killMe = 1;
+					break;
+				case PW_NEUTRALFLAG:
+					killMe = 1;
+					break;
+				default:
+					break;
+			}
+
+			if (killMe) G_FreeEntity(check);
+		}
+	}
+}
