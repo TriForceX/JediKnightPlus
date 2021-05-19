@@ -110,78 +110,77 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
 
 	// Check client plugin
-	if (client->pers.jkmodPers.ClientPlugin || !jkcvar_forcePlugin.integer)
+	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.ClientPlugin)
 	{
-		// Show a welcome message
-		if (client->sess.sessionTeam != TEAM_SPECTATOR)
-		{
-			// Show base client begin message
-			if (g_gametype.integer != GT_TOURNAMENT)
-			{
-				// Current mod version
-				trap_SendServerCommand(clientNum, va("print \""
-					"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n"
-					"\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
+		char	*serverVersion = JK_VERSION;
+		char	*clientVersion;
+		char	*pluginVersion;
+		int		allowDownload;
 
-				// Random message
-				if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodLevel.RandomBegin[0], "") == 0)
-				{
-					int random = JKMod_Rand() % level.jkmodLevel.RandomBeginCount;
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLevel.RandomBegin[random]));
-				}
-				else
-				{
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")));
-				}
-			}
-
-			// Server motd time
-			if (*jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0 && !client->sess.jkmodSess.MotdSeen)
-			{
-				client->jkmodClient.MotdTime = jkcvar_serverMotdTime.integer;
-				client->sess.jkmodSess.MotdSeen = qtrue;
-			}
-		}
-	}
-	else if (jkcvar_forcePlugin.integer)
-	{
 		// Force to spectator mode
-		if (client->sess.sessionTeam != TEAM_SPECTATOR)
+		if (jkcvar_pluginRequired.integer == 2 && client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
 			SetTeam(ent, "spectator");
+			return;
+		}
+
+		// Get info
+		clientVersion = Info_ValueForKey(userinfo, "JK2MV");
+		pluginVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
+		allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
+
+		// Show center print message
+		if (!pluginVersion[0])
+		{
+			trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
+			G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
 		}
 		else
 		{
-			char	*serverVersion = JK_VERSION;
-			char	*clientVersion;
-			char	*pluginVersion;
-			int		allowDownload;
+			trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, serverVersion));
+			G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, serverVersion);
+		}
 
-			clientVersion = Info_ValueForKey(userinfo, "JK2MV");
-			pluginVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
-			allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
+		// Show console print message
+		if (allowDownload)
+		{
+			trap_SendServerCommand(clientNum, va("print \"Update your client plugin typing ^2/%s_allowdownload 1^7 in the console and reconnect\n\"", (clientVersion[0] ? "mv" : "cl")));
+		}
+		else
+		{
+			trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2https://jkmod.github.io\n\"", serverVersion));
+		}
+	}
 
-			// Show center print message
-			if (!pluginVersion[0])
+	// Show a welcome message
+	if (client->sess.sessionTeam != TEAM_SPECTATOR)
+	{
+		// Show base client begin message
+		if (g_gametype.integer != GT_TOURNAMENT)
+		{
+			// Current mod version
+			trap_SendServerCommand(clientNum, va("print \"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
+
+			// Random message
+			if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodLevel.RandomBegin[0], "") == 0)
 			{
-				trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
-				G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
+				int random = JKMod_Rand() % level.jkmodLevel.RandomBeginCount;
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLevel.RandomBegin[random]));
 			}
 			else
 			{
-				trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, serverVersion));
-				G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, serverVersion);
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")));
 			}
+		}
 
-			// Show console print message
-			if (allowDownload)
-			{
-				trap_SendServerCommand(clientNum, va("print \"Update your client plugin typing ^2/%s_allowdownload 1^7 in the console and reconnect\n\"", (clientVersion[0] ? "mv" : "cl")));
-			}
-			else
-			{
-				trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2https://jkmod.github.io\n\"", serverVersion));
-			}
+		// Server motd time
+		if (!client->sess.jkmodSess.MotdSeen && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		{
+			// Delay motd for non-plugin clients
+			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.ClientPlugin ? jkcvar_serverMotdTime.integer + 2 : 0;
+			
+			client->jkmodClient.MotdTime = motdDelayed ? motdDelayed : jkcvar_serverMotdTime.integer;
+			client->sess.jkmodSess.MotdSeen = qtrue;
 		}
 	}
 }

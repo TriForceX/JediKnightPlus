@@ -819,7 +819,11 @@ void StopFollowing( gentity_t *ent ) {
 	ent->r.svFlags &= ~SVF_BOT;
 	ent->client->ps.clientNum = ent - g_entities;
 	ent->client->ps.weapon = WP_NONE;
-	ent->client->ps.duelInProgress = qfalse; // Workaround 
+
+	// Workaround
+	ent->client->ps.duelInProgress = qfalse; 
+	ent->client->ps.zoomMode = 0;
+	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
 
 	// Tr!Force: [Dimensions] Check dimension
 	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
@@ -874,7 +878,7 @@ void Cmd_Team_f( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.jkmodPers.ClientPlugin)
+	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.ClientPlugin)
 	{
 		ClientBegin(ent->s.number, qfalse);
 		return;
@@ -1003,7 +1007,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_forcePlugin.integer && !ent->client->pers.jkmodPers.ClientPlugin) {
+	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.ClientPlugin) {
 		return;
 	}
 

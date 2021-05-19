@@ -80,7 +80,7 @@ vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
 
-vmCvar_t	jkcvar_forcePlugin;
+vmCvar_t	jkcvar_pluginRequired;
 vmCvar_t	jkcvar_macroScan;
 vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
@@ -142,7 +142,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_forcePlugin,			"jk_forcePlugin",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					CVAR_ARCHIVE,						0, qtrue },
@@ -226,9 +226,9 @@ void JKMod_G_UpdateCvars(void)
 				}
 
 				// Plugin check
-				if (cv->vmCvar == &jkcvar_forcePlugin)
+				if (cv->vmCvar == &jkcvar_pluginRequired)
 				{
-					int check = cv->vmCvar->integer ? 1 : 0;
+					int check = cv->vmCvar->integer == 2 ? 1 : 0;
 					int num;
 
 					if (check)

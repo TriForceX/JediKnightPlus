@@ -80,10 +80,13 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		}
 
 		// Show server motd
-		if (client->jkmodClient.MotdTime && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		if (client->jkmodClient.MotdTime)
 		{
-			JKMod_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
-			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.MotdTime));
+			if (client->jkmodClient.MotdTime <= jkcvar_serverMotdTime.integer)
+			{
+				JKMod_stringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
+				G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.MotdTime));
+			}
 			client->jkmodClient.MotdTime--;
 		}
 

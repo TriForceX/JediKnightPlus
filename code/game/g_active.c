@@ -598,14 +598,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		client->ps.pm_type = PM_SPECTATOR;
 		client->ps.speed = 400;	// faster than normal
 		client->ps.basespeed = 400;
-
-		// Tr!Force: [Plugin] Don't allow user actions
-		if (jkcvar_forcePlugin.integer && !client->pers.jkmodPers.ClientPlugin) {
-			client->ps.speed = 0;
-			client->ps.basespeed = 0;
-			client->pers.cmd.upmove = 0;
-			client->pers.cmd.buttons = 0;
-		}
+		client->ps.forceHandExtend = jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.ClientPlugin ? HANDEXTEND_KNOCKDOWN : HANDEXTEND_NONE; // Tr!Force: [Plugin] Don't allow user actions
 
 		// set up for pmove
 		memset (&pm, 0, sizeof(pm));
