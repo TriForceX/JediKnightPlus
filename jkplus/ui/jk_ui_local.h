@@ -61,6 +61,15 @@ typedef struct
 
 } jkmod_dimensions_table_t;
 
+// Reset client table
+typedef struct
+{
+	char			*cvar;		// Cvar name
+	char			*defVal;	// Cvar default value
+	char			*recVal;	// Cvar recommended value
+
+} jkmod_reset_client_t;
+
 /*
 =====================================================================
 Cvar registration

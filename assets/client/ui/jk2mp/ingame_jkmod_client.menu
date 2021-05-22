@@ -980,10 +980,15 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DUELEND
-			descText			@JKMENUS_CLIENT_DUELEND_DESC
-			cvar				"jk_cg_duelEnd"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_DISMEMBER
+			descText			@JKMENUS_CLIENT_DISMEMBER_DESC
+			cvar				"cg_dismember"
+			cvarFloatList
+			{
+				@MENUS0_NO  	0
+				@MENUS0_YES		2
+			}
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1442,11 +1447,77 @@
 		{
 			name				none
 			group				clientCameraControls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_DUELEND
+			descText			@JKMENUS_CLIENT_DUELEND_DESC
+			cvar				"jk_cg_duelEnd"
+			rect				220 81 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight3
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight3
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientCameraControls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_FOVADJUST
+			descText			@JKMENUS_CLIENT_FOVADJUST_DESC
+			cvar				"cg_fovaspectadjust"
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight4
+				hide			keybindstatus
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientCameraControls
 			type				ITEM_TYPE_SLIDER
 			text				@JKMENUS_CLIENT_FOV
 			descText			@JKMENUS_CLIENT_FOV_DESC
 			cvarfloat			"cg_fov" 10 50 200
-			rect				220 81 300 20
+			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1461,12 +1532,12 @@
 			
 			mouseEnter
 			{ 
-				show			highlight3
+				show			highlight5
 				show			keybindstatus
 			}
 			mouseExit
 			{ 
-				hide			highlight3
+				hide			highlight5
 				hide			keybindstatus
 			}
 		}
@@ -1475,7 +1546,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			rect				220 81 300 20
+			rect				220 121 300 20
 			type				4
 			style				0	
 			text				""
@@ -1499,7 +1570,7 @@
 			text				@JKMENUS_CLIENT_THIRDCAMERA
 			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
 			cvarfloat			"cg_thirdPersonRange" 10 0 150
-			rect				220 101 300 20
+			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1514,12 +1585,12 @@
 			
 			mouseEnter
 			{ 
-				show			highlight4
+				show			highlight6
 				show			keybindstatus
 			}
 			mouseExit
 			{ 
-				hide			highlight4
+				hide			highlight6
 				hide			keybindstatus
 			}
 		}
@@ -1528,7 +1599,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			rect				220 101 300 20
+			rect				220 141 300 20
 			type				4
 			style				0	
 			text				""
@@ -1859,6 +1930,7 @@
 				play			"sound/interface/button1.wav" ;
 				close			all ; 
 				hide			default_glow ;
+				setcvar			JKMod_resetClient 0 ;
 				uiScript		update "JKMod_resetClient"
 			}
 			

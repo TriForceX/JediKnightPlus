@@ -10,6 +10,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/ui/ui_shared.h"	// UI shared header
 
 int jkmod_pause_count = 0; // Pause announce counter
+int jkmod_popup_count = 0; // Client pop-up timer
 
 /*
 =====================================================================
@@ -259,6 +260,33 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 		CG_Text_Paint(x, y, fontScale, colorWhite, drawThese[i]->string, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 		y += ((CHATBOX_FONT_HEIGHT*fontScale)*drawThese[i]->lines);
 		i++;
+	}
+}
+
+/*
+=====================================================================
+Client options pop-up
+=====================================================================
+*/
+void JKMod_CG_ClientPopUp(void)
+{
+	if (!cg.snap) return;
+	if (jkcvar_cg_clientPopUp.integer) return;
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
+	if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) return;
+	
+	// Scan once every second
+	if ((jkmod_popup_count + 1000) < cg.time)
+	{
+		jkmod_popup_count = cg.time;
+
+		// Launch only when all center prints dissapear
+		if (!((cg.centerPrintTime + (1000 * cg_centertime.value)) >= cg.time))
+		{
+			trap_SendConsoleCommand("jk_ui_clientpopup\n");
+			trap_Cvar_Set("jk_cg_clientPopUp", "1");
+		}
 	}
 }
 

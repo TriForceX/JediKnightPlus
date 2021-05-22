@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 120
+COUNT 125
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -743,11 +743,11 @@ INDEX 81
 INDEX 82
 {
    REFERENCE CLIENT_CHATOPACITY_DESC
-   TEXT_LANGUAGE1 "Make chatting players transparent (Only works if the dimension is enabled)."
-   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents (Ne fonctionne que si la dimension est activée)."
-   TEXT_LANGUAGE3 "Chatten sie spieler transparent (Funktioniert nur, wenn die dimension aktiviert ist)."
-   TEXT_LANGUAGE6 "Make chatting players transparent (Only works if the dimension is enabled)."
-   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes (Solo si la dimensión está habilitada)."
+   TEXT_LANGUAGE1 "Make chatting players transparent."
+   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents."
+   TEXT_LANGUAGE3 "Chatten sie spieler transparent."
+   TEXT_LANGUAGE6 "Make chatting players transparent."
+   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes."
 }
 INDEX 83
 {
@@ -1013,20 +1013,20 @@ INDEX 111
 INDEX 112
 {
    REFERENCE CLIENT_DUELEND
-   TEXT_LANGUAGE1 "Duel end:"
-   TEXT_LANGUAGE2 "Fin du duel:"
-   TEXT_LANGUAGE3 "Ende des duells:"
-   TEXT_LANGUAGE6 "Duel end:"
-   TEXT_LANGUAGE8 "Fin de duelo:"
+   TEXT_LANGUAGE1 "Duel end animation:"
+   TEXT_LANGUAGE2 "Animation de fin de duel:"
+   TEXT_LANGUAGE3 "Duellende animation:"
+   TEXT_LANGUAGE6 "Duel end animation:"
+   TEXT_LANGUAGE8 "Animación fin de duelo:"
 }
 INDEX 113
 {
    REFERENCE CLIENT_DUELEND_DESC
-   TEXT_LANGUAGE1 "Plays an animation at the end of a duel."
-   TEXT_LANGUAGE2 "Jouez une animation à la fin d'un duel."
-   TEXT_LANGUAGE3 "Spielt eine animation am ende eines duells ab."
-   TEXT_LANGUAGE6 "Plays an animation at the end of a duel."
-   TEXT_LANGUAGE8 "Reproduce una animación al finalizar un duelo."
+   TEXT_LANGUAGE1 "Plays a camera animation at the end of a duel."
+   TEXT_LANGUAGE2 "Joue une animation de caméra à la fin d'un duel."
+   TEXT_LANGUAGE3 "Spielt am ende eines duells eine kameraanimation ab."
+   TEXT_LANGUAGE6 "Plays a camera animation at the end of a duel."
+   TEXT_LANGUAGE8 "Reproduce una animación de cámara al finalizar un duelo."
 }
 INDEX 114
 {
@@ -1081,4 +1081,49 @@ INDEX 119
    TEXT_LANGUAGE3 "Langsam"
    TEXT_LANGUAGE6 "Slow"
    TEXT_LANGUAGE8 "Lento"
+}
+INDEX 120
+{
+   REFERENCE CLIENT_DISMEMBER
+   TEXT_LANGUAGE1 "Dismemberment:"
+   TEXT_LANGUAGE2 "Démembrement:"
+   TEXT_LANGUAGE3 "Zerstückelung:"
+   TEXT_LANGUAGE6 "Dismemberment:"
+   TEXT_LANGUAGE8 "Desmembramiento:"
+}
+INDEX 121
+{
+   REFERENCE CLIENT_DISMEMBER_DESC
+   TEXT_LANGUAGE1 "Enables player body dismemberment."
+   TEXT_LANGUAGE2 "Permet le démembrement du corps du joueur. "
+   TEXT_LANGUAGE3 "Aktiviert die Zerstückelung des Spielerkörpers."
+   TEXT_LANGUAGE6 "Enables player body dismemberment."
+   TEXT_LANGUAGE8 "Permite el desmembramiento del cuerpo del jugador."
+}
+INDEX 122
+{
+   REFERENCE CLIENT_FOVADJUST
+   TEXT_LANGUAGE1 "Adjusted field of view:"
+   TEXT_LANGUAGE2 "Champ de vision ajusté:"
+   TEXT_LANGUAGE3 "Angepasstes sichtfeld:"
+   TEXT_LANGUAGE6 "Adjusted field of view:"
+   TEXT_LANGUAGE8 "Campo de visión ajustado:"
+}
+INDEX 123
+{
+   REFERENCE CLIENT_FOVADJUST_DESC
+   TEXT_LANGUAGE1 "Convert 4:3 field of view values to current aspect."
+   TEXT_LANGUAGE2 "Conversion des valeurs de champ de vision 4: 3 en aspect actuel."
+   TEXT_LANGUAGE3 "Konvertieren Sie 4:3 sichtfeldwerte in den aktuellen aspekt."
+   TEXT_LANGUAGE6 "Convert 4:3 field of view values to current aspect."
+   TEXT_LANGUAGE8 "Convertir valores de campo de visión 4:3 al aspecto actual."
+}
+INDEX 124
+{
+   REFERENCE CLIENT_POPUP
+   TEXT_LANGUAGE1 "Do you want to load the recommended mod options?"
+   TEXT_LANGUAGE2 "Voulez-vous charger les options recommandées de mod?"
+   TEXT_LANGUAGE3 "Willst du die empfohlenen mod-optionen laden?"
+   TEXT_LANGUAGE6 "Do you want to load the recommended mod options?"
+   TEXT_LANGUAGE8 "¿Quieres cargar las opciones recomendadas del mod?"
 }
