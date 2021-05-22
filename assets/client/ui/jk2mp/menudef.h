@@ -21,6 +21,7 @@
 #define ITEM_TYPE_MULTI			12        // multiple list setting, enumerated
 #define ITEM_TYPE_BIND			13		  // multiple list setting, enumerated
 #define ITEM_TYPE_TEXTSCROLL	14		  // scrolls text
+#define ITEM_TYPE_SLIDER_INT	15		  // Tr!Force: [UIGeneral] Integer slider
     
 #define ITEM_ALIGN_LEFT 0                 // left alignment
 #define ITEM_ALIGN_CENTER 1               // center alignment

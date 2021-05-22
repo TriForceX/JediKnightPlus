@@ -2977,7 +2977,7 @@ static void Scroll_Slider_ThumbFunc(void *p) {
 	value /= SLIDER_WIDTH;
 	value *= (editDef->maxVal - editDef->minVal);
 	value += editDef->minVal;
-	DC->setCVar(si->item->cvar, va("%f", value));
+	DC->setCVar(si->item->cvar, (si->item->type == ITEM_TYPE_SLIDER_INT ? va("%i", (int)value) : va("%f", value))); // Tr!Force: [UIGeneral] Integer slider
 }
 
 void Item_StartCapture(itemDef_t *item, int key) 
@@ -3039,6 +3039,7 @@ void Item_StartCapture(itemDef_t *item, int key)
 			break;
 
 		case ITEM_TYPE_SLIDER:
+		case ITEM_TYPE_SLIDER_INT: // Tr!Force: [UIGeneral] Integer slider
 		{
 			flags = Item_Slider_OverSlider(item, DC->cursorx, DC->cursory);
 			if (flags & WINDOW_LB_THUMB) {
@@ -3089,7 +3090,7 @@ qboolean Item_Slider_HandleKey(itemDef_t *item, int key, qboolean down) {
 					// vm fuckage
 					// value = (((float)(DC->cursorx - x)/ SLIDER_WIDTH) * (editDef->maxVal - editDef->minVal));
 					value += editDef->minVal;
-					DC->setCVar(item->cvar, va("%f", value));
+					DC->setCVar(item->cvar, (item->type == ITEM_TYPE_SLIDER_INT ? va("%i", (int)value) : va("%f", value))); // Tr!Force: [UIGeneral] Integer slider
 					return qtrue;
 				}
 			}
@@ -3108,7 +3109,7 @@ qboolean Item_Slider_HandleKey(itemDef_t *item, int key, qboolean down) {
 				if (value > editDef->maxVal) value = editDef->maxVal;
 				if (value < editDef->minVal) value = editDef->minVal;
 
-				DC->setCVar(item->cvar, va("%f", value));
+				DC->setCVar(item->cvar, (item->type == ITEM_TYPE_SLIDER_INT ? va("%i", (int)value) : va("%f", value))); // Tr!Force: [UIGeneral] Integer slider
 				return qtrue;
 			}
 		}
@@ -3177,6 +3178,7 @@ qboolean Item_HandleKey(itemDef_t *item, int key, qboolean down) {
 			return Item_Bind_HandleKey(item, key, down);
       break;
     case ITEM_TYPE_SLIDER:
+	case ITEM_TYPE_SLIDER_INT: // Tr!Force: [UIGeneral] Integer slider
       return Item_Slider_HandleKey(item, key, down);
       break;
     //case ITEM_TYPE_IMAGE:
@@ -5104,6 +5106,7 @@ void Item_Paint(itemDef_t *item)
       Item_Bind_Paint(item);
       break;
     case ITEM_TYPE_SLIDER:
+	case ITEM_TYPE_SLIDER_INT: // Tr!Force: [UIGeneral] Integer slider
       Item_Slider_Paint(item);
       break;
     default:
@@ -5375,7 +5378,7 @@ void Item_ValidateTypeData(itemDef_t *item)
 		item->typeData = UI_Alloc(sizeof(listBoxDef_t));
 		memset(item->typeData, 0, sizeof(listBoxDef_t));
 	}
-	else if (item->type == ITEM_TYPE_EDITFIELD || item->type == ITEM_TYPE_NUMERICFIELD || item->type == ITEM_TYPE_YESNO || item->type == ITEM_TYPE_BIND || item->type == ITEM_TYPE_SLIDER || item->type == ITEM_TYPE_TEXT) 
+	else if (item->type == ITEM_TYPE_EDITFIELD || item->type == ITEM_TYPE_NUMERICFIELD || item->type == ITEM_TYPE_YESNO || item->type == ITEM_TYPE_BIND || item->type == ITEM_TYPE_SLIDER || item->type == ITEM_TYPE_TEXT || item->type == ITEM_TYPE_SLIDER_INT) // Tr!Force: [UIGeneral] Integer slider
 	{
 		editFieldDef_t *editPtr;
 
@@ -6094,6 +6097,7 @@ qboolean ItemParse_cvar( itemDef_t *item, int handle )
 			case ITEM_TYPE_YESNO:
 			case ITEM_TYPE_BIND:
 			case ITEM_TYPE_SLIDER:
+			case ITEM_TYPE_SLIDER_INT: // Tr!Force: [UIGeneral] Integer slider
 			case ITEM_TYPE_TEXT:
 				editPtr = (editFieldDef_t*)item->typeData;
 				editPtr->minVal = -1;

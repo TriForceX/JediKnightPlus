@@ -1304,7 +1304,7 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_SLIDER
+			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_FLAGOPACITY
 			descText			@JKMENUS_CLIENT_FLAGOPACITY_DESC
 			cvarfloat			"jk_cg_flagOpacity" 10 0 255
@@ -1357,7 +1357,7 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_SLIDER
+			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_SABERTRAIL
 			descText			@JKMENUS_CLIENT_SABERTRAIL_DESC
 			cvarfloat			"jk_cg_saberTrailSpeed" 10 0 150
@@ -1513,7 +1513,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			type				ITEM_TYPE_SLIDER
+			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_FOV
 			descText			@JKMENUS_CLIENT_FOV_DESC
 			cvarfloat			"cg_fov" 10 50 200
@@ -1566,7 +1566,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			type				ITEM_TYPE_SLIDER
+			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_THIRDCAMERA
 			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
 			cvarfloat			"cg_thirdPersonRange" 10 0 150
