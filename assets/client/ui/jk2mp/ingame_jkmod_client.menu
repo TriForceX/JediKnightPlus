@@ -980,15 +980,10 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_DISMEMBER
-			descText			@JKMENUS_CLIENT_DISMEMBER_DESC
-			cvar				"cg_dismember"
-			cvarFloatList
-			{
-				@MENUS0_NO  	0
-				@MENUS0_YES		2
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_PLAYERLABEL
+			descText			@JKMENUS_CLIENT_PLAYERLABEL_DESC
+			cvar				"jk_cg_drawPlayerNames"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1189,14 +1184,13 @@
 			name				none
 			group				clientVisualsControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_SHADOWS
-			descText			@JKMENUS_CLIENT_SHADOWS_DESC
-			cvar				"cg_shadows"
+			text				@JKMENUS_CLIENT_DISMEMBER
+			descText			@JKMENUS_CLIENT_DISMEMBER_DESC
+			cvar				"cg_dismember"
 			cvarFloatList
 			{
-				"2D"  			1
-				"3D"  			3
-				@MENUS0_OFF		0
+				@MENUS0_NO  	0
+				@MENUS0_YES		2
 			}
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1864,6 +1858,45 @@
 				hide			highlight4
 				hide			keybindstatus
 			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_SHADOWS
+			descText			@JKMENUS_CLIENT_SHADOWS_DESC
+			cvar				"cg_shadows"
+			cvarFloatList
+			{
+				"2D"  			1
+				"3D"  			3
+				@MENUS0_OFF		0
+			}
+			rect				220 121 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight5
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			keybindstatus
+				hide			highlight5
+			} 
 		}
 
 		//---------------------------------------------

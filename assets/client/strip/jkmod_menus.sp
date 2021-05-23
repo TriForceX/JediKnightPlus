@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 125
+COUNT 127
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1126,4 +1126,22 @@ INDEX 124
    TEXT_LANGUAGE3 "Willst du die empfohlenen mod-optionen laden?"
    TEXT_LANGUAGE6 "Do you want to load the recommended mod options?"
    TEXT_LANGUAGE8 "¿Quieres cargar las opciones recomendadas del mod?"
+}
+INDEX 125
+{
+   REFERENCE CLIENT_PLAYERLABEL
+   TEXT_LANGUAGE1 "Draw player names:"
+   TEXT_LANGUAGE2 "Afficher noms joueurs:"
+   TEXT_LANGUAGE3 "Spielernamen anzeigen:"
+   TEXT_LANGUAGE6 "Draw player names:"
+   TEXT_LANGUAGE8 "Mostrar nombres jugador:"
+}
+INDEX 126
+{
+   REFERENCE CLIENT_PLAYERLABEL_DESC
+   TEXT_LANGUAGE1 "Shows players names above their head."
+   TEXT_LANGUAGE2 "Affiche les noms des joueurs au-dessus de leur tête."
+   TEXT_LANGUAGE3 "Zeigt spielernamen über dem kopf an."
+   TEXT_LANGUAGE6 "Shows players names above their head."
+   TEXT_LANGUAGE8 "Muestra los nombres de los jugadoras encima de su cabeza."
 }

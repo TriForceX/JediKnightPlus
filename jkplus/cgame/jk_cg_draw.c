@@ -37,6 +37,12 @@ void JKMod_CG_Draw2D(void)
 		JKMod_CG_DrawRaceTimer();
 	}
 
+	// Draw player label
+	if (jkcvar_cg_drawPlayerNames.integer)
+	{
+		JKMod_CG_DrawPlayerLabels();
+	}
+
 	// Draw Jetpack Fuel
 	if (cgs.jkmodCvar.jetPack == 1)
 	{
@@ -560,5 +566,74 @@ void JKMod_CG_DrawPauseString(void)
 		w1 = CG_DrawStrlen(t1) * BIGCHAR_WIDTH;
 
 		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
+	}
+}
+
+/*
+=====================================================================
+Draw player labels
+=====================================================================
+*/
+void JKMod_CG_DrawPlayerLabels(void)
+{
+	int i;
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		vec3_t		pos;
+		float		x, y;
+		trace_t		trace;
+		centity_t	*cent = &cg_entities[i];
+		vec3_t		diff;
+		float		scale;
+
+		// Skip
+		if (!cent || !cent->currentValid)
+			continue;
+		if (i == cg.clientNum)
+			continue;
+		if (i == cg.snap->ps.clientNum)
+			continue;
+		if (cent->currentState.eFlags & EF_DEAD)
+			continue;
+		if (cent->currentState.eType != ET_PLAYER)	
+			continue;
+		if (!cgs.clientinfo[i].infoValid)
+			continue;
+		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)	
+			continue;
+		if (CG_IsMindTricked(cent->currentState.trickedentindex,
+			cent->currentState.trickedentindex2,
+			cent->currentState.trickedentindex3,
+			cent->currentState.trickedentindex4,
+			cg.snap->ps.clientNum))
+			continue;
+
+		// Max distance
+		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
+		if (VectorLength(diff) >= 1024)
+			continue;
+
+		// Do trace
+		CG_Trace( &trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID|CONTENTS_BODY );
+		if (trace.entityNum == ENTITYNUM_WORLD)
+			continue;
+
+		// Prevent crosshair names override
+		if (cg.crosshairClientNum == i && cg_drawCrosshair.integer && cg_drawCrosshairNames.integer)
+			continue;
+
+		// Set height
+		VectorCopy(cent->lerpOrigin, pos);
+		pos[2] += 60;
+
+		// Check coords
+		if (!CG_WorldCoordToScreenCoord(pos, &x, &y))
+			continue;
+
+		// Set dynamic scale
+		scale = 150 / VectorLength(diff);
+
+		// Show name
+		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > 1 ? 1 : scale));
 	}
 }

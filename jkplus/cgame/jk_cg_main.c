@@ -33,6 +33,7 @@ vmCvar_t	jkcvar_cg_drawForcePoints;
 vmCvar_t	jkcvar_cg_drawInventory;
 vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
+vmCvar_t	jkcvar_cg_drawPlayerNames;
 vmCvar_t	jkcvar_cg_scoreboardIcons;
 vmCvar_t	jkcvar_cg_chatIcon;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
@@ -66,6 +67,7 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_drawInventory,		"jk_cg_drawInventory",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawRaceTimer,		"jk_cg_drawRaceTimer",		"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawBactaModel,	"jk_cg_drawBactaModel",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_drawPlayerNames,	"jk_cg_drawPlayerNames",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_scoreboardIcons,	"jk_cg_scoreboardIcons",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_saberTrailSpeed,	"jk_cg_saberTrailSpeed",	"40",	CVAR_ARCHIVE },

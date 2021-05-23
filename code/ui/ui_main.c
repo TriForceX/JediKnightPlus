@@ -4460,6 +4460,7 @@ static void UI_Update(const char *name) {
 			{ "jk_cg_duelEndDelay",			"1",		"1" },
 			{ "jk_cg_drawHitBox",			"0",		NULL },
 			{ "jk_cg_drawBactaModel",		"0",		"1" },
+			{ "jk_cg_drawPlayerNames",		"0",		NULL },
 			{ "jk_cg_chatIcon",				"0",		"1" },
 			{ "jk_cg_saberTrailSpeed",		"40",		"40" },
 			{ "jk_cg_damageBlend",			"0",		"1" },

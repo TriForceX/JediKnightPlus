@@ -110,6 +110,7 @@ extern vmCvar_t						jkcvar_cg_drawForcePoints;
 extern vmCvar_t						jkcvar_cg_drawInventory;
 extern vmCvar_t						jkcvar_cg_drawRaceTimer;
 extern vmCvar_t						jkcvar_cg_drawBactaModel;
+extern vmCvar_t						jkcvar_cg_drawPlayerNames;
 extern vmCvar_t						jkcvar_cg_scoreboardIcons;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
@@ -155,6 +156,7 @@ void		JKMod_CG_DrawJetPackFuel(void);
 void		JKMod_CG_DrawDimensionString(void);
 void		JKMod_CG_DrawRaceTimer(void);
 void		JKMod_CG_DrawPauseString(void);
+void		JKMod_CG_DrawPlayerLabels(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);
