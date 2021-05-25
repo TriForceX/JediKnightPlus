@@ -222,7 +222,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 
 	if (jkcvar_cg_chatBoxHistory.integer)
 	{
-		drawAnyway = (qboolean)(trap_Key_GetCatcher() & KEYCATCH_CONSOLE);
+		drawAnyway = (qboolean)(trap_Key_GetCatcher() & (jkcvar_cg_chatBoxHistory.integer == 2 ? (KEYCATCH_CONSOLE | KEYCATCH_MESSAGE) : KEYCATCH_CONSOLE));
 	}
 
 	memset(drawThese, 0, sizeof(drawThese));

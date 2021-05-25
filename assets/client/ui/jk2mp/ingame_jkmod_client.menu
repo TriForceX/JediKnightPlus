@@ -1898,6 +1898,44 @@
 				hide			highlight5
 			} 
 		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_CHATBOXHISTORY
+			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
+			cvar				"jk_cg_chatBoxHistory"
+			cvarFloatList
+			{
+				@MENUS0_YES  		2
+				@MENUS0_NO			1
+			}
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight6
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			keybindstatus
+				hide			highlight6
+			} 
+		}
 
 		//---------------------------------------------
 		//	DEFAULTS OPTIONS

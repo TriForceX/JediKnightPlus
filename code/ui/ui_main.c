@@ -4448,7 +4448,7 @@ static void UI_Update(const char *name) {
 			{ "jk_cg_chatBox",				"0",		"1" },
 			{ "jk_cg_chatBoxTime",			"10",		"10" },
 			{ "jk_cg_chatBoxHeight",		"360",		"360" },
-			{ "jk_cg_chatBoxHistory",		"1",		"1" },
+			{ "jk_cg_chatBoxHistory",		"1",		"2" },
 			{ "cg_drawTimer",				"0",		NULL },
 			{ "cg_drawFPS",					"0",		NULL },
 			{ "cg_lagometer",				"0",		NULL },

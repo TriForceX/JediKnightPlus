@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 127
+COUNT 129
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1144,4 +1144,22 @@ INDEX 126
    TEXT_LANGUAGE3 "Zeigt spielernamen über dem kopf an."
    TEXT_LANGUAGE6 "Shows players names above their head."
    TEXT_LANGUAGE8 "Muestra los nombres de los jugadoras encima de su cabeza."
+}
+INDEX 127
+{
+   REFERENCE CLIENT_CHATBOXHISTORY
+   TEXT_LANGUAGE1 "Chat history:"
+   TEXT_LANGUAGE2 "historique du chat:"
+   TEXT_LANGUAGE3 "Chatverlauf:"
+   TEXT_LANGUAGE6 "Chat history:"
+   TEXT_LANGUAGE8 "Historial del chat:"
+}
+INDEX 128
+{
+   REFERENCE CLIENT_CHATBOXHISTORY_DESC
+   TEXT_LANGUAGE1 "Shows the chat history on Jedi Academy chat style."
+   TEXT_LANGUAGE2 "Affiche l'historique des messages dans le chat de type Jedi Academy."
+   TEXT_LANGUAGE3 "Zeigt den chatverlauf im chatstil der Jedi Academy an."
+   TEXT_LANGUAGE6 "Shows the chat history on Jedi Academy chat style."
+   TEXT_LANGUAGE8 "Muestra el historial de mensajes en el chat tipo Jedi Academy."
 }
