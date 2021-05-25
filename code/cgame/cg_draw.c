@@ -3179,6 +3179,8 @@ static void CG_DrawCrosshairNames( void ) {
 	vec4_t		tcolor;
 	char		*name;
 	int			baseColor;
+	vec3_t		diff; // Tr!Force: [PlayerLabels] Check distance
+
 
 	if ( !cg_drawCrosshair.integer ) {
 		return;
@@ -3195,6 +3197,13 @@ static void CG_DrawCrosshairNames( void ) {
 	if (cg.crosshairClientNum >= MAX_CLIENTS)
 	{
 		return;
+	}
+
+	// Tr!Force: [PlayerLabels] Prevent crosshair names override
+	if (jkcvar_cg_drawPlayerNames.integer)
+	{
+		VectorSubtract(cg_entities[cg.crosshairClientNum].lerpOrigin, cg.predictedPlayerState.origin, diff);
+		if (VectorLength(diff) < PLAYER_LABEL_DIST) return;
 	}
 
 	// draw the name of the player being looked at

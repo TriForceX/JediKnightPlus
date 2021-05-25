@@ -20,6 +20,7 @@ Global definitions
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
 #define MAX_CHATBOX_ITEMS			5
+#define PLAYER_LABEL_DIST			512 // 1014
 
 /*
 =====================================================================

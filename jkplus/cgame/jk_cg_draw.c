@@ -610,16 +610,12 @@ void JKMod_CG_DrawPlayerLabels(void)
 
 		// Max distance
 		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) >= 1024)
+		if (VectorLength(diff) >= PLAYER_LABEL_DIST)
 			continue;
 
 		// Do trace
 		CG_Trace( &trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID|CONTENTS_BODY );
 		if (trace.entityNum == ENTITYNUM_WORLD)
-			continue;
-
-		// Prevent crosshair names override
-		if (cg.crosshairClientNum == i && cg_drawCrosshair.integer && cg_drawCrosshairNames.integer)
 			continue;
 
 		// Set height
