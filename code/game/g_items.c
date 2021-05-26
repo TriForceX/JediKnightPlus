@@ -2011,6 +2011,7 @@ be on an entity that hasn't spawned yet.
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	int wDisable = 0;
+	qboolean GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLevel.cvarTempUnlock == 2 : qtrue; // Tr!Force: [GameTypeConfig] Check until loaded
 
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
@@ -2040,7 +2041,7 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 		}
 	}
 
-	if ( G_ItemDisabled(item) )
+	if ( G_ItemDisabled(item) && GTconfigLoaded ) // Tr!Force: [GameTypeConfig] Check until loaded
 		return;
 
 	// Tr!Force: [Items] Reset original item position

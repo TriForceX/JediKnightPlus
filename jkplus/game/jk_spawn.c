@@ -150,6 +150,11 @@ void JKMod_CheckValidMapItems(void)
 			}
 		}
 
+		if (G_ItemDisabled(check->item))
+		{
+			G_FreeEntity(check);
+		}
+
 		if (g_gametype.integer != GT_JEDIMASTER)
 		{
 			if (HasSetSaberOnly())
