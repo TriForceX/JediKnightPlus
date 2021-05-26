@@ -189,6 +189,13 @@ void JKMod_G_RegisterCvars(void)
 		}
 	}
 
+	// Disable dimensions if mvapi not available
+	if (!mvapi && jkcvar_altDimension.integer != 0) 
+	{
+		trap_Cvar_Set("jk_altDimension", "0");
+		G_Printf("Warning: Dimensions has been disabled (MVAPI not available).\n");
+	}
+
 	// Launch original register cvars function
 	BaseJK2_G_RegisterCvars();
 }

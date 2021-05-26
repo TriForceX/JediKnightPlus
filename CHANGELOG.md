@@ -9,6 +9,16 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.14.5
+- Changed forcePlugin cvar to pluginRequired
+- Added recommended client options pop-up
+- Added slider integer input to be used on menus
+- Added option to show player names above their head
+- Added JKA chat history option to menus
+- Improved crosshair names hidden on player labels
+- Added missing check for manually disabled map items
+- Disable dimension cvar if MVAPI is not available
+
 ## 0.14.4
 - Added custom map cycle from file only
 - Delay bots on custom game type config load

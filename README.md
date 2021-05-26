@@ -8,7 +8,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.14.4-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![version](https://img.shields.io/badge/Current%20Version-0.14.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
 [![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
@@ -138,6 +138,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Display bacta indicator on belt (3D model)
 - [ ] Display current weapon in back (3D model)
 - [x] Display race timer on race dimension
+- [x] Display player names above their head
 - [x] Enable custom item indicator on hud
 - [ ] Enable push/pull force effect color to match with the color of lightsaber
 - [ ] Enable the color for the second blade with dual blade lightsabers
