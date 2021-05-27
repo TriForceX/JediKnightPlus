@@ -10,97 +10,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
-Inspect cvar function
-=====================================================================
-*/
-static int InspectCvar(char *cvarname)
-{
-	char *buf, *name;
-	char *q, *r;
-
-	if ((buf = BG_TempAlloc(256)) == 0) // Assume the worst
-	{ 
-		return 1;
-	}
-	if ((name = BG_TempAlloc(256)) == 0) // Assume the worst
-	{ 
-		return 1;
-	}
-
-	// Get the value of the cvar	
-	trap_Cvar_VariableStringBuffer(cvarname, buf, 255);
-
-	// Look for illegal commands
-	if (strstr(buf, "+moveup") || strstr(buf, "+attack") ||
-		strstr(buf, "+forward") || strstr(buf, "+back") ||
-		strstr(buf, "+movedown"))
-	{
-		BG_TempFree(512); // Free the temp buffer
-		return 1;
-	}
-
-	// Look for exec commands
-	q = buf;
-	while (*q)
-	{
-		while (*q && (*q == ';' || *q == ' ' || *q == '\t')) q++;  // Skip leading ';' or white space
-		if (*q && (!Q_stricmpn(q, "exec ", 5) || !Q_stricmpn(q, "exec\t", 5)))
-		{ 
-			// This is an exec command, snag the filename
-			r = name;
-			q += 4; //skip the exec
-			while (*q == ' ' || *q == '\t') q++;  // Skip white space
-			if (*q == '\"')
-			{ 
-				// This next token is quoted
-				q++;
-				while (*q && *q != '\"') *r++ = *q++;
-				if (*q) q++;	// Eat the last quote
-				*r = 0;			// Terminate quotation string
-			}
-			else
-			{
-				while (*q && *q != ';' && *q != ' ' && *q != '\t')
-				{
-					*r++ = *q++;
-				}
-				*r = 0; // Terminate filename string
-			}
-			// Recurse
-			if (InspectFile(name) == 1)
-			{
-				BG_TempFree(512); // Free the temp buffer
-				return 1;
-			}
-		}
-		while (*q && *q != ';')
-		{
-			if (*q == '\"')
-			{
-				q++;
-				while (*q && *q != '\"') q++;
-				if (*q) q++; // Eat the last quote
-			}
-			else
-			{
-				q++;
-			}
-		}
-		// Look for the next command in the string
-	}
-
-	// We don't actually want to recurse here (like in the file case), since the execution of vstr is not recursive!
-	// All OK, free the temp buffer
-	BG_TempFree(512);
-	return 0;
-}
-
-/*
-=====================================================================
 Inspect file function
 =====================================================================
 */
-int InspectFile(char *filename)
+static int InspectFile(char *filename)
 {
 	char *name;
 	char *q, *r, *buf;
@@ -245,6 +158,93 @@ int InspectFile(char *filename)
 
 	// All OK, free the temp buffer
 	BG_TempFree(len + 257);
+	return 0;
+}
+
+/*
+=====================================================================
+Inspect cvar function
+=====================================================================
+*/
+static int InspectCvar(char *cvarname)
+{
+	char *buf, *name;
+	char *q, *r;
+
+	if ((buf = BG_TempAlloc(256)) == 0) // Assume the worst
+	{ 
+		return 1;
+	}
+	if ((name = BG_TempAlloc(256)) == 0) // Assume the worst
+	{ 
+		return 1;
+	}
+
+	// Get the value of the cvar	
+	trap_Cvar_VariableStringBuffer(cvarname, buf, 255);
+
+	// Look for illegal commands
+	if (strstr(buf, "+moveup") || strstr(buf, "+attack") ||
+		strstr(buf, "+forward") || strstr(buf, "+back") ||
+		strstr(buf, "+movedown"))
+	{
+		BG_TempFree(512); // Free the temp buffer
+		return 1;
+	}
+
+	// Look for exec commands
+	q = buf;
+	while (*q)
+	{
+		while (*q && (*q == ';' || *q == ' ' || *q == '\t')) q++;  // Skip leading ';' or white space
+		if (*q && (!Q_stricmpn(q, "exec ", 5) || !Q_stricmpn(q, "exec\t", 5)))
+		{ 
+			// This is an exec command, snag the filename
+			r = name;
+			q += 4; //skip the exec
+			while (*q == ' ' || *q == '\t') q++;  // Skip white space
+			if (*q == '\"')
+			{ 
+				// This next token is quoted
+				q++;
+				while (*q && *q != '\"') *r++ = *q++;
+				if (*q) q++;	// Eat the last quote
+				*r = 0;			// Terminate quotation string
+			}
+			else
+			{
+				while (*q && *q != ';' && *q != ' ' && *q != '\t')
+				{
+					*r++ = *q++;
+				}
+				*r = 0; // Terminate filename string
+			}
+			// Recurse
+			if (InspectFile(name) == 1)
+			{
+				BG_TempFree(512); // Free the temp buffer
+				return 1;
+			}
+		}
+		while (*q && *q != ';')
+		{
+			if (*q == '\"')
+			{
+				q++;
+				while (*q && *q != '\"') q++;
+				if (*q) q++; // Eat the last quote
+			}
+			else
+			{
+				q++;
+			}
+		}
+		// Look for the next command in the string
+	}
+
+	// We don't actually want to recurse here (like in the file case), since the execution of vstr is not recursive!
+	// All OK, free the temp buffer
+	BG_TempFree(512);
 	return 0;
 }
 

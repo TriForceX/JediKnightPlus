@@ -11,9 +11,13 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 // Extern stuff
 extern int saberOffSound;
 extern int saberOnSound;
+extern int trap_RealTime(qtime_t *qtime);
 extern char *ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
 extern jkmod_dimension_data_t jkmod_dimension_data[];
+extern int G_ClientNumberFromName(const char* name);
+extern int G_ClientNumberFromStrippedName(const char* name);
+extern qboolean G_OtherPlayersDueling(void);
 
 /*
 =====================================================================
@@ -805,6 +809,9 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	}
 }
 
+// Re-route old function
+void Cmd_EngageDuel_f(gentity_t *ent) { JKMod_EngageDuel(ent, 0); }
+
 /*
 =====================================================================
 Custom say function
@@ -1143,7 +1150,6 @@ void JKMod_ClientCommand(int clientNum)
 		qboolean ignore;
 		int		ignored = -1;
 		int		option;
-		char	name[MAX_STRING_CHARS];
 		char    arg1[MAX_TOKEN_CHARS];
 		char    arg2[MAX_TOKEN_CHARS];
 

@@ -65,7 +65,6 @@ Race trigger functions
 // Start race timer
 void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator) 
 {
-	int	i;
 	int	clientNum = -1;
 	int	lessTime;
 
@@ -90,7 +89,6 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Stop race timer
 void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	i;
 	int	clientNum = -1;
 	int	timeSec, timeMin, timeMsec;
 
@@ -124,7 +122,6 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Checkpoint race timer
 void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	i;
 	int	clientNum = -1;
 	int	timeSec, timeMin, timeMsec;
 

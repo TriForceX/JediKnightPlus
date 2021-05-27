@@ -9,6 +9,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/cgame/cg_local.h"	// Original header
 #include "../../code/ui/ui_shared.h"	// UI shared header
 
+// Extern stuff
+extern int trap_RealTime(qtime_t *qtime);
+extern qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
+
 int jkmod_pause_count = 0; // Pause announce counter
 int jkmod_popup_count = 0; // Client pop-up timer
 

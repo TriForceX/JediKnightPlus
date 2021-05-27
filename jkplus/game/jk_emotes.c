@@ -9,6 +9,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/game/g_local.h"	// Original header
 #include "../../code/game/bg_local.h"	// Get PM_ stuff
 
+// Extern stuff
+extern void StandardSetBodyAnim(gentity_t *self, int anim, int flags);
+
 /*
 =====================================================================
 Emote list

@@ -86,6 +86,8 @@ Common / new functions
 */
 
 // ui_main.c
+void		BaseJK2_UI_RegisterCvars(void);
+void		BaseJK2_UI_UpdateCvars(void);
 const char	*BaseJK2_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			BaseJK2_UI_FeederCount(float feederID);
 qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);

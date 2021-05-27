@@ -101,7 +101,6 @@ Pause game command function
 static void JKMod_svCmd_pauseGame(void)
 {
 	char	arg1[MAX_STRING_CHARS];
-	char	arg2[MAX_STRING_CHARS];
 
 	if (trap_Argc() < 2)
 	{

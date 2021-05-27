@@ -165,7 +165,6 @@ Re-routed functions
 #define ClientBegin					JKMod_ClientBegin
 #define ConsoleCommand				JKMod_ConsoleCommand
 #define G_InitGame					JKMod_G_InitGame
-#define Cmd_EngageDuel_f			JKMod_EngageDuel
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
 #define trap_Trace					JKMod_DimensionTrace
@@ -247,6 +246,7 @@ Common / new functions
 
 // g_active.c
 void		BaseJK2_ClientTimerActions(gentity_t *ent, int msec);
+void		BaseJK2_ClientThink_real(gentity_t *ent);
 
 // g_client.c
 char		*BaseJK2_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot);
@@ -256,11 +256,15 @@ void		BaseJK2_ClientBegin(int clientNum, qboolean allowTeamReset);
 void		BaseJK2_ClientCommand(int clientNum);
 
 // g_main.c
+void		BaseJK2_G_RegisterCvars(void);
+void		BaseJK2_G_UpdateCvars(void);
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
-qboolean	JKMod_PauseFrameCheck(int levelTime);
-void		JKMod_PauseFrameRun(void);
+
+// g_svcmds.c
+qboolean	BaseJK2_ConsoleCommand(void);
 
 // jk_active.c
+void		JKMod_ClientTimerActions(gentity_t *ent, int msec);
 void		JKMod_ClientThink_real(gentity_t *ent);
 void		JKMod_PauseClientThink(gentity_t *ent);
 
@@ -270,6 +274,8 @@ void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *e
 // jk_cmds.c
 qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
 void		JKMod_CallVote(gentity_t *ent);
+void		JKMod_EngageDuel(gentity_t *ent, int type);
+void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
 void		JKMod_WhoIs(gentity_t *ent);
 
 // jk_common.c
@@ -310,6 +316,10 @@ void		JKMod_emoteDoKiss(gentity_t *ent);
 void		JKMod_emoteDoPunch(gentity_t *ent);
 
 // jk_main.c
+void		JKMod_G_RegisterCvars(void);
+void		JKMod_G_UpdateCvars(void);
+qboolean	JKMod_PauseFrameCheck(int levelTime);
+void		JKMod_PauseFrameRun(void);
 void		JKMod_randomBeginInit(void);
 void		JKMod_serverNewsInit(void);
 void		JKMod_teleportChatInit(void);

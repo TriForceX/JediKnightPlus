@@ -8,6 +8,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern int trap_RealTime(qtime_t *qtime);
+
 /*
 =====================================================================
 Client timer actions function

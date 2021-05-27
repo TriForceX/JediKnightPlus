@@ -8,6 +8,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern char *G_AddSpawnVarToken(const char *string);
+extern int G_ItemDisabled(gitem_t *item);
+
 /*
 =====================================================================
 Spawn fields list and variables
@@ -21,8 +25,7 @@ typedef struct {
 } spawn_t;
 
 // Base spawn list
-extern	spawn_t	spawns[];
-extern char *G_AddSpawnVarToken(const char *string);
+extern spawn_t spawns[];
 
 // Spawn functions list
 void JKMod_SP_TimerStart(gentity_t *self);

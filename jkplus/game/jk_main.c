@@ -10,6 +10,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 // Extern stuff
 extern void SpectatorClientEndFrame(gentity_t *ent);
+extern void CheckVote(void);
+extern void CheckTeamVote(team_t team);
+extern void CheckCvars(void);
+extern int G_ParseInfos(char *buf, int max, char *infos[]);
 
 /*
 =====================================================================

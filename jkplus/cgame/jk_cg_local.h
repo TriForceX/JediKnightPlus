@@ -139,7 +139,13 @@ Common / new functions
 =====================================================================
 */
 
+// g_main.c
+void		BaseJK2_CG_RegisterCvars(void);
+void		BaseJK2_CG_UpdateCvars(void);
+
 // jk_cg_main.c
+void		JKMod_CG_RegisterCvars(void);
+void		JKMod_CG_UpdateCvars(void);
 void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
 

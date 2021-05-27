@@ -9,6 +9,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/cgame/cg_local.h"	// Original header
 #include "../../code/ghoul2/g2.h"		// G2 header
 
+// Extern stuff
+qboolean CG_InRollAnim(centity_t *cent);
+
 /*
 =====================================================================
 Custom player functions
