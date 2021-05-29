@@ -425,3 +425,20 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		trap_R_AddRefEntityToScene(&re);
 	}
 }
+
+/*
+=====================================================================
+Duel end check
+=====================================================================
+*/
+void JKMod_CG_DuelEnd(qboolean winner) 
+{
+	if (!jkcvar_cg_duelEnd.integer) return;
+	if (cg.jkmodCG.duelEndLead < cg.time) CG_AddBufferedSound(winner ? cgs.media.winnerSound : cgs.media.loserSound);
+
+	cg.jkmodCG.duelEnd = qtrue;
+	cg.jkmodCG.duelEndLead = 0;
+	cg.jkmodCG.duelEndRange = cg_thirdPersonRange.value;
+
+	JKMod_CG_Printf(S_COLOR_YELLOW "Client %i duel %s\n", cg.snap->ps.clientNum, (winner ? "win" : "lose"));
+}

@@ -54,7 +54,7 @@ typedef struct
 	int					chatItemActive;					// Chat item active
 	qboolean			duelEnd;						// Duel end active
 	float				duelEndRange;					// Duel end original range
-	qboolean			duelEndLeader;					// Duel end leader check
+	int					duelEndLead;					// Duel end lead check
 
 } jkmod_cg_t;
 
@@ -170,5 +170,6 @@ void		JKMod_CG_Player(centity_t *cent);
 qboolean	JKMod_CG_InEmoteUI(centity_t *cent);
 void		JKMod_CG_AddHitBox(centity_t *cent);
 void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec4_t modelDetails);
+void		JKMod_CG_DuelEnd(qboolean winner);
 
 #endif // __JK_CG_LOCAL_H__

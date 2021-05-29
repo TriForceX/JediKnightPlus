@@ -413,9 +413,9 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 			if ( ps->persistant[PERS_RANK] != ops->persistant[PERS_RANK] ) {
 				if ( cgs.gametype < GT_TEAM) {
 					if (  ps->persistant[PERS_RANK] == 0 ) {
-						if(jkcvar_cg_duelEnd.integer) cg.jkmodCG.duelEndLeader = qtrue; // Tr!Force: [DuelEnd] Sound check
 						CG_AddBufferedSound(cgs.media.takenLeadSound);
 						cgAnnouncerTime = cg.time + 3000;
+						cg.jkmodCG.duelEndLead = jkcvar_cg_duelEnd.integer ? cg.time + 3000 : 0; // Tr!Force: [DuelEnd] Sound check
 					} else if ( ps->persistant[PERS_RANK] == RANK_TIED_FLAG ) {
 						//CG_AddBufferedSound(cgs.media.tiedLeadSound);
 					} else if ( ( ops->persistant[PERS_RANK] & ~RANK_TIED_FLAG ) == 0 ) {
@@ -425,6 +425,7 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 						{
 							CG_AddBufferedSound(cgs.media.lostLeadSound);
 							cgAnnouncerTime = cg.time + 3000;
+							cg.jkmodCG.duelEndLead = jkcvar_cg_duelEnd.integer ? cg.time + 3000 : 0; // Tr!Force: [DuelEnd] Sound check
 						}
 					}
 				}

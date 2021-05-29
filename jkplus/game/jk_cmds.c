@@ -729,12 +729,6 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			ent->client->ps.duelInProgress = qtrue;
 			challenged->client->ps.duelInProgress = qtrue;
 
-			ent->client->ps.duelTime = level.time + 2000;
-			challenged->client->ps.duelTime = level.time + 2000;
-
-			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
-			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
-
 			if (jkcvar_altDimension.integer & DIMENSION_DUEL)
 			{
 				unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
@@ -742,6 +736,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 				JKMod_DimensionSet(ent, DIMENSION_DUEL_FREE);
 				JKMod_DimensionSet(challenged, DIMENSION_DUEL_FREE);
 			}
+
+			ent->client->ps.duelTime = level.time + 2000;
+			challenged->client->ps.duelTime = level.time + 2000;
+
+			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
+			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;

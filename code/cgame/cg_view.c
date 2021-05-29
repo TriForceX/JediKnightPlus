@@ -1323,10 +1323,6 @@ CG_AddBufferedSound
 void CG_AddBufferedSound( sfxHandle_t sfx ) {
 	if ( !sfx )
 		return;
-
-	// Tr!Force: [DuelEnd] Sound check
-	if (jkcvar_cg_duelEnd.integer && cg.jkmodCG.duelEndLeader && sfx == cgs.media.winnerSound) return; 
-
 	cg.soundBuffer[cg.soundBufferIn] = sfx;
 	cg.soundBufferIn = (cg.soundBufferIn + 1) % MAX_SOUNDBUFFER;
 	if (cg.soundBufferIn == cg.soundBufferOut) {
