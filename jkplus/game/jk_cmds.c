@@ -1007,7 +1007,10 @@ void JKMod_ClientCommand(int clientNum)
 	trap_Argv(0, cmd, sizeof(cmd));
 
 	// Help command
-	if (Q_stricmp(cmd, "help") == 0)
+	if (Q_stricmp(cmd, "help") == 0 || 
+		Q_stricmp(cmd, "info") == 0 || 
+		Q_stricmp(cmd, "amhelp") == 0 || 
+		Q_stricmp(cmd, "aminfo") == 0)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
 
@@ -1049,6 +1052,8 @@ void JKMod_ClientCommand(int clientNum)
 				"^3callvote\n"
 				"^3motd\n"
 				"^3whois\n"
+				"^3savepos\n"
+				"^3loadpos\n"
 				"^7\""));
 			return;
 		}
@@ -1084,7 +1089,7 @@ void JKMod_ClientCommand(int clientNum)
 				"^3engage_duel\n"
 				"^3engage_duel_force\n"
 				"^5----------\n"
-				"^2Note: ^7You also can use ^5engage_ff ^7for force duel challenge\n"
+				"^2Note: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
 				"^7\""));
 			return;
 		}
@@ -1111,24 +1116,6 @@ void JKMod_ClientCommand(int clientNum)
 		else
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is disabled at the moment\n\"", arg1));
-			return;
-		}
-	}
-	// Emote command
-	else if (Q_stricmp(cmd, "emote") == 0)
-	{
-		char    arg1[MAX_TOKEN_CHARS];
-
-		trap_Argv(1, arg1, sizeof(arg1));
-
-		if (trap_Argc() < 2)
-		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
-			return;
-		}
-		else if (!JKMod_emoteCheck(arg1, ent))
-		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));
 			return;
 		}
 	}
@@ -1255,7 +1242,10 @@ void JKMod_ClientCommand(int clientNum)
 		}
 	}
 	// Engage force duel command
-	else if (Q_stricmp(cmd, "engage_duel_force") == 0 || Q_stricmp(cmd, "engage_ff") == 0)
+	else if (Q_stricmp(cmd, "engage_duel_force") == 0 || 
+			 Q_stricmp(cmd, "engage_forceduel") == 0 || 
+			 Q_stricmp(cmd, "engage_fullforceduel") == 0 || 
+			 Q_stricmp(cmd, "engage_ff") == 0)
 	{
 		if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 229373)
 		{
@@ -1361,6 +1351,32 @@ void JKMod_ClientCommand(int clientNum)
 				trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
 				return;
 			}
+		}
+	}
+	// Emote command
+	else if (Q_stricmp(cmd, "emote") == 0 || Q_stricmpn(cmd, "am", 2) == 0)
+	{
+		if (Q_stricmp(cmd, "emote") == 0)
+		{
+			char    arg1[MAX_TOKEN_CHARS];
+
+			trap_Argv(1, arg1, sizeof(arg1));
+
+			if (trap_Argc() < 2)
+			{
+				trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
+				return;
+			}
+			else if (!JKMod_emoteCheck(arg1, ent))
+			{
+				trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));
+				return;
+			}
+		}
+		else if (!JKMod_emoteCheck(cmd, ent))
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", cmd));
+			return;
 		}
 	}
 	// Test command

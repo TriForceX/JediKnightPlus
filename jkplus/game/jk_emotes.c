@@ -167,7 +167,7 @@ int JKMod_emoteCheck(char *cmd, gentity_t *ent)
 	// Now start on the checks for each command possibility
 	for(i = 0; i < sizeof(emotes) / sizeof(emotes[0]); i++)
 	{
-		if(Q_stricmp(cmd, emotes[i].cmd) == 0)
+		if(Q_stricmp(cmd, emotes[i].cmd) == 0 || Q_stricmp (cmd, va("am%s", emotes[i].cmd)) == 0)
 		{
 			JKMod_emoteDo(ent, emotes[i].emoteIndex);
 			return 1;
