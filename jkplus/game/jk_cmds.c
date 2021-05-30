@@ -1257,7 +1257,7 @@ void JKMod_ClientCommand(int clientNum)
 	// Engage force duel command
 	else if (Q_stricmp(cmd, "engage_duel_force") == 0 || Q_stricmp(cmd, "engage_ff") == 0)
 	{
-		if (!jkcvar_allowCustomDuel.integer)
+		if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 229373)
 		{
 			trap_SendServerCommand(ent - g_entities, va("print \"^3Force duel ^7is disabled by the server\n\""));
 			JKMod_EngageDuel(ent, 0);
