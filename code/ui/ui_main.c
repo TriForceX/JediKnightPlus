@@ -4434,11 +4434,9 @@ static void UI_Update(const char *name) {
 	{
 		int num;
 
+		// Update JK_CLIENT_POPUP_ITEMS count based on this so new updates can trigger the popup again
 		jkmod_reset_client_t jkmod_reset_client[] =
 		{
-			// Client pop-up				default		recommended
-			{ "jk_cg_clientPopUp",			"0",		"1" },
-
 			// interface cvars				default		recommended
 			{ "jk_cg_drawClock",			"0",		"2" },
 			{ "jk_cg_drawForcePoints",		"0",		"1" },
@@ -4474,6 +4472,7 @@ static void UI_Update(const char *name) {
 
 			// camera cvars					default		recommended
 			{ "jk_cg_duelEnd",				"0",		"1" },
+			{ "jk_cg_specialMoveCamera",	"0",		"1" },
 			{ "cg_fpls",					"0",		"0" },
 			{ "cg_fovaspectadjust",			"0",		"1" },
 			{ "cg_fov",						"80",		NULL },
@@ -4485,6 +4484,10 @@ static void UI_Update(const char *name) {
 			{ "jk_cg_jetPackIdle",			"0",		NULL },
 		};
 
+		// Update popup
+		trap_Cvar_Set("jk_cg_clientPopUp", va("%i", (val ? JK_CLIENT_POPUP_ITEMS : 0)));
+
+		// Update cvars
 		for(num = 0; num < sizeof(jkmod_reset_client) / sizeof(jkmod_reset_client[0]); num++)
 		{
 			if (val && jkmod_reset_client[num].recVal == NULL) continue;
@@ -5230,8 +5233,7 @@ static void UI_RunMenuScript(const char **args)
 		// Tr!Force: [JKMod] Rotate camera when using emotes menu
 		else if (Q_stricmp(name, "JKMod_emoteCamera") == 0) 
 		{ 
-			int cameraAngle = trap_Cvar_VariableValue("cg_thirdPersonAngle") ? 0 : 180;
-			trap_Cvar_SetValue("cg_thirdPersonAngle", cameraAngle);
+			trap_Cmd_ExecuteText(EXEC_APPEND, "emotecamera\n");
 			trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
 		}
 		// Tr!Force: [JKMod] Change dimension from menu

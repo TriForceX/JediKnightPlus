@@ -182,7 +182,7 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				close			ingame_jkmod_dimensions ;  
-				uiScript		JKMod_dimensionToggle ;
+				exec 			"cmd dimension normal" ;
 			}
 			mouseenter 
 			{ 

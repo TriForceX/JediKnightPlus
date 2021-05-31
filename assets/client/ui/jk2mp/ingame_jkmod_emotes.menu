@@ -370,7 +370,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				uiScript		JKMod_emoteToggle ;
+				exec 			"cmd emote stop" ;
 			}
 			mouseenter 
 			{ 

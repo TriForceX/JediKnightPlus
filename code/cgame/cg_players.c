@@ -3430,6 +3430,9 @@ static void CG_PlayerSprites( centity_t *cent ) {
 		return; //this entity is mind-tricking the current client, so don't render it
 	}
 
+	// Tr!Force: [JKMod] Don't show on emote menu
+	if ( JKMod_CG_EmoteUI() ) return;
+
 	if ( cent->currentState.eFlags & EF_CONNECTION && cg_drawPlayerSprites.integer & 1 ) {
 		CG_PlayerFloatSprite( cent, cgs.media.connectionShader );
 		return;
@@ -6785,7 +6788,7 @@ doEssentialTwo:
 	// Tr!Force: [ChatProtect] Chat player transparency
 	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 	{
-		if (!JKMod_CG_InEmoteUI(cent))
+		if (!JKMod_CG_EmoteUI())
 		{
 			legs.renderfx |= RF_FORCE_ENT_ALPHA;
 			legs.shaderRGBA[3] = 100; // Fixed ?

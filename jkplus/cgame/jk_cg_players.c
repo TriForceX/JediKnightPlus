@@ -118,16 +118,6 @@ void JKMod_CG_Player(centity_t *cent)
 
 /*
 =====================================================================
-Check player emote UI
-=====================================================================
-*/
-qboolean JKMod_CG_InEmoteUI(centity_t *cent)
-{
-	return (trap_Key_GetCatcher() & KEYCATCH_UI) && cg_thirdPersonAngle.integer == 180 && cent->currentState.number == cg.predictedPlayerState.clientNum ? qtrue : qfalse;
-}
-
-/*
-=====================================================================
 Show player bounding hit boxes
 =====================================================================
 */
@@ -374,7 +364,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		// Check chat player transparency
 		if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 		{
-			if (!JKMod_CG_InEmoteUI(cent))
+			if (!JKMod_CG_EmoteUI())
 			{
 				re.renderfx |= RF_FORCE_ENT_ALPHA;
 				re.shaderRGBA[3] = 100; // Fixed ?
@@ -441,4 +431,39 @@ void JKMod_CG_DuelEnd(qboolean winner)
 	cg.jkmodCG.duelEndRange = cg_thirdPersonRange.value;
 
 	JKMod_CG_Printf(S_COLOR_YELLOW "Client %i duel %s\n", cg.snap->ps.clientNum, (winner ? "win" : "lose"));
+}
+
+/*
+=====================================================================
+Check player emote UI
+=====================================================================
+*/
+qboolean JKMod_CG_EmoteUI(void)
+{
+	return (trap_Key_GetCatcher() & KEYCATCH_UI) && cg.jkmodCG.emoteCamera ? qtrue : qfalse;
+}
+
+/*
+=====================================================================
+Check player emote camera
+=====================================================================
+*/
+void JKMod_CG_EmoteCamera(void)
+{
+	int cameraAngle = 180;
+	int cameraRange = 120;
+	int cameraVertOffset = 0;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
+	
+	if (cg_thirdPersonAngle.value != cameraAngle) cg.jkmodCG.prevCameraAngle = cg_thirdPersonAngle.value;
+	if (cg_thirdPersonRange.value != cameraRange) cg.jkmodCG.prevCameraRange = cg_thirdPersonRange.value;
+	if (cg_thirdPersonVertOffset.value != cameraVertOffset) cg.jkmodCG.prevCameraVertOffset = cg_thirdPersonVertOffset.value;
+	
+	cg_thirdPersonAngle.value = cg_thirdPersonAngle.value != cameraAngle ? cameraAngle : cg.jkmodCG.prevCameraAngle;
+	cg_thirdPersonRange.value = cg_thirdPersonRange.value != cameraRange ? cameraRange : cg.jkmodCG.prevCameraRange;
+	cg_thirdPersonVertOffset.value = cg_thirdPersonVertOffset.value != cameraVertOffset ? cameraVertOffset : cg.jkmodCG.prevCameraVertOffset;
+
+	cg.jkmodCG.emoteCamera = !cg.jkmodCG.emoteCamera ? qtrue : qfalse;
 }

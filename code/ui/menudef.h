@@ -82,6 +82,8 @@
 #define FEEDER_JK_EMOTES					0x12			// Tr!Force: [Emotes] Feeder
 #define FEEDER_JK_DIMENSIONS				0x13			// Tr!Force: [Dimensions] Feeder
 
+#define JK_CLIENT_POPUP_ITEMS				38				// Tr!Force: [UIGeneral] Client options pop-up count
+
 // display flags
 #define CG_SHOW_BLUE_TEAM_HAS_REDFLAG     0x00000001
 #define CG_SHOW_RED_TEAM_HAS_BLUEFLAG     0x00000002

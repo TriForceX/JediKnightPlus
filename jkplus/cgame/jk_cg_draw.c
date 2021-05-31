@@ -281,10 +281,10 @@ Client options pop-up
 void JKMod_CG_ClientPopUp(void)
 {
 	if (!cg.snap) return;
-	if (jkcvar_cg_clientPopUp.integer) return;
+	if (jkcvar_cg_clientPopUp.integer == JK_CLIENT_POPUP_ITEMS) return;
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
-	if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 	
 	// Scan once every second
 	if ((jkmod_popup_count + 1000) < cg.time)
@@ -295,7 +295,7 @@ void JKMod_CG_ClientPopUp(void)
 		if (!((cg.centerPrintTime + (1000 * cg_centertime.value)) >= cg.time))
 		{
 			trap_SendConsoleCommand("jk_ui_clientpopup\n");
-			trap_Cvar_Set("jk_cg_clientPopUp", "1");
+			trap_Cvar_Set("jk_cg_clientPopUp", va("%i", JK_CLIENT_POPUP_ITEMS));
 		}
 	}
 }

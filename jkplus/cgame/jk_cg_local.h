@@ -55,6 +55,10 @@ typedef struct
 	qboolean			duelEnd;						// Duel end active
 	float				duelEndRange;					// Duel end original range
 	int					duelEndLead;					// Duel end lead check
+	qboolean			emoteCamera;					// Check emote camera
+	int					prevCameraAngle;				// Saved camera angle
+	int					prevCameraRange;				// Saved camera range
+	int					prevCameraVertOffset;			// Saved camera vertical offset
 
 } jkmod_cg_t;
 
@@ -119,6 +123,7 @@ extern vmCvar_t						jkcvar_cg_damageBlend;
 extern vmCvar_t						jkcvar_cg_flagOpacity;
 extern vmCvar_t						jkcvar_cg_flagAlignment;
 extern vmCvar_t						jkcvar_cg_chatPlayerOpacity;
+extern vmCvar_t						jkcvar_cg_specialMoveCamera;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;
@@ -167,9 +172,10 @@ void		JKMod_CG_DrawPlayerLabels(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);
-qboolean	JKMod_CG_InEmoteUI(centity_t *cent);
 void		JKMod_CG_AddHitBox(centity_t *cent);
 void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels, qhandle_t modelFile, char *modelBolt, vec4_t modelDetails);
 void		JKMod_CG_DuelEnd(qboolean winner);
+qboolean	JKMod_CG_EmoteUI(void);
+void		JKMod_CG_EmoteCamera(void);
 
 #endif // __JK_CG_LOCAL_H__

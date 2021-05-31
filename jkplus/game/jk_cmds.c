@@ -1367,6 +1367,16 @@ void JKMod_ClientCommand(int clientNum)
 				trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
 				return;
 			}
+			else if (!Q_stricmp(arg1, "stop")) 
+			{
+				if (JKMod_emoteIn(ent, -1))
+				{
+					ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+					ent->client->ps.forceDodgeAnim = 0;
+					ent->client->ps.forceHandExtendTime = 0;
+				}
+				return;
+			}
 			else if (!JKMod_emoteCheck(arg1, ent))
 			{
 				trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));

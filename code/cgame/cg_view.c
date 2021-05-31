@@ -296,6 +296,33 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 {
 	float thirdPersonRange = cg_thirdPersonRange.value;
 
+	// Tr!Force: [BackSwing] Back swing camera range
+	if (jkcvar_cg_specialMoveCamera.integer && !cg.jkmodCG.duelEnd &&
+		cg.predictedPlayerState.saberMove == LS_A_BACK || 
+		cg.predictedPlayerState.saberMove == LS_A_BACK_CR || 
+		cg.predictedPlayerState.saberMove == LS_A_BACKSTAB || 
+		cg.predictedPlayerState.saberMove == LS_A_FLIP_STAB || 
+		cg.predictedPlayerState.saberMove == LS_A_FLIP_SLASH || 
+		cg.predictedPlayerState.saberMove == LS_A_JUMP_T__B_) 
+	{
+		float animLength = bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].numFrames * abs(bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].frameLerp);
+		float elapsedTime = (float)(animLength - cg.predictedPlayerState.legsTimer);
+		float backDist = 0;
+
+		// Starting anim
+		if (elapsedTime < animLength / 2.0f)
+		{	
+			backDist = (elapsedTime / animLength)*120.0f;
+		}
+		// Ending anim
+		else
+		{
+			backDist = ((animLength - elapsedTime) / animLength)*120.0f;
+		}
+
+		if (cg.predictedPlayerState.stats[STAT_HEALTH] > 0) thirdPersonRange += backDist;
+	}
+
 	if (cg.snap && cg.snap->ps.usingATST)
 	{
 		thirdPersonRange = 300;
@@ -1627,6 +1654,11 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	else if (cg.snap->ps.zoomMode)
 	{ //always force first person when zoomed
 		cg.renderingThirdPerson = 0;
+	}
+	// Tr!Force: [JKMod] Check emote camera
+	else if (cg.jkmodCG.emoteCamera) 
+	{
+		cg.renderingThirdPerson = 1;
 	}
 
 	// build cg.refdef

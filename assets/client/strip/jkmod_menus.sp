@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 129
+COUNT 132
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -743,11 +743,11 @@ INDEX 81
 INDEX 82
 {
    REFERENCE CLIENT_CHATOPACITY_DESC
-   TEXT_LANGUAGE1 "Make chatting players transparent."
-   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents."
-   TEXT_LANGUAGE3 "Chatten sie spieler transparent."
-   TEXT_LANGUAGE6 "Make chatting players transparent."
-   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes."
+   TEXT_LANGUAGE1 "Make chatting players transparent if server allows it."
+   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents si le serveur le permet."
+   TEXT_LANGUAGE3 "Machen sie das chatten von spielern transparent, wenn der server dies zulässt."
+   TEXT_LANGUAGE6 "Make chatting players transparent if server allows it."
+   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes si el servidor lo permite."
 }
 INDEX 83
 {
@@ -1013,20 +1013,20 @@ INDEX 111
 INDEX 112
 {
    REFERENCE CLIENT_DUELEND
-   TEXT_LANGUAGE1 "Duel end animation:"
-   TEXT_LANGUAGE2 "Animation de fin de duel:"
-   TEXT_LANGUAGE3 "Duellende animation:"
-   TEXT_LANGUAGE6 "Duel end animation:"
-   TEXT_LANGUAGE8 "Animación fin de duelo:"
+   TEXT_LANGUAGE1 "Duel end:"
+   TEXT_LANGUAGE2 "Fin de duel:"
+   TEXT_LANGUAGE3 "Duellende:"
+   TEXT_LANGUAGE6 "Duel end:"
+   TEXT_LANGUAGE8 "Fin de duelo:"
 }
 INDEX 113
 {
    REFERENCE CLIENT_DUELEND_DESC
-   TEXT_LANGUAGE1 "Plays a camera animation at the end of a duel."
-   TEXT_LANGUAGE2 "Joue une animation de caméra à la fin d'un duel."
-   TEXT_LANGUAGE3 "Spielt am ende eines duells eine kameraanimation ab."
-   TEXT_LANGUAGE6 "Plays a camera animation at the end of a duel."
-   TEXT_LANGUAGE8 "Reproduce una animación de cámara al finalizar un duelo."
+   TEXT_LANGUAGE1 "Camera animation at the end of a private duel."
+   TEXT_LANGUAGE2 "Animation caméra à la fin d'un duel privé."
+   TEXT_LANGUAGE3 "Kameraanimation am ende eines privaten duells."
+   TEXT_LANGUAGE6 "Camera animation at the end of a private duel."
+   TEXT_LANGUAGE8 "Animación de cámara al finalizar un duelo privado."
 }
 INDEX 114
 {
@@ -1162,4 +1162,31 @@ INDEX 128
    TEXT_LANGUAGE3 "Zeigt den chatverlauf im chatstil der Jedi Academy an."
    TEXT_LANGUAGE6 "Shows the chat history on Jedi Academy chat style."
    TEXT_LANGUAGE8 "Muestra el historial de mensajes en el chat tipo Jedi Academy."
+}
+INDEX 129
+{
+   REFERENCE CLIENT_CUSTOMIZE
+   TEXT_LANGUAGE1 "Customize"
+   TEXT_LANGUAGE2 "Personnaliser"
+   TEXT_LANGUAGE3 "Anpassen"
+   TEXT_LANGUAGE6 "Customize"
+   TEXT_LANGUAGE8 "Personalizar"
+}
+INDEX 130
+{
+   REFERENCE CLIENT_SPECIALMOVECAM
+   TEXT_LANGUAGE1 "Special movements:"
+   TEXT_LANGUAGE2 "Mouvements spéciaux:"
+   TEXT_LANGUAGE3 "Spezialbewegungen:"
+   TEXT_LANGUAGE6 "Special movements:"
+   TEXT_LANGUAGE8 "Movimientos especiales:"
+}
+INDEX 131
+{
+   REFERENCE CLIENT_SPECIALMOVECAM_DESC
+   TEXT_LANGUAGE1 "Camera animation when performing special movements."
+   TEXT_LANGUAGE2 "Animation de caméra lors de l'exécution de mouvements spéciaux."
+   TEXT_LANGUAGE3 "Kamera-animation bei der durchführung von speziellen bewegungen."
+   TEXT_LANGUAGE6 "Camera animation when performing special movements."
+   TEXT_LANGUAGE8 "Animación de cámara al realizar movimientos especiales."
 }
