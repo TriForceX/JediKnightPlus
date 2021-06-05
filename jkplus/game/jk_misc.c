@@ -151,19 +151,24 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	if (jkcvar_teleportFrag.integer) trap_UnlinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
 
 	VectorCopy(origin, player->client->ps.origin);
-	player->client->ps.origin[2] += 1;
+	player->client->ps.origin[2] += 2;
 
-	if (spitplayer) 
+	if (spitplayer)
 	{
 		// spit the player out
 		AngleVectors(angles, player->client->ps.velocity, NULL, NULL);
 		VectorScale(player->client->ps.velocity, spitspeed, player->client->ps.velocity);
 		player->client->ps.pm_time = 160;		// hold time
 		player->client->ps.pm_flags |= PMF_TIME_KNOCKBACK;
-
-		// toggle the teleport bit so the client knows to not lerp
-		player->client->ps.eFlags ^= EF_TELEPORT_BIT;
 	}
+	else
+	{
+		// clear player velocity
+		VectorClear(player->client->ps.velocity);
+	}
+
+	// toggle the teleport bit so the client knows to not lerp
+	player->client->ps.eFlags ^= EF_TELEPORT_BIT;
 
 	// set angles
 	SetClientViewAngle(player, angles);

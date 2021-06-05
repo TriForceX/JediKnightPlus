@@ -558,4 +558,6 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("dropflag");			// Tr!Force: [JKMod] Add command for menus
 	trap_AddCommand ("engage_duel_force");	// Tr!Force: [JKMod] Add command for menus
 	trap_AddCommand ("jetpack");			// Tr!Force: [JKMod] Add command for menus
+	trap_AddCommand ("savepos");			// Tr!Force: [JKMod] Add command for menus
+	trap_AddCommand ("loadpos");			// Tr!Force: [JKMod] Add command for menus
 }

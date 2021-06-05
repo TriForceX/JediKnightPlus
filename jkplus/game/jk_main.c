@@ -222,12 +222,10 @@ void JKMod_G_UpdateCvars(void)
 
 				if(cv->trackChange)
 				{
-					// Server news and random begin warning
-					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews))
+					// Reload stuff warning
+					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews || cv->vmCvar == &jkcvar_teleportChat))
 					{
-						if (!(Q_stricmp(cv->vmCvar->string, "0") == 0 || Q_stricmp(cv->vmCvar->string, "paused") == 0)) {
-							G_Printf("%s will load the files upon restarting.\n", cv->cvarName);
-						}
+						G_Printf("%s will load the files upon restarting or by using /rcon reload <type>.\n", cv->cvarName);
 					}
 					// Normal tracking
 					else 
@@ -724,12 +722,6 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	if (jkcvar_teleportChat.integer)
 	{
 		JKMod_teleportChatInit();
-
-		// Reset to normal teleport chat
-		if (jkcvar_teleportChat.integer == 2) 
-		{
-			trap_Cvar_Set("jk_teleportChat", "1");
-		}
 	}
 
 	// Check server idle

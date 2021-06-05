@@ -91,6 +91,11 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
 		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\n\"");
 		return qfalse;
 	}
+	else if (ent->client->ps.pm_type == PM_DEAD)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension while dead\n\"");
+		return qfalse;
+	}
 	else if (ent->client->ps.duelInProgress)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in a private duel\n\"");

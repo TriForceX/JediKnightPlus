@@ -101,9 +101,9 @@ Save position for teleport
 */
 static qboolean JKMod_savePosition(gentity_t *ent)
 {
-	if (jkcvar_teleportChat.integer != 2)
+	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
+		trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is not available\n\""));
 		return qfalse;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
@@ -118,12 +118,12 @@ static qboolean JKMod_savePosition(gentity_t *ent)
 	}
 	else
 	{
-		ent->client->ps.viewangles[0] = 0.0f;
 		ent->client->ps.viewangles[2] = 0.0f;
 		ent->client->pers.jkmodPers.TeleportChatOrigin[0] = ent->client->ps.origin[0];
 		ent->client->pers.jkmodPers.TeleportChatOrigin[1] = ent->client->ps.origin[1];
 		ent->client->pers.jkmodPers.TeleportChatOrigin[2] = ent->client->ps.origin[2];
-		ent->client->pers.jkmodPers.TeleportChatOrigin[3] = ent->client->ps.viewangles[1];
+		ent->client->pers.jkmodPers.TeleportChatOrigin[3] = ent->client->ps.viewangles[PITCH];
+		ent->client->pers.jkmodPers.TeleportChatOrigin[4] = ent->client->ps.viewangles[YAW];
 
 		trap_SendServerCommand(ent - g_entities, va("cp \"Saved position!\n\""));
 
@@ -144,9 +144,9 @@ Load position for teleport
 */
 static qboolean JKMod_loadPosition(gentity_t *ent)
 {
-	if (jkcvar_teleportChat.integer != 2)
+	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is disabled by the server\n\""));
+		trap_SendServerCommand(ent - g_entities, va("cp \"This teleport is not available\n\""));
 		return qfalse;
 	}
 	else if (!ent->client->pers.jkmodPers.TeleportChatSaved)
@@ -171,11 +171,18 @@ static qboolean JKMod_loadPosition(gentity_t *ent)
 		temporigin[0] = ent->client->pers.jkmodPers.TeleportChatOrigin[0];
 		temporigin[1] = ent->client->pers.jkmodPers.TeleportChatOrigin[1];
 		temporigin[2] = ent->client->pers.jkmodPers.TeleportChatOrigin[2];
-		tempangles[PITCH] = 0.0f;
-		tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatOrigin[3];
+		tempangles[PITCH] = ent->client->pers.jkmodPers.TeleportChatOrigin[3];
+		tempangles[YAW] = ent->client->pers.jkmodPers.TeleportChatOrigin[4];
 		tempangles[ROLL] = 0.0f;
 
 		JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
+
+		// Reset timer
+		if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+		{
+			ent->client->ps.duelTime = 0;
+			ent->client->pers.jkmodPers.raceStartTime = 0;
+		}
 
 		if (ent->client->pers.jkmodPers.TeleportChatSaved == "true") {
 			ent->client->pers.jkmodPers.TeleportChatSaved = va("%i %i %i", temporigin[0], temporigin[1], temporigin[2]);

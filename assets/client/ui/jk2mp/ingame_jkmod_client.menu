@@ -1855,6 +1855,72 @@
 				hide			keybindstatus
 			}
 		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_SAVEPOS
+			descText			@JKMENUS_CLIENT_SAVEPOS_DESC
+			cvar				"savepos"
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight6
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight6
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_LOADPOS
+			descText			@JKMENUS_CLIENT_LOADPOS_DESC
+			cvar				"loadpos"
+			rect				220 161 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight7
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight7
+				hide			keybindstatus
+			}
+		}
 
 		//---------------------------------------------
 		//	OTHERS OPTIONS

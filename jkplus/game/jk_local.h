@@ -82,7 +82,7 @@ typedef struct
 {
 	qboolean	ClientPlugin;			// Client plugin check
 	int			CustomDuel;				// Client is in force duel
-	int			TeleportChatOrigin[4];	// Player saved pos x y z yaw
+	int			TeleportChatOrigin[5];	// Player saved pos x y z pitch yaw
 	char		*TeleportChatSaved;		// Player saved pos saved
 	int			jetackUseDelay;			// Jetpack usage delay
 	qboolean	buttonUseAnim;			// Button use animation use check

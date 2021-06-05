@@ -4028,6 +4028,8 @@ static bind_t g_bindings[] =
 	{"engage_duel_force",	-1,				-1,		-1,	-1},
 	{"jetpack",				-1,				-1,		-1,	-1},
 	{"kill",				-1,				-1,		-1,	-1},
+	{"savepos",				-1,				-1,		-1,	-1},
+	{"loadpos",				-1,				-1,		-1,	-1},
 };
 
 

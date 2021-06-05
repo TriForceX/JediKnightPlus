@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 138
+COUNT 142
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1243,4 +1243,40 @@ INDEX 137
    TEXT_LANGUAGE3 "Groß"
    TEXT_LANGUAGE6 "Big"
    TEXT_LANGUAGE8 "Grande"
+}
+INDEX 138
+{
+   REFERENCE CLIENT_SAVEPOS
+   TEXT_LANGUAGE1 "Save position:"
+   TEXT_LANGUAGE2 "Sauvegarder position:"
+   TEXT_LANGUAGE3 "Position speichern:"
+   TEXT_LANGUAGE6 "Save position:"
+   TEXT_LANGUAGE8 "Guardar posición:"
+}
+INDEX 139
+{
+   REFERENCE CLIENT_SAVEPOS_DESC
+   TEXT_LANGUAGE1 "Save the current position for teleporting."
+   TEXT_LANGUAGE2 "Enregistrez la position actuelle pour la téléportation."
+   TEXT_LANGUAGE3 "Speichern sie die aktuelle position zum teleportieren. "
+   TEXT_LANGUAGE6 "Save the current position for teleporting."
+   TEXT_LANGUAGE8 "Guardar la posición actual para teletransportación."
+}
+INDEX 140
+{
+   REFERENCE CLIENT_LOADPOS
+   TEXT_LANGUAGE1 "Load position:"
+   TEXT_LANGUAGE2 "Position de charge:"
+   TEXT_LANGUAGE3 "Position laden:"
+   TEXT_LANGUAGE6 "Load position:"
+   TEXT_LANGUAGE8 "Cargar posición:"
+}
+INDEX 141
+{
+   REFERENCE CLIENT_LOADPOS_DESC
+   TEXT_LANGUAGE1 "Teleport to the saved position."
+   TEXT_LANGUAGE2 "Téléporter à la position enregistrée."
+   TEXT_LANGUAGE3 "Teleportieren auf die gespeicherte position."
+   TEXT_LANGUAGE6 "Teleport to the saved position."
+   TEXT_LANGUAGE8 "Teletransporta a la posición guardada."
 }
