@@ -1100,7 +1100,7 @@ void CG_DrawHUD(centity_t	*cent)
 	if ( cgs.gametype == GT_TOURNAMENT )
 	{//A duel that requires more than one kill to knock the current enemy back to the queue
 		//show current kills out of how many needed
-		scoreStr = va("Score: %i/%i", cg.snap->ps.persistant[PERS_SCORE], cgs.fraglimit);
+		scoreStr = va("%s: %i/%i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], cgs.fraglimit); // Tr!Force: [CGameGeneral] Use translated text
 	}
 	else if (0 && cgs.gametype < GT_TEAM )
 	{	// This is a teamless mode, draw the score bias.
@@ -1128,13 +1128,15 @@ void CG_DrawHUD(centity_t	*cent)
 		{	// We are behind!
 			Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (%d)", scoreBias);
 		}
-		scoreStr = va("Score: %i%s", cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr);
+		scoreStr = va("%s: %i%s", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr); // Tr!Force: [CGameGeneral] Use translated text
 	}
 	else
 	{	// Don't draw a bias.
-		scoreStr = va("Score: %i", cg.snap->ps.persistant[PERS_SCORE]);
+		scoreStr = va("%s: %i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Use translated text
 	}
-	UI_DrawScaledProportionalString(cgs.screenWidth-101, cgs.screenHeight-23, scoreStr, UI_RIGHT|UI_DROPSHADOW, colorTable[CT_WHITE], 0.7);
+	
+	// Tr!Force: [CGameGeneral] Don't draw score label when changing stuff or menu
+	if(!cg.iconHUDActive && !(trap_Key_GetCatcher() & KEYCATCH_UI)) UI_DrawScaledProportionalString(cgs.screenWidth-101, cgs.screenHeight-23, scoreStr, UI_RIGHT|UI_DROPSHADOW, colorTable[CT_WHITE], 0.7);
 
 	menuHUD = Menus_FindByName("righthud");
 	if (menuHUD)
@@ -2588,6 +2590,12 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 
 	if ( cg.predictedPlayerState.zoomMode != 0 )
 	{//not while scoped
+		return;
+	}
+
+	// Tr!Force: [JKMod] Don't show with movement keys at center
+	if( jkcvar_cg_drawMovementKeys.integer == 2 && cg.snap->ps.pm_type != PM_SPECTATOR )
+	{
 		return;
 	}
 

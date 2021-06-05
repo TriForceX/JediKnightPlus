@@ -1664,6 +1664,11 @@ void ExitLevel (void) {
 			continue;
 		}
 		cl->ps.persistant[PERS_SCORE] = 0;
+
+		// Tr!Force: [Scoreboard] Extra info
+		if ( g_gametype.integer != GT_TOURNAMENT ) {
+			cl->sess.losses = 0;
+		}
 	}
 
 	// we need to do this here before chaning to CON_CONNECTING

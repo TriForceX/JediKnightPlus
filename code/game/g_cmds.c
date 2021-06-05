@@ -777,6 +777,11 @@ void SetTeam( gentity_t *ent, char *s ) {
 		}
 	}
 
+	// Tr!Force: [Scoreboard] Extra info
+	if ( team != TEAM_SPECTATOR && oldTeam == TEAM_SPECTATOR && g_gametype.integer != GT_TOURNAMENT ) { 
+		ent->client->sess.losses = 0;
+    }
+
 	client->sess.sessionTeam = team;
 	client->sess.spectatorState = specState;
 	client->sess.spectatorClient = specClient;

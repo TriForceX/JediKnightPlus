@@ -2406,6 +2406,7 @@ void ClientDisconnect( int clientNum ) {
 	ent->client->pers.connected = CON_DISCONNECTED;
 	ent->client->ps.persistant[PERS_TEAM] = TEAM_FREE;
 	ent->client->sess.sessionTeam = TEAM_FREE;
+	ent->client->sess.losses = 0; // Tr!Force: [Scoreboard] Extra info
 
 	trap_SetConfigstring( CS_PLAYERS + clientNum, "");
 

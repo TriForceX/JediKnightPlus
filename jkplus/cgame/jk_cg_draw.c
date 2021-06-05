@@ -12,6 +12,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 // Extern stuff
 extern int trap_RealTime(qtime_t *qtime);
 extern qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
+extern qboolean CG_InRollAnim(centity_t *cent);
 
 int jkmod_pause_count = 0; // Pause announce counter
 int jkmod_popup_count = 0; // Client pop-up timer
@@ -53,6 +54,12 @@ void JKMod_CG_Draw2D(void)
 		JKMod_CG_DrawJetPackFuel();
 	}
 
+	// Draw movement keys
+	if (jkcvar_cg_drawMovementKeys.integer)
+	{
+		JKMod_CG_DrawMovementKeys(); 
+	}
+
 	// Draw Dimension indicator
 	if (cg.snap->ps.stats[JK_DIMENSION] > 1)
 	{
@@ -68,6 +75,30 @@ void JKMod_CG_Draw2D(void)
 
 /*
 =====================================================================
+Check icon hud active (when cg_hudfiles is 1)
+=====================================================================
+*/
+qboolean JKMod_CG_IconHUDActive(void)
+{
+	float inTime = cg.invenSelectTime+WEAPON_SELECT_TIME;
+	float wpTime = cg.weaponSelectTime+WEAPON_SELECT_TIME;
+	float fpTime = cg.forceSelectTime+WEAPON_SELECT_TIME;
+
+	return (cg.iconHUDActive || cg_hudFiles.integer && (inTime > cg.time) || (wpTime > cg.time) || (fpTime > cg.time));
+}
+
+/*
+=====================================================================
+Check when center print is showing
+=====================================================================
+*/
+qboolean JKMod_CG_CenterPrintActive(void)
+{
+	return ((cg.centerPrintTime + (1000 * cg_centertime.value)) >= cg.time);
+}
+
+/*
+=====================================================================
 Draw clock function
 =====================================================================
 */
@@ -79,6 +110,7 @@ void JKMod_CG_DrawClock(void)
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 
+	trap_R_SetColor(colorTable[CT_WHITE]); // Don't tint hud
 	trap_RealTime(&serverTime);
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
@@ -292,7 +324,7 @@ void JKMod_CG_ClientPopUp(void)
 		jkmod_popup_count = cg.time;
 
 		// Launch only when all center prints dissapear
-		if (!((cg.centerPrintTime + (1000 * cg_centertime.value)) >= cg.time))
+		if (!JKMod_CG_CenterPrintActive())
 		{
 			trap_SendConsoleCommand("jk_ui_clientpopup\n");
 			trap_Cvar_Set("jk_cg_clientPopUp", va("%i", JK_CLIENT_POPUP_ITEMS));
@@ -471,6 +503,8 @@ void JKMod_CG_DrawDimensionString(void)
 	const char *dimensionStr = NULL;
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
 
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimensionStr = "Private Duel";
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimensionStr = "Guns Arena";
@@ -480,7 +514,12 @@ void JKMod_CG_DrawDimensionString(void)
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT) dimensionStr = "Cheats Mode";
 
 	if (dimensionStr) {
-		UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
+		if (cg_hudFiles.integer) {
+			vec4_t textColor = { .875f, .718f, .121f, 1.0f };
+			UI_DrawProportionalString(0.5f * cgs.screenWidth, cgs.screenHeight - 25, va("%s", dimensionStr), UI_CENTER | UI_SMALLFONT | UI_DROPSHADOW, textColor);
+		} else {
+			UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
+		}
 	}
 }
 
@@ -636,4 +675,169 @@ void JKMod_CG_DrawPlayerLabels(void)
 		// Show name
 		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > 1 ? 1 : scale));
 	}
+}
+
+/*
+=====================================================================
+Draw movement keys
+=====================================================================
+*/
+void JKMod_CG_DrawMovementKeys(void)
+{
+	centity_t *cent;
+	usercmd_t cmd = { 0 };
+	int moveDir;
+	float w, h, x, y, xOffset, yOffset, scale;
+
+	if (!cg.snap) return;
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return; // Spec following is still allowed
+	if (cg.scoreBoardShowing) return;
+	if (jkcvar_cg_drawMovementKeys.integer == 2 && JKMod_CG_CenterPrintActive()) return;
+	if (jkcvar_cg_drawMovementKeys.integer > 1 && (trap_Key_GetCatcher() & KEYCATCH_MESSAGE)) return;
+	if (jkcvar_cg_drawMovementKeys.integer < 2 && JKMod_CG_IconHUDActive()) return;
+
+	trap_R_SetColor(colorTable[CT_WHITE]); // Don't tint hud
+
+	cent = &cg_entities[cg.predictedPlayerState.clientNum];
+	moveDir = cg.snap->ps.movementDir;
+
+	// If it's us
+	if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback)
+	{
+		trap_GetUserCmd(trap_GetCurrentCmdNumber(), &cmd);
+
+		if ((cg.snap->ps.pm_flags & PMF_DUCKED) || CG_InRollAnim(cent)) {
+			cmd.upmove = -1;
+		}
+	}
+	else
+	{
+		float xyspeed = (float)sqrt(cg.snap->ps.velocity[0] * cg.snap->ps.velocity[0] + cg.snap->ps.velocity[1] * cg.snap->ps.velocity[1]);
+		float zspeed = cg.snap->ps.velocity[2];
+		static float lastZSpeed = 0.0f;
+
+		if ((JKMod_CG_GroundDistance() > 1 && zspeed > 8 && zspeed > lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || (cg.snap->ps.pm_flags & PMF_JUMP_HELD)) {
+			cmd.upmove = 1;
+		} else if ((cg.snap->ps.pm_flags & PMF_DUCKED) || CG_InRollAnim(cent)) {
+			cmd.upmove = -1;
+		}
+
+		if ((cent->currentState.eFlags & EF_FIRING) && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
+			cmd.buttons |= BUTTON_ATTACK;
+			cmd.buttons &= ~BUTTON_ALT_ATTACK;
+		} else if (cent->currentState.eFlags & EF_ALT_FIRING) {
+			cmd.buttons |= BUTTON_ALT_ATTACK;
+			cmd.buttons &= ~BUTTON_ATTACK;
+		}
+
+		if (xyspeed < 9) moveDir = -1;
+
+		lastZSpeed = zspeed;
+
+		switch (moveDir)
+		{
+			case 0: // W
+				cmd.forwardmove = 1;
+				break;
+			case 1: // WA
+				cmd.forwardmove = 1;
+				cmd.rightmove = -1;
+				break;
+			case 2: // A
+				cmd.rightmove = -1;
+				break;
+			case 3: // AS
+				cmd.rightmove = -1;
+				cmd.forwardmove = -1;
+				break;
+			case 4: // S
+				cmd.forwardmove = -1;
+				break;
+			case 5: // SD
+				cmd.forwardmove = -1;
+				cmd.rightmove = 1;
+				break;
+			case 6: // D
+				cmd.rightmove = 1;
+				break;
+			case 7: // DW
+				cmd.rightmove = 1;
+				cmd.forwardmove = 1;
+				break;
+			default:
+				break;
+		}
+	}
+
+	// Big
+	if (jkcvar_cg_drawMovementKeys.integer == 3) 
+	{
+		x = 16;
+		y = 44;
+		scale = 2;
+	} 
+	// Medium
+	else if (jkcvar_cg_drawMovementKeys.integer == 2) 
+	{
+		x = (0.5f * cgs.screenWidth) - 48;
+		y = 215;
+		scale = 1.5;
+	} 
+	// Small
+	else 
+	{
+		x = cgs.screenWidth - 165;
+		y = cg_hudFiles.integer ? 443 : 423;
+		scale = 1;
+	}
+
+	w = 16 * scale;
+	h = 16 * scale;;
+
+	xOffset = 0;
+	yOffset = 0;
+
+	x += xOffset;
+	y += yOffset;
+
+	if (cmd.upmove < 0)
+		CG_DrawPic(w * 2 + x, y, w, h, cgs.jkmodMedia.keyCrouchOn);
+	else
+		CG_DrawPic(w * 2 + x, y, w, h, cgs.jkmodMedia.keyCrouchOff);
+
+	if (cmd.upmove > 0)
+		CG_DrawPic(x, y, w, h, cgs.jkmodMedia.keyJumpOn);
+	else
+		CG_DrawPic(x, y, w, h, cgs.jkmodMedia.keyJumpOff);
+
+	if (cmd.forwardmove < 0)
+		CG_DrawPic(w + x, h + y, w, h, cgs.jkmodMedia.keyBackOn);
+	else
+		CG_DrawPic(w + x, h + y, w, h, cgs.jkmodMedia.keyBackOff);
+
+	if (cmd.forwardmove > 0)
+		CG_DrawPic(w + x, y, w, h, cgs.jkmodMedia.keyForwardOn);
+	else
+		CG_DrawPic(w + x, y, w, h, cgs.jkmodMedia.keyForwardOff);
+
+	if (cmd.rightmove < 0)
+		CG_DrawPic(x, h + y, w, h, cgs.jkmodMedia.keyLeftOn);
+	else
+		CG_DrawPic(x, h + y, w, h, cgs.jkmodMedia.keyLeftOff);
+
+	if (cmd.rightmove > 0)
+		CG_DrawPic(w * 2 + x, h + y, w, h, cgs.jkmodMedia.keyRightOn);
+	else
+		CG_DrawPic(w * 2 + x, h + y, w, h, cgs.jkmodMedia.keyRightOff);
+
+	if (cmd.buttons & BUTTON_ATTACK)
+		CG_DrawPic(w * 3 + x, y, w, h, cgs.jkmodMedia.keyAttackOn);
+	else
+		CG_DrawPic(w * 3 + x, y, w, h, cgs.jkmodMedia.keyAttackOff);
+
+	if (cmd.buttons & BUTTON_ALT_ATTACK)
+		CG_DrawPic(w * 3 + x, h + y, w, h, cgs.jkmodMedia.keyAltOn);
+	else
+		CG_DrawPic(w * 3 + x, h + y, w, h, cgs.jkmodMedia.keyAltOff);
 }

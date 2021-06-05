@@ -175,11 +175,35 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 		else
 		{
-			CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i", score->score),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+			// TriForce: [Scoreboard] Extra info
+			if (jkcvar_cg_scoreboardExtras.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))
+			{
+				CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i/%i", score->score, ci->losses),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+			}
+			else
+			{
+				CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i", score->score),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+			}
 		}
 	}
 
-	CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, va("%i", score->ping),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	// TriForce: [Scoreboard] Extra info
+	if (jkcvar_cg_scoreboardExtras.integer)
+	{
+		char *jkmod_ping;
+		
+		if (score->ping != -1)
+			jkmod_ping = ci->botSkill != 0 ? "Bot" : va("%i", score->ping);
+		else
+			jkmod_ping = "-";
+
+		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, jkmod_ping,0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	}
+	else
+	{
+		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, va("%i", score->ping),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	}
+
 	CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 
 	// add the "ready" marker for intermission exiting
@@ -382,8 +406,8 @@ qboolean CG_DrawOldScoreboard( void ) {
 	// Unfortunately, since it's so sodding late now and post release I can't enable the localisation code (REM'd) since some of 
 	//	the localised strings don't fit - since no-one's ever seen them to notice this.  Smegging brilliant. Thanks people.
 	//
-	CG_Text_Paint ( SB_NAME_X, y, 1.0f, colorWhite, /*CG_GetStripEdString("MENUS3", "NAME")*/"Name",0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
-	if (cgs.gametype == GT_TOURNAMENT)
+	CG_Text_Paint ( SB_NAME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "NAME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
+	if (cgs.gametype == GT_TOURNAMENT || (jkcvar_cg_scoreboardExtras.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))) // Tr!Force: [Scoreboard] Extra info
 	{
 		char sWL[100];
 		trap_SP_GetStringTextString("INGAMETEXT_W_L", sWL,	sizeof(sWL));
@@ -392,10 +416,10 @@ qboolean CG_DrawOldScoreboard( void ) {
 	}
 	else
 	{
-		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, /*CG_GetStripEdString("MENUS3", "SCORE")*/"Score", 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("JKINGAME", "SCORE"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 	}
-	CG_Text_Paint ( SB_PING_X, y, 1.0f, colorWhite, /*CG_GetStripEdString("MENUS0", "PING")*/"Ping", 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
-	CG_Text_Paint ( SB_TIME_X, y, 1.0f, colorWhite, /*CG_GetStripEdString("MENUS3", "TIME")*/"Time", 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+	CG_Text_Paint ( SB_PING_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS0", "PING"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
+	CG_Text_Paint ( SB_TIME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "TIME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 
 	y = SB_TOP;
 

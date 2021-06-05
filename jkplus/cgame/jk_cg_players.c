@@ -10,7 +10,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #include "../../code/ghoul2/g2.h"		// G2 header
 
 // Extern stuff
-qboolean CG_InRollAnim(centity_t *cent);
+extern qboolean CG_InRollAnim(centity_t *cent);
 
 /*
 =====================================================================
@@ -466,4 +466,22 @@ void JKMod_CG_EmoteCamera(void)
 	cg_thirdPersonVertOffset.value = cg_thirdPersonVertOffset.value != cameraVertOffset ? cameraVertOffset : cg.jkmodCG.prevCameraVertOffset;
 
 	cg.jkmodCG.emoteCamera = !cg.jkmodCG.emoteCamera ? qtrue : qfalse;
+}
+
+/*
+=====================================================================
+Check player ground distance
+=====================================================================
+*/
+float JKMod_CG_GroundDistance(void)
+{
+	trace_t tr;
+	vec3_t down;
+
+	VectorCopy(cg.predictedPlayerState.origin, down);
+	down[2] -= 4096;
+	CG_Trace(&tr, cg.predictedPlayerState.origin, NULL, NULL, down, cg.predictedPlayerState.clientNum, MASK_SOLID);
+	VectorSubtract(cg.predictedPlayerState.origin, tr.endpos, down);
+
+	return VectorLength(down) - 24.0f;
 }

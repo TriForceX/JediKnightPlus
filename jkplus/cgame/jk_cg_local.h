@@ -88,6 +88,23 @@ typedef struct
 	fxHandle_t	jetpackActive;
 	fxHandle_t	jetpackIdle;
 
+	qhandle_t	keyCrouchOff;
+	qhandle_t	keyCrouchOn;
+	qhandle_t	keyJumpOff;
+	qhandle_t	keyJumpOn;
+	qhandle_t	keyBackOff;
+	qhandle_t	keyBackOn;
+	qhandle_t	keyForwardOff;
+	qhandle_t	keyForwardOn;
+	qhandle_t	keyLeftOff;
+	qhandle_t	keyLeftOn;
+	qhandle_t	keyRightOff;
+	qhandle_t	keyRightOn;
+	qhandle_t	keyAttackOn;
+	qhandle_t	keyAttackOff;
+	qhandle_t	keyAltOn;
+	qhandle_t	keyAltOff;
+
 } jkmod_media_t;
 
 /*
@@ -116,7 +133,9 @@ extern vmCvar_t						jkcvar_cg_drawInventory;
 extern vmCvar_t						jkcvar_cg_drawRaceTimer;
 extern vmCvar_t						jkcvar_cg_drawBactaModel;
 extern vmCvar_t						jkcvar_cg_drawPlayerNames;
+extern vmCvar_t						jkcvar_cg_drawMovementKeys;
 extern vmCvar_t						jkcvar_cg_scoreboardIcons;
+extern vmCvar_t						jkcvar_cg_scoreboardExtras;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
@@ -156,6 +175,8 @@ void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf,
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);
+qboolean	JKMod_CG_IconHUDActive(void);
+qboolean	JKMod_CG_CenterPrintActive(void);
 void		JKMod_CG_DrawClock(void);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);
@@ -169,6 +190,7 @@ void		JKMod_CG_DrawDimensionString(void);
 void		JKMod_CG_DrawRaceTimer(void);
 void		JKMod_CG_DrawPauseString(void);
 void		JKMod_CG_DrawPlayerLabels(void);
+void		JKMod_CG_DrawMovementKeys(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);
@@ -177,5 +199,6 @@ void		JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels
 void		JKMod_CG_DuelEnd(qboolean winner);
 qboolean	JKMod_CG_EmoteUI(void);
 void		JKMod_CG_EmoteCamera(void);
+float		JKMod_CG_GroundDistance(void);
 
 #endif // __JK_CG_LOCAL_H__

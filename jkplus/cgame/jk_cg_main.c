@@ -34,7 +34,9 @@ vmCvar_t	jkcvar_cg_drawInventory;
 vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
 vmCvar_t	jkcvar_cg_drawPlayerNames;
+vmCvar_t	jkcvar_cg_drawMovementKeys;
 vmCvar_t	jkcvar_cg_scoreboardIcons;
+vmCvar_t	jkcvar_cg_scoreboardExtras;
 vmCvar_t	jkcvar_cg_chatIcon;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
 vmCvar_t	jkcvar_cg_damageBlend;
@@ -69,7 +71,9 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_drawRaceTimer,		"jk_cg_drawRaceTimer",		"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawBactaModel,	"jk_cg_drawBactaModel",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawPlayerNames,	"jk_cg_drawPlayerNames",	"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_drawMovementKeys,	"jk_cg_drawMovementKeys",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_scoreboardIcons,	"jk_cg_scoreboardIcons",	"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_scoreboardExtras,	"jk_cg_scoreboardExtras",	"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_saberTrailSpeed,	"jk_cg_saberTrailSpeed",	"40",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_damageBlend,		"jk_cg_damageBlend",		"0",	CVAR_ARCHIVE },
@@ -181,6 +185,24 @@ void JKMod_CG_RegisterMedia(void)
 
 	cgs.jkmodMedia.jetpackActiveSound	= trap_S_RegisterSound("sound/effects/fire_lp.wav");
 	cgs.jkmodMedia.jetpackIdleSound		= trap_S_RegisterSound("sound/effects/torch_burning_lp.wav");
+
+	cgs.jkmodMedia.keyCrouchOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/crouch_off");
+	cgs.jkmodMedia.keyCrouchOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/crouch_on");
+	cgs.jkmodMedia.keyJumpOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/jump_off");
+	cgs.jkmodMedia.keyJumpOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/jump_on");
+	cgs.jkmodMedia.keyBackOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/back_off");
+	cgs.jkmodMedia.keyBackOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/back_on");
+	cgs.jkmodMedia.keyForwardOff		= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/forward_off");
+	cgs.jkmodMedia.keyForwardOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/forward_on");
+	cgs.jkmodMedia.keyLeftOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/left_off");
+	cgs.jkmodMedia.keyLeftOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/left_on");
+	cgs.jkmodMedia.keyRightOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/right_off");
+	cgs.jkmodMedia.keyRightOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/right_on");
+	cgs.jkmodMedia.keyRightOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/right_on");
+	cgs.jkmodMedia.keyAttackOn			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/attack_on");
+	cgs.jkmodMedia.keyAttackOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/attack_off");
+	cgs.jkmodMedia.keyAltOn				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_on");
+	cgs.jkmodMedia.keyAltOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_off");
 
 	
 	Com_Printf( S_COLOR_CYAN "----------- JKPlus Media Complete -----------\n" );

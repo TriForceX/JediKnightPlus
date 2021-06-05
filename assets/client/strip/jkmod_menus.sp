@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 132
+COUNT 138
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1013,11 +1013,11 @@ INDEX 111
 INDEX 112
 {
    REFERENCE CLIENT_DUELEND
-   TEXT_LANGUAGE1 "Duel end:"
-   TEXT_LANGUAGE2 "Fin de duel:"
-   TEXT_LANGUAGE3 "Duellende:"
-   TEXT_LANGUAGE6 "Duel end:"
-   TEXT_LANGUAGE8 "Fin de duelo:"
+   TEXT_LANGUAGE1 "Private duel end:"
+   TEXT_LANGUAGE2 "Fin du duel privé:"
+   TEXT_LANGUAGE3 "Privates duell ende:"
+   TEXT_LANGUAGE6 "Private duel end:"
+   TEXT_LANGUAGE8 "Fin de duelo privado:"
 }
 INDEX 113
 {
@@ -1189,4 +1189,58 @@ INDEX 131
    TEXT_LANGUAGE3 "Kamera-animation bei der durchführung von speziellen bewegungen."
    TEXT_LANGUAGE6 "Camera animation when performing special movements."
    TEXT_LANGUAGE8 "Animación de cámara al realizar movimientos especiales."
+}
+INDEX 132
+{
+   REFERENCE CLIENT_SCOREEXTRAS
+   TEXT_LANGUAGE1 "Scoreboard extras:"
+   TEXT_LANGUAGE2 "Extras tableau de bord:"
+   TEXT_LANGUAGE3 "Score marker extras:"
+   TEXT_LANGUAGE6 "Scoreboard extras:"
+   TEXT_LANGUAGE8 "Extras tabla puntajes:"
+}
+INDEX 133
+{
+   REFERENCE CLIENT_SCOREEXTRAS_DESC
+   TEXT_LANGUAGE1 "Shows extra information on scoreboard."
+   TEXT_LANGUAGE2 "Affiche les informations supplémentaires sur le tableau de bord."
+   TEXT_LANGUAGE3 "Zeigt zusätzliche informationen auf der anzeigetafel an."
+   TEXT_LANGUAGE6 "Shows extra information on scoreboard."
+   TEXT_LANGUAGE8 "Muestra información extra en la tabla de puntajes."
+}
+INDEX 134
+{
+   REFERENCE CLIENT_MOVEMENTKEYS
+   TEXT_LANGUAGE1 "Draw movement keys:"
+   TEXT_LANGUAGE2 "Voir boutons mouvement:"
+   TEXT_LANGUAGE3 "Siehe bewegungstasten:"
+   TEXT_LANGUAGE6 "Draw movement keys:"
+   TEXT_LANGUAGE8 "Ver teclas movimiento:"
+}
+INDEX 135
+{
+   REFERENCE CLIENT_MOVEMENTKEYS_DESC
+   TEXT_LANGUAGE1 "Shows movement and actions keys pressed."
+   TEXT_LANGUAGE2 "Affiche les touches de mouvement et d'action enfoncées."
+   TEXT_LANGUAGE3 "Zeigt die gedrückten bewegungs-und aktionstasten an."
+   TEXT_LANGUAGE6 "Shows movement and actions keys pressed."
+   TEXT_LANGUAGE8 "Muestra las teclas de movimiento y acciones presionadas."
+}
+INDEX 136
+{
+   REFERENCE SIZE_SMALL
+   TEXT_LANGUAGE1 "Small"
+   TEXT_LANGUAGE2 "Petit"
+   TEXT_LANGUAGE3 "Klein "
+   TEXT_LANGUAGE6 "Small"
+   TEXT_LANGUAGE8 "Pequeño"
+}
+INDEX 137
+{
+   REFERENCE SIZE_BIG
+   TEXT_LANGUAGE1 "Big"
+   TEXT_LANGUAGE2 "Grand"
+   TEXT_LANGUAGE3 "Groß"
+   TEXT_LANGUAGE6 "Big"
+   TEXT_LANGUAGE8 "Grande"
 }
