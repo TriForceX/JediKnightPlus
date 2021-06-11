@@ -15,12 +15,15 @@ Check trigger contact
 */
 qboolean JKMod_InTrigger(vec3_t interpOrigin, gentity_t *trigger)
 {
-	vec3_t	mins, maxs;
-	static const vec3_t	pmins = {-15, -15, DEFAULT_MINS_2};
-	static const vec3_t	pmaxs = {15, 15, DEFAULT_MAXS_2};
+	vec3_t			mins, maxs;
+	static vec3_t	playerMins;
+	static vec3_t	playerMaxs;
 
-	VectorAdd( interpOrigin, pmins, mins );
-	VectorAdd( interpOrigin, pmaxs, maxs );
+	VectorSet(playerMins, -15, -15, DEFAULT_MINS_2);
+	VectorSet(playerMaxs, 15, 15, DEFAULT_MAXS_2);
+
+	VectorAdd(interpOrigin, playerMins, mins);
+	VectorAdd(interpOrigin, playerMaxs, maxs);
 
 	if (trap_EntityContact(mins, maxs, trigger)) return qtrue;
 	
@@ -65,7 +68,6 @@ Race trigger functions
 // Start race timer
 void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator) 
 {
-	int	clientNum = -1;
 	int	lessTime;
 
 	// Check dimension
@@ -89,7 +91,6 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Stop race timer
 void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	clientNum = -1;
 	int	timeSec, timeMin, timeMsec;
 
 	// Check dimension
@@ -122,7 +123,6 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Checkpoint race timer
 void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	clientNum = -1;
 	int	timeSec, timeMin, timeMsec;
 
 	// Check dimension

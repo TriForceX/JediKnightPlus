@@ -99,6 +99,9 @@ field_t fields[] = {
 	{"angle", FOFS(s.angles), F_ANGLEHACK},
 	{"targetShaderName", FOFS(targetShaderName), F_LSTRING},
 	{"targetShaderNewName", FOFS(targetShaderNewName), F_LSTRING},
+	// Tr!Force: [MapFixes] Added missing fields
+	{"mins", FOFS(r.mins), F_VECTOR},
+	{"maxs", FOFS(r.maxs), F_VECTOR},
 
 	{NULL}
 };
@@ -796,13 +799,26 @@ void SP_worldspawn( void )
 
 	trap_SetConfigstring( CS_LEVEL_START_TIME, va("%i", level.startTime ) );
 
-	G_SpawnString( "music", "", &text );
-
-	// Tr!Force: [JKMod] Set default music if empty
-	if (jkcvar_mapDefaultMusic.string[0] && strcmp(jkcvar_mapDefaultMusic.string, "0") != 0 && !text[0])
+	// Tr!Force: [MapFixes] Find SP map default music
+	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse)) 
 	{
-		G_SpawnString( "music", jkcvar_mapDefaultMusic.string, &text );
-		JKMod_Printf(S_COLOR_GREEN "No map music, setting the default one: %s\n", jkcvar_mapDefaultMusic.string);
+		const char *SPmapDefaultMusic = JKMod_GetMapMusic();
+
+		if (!G_SpawnString( "music", *SPmapDefaultMusic != '0' ? SPmapDefaultMusic : "", &text ))
+		{
+			if (*SPmapDefaultMusic && *SPmapDefaultMusic != '0')
+			{
+				G_Printf(S_COLOR_YELLOW "No map music, setting the default: %s\n", SPmapDefaultMusic);
+			}
+		}
+	}
+	// Tr!Force: [JKMod] Set default music if empty
+	else if (!G_SpawnString( "music", *jkcvar_mapDefaultMusic.string != '0' ? jkcvar_mapDefaultMusic.string : "", &text ))
+	{
+		if (*jkcvar_mapDefaultMusic.string && *jkcvar_mapDefaultMusic.string != '0')
+		{
+			G_Printf(S_COLOR_YELLOW "No map music, setting the default: %s\n", jkcvar_mapDefaultMusic.string);
+		}
 	}
 
 	trap_SetConfigstring( CS_MUSIC, text );

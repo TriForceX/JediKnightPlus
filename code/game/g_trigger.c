@@ -117,6 +117,25 @@ void multi_trigger( gentity_t *ent, gentity_t *activator ) {
 	} else {
 		// we can't just remove (self) here, because this is a touch function
 		// called while looping through area links...
+
+		// Tr!Force: [Dimensions] Ugly workaround because dont know why some defrag maps has "wait" "-1" on start timers
+		if (ent->target && (jkcvar_altDimension.integer & DIMENSION_RACE))
+		{
+			gentity_t	*target = NULL;;
+
+			target = G_PickTarget(ent->target);
+
+			if (target && ( // Skip this
+				!Q_stricmp("jkmod_timer_start", target->classname) || 
+				!Q_stricmp("target_startTimer", target->classname) ||
+				!Q_stricmp("df_trigger_start", target->classname) )) 
+			{
+				ent->nextthink = level.time + FRAMETIME;
+				ent->think = multi_wait;
+				return;
+			}
+		}
+
 		ent->touch = 0;
 		ent->nextthink = level.time + FRAMETIME;
 		ent->think = G_FreeEntity;

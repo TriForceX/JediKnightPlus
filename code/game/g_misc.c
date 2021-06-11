@@ -1411,6 +1411,21 @@ void fx_runner_think( gentity_t *ent )
 		// let our target know that we have spawned an effect
 		G_UseTargets( ent, ent );
 	}
+
+	// Tr!Force: [MapFixes] Add fx missing think
+	if (jkcvar_mapFixes.integer)
+	{
+		BG_EvaluateTrajectory( &ent->s.pos, level.time, ent->r.currentOrigin );
+		BG_EvaluateTrajectory( &ent->s.apos, level.time, ent->r.currentAngles );
+
+		VectorCopy(ent->r.currentAngles, ent->s.angles);
+		VectorCopy(ent->r.currentOrigin, ent->s.origin);
+
+		if ( ent->spawnflags & 4 ) // damage
+		{
+			G_RadiusDamage( ent->r.currentOrigin, ent, ent->splashDamage, ent->splashRadius, ent, MOD_UNKNOWN );
+		}
+	}
 }
 
 //----------------------------------------------------------
@@ -1514,11 +1529,26 @@ void SP_fx_runner( gentity_t *ent )
 	G_SpawnInt( "delay", "400", &ent->delay );
 	G_SpawnFloat( "random", "0", &ent->random );
 
-	if (!ent->s.angles[0] && !ent->s.angles[1] && !ent->s.angles[2])
+	// Tr!Force: [MapFixes] Add fx missing fields
+	if (jkcvar_mapFixes.integer)
+	{
+		G_SpawnInt( "splashRadius", "16", &ent->splashRadius );
+		G_SpawnInt( "splashDamage", "5", &ent->splashDamage );
+
+		if (!JKMod_SpawnAngleHack( "angle", "0", ent->s.angles ))
+		{
+			// didn't have angles, so give us the default of up
+			VectorSet( ent->s.angles, -90, 0, 0 );
+		}
+	}
+	else if (!ent->s.angles[0] && !ent->s.angles[1] && !ent->s.angles[2])
 	{
 		// didn't have angles, so give us the default of up
 		VectorSet( ent->s.angles, -90, 0, 0 );
 	}
+
+	// Tr!Force: [MapFixes] Add fx angles field
+	if (jkcvar_mapFixes.integer) G_SetAngles(ent, ent->s.angles);
 
 	// make us useable if we can be targeted
 	if ( ent->targetname )

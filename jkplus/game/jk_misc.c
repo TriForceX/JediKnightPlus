@@ -12,6 +12,51 @@ extern qboolean SaberAttacking(gentity_t *self);
 
 /*
 =====================================================================
+Get current server map
+=====================================================================
+*/
+const char *JKMod_GetCurrentMap(void)
+{
+	vmCvar_t	mapname;
+	static char	*currentmap;
+
+	trap_Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
+	currentmap = mapname.string;
+
+	return currentmap;
+}
+
+/*
+=====================================================================
+Get first music from folder
+=====================================================================
+*/
+const char *JKMod_GetMapMusic(void)
+{
+	int			numFiles;
+	int			filelen;
+	char		filelist[4096];
+	static char	filename[MAX_QPATH];
+	char		*fileptr;
+	// int		i;
+	const char	*currentmap = JKMod_GetCurrentMap();
+	static char	*defaultmusic = jkcvar_mapDefaultMusic.string;
+
+	numFiles = trap_FS_GetFileList(va("music/%s", currentmap), ".mp3", filelist, sizeof(filelist));
+	fileptr = filelist;
+
+	// for (i = 0; i < numFiles; i++, fileptr += filelen+1)
+	// {
+		filelen = strlen(fileptr);
+		Q_strncpyz(filename, va("music/%s/", currentmap), sizeof(filename));
+		Q_strcat(filename, sizeof(filename), fileptr);
+	// }
+		
+	return VALIDSTRING(fileptr) ? filename : defaultmusic;
+}
+
+/*
+=====================================================================
 Custom force power valid check
 =====================================================================
 */
@@ -435,11 +480,71 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 
 /*
 =====================================================================
+Check if is single player map
+=====================================================================
+*/
+qboolean JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special)
+{
+	// Requires serverside or bsp modification
+	if (normal && (
+		Q_stricmp(mapname, "artus_topside") == 0 ||
+		Q_stricmp(mapname, "cairn_assembly") == 0 ||
+		Q_stricmp(mapname, "cairn_reactor") == 0 ||
+		Q_stricmp(mapname, "doom_shields") == 0 ||
+		Q_stricmp(mapname, "bespin_streets") == 0 ||
+		Q_stricmp(mapname, "bespin_platform") == 0 ||
+		Q_stricmp(mapname, "yavin_temple") == 0 ||
+		Q_stricmp(mapname, "yavin_swamp") == 0 ||
+		Q_stricmp(mapname, "yavin_trial") == 0 ||
+		Q_stricmp(mapname, "yavin_canyon") == 0 ||
+		Q_stricmp(mapname, "yavin_courtyard") == 0 ||
+		Q_stricmp(mapname, "yavin_final") == 0 ||
+		Q_stricmp(mapname, "valley") == 0 ||
+		Q_stricmp(mapname, "pit") == 0))
+	{
+		return qtrue;
+	}
+	// Requires engine and bsp modification
+	else if (special && (
+		Q_stricmp(mapname, "kejim_base") == 0 ||
+		Q_stricmp(mapname, "kejim_post") == 0 ||
+		Q_stricmp(mapname, "artus_detention") == 0 ||
+		Q_stricmp(mapname, "artus_mine") == 0 ||
+		Q_stricmp(mapname, "bespin_undercity") == 0 ||
+		Q_stricmp(mapname, "cairn_bay") == 0 ||
+		Q_stricmp(mapname, "cairn_dock1") == 0 ||
+		Q_stricmp(mapname, "doom_comm") == 0 ||
+		Q_stricmp(mapname, "doom_detention") == 0 ||
+		Q_stricmp(mapname, "ns_hideout") == 0 ||
+		Q_stricmp(mapname, "ns_starpad") == 0 ||
+		Q_stricmp(mapname, "ns_streets") == 0))
+	{
+		return qtrue;
+	}
+	else
+	{
+		return qfalse;
+	}
+}
+
+/*
+=====================================================================
 Misc map entities resources
 =====================================================================
 */
 
-#define JK_STATION_RECHARGE_TIME	3000
+#define STATION_RECHARGE_TIME			3000
+#define STATION_SHIELD_TYPE				1
+#define STATION_HEALTH_TYPE				2
+#define STATION_AMMO_TYPE				3
+#define DEBRIS_SPECIALCASE_ROCK			-1
+#define DEBRIS_SPECIALCASE_CHUNKS		-2
+#define DEBRIS_SPECIALCASE_WOOD			-3
+#define DEBRIS_SPECIALCASE_GLASS		-4
+extern int gExplSound;
+extern void BreakableBrushDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod);
+extern void BreakableBrushPain(gentity_t *self, gentity_t *attacker, int damage);
+extern void BreakableBrushUse(gentity_t *self, gentity_t *other, gentity_t *activator);
 
 // Effects usage
 extern void SP_fx_runner(gentity_t *ent);
@@ -458,24 +563,6 @@ void JKMod_EnergyStationCheck(gentity_t *ent)
 	ent->nextthink = level.time + ent->bolt_Head;
 }
 
-// Energy station settings function
-void JKMod_EnergyStationSettings(gentity_t *ent, int count, qboolean chargeRate)
-{
-	G_SpawnInt("count", "0", &ent->count);
-
-	if (!ent->count) {
-		ent->count = count;
-	}
-
-	if (chargeRate)  {
-		G_SpawnInt("chargerate", "0", &ent->bolt_Head);
-
-		if (!ent->bolt_Head) {
-			ent->bolt_Head = JK_STATION_RECHARGE_TIME;
-		}
-	}
-}
-
 // Energy station use function
 void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
@@ -486,18 +573,15 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	qboolean typeHealth;
 	qboolean typeShield;
 
-	typeAmmo = (self->classname == "jkmod_ammo_power_converter");
-	typeHealth = (self->classname == "jkmod_health_power_converter");
-	typeShield = (self->classname == "jkmod_shield_power_converter");
+	if (!activator || !activator->client) return;
 
+	// Set type
+	typeAmmo = self->watertype == STATION_AMMO_TYPE;
+	typeHealth =  self->watertype == STATION_HEALTH_TYPE;
+	typeShield = self->watertype == STATION_SHIELD_TYPE;
+	
+	// Set amount
 	give = typeHealth ? 5 : 2;
-
-	if (!activator || !activator->client)
-	{
-		return;
-	}
-
-	// Set ammo
 	currentAmmo = weaponData[activator->client->ps.weapon].ammoIndex;
 
 	if (self->setTime < level.time)
@@ -610,122 +694,270 @@ Misc map entities functions
 =====================================================================
 */
 
-// Shield power converter function
-void JKMod_SP_ShieldPowerConverter(gentity_t *ent)
+// Misc power converter
+void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 {
+	vec3_t		angles;
+	gentity_t	*effect;
+	char		*fxFile;
+	char		*mins, *maxs;
+	int			count;
+	qboolean	chargeRate;
+
+	G_SpawnInt("type", "1", &ent->watertype);
+	G_SpawnInt("count", "0", &ent->count);
+	G_SpawnString("model", "", &ent->model);
+
+	if (ent->watertype != STATION_SHIELD_TYPE && ent->watertype != STATION_HEALTH_TYPE && ent->watertype != STATION_AMMO_TYPE)
+	{
+		G_Printf(S_COLOR_RED "ERROR: jkmod_misc_power_converter doesn't have a valid type (%i)\n", ent->watertype);
+		G_FreeEntity(ent);
+		return;
+	}
+
+	if (!ent->model || !ent->model[0])
+	{
+		if (ent->watertype == STATION_SHIELD_TYPE) ent->model = "models/items/a_shield_converter.md3";
+		if (ent->watertype == STATION_HEALTH_TYPE) ent->model = "models/map_objects/imp_mine/tank.md3";
+		if (ent->watertype == STATION_AMMO_TYPE) ent->model = "models/items/a_pwr_converter.md3";
+	}
+
+	ent->s.modelindex = G_ModelIndex(ent->model);
+	ent->s.modelindex2 = G_ModelIndex(ent->model);
+
+	mins = ent->watertype == STATION_HEALTH_TYPE ? "-8, -8, -50" : "-16 -16 -40";
+	maxs = ent->watertype == STATION_HEALTH_TYPE ? "8, 8, 50" : "16 16 40";
+
+	G_SpawnVector("mins", mins, ent->r.mins);
+	G_SpawnVector("maxs", maxs, ent->r.maxs);
+
+	if (!Q_stricmp(ent->model,".glm"))
+	{	
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
+	}
+
 	if (!ent->health)
 	{
 		ent->health = 999;
 	}
 
-	VectorSet(ent->r.mins, -16, -16, -40);
-	VectorSet(ent->r.maxs, 16, 16, 40);
-
-	ent->s.modelindex = G_ModelIndex("models/items/a_shield_converter.md3");
-
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
-	ent->classname = "jkmod_shield_power_converter";
-
-	JKMod_EnergyStationSettings(ent, 50, qtrue);
-
-	ent->boltpoint4 = ent->count; //initial value
-	ent->think = JKMod_EnergyStationCheck;
-	ent->nextthink = level.time + JK_STATION_RECHARGE_TIME;
-
+	ent->classname = "jkmod_misc_power_converter";
 	ent->use = JKMod_EnergyStationUse;
+
+	count = ent->watertype == STATION_SHIELD_TYPE ? 50 : 100;
+	chargeRate = ent->watertype == STATION_SHIELD_TYPE ? qtrue : qfalse;
+
+	if (!ent->count) ent->count = count;
+
+	if (chargeRate) 
+	{
+		G_SpawnInt("chargerate", "0", &ent->bolt_Head);
+		if (!ent->bolt_Head) ent->bolt_Head = STATION_RECHARGE_TIME;
+	}
+
+	ent->boltpoint4 = ent->count; // initial value
+	ent->think = JKMod_EnergyStationCheck;
+	ent->nextthink = level.time + STATION_RECHARGE_TIME;
 
 	G_SetOrigin(ent, ent->s.origin);
 	VectorCopy(ent->s.angles, ent->s.apos.trBase);
 	trap_LinkEntity(ent);
+	
+	// Precache
+	G_SoundIndex("sound/interface/ammocon_run.wav");
+	G_SoundIndex("sound/interface/shieldcon_run.wav");
+	G_SoundIndex("sound/interface/shieldcon_done.mp3");
 
-	G_SoundIndex("sound/movers/objects/useshieldstation.wav");
+	if (G_SpawnString("fxFile", "", &fxFile))
+	{
+		if (fxFile && fxFile[0])
+		{
+			effect = JKMod_G_Spawn(ent->s.number);
 
-	ent->s.modelindex2 = G_ModelIndex("/models/items/psd_big.md3");	// Precache model
+			effect->s.origin[0] = (int)ent->s.origin[0];
+			effect->s.origin[1] = (int)ent->s.origin[1];
+			effect->s.origin[2] = (int)ent->s.origin[2] + ent->r.maxs[2];
+			SP_fx_runner(effect);
+
+			VectorCopy(ent->s.angles, angles);
+			G_SetAngles(effect, angles);
+		}
+	}
 }
 
-// Health power converter function
-void JKMod_SP_HealthPowerConverter(gentity_t *ent)
+// Misc model
+void JKMod_SP_MiscModel(gentity_t *ent)
 {
-	vec3_t angles;
-	gentity_t *effect = JKMod_G_Spawn(ent->s.number);
-	int smoke;
+	G_SpawnString( "model", "", &ent->model );
 
-	if (!ent->health)
-	{
-		ent->health = 999;
+	ent->s.eType = ET_GENERAL;
+	ent->s.modelindex = G_ModelIndex(ent->model);
+	ent->s.modelindex2 = G_ModelIndex(ent->model);
+
+	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
+	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
+
+	if (!Q_stricmp(ent->model,".glm"))
+	{	
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
 	}
 
-	VectorSet(ent->r.mins, -8, -8, -50);
-	VectorSet(ent->r.maxs, 8, 8, 50);
-
-	ent->s.modelindex = G_ModelIndex("models/map_objects/imp_mine/tank.md3");
-
-	ent->s.eFlags = 0;
-	ent->r.svFlags |= SVF_PLAYER_USABLE;
-	ent->r.contents = CONTENTS_SOLID;
-	ent->clipmask = MASK_SOLID;
-	ent->classname = "jkmod_health_power_converter";
-	ent->use = JKMod_EnergyStationUse;
-
-	JKMod_EnergyStationSettings(ent, 100, qfalse);
-
-	ent->boltpoint4 = ent->count; //initial value
-	ent->think = JKMod_EnergyStationCheck;
-	ent->nextthink = level.time + JK_STATION_RECHARGE_TIME;
+    ent->r.contents = CONTENTS_SOLID;
+    ent->clipmask = MASK_SOLID;
 
 	G_SetOrigin(ent, ent->s.origin);
 	VectorCopy(ent->s.angles, ent->s.apos.trBase);
-	trap_LinkEntity(ent);
 
-	G_SoundIndex("sound/movers/objects/useshieldstation.wav");
-	G_SpawnInt( "smoke", "0", &smoke );
-
-	if (smoke)
-	{
-		JKMod_AddSpawnField("fxFile", "smoke");
-
-		effect->s.origin[2] = (int)ent->s.origin[2] + 45;
-		effect->s.origin[1] = (int)ent->s.origin[1];
-		effect->s.origin[0] = (int)ent->s.origin[0];
-		SP_fx_runner(effect);
-
-		VectorCopy(ent->s.angles, angles);
-		G_SetAngles(effect, angles);
-	}
+	trap_LinkEntity( ent );
 }
 
-// Ammo power converter function
-void JKMod_SP_AmmoPowerConverter(gentity_t *ent)
+// Misc model breakable
+void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 {
-	if (!ent->health)
+	char *model, *sound, *debrissound;
+	
+	ent->s.modelindex = G_ModelIndex(ent->model);
+	ent->s.modelindex2 = G_ModelIndex(ent->model);
+
+	if (ent->spawnflags & 1)
 	{
-		ent->health = 999;
+		ent->r.contents = CONTENTS_SOLID|CONTENTS_OPAQUE|CONTENTS_BODY|CONTENTS_MONSTERCLIP|CONTENTS_BOTCLIP;
+	}
+	else if (ent->health)
+	{
+		ent->r.contents = CONTENTS_SHOTCLIP;
+	}
+		
+	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
+	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
+
+	if (!Q_stricmp(ent->model,".glm"))
+	{	
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
 	}
 
-	VectorSet(ent->r.mins, -16, -16, -40);
-	VectorSet(ent->r.maxs, 16, 16, 40);
+	G_SetOrigin(ent, ent->s.origin);
+	G_SetAngles(ent, ent->s.angles);
 
-	ent->s.modelindex = G_ModelIndex("models/items/a_pwr_converter.md3");
+	if (ent->health)
+	{
+		ent->takedamage = qtrue;
+		ent->pain = BreakableBrushPain;
+		ent->die = BreakableBrushDie;
+	}
 
-	ent->s.eFlags = 0;
-	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	if (ent->spawnflags & 128)
+	{
+		ent->r.svFlags |= SVF_PLAYER_USABLE;
+	}
+	
+	ent->use = BreakableBrushUse;
+	ent->s.teamowner = 0;
+
+	G_SpawnString("debrismodel", "rock", &model);
+	G_SpawnString("debrissound", "", &debrissound);
+	G_SpawnString("breaksound", "sound/movers/objects/objectBreak.wav", &sound);
+
+	ent->boltpoint3 = G_SoundIndex(sound);
+
+	gExplSound = G_SoundIndex("sound/weapons/explosions/cargoexplode.wav");
+
+	if (debrissound && debrissound[0])
+	{
+		ent->boltpoint1 = G_SoundIndex(debrissound);
+	}
+	else
+	{
+		ent->boltpoint1 = 0;
+	}
+
+	ent->boltpoint4 = 1;
+
+	if (strcmp(model, "rock") == 0)
+	{
+		G_ModelIndex("models/chunks/rock/rock1_1.md3");
+		G_ModelIndex("models/chunks/rock/rock1_2.md3");
+		G_ModelIndex("models/chunks/rock/rock1_3.md3");
+		G_ModelIndex("models/chunks/rock/rock1_4.md3");
+
+		ent->boltpoint2 = DEBRIS_SPECIALCASE_ROCK;
+	}
+	else if (strcmp(model, "chunks") == 0)
+	{
+		G_ModelIndex("models/chunks/generic/chunks_1.md3");
+		G_ModelIndex("models/chunks/generic/chunks_2.md3");
+
+		ent->boltpoint2 = DEBRIS_SPECIALCASE_CHUNKS;
+	}
+	else if (strcmp(model, "wood") == 0)
+	{
+		G_ModelIndex("models/chunks/crate/crate1_1.md3");
+		G_ModelIndex("models/chunks/crate/crate1_2.md3");
+		G_ModelIndex("models/chunks/crate/crate1_3.md3");
+		G_ModelIndex("models/chunks/crate/crate1_4.md3");
+		G_ModelIndex("models/chunks/crate/crate2_1.md3");
+		G_ModelIndex("models/chunks/crate/crate2_2.md3");
+		G_ModelIndex("models/chunks/crate/crate2_3.md3");
+		G_ModelIndex("models/chunks/crate/crate2_4.md3");
+
+		ent->boltpoint2 = DEBRIS_SPECIALCASE_WOOD;
+	}
+	else if (strcmp(model, "glass") == 0)
+	{
+		G_ModelIndex("models/chunks/metal/metal1_1.md3");
+		G_ModelIndex("models/chunks/metal/metal1_2.md3");
+		G_ModelIndex("models/chunks/metal/metal1_3.md3");
+		G_ModelIndex("models/chunks/metal/metal1_4.md3");
+		G_ModelIndex("models/chunks/metal/metal2_1.md3");
+		G_ModelIndex("models/chunks/metal/metal2_2.md3");
+		G_ModelIndex("models/chunks/metal/metal2_3.md3");
+		G_ModelIndex("models/chunks/metal/metal2_4.md3");
+
+		ent->boltpoint2 = DEBRIS_SPECIALCASE_GLASS;
+	}
+	else if (strcmp(model, "none") == 0)
+	{
+		ent->boltpoint2 = 0;
+	}
+	else
+	{
+		ent->boltpoint2 = G_ModelIndex(model);
+	}
+
+	trap_LinkEntity(ent);
+}
+
+// Misc ion cannon
+void JKMod_SP_MiscIonCannon(gentity_t *ent)
+{
+	char *model;
+
+	model = "models/map_objects/imp_mine/ion_cannon.glm";
+
+	ent->s.eType = ET_GENERAL;
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
-	ent->classname = "jkmod_ammo_power_converter";
-	ent->use = JKMod_EnergyStationUse;
-
-	JKMod_EnergyStationSettings(ent, 100, qfalse);
-
-	ent->boltpoint4 = ent->count; //initial value
-	ent->think = JKMod_EnergyStationCheck;
-	ent->nextthink = level.time + JK_STATION_RECHARGE_TIME;
+	ent->bolt_Head = 0;
+	ent->s.modelindex = G_ModelIndex(model);
+	ent->s.modelGhoul2 = 1;
+	ent->s.g2radius = 110;
 
 	G_SetOrigin(ent, ent->s.origin);
-	VectorCopy(ent->s.angles, ent->s.apos.trBase);
-	trap_LinkEntity(ent);
 
-	G_SoundIndex("sound/movers/objects/useshieldstation.wav");
+	VectorCopy(ent->s.angles, ent->pos1 );
+	VectorCopy(ent->s.angles, ent->r.currentAngles);
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
+
+	VectorSet(ent->r.mins, -141.0f, -148.0f, 0.0f);
+	VectorSet(ent->r.maxs,  142.0f, 135.0f, 245.0f);
+
+	ent->s.pos.trType = TR_STATIONARY;
+	trap_LinkEntity(ent);
 }

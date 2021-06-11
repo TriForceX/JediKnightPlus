@@ -208,9 +208,6 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 	char		rotation[MAX_TOKEN_CHARS];
 	int			realrotation;
 	vec3_t		realorigin;
-	vmCvar_t	currentmap;
-
-	trap_Cvar_Register(&currentmap, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
 
 	for (i = 0; i < level.jkmodLevel.TeleportChatsCount; i++)
 	{
@@ -223,7 +220,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 
 		if (Q_stricmp(text, command) == 0)
 		{
-			if (Q_stricmp(map, currentmap.string) == 0)
+			if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
 			{
 				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 				{

@@ -8,6 +8,12 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+// Undo re-routing for calls made from here
+#undef trap_SetBrushModel
+
+// Re-declare trace function
+void trap_SetBrushModel(gentity_t *ent, const char *name);
+
 // Extern stuff
 extern char *G_AddSpawnVarToken(const char *string);
 extern int G_ItemDisabled(gitem_t *item);
@@ -28,24 +34,29 @@ typedef struct {
 extern spawn_t spawns[];
 
 // Spawn functions list
+void JKMod_SP_MiscModel(gentity_t *ent);
+void JKMod_SP_MiscPowerConverter(gentity_t *ent);
+
 void JKMod_SP_TimerStart(gentity_t *self);
 void JKMod_SP_TimerStop(gentity_t *self);
 void JKMod_SP_TimerCheckpoint(gentity_t *self);
 
-void JKMod_SP_ShieldPowerConverter(gentity_t *self);
-void JKMod_SP_HealthPowerConverter(gentity_t *self);
-void JKMod_SP_AmmoPowerConverter(gentity_t *self);
+void JKMod_SP_MiscModelBreakable(gentity_t *ent);
+void JKMod_SP_MiscIonCannon(gentity_t *ent);
 
 spawn_t	jkmod_spawns[] = {
 
 	// Custom spawn fields
+	{"jkmod_misc_model",				JKMod_SP_MiscModel},
+	{"jkmod_misc_power_converter",		JKMod_SP_MiscPowerConverter},
+
 	{"jkmod_timer_start",				JKMod_SP_TimerStart},
 	{"jkmod_timer_stop",				JKMod_SP_TimerStop},
 	{"jkmod_timer_checkpoint",			JKMod_SP_TimerCheckpoint},
 
-	{"jkmod_shield_power_converter",	JKMod_SP_ShieldPowerConverter},
-	{"jkmod_health_power_converter",	JKMod_SP_HealthPowerConverter},
-	{"jkmod_ammo_power_converter",		JKMod_SP_AmmoPowerConverter},
+	// Single player fields
+	{"misc_model_breakable",			JKMod_SP_MiscModelBreakable},
+	{"misc_ion_cannon",					JKMod_SP_MiscIonCannon},
 	
 	// Support for regular JK2 & JKA race maps
 	{"target_startTimer",				JKMod_SP_TimerStart},
@@ -98,7 +109,12 @@ qboolean JKMod_G_CallSpawn(gentity_t *ent)
 		}
 	}
 
-	G_Printf("%s doesn't have a spawn function\n", ent->classname);
+	// Print only in developer mode
+	if (jkcvar_mapFixes.integer) {
+		JKMod_Printf("%s doesn't have a spawn function\n", ent->classname);
+	} else {
+		G_Printf("%s doesn't have a spawn function\n", ent->classname);
+	}
 	return qfalse;
 }
 
@@ -245,4 +261,88 @@ void JKMod_CheckValidMapItems(void)
 			if (killMe) G_FreeEntity(check);
 		}
 	}
+}
+
+/*
+=====================================================================
+Custom set brush model function
+=====================================================================
+*/
+void JKMod_SetBrushModel(gentity_t *ent, const char *name)
+{
+	if (jkcvar_mapFixes.integer)
+	{
+		char		iBuf[64];
+		int			i;
+
+		if (!name) return;
+
+		if (strlen(name) < 2) return;
+
+		if (name[0] != '*') return;
+
+		if (MAX_BRUSH_MODELS != 0)
+		{
+			iBuf[0] = '0';
+
+			for (i = 1; i < 20; i += 1)
+			{
+				iBuf[i] = name[i];
+			}
+
+			if (atoi(iBuf) == 0)
+			{
+				G_FreeEntity(ent);
+				JKMod_Printf(S_COLOR_YELLOW "Entitity freed (zero)\n");
+				return;
+			}
+
+			if (atoi(iBuf) > 127)
+			{
+				if (JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+				{
+					G_FreeEntity(ent);
+					JKMod_Printf(S_COLOR_MAGENTA "Entitity freed (%i > %i)\n", atoi(iBuf), 127);
+					return;
+				}
+			}
+
+			if (atoi(iBuf) >= MAX_BRUSH_MODELS)
+			{
+				G_FreeEntity(ent);
+				JKMod_Printf(S_COLOR_YELLOW "Entitity freed (%i > %i)\n", atoi(iBuf), MAX_BRUSH_MODELS);
+				return;
+			}
+		}
+
+		if (Q_stricmp(name, "") == 0)
+		{
+			G_FreeEntity(ent);
+			JKMod_Printf(S_COLOR_YELLOW "Entitity freed (empty)\n");
+			return;
+		}
+	}
+
+	trap_SetBrushModel(ent, name);
+}
+
+/*
+=====================================================================
+Get custom "angle" field from fx_runner
+=====================================================================
+*/
+qboolean JKMod_SpawnAngleHack(const char *key, const char *defaultString, float *out)
+{
+	char		*s;
+	qboolean	present;
+	float		temp = 0;
+
+	present = G_SpawnString( key, defaultString, &s );
+	sscanf( s, "%f", &temp );
+
+	out[0] = 0;
+	out[1] = temp;
+	out[2] = 0;
+
+	return present;
 }

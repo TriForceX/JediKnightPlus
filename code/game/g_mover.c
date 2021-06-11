@@ -594,9 +594,27 @@ void Use_BinaryMover( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
 	// if all the way up, just delay before coming down
 	if ( ent->moverState == MOVER_POS2 && other && other->client ) {
-		//rww - don't delay if we're not being used by a player
-		ent->nextthink = level.time + ent->wait;
-		return;
+		// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
+		if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+		{
+			if (ent->boltpoint1 == 0)
+			{
+				//rww - don't delay if we're not being used by a player
+				ent->nextthink = level.time + ent->wait;
+				return;
+			}
+			else
+			{
+				ent->think = ReturnToPos1;
+				ent->nextthink = level.time + 50;
+			}
+		}
+		else
+		{
+			//rww - don't delay if we're not being used by a player
+			ent->nextthink = level.time + ent->wait;
+			return;
+		}
 	}
 
 	// only partway down before reversing
@@ -656,9 +674,22 @@ void InitMover( gentity_t *ent ) {
 		ent->s.modelindex2 = G_ModelIndex( ent->model2 );
 	}
 
-	// if the "loopsound" key is set, use a constant looping sound when moving
-	if ( G_SpawnString( "noise", "100", &sound ) ) {
-		ent->s.loopSound = G_SoundIndex( sound );
+	// Tr!Force: [MapFixes] Don't use constant looping sound on SP maps
+	if (jkcvar_mapFixes.integer)
+	{
+		if (!(level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse)))
+		{
+			if (G_SpawnString("noise", "100", &sound)) {
+				ent->s.loopSound = G_SoundIndex(sound);
+			}
+		}
+	}
+	else
+	{
+		// if the "loopsound" key is set, use a constant looping sound when moving
+		if (G_SpawnString("noise", "100", &sound)) {
+			ent->s.loopSound = G_SoundIndex(sound);
+		}
 	}
 
 	// if the "color" or "light" keys are set, setup constantLight
@@ -867,6 +898,15 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent ) {
 
 	// create a trigger with this size
 	other = JKMod_G_Spawn ( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
+	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse)) 
+	{
+		VectorCopy(mins, other->s.origin);
+		G_SetOrigin(other, other->s.origin);
+		VectorSet(maxs, maxs[0]-mins[0], maxs[1]-mins[1], maxs[2]-mins[2]);
+		VectorSet(mins, 0, 0, 0);
+		other->target = ent->targetname;
+	}
 	other->classname = "door_trigger";
 	VectorCopy (mins, other->r.mins);
 	VectorCopy (maxs, other->r.maxs);
@@ -881,7 +921,34 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent ) {
 }
 
 void Think_MatchTeam( gentity_t *ent ) {
-	MatchTeam( ent, ent->moverState, level.time );
+	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
+	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+	{
+		int	i;
+		int	success = 0; 
+
+		for (i = MAX_CLIENTS; i < MAX_TOKEN_CHARS; i++ )
+		{
+			gentity_t	*other = &g_entities[i];
+
+			if (!other || !other->inuse) continue;
+			
+			if (Q_stricmp(other->target, ent->targetname) == 0) {
+				success = 1;
+				break;
+			}
+		}
+
+		if (success == 0 && ent->health == 0) {
+			Think_SpawnNewDoorTrigger(ent);
+		} else {
+			MatchTeam( ent, ent->moverState, level.time );
+		}
+	}
+	else
+	{
+		MatchTeam( ent, ent->moverState, level.time );
+	}
 }
 
 
@@ -969,6 +1036,12 @@ void SP_func_door (gentity_t *ent) {
 		VectorCopy( ent->pos2, temp );
 		VectorCopy( ent->s.origin, ent->pos2 );
 		VectorCopy( temp, ent->pos1 );
+	}
+
+	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
+	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+	{
+		 if (ent->spawnflags & 64) ent->boltpoint1 = 1;
 	}
 
 	InitMover( ent );
@@ -1497,6 +1570,8 @@ void SP_func_static( gentity_t *ent ) {
 	InitMover( ent );
 	VectorCopy( ent->s.origin, ent->s.pos.trBase );
 	VectorCopy( ent->s.origin, ent->r.currentOrigin );
+	// Tr!Force: [MapFixes] Spawn func static
+	if (jkcvar_mapFixes.integer) trap_LinkEntity(ent);
 }
 
 
@@ -2129,6 +2204,15 @@ void SP_func_usable( gentity_t *self )
 	InitMover( self );
 	VectorCopy( self->s.origin, self->s.pos.trBase );
 	VectorCopy( self->s.origin, self->r.currentOrigin );
+
+	// Tr!Force: [MapFixes] Set proper spawnflags for func_usable on SP maps
+	if (jkcvar_mapFixes.integer)
+	{
+		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+		{
+			self->spawnflags |= 8;
+		}
+	}
 
 	self->count = 1;
 	if (self->spawnflags & 1)

@@ -24,6 +24,7 @@ Global definitions
 #define MAX_FILE_CHARS				1024
 #define MAX_FILE_LENGTH				131072
 #define MAX_LINES					64
+#define MAX_BRUSH_MODELS			150
 
 #define	ITEM_RESPAWN_ARMOR			20
 #define	ITEM_RESPAWN_HEALTH			30
@@ -31,6 +32,7 @@ Global definitions
 #define	ITEM_RESPAWN_HOLDABLE		60
 
 #define DEFAULT						Q3_INFINITE // Workaround
+#define VALIDSTRING(a)				((a != NULL) && (a[0] != '\0'))
 
 /*
 =====================================================================
@@ -168,6 +170,7 @@ Re-routed functions
 #define Cmd_Say_f					JKMod_Say
 #define G_CallSpawn 				JKMod_G_CallSpawn
 #define trap_Trace					JKMod_DimensionTrace
+#define trap_SetBrushModel			JKMod_SetBrushModel
 
 /*
 =====================================================================
@@ -197,7 +200,7 @@ extern	vmCvar_t					jkcvar_teleportChat;
 extern	vmCvar_t					jkcvar_teleportChatTime;
 extern	vmCvar_t					jkcvar_teleportFrag;
 
-extern	vmCvar_t					jkcvar_voteCustomMap;
+extern	vmCvar_t					jkcvar_voteAnyMap;
 extern	vmCvar_t					jkcvar_voteControl;
 extern	vmCvar_t					jkcvar_voteResults;
 extern	vmCvar_t					jkcvar_voteWaitTime;
@@ -327,11 +330,14 @@ void		JKMod_serverIdleCheck(void);
 void		JKMod_gameTypeConfig(void);
 
 // jk_misc.c
+const char	*JKMod_GetCurrentMap(void);
+const char	*JKMod_GetMapMusic(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_PlayerMovementCheck(gentity_t *ent);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
+qboolean	JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special);
 
 // jk_utils.c
 qboolean	JKMod_OthersInBox(gentity_t *ent);
@@ -356,6 +362,8 @@ void		JKMod_WriteSessionData(gclient_t *client);
 qboolean	JKMod_G_CallSpawn(gentity_t *ent);
 void		JKMod_AddSpawnField(char *field, char *value);
 void		JKMod_CheckValidMapItems(void);
+void		JKMod_SetBrushModel(gentity_t *ent, const char *name);
+qboolean	JKMod_SpawnAngleHack(const char *key, const char *defaultString, float *out);
 
 // jk_svcmds.c
 void		JKMod_gamePlay(char *gameplay);
