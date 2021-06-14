@@ -530,7 +530,7 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 	if (bi->actionflags & ACTION_RESPAWN) ucmd->buttons = BUTTON_ATTACK;
 	if (bi->actionflags & ACTION_ATTACK) ucmd->buttons |= BUTTON_ATTACK;
 	if (bi->actionflags & ACTION_ALT_ATTACK) ucmd->buttons |= BUTTON_ALT_ATTACK;
-//	if (bi->actionflags & ACTION_TALK) ucmd->buttons |= BUTTON_TALK;
+	if (bi->actionflags & ACTION_TALK && jkcvar_botsAI.integer) ucmd->buttons |= BUTTON_TALK; // Tr!Force: [Bot] Custom AI
 	if (bi->actionflags & ACTION_GESTURE) ucmd->buttons |= BUTTON_GESTURE;
 	if (bi->actionflags & ACTION_USE) ucmd->buttons |= BUTTON_USE_HOLDABLE;
 	if (bi->actionflags & ACTION_WALK) ucmd->buttons |= BUTTON_WALKING;
@@ -728,7 +728,12 @@ int BotAI(int client, float thinktime) {
 #ifdef _DEBUG
 	start = trap_Milliseconds();
 #endif
-	StandardBotAI(bs, thinktime);
+	// Tr!Force: [Bot] Custom AI
+	if (jkcvar_botsAI.integer) {
+		JKMod_CustomBotAI(bs, thinktime);
+	} else {
+		StandardBotAI(bs, thinktime);
+	}
 #ifdef _DEBUG
 	end = trap_Milliseconds();
 
@@ -7042,7 +7047,7 @@ BotAISetup
 int BotAISetup( int restart ) {
 	//rww - new bot cvars..
 	trap_Cvar_Register(&bot_forcepowers, "bot_forcepowers", "1", CVAR_CHEAT);
-	trap_Cvar_Register(&bot_forgimmick, "bot_forgimmick", "0", CVAR_CHEAT);
+	trap_Cvar_Register(&bot_forgimmick, "bot_forgimmick", "0", 0); // Tr!Force [Bot] Allow static bots
 	trap_Cvar_Register(&bot_honorableduelacceptance, "bot_honorableduelacceptance", "0", 0); // Tr!Force [Bot] Allow bot duel challenges
 #ifdef _DEBUG
 	trap_Cvar_Register(&bot_nogoals, "bot_nogoals", "0", CVAR_CHEAT);

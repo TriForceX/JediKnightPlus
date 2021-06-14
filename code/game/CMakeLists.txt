@@ -65,6 +65,7 @@ set(MVGAMESOURCES
 	"${JKModDir}/game/jk_active.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_arenas.c"
 	"${SRCDir}/game/g_bot.c"
+	"${JKModDir}/game/jk_bot.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_client.c"
 	"${JKModDir}/game/jk_client.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/game/g_cmds.c"

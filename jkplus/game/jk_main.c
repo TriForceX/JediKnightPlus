@@ -94,6 +94,7 @@ vmCvar_t	jkcvar_mapCycleFromFile;
 
 vmCvar_t	jkcvar_jetPack;
 vmCvar_t	jkcvar_playerMovement;
+vmCvar_t	jkcvar_botsAI;
 
 static cvarTable_t	JKModCvarTable[] = 
 {
@@ -156,6 +157,7 @@ static cvarTable_t	JKModCvarTable[] =
 
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_test1,				"jk_test1",					"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,				"jk_test2",					"0",					CVAR_ARCHIVE,						0, qtrue },

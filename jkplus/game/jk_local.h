@@ -240,6 +240,7 @@ extern	vmCvar_t					jkcvar_mapCycleFromFile;
 
 extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_playerMovement;
+extern	vmCvar_t					jkcvar_botsAI;
 
 /*
 =====================================================================
