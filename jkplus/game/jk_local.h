@@ -205,6 +205,7 @@ extern	vmCvar_t					jkcvar_voteControl;
 extern	vmCvar_t					jkcvar_voteResults;
 extern	vmCvar_t					jkcvar_voteWaitTime;
 extern	vmCvar_t					jkcvar_voteMinPlayers;
+extern	vmCvar_t					jkcvar_voteMaxPass;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;

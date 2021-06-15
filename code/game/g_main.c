@@ -2372,34 +2372,65 @@ void CheckVote( void ) {
 	if ( !level.voteTime || level.jkmodLevel.pauseTime > level.time ) { // Tr!Force: [Pause] Check vote time
 		return;
 	}
-	if ( level.time - level.voteTime >= VOTE_TIME ) {
-		trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEFAILED")) );
-	} else {
-		if ( level.voteYes > level.numVotingClients/2 ) {
-			// execute the command, then remove the vote
-			trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEPASSED")) );
-			level.voteExecuteTime = level.time + 3000;
-		} else if ( level.voteNo >= level.numVotingClients/2 ) {
-			// same behavior as a timeout
+	// Tr!Force: [Vote] Check min/max vote pass
+	if ( jkcvar_voteMaxPass.integer )
+	{
+		if ( level.time - level.voteTime >= VOTE_TIME )
+		{
+			if ( level.voteYes > level.voteNo )
+			{
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEPASSED")) );
+				level.voteExecuteTime = level.time + 3000;
+			}
+			else
+			{
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEFAILED")) );
+			}
+		} 
+		else 
+		{
+			if ( level.voteYes > level.numVotingClients )
+			{
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEPASSED")) );
+				level.voteExecuteTime = level.time + 3000;
+			}
+			else if ( level.voteNo >= level.numVotingClients )
+			{
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEFAILED")) );
+			}
+			else 
+			{
+				return;
+			}
+		}
+	}
+	else
+	{
+		if ( level.time - level.voteTime >= VOTE_TIME ) {
 			trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEFAILED")) );
 		} else {
-			// still waiting for a majority
-			return;
+			if ( level.voteYes > level.numVotingClients/2 ) {
+				// execute the command, then remove the vote
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEPASSED")) );
+				level.voteExecuteTime = level.time + 3000;
+			} else if ( level.voteNo >= level.numVotingClients/2 ) {
+				// same behavior as a timeout
+				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEFAILED")) );
+			} else {
+				// still waiting for a majority
+				return;
+			}
 		}
 	}
 
 	// Tr!Force: [Vote] Show vote results
 	if (strstr(level.voteDisplayString, "Poll:"))
 	{
-		trap_SendServerCommand(-1, va("cp \"%s\n"
-			"^7Yes: ^2%d "
-			"^7No: ^1%d\"",
-			level.voteDisplayString, level.voteYes, level.voteNo));
+		trap_SendServerCommand(-1, va("cp \"%s\n^7Yes: ^2%d ^7No: ^1%d\"", level.voteDisplayString, level.voteYes, level.voteNo));
 	}
-	if(jkcvar_voteResults.integer)
+	if (jkcvar_voteResults.integer)
 	{
-		trap_SendServerCommand(-1, va("print \"Vote results: Yes: ^2%d ^7No: ^1%d\n\"",
-			level.voteYes, level.voteNo));
+		trap_SendServerCommand(-1, va("print \"Vote results: Yes: ^2%d ^7No: ^1%d\n\"", level.voteYes, level.voteNo));
 	}
 
 	level.voteTime = 0;

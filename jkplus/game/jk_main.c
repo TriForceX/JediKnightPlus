@@ -59,6 +59,7 @@ vmCvar_t	jkcvar_voteControl;
 vmCvar_t	jkcvar_voteResults;
 vmCvar_t	jkcvar_voteWaitTime;
 vmCvar_t	jkcvar_voteMinPlayers;
+vmCvar_t	jkcvar_voteMaxPass;
 vmCvar_t	jkcvar_itemForcePhysics;
 vmCvar_t	jkcvar_duelStartHealth;
 vmCvar_t	jkcvar_duelStartArmor;
@@ -122,6 +123,7 @@ static cvarTable_t	JKModCvarTable[] =
 	{ &jkcvar_voteResults,			"jk_voteResults",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteWaitTime,			"jk_voteWaitTime",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_voteMinPlayers,		"jk_voteMinPlayers",		"2",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteMaxPass,			"jk_voteMaxPass",			"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_itemForcePhysics,		"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelStartHealth,		"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelStartArmor,		"jk_duelStartArmor",		"0",					CVAR_ARCHIVE,						0, qtrue },
