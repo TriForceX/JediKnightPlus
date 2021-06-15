@@ -1270,7 +1270,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				G_CenterPrint( -1, 3, va("%s\n", G_GetStripEdString("SVINGAME", "PLDUELTIE")) );
 			}
 		}
-		else
+		else if (jkcvar_duelDistance.integer > 0) // Tr!Force: [Duel] Custom max distance
 		{
 			vec3_t vSub;
 			float subLen = 0;
@@ -1278,7 +1278,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			VectorSubtract(ent->client->ps.origin, duelAgainst->client->ps.origin, vSub);
 			subLen = VectorLength(vSub);
 
-			if (subLen >= 1024)
+			if (subLen >= jkcvar_duelDistance.integer) // Tr!Force: [Duel] Custom max distance
 			{
 				ent->client->ps.duelInProgress = 0;
 				duelAgainst->client->ps.duelInProgress = 0;

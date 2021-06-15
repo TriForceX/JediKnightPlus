@@ -574,6 +574,7 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	qboolean typeShield;
 
 	if (!activator || !activator->client) return;
+	if (activator->client->ps.duelInProgress) return;
 
 	// Set type
 	typeAmmo = self->watertype == STATION_AMMO_TYPE;

@@ -2646,11 +2646,11 @@ void G_RunFrame( int levelTime ) {
 			float useDif = 0; //the difference to use when actually setting the timescale
 
 			// Tr!Force: [JKMod] Slow-mo duel end workaround
-			if (jkcvar_duelEndSlowFix.integer)
+			if (jkcvar_duelEndSlow.integer)
 			{
 				char buf[128];
 				float tFVal = 0;
-				float tScale = jkcvar_duelEndTimeScale.value;
+				float tScale = jkcvar_duelEndSlowScale.value;
 
 				trap_Cvar_VariableStringBuffer("timescale", buf, sizeof(buf));
 				tFVal = atof(buf);
