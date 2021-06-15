@@ -171,6 +171,12 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			{
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")));
 			}
+
+			// Custom sound
+			if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string))
+			{
+				G_Sound(ent, CHAN_VOICE, G_SoundIndex(jkcvar_serverJoinSound.string));
+			}
 		}
 
 		// Server motd time

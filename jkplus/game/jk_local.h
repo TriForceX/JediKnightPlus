@@ -32,7 +32,9 @@ Global definitions
 #define	ITEM_RESPAWN_HOLDABLE		60
 
 #define DEFAULT						Q3_INFINITE // Workaround
+
 #define VALIDSTRING(a)				((a != NULL) && (a[0] != '\0'))
+#define VALIDSTRINGCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
 
 /*
 =====================================================================
@@ -187,6 +189,7 @@ extern	vmCvar_t					jkcvar_serverIdle;
 extern	vmCvar_t					jkcvar_serverIdleFile;
 extern	vmCvar_t					jkcvar_serverClosed;
 extern	vmCvar_t					jkcvar_serverClosedText;
+extern	vmCvar_t					jkcvar_serverJoinSound;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
