@@ -312,6 +312,7 @@ Client options pop-up
 */
 void JKMod_CG_ClientPopUp(void)
 {
+	if (!cgs.jkmodCvar.pluginRequired) return;
 	if (!cg.snap) return;
 	if (jkcvar_cg_clientPopUp.integer == JK_CLIENT_POPUP_ITEMS) return;
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
