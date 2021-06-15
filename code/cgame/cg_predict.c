@@ -645,7 +645,12 @@ void CG_PredictPlayerState( void ) {
 		cg_pmove.tracemask = MASK_PLAYERSOLID;
 	}
 	if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
-		cg_pmove.tracemask &= ~CONTENTS_BODY;	// spectators can fly through bodies
+		// Tr!Force: [PlayerMovement] Spectators can fly through everything
+		if (cg.snap->ps.stats[JK_MOVEMENT] & JK_SPECTATOR_NOCLIP) {
+			cg_pmove.tracemask &= ~MASK_ALL;
+		} else {
+			cg_pmove.tracemask &= ~CONTENTS_BODY;	// spectators can fly through bodies
+		}
 	}
 	cg_pmove.noFootsteps = ( cgs.dmflags & DF_NO_FOOTSTEPS ) > 0;
 

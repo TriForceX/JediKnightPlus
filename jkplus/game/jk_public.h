@@ -25,6 +25,7 @@ Global definitions
 #define JK_WEAPON_STAND			( 1 << 1 )
 #define JK_DISRUPTOR_WALK		( 1 << 2 )
 #define JK_USE_STAND			( 1 << 3 )
+#define JK_SPECTATOR_NOCLIP		( 1 << 4 )
 
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 28 )

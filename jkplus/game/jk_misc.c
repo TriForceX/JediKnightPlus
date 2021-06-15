@@ -142,6 +142,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_USE_STAND;
 
+	// Spectator no-clip (Requires clientside)
+	if ((jkcvar_playerMovement.integer & JK_SPECTATOR_NOCLIP) && ent->client->pers.jkmodPers.ClientPlugin) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_SPECTATOR_NOCLIP;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_SPECTATOR_NOCLIP;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 /*
