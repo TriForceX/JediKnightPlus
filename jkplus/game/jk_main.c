@@ -236,10 +236,12 @@ void JKMod_G_UpdateCvars(void)
 						G_Printf("%s will load the files upon restarting or by using /rcon reload <type>.\n", cv->cvarName);
 					}
 					// Normal tracking
-					else 
+					else if (!level.jkmodLevel.cvarToggleMod)
 					{
 						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 					}
+					// Reset toggle mod check
+					level.jkmodLevel.cvarToggleMod = qfalse;
 				}
 
 				// Plugin check

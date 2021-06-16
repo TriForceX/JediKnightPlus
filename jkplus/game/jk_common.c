@@ -27,6 +27,26 @@ void QDECL JKMod_Printf(const char *fmt, ...)
 		trap_Printf(text);
 	}
 }
+
+/*
+=====================================================================
+Check the given string as number
+=====================================================================
+*/
+qboolean JKMod_isNumber(const char *s)
+{
+	int i = strlen(s);
+	int isNum = (i > 0);
+
+	while (i-- && isNum) {
+		if (!(s[i] >= '0' && s[i] <= '9')) {
+			isNum = 0;
+		}
+	}
+
+	return isNum;
+}
+
 /*
 =====================================================================
 Compare the given command with another

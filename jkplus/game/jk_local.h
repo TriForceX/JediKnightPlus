@@ -132,6 +132,7 @@ typedef struct
 	int			pauseTime;										// Pause time stop
 	unsigned	pauseTimeCustom;								// Pause custom seconds
 	unsigned	cvarTempUnlock;									// Cvar latch unlock status
+	qboolean	cvarToggleMod;									// Check cvar changes from toggleMod
 
 } jkmod_locals_t;
 
@@ -152,6 +153,13 @@ typedef struct
 	char		*name;
 
 } jkmod_dimension_data_t;
+
+// Bit value data
+typedef struct 
+{ 
+	const char	*string;
+
+} jkmod_bit_info_t;
 
 /*
 =====================================================================
@@ -289,6 +297,7 @@ void		JKMod_WhoIs(gentity_t *ent);
 
 // jk_common.c
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
+qboolean	JKMod_isNumber(const char *s);
 int			JKMod_compareCmd(char *cmd, char *required);
 void		JKMod_stringEscape(char *in, char *out, int outSize);
 void		JKMod_cleanString(char *in, char *out);
