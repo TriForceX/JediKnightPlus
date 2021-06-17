@@ -148,7 +148,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		}
 		else
 		{
-			trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2https://jkmod.github.io\n\"", serverVersion));
+			trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2%s\n\"", serverVersion, JK_URL));
 		}
 	}
 

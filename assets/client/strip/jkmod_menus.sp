@@ -32,11 +32,11 @@ INDEX 2
 INDEX 3
 {
    REFERENCE MOD_OPTIONS_WEBSITE
-   TEXT_LANGUAGE1 "Visit https://jkmod.github.io for more info!"
-   TEXT_LANGUAGE2 "Visitez https://jkmod.github.io pour plus d'informations!"
-   TEXT_LANGUAGE3 "Besuchen Sie https://jkmod.github.io für weitere Informationen!"
-   TEXT_LANGUAGE6 "Visit https://jkmod.github.io for more information!"
-   TEXT_LANGUAGE8 "Visita https://jkmod.github.io para más infomación!"
+   TEXT_LANGUAGE1 "Visit https://jkplus.github.io for more info!"
+   TEXT_LANGUAGE2 "Visitez https://jkplus.github.io pour plus d'informations!"
+   TEXT_LANGUAGE3 "Besuchen Sie https://jkplus.github.io für weitere Informationen!"
+   TEXT_LANGUAGE6 "Visit https://jkplus.github.io for more information!"
+   TEXT_LANGUAGE8 "Visita https://jkplus.github.io para más infomación!"
 }
 INDEX 4
 {

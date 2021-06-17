@@ -13,6 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #define JK_LONGNAME			"Jedi Knight Plus"
 #define JK_SHORTNAME   		"JK+ Mod"
 #define JK_COLOR  			"^5"
+#define JK_URL  			"https://jkplus.github.io"
 
 // Version
 #define JK_MAJOR 			"0"
