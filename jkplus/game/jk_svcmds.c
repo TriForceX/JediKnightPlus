@@ -10,52 +10,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
-Gameplay changer
-=====================================================================
-*/
-void JKMod_gamePlay(char *gameplay)
-{
-	if (!Q_stricmp(gameplay, "2") || !Q_stricmp(gameplay, "1.02"))
-	{
-		if (jk2gameplay != VERSION_1_02) {
-			MV_SetGamePlay(VERSION_1_02);
-			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.02\n\"");
-			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.02\n\"");
-		}
-		if (jk2startversion == VERSION_1_02) {
-			trap_Cvar_Set("jk_gamePlay", "0");
-		}
-	}
-	else if (!Q_stricmp(gameplay, "3") || !Q_stricmp(gameplay, "1.03"))
-	{
-		if (jk2gameplay != VERSION_1_03) {
-			MV_SetGamePlay(VERSION_1_03);
-			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.03\n\"");
-			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.03\n\"");
-		}
-		if (jk2startversion == VERSION_1_03) {
-			trap_Cvar_Set("jk_gamePlay", "0");
-		}
-	}
-	else if (!Q_stricmp(gameplay, "4") || !Q_stricmp(gameplay, "1.04"))
-	{
-		if (jk2gameplay != VERSION_1_04) {
-			MV_SetGamePlay(VERSION_1_04);
-			trap_SendServerCommand(-1, "print \"Server gameplay changed to 1.04\n\"");
-			trap_SendServerCommand(-1, "cp \"Gameplay changed to 1.04\n\"");
-		}
-		if (jk2startversion == VERSION_1_04) {
-			trap_Cvar_Set("jk_gamePlay", "0");
-		}
-	}
-	else
-	{
-		trap_Cvar_Set("jk_gamePlay", va("%i", jk2gameplay));
-	}
-}
-
-/*
-=====================================================================
 Gameplay command function
 =====================================================================
 */
@@ -65,7 +19,11 @@ static void JKMod_svCmd_gamePlay(void)
 
 	trap_Argv(1, arg1, sizeof(arg1));
 
-	trap_Cvar_Set("jk_gamePlay", arg1);
+	if (trap_Argc() < 2) {
+		G_Printf("Usage: gameplay <version>\n");
+	} else {
+		JKMod_SetGamePlay(arg1);
+	}
 }
 
 /*
@@ -79,17 +37,16 @@ static void JKMod_svCmd_reload(void)
 
 	trap_Argv(1, arg1, sizeof(arg1));
 
-	if (!Q_stricmp(arg1, "random_begin"))
+	if (trap_Argc() < 2)
 	{
-		JKMod_randomBeginInit();
+		G_Printf("Usage: reload <option>\n");
 	}
-	else if (!Q_stricmp(arg1, "server_news"))
+	else
 	{
-		JKMod_serverNewsInit();
-	}
-	else if (!Q_stricmp(arg1, "teleport_chats"))
-	{
-		JKMod_teleportChatInit();
+		if (!Q_stricmp(arg1, "random_begin")) JKMod_CVU_randomBegin();
+		else if (!Q_stricmp(arg1, "server_news")) JKMod_CVU_serverNews();
+		else if (!Q_stricmp(arg1, "teleport_chats")) JKMod_CVU_teleportChat();
+		else G_Printf("Option %s not allowed\n", arg1);
 	}
 }
 
@@ -112,26 +69,21 @@ static void JKMod_svCmd_pauseGame(void)
 
 		if (!Q_stricmp(arg1, "off")) 
 		{
-			if (level.jkmodLevel.pauseTime > level.time)
-			{
-				level.jkmodLevel.pauseTime = level.time;
-			}
+			if (level.jkmodLocals.pauseTime > level.time) level.jkmodLocals.pauseTime = level.time;
 		}
 		else 
 		{
-			if (level.intermissionQueued || level.intermissiontime) {
-				return;
-			}
+			if (level.intermissionQueued || level.intermissiontime) return;
 
 			if (!Q_stricmp(arg1, "on")) 
 			{
-				level.jkmodLevel.pauseTime = INT_MAX;
-				level.jkmodLevel.pauseTimeCustom = 0;
+				level.jkmodLocals.pauseTime = INT_MAX;
+				level.jkmodLocals.pauseTimeCustom = 0;
 			}
 			else // Seconds
 			{
-				level.jkmodLevel.pauseTime = level.time + 1000 * atoi(arg1);
-				level.jkmodLevel.pauseTimeCustom = atoi(arg1);
+				level.jkmodLocals.pauseTime = level.time + 1000 * atoi(arg1);
+				level.jkmodLocals.pauseTimeCustom = atoi(arg1);
 			}
 		}
 	}
@@ -147,19 +99,16 @@ static void JKMod_svCmd_remapShader(void)
 	char	arg1[MAX_STRING_CHARS];
 	char	arg2[MAX_STRING_CHARS];
 
-	float f = level.time * 0.001;
-
 	if (trap_Argc() < 3)
 	{
 		G_Printf("Usage: remapshader <original> <replacement>\n");
 	}
 	else
 	{
+		float f = level.time * 0.001;
+
 		trap_Argv(1, arg1, sizeof(arg1));
 		trap_Argv(2, arg2, sizeof(arg2));
-
-		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
-		Com_sprintf(arg2, sizeof(arg1), "%s", arg2);
 
 		AddRemap(arg1, arg2, f);
 
@@ -175,7 +124,6 @@ Change music command function
 static void JKMod_svCmd_changeMusic(void)
 {
 	char	arg1[MAX_STRING_CHARS];
-	char	*music;
 
 	if (trap_Argc() < 2)
 	{
@@ -183,11 +131,21 @@ static void JKMod_svCmd_changeMusic(void)
 	}
 	else
 	{
-		trap_Argv(1, arg1, sizeof(arg1));
-		Com_sprintf(arg1, sizeof(arg1), "%s", arg1);
+		fileHandle_t	f;
+		char			*music;
 
-		G_SpawnString("music", arg1, &music);
-		trap_SetConfigstring(CS_MUSIC, music);
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (trap_FS_FOpenFile(va("music/%s", arg1), &f, FS_READ) >= 0)
+		{
+			trap_FS_FCloseFile(f);
+			G_SpawnString("music", va("music/%s", arg1), &music);
+			trap_SetConfigstring(CS_MUSIC, music);
+		}
+		else
+		{
+			G_Printf("Music %s doesn't exist\n", arg1);
+		}
 	}
 }
 
@@ -196,6 +154,8 @@ static void JKMod_svCmd_changeMusic(void)
 Toggle mod cvar options
 =====================================================================
 */
+
+// Options for jk_playerMovement cvar
 static jkmod_bit_info_t togglePlayerMovement[] = 
 {
 	"JKA JETPACK STYLE",
@@ -204,6 +164,8 @@ static jkmod_bit_info_t togglePlayerMovement[] =
 	"BUTTON USE STAND",
 	"SPECTATOR NO-CLIP",
 };
+
+// Options for jk_voteControl cvar
 static jkmod_bit_info_t toggleVoteControl[] = 
 {
 	"MAP RESTART",
@@ -218,6 +180,8 @@ static jkmod_bit_info_t toggleVoteControl[] =
 	"GAMEPLAY",
 	"POLL",
 };
+
+// Options for bot_forGimmick cvar
 static jkmod_bit_info_t toggleBotForGimmick[] = 
 {
 	"STATIC",
@@ -225,18 +189,19 @@ static jkmod_bit_info_t toggleBotForGimmick[] =
 	"ALT ATTACK",
 	"CROUCH",
 	"JUMP",
-	"GESTURE",
+	"TAUNT",
 	"TALK",
 };
 
+// Toggle mod command
 static void JKMod_svCmd_toggleMod(void)
 {
-	char		arg1[MAX_STRING_CHARS];
-	char		arg2[MAX_STRING_CHARS];
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
 
 	if (trap_Argc() < 2)
 	{
-		G_Printf("Usage: toggleMod <cvar> <option>\n");
+		G_Printf("Usage: togglemod <cvar> <option>\n");
 	}
 	else
 	{
@@ -278,17 +243,17 @@ static void JKMod_svCmd_toggleMod(void)
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
-			G_Printf("Example: ^3/toggleMod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+			G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
 			return;
 		}
 
-		if (JKMod_isNumber(arg2)) 
+		if (JKMod_ValidNumber(arg2)) 
 		{
 			val = atoi(arg2);
 
 			if (val >= 0 && val < toggleModSize) 
 			{
-				level.jkmodLevel.cvarToggleMod = qtrue;
+				level.jkmodLocals.cvarToggleMod = qtrue;
 				bits ^= (1 << val);
 				trap_Cvar_Set(arg1, va("%i",bits));
 				trap_SendServerCommand(-1, va("print \"Server: %s %s %s\n\"", arg1, ((bits & (1 << val)) ? "enabled" : "disabled"), toggleModOptions[val].string));
@@ -301,7 +266,7 @@ static void JKMod_svCmd_toggleMod(void)
 					if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 					else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 				}
-				G_Printf("Example: ^3/toggleMod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+				G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
 			}
 		}
 		else 
@@ -312,7 +277,52 @@ static void JKMod_svCmd_toggleMod(void)
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
-			G_Printf("Example: ^3/toggleMod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+			G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+		}
+	}
+}
+
+/*
+=====================================================================
+Force dimension function
+=====================================================================
+*/
+static void JKMod_svCmd_forceDimension(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+
+	if (trap_Argc() < 3)
+	{
+		G_Printf("Usage: forcedimension <player|number|all> <dimension>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		if (!Q_stricmp(arg1, "all"))
+		{
+			gentity_t *ent;
+			int i;
+
+			for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+			{
+				if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+				{
+					JKMod_DimensionCmd(ent, arg2, qfalse);
+				}
+			}
+		}
+		else
+		{
+			int target = JKMod_CheckValidClient(NULL, arg1);
+
+			if (target != -1)
+			{
+				gentity_t *ent = &g_entities[target];
+				JKMod_DimensionCmd(ent, arg2, qfalse);
+			}
 		}
 	}
 }
@@ -353,19 +363,24 @@ qboolean JKMod_ConsoleCommand(void)
 		JKMod_svCmd_changeMusic();
 		return qtrue;
 	}
-	if (!Q_stricmp(cmd, "whois"))
-	{
-		JKMod_WhoIs(NULL);
-		return qtrue;
-	}
 	if (!Q_stricmp(cmd, "togglemod"))
 	{
 		JKMod_svCmd_toggleMod();
 		return qtrue;
 	}
-	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer) // Cvar latch temp unlock check
+	if (!Q_stricmp(cmd, "forcedimension"))
 	{
-		level.jkmodLevel.cvarTempUnlock = 1;
+		JKMod_svCmd_forceDimension();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "whois"))
+	{
+		JKMod_WhoIs(NULL);
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)
+	{
+		level.jkmodLocals.cvarTempUnlock = 1;
 		G_RegisterCvars();
 		return qtrue;
 	}

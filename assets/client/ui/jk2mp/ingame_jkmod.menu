@@ -15,6 +15,16 @@
 		descScale               0.7
 		descColor               .235 .882 .847 1
 		descAlignment           ITEM_ALIGN_CENTER
+		disablecolor			1 1 1 1
+		onClose 
+		{
+			hide					button1hover ;
+			hide					button2hover ;
+			hide					button3hover ;
+			hide					button4hover ;
+			hide					button5hover ;
+			hide					button6hover ;
+		}
 		
 		//---------------------------------------------
 		//	BACKGROUND
@@ -185,6 +195,11 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
+			cvarTest			"ui_myteam"
+			disableCvar 
+			{ 
+				"3" ; 
+			}
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
@@ -253,19 +268,20 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
+			decoration
 			action 
 			{ 
-				play			"sound/weapons/noammo.mp3" ;
+				//play			"sound/weapons/button1.mp3" ;
 				//open			ingame_jkmod_server ;
 				//close			ingame_jkmod ;
 			}
 			mouseenter 
 			{ 
-				show			button3hover
+				//show			button3hover
 			}
 			mouseexit 
 			{ 
-				hide			button3hover
+				//hide			button3hover
 			}
 		}
 		itemdef
@@ -287,19 +303,20 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
+			decoration
 			action 
 			{ 
-				play			"sound/weapons/noammo.mp3" ;
+				//play			"sound/weapons/button1.mp3" ;
 				//open			ingame_jkmod_admin ;
 				//close			ingame_jkmod ;
 			}
 			mouseenter 
 			{ 
-				show			button4hover
+				//show			button4hover
 			}
 			mouseexit 
 			{ 
-				hide			button4hover
+				//hide			button4hover
 			}
 		}
 		itemdef
@@ -321,19 +338,20 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
+			decoration
 			action 
 			{ 
-				play			"sound/weapons/noammo.mp3" ;
+				//play			"sound/weapons/button1.mp3" ;
 				//open			ingame_jkmod_build ;
 				//close			ingame_jkmod ;
 			}
 			mouseenter 
 			{ 
-				show			button5hover
+				//show			button5hover
 			}
 			mouseexit 
 			{ 
-				hide			button5hover
+				//hide			button5hover
 			}
 		}
 		itemdef
@@ -355,19 +373,20 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
+			decoration
 			action 
 			{ 
-				play			"sound/weapons/noammo.mp3" ;
+				//play			"sound/weapons/button1.mp3" ;
 				//open			ingame_jkmod_others ;
 				//close			ingame_jkmod ;
 			}
 			mouseenter 
 			{ 
-				show			button6hover
+				//show			button6hover
 			}
 			mouseexit 
 			{ 
-				hide			button6hover
+				//hide			button6hover
 			}
 		}
 		
@@ -383,7 +402,7 @@
 			type				4
 			style				0	
 			text				@MENUS0_VERSION
-			cvar				jkmod_clientversion
+			cvar				jkmod_client
 			//maxPaintChars		40
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			135

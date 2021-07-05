@@ -34,6 +34,11 @@ Global definitions
 // Other stuff
 #define JK_PASS_THROUGH			( 1 << 30 )
 
+// Utilities
+#define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
+#define VALIDSTRINGCVAR(a)		((a != NULL) && (a[0] != '\0') && (*a != '0'))
+#define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))
+
 /*
 =====================================================================
 Player / world information
@@ -52,7 +57,10 @@ typedef enum
 	DIMENSION_RACE		= ( 1 << 3 ),
 	DIMENSION_SABER		= ( 1 << 4 ),
 	DIMENSION_INSTA		= ( 1 << 5 ),
-	DIMENSION_CHEAT		= ( 1 << 6 )
+	DIMENSION_CHEAT		= ( 1 << 6 ),
+
+	/* Total */
+	DIMENSION_MAX		= 7
 
 } jkmod_dimensions_t;
 

@@ -1057,11 +1057,23 @@ void CG_DrawHUD(centity_t	*cent)
 			Com_sprintf(ammoString, sizeof(ammoString), "%i", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
 		}
 		
-		UI_DrawProportionalString( cgs.screenWidth-(weapX+16+32), y+40, va( "%s", ammoString ),
-			UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_HUD_ORANGE] );
+		// Tr!Force: [Dimension] Show best race time
+		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+		{
+			UI_DrawProportionalString( cgs.screenWidth-64, y+40, va( "%s", CG_GetStripEdString("JKINGAME", "RECORD") ),
+				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_HUD_ORANGE] );
 
-		UI_DrawProportionalString( cgs.screenWidth-(x+18+14+32), y+40+14, va( "%i", cg.snap->ps.fd.forcePower),
-			UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_ICON_BLUE] );
+			UI_DrawProportionalString( cgs.screenWidth-114, y+40+14, va( "%s", JKMod_CG_MsToString(cg.jkmodCG.raceBestTime) ),
+				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_ICON_BLUE] );
+		}
+		else
+		{
+			UI_DrawProportionalString( cgs.screenWidth-(weapX+16+32), y+40, va( "%s", ammoString ),
+				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_HUD_ORANGE] );
+
+			UI_DrawProportionalString( cgs.screenWidth-(x+18+14+32), y+40+14, va( "%i", cg.snap->ps.fd.forcePower),
+				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_ICON_BLUE] );
+		}
 
 		return;
 	}
@@ -1129,6 +1141,11 @@ void CG_DrawHUD(centity_t	*cent)
 			Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (%d)", scoreBias);
 		}
 		scoreStr = va("%s: %i%s", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr); // Tr!Force: [CGameGeneral] Use translated text
+	}
+	// Tr!Force: [Dimension] Show best race time
+	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
+	{
+		scoreStr = va("%s: %s", CG_GetStripEdString("JKINGAME", "RECORD"), JKMod_CG_MsToString(cg.jkmodCG.raceBestTime));
 	}
 	else
 	{	// Don't draw a bias.
@@ -3627,7 +3644,7 @@ static void CG_DrawWarmup( void ) {
 	// int			cw;
 	const char	*s;
 
-	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime) return; // Tr!Force: [Pause] Don't draw warmup
+	if (cgs.jkmodCGS.pauseTime > cg.snap->serverTime) return; // Tr!Force: [Pause] Don't draw warmup
 
 	sec = cg.warmup;
 	if ( !sec ) {

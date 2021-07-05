@@ -1336,10 +1336,10 @@ void RespawnItem( gentity_t *ent ) {
 	// Tr!Force: [Items] Reset original item position
 	if (jkcvar_itemForcePhysics.integer <= 1)
 	{
-		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
-		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.pos.trBase);
-		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.apos.trBase);
-		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->r.currentOrigin);
+		VectorCopy(ent->jkmodEnt.itemFirstOrigin, ent->s.origin);
+		VectorCopy(ent->jkmodEnt.itemFirstOrigin, ent->s.pos.trBase);
+		VectorCopy(ent->jkmodEnt.itemFirstOrigin, ent->s.apos.trBase);
+		VectorCopy(ent->jkmodEnt.itemFirstOrigin, ent->r.currentOrigin);
 	}
 
 	ent->r.contents = CONTENTS_TRIGGER;
@@ -1892,10 +1892,10 @@ void FinishSpawningItem( gentity_t *ent ) {
 	*/
 
 	// Tr!Force: [Items] Reset original item position
-	if (!ent->jkmodEnt.ItemSpawnedBefore)
+	if (!ent->jkmodEnt.itemSpawnedBefore)
 	{
-		ent->jkmodEnt.ItemSpawnedBefore = qtrue;
-		VectorCopy(tr.endpos, ent->jkmodEnt.ItemFirstOrigin);
+		ent->jkmodEnt.itemSpawnedBefore = qtrue;
+		VectorCopy(tr.endpos, ent->jkmodEnt.itemFirstOrigin);
 	}
 
 	trap_LinkEntity (ent);
@@ -2011,7 +2011,7 @@ be on an entity that hasn't spawned yet.
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	int wDisable = 0;
-	qboolean GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLevel.cvarTempUnlock == 2 : qtrue; // Tr!Force: [GameTypeConfig] Check until loaded
+	qboolean GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue; // Tr!Force: [GameTypeConfig] Check until loaded
 
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
@@ -2045,9 +2045,9 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 		return;
 
 	// Tr!Force: [Items] Reset original item position
-	if (jkcvar_itemForcePhysics.integer <= 1 && ent->jkmodEnt.ItemSpawnedBefore)
+	if (jkcvar_itemForcePhysics.integer <= 1 && ent->jkmodEnt.itemSpawnedBefore)
 	{
-		VectorCopy(ent->jkmodEnt.ItemFirstOrigin, ent->s.origin);
+		VectorCopy(ent->jkmodEnt.itemFirstOrigin, ent->s.origin);
 	}
 
 	ent->item = item;

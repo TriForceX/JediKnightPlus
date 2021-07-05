@@ -29,52 +29,43 @@ Player / world information
 =====================================================================
 */
 
-// Emotes list
+// Cvar table
 typedef struct 
 {
-	int				count;	// Emotes count
-	char			*cmd;	// Emotes command
+	vmCvar_t	*vmCvar;
+	char		*cvarName;
+	char		*defaultString;
+	int			cvarFlags;
 
-} jkmod_emotes_list_t;
+} jkmod_ui_cvar_table_t;
 
-// Emotes table
+// Command table
 typedef struct
 {
-	char			*cmd;	// Emotes command
-	char			*title;	// Emotes title
+	char		*cmd;	// Item command
+	char		*title;	// Item title
 
-} jkmod_emotes_table_t;
-
-// Dimensions list
-typedef struct
-{
-	int				count;	// Dimensions count
-	char			*cmd;	// Dimensions command
-
-} jkmod_dimensions_list_t;
-
-// Dimensions table
-typedef struct
-{
-	char			*cmd;	// Dimensions command
-	char			*title;	// Dimensions title
-
-} jkmod_dimensions_table_t;
+} jkmod_ui_command_table_t;
 
 // Reset client table
 typedef struct
 {
-	char			*cvar;		// Cvar name
-	char			*defVal;	// Cvar default value
-	char			*recVal;	// Cvar recommended value
+	char		*cvar;		// Cvar name
+	char		*defVal;	// Cvar default value
+	char		*recVal;	// Cvar recommended value
 
-} jkmod_reset_client_t;
+} jkmod_ui_reset_client_t;
 
 /*
 =====================================================================
 Cvar registration
 =====================================================================
 */
+
+extern vmCvar_t						jkcvar_ui_votePoll;
+extern vmCvar_t						jkcvar_ui_emoteToggle;
+extern vmCvar_t						jkcvar_ui_dimensionToggle;
+extern vmCvar_t						jkcvar_ui_resetClient;
 
 extern vmCvar_t						jkcvar_ui_test1;
 extern vmCvar_t						jkcvar_ui_test2;
@@ -93,12 +84,15 @@ int			BaseJK2_UI_FeederCount(float feederID);
 qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 
 // jk_atoms.c
-void		JKMod_MacroScan(void);
-void		JKMod_MacroEnable(void);
+void		JKMod_UI_MacroScan(void);
+void		JKMod_UI_MacroEnable(void);
+qboolean	JKMod_UI_ConsoleCommand(char *cmd);
 
 // jk_main.c
 const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKMod_UI_FeederCount(float feederID);
 qboolean	JKMod_UI_FeederSelection(float feederID, int index);
+void		JKMod_UI_Update(const char *name, int val);
+qboolean	JKMod_UI_RunMenuScript(const char **args, const char *name);
 
 #endif // __JK_UI_LOCAL_H__

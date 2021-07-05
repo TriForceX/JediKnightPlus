@@ -770,7 +770,7 @@
 			font				2
 			textscale			.9
 			type				ITEM_TYPE_EDITFIELD
-			cvar				"jk_ui_cmd_votePoll"
+			cvar				"jk_ui_votePoll"
 			rect				120 103 220 30
 			textalign			ITEM_ALIGN_LEFT
 			textalignx			0

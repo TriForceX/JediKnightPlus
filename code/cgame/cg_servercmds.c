@@ -146,10 +146,10 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
 
-	cgs.jkmodCvar.pluginRequired = atoi(Info_ValueForKey(info, "jk_pluginRequired"));	// Tr!Force: [Plugin] Main cvar
-	cgs.jkmodCvar.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));				// Tr!Force: [MacroScan] Main cvar
-	cgs.jkmodCvar.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));			// Tr!Force: [CustomHats] Main cvar
-	cgs.jkmodCvar.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));					// Tr!Force: [JetPack] Main cvar
+	cgs.jkmodCGS.pluginRequired = atoi(Info_ValueForKey(info, "jk_pluginRequired"));	// Tr!Force: [Plugin] Main cvar
+	cgs.jkmodCGS.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));				// Tr!Force: [MacroScan] Main cvar
+	cgs.jkmodCGS.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));			// Tr!Force: [CustomHats] Main cvar
+	cgs.jkmodCGS.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));					// Tr!Force: [JetPack] Main cvar
 
 	mapname = Info_ValueForKey( info, "mapname" );
 
@@ -387,7 +387,7 @@ void CG_UpdateConfigString( int num, qboolean init )
 			MV_LoadSettings( str );
 			break;
 		case CS_PAUSE: // Tr!Force: [Pause] Get server pause time
-			cgs.jkmodCvar.pauseTime = atoi(str);
+			cgs.jkmodCGS.pauseTime = atoi(str);
 		default:
 			break;
 		}
@@ -1258,6 +1258,7 @@ static void CG_ServerCommand( void ) {
 	if ( !strcmp( cmd, "print" ) ) {
 		char strEd[MAX_STRIPED_SV_STRING];
 		CG_CheckSVStripEdRef(strEd, CG_Argv(1));
+		if (strstr(strEd, "This server is running JK2MV")) return; // Tr!Force: [JKMod] Skip JK2MV message
 		CG_Printf( "%s", strEd );
 		return;
 	}
@@ -1270,8 +1271,8 @@ static void CG_ServerCommand( void ) {
 			// Tr!Force: [ChatBox] Add line to chat box
 			if (jkcvar_cg_chatBox.integer)
 			{
-				JKMod_CG_ChatBox_AddString( text ); 
-				// CG_Printf("%s\n", text); // Fix me
+				JKMod_CG_ChatBox_AddString( text );
+				// CG_Printf("[skipnotify]%s\n", text); // Fix me
 			}
 			else {
 				CG_Printf("%s\n", text);
@@ -1289,7 +1290,7 @@ static void CG_ServerCommand( void ) {
 		if (jkcvar_cg_chatBox.integer)
 		{
 			JKMod_CG_ChatBox_AddString( text );
-			// CG_Printf("%s\n", text); // Fix me
+			// CG_Printf("[skipnotify]%s\n", text); // Fix me
 		}
 		else {
 			CG_Printf("%s\n", text);
@@ -1342,6 +1343,12 @@ static void CG_ServerCommand( void ) {
 	// the menu system during development
 	if ( !strcmp( cmd, "clientLevelShot" ) ) {
 		cg.levelShot = qtrue;
+		return;
+	}
+
+	// Tr!Force: [Dimension] Get race best time updated info
+	if ( !strcmp( cmd, "raceBestTime" ) ) {
+		cg.jkmodCG.raceBestTime = atoi(CG_Argv(1));
 		return;
 	}
 

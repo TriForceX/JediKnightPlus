@@ -2145,7 +2145,7 @@ qboolean ExampleAnimEntClearLOS(gentity_t *self, vec3_t point)
 
 	trap_Trace(&tr, self->r.currentOrigin, 0, 0, point, self->s.number, self->clipmask);
 
-	if (!(g_entities[tr.entityNum].r.contents & CONTENTS_BODY)) // Tr!Force: [JKMod] Ignore empty bodies
+	if (!(g_entities[tr.entityNum].r.contents & CONTENTS_BODY) || g_entities[tr.entityNum].flags & FL_NOTARGET) // Tr!Force: [JKMod] Ignore empty bodies and notarget
 	{
 		return qfalse;
 	}

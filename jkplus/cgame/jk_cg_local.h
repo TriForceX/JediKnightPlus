@@ -17,9 +17,9 @@ Global definitions
 =====================================================================
 */
 
+#define CHATBOX_ITEMS				5
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
-#define MAX_CHATBOX_ITEMS			5
 #define PLAYER_LABEL_DIST			512 // 1014
 
 /*
@@ -27,17 +27,6 @@ Global definitions
 Player / world information
 =====================================================================
 */
-
-// Server cvars
-typedef struct
-{
-	int			pluginRequired;	// Tr!Force: [Plugin] Main cvar
-	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
-	int			customHats;		// Tr!Force: [CustomHats] Main cvar
-	int			jetPack;		// Tr!Force: [JetPack] Main cvar
-	int			pauseTime;		// Tr!Force: [Pause] Server pause time
-
-} jkmod_cvar_t;
 
 // Chat box
 typedef struct jkmod_chatbox_s
@@ -48,18 +37,30 @@ typedef struct jkmod_chatbox_s
 
 } jkmod_chatbox_t;
 
+// Client game static
+typedef struct
+{
+	int			pluginRequired;	// Tr!Force: [Plugin] Main cvar
+	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
+	int			customHats;		// Tr!Force: [CustomHats] Main cvar
+	int			jetPack;		// Tr!Force: [JetPack] Main cvar
+	int			pauseTime;		// Tr!Force: [Pause] Server pause time
+
+} jkmod_cgs_t;
+
 // Client game
 typedef struct
 {
-	jkmod_chatbox_t		chatItems[MAX_CHATBOX_ITEMS];	// Chat items count
-	int					chatItemActive;					// Chat item active
-	qboolean			duelEnd;						// Duel end active
-	float				duelEndRange;					// Duel end original range
-	int					duelEndLead;					// Duel end lead check
-	qboolean			emoteCamera;					// Check emote camera
-	int					prevCameraAngle;				// Saved camera angle
-	int					prevCameraRange;				// Saved camera range
-	int					prevCameraVertOffset;			// Saved camera vertical offset
+	jkmod_chatbox_t		chatItems[CHATBOX_ITEMS];	// Chat items count
+	int					chatItemActive;				// Chat item active
+	qboolean			duelEnd;					// Duel end active
+	float				duelEndRange;				// Duel end original range
+	int					duelEndLead;				// Duel end lead check
+	qboolean			emoteCamera;				// Check emote camera
+	int					prevCameraAngle;			// Saved camera angle
+	int					prevCameraRange;			// Saved camera range
+	int					prevCameraVertOffset;		// Saved camera vertical offset
+	int					raceBestTime;				// Saved camera vertical offset
 
 } jkmod_cg_t;
 
@@ -80,6 +81,9 @@ typedef struct
 	
 	qhandle_t	hitBox;
 	qhandle_t	hitBoxNoCull;
+	qhandle_t	dotRed;
+	qhandle_t	dotGreen;
+	qhandle_t	dotYellow;
 	qhandle_t	clockBg;
 	qhandle_t	jetpackIcon;
 
@@ -154,6 +158,7 @@ extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
 extern vmCvar_t						jkcvar_cg_clientPopUp;
+extern vmCvar_t						jkcvar_cg_resetClient;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
@@ -178,6 +183,7 @@ void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf,
 void		JKMod_CG_Draw2D(void);
 qboolean	JKMod_CG_IconHUDActive(void);
 qboolean	JKMod_CG_CenterPrintActive(void);
+const char	*JKMod_CG_MsToString(const int ms);
 void		JKMod_CG_DrawClock(void);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);

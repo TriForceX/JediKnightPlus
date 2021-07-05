@@ -34,7 +34,7 @@ extern bot_state_t *botstates[MAX_CLIENTS];
 #define JK_BOT_ATTACK_ALT	( 1 << 2 )
 #define JK_BOT_CROUCH		( 1 << 3 )
 #define JK_BOT_JUMP			( 1 << 4 )
-#define JK_BOT_GESTURE		( 1 << 5 )
+#define JK_BOT_TAUNT		( 1 << 5 )
 #define JK_BOT_TALK			( 1 << 6 )
 
 /*
@@ -99,7 +99,7 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 		if (bot_forgimmick.integer & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_JUMP) trap_EA_Jump(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_GESTURE) trap_EA_Gesture(bs->client);
+		if (bot_forgimmick.integer & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_TALK) trap_EA_Talk(bs->client);
 		return;
 	}

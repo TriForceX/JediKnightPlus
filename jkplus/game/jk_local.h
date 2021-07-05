@@ -17,24 +17,17 @@ Global definitions
 =====================================================================
 */
 
-#define MAX_NETNAME					64
+#define MAX_NAME_BIG				64
 #define	MAX_NAME_PRINT				28 // 24
-#define	MAX_NAME_CHECK				(MAX_NETNAME - 8)
+#define	MAX_NAME_CHECK				(MAX_NAME_BIG - 8)
 #define MAX_FILE_VARS				64
 #define MAX_FILE_CHARS				1024
-#define MAX_FILE_LENGTH				131072
-#define MAX_LINES					64
+#define MAX_FILE_LENGTH				131072 // 128kb
 #define MAX_BRUSH_MODELS			150
-
-#define	ITEM_RESPAWN_ARMOR			20
-#define	ITEM_RESPAWN_HEALTH			30
-#define	ITEM_RESPAWN_AMMO			40
-#define	ITEM_RESPAWN_HOLDABLE		60
+#define MAX_IP_STRING				16
+#define MAX_CHALLENGE				4
 
 #define DEFAULT						Q3_INFINITE // Workaround
-
-#define VALIDSTRING(a)				((a != NULL) && (a[0] != '\0'))
-#define VALIDSTRINGCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
 
 /*
 =====================================================================
@@ -59,105 +52,196 @@ typedef enum
 
 } jkmod_vote_t;
 
+// Emotes list
+typedef enum 
+{
+	EMOTE_BAR = 0,
+	EMOTE_BEG,
+	EMOTE_BURIED,
+	EMOTE_COCKY,
+	EMOTE_COMEON,
+	EMOTE_COMTALK,
+	EMOTE_CROSSARMS,
+	EMOTE_DONTKILLME,
+	EMOTE_DONTKNOW,
+	EMOTE_DONTKNOW2,
+	EMOTE_EXPLAIN,
+	EMOTE_EXPLAIN2,
+	EMOTE_FAKEDEAD,
+	EMOTE_FLIP,
+	EMOTE_HANDHIPS,
+	EMOTE_HI,
+	EMOTE_HUG,
+	EMOTE_KISS,
+	EMOTE_KNEEL,
+	EMOTE_LAUGH,
+	EMOTE_LOOK,
+	EMOTE_LOOK2,
+	EMOTE_NOD,
+	EMOTE_POINT,
+	EMOTE_POINT2,
+	EMOTE_PUNCH,
+	EMOTE_SIT,
+	EMOTE_SIT2,
+	EMOTE_SIT3,
+	EMOTE_SHAKE,
+	EMOTE_SUPER,
+	EMOTE_SUPER2,
+	EMOTE_SURRENDER,
+	EMOTE_SPIN,
+	EMOTE_SPINR,
+	EMOTE_SPIN2,
+	EMOTE_SPIN2R,
+	EMOTE_TAUNT2,
+	EMOTE_TAUNT3,
+	EMOTE_THINK,
+	EMOTE_THREATEN,
+	EMOTE_THUMBSUP,
+	EMOTE_THUMBSDOWN,
+	EMOTE_TOSSBACK,
+	EMOTE_TOSSOVER,
+	EMOTE_TOSSUP,
+	EMOTE_TYPE,
+	EMOTE_TYPE2,
+	EMOTE_VICTORY,
+	EMOTE_VICTORY2,
+	EMOTE_WAITING,
+	EMOTE_WATCHOUT,
+	EMOTE_WRITING,
+	EMOTE_WRITING2,
+
+	EMOTE_NUM_EMOTES
+
+} jkmod_emotes_t;
+
+// Cvar table
+typedef struct
+{
+	vmCvar_t		*vmCvar;
+	char			*cvarName;
+	char			*defaultString;
+	void			(*update)(void);
+	int				cvarFlags;
+	int				modificationCount;
+	qboolean		trackChange;
+
+} jkmod_cvar_table_t;
+
+// Emotes data
+typedef struct 
+{
+	jkmod_emotes_t	emoteIndex;		// Emote number
+	char			*cmd;			// Command name
+	qboolean		special;		// Is a Walkable emote
+	int				startAnim;		// Beginning animation
+	int				endAnim;		// Ending animation, -1 for no ending animation (no frozen)
+	qboolean		compatible;		// It support all game versions
+	qboolean		toggleSaber;	// Toggle lightsaber
+
+} jkmod_emotes_data_t;
+
 // Server entity
 typedef struct
 {
-	vec3_t		ItemFirstOrigin;		// First original item position
-	qboolean    ItemSpawnedBefore;		// Reset original item position
-	int			dimensionOwner;			// Dimension owner number
-	unsigned	dimensionNumber;		// Current dimension number
-	int			time1;					// Entity think time for pause
-	int			time2;					// Entity sync time for pause
+	vec3_t			itemFirstOrigin;	// First original item position
+	qboolean		itemSpawnedBefore;	// Reset original item position
+	int				dimensionOwner;		// Dimension owner number
+	unsigned		dimensionNumber;	// Current dimension number
+	int				time1;				// Entity think time for pause
+	int				time2;				// Entity sync time for pause
 
 } jkmod_ent_t;
 
 // Client session
 typedef struct
 {
-	qboolean	MotdSeen;			// Server motd seen
-	char		ClientIP[64];		// Client IP
-	int			IgnoredPlayer[2];	// Client ignored player chats & duels
-	int			IgnoredAll[2];		// Client ignored all chats & duels
+	qboolean		motdSeen;					// Server motd seen
+	char			clientIP[MAX_IP_STRING];	// Client IP string
+	int				ignoredPlayer[2];			// Client ignored player chats & duels
+	int				ignoredAll[2];				// Client ignored all chats & duels
 
 } jkmod_sess_t;
 
 // Client persistant
 typedef struct
 {
-	qboolean	ClientPlugin;			// Client plugin check
-	int			CustomDuel;				// Client is in force duel
-	int			TeleportChatOrigin[5];	// Player saved pos x y z pitch yaw
-	char		*TeleportChatSaved;		// Player saved pos saved
-	int			jetackUseDelay;			// Jetpack usage delay
-	qboolean	buttonUseAnim;			// Button use animation use check
-	qboolean	buttonUseAnimValid;		// Button use animation valid target
-	int			raceStartTime;			// Start time for racers
-	qboolean	invulnerability;		// Persistant take damage
-	qboolean	passThrough;			// Check for pass-through
-	qboolean	passThroughPerm;		// Check for permanent pass-through
-	int			customSettings;			// Custom settings check
-	int			customSettingsCount;	// Custom settings modification count
-	float		customGravity;			// Custom speed for custom settings
-	float		customSpeed;			// Custom gravity for custom settings
+	qboolean		clientPlugin;			// Client plugin check
+	int				customDuel;				// Client is in custom duel
+	int				teleportChatOrigin[5];	// Player teleport x y z pitch yaw
+	int				teleportChatCheck;		// Player teleport check
+	int				jetackUseDelay;			// Jetpack usage delay
+	qboolean		buttonUseAnim;			// Button use animation use check
+	qboolean		buttonUseAnimValid;		// Button use animation valid target
+	int				raceStartTime;			// Start time for racers
+	int				raceLastTime;			// Last time for racers
+	int				raceBestTime;			// Best time for racers
+	qboolean		invulnerability;		// Persistant take damage
+	qboolean		passThrough;			// Check for pass-through
+	qboolean		passThroughPerm;		// Check for permanent pass-through
+	int				customSettings;			// Custom settings check
+	int				customSettingsCount;	// Custom settings modification count
+	float			customGravity;			// Custom speed for custom settings
+	float			customSpeed;			// Custom gravity for custom settings
 
 } jkmod_pers_t;
 
 // Client clear
 typedef struct 
 {
-	vec3_t		PauseSavedView;		// Player saved view angles
-	int			TimeResidual;		// Player time residual
-	int			DropFlagTime;		// Player time
-	int			DimensionTime;		// Dimension change time
-	int			ConnectTime;		// Client connect time
-	int			ChatTime;			// Chat protect time
-	int			MotdTime;			// Server motd time
-	int			VoteWaitTime;		// Player callvote wait time
-	int			TeleportChatTime;	// Teleport chat wait time
-	qboolean	TeleportChatUsed;	// Teleport chat check used
+	int				dropFlagTime;		// Player time
+	int				dimensionTime;		// Dimension change time
+	int				chatTime;			// Chat protect time
+	int				motdTime;			// Server motd time
+	int				voteWaitTime;		// Player callvote wait time
+	int				teleportChatTime;	// Teleport chat wait time
+	qboolean		teleportChatUsed;	// Teleport chat check used
 	
 } jkmod_client_t;
 
 // Level data
 typedef struct
 {
-	char		RandomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
-	int			RandomBeginCount;								// Message counter
-	char		ServerNews[MAX_FILE_VARS][MAX_FILE_CHARS];		// Store messages
-	int			ServerNewsCount;								// News counter
-	int			ServerNewsNum;									// News timer
-	char		*TeleportChats[MAX_FILE_CHARS];					// Chat teleport info
-	int			TeleportChatsCount;								// Chat teleport counter
-	int			idleTime;										// Server idle time
-	int			pauseTime;										// Pause time stop
-	unsigned	pauseTimeCustom;								// Pause custom seconds
-	unsigned	cvarTempUnlock;									// Cvar latch unlock status
-	qboolean	cvarToggleMod;									// Check cvar changes from toggleMod
+	char			randomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];	// Random begin strings
+	int				randomBeginCount;							// Random begin total count
+	char			serverNews[MAX_FILE_VARS][MAX_FILE_CHARS];	// Server news strings
+	int				serverNewsCount;							// Server news total count
+	int				serverNewsNum;								// Server news current number
+	char			*teleportChats[MAX_FILE_CHARS];				// Teleport chat strings
+	int				teleportChatsCount;							// Teleport chat total count
+	int				idleTime;									// Server idle time
+	int				pauseTime;									// Pause time stop
+	unsigned		pauseTimeCustom;							// Pause custom seconds
+	unsigned		cvarTempUnlock;								// Cvar latch unlock status
+	qboolean		cvarToggleMod;								// Check cvar changes from toggleMod
+	qboolean		mapRestarted;								// Map restart check for current players
+	char			reconnectedIP[MAX_IP_STRING];				// Check IP for client reconnect
+	int				closedCheck[MAX_CHALLENGE];					// Closed server check
+	int				messageCheck[MAX_CHALLENGE];				// Connect message check
 
 } jkmod_locals_t;
 
 // Dimension data
 typedef struct 
 {
-	unsigned	dimension;
-	int			weapons;
-	int			forcepowers;
-	int			forcelevel;
-	qboolean	holdables;
-	qboolean	jetpack;
-	qboolean	invulnerability;
-	qboolean	passthrough;
-	float		speed;
-	float		gravity;
-	char		*command;
-	char		*name;
+	unsigned		dimension;
+	int				weapons;
+	int				forcepowers;
+	int				forcelevel;
+	qboolean		holdables;
+	qboolean		jetpack;
+	qboolean		invulnerability;
+	qboolean		passthrough;
+	float			speed;
+	float			gravity;
+	char			*command;
+	char			*name;
 
 } jkmod_dimension_data_t;
 
 // Bit value data
 typedef struct 
 { 
-	const char	*string;
+	const char		*string;
 
 } jkmod_bit_info_t;
 
@@ -170,7 +254,6 @@ Re-routed functions
 #define ClientCommand				JKMod_ClientCommand
 #define G_RunClient					JKMod_RunClient
 #define ClientThink_real			JKMod_ClientThink_real
-#define ClientTimerActions			JKMod_ClientTimerActions
 #define G_RegisterCvars 			JKMod_G_RegisterCvars
 #define G_UpdateCvars				JKMod_G_UpdateCvars
 #define ClientConnect				JKMod_ClientConnect
@@ -187,9 +270,6 @@ Re-routed functions
 Cvar registration
 =====================================================================
 */
-
-extern	vmCvar_t					jkcvar_test1;
-extern	vmCvar_t					jkcvar_test2;
 
 extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
@@ -220,6 +300,7 @@ extern	vmCvar_t					jkcvar_voteMaxPass;
 extern	vmCvar_t					jkcvar_itemForcePhysics;
 extern	vmCvar_t					jkcvar_duelStartHealth;
 extern	vmCvar_t					jkcvar_duelStartArmor;
+extern	vmCvar_t					jkcvar_duelStartEmote;
 extern	vmCvar_t					jkcvar_duelEndStats;
 extern	vmCvar_t					jkcvar_duelEndSlow;
 extern	vmCvar_t					jkcvar_duelEndSlowScale;
@@ -255,6 +336,9 @@ extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_playerMovement;
 extern	vmCvar_t					jkcvar_botsAI;
 
+extern	vmCvar_t					jkcvar_test1;
+extern	vmCvar_t					jkcvar_test2;
+
 /*
 =====================================================================
 Common / new functions
@@ -262,7 +346,6 @@ Common / new functions
 */
 
 // g_active.c
-void		BaseJK2_ClientTimerActions(gentity_t *ent, int msec);
 void		BaseJK2_ClientThink_real(gentity_t *ent);
 
 // g_client.c
@@ -289,7 +372,8 @@ void		JKMod_PauseClientThink(gentity_t *ent);
 void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *ent);
 
 // jk_cmds.c
-qboolean	JKMod_IsClientIgnored(int option, int ignorer, int ignored);
+qboolean	JKMod_IgnoreClientCheck(int option, int ignorer, int ignored);
+void		JKMod_IgnoreClientClear(int ignored);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);
 void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
@@ -297,17 +381,17 @@ void		JKMod_WhoIs(gentity_t *ent);
 
 // jk_common.c
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
-qboolean	JKMod_isNumber(const char *s);
-int			JKMod_compareCmd(char *cmd, char *required);
-void		JKMod_stringEscape(char *in, char *out, int outSize);
-void		JKMod_cleanString(char *in, char *out);
-char		*JKMod_sanitizeString(char *dest, char *source, int destSize);
-int			JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName);
-void		JKMod_dropPlayer(gentity_t *ent, char *msg);
-void		JKMod_sendCommand(int target, char *cmd, char *string);
-const char	*JKMod_msToString(const int ms, qboolean abbr);
-int			JKMod_ClientNumberFromArg(char* name);
-char		*JKMod_ConcatArgs(int start);
+qboolean	JKMod_ValidNumber(const char *s);
+void		JKMod_DummyEncode(char *buffer, const char *s);
+void		JKMod_TruncateString(char *buffer, const char *s, int limit);
+void		JKMod_StringEscape(char *in, char *out, int outSize);
+char		*JKMod_SanitizeString(char *dest, char *source, int destSize);
+int			JKMod_DuplicatedNameCheck(gentity_t *ent, char *clientName);
+void		JKMod_DropPlayer(gentity_t *ent, char *reason);
+const char	*JKMod_MsToString(const int ms);
+const char	*JKMod_MsToWord(const int ms, qboolean abbr);
+int			JKMod_GetClientNumber(char* name);
+int			JKMod_CheckValidClient(gentity_t *ent, char *name);
 char		*JKMod_ReadFile(char *filename);
 void		JKMod_RandSeed(unsigned seed);
 int			JKMod_Rand(void);
@@ -326,23 +410,27 @@ void		JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t mi
 int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount, int entityNum);
 
 // jk_emotes.c
-int			JKMod_emoteCheck(char *cmd, gentity_t *ent);
-int			JKMod_emoteIn(gentity_t *ent, int type);
-void		JKMod_emoteDo(gentity_t *ent, int emoteIndex);
-void		JKMod_emoteDoHug(gentity_t *ent);
-void		JKMod_emoteDoKiss(gentity_t *ent);
-void		JKMod_emoteDoPunch(gentity_t *ent);
+int			JKMod_EmoteCheck(char *cmd, gentity_t *ent);
+int			JKMod_EmoteIn(gentity_t *ent, int type);
+void		JKMod_EmotePlay(gentity_t *ent, int emoteIndex);
+void		JKMod_EmoteCmdHug(gentity_t *ent);
+void		JKMod_EmoteCmdKiss(gentity_t *ent);
+void		JKMod_EmoteCmdPunch(gentity_t *ent);
 
 // jk_main.c
 void		JKMod_G_RegisterCvars(void);
 void		JKMod_G_UpdateCvars(void);
+void		JKMod_CVU_randomBegin(void);
+void		JKMod_CVU_serverNews(void);
+void		JKMod_CVU_teleportChat(void);
+void		JKMod_CVU_gamePlay(void);
+void		JKMod_CVU_playerMovement(void);
+void		JKMod_CVU_pluginRequired(void);
+void		JKMod_CVU_serverClosed(void);
 qboolean	JKMod_PauseFrameCheck(int levelTime);
 void		JKMod_PauseFrameRun(void);
-void		JKMod_randomBeginInit(void);
-void		JKMod_serverNewsInit(void);
-void		JKMod_teleportChatInit(void);
-void		JKMod_serverIdleCheck(void);
-void		JKMod_gameTypeConfig(void);
+void		JKMod_ServerIdleCheck(void);
+void		JKMod_GameTypeConfig(void);
 
 // jk_misc.c
 const char	*JKMod_GetCurrentMap(void);
@@ -350,7 +438,9 @@ const char	*JKMod_GetMapMusic(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_PlayerMovementCheck(gentity_t *ent);
+void		JKMod_SetGamePlay(char *option);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
+int			JKMod_ItemRespawnTime(gentity_t *ent);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 qboolean	JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special);
 
@@ -358,6 +448,7 @@ qboolean	JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_AntiStuckBox(gentity_t *ent);
 void		JKMod_RemoveByClass(gentity_t *ent, char *name);
+void		JKMod_JetpackTryUse(gentity_t *ent);
 void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
@@ -379,8 +470,5 @@ void		JKMod_AddSpawnField(char *field, char *value);
 void		JKMod_CheckValidMapItems(void);
 void		JKMod_SetBrushModel(gentity_t *ent, const char *name);
 qboolean	JKMod_SpawnAngleHack(const char *key, const char *defaultString, float *out);
-
-// jk_svcmds.c
-void		JKMod_gamePlay(char *gameplay);
 
 #endif // __JK_LOCAL_H__

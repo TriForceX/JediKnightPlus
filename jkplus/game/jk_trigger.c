@@ -68,7 +68,7 @@ Race trigger functions
 // Start race timer
 void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator) 
 {
-	int	lessTime;
+	int	timeStart;
 
 	// Check dimension
 	if (!(jkcvar_altDimension.integer & DIMENSION_RACE)) return;
@@ -80,10 +80,11 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	if (activator->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
 
 	// Set info
-	lessTime = JKMod_InterpolateTouchTime(activator, ent);
+	timeStart = JKMod_InterpolateTouchTime(activator, ent);
 
-	activator->client->ps.duelTime = level.time - lessTime;
-	activator->client->pers.jkmodPers.raceStartTime = trap_Milliseconds() - lessTime;
+	// Set timers
+	activator->client->ps.duelTime = level.time - timeStart;
+	activator->client->pers.jkmodPers.raceStartTime = trap_Milliseconds() - timeStart;
 
 	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer started!\""));
 }
@@ -91,7 +92,8 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Stop race timer
 void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	timeSec, timeMin, timeMsec;
+	int	timeLast, timeBest;
+	char timeLastStr[32], timeBestStr[32];
 
 	// Check dimension
 	if (!(jkcvar_altDimension.integer & DIMENSION_RACE)) return;
@@ -105,17 +107,34 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	// Check timer
 	if (!activator->client->pers.jkmodPers.raceStartTime) return;
 
-	// Show info
-	timeMsec = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
-	timeSec = timeMsec / 1000;
-	timeMsec -= timeSec * 1000;
-	timeMin = timeSec / 60;
-	timeSec -= timeMin * 60;
+	// Set info
+	timeLast = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
+	timeBest = !activator->client->pers.jkmodPers.raceBestTime ? timeLast : activator->client->pers.jkmodPers.raceBestTime;
 
-	trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%02i:%02i:%03i^7]\n\"", activator->client->pers.netname, timeMin, timeSec, timeMsec));
+	Q_strncpyz(timeLastStr, JKMod_MsToString(timeLast), sizeof(timeLastStr));
+	Q_strncpyz(timeBestStr, JKMod_MsToString(timeBest), sizeof(timeBestStr));
+
+	// Show info
+	if (timeLast == timeBest) {
+		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%s^7]\n\"", activator->client->pers.netname, timeLastStr));
+	} else if (timeLast < timeBest) {
+		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%s^7] which is a new personal record!\n\"", activator->client->pers.netname, timeLastStr));
+	} else {
+		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^3%s^7] and his record was [^2%s^7]\n\"", activator->client->pers.netname, timeLastStr, timeBestStr));
+	}
+
 	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer finished!\""));
 
-	// Reset timer
+	// Update timers
+	activator->client->pers.jkmodPers.raceLastTime = timeLast;
+	activator->client->pers.jkmodPers.raceBestTime = timeLast > timeBest ? timeBest : timeLast;
+
+	// Update client
+	if (activator->client->pers.jkmodPers.clientPlugin) {
+		trap_SendServerCommand(activator - g_entities, va("raceBestTime %i", activator->client->pers.jkmodPers.raceBestTime));
+	}
+	
+	// Reset timers
 	activator->client->ps.duelTime = 0;
 	activator->client->pers.jkmodPers.raceStartTime = 0;
 }
@@ -123,7 +142,7 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 // Checkpoint race timer
 void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activator)
 {
-	int	timeSec, timeMin, timeMsec;
+	int	timeCheck;
 
 	// Check dimension
 	if (!(jkcvar_altDimension.integer & DIMENSION_RACE)) return;
@@ -137,14 +156,11 @@ void JKMod_TimerCheckpoint(gentity_t *ent, gentity_t *other, gentity_t *activato
 	// Check timer
 	if (!activator->client->pers.jkmodPers.raceStartTime) return;
 
-	// Show info
-	timeMsec = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
-	timeSec = timeMsec / 1000;
-	timeMsec -= timeSec * 1000;
-	timeMin = timeSec / 60;
-	timeSec -= timeMin * 60;
+	// Set info
+	timeCheck = trap_Milliseconds() - activator->client->pers.jkmodPers.raceStartTime;
 
-	trap_SendServerCommand(activator - g_entities, va("cp \"Checkpoint!\n^3%02i:%02i:%03i\"", timeMin, timeSec, timeMsec));
+	// Show info
+	trap_SendServerCommand(activator - g_entities, va("cp \"Checkpoint!\n^3%s\"", JKMod_MsToString(timeCheck)));
 }
 
 /*

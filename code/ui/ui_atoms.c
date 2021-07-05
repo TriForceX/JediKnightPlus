@@ -356,27 +356,8 @@ qboolean UI_ConsoleCommand( int realTime ) {
 		return qtrue;
 	}
 
-	// Tr!Force: [MacroScan] Scan command
-	if (Q_stricmp(cmd, "jk_ui_macroscan") == 0)
-	{
-		JKMod_MacroScan();
-		return qtrue;
-	}
-	// Tr!Force: [MacroScan] Enable command
-	if (Q_stricmp(cmd, "jk_ui_macroenable") == 0)
-	{
-		JKMod_MacroEnable();
-		return qtrue;
-	}
-	// Tr!Force: [JKMod] Open client options pop-up
-	if (Q_stricmp(cmd, "jk_ui_clientpopup") == 0)
-	{
-		if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) 
-		{
-			trap_Cvar_Set("cl_paused", "1");
-			trap_Key_SetCatcher(KEYCATCH_UI);
-			Menus_ActivateByName("ingame_jkmod_popup");
-		}
+	// Tr!Force: [JKMod] Check custom console commands
+	if ( JKMod_UI_ConsoleCommand(cmd) ) {
 		return qtrue;
 	}
 

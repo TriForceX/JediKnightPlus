@@ -1160,11 +1160,11 @@ void ClientUserinfoChanged( int clientNum ) {
 	}
 
 	// Tr!Force: [Plugin] Check plugin
-	s = Info_ValueForKey( userinfo, "jkmod_clientversion" );
+	s = Info_ValueForKey( userinfo, "jkmod_client" );
 	if ( !strcmp( s, JK_VERSION ) ) {
-		client->pers.jkmodPers.ClientPlugin = qtrue;
+		client->pers.jkmodPers.clientPlugin = qtrue;
 	} else {
-		client->pers.jkmodPers.ClientPlugin = qfalse;
+		client->pers.jkmodPers.clientPlugin = qfalse;
 	}
 
 	// check the item prediction
@@ -2407,7 +2407,13 @@ void ClientDisconnect( int clientNum ) {
 	ent->client->ps.persistant[PERS_TEAM] = TEAM_FREE;
 	ent->client->sess.sessionTeam = TEAM_FREE;
 	ent->client->sess.losses = 0; // Tr!Force: [Scoreboard] Extra info
+	
+	// Tr!Force: [JKMod] Check for reconnect
+	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));
 
+	// Tr!Force: [JKMod] Clear ignored client
+	JKMod_IgnoreClientClear(clientNum);
+	
 	trap_SetConfigstring( CS_PLAYERS + clientNum, "");
 
 	CalculateRanks();

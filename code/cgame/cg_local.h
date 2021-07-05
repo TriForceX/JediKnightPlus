@@ -1418,7 +1418,7 @@ Ghoul2 Insert End
 
 	int				mvsdk_svFlags;
 
-	jkmod_cvar_t	jkmodCvar;		// Tr!Force: [JKMod] Server cvars
+	jkmod_cgs_t		jkmodCGS;		// Tr!Force: [JKMod] Client game static
 	jkmod_media_t	jkmodMedia;		// Tr!Force: [JKMod] Client media
 
 } cgs_t;

@@ -87,11 +87,38 @@ void JKMod_RemoveByClass(gentity_t *ent, char *name)
 			if (!Q_stricmp(name, "detpack") && ent->client->ps.hasDetPackPlanted) {
 				ent->client->ps.hasDetPackPlanted = qfalse;
 			}
+
 			VectorCopy(found->r.currentOrigin, found->s.origin);
 			found->think = G_FreeEntity;
 			found->nextthink = level.time;
 
-			JKMod_Printf(S_COLOR_CYAN "Check remove %s from client %i\n", name, ent->s.number);
+			JKMod_Printf(S_COLOR_MAGENTA "Check remove %s from client %i\n", name, ent->s.number);
+		}
+	}
+}
+/*
+=====================================================================
+Jetpack use button action
+=====================================================================
+*/
+void JKMod_JetpackTryUse(gentity_t *ent)
+{
+	if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
+	{
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING &&  ent->client->pers.jkmodPers.jetackUseDelay <= level.time) {
+			// Disable
+			ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
+			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
+			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack off\n\""));
+		}
+		else if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE &&
+			ent->client->pers.jkmodPers.jetackUseDelay <= level.time &&
+			!(BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim) || JKMod_PlayerMoving(ent, qfalse, qtrue))) {
+			// Enable
+			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
+			ent->client->ps.eFlags |= JK_JETPACK_FLAMING;
+			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
+			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack on\n\""));
 		}
 	}
 }

@@ -23,11 +23,11 @@ INDEX 1
 INDEX 2
 {
    REFERENCE MOD_OPTIONS_INTRO
-   TEXT_LANGUAGE1 "The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games."
-   TEXT_LANGUAGE2 "L'objectif de ce mod est de rassembler des choses utiles et d'ajouter des éléments personnalisés au jeu, en réalisant les idées des joueurs en ajoutant de nouvelles options et en portant d'autres mods et jeux."
-   TEXT_LANGUAGE3 "Das ziel dieses mod ist es, dem spiel nützliche und neue dinge hinzuzufügen, um die ideen der spieler zum leben zu erwecken, indem neue optionen hinzugefügt und andere mods und spiele portiert werden."
-   TEXT_LANGUAGE6 "The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games."
-   TEXT_LANGUAGE8 "El objetivo de este mod es reunir cosas útiles y agregar elementos personalizados al juego, haciendo realidad las ideas de los jugadores agregando nuevas opciones y portando algunas de otros mods y juegos."
+   TEXT_LANGUAGE1 "The main goal of this mod is to reunite useful stuff and add custom features to the game environment, specially making players ideas come true adding new features and porting some from other mods and games"
+   TEXT_LANGUAGE2 "L'objectif de ce mod est de rassembler des choses utiles et d'ajouter des éléments personnalisés au jeu, en réalisant les idées des joueurs en ajoutant de nouvelles options et en portant d'autres mods et jeux"
+   TEXT_LANGUAGE3 "Das ziel dieses mod ist es, dem spiel nützliche und neue dinge hinzuzufügen, um die ideen der spieler zum leben zu erwecken, indem neue optionen hinzugefügt und andere mods und spiele portiert werden"
+   TEXT_LANGUAGE6 "The main goal of this mod is to reunite useful stuff and add custom features to the game environment, specially making players ideas come true adding new features and porting some from other mods and games"
+   TEXT_LANGUAGE8 "El objetivo de este mod es reunir cosas útiles y agregar elementos personalizados al juego, haciendo realidad las ideas de los jugadores agregando nuevas opciones y portando algunas de otros mods y juegos"
 }
 INDEX 3
 {

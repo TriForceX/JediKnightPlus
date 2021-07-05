@@ -4424,79 +4424,6 @@ static void UI_Update(const char *name) {
 			trap_Cvar_SetValue( "m_pitch", -0.022f );
 		}
 	}
-	// Tr!Force: [JKMod] Parse vote poll message
-	else if (!Q_stricmp(name, "JKMod_votePoll"))
-	{
-		trap_Cmd_ExecuteText(EXEC_APPEND, va("callvote poll \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_votePoll")));
-	}
-	// Tr!Force: [JKMod] Reset client menu options
-	else if (!Q_stricmp(name, "JKMod_resetClient"))
-	{
-		int num;
-
-		// Update JK_CLIENT_POPUP_ITEMS count based on this so new updates can trigger the popup again
-		jkmod_reset_client_t jkmod_reset_client[] =
-		{
-			// interface cvars				default		recommended
-			{ "jk_cg_drawClock",			"0",		"2" },
-			{ "jk_cg_drawForcePoints",		"0",		"1" },
-			{ "jk_cg_drawInventory",		"0",		"1" },
-			{ "jk_cg_drawRaceTimer",		"1",		"1" },
-			{ "jk_cg_drawMovementKeys",		"0",		NULL },
-			{ "jk_cg_scoreboardIcons",		"0",		"1" },
-			{ "jk_cg_scoreboardExtras",		"0",		"1" },
-			{ "jk_cg_chatBox",				"0",		"1" },
-			{ "jk_cg_chatBoxTime",			"10",		"10" },
-			{ "jk_cg_chatBoxHeight",		"360",		"360" },
-			{ "jk_cg_chatBoxHistory",		"1",		"2" },
-			{ "cg_drawTimer",				"0",		NULL },
-			{ "cg_drawFPS",					"0",		NULL },
-			{ "cg_lagometer",				"0",		NULL },
-			{ "cg_hudFiles",				"0",		"0" },
-
-			// visuals cvars				default		recommended
-			{ "jk_cg_duelGlow",				"1",		"1" },
-			{ "jk_cg_duelEndOrbit",			"1.5",		"1.5" },
-			{ "jk_cg_duelEndDelay",			"1",		"1" },
-			{ "jk_cg_drawHitBox",			"0",		NULL },
-			{ "jk_cg_drawBactaModel",		"0",		"1" },
-			{ "jk_cg_drawPlayerNames",		"0",		NULL },
-			{ "jk_cg_chatIcon",				"0",		"1" },
-			{ "jk_cg_saberTrailSpeed",		"40",		"40" },
-			{ "jk_cg_damageBlend",			"0",		"1" },
-			{ "jk_cg_flagOpacity",			"255",		"127" },
-			{ "jk_cg_flagAlignment",		"0",		"1" },
-			{ "jk_cg_chatPlayerOpacity",	"1",		"1" },
-			{ "cg_dismember",				"0",		"2" },
-			{ "cg_simpleItems",				"0",		NULL },
-			{ "cg_shadows",					"1",		NULL },
-			{ "cg_scorePlums",				"1",		"2" },
-
-			// camera cvars					default		recommended
-			{ "jk_cg_duelEnd",				"0",		"1" },
-			{ "jk_cg_specialMoveCamera",	"0",		"1" },
-			{ "cg_fpls",					"0",		"0" },
-			{ "cg_fovaspectadjust",			"0",		"1" },
-			{ "cg_fov",						"80",		NULL },
-			{ "cg_thirdPersonRange",		"80",		NULL },
-
-			// others cvars					default		recommended
-			{ "jk_cg_customHats",			"0",		NULL },
-			{ "jk_cg_customAnims",			"0",		"1" },
-			{ "jk_cg_jetPackIdle",			"0",		NULL },
-		};
-
-		// Update popup
-		trap_Cvar_Set("jk_cg_clientPopUp", va("%i", (val ? JK_CLIENT_POPUP_ITEMS : 0)));
-
-		// Update cvars
-		for(num = 0; num < sizeof(jkmod_reset_client) / sizeof(jkmod_reset_client[0]); num++)
-		{
-			if (val && jkmod_reset_client[num].recVal == NULL) continue;
-
-			trap_Cvar_Set(jkmod_reset_client[num].cvar, (val ? jkmod_reset_client[num].recVal : jkmod_reset_client[num].defVal));
-		}
-	}
 	// screen resolutions
 	else if (!Q_stricmp(name, "ui_r_aspectratio")) {
 		int ui_r_mode = (int)trap_Cvar_VariableValue("ui_r_mode");
@@ -4512,6 +4439,9 @@ static void UI_Update(const char *name) {
 			trap_Cvar_SetValue("ui_r_fullscreen", 1);
 		}
 	}
+
+	// Tr!Force: [JKMod] Check custom menu update
+	JKMod_UI_Update(name, val);
 }
 
 static int gUISelectedMap = 0;
@@ -5231,25 +5161,7 @@ static void UI_RunMenuScript(const char **args)
 				trap_UI_DeleteDLFile(&uiInfo.downloadsList[uiInfo.downloadsIndex]);
 				UI_LoadDLFiles();
 			}
-		} 
-		// Tr!Force: [JKMod] Rotate camera when using emotes menu
-		else if (Q_stricmp(name, "JKMod_emoteCamera") == 0) 
-		{ 
-			trap_Cmd_ExecuteText(EXEC_APPEND, "emotecamera\n");
-			trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
-		}
-		// Tr!Force: [JKMod] Change dimension from menu
-		else if (Q_stricmp(name, "JKMod_emoteToggle") == 0)
-		{
-			trap_Cmd_ExecuteText(EXEC_APPEND, va("emote \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_emoteToggle")));
-		}
-		// Tr!Force: [JKMod] Change dimension from menu
-		else if (Q_stricmp(name, "JKMod_dimensionToggle") == 0)
-		{
-			trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_cmd_dimensionToggle")));
-		}
-		else 
-		{
+		} else if (!JKMod_UI_RunMenuScript(args, name)) { // Tr!Force: [JKMod] Check custom menu scripts
 			Com_Printf("unknown UI script %s\n", name);
 		}
 	}

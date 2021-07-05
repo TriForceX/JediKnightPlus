@@ -589,7 +589,7 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		{
 			cv->cvarFlags ^= CVAR_LATCH;
 			cv->cvarFlags ^= CVAR_TEMP;
-			JKMod_Printf("%s%s latched from basejk checked\n", (cv->cvarFlags & CVAR_LATCH ? S_COLOR_GREEN : S_COLOR_YELLOW), cv->cvarName);
+			JKMod_Printf("%s latched from basejk %s\n", cv->cvarName, (cv->cvarFlags & CVAR_LATCH ? "^5locked" : "^3unlocked"));
 		}
 
 		trap_Cvar_Register( cv->vmCvar, cv->cvarName,
@@ -603,9 +603,9 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	}
 
 	// Tr!Force: [GameTypeConfig] Cvar latch temp unlock finish
-	if (jkcvar_gameTypeConfig.integer && level.jkmodLevel.cvarTempUnlock == 1) 
+	if (jkcvar_gameTypeConfig.integer && level.jkmodLocals.cvarTempUnlock == 1) 
 	{
-		level.jkmodLevel.cvarTempUnlock = 2;
+		level.jkmodLocals.cvarTempUnlock = 2;
 		if (level.newSession) JKMod_CheckValidMapItems();
 		return;
 	}
@@ -652,7 +652,7 @@ void BaseJK2_G_UpdateCvars( void ) { // Tr!Force: [BaseJK2] Update cvars functio
 			if ( cv->modificationCount != cv->vmCvar->modificationCount ) {
 				cv->modificationCount = cv->vmCvar->modificationCount;
 
-				if ( cv->trackChange ) {
+				if ( cv->trackChange && !level.jkmodLocals.cvarToggleMod ) { // Tr!Force: [JKMod] Toggle mod check
 					trap_SendServerCommand( -1, va("print \"Server: %s changed to %s\n\"", 
 						cv->cvarName, cv->vmCvar->string ) );
 				}
@@ -1034,7 +1034,7 @@ void AddTournamentPlayer( void ) {
 			continue;
 		}
 		// Tr!Force: [Plugin] Don't allow
-		if (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.ClientPlugin) {
+		if (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.clientPlugin) {
 			continue;
 		}
 
@@ -2369,7 +2369,7 @@ void CheckVote( void ) {
 			level.votingGametypeTo = 0;
 		}
 	}
-	if ( !level.voteTime || level.jkmodLevel.pauseTime > level.time ) { // Tr!Force: [Pause] Check vote time
+	if ( !level.voteTime || level.jkmodLocals.pauseTime > level.time ) { // Tr!Force: [Pause] Check vote time
 		return;
 	}
 	// Tr!Force: [Vote] Check min/max vote pass
@@ -2567,6 +2567,8 @@ CheckCvars
 */
 void CheckCvars( void ) {
 	static int lastMod = -1;
+	
+	if ( VALIDSTRINGCVAR(jkcvar_serverClosed.string) ) return; // Tr!Force: [JKMod] Server closed on top
 
 	if ( g_password.modificationCount != lastMod ) {
 		lastMod = g_password.modificationCount;
@@ -2822,7 +2824,7 @@ start = trap_Milliseconds();
 end = trap_Milliseconds();
 
 	// Tr!Force: [JKMod] Check server idle
-	JKMod_serverIdleCheck();
+	JKMod_ServerIdleCheck();
 
 	// see if it is time to do a tournement restart
 	CheckTournament();

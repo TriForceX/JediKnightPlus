@@ -8,7 +8,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/game/g_local.h" // Original header
 
+// External stuff
 extern qboolean SaberAttacking(gentity_t *self);
+extern qboolean WP_HasForcePowers( const playerState_t *ps );
 
 /*
 =====================================================================
@@ -69,7 +71,7 @@ qboolean JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps)
 		JKMod_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if (ent->client->pers.jkmodPers.CustomDuel == 0)
+	if (ent->client->pers.jkmodPers.customDuel == 0)
 	{
 		return qfalse;
 	}
@@ -131,7 +133,7 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_WEAPON_STAND;
 
 	// Disruptor Zoom Always (Requires clientside)
-	if ((jkcvar_playerMovement.integer & JK_DISRUPTOR_WALK) && ent->client->pers.jkmodPers.ClientPlugin) 
+	if ((jkcvar_playerMovement.integer & JK_DISRUPTOR_WALK) && ent->client->pers.jkmodPers.clientPlugin) 
 		ent->client->ps.stats[JK_MOVEMENT] |= JK_DISRUPTOR_WALK;
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DISRUPTOR_WALK;
@@ -143,13 +145,39 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_USE_STAND;
 
 	// Spectator no-clip (Requires clientside)
-	if ((jkcvar_playerMovement.integer & JK_SPECTATOR_NOCLIP) && ent->client->pers.jkmodPers.ClientPlugin) 
+	if ((jkcvar_playerMovement.integer & JK_SPECTATOR_NOCLIP) && ent->client->pers.jkmodPers.clientPlugin) 
 		ent->client->ps.stats[JK_MOVEMENT] |= JK_SPECTATOR_NOCLIP;
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_SPECTATOR_NOCLIP;
 
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
+
+/*
+=====================================================================
+Gameplay changer
+=====================================================================
+*/
+void JKMod_SetGamePlay(char *option)
+{
+	int version;
+
+	if (!Q_stricmp(option, "2") || !Q_stricmp(option, "1.02")) version = VERSION_1_02;
+	else if (!Q_stricmp(option, "3") || !Q_stricmp(option, "1.03")) version = VERSION_1_03;
+	else if (!Q_stricmp(option, "4") || !Q_stricmp(option, "1.04")) version = VERSION_1_04;
+	else if (!Q_stricmp(option, "0")) version = jk2startversion;
+	else version = jk2gameplay;
+
+	if (version != jk2gameplay) 
+	{
+		MV_SetGamePlay(version);
+		trap_SendServerCommand(-1, va("print \"Server gameplay changed to 1.0%i\n\"", version));
+		trap_SendServerCommand(-1, va("cp \"Gameplay changed to 1.0%i\n\"", version));
+	}
+
+	trap_Cvar_Set("jk_gamePlay", va("%i", version == jk2startversion ? 0 : version));
+}
+
 /*
 =====================================================================
 Teleport player function
@@ -159,16 +187,15 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 {
 	gentity_t	*tent;
 
+	// Default spit speed
 	if (!spitspeed) spitspeed = 400;
 
-	if (player->client->sess.spectatorState == SPECTATOR_FOLLOW)
-	{ // Follow spectators don't need to teleport. And calling BG_PlayerStateToEntityState on them corrupts their s.number.
-		return;
-	}
+	// Follow spectators don't need to teleport. And calling BG_PlayerStateToEntityState on them corrupts their s.number.
+	if (player->client->sess.spectatorState == SPECTATOR_FOLLOW) return;
 
-	// use temp events at source and destination to prevent the effect
-	// from getting dropped by a second player event
-	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
+	// Use temp events at source and destination to prevent the effect from getting dropped by a second player event
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) 
+	{
 		if (efxfile[0] == '\0')
 		{
 			tent = JKMod_G_TempEntity(player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number);
@@ -198,15 +225,15 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 		}
 	}
 
-	// unlink to make sure it can't possibly interfere with G_KillBox
-	if (jkcvar_teleportFrag.integer) trap_UnlinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
+	// Unlink to make sure it can't possibly interfere with G_KillBox
+	if (jkcvar_teleportFrag.integer) trap_UnlinkEntity(player);
 
 	VectorCopy(origin, player->client->ps.origin);
 	player->client->ps.origin[2] += 2;
 
 	if (spitplayer)
 	{
-		// spit the player out
+		// Spit the player out
 		AngleVectors(angles, player->client->ps.velocity, NULL, NULL);
 		VectorScale(player->client->ps.velocity, spitspeed, player->client->ps.velocity);
 		player->client->ps.pm_time = 160;		// hold time
@@ -214,33 +241,105 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	}
 	else
 	{
-		// clear player velocity
+		// Clear player velocity
 		VectorClear(player->client->ps.velocity);
 	}
 
-	// toggle the teleport bit so the client knows to not lerp
+	// Toggle the teleport bit so the client knows to not lerp
 	player->client->ps.eFlags ^= EF_TELEPORT_BIT;
 
-	// set angles
+	// Set angles
 	SetClientViewAngle(player, angles);
 
-	// kill anything at the destination
-	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
-		// Tr!Force: [TeleFrag] Allow kill and unlink
-		if (jkcvar_teleportFrag.integer)
+	// Kill anything at the destination
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) 
+	{
+		if (jkcvar_teleportFrag.integer) {
 			G_KillBox(player);
-		else
+		} else {
 			JKMod_AntiStuckBox(player);
+		}
 	}
 
-	// save results of pmove
+	// Save results of pmove
 	BG_PlayerStateToEntityState(&player->client->ps, &player->s, qtrue);
 
-	// use the precise origin for linking
+	// Use the precise origin for linking
 	VectorCopy(player->client->ps.origin, player->r.currentOrigin);
 
-	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) {
-		if (jkcvar_teleportFrag.integer) trap_LinkEntity(player); // Tr!Force: [TeleFrag] Allow kill and unlink
+	// Link entity
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR && jkcvar_teleportFrag.integer) trap_LinkEntity(player);
+}
+
+/*
+=====================================================================
+Respawn time calculation for item throwing
+=====================================================================
+*/
+#define	ITEM_RESPAWN_ARMOR			20
+#define	ITEM_RESPAWN_HEALTH			30
+#define	ITEM_RESPAWN_AMMO			40
+#define	ITEM_RESPAWN_HOLDABLE		60
+
+int JKMod_ItemRespawnTime(gentity_t *ent)
+{
+	float respawnTime;
+
+	// Respawn time based on giType
+	if (ent->item->giType == IT_ARMOR)
+	{
+		respawnTime = ITEM_RESPAWN_ARMOR;
+	}
+	else if (ent->item->giType == IT_HOLDABLE)
+	{
+		respawnTime = ITEM_RESPAWN_HOLDABLE;
+	}
+	else if (ent->item->giType == IT_HEALTH)
+	{
+		respawnTime = ITEM_RESPAWN_HEALTH;
+	}
+	else if (ent->item->giType == IT_AMMO)
+	{
+		respawnTime = ITEM_RESPAWN_AMMO;
+	}
+
+	// Adaption disabled so no wait time/random set
+	if (!g_adaptRespawn.integer && !ent->wait && !ent->random)
+	{
+		return((int)respawnTime);
+	}
+	else
+	{
+		// Scale respawn time based on the current playing clients
+		if (level.numPlayingClients > 4)
+		{
+			if (level.numPlayingClients > 32)
+			{
+				respawnTime *= 0.25;
+			}
+			else if (level.numPlayingClients > 12)
+			{
+				respawnTime *= 20.0 / (float)(level.numPlayingClients + 8);
+			}
+			else
+			{
+				respawnTime *= 8.0 / (float)(level.numPlayingClients + 4);
+			}
+		}
+
+		// Check wait
+		if (ent->wait)
+			respawnTime = ent->wait;
+
+		// Check random
+		if (ent->random)
+			respawnTime += crandom() * ent->random;
+
+		// Don't allow below 1
+		if (respawnTime < 1.0)
+			respawnTime = 1.0;
+
+		return ((int)respawnTime);
 	}
 }
 
@@ -249,16 +348,14 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 Custom & default game settings function
 =====================================================================
 */
-extern qboolean WP_HasForcePowers( const playerState_t *ps );
-
-// Custom settings
 void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity)
 {
 	int customSettings = ent->client->pers.jkmodPers.customSettings;
 	int customSettingsCount = ent->client->pers.jkmodPers.customSettingsCount;
 
 	// Reset?
-	if (weapons == DEFAULT && forcepowers == DEFAULT && speed == DEFAULT && gravity == DEFAULT) { 
+	if (weapons == DEFAULT && forcepowers == DEFAULT && speed == DEFAULT && gravity == DEFAULT) 
+	{ 
 		ent->client->pers.jkmodPers.customSettings = 0;
 		ent->client->pers.jkmodPers.customSettingsCount = 0;
 	}
@@ -277,14 +374,17 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 			int i;
 			int customLevel, customCheck = -1;
 
-			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_SABER) {
-				customCheck = 15; // Saber attack
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_SABER) 
+			{
+				customCheck = FP_SABERATTACK;
 				customLevel = FORCE_LEVEL_3;
 			}
 
 			i = 0;
 			while (i < NUM_FORCE_POWERS)
 			{
+				if (ent->client->ps.fd.forcePowersActive & (1 << i)) WP_ForcePowerStop(ent, i);
+
 				if (forcepowers & (1 << i))
 				{
 					ent->client->ps.fd.forcePowerLevel[i] = 0;
@@ -372,54 +472,28 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	// Other stuff
 	if (customSettings != customSettingsCount)
 	{
-		int i;
-		int removeSize;
-		char *removeName[] = {
-			// Projectiles
-			"bryar_proj",
-			"generic_proj",
-			"blaster_proj",
-			"emplaced_gun_proj",
-			"bowcaster_proj",
-			"bowcaster_alt_proj",
-			"repeater_proj",
-			"repeater_alt_proj",
-			"demp2_proj",
-			"demp2_alt_proj",
-			"flech_proj",
-			"flech_alt",
-			"rocket_proj",
-			"thermal_detonator",
-			"detpack",
-			"laserTrap",
-			// Misc
-			"sentryGun",
-			"g2animent",
-			// Items
-			"item_shield",
-			"item_ysalimari",
-			"item_force_boon",
-			"item_force_enlighten_dark",
-			"item_force_enlighten_light",
-			// Dropped
-			"weapon_blaster",
-			"weapon_disruptor",
-			"weapon_bowcaster",
-			"weapon_repeater",
-			"weapon_demp2",
-			"weapon_flechette",
-			"weapon_rocket_launcher",
-			"weapon_thermal",
-			"weapon_trip_mine",
-			"weapon_det_pack",
-		};
+		gentity_t *found = NULL;
+		int i = MAX_CLIENTS;
+		int foundType = 0;
+		int foundCheck = (1 << ET_GENERAL) | (1 << ET_ITEM) | (1 << ET_MISSILE) | (1 << ET_SPECIAL) | (1 << ET_GRAPPLE);
 
-		removeSize = sizeof(removeName) / sizeof(removeName[0]);
-
-		i = 0;
-		while (i < removeSize)
+		while (i < MAX_GENTITIES)
 		{
-			JKMod_RemoveByClass(ent, removeName[i]);
+			found = &g_entities[i];
+			foundType = (1 << found->s.eType);
+
+			if ((foundType & foundCheck) && (found->parent == ent || (!Q_stricmp(found->classname, "g2animent") && found->s.owner == ent->s.number)) && Q_stricmp(found->classname, "lightsaber")) // Skip this
+			{
+				if (!Q_stricmp(found->classname, "sentryGun") && ent->client->ps.fd.sentryDeployed) {
+					ent->client->ps.fd.sentryDeployed = qfalse;
+				}
+				if (!Q_stricmp(found->classname, "detpack") && ent->client->ps.hasDetPackPlanted) {
+					ent->client->ps.hasDetPackPlanted = qfalse;
+				}
+
+				JKMod_Printf(S_COLOR_MAGENTA "Check remove %s from client %i\n", found->classname, ent->s.number);
+				G_FreeEntity(found);
+			}
 			i++;
 		}
 
@@ -435,7 +509,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	{
 		if (jkcvar_jetPack.integer) {
 			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-			if (!ent->client->ps.stats[JK_FUEL]) ent->client->ps.stats[JK_FUEL] = 100;
+			ent->client->ps.stats[JK_FUEL] = 100;
 		}
 	}
 	else 
@@ -456,12 +530,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	}
 
 	// Invulnerability
-	if (invulnerability) {
-		ent->client->pers.jkmodPers.invulnerability = qtrue;
-	}
-	else {
-		ent->client->pers.jkmodPers.invulnerability = qfalse;
-	}
+	ent->client->pers.jkmodPers.invulnerability = invulnerability ? qtrue : qfalse;
 
 	// Speed
 	ent->client->pers.jkmodPers.customSpeed = speed;
@@ -481,7 +550,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	// Modification count
 	if (customSettings != customSettingsCount) ent->client->pers.jkmodPers.customSettings = ent->client->pers.jkmodPers.customSettingsCount;
 
-	JKMod_Printf(S_COLOR_YELLOW "Custom settings for client %i\n", ent->client->ps.clientNum);
+	JKMod_Printf(S_COLOR_YELLOW "Client %i custom settings\n", ent->client->ps.clientNum);
 }
 
 /*
@@ -538,7 +607,6 @@ qboolean JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special
 Misc map entities resources
 =====================================================================
 */
-
 #define STATION_RECHARGE_TIME			3000
 #define STATION_SHIELD_TYPE				1
 #define STATION_HEALTH_TYPE				2
@@ -547,24 +615,18 @@ Misc map entities resources
 #define DEBRIS_SPECIALCASE_CHUNKS		-2
 #define DEBRIS_SPECIALCASE_WOOD			-3
 #define DEBRIS_SPECIALCASE_GLASS		-4
+
 extern int gExplSound;
 extern void BreakableBrushDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod);
 extern void BreakableBrushPain(gentity_t *self, gentity_t *attacker, int damage);
 extern void BreakableBrushUse(gentity_t *self, gentity_t *other, gentity_t *activator);
-
-// Effects usage
 extern void SP_fx_runner(gentity_t *ent);
 
 // Check recharge
 void JKMod_EnergyStationCheck(gentity_t *ent)
 {
-	if (ent->fly_sound_debounce_time < level.time) {
-		ent->s.loopSound = 0;
-	}
-
-	if (ent->count < ent->boltpoint4) {
-		ent->count++;
-	}
+	if (ent->fly_sound_debounce_time < level.time) ent->s.loopSound = 0;
+	if (ent->count < ent->boltpoint4) ent->count++;
 
 	ent->nextthink = level.time + ent->bolt_Head;
 }
@@ -617,16 +679,16 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 			if (typeAmmo) 
 			{
 				int i = AMMO_BLASTER;
+
 				while (i < AMMO_MAX)
 				{
 					add = ammoData[i].max*0.1;
 
-					if (add < 1) {
-						add = 1;
-					}
+					if (add < 1) add = 1;
 					if (activator->client->ps.ammo[i] < ammoData[i].max)
 					{
 						activator->client->ps.ammo[i] += add;
+
 						if (activator->client->ps.ammo[i] > ammoData[i].max)
 						{
 							activator->client->ps.ammo[i] = ammoData[i].max;
@@ -637,22 +699,17 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 			}
 			else 
 			{
-				if (dif > give) {
+				if (dif > give) 
 					add = give;
-				}
-				else {
+				else 
 					add = dif;
-				}
-				if (self->count < add) {
-					add = self->count;
-				}
+
+				if (self->count < add) add = self->count;
 			}
 
 			self->count -= add;
 
-			if (self->count <= 0 && typeShield) {
-				self->setTime = 0;
-			}
+			if (self->count <= 0 && typeShield) self->setTime = 0;
 
 			stop = 0;
 
@@ -683,15 +740,12 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 		}
 
 		// Show data
-		if (typeAmmo) {
+		if (typeAmmo)
 			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Ammo\n^3%i\n\"", activator->client->ps.ammo[currentAmmo]));
-		}
-		else if (typeHealth) {
+		else if (typeHealth)
 			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health\n^1%i\n\"", activator->client->ps.stats[STAT_HEALTH]));
-		}
-		else if (typeShield) {
+		else if (typeShield)
 			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield\n^2%i\n\"", activator->client->ps.stats[STAT_ARMOR]));
-		}
 	}
 }
 
@@ -722,7 +776,7 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 		return;
 	}
 
-	if (!ent->model || !ent->model[0])
+	if (!VALIDSTRING(ent->model))
 	{
 		if (ent->watertype == STATION_SHIELD_TYPE) ent->model = "models/items/a_shield_converter.md3";
 		if (ent->watertype == STATION_HEALTH_TYPE) ent->model = "models/map_objects/imp_mine/tank.md3";
@@ -782,7 +836,7 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 
 	if (G_SpawnString("fxFile", "", &fxFile))
 	{
-		if (fxFile && fxFile[0])
+		if (VALIDSTRING(fxFile))
 		{
 			effect = JKMod_G_Spawn(ent->s.number);
 
@@ -876,7 +930,7 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 
 	gExplSound = G_SoundIndex("sound/weapons/explosions/cargoexplode.wav");
 
-	if (debrissound && debrissound[0])
+	if (VALIDSTRING(debrissound))
 	{
 		ent->boltpoint1 = G_SoundIndex(debrissound);
 	}

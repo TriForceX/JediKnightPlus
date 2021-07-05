@@ -993,7 +993,6 @@ Try and use an entity in the world, directly ahead of us
 #define USE_DISTANCE	64.0f
 
 extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace );
-extern qboolean SaberAttacking(gentity_t *self); // Tr!Force: [JetPack] Use button
 void TryUse( gentity_t *ent )
 {
 	gentity_t	*target;
@@ -1002,23 +1001,7 @@ void TryUse( gentity_t *ent )
 	vec3_t		viewspot;
 
 	// Tr!Force: [JetPack] Use button
-	if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
-	{
-		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING && (ent->client->pers.jkmodPers.jetackUseDelay <= level.time))
-		{
-			ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
-			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
-		}
-		else if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE && (ent->client->pers.jkmodPers.jetackUseDelay <= level.time) &&
-			!( BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim)
-			|| ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN
-			|| ent->client->ps.weapon == WP_SABER && SaberAttacking(ent)))
-		{
-			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
-			ent->client->ps.eFlags |= JK_JETPACK_FLAMING;
-			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
-		}
-	}
+	JKMod_JetpackTryUse(ent);
 
 	VectorCopy(ent->client->ps.origin, viewspot);
 	viewspot[2] += ent->client->ps.viewheight;

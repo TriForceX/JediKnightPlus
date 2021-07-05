@@ -2,7 +2,7 @@
 ======================= Jedi Knight Plus Mod ========================
 By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 =====================================================================
-[Description]: Main dimension stuff...
+[Description]: Main dimension stuff
 =====================================================================
 */
 
@@ -19,7 +19,7 @@ void trap_Trace(trace_t *results, const vec3_t start, const vec3_t mins, const v
 Dimension data table
 =====================================================================
 */
-jkmod_dimension_data_t jkmod_dimension_data[] =
+jkmod_dimension_data_t JKModDimensionData[] =
 {
 	// dimension		weapons		forcepowers	forcelevel		holdables	jetpack		invulnerability	passthrough	speed	 gravity	command		name
     { DIMENSION_FREE,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		DEFAULT, DEFAULT,	"normal",	"Normal" },
@@ -30,6 +30,8 @@ jkmod_dimension_data_t jkmod_dimension_data[] =
 	{ DIMENSION_CHEAT,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		250,	 800,		"cheats",	"Cheats Mode" },
 };
 
+int JKModDimensionDataSize = ARRAY_LEN(JKModDimensionData);
+
 /*
 =====================================================================
 Dimension index from table
@@ -37,13 +39,11 @@ Dimension index from table
 */
 int JKMod_DimensionIndex(unsigned dimension)
 {
-	int	num;
+	int	i;
 
-	for(num = 0; num < sizeof(jkmod_dimension_data) / sizeof(jkmod_dimension_data[0]); num++)
+	for (i = 0; i < JKModDimensionDataSize; i++)
 	{
-		if (jkmod_dimension_data[num].dimension == dimension) {
-			return num;
-		}
+		if (JKModDimensionData[i].dimension == dimension) return i;
 	}
 	
 	return 0;
@@ -58,18 +58,18 @@ void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 {
 	if (jkcvar_altDimension.integer)
 	{
-		int num = JKMod_DimensionIndex(dimension);
+		int i = JKMod_DimensionIndex(dimension);
 
 		JKMod_CustomGameSettings(ent, 
-			jkmod_dimension_data[num].weapons,			// Weapons
-			jkmod_dimension_data[num].forcepowers,		// Force
-			jkmod_dimension_data[num].forcelevel,		// Force level
-			jkmod_dimension_data[num].holdables,		// Holdable items
-			jkmod_dimension_data[num].jetpack,			// Jetpack
-			jkmod_dimension_data[num].invulnerability,	// Invulnerability
-			jkmod_dimension_data[num].passthrough,		// Pass-through
-			jkmod_dimension_data[num].speed,			// Speed
-			jkmod_dimension_data[num].gravity			// Gravity
+			JKModDimensionData[i].weapons,			// Weapons
+			JKModDimensionData[i].forcepowers,		// Force
+			JKModDimensionData[i].forcelevel,		// Force level
+			JKModDimensionData[i].holdables,		// Holdable items
+			JKModDimensionData[i].jetpack,			// Jetpack
+			JKModDimensionData[i].invulnerability,	// Invulnerability
+			JKModDimensionData[i].passthrough,		// Pass-through
+			JKModDimensionData[i].speed,			// Speed
+			JKModDimensionData[i].gravity			// Gravity
 		);
 	}
 }
@@ -81,6 +81,10 @@ Set dimension function
 */
 qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
 {
+	int		i;
+	char	*print = say ? "cp" : "print";
+	char	message[MAX_STRING_CHARS] = { 0 };
+
 	if (!jkcvar_altDimension.integer)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"Dimensions are disabled by the server\n\"");
@@ -106,31 +110,36 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in this game type\n\"");
 		return qfalse;
 	}
-	else if (level.jkmodLevel.pauseTime > level.time)
+	else if (level.jkmodLocals.pauseTime > level.time)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension during pause mode\n\"");
 		return qfalse;
 	}
-	else if (ent->client->jkmodClient.DimensionTime > 0)
+	else if (ent->client->jkmodClient.dimensionTime > 0)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds before change dimension\n\"", ent->client->jkmodClient.DimensionTime));
+		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds before change dimension\n\"", ent->client->jkmodClient.dimensionTime));
 		return qfalse;
 	}
 	else
 	{
-		int	num;
+		// Message
+		Q_strcat(message, sizeof(message), "^7Usage: ^2!dimension <option>\n^7Option list:\n");
 
 		// Start
-		for (num = 0; num < sizeof(jkmod_dimension_data) / sizeof(jkmod_dimension_data[0]); num++)
+		for (i = 0; i < JKModDimensionDataSize; i++)
 		{
-			if (!Q_stricmp(dimension, jkmod_dimension_data[num].command))
+			// Add to message
+			Q_strcat(message, sizeof(message), va("^3%s\n", JKModDimensionData[i].command));
+
+			// Command
+			if (!Q_stricmp(dimension, JKModDimensionData[i].command))
 			{
-				qboolean	dimensionFree = jkmod_dimension_data[num].dimension == DIMENSION_FREE;
-				int			dimensionIndex = jkmod_dimension_data[num].dimension;
-				char		*dimensionName = jkmod_dimension_data[num].name;
+				qboolean	dimensionFree = JKModDimensionData[i].dimension == DIMENSION_FREE;
+				int			dimensionIndex = JKModDimensionData[i].dimension;
+				char		*dimensionName = JKModDimensionData[i].name;
 
 				// Delay
-				ent->client->jkmodClient.DimensionTime = jkcvar_altDimensionTime.integer;
+				ent->client->jkmodClient.dimensionTime = jkcvar_altDimensionTime.integer;
 
 				// Check
 				if (!(jkcvar_altDimension.integer & dimensionIndex) && !dimensionFree)
@@ -150,7 +159,7 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
 				else if (ent->client->ps.stats[JK_DIMENSION] > 1)
 				{
 					JKMod_DimensionSet(ent, DIMENSION_FREE);
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", jkmod_dimension_data[0].name));
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", JKModDimensionData[0].name));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s ^3%s ^7dimension\n\"", ent->client->pers.netname, (dimensionFree ? "back to" : "left the"), dimensionName));
 					return dimensionFree;
 				}
@@ -163,24 +172,7 @@ qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
 		}
 
 		// Not found
-		if (!say)
-		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Usage: dimension <option>\nSee ^3/help dimensions ^7for more information\n\""));
-		}
-		else
-		{
-			trap_SendServerCommand(ent - g_entities, va("cp \""
-				"^7Usage: ^2!dimension <option>\n"
-				"^7Option list:\n"
-				"^3normal\n"
-				"^3guns\n"
-				"^3race\n"
-				"^3saber\n"
-				"^3insta\n"
-				"^3cheats\n"
-				"^7\""));
-		}
-		
+		trap_SendServerCommand(ent - g_entities, va("%s \"%s\n\"", print, (say ? message : "Usage: dimension <option>\nSee ^3/help dimensions ^7for more information")));
 		return qfalse;
 	}
 }
@@ -216,8 +208,7 @@ void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 
 		assert(owner >= 0 && owner < MAX_GENTITIES);
 
-		if (owner >= MAX_CLIENTS && owner < ENTITYNUM_MAX_NORMAL) 
-		{
+		if (owner >= MAX_CLIENTS && owner < ENTITYNUM_MAX_NORMAL) {
 			owner = g_entities[owner].jkmodEnt.dimensionOwner;
 			assert(owner < MAX_CLIENTS || owner == ENTITYNUM_NONE || owner == ENTITYNUM_WORLD);
 		}
@@ -255,27 +246,27 @@ unsigned JKMod_DimensionGetFree(void)
 		qboolean free;
 		int i;
 
-		for (dimension = 1 << 15; dimension != 0; dimension <<= 1) {
+		for (dimension = 1 << DIMENSION_MAX; dimension != 0; dimension <<= 1) 
+		{
 			free = qtrue;
 
-			for (i = 0; i < level.maxclients; i++) {
-				if (!g_entities[i].inuse) {
-					continue;
-				}
-				if ((g_entities[i].jkmodEnt.dimensionNumber & dimension) != 0) {
+			for (i = 0; i < level.maxclients; i++) 
+			{
+				if (!g_entities[i].inuse) continue;
+
+				if ((g_entities[i].jkmodEnt.dimensionNumber & dimension) != 0) 
+				{
 					free = qfalse;
 					break;
 				}
 			}
-			if (free) {
-				return dimension;
-			}
+
+			if (free) return dimension;
 		}
+
 		assert(0);
 		return DIMENSION_FREE;
-	}
-	else
-	{
+	} else {
 		return 0;
 	}
 }
@@ -390,6 +381,7 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 				ent->r.contents = 0;
 				JKMod_DimensionTrace(results, start, mins, maxs, end, passEntityNum, contentmask);
 				ent->r.contents = contents;
+
 				return;
 			}
 		}
@@ -414,9 +406,9 @@ int JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *enti
 	if (mvapi && jkcvar_altDimension.integer)
 	{
 		gentity_t	*passEnt = g_entities + entityNum;
-		int	fullCount;
-		int	count;
-		int	i;
+		int			fullCount;
+		int			count;
+		int			i;
 
 		fullCount = trap_EntitiesInBox(mins, maxs, entityList, maxcount);
 

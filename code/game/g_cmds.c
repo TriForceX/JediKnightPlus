@@ -254,6 +254,18 @@ void Cmd_Give_f (gentity_t *ent)
 		i = 0;
 	}
 
+	// Tr!Force: [JetPack] Apply on give command
+	if (give_all || Q_stricmp( name, "jetpack") == 0) 
+	{
+		if (jkcvar_jetPack.integer)
+		{
+			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+			ent->client->ps.stats[JK_FUEL] = 100;
+
+			if (!give_all) return;
+		}
+	}
+
 	if (give_all || Q_stricmp( name, "health") == 0)
 	{
 		if (trap_Argc() == 3) {
@@ -548,6 +560,9 @@ Let everyone know about a team change
 */
 void BroadcastTeamChange( gclient_t *client, int oldTeam )
 {
+	// Tr!Force: [JKMod] Clear map restarted
+	if (level.jkmodLocals.mapRestarted) level.jkmodLocals.mapRestarted = qfalse;
+
 	client->ps.fd.forceDoInit = 1; //every time we change teams make sure our force powers are set right
 
 	if ( client->sess.sessionTeam == TEAM_RED ) {
@@ -730,7 +745,7 @@ void SetTeam( gentity_t *ent, char *s ) {
 	}
 
 	// Tr!Force: [Pause] Don't allow
-	if (level.jkmodLevel.pauseTime > level.time)
+	if (level.jkmodLocals.pauseTime > level.time)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"You can't change team during pause mode\n\"");
 		return;
@@ -883,7 +898,7 @@ void Cmd_Team_f( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.ClientPlugin)
+	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.clientPlugin)
 	{
 		ClientBegin(ent->s.number, qfalse);
 		return;
@@ -1012,7 +1027,7 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 	}
 
 	// Tr!Force: [Plugin] Don't allow
-	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.ClientPlugin) {
+	if (jkcvar_pluginRequired.integer == 2 && !ent->client->pers.jkmodPers.clientPlugin) {
 		return;
 	}
 
@@ -1100,7 +1115,7 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 	}
 
 	// Tr!Force: [Ignore] Apply chat ignore
-	if (JKMod_IsClientIgnored(0, other->s.number, ent->s.number) || other->client->sess.jkmodSess.IgnoredAll[0])
+	if (JKMod_IgnoreClientCheck(0, other->s.number, ent->s.number) || other->client->sess.jkmodSess.ignoredAll[0])
 	{
 		return;
 	}

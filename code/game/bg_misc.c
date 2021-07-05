@@ -1338,7 +1338,7 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 			if (!ps->saberLockFrame || power != FP_PUSH)
 			{
 				#ifdef JK2_GAME
-				// Tr!Force: [CustomDuel] Check force duel
+				// Tr!Force: [Duel] Check force duel
 				if (!JKMod_ForcePowerValid(power, ps))
 				#endif
 				return qfalse;

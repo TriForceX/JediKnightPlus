@@ -21,20 +21,6 @@ Cvar table list and variables
 =====================================================================
 */
 
-typedef struct { // Cvar table struct
-
-	vmCvar_t	*vmCvar;
-	char		*cvarName;
-	char		*defaultString;
-	int			cvarFlags;
-	int			modificationCount;
-	qboolean	trackChange;
-
-} cvarTable_t;
-
-vmCvar_t	jkcvar_test1;
-vmCvar_t	jkcvar_test2;
-
 vmCvar_t	jkcvar_serverMotd;
 vmCvar_t	jkcvar_serverMotdTime;
 vmCvar_t	jkcvar_serverIdle;
@@ -64,6 +50,7 @@ vmCvar_t	jkcvar_voteMaxPass;
 vmCvar_t	jkcvar_itemForcePhysics;
 vmCvar_t	jkcvar_duelStartHealth;
 vmCvar_t	jkcvar_duelStartArmor;
+vmCvar_t	jkcvar_duelStartEmote;
 vmCvar_t	jkcvar_duelEndStats;
 vmCvar_t	jkcvar_duelEndSlow;
 vmCvar_t	jkcvar_duelEndSlowScale;
@@ -99,77 +86,81 @@ vmCvar_t	jkcvar_jetPack;
 vmCvar_t	jkcvar_playerMovement;
 vmCvar_t	jkcvar_botsAI;
 
-static cvarTable_t	JKModCvarTable[] = 
+vmCvar_t	jkcvar_test1;
+vmCvar_t	jkcvar_test2;
+
+static jkmod_cvar_table_t JKModCvarTable[] = 
 {
-	{ &jkcvar_serverMotd,			"jk_serverMotd",			"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverMotdTime,		"jk_serverMotdTime",		"5",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverIdle,			"jk_serverIdle",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverIdleFile,		"jk_serverIdleFile",		"jkmod_server.cfg",		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverClosed,			"jk_serverClosed",			"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverClosedText,		"jk_serverClosedText",		"Closed.",				CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_serverJoinSound,		"jk_serverJoinSound",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverMotd,			"jk_serverMotd",			"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverMotdTime,		"jk_serverMotdTime",		"5",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverIdle,			"jk_serverIdle",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverIdleFile,		"jk_serverIdleFile",		"jkmod_server.cfg",		NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverClosed,			"jk_serverClosed",			"0",					JKMod_CVU_serverClosed,		CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverClosedText,		"jk_serverClosedText",		"Closed.",				NULL,						CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverJoinSound,		"jk_serverJoinSound",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_allowBlackNames,		"jk_allowBlackNames",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowMultiDuel,		"jk_allowMultiDuel",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowCustomDuel,		"jk_allowCustomDuel",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_allowDuelChat,		"jk_allowDuelChat",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_noDuplicatedNames,	"jk_noDuplicatedNames",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_chatProtect,			"jk_chatProtect",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_teleportFrag,			"jk_teleportFrag",			"1",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowBlackNames,		"jk_allowBlackNames",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowMultiDuel,		"jk_allowMultiDuel",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowCustomDuel,		"jk_allowCustomDuel",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowDuelChat,		"jk_allowDuelChat",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_noDuplicatedNames,	"jk_noDuplicatedNames",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_chatProtect,			"jk_chatProtect",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportFrag,			"jk_teleportFrag",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_voteAnyMap,			"jk_voteAnyMap",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteControl,			"jk_voteControl",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteResults,			"jk_voteResults",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteWaitTime,			"jk_voteWaitTime",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteMinPlayers,		"jk_voteMinPlayers",		"2",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_voteMaxPass,			"jk_voteMaxPass",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_itemForcePhysics,		"jk_itemForcePhysics",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelStartHealth,		"jk_duelStartHealth",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelStartArmor,		"jk_duelStartArmor",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelEndStats,			"jk_duelEndStats",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelEndSlow,			"jk_duelEndSlow",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelEndSlowScale,		"jk_duelEndTimeScale",		"0.5",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelDistance,			"jk_duelDistance",			"1024",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteAnyMap,			"jk_voteAnyMap",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteControl,			"jk_voteControl",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteResults,			"jk_voteResults",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteWaitTime,			"jk_voteWaitTime",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteMinPlayers,		"jk_voteMinPlayers",		"2",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_voteMaxPass,			"jk_voteMaxPass",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_itemForcePhysics,		"jk_itemForcePhysics",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelStartHealth,		"jk_duelStartHealth",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelStartArmor,		"jk_duelStartArmor",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelStartEmote,		"jk_duelStartEmote",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelEndStats,			"jk_duelEndStats",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelEndSlow,			"jk_duelEndSlow",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelEndSlowScale,		"jk_duelEndTimeScale",		"0.5",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelDistance,			"jk_duelDistance",			"1024",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_customHats,			"jk_customHats",			"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_customHats,			"jk_customHats",			"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
-	{ &jkcvar_emotesEnabled,		"jk_emotesEnabled",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesBreak,			"jk_emotesBreak",			"1",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesFreeze,			"jk_emotesFreeze",			"1",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesEnabled,		"jk_emotesEnabled",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesBreak,			"jk_emotesBreak",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesFreeze,			"jk_emotesFreeze",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_emotesPunchDamage,	"jk_emotesPunchDamage",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					CVAR_ARCHIVE | CVAR_LATCH,			0, qfalse },
-	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					JKMod_CVU_gamePlay,			CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					NULL,						CVAR_ARCHIVE | CVAR_LATCH,			0, qfalse },
+	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					JKMod_CVU_randomBegin,		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					JKMod_CVU_serverNews,		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_mapDefaultMusic,		"jk_mapDefaultMusic",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_mapCycleFromFile,		"jk_mapCycleFromFile",		"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					JKMod_CVU_pluginRequired,	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapDefaultMusic,		"jk_mapDefaultMusic",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapCycleFromFile,		"jk_mapCycleFromFile",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					JKMod_CVU_playerMovement,	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_test1,				"jk_test1",					"0",					CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_test2,				"jk_test2",					"0",					CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_test1,				"jk_test1",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_test2,				"jk_test2",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 };
 
-static int JKModCvarTableSize = sizeof(JKModCvarTable) / sizeof(JKModCvarTable[0]);
+static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
 
 /*
 =====================================================================
@@ -177,10 +168,11 @@ Register / update cvars functions
 =====================================================================
 */
 
+// Register cvars
 void JKMod_G_RegisterCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
+	int					i;
+	jkmod_cvar_table_t	*cv;
 
 	// Register all the cvars
 	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
@@ -190,7 +182,7 @@ void JKMod_G_RegisterCvars(void)
 		{
 			cv->cvarFlags ^= CVAR_LATCH;
 			cv->cvarFlags ^= CVAR_TEMP;
-			JKMod_Printf("%s%s latched from jkmod checked\n", (cv->cvarFlags & CVAR_LATCH ? S_COLOR_GREEN : S_COLOR_YELLOW), cv->cvarName);
+			JKMod_Printf("%s latched from jkmod %s\n", cv->cvarName, (cv->cvarFlags & CVAR_LATCH ? "^5locked" : "^3unlocked"));
 		}
 
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
@@ -212,10 +204,11 @@ void JKMod_G_RegisterCvars(void)
 	BaseJK2_G_RegisterCvars();
 }
 
+// Update cvars
 void JKMod_G_UpdateCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
+	int					i;
+	jkmod_cvar_table_t	*cv;
 
 	// Update all the cvars
 	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
@@ -228,76 +221,168 @@ void JKMod_G_UpdateCvars(void)
 			{
 				cv->modificationCount = cv->vmCvar->modificationCount;
 
-				if(cv->trackChange)
+				// Normal tracking
+				if(cv->trackChange && !level.jkmodLocals.cvarToggleMod)
 				{
-					// Reload stuff warning
-					if ((cv->vmCvar == &jkcvar_randomBegin || cv->vmCvar == &jkcvar_serverNews || cv->vmCvar == &jkcvar_teleportChat))
-					{
-						G_Printf("%s will load the files upon restarting or by using /rcon reload <type>.\n", cv->cvarName);
-					}
-					// Normal tracking
-					else if (!level.jkmodLevel.cvarToggleMod)
-					{
-						trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
-					}
-					// Reset toggle mod check
-					level.jkmodLevel.cvarToggleMod = qfalse;
+					trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 				}
 
-				// Plugin check
-				if (cv->vmCvar == &jkcvar_pluginRequired)
-				{
-					int check = cv->vmCvar->integer == 2 ? 1 : 0;
-					int num;
-
-					if (check)
-					{
-						gentity_t *ent;
-
-						for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent)
-						{
-							if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
-							{
-								if (!ent->client->pers.jkmodPers.ClientPlugin)
-								{
-									ClientBegin(ent->s.number, qfalse);
-								}
-							}
-						}
-					}
-				}
-
-				// Ingame gameplay
-				if (cv->vmCvar == &jkcvar_gamePlay)
-				{
-					char *gameplay = cv->vmCvar->string;
-
-					if (strcmp(gameplay, "0") != 0)
-					{
-						JKMod_gamePlay(gameplay);
-					}
-				}
-
-				// Player movement
-				if (cv->vmCvar == &jkcvar_playerMovement)
-				{
-					gentity_t *ent;
-					int num;
-
-					for (num = 0, ent = g_entities; num < MAX_CLIENTS; ++num, ++ent)
-					{
-						if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
-						{
-							JKMod_PlayerMovementCheck(ent);
-						}
-					}
-				}
+				// Update functions
+				if (cv->update) cv->update();
 			}
 		}
 	}
 
 	// Launch original update cvars function
 	BaseJK2_G_UpdateCvars();
+
+	// Reset toggle mod check
+	if (level.jkmodLocals.cvarToggleMod) level.jkmodLocals.cvarToggleMod = qfalse;
+}
+
+// Update random begin cvar
+void JKMod_CVU_randomBegin(void) 
+{
+	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
+	{
+		static char		*linestart;
+		static char		*lineend;
+		static int		count;
+
+		level.jkmodLocals.randomBeginCount = 0;
+		linestart = JKMod_ReadFile("config/random_begin.cfg");
+
+		if (linestart)
+		{
+			lineend = strchr(linestart, '\n');
+			while (lineend)
+			{
+				*lineend = 0;
+				Q_strncpyz(level.jkmodLocals.randomBegin[count++], linestart, sizeof(level.jkmodLocals.randomBegin[0]));
+				level.jkmodLocals.randomBeginCount++;
+				linestart = lineend + 1;
+				lineend = strchr(linestart, '\n');
+				if (count >= MAX_FILE_VARS) break;
+			}
+			if (count < MAX_FILE_VARS) {
+				Q_strncpyz(level.jkmodLocals.randomBegin[count++], linestart, sizeof(level.jkmodLocals.randomBegin[0]));
+				level.jkmodLocals.randomBeginCount++;
+			}
+			G_Printf("%i random begin messages loaded\n", level.jkmodLocals.randomBeginCount);
+		}
+		else
+		{
+			trap_Cvar_Set("jk_randomBegin", "0");
+		}
+	}
+}
+
+// Update server news cvar
+void JKMod_CVU_serverNews(void)
+{
+	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
+	{
+		static char		*linestart;
+		static char		*lineend;
+		static int		count;
+
+		level.jkmodLocals.serverNewsCount = 0;
+		linestart = JKMod_ReadFile("config/server_news.cfg");
+
+		if (linestart)
+		{
+			lineend = strchr(linestart, '\n');
+			while (lineend)
+			{
+				*lineend = 0;
+				Q_strncpyz(level.jkmodLocals.serverNews[count++], linestart, sizeof(level.jkmodLocals.serverNews[0]));
+				level.jkmodLocals.serverNewsCount++;
+				linestart = lineend + 1;
+				lineend = strchr(linestart, '\n');
+				if (count >= MAX_FILE_VARS) break;
+			}
+			if (count < MAX_FILE_VARS) {
+				Q_strncpyz(level.jkmodLocals.serverNews[count++], linestart, sizeof(level.jkmodLocals.serverNews[0]));
+				level.jkmodLocals.serverNewsCount++;
+			}
+			G_Printf("%i server news loaded\n", level.jkmodLocals.serverNewsCount);
+		}
+		else
+		{
+			trap_Cvar_Set("jk_serverNews", "0");
+		}
+	}
+}
+
+// Update teleport chat
+void JKMod_CVU_teleportChat(void)
+{
+	if (jkcvar_teleportChat.integer == 1) // 2 is for save/load enable
+	{
+		static char		*linestart;
+
+		level.jkmodLocals.teleportChatsCount = 0;
+		linestart = JKMod_ReadFile("config/teleport_chats.cfg");
+
+		if (linestart)
+		{
+			level.jkmodLocals.teleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
+			G_Printf("%i teleport chats loaded\n", level.jkmodLocals.teleportChatsCount);
+		}
+		else
+		{
+			trap_Cvar_Set("jk_teleportChat", "0");
+		}
+	}
+}
+
+// Update gameplay cvar
+void JKMod_CVU_gamePlay(void)
+{
+	JKMod_SetGamePlay(jkcvar_gamePlay.string);
+}
+
+// Update player movement cvar
+void JKMod_CVU_playerMovement(void)
+{
+	gentity_t *ent;
+	int i;
+
+	for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+	{
+		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+		{
+			JKMod_PlayerMovementCheck(ent);
+		}
+	}
+}
+
+// Update plugin required cvar
+void JKMod_CVU_pluginRequired(void)
+{
+	if (jkcvar_pluginRequired.integer == 2)
+	{
+		gentity_t *ent;
+		int i;
+
+		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+		{
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			{
+				if (!ent->client->pers.jkmodPers.clientPlugin) ClientBegin(ent->s.number, qfalse);
+			}
+		}
+	}
+}
+
+// Update server closed cvar
+void JKMod_CVU_serverClosed(void)
+{
+	if (VALIDSTRINGCVAR(jkcvar_serverClosed.string)) {
+		trap_Cvar_Set( "g_needpass", "1" );
+	} else {
+		trap_Cvar_Set( "g_needpass", "0" );
+	}
 }
 
 /*
@@ -316,7 +401,7 @@ void JKMod_PauseTimeRestore(int msec)
 	ADJUST(level.intermissionQueued);
 	ADJUST(level.exitTime);
 	ADJUST(level.voteTime);
-	ADJUST(level.jkmodLevel.idleTime);
+	ADJUST(level.jkmodLocals.idleTime);
 
 	level.startTime += msec;
 
@@ -332,7 +417,7 @@ void JKMod_PauseTimeRestore(int msec)
 			gclient_t		*client = ent->client;
 			playerState_t	*ps = &client->ps;
 
-			G_Sound(ent, CHAN_VOICE, G_SoundIndex("sound/chars/mothma/misc/40MOM038"));
+			G_Sound(ent, CHAN_AUTO, G_SoundIndex("sound/chars/mothma/misc/40MOM038"));
 
 			ADJUST(ent->s.constantLight);
 			ADJUST(ent->s.emplacedOwner);
@@ -459,16 +544,16 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 	static int	pauseLast = 0;
 	static int	pauseTime = 0;
 
-	if (level.jkmodLevel.pauseTime > levelTime)
+	if (level.jkmodLocals.pauseTime > levelTime)
 	{
 		if (!pauseLast)
 		{
 			pauseLast = levelTime;
-			level.jkmodLevel.idleTime = levelTime;
+			level.jkmodLocals.idleTime = levelTime;
 			
-			if (level.jkmodLevel.pauseTimeCustom) {
-				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLevel.pauseTimeCustom));
-				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\n\"", level.jkmodLevel.pauseTimeCustom));
+			if (level.jkmodLocals.pauseTimeCustom) {
+				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
+				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
 			}
 			else {
 				trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
@@ -476,9 +561,9 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 			}
 		}
 
-		if (pauseTime != level.jkmodLevel.pauseTime)
+		if (pauseTime != level.jkmodLocals.pauseTime)
 		{
-			pauseTime = level.jkmodLevel.pauseTime;
+			pauseTime = level.jkmodLocals.pauseTime;
 			trap_SetConfigstring(CS_PAUSE, va("%d", pauseTime));
 		}
 
@@ -487,7 +572,7 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 	else if (pauseLast)
 	{
 		JKMod_PauseTimeRestore(levelTime - pauseLast);
-		trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_msToString((levelTime - pauseLast + 1000), qfalse)));
+		trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_MsToWord((levelTime - pauseLast + 1000), qfalse)));
 		trap_SendServerCommand(-1, va("cp \"%s\n\"", G_GetStripEdString("SVINGAME", "BEGIN_DUEL")));
 		
 		pauseLast = 0;
@@ -534,133 +619,34 @@ void JKMod_PauseFrameRun(void)
 
 /*
 =====================================================================
-Random begin initialization
-=====================================================================
-*/
-void JKMod_randomBeginInit(void) 
-{
-	static char		*linestart;
-	static char		*lineend;
-	static int		count;
-
-	level.jkmodLevel.RandomBeginCount = 0;
-	linestart = JKMod_ReadFile("config/random_begin.cfg");
-
-	if (linestart)
-	{
-		lineend = strchr(linestart, '\n');
-		while (lineend)
-		{
-			*lineend = 0;
-			Q_strncpyz(level.jkmodLevel.RandomBegin[count++], linestart, sizeof(level.jkmodLevel.RandomBegin[0]));
-			level.jkmodLevel.RandomBeginCount++;
-			linestart = lineend + 1;
-			lineend = strchr(linestart, '\n');
-			if (count >= MAX_LINES) break;
-		}
-		if (count < MAX_LINES) {
-			Q_strncpyz(level.jkmodLevel.RandomBegin[count++], linestart, sizeof(level.jkmodLevel.RandomBegin[0]));
-			level.jkmodLevel.RandomBeginCount++;
-		}
-		G_Printf("%i random begin messages loaded\n", level.jkmodLevel.RandomBeginCount);
-	}
-	else
-	{
-		trap_Cvar_Set("jk_randomBegin", "0");
-	}
-}
-
-/*
-=====================================================================
-Server news initialization
-=====================================================================
-*/
-void JKMod_serverNewsInit(void)
-{
-	static char		*linestart;
-	static char		*lineend;
-	static int		count;
-
-	level.jkmodLevel.ServerNewsCount = 0;
-	linestart = JKMod_ReadFile("config/server_news.cfg");
-
-	if (linestart)
-	{
-		lineend = strchr(linestart, '\n');
-		while (lineend)
-		{
-			*lineend = 0;
-			Q_strncpyz(level.jkmodLevel.ServerNews[count++], linestart, sizeof(level.jkmodLevel.ServerNews[0]));
-			level.jkmodLevel.ServerNewsCount++;
-			linestart = lineend + 1;
-			lineend = strchr(linestart, '\n');
-			if (count >= MAX_LINES) break;
-		}
-		if (count < MAX_LINES) {
-			Q_strncpyz(level.jkmodLevel.ServerNews[count++], linestart, sizeof(level.jkmodLevel.ServerNews[0]));
-			level.jkmodLevel.ServerNewsCount++;
-		}
-		G_Printf("%i server news loaded\n", level.jkmodLevel.ServerNewsCount);
-	}
-	else
-	{
-		trap_Cvar_Set("jk_serverNews", "0");
-	}
-}
-
-/*
-=====================================================================
-Teleport chats initialization
-=====================================================================
-*/
-void JKMod_teleportChatInit(void)
-{
-	static char		*linestart;
-
-	level.jkmodLevel.TeleportChatsCount = 0;
-	linestart = JKMod_ReadFile("config/teleport_chats.cfg");
-
-	if (linestart)
-	{
-		level.jkmodLevel.TeleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodLevel.TeleportChatsCount, &level.jkmodLevel.TeleportChats[level.jkmodLevel.TeleportChatsCount]);
-		G_Printf("%i teleport chats loaded\n", level.jkmodLevel.TeleportChatsCount);
-	}
-	else
-	{
-		trap_Cvar_Set("jk_teleportChat", "0");
-	}
-}
-
-/*
-=====================================================================
 Server idle check
 =====================================================================
 */
-void JKMod_serverIdleCheck(void)
+void JKMod_ServerIdleCheck(void)
 {
 	if (level.numVotingClients == 0 && jkcvar_serverIdle.integer) 
 	{
-		if (level.jkmodLevel.idleTime > 0)
+		if (level.jkmodLocals.idleTime > 0)
 		{
-			if (level.jkmodLevel.idleTime + jkcvar_serverIdle.integer*60000 < level.time + 15000)
+			if (level.jkmodLocals.idleTime + jkcvar_serverIdle.integer*60000 < level.time + 15000)
 			{
 				trap_SendServerCommand(-1, "print \"Server idle, changing to defaults in 15 seconds...\n\"");
-				level.jkmodLevel.idleTime =- level.jkmodLevel.idleTime;
+				level.jkmodLocals.idleTime =- level.jkmodLocals.idleTime;
 			}
 		}
 		else 
 		{
-			if (-level.jkmodLevel.idleTime + jkcvar_serverIdle.integer*60000 < level.time)
+			if (-level.jkmodLocals.idleTime + jkcvar_serverIdle.integer*60000 < level.time)
 			{
 				trap_SendConsoleCommand(EXEC_APPEND, va("exec %s\n", jkcvar_serverIdleFile.string));
-				level.jkmodLevel.idleTime = level.time;
+				level.jkmodLocals.idleTime = level.time;
 			}
 		}
 	}
 	else 
 	{
-		if (level.jkmodLevel.idleTime < 0) trap_SendServerCommand(-1, "print \"Server idle reset aborted!\n\"");
-		level.jkmodLevel.idleTime = level.time;
+		if (level.jkmodLocals.idleTime < 0) trap_SendServerCommand(-1, "print \"Server idle reset aborted!\n\"");
+		level.jkmodLocals.idleTime = level.time;
 	}
 }
 
@@ -669,7 +655,7 @@ void JKMod_serverIdleCheck(void)
 Custom GameType Config
 =====================================================================
 */
-void JKMod_gameTypeConfig(void)
+void JKMod_GameTypeConfig(void)
 {
 	static char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
 	static fileHandle_t	f;
@@ -699,7 +685,7 @@ Main initialization functions
 */
 void JKMod_G_InitGame(int levelTime, int randomSeed, int restart) 
 {
-	G_Printf(S_COLOR_CYAN "------ JKPlus Initialization ------\n");
+	G_Printf(S_COLOR_CYAN "----- JK+ Game Initialization -----\n");
 
 	// Launch original init game function
 	BaseJK2_G_InitGame(levelTime, randomSeed, restart);
@@ -710,40 +696,55 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set default timescale
 	trap_Cvar_Set("timescale", "1");
 
+	// Set map restarted check
+	level.jkmodLocals.mapRestarted = (qboolean)restart;
+
 	// Check gameplay
-	if (strcmp(jkcvar_gamePlay.string, "0") != 0)
+	if (jkcvar_gamePlay.integer)
 	{
-		JKMod_gamePlay(jkcvar_gamePlay.string);
+		JKMod_SetGamePlay(jkcvar_gamePlay.string);
 	}
 
 	// Set random begin message
-	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
+	if (jkcvar_randomBegin.integer)
 	{
-		JKMod_randomBeginInit();
+		JKMod_CVU_randomBegin();
 	}
 
 	// Set server news
-	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
+	if (jkcvar_serverNews.integer)
 	{
-		JKMod_serverNewsInit();
+		JKMod_CVU_serverNews();
 	}
 
 	// Set teleport chats
 	if (jkcvar_teleportChat.integer)
 	{
-		JKMod_teleportChatInit();
+		JKMod_CVU_teleportChat();
 	}
 
 	// Check server idle
 	if (jkcvar_serverIdle.integer)
 	{
-		level.jkmodLevel.idleTime = levelTime;
+		level.jkmodLocals.idleTime = levelTime;
 		G_Printf("%i minutes set for server idle\n", jkcvar_serverIdle.integer);
 	}
 
 	// Check gametype config
 	if (jkcvar_gameTypeConfig.integer)
 	{
-		JKMod_gameTypeConfig();
+		JKMod_GameTypeConfig();
+	}
+
+	// Check server closed
+	if (VALIDSTRINGCVAR(jkcvar_serverClosed.string))
+	{
+		trap_Cvar_Set("g_needpass", "1");
+	}
+
+	// Precache join sound
+	if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string))
+	{
+		G_SoundIndex(jkcvar_serverJoinSound.string);
 	}
 }

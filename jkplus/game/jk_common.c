@@ -33,7 +33,7 @@ void QDECL JKMod_Printf(const char *fmt, ...)
 Check the given string as number
 =====================================================================
 */
-qboolean JKMod_isNumber(const char *s)
+qboolean JKMod_ValidNumber(const char *s)
 {
 	int i = strlen(s);
 	int isNum = (i > 0);
@@ -49,19 +49,34 @@ qboolean JKMod_isNumber(const char *s)
 
 /*
 =====================================================================
-Compare the given command with another
+Truncate buffer with custom length limit
 =====================================================================
 */
-int JKMod_compareCmd(char *cmd, char *required)
+void JKMod_TruncateString(char *buffer, const char *s, int limit) 
 {
-	if (Q_stricmp(cmd, required) == 0)
-	{
-		return 1;
+	int length = strlen(s);
+
+	if (length <= limit) {
+		Q_strncpyz(buffer, s, limit);
+	} else {
+		Q_strncpyz(buffer, s, limit - 2);
+		Q_strcat(buffer, limit + 1, "...");
 	}
-	else
-	{
-		return 0;
-	}
+}
+
+/*
+=====================================================================
+Encode characters of a string into its ASCII numbers total sum
+=====================================================================
+*/
+void JKMod_DummyEncode(char *buffer, const char *s)
+{
+	int i;
+	int temp = 0;
+	int length = strlen(s);
+
+	for (i = 0; i < strlen(s); i++) temp += s[i];
+	Q_strncpyz(buffer, va("%i", temp), length);
 }
 
 /*
@@ -69,7 +84,7 @@ int JKMod_compareCmd(char *cmd, char *required)
 Cleans the given string from newlines and such
 =====================================================================
 */
-void JKMod_stringEscape(char *in, char *out, int outSize)
+void JKMod_StringEscape(char *in, char *out, int outSize)
 {
 	char	ch, ch1;
 	int len = 0;
@@ -79,15 +94,13 @@ void JKMod_stringEscape(char *in, char *out, int outSize)
 	{
 		ch = *in++;
 		ch1 = *in;
-		if (ch == '\\' && ch1 == 'n')
-		{
+		if (ch == '\\' && ch1 == 'n') {
 			in++;
 			*out++ = '\n';
+		} else {
+			*out++ = ch;
 		}
-		else *out++ = ch;
-		if (len > outSize - 1) {
-			break;
-		}
+		if (len > outSize - 1) break;
 		len++;
 	}
 	return;
@@ -95,38 +108,10 @@ void JKMod_stringEscape(char *in, char *out, int outSize)
 
 /*
 =====================================================================
-Removes color codes and converts everything to lower case
-=====================================================================
-*/
-void JKMod_cleanString(char *in, char *out)
-{
-	int	i, count = 0;
-	int	strLen = strlen(in);
-
-	for (i = 0; i < strLen; i++)
-	{
-		if ((strLen > i + 1) && in[i] == '^' && in[i + 1] >= '0' && in[i + 1] <= '9')
-		{
-			i++;
-			continue;
-		}
-
-		if ((int)in < 0)
-		{
-			continue;
-		}
-
-		out[count] = tolower(in[i]);
-		count++;
-	}
-}
-
-/*
-=====================================================================
 Sanitize strings with color codes
 =====================================================================
 */
-char *JKMod_sanitizeString(char *dest, char *source, int destSize)
+char *JKMod_SanitizeString(char *dest, char *source, int destSize)
 {
 	char	string[MAX_TOKEN_CHARS];
 	char	clean[MAX_TOKEN_CHARS];
@@ -143,13 +128,10 @@ char *JKMod_sanitizeString(char *dest, char *source, int destSize)
 
 	for (i = 0; i < length; i++)
 	{
-		if (string[i] != '^')
-		{
+		if (string[i] != '^') {
 			clean[n] = tolower(string[i]);
 			n++;
-		}
-		else if (string[i] == '^')
-		{
+		} else if (string[i] == '^') {
 			i++;
 		}
 	}
@@ -160,24 +142,21 @@ char *JKMod_sanitizeString(char *dest, char *source, int destSize)
 
 /*
 =====================================================================
-Sanitize strings with color codes Rev2
+Sanitize strings with color codes (alternative method)
 =====================================================================
 */
-void JKMod_sanitizeStringRev2(char *in, char *out)
+void JKMod_SanitizeStringRev2(char *in, char *out)
 {
 	int i = 0;
 	int r = 0;
 
 	while (in[i])
 	{
-		if (i >= MAX_NAME_LENGTH - 1)
-		{
-			break;
-		}
+		if (i >= MAX_NAME_LENGTH - 1) break;
 		if (in[i] == '^')
 		{
-			if (in[i + 1] >= 48 && //'0'
-				in[i + 1] <= 57) //'9'
+			if (in[i + 1] >= 48 &&	//'0'
+				in[i + 1] <= 57)	//'9'
 			{
 				i += 2;
 				continue;
@@ -205,7 +184,7 @@ void JKMod_sanitizeStringRev2(char *in, char *out)
 Check for duplicated player names
 =====================================================================
 */
-int JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName)
+int JKMod_DuplicatedNameCheck(gentity_t *ent, char *clientName)
 {
 	gentity_t	*other;
 	int			i, j, num;
@@ -221,11 +200,11 @@ int JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName)
 		for (j = 0; j < MAX_CLIENTS; j++)
 		{
 			other = &g_entities[j];
-			JKMod_sanitizeString(cleanEnt, newName, sizeof(cleanEnt));
+			JKMod_SanitizeString(cleanEnt, newName, sizeof(cleanEnt));
 
 			if (other && other->client && other->inuse && other->client->pers.connected == CON_CONNECTED)
 			{
-				JKMod_sanitizeString(cleanOther, other->client->pers.netname, sizeof(cleanOther));
+				JKMod_SanitizeString(cleanOther, other->client->pers.netname, sizeof(cleanOther));
 
 				if (other - g_entities != ent - g_entities)
 				{
@@ -246,25 +225,23 @@ int JKMod_duplicatedNameCheck(gentity_t *ent, char *clientName)
 Drops a player from the server with the given message
 =====================================================================
 */
-void JKMod_dropPlayer(gentity_t *ent, char *msg)
+void JKMod_DropPlayer(gentity_t *ent, char *reason)
 {
+	int clientNum = ent - g_entities;
+
 	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
 		ent->client->sess.spectatorState = SPECTATOR_FREE;
 		ent->client->sess.spectatorClient = ent - g_entities;
 	}
 
-	trap_DropClient(ent - g_entities, msg);
-}
-
-/*
-=====================================================================
-Sends a message/command to the client target
-=====================================================================
-*/
-void JKMod_sendCommand(int target, char *cmd, char *string)
-{
-	trap_SendServerCommand(target, va("%s \"%s\"", cmd, string));
+	if (!VALIDSTRING(reason)) 
+	{
+		reason = "Unknown";
+	}
+	
+	G_LogPrintf("ClientDrop: %s Reason: %s\n", ent->client->sess.jkmodSess.clientIP, reason);
+	trap_DropClient(clientNum, va("%s (Reason: ^3%s^7)", G_GetStripEdString("SVINGAME", "WAS_KICKED"), reason));
 }
 
 /*
@@ -272,7 +249,25 @@ void JKMod_sendCommand(int target, char *cmd, char *string)
 Convert milliseconds to string
 =====================================================================
 */
-const char *JKMod_msToString(const int ms, qboolean abbr) 
+const char *JKMod_MsToString(const int ms)
+{
+	int	timeSec, timeMin, timeMsec;
+
+	timeMsec = ms;
+	timeSec = timeMsec / 1000;
+	timeMsec -= timeSec * 1000;
+	timeMin = timeSec / 60;
+	timeSec -= timeMin * 60;
+
+	return !ms ? "00:00:000" : va("%02i:%02i:%03i", timeMin, timeSec, timeMsec);
+}
+
+/*
+=====================================================================
+Convert milliseconds to word
+=====================================================================
+*/
+const char *JKMod_MsToWord(const int ms, qboolean abbr) 
 {
 	int	   		fsecs = ms / 1000;
 	int			wholemins = fsecs / 60;
@@ -295,8 +290,10 @@ const char *JKMod_msToString(const int ms, qboolean abbr)
 		{
 			return va("%d %s", hrs, strhours);
 		}
+
 		return va("%d %s %d %s", hrs, strhours, wholemins, strminutes);
 	}
+
 	fremainsecs = (ms - wholemins * 60000) * 0.001f;
 
 	return va("%d %s %d %s", wholemins, strminutes, (int)fremainsecs, strseconds);
@@ -307,19 +304,20 @@ const char *JKMod_msToString(const int ms, qboolean abbr)
 Get client number from stripped substring
 =====================================================================
 */
-int JKMod_ClientNumberFromStrippedSubstring(const char* name)
+int JKMod_GetClientNumberStripped(const char* name)
 {
 	char		s2[MAX_STRING_CHARS];
 	char		n2[MAX_STRING_CHARS];
 	int			i, match = -1;
 	gclient_t	*cl;
 
-	JKMod_sanitizeStringRev2((char*)name, s2);
+	JKMod_SanitizeStringRev2((char*)name, s2);
 
 	for (i = 0; i < level.numConnectedClients; i++)
 	{
 		cl = &level.clients[level.sortedClients[i]];
-		JKMod_sanitizeStringRev2(cl->pers.netname, n2);
+		JKMod_SanitizeStringRev2(cl->pers.netname, n2);
+
 		if (strstr(n2, s2))
 		{
 			if (match != -1)
@@ -329,6 +327,7 @@ int JKMod_ClientNumberFromStrippedSubstring(const char* name)
 			match = level.sortedClients[i];
 		}
 	}
+
 	return match;
 }
 
@@ -337,93 +336,72 @@ int JKMod_ClientNumberFromStrippedSubstring(const char* name)
 Get client number from argument
 =====================================================================
 */
-int JKMod_ClientNumberFromArg(char* name)
+int JKMod_GetClientNumber(char* name)
 {
 	int client_id = 0;
 	char *cp;
 
 	cp = name;
+
 	while (*cp)
 	{
-		if (*cp >= '0' && *cp <= '9') cp++;
-		else
-		{
+		if (*cp >= '0' && *cp <= '9') {
+			cp++;
+		} else {
 			client_id = -1; 
 			break;
 		}
 	}
-	if (client_id == 0)
-	{ 
+
+	if (client_id == 0) { 
 		client_id = atoi(name);
+	} else if (client_id == -1) {
+		client_id = JKMod_GetClientNumberStripped(name);
 	}
-	else
-	{ 
-		if (client_id == -1)
-		{
-			client_id = JKMod_ClientNumberFromStrippedSubstring(name);
-		}
-	}
+
 	return client_id;
 }
 
 /*
 =====================================================================
-Get client number from stripped name
+Check valid client from name
 =====================================================================
 */
-int JKMod_ClientNumberFromStrippedName(const char* name)
+int JKMod_CheckValidClient(gentity_t *ent, char *name)
 {
-	char		s2[MAX_STRING_CHARS];
-	char		n2[MAX_STRING_CHARS];
-	int			i;
-	gclient_t*	cl;
+	int target = JKMod_GetClientNumber(name);
 
-	// check for a name match
-	JKMod_sanitizeStringRev2((char*)name, s2);
-
-	for (i = 0, cl = level.clients; i < level.numConnectedClients; i++, cl++)
+	if (target == -1)
 	{
-		JKMod_sanitizeStringRev2(cl->pers.netname, n2);
-		if (!strcmp(n2, s2))
-		{
-			return i;
-		}
+		if (ent) trap_SendServerCommand(ent - g_entities, va("print \"Can't find the name ^3%s\n\"", name));
+		else G_Printf("Can't find the name ^3%s\n", name);
+		return -1;
 	}
-	return -1;
-}
-
-/*
-=====================================================================
-Concatenate arguments
-=====================================================================
-*/
-char *JKMod_ConcatArgs(int start) 
-{
-	int			i, c, tlen;
-	static char	line[MAX_STRING_CHARS];
-	int			len;
-	char		arg[MAX_STRING_CHARS];
-
-	len = 0;
-	c = trap_Argc();
-	for (i = start; i < c; i++) {
-		trap_Argv(i, arg, sizeof(arg));
-		tlen = strlen(arg);
-		// Added this line below for extra anti msgboom protection
-		if (len + tlen >= 850) {
-			break;
-		}
-		memcpy(line + len, arg, tlen);
-		len += tlen;
-		if (i != c - 1) {
-			line[len] = ' ';
-			len++;
-		}
+	else if (target == -2)
+	{
+		if (ent) trap_SendServerCommand(ent - g_entities, va("print \"There are other names that contains ^3%s\n\"", name));
+		else G_Printf("There are other names that contains ^3%s\n", name);
+		return -1;
+	}
+	else if (target >= MAX_CLIENTS || target < 0)
+	{
+		if (ent) trap_SendServerCommand(ent - g_entities, va("print \"Invalid name for ^3%s\n\"", name));
+		else G_Printf("Invalid name for ^3%s\n", name);
+		return -1;
+	}
+	else if (!g_entities[target].inuse || g_entities[target].client->pers.connected != CON_CONNECTED)
+	{
+		if (ent) trap_SendServerCommand(ent - g_entities, va("print \"The client ^3%s ^7is not active\n\"", name));
+		else G_Printf("The client ^3%s ^7is not active\n", name);
+		return -1;
+	}
+	else if (ent && target == ent->client->ps.clientNum)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
+		return -1;
 	}
 
-	line[len] = 0;
-
-	return line;
+	return target;
 }
 
 /*

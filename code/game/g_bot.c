@@ -836,7 +836,7 @@ static void G_AddBot( const char *name, float skill, const char *team, int delay
 	Info_SetValueForKey( userinfo, "jk_cg_customHats", va("%i", jkmod_hat) ); 
 
 	// Tr!Force: [Plugin] Validate bots
-	Info_SetValueForKey( userinfo, "jkmod_clientversion", JK_VERSION ); 
+	Info_SetValueForKey( userinfo, "jkmod_client", JK_VERSION ); 
 
 	// have the server allocate a client slot
 	clientNum = trap_BotAllocateClient();

@@ -49,7 +49,7 @@ void JKMod_CG_Draw2D(void)
 	}
 
 	// Draw Jetpack Fuel
-	if (cgs.jkmodCvar.jetPack == 1)
+	if (cgs.jkmodCGS.jetPack == 1)
 	{
 		JKMod_CG_DrawJetPackFuel();
 	}
@@ -67,7 +67,7 @@ void JKMod_CG_Draw2D(void)
 	}
 
 	// Draw pause text
-	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime)
+	if (cgs.jkmodCGS.pauseTime > cg.snap->serverTime)
 	{
 		JKMod_CG_DrawPauseString();
 	}
@@ -95,6 +95,24 @@ Check when center print is showing
 qboolean JKMod_CG_CenterPrintActive(void)
 {
 	return ((cg.centerPrintTime + (1000 * cg_centertime.value)) >= cg.time);
+}
+
+/*
+=====================================================================
+Convert milliseconds to string
+=====================================================================
+*/
+const char *JKMod_CG_MsToString(const int ms)
+{
+	int	timeSec, timeMin, timeMsec;
+
+	timeMsec = ms;
+	timeSec = timeMsec / 1000;
+	timeMsec -= timeSec * 1000;
+	timeMin = timeSec / 60;
+	timeSec -= timeMin * 60;
+
+	return !ms ? "00:00:000" : va("%02i:%02i:%03i", timeMin, timeSec, timeMsec);
 }
 
 /*
@@ -139,6 +157,8 @@ void JKMod_CG_DrawClock(void)
 Draw custom chat box
 =====================================================================
 */
+
+// Chatbox string insert
 void JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str)
 {
 	int insLen = strlen(str);
@@ -161,6 +181,7 @@ void JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str)
 	}
 }
 
+// Chatbox stirng add
 void JKMod_CG_ChatBox_AddString(char *chatStr)
 {
 	jkmod_chatbox_t *chat = &cg.jkmodCG.chatItems[cg.jkmodCG.chatItemActive];
@@ -224,12 +245,14 @@ void JKMod_CG_ChatBox_AddString(char *chatStr)
 	}
 
 	cg.jkmodCG.chatItemActive++;
-	if (cg.jkmodCG.chatItemActive >= MAX_CHATBOX_ITEMS)
+
+	if (cg.jkmodCG.chatItemActive >= CHATBOX_ITEMS)
 	{
 		cg.jkmodCG.chatItemActive = 0;
 	}
 }
 
+// Chatbox array insert
 void JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item)
 {
 	if (array[insPoint]) // Recursively call, to move everything up to the top
@@ -245,9 +268,10 @@ void JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int max
 	array[insPoint] = item;
 }
 
+// Chatbox draw strings
 void JKMod_CG_ChatBox_DrawStrings(void)
 {
-	jkmod_chatbox_t *drawThese[MAX_CHATBOX_ITEMS];
+	jkmod_chatbox_t *drawThese[CHATBOX_ITEMS];
 	int numToDraw = 0;
 	int linesToDraw = 0;
 	int i = 0;
@@ -263,7 +287,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 
 	memset(drawThese, 0, sizeof(drawThese));
 
-	while (i < MAX_CHATBOX_ITEMS)
+	while (i < CHATBOX_ITEMS)
 	{
 		if (cg.jkmodCG.chatItems[i].time >= cg.time || drawAnyway)
 		{
@@ -280,7 +304,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 				}
 				check--;
 			}
-			JKMod_CG_ChatBox_ArrayInsert(drawThese, insertionPoint, MAX_CHATBOX_ITEMS, &cg.jkmodCG.chatItems[i]);
+			JKMod_CG_ChatBox_ArrayInsert(drawThese, insertionPoint, CHATBOX_ITEMS, &cg.jkmodCG.chatItems[i]);
 			numToDraw++;
 			linesToDraw += cg.jkmodCG.chatItems[i].lines;
 		}
@@ -312,9 +336,9 @@ Client options pop-up
 */
 void JKMod_CG_ClientPopUp(void)
 {
-	if (!cgs.jkmodCvar.pluginRequired) return;
+	if (!cgs.jkmodCGS.pluginRequired) return;
 	if (!cg.snap) return;
-	if (jkcvar_cg_clientPopUp.integer == JK_CLIENT_POPUP_ITEMS) return;
+	if (jkcvar_cg_clientPopUp.integer == jkcvar_cg_resetClient.integer) return;
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
 	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
@@ -327,8 +351,8 @@ void JKMod_CG_ClientPopUp(void)
 		// Launch only when all center prints dissapear
 		if (!JKMod_CG_CenterPrintActive())
 		{
-			trap_SendConsoleCommand("jk_ui_clientpopup\n");
-			trap_Cvar_Set("jk_cg_clientPopUp", va("%i", JK_CLIENT_POPUP_ITEMS));
+			trap_SendConsoleCommand("jk_ui_cmd_clientPopUp\n");
+			trap_Cvar_Set("jk_cg_clientPopUp", va("%i", jkcvar_cg_resetClient.integer));
 		}
 	}
 }
@@ -344,19 +368,16 @@ void JKMod_CG_DrawInventory(int y)
 	int ico_size = 32;
 	float xAlign = cgs.screenWidth - ico_size * 1.1f;
 
-	if (!cg.snap)
-		return;
-
-	if (cg.snap->ps.pm_type == PM_SPECTATOR)
-		return;
-
-	if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
-		return;
+	if (!cg.snap) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
+	if (cg.snap->ps.stats[STAT_HEALTH] <= 0) return;
 
 	y += 8;
 
-	if (!cg.renderingThirdPerson && (cg.snap->ps.eFlags & JK_JETPACK_ACTIVE)) {
+	if (!cg.renderingThirdPerson && (cg.snap->ps.eFlags & JK_JETPACK_ACTIVE)) 
+	{
 		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.jkmodMedia.jetpackIcon);
+		if (cg.snap->ps.eFlags & JK_JETPACK_FLAMING) CG_DrawPic(xAlign + 20, y - 2.5, 8, 8, cgs.jkmodMedia.dotRed);
 		y += ico_size;
 	}
 
@@ -386,22 +407,15 @@ float JKMod_CG_DrawPowerupIcons(int y)
 	float yAlign = 8;
 	gitem_t	*item;
 
-	if (!cg.snap)
-	{
-		return y;
-	}
-
-	if (cg.snap->ps.pm_type == PM_SPECTATOR) { 
-		return y;
-	}
+	if (!cg.snap) return y;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR)return y;
 
 	if (jkcvar_cg_drawInventory.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)) { 
 		ico_size = ICON_SIZE * 1.25;
 		xAlign = (xAlign - ico_size);
 		yAlign = (ICON_SIZE / 2);
 		y += 5;
-	}
-	else {
+	} else {
 		y += 16;
 	}
 
@@ -418,12 +432,9 @@ float JKMod_CG_DrawPowerupIcons(int y)
 				int icoShader = 0;
 				if (cgs.gametype == GT_CTY && (j == PW_REDFLAG || j == PW_BLUEFLAG))
 				{
-					if (j == PW_REDFLAG)
-					{
+					if (j == PW_REDFLAG) {
 						icoShader = trap_R_RegisterShaderNoMip("gfx/hud/mpi_rflag_ys");
-					}
-					else
-					{
+					} else {
 						icoShader = trap_R_RegisterShaderNoMip("gfx/hud/mpi_bflag_ys");
 					}
 				}
@@ -532,25 +543,21 @@ Draw race timer
 void JKMod_CG_DrawRaceTimer(void)
 {
 	int			w1, w2;
-	int			timeSec, timeMin, timeMsec;
+	int			timeMsec;
 	const char	*t1, *t2;
 	float		color[4];
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.snap->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
-	if (cgs.jkmodCvar.pauseTime > cg.snap->serverTime) return;
+	if (cgs.jkmodCGS.pauseTime > cg.snap->serverTime) return;
 	if (!cg.predictedPlayerState.duelTime) return;
 
 	timeMsec = cg.time - cg.predictedPlayerState.duelTime;
-	timeSec = timeMsec / 1000;
-	timeMsec -= timeSec * 1000;
-	timeMin = timeSec / 60;
-	timeSec -= timeMin * 60;
 
-	t1 = CG_GetStripEdString("JKINGAME", "RACE_TIME");
+	t1 = CG_GetStripEdString("MENUS3", "TIME");
 	w1 = CG_DrawStrlen(t1) * SMALLCHAR_WIDTH;
 
-	t2 = va("%02i:%02i:%03i", timeMin, timeSec, timeMsec);
+	t2 = va("%s", JKMod_CG_MsToString(timeMsec));
 	w2 = CG_DrawStrlen(t2) * BIGCHAR_WIDTH;
 
 	color[0] = color[1] = color[2] = 1.0;
@@ -577,9 +584,9 @@ void JKMod_CG_DrawPauseString(void)
 	color[0] = color[1] = color[2] = 1.0;
 	color[3] = 1.0f;
 
-	if (cgs.jkmodCvar.pauseTime != INT_MAX) 
+	if (cgs.jkmodCGS.pauseTime != INT_MAX) 
 	{
-		sec = (cgs.jkmodCvar.pauseTime - cg.snap->serverTime) / 1000 + 1;
+		sec = (cgs.jkmodCGS.pauseTime - cg.snap->serverTime) / 1000 + 1;
 
 		t1 = CG_GetStripEdString("JKINGAME", "PAUSE_GAME");
 		w1 = CG_DrawStrlen(t1) * SMALLCHAR_WIDTH;
@@ -593,14 +600,12 @@ void JKMod_CG_DrawPauseString(void)
 		if (sec <= 3 && sec != jkmod_pause_count) 
 		{
 			jkmod_pause_count = sec;
+
 			switch (sec) 
 			{
-				case 1:
-					trap_S_StartLocalSound(cgs.media.count1Sound, CHAN_ANNOUNCER); break;
-				case 2:
-					trap_S_StartLocalSound(cgs.media.count2Sound, CHAN_ANNOUNCER); break;
-				case 3:
-					trap_S_StartLocalSound(cgs.media.count3Sound, CHAN_ANNOUNCER); break;
+				case 1: trap_S_StartLocalSound(cgs.media.count1Sound, CHAN_ANNOUNCER); break;
+				case 2: trap_S_StartLocalSound(cgs.media.count2Sound, CHAN_ANNOUNCER); break;
+				case 3: trap_S_StartLocalSound(cgs.media.count3Sound, CHAN_ANNOUNCER); break;
 			}
 		}
 	}
@@ -628,7 +633,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 		trace_t		trace;
 		centity_t	*cent = &cg_entities[i];
 		vec3_t		diff;
-		float		scale;
+		float		scale, max = 0.9;
 
 		// Skip
 		if (!cent || !cent->currentValid)
@@ -674,7 +679,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 		scale = 150 / VectorLength(diff);
 
 		// Show name
-		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > 1 ? 1 : scale));
+		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > max ? max : scale));
 	}
 }
 

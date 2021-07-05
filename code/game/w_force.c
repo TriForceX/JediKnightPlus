@@ -626,19 +626,19 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
-	// Tr!Force: [CustomDuel] Check usage in force duel
+	// Tr!Force: [Duel] Check usage in force duel
 	if (jkcvar_allowCustomDuel.integer)
 	{
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.jkmodPers.CustomDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->pers.jkmodPers.customDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
 		}
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.jkmodPers.CustomDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->pers.jkmodPers.customDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}
@@ -2626,69 +2626,6 @@ qboolean G_InGetUpAnim(playerState_t *ps)
 	return qfalse;
 }
 
-// Tr!Force: [Items] Respawn time calculation for item throwing
-int JKMod_adjustRespawnTime(gentity_t *ent)
-{
-	float respawnTime;
-
-	// Respawn time based on giType
-	if (ent->item->giType == IT_ARMOR)
-	{
-		respawnTime = ITEM_RESPAWN_ARMOR;
-	}
-	else if (ent->item->giType == IT_HOLDABLE)
-	{
-		respawnTime = ITEM_RESPAWN_HOLDABLE;
-	}
-	else if (ent->item->giType == IT_HEALTH)
-	{
-		respawnTime = ITEM_RESPAWN_HEALTH;
-	}
-	else if (ent->item->giType == IT_AMMO)
-	{
-		respawnTime = ITEM_RESPAWN_AMMO;
-	}
-
-	// Adaption disabled so no wait time/random set
-	if (!g_adaptRespawn.integer && !ent->wait && !ent->random)
-	{
-		return((int)respawnTime);
-	}
-	else
-	{
-		// Scale respawn time based on the current playing clients
-		if (level.numPlayingClients > 4)
-		{
-			if (level.numPlayingClients > 32)
-			{
-				respawnTime *= 0.25;
-			}
-			else if (level.numPlayingClients > 12)
-			{
-				respawnTime *= 20.0 / (float)(level.numPlayingClients + 8);
-			}
-			else
-			{
-				respawnTime *= 8.0 / (float)(level.numPlayingClients + 4);
-			}
-		}
-
-		// Check wait
-		if (ent->wait)
-			respawnTime = ent->wait;
-
-		// Check random
-		if (ent->random)
-			respawnTime += crandom() * ent->random;
-
-		// Don't allow below 1
-		if (respawnTime < 1.0)
-			respawnTime = 1.0;
-
-		return ((int)respawnTime);
-	}
-}
-
 extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace );
 void ForceThrow( gentity_t *self, qboolean pull )
 {
@@ -3349,7 +3286,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				}
 
 				// Set respawntime
-				push_list[x]->nextthink = level.time + JKMod_adjustRespawnTime(push_list[x]) * 1000;
+				push_list[x]->nextthink = level.time + JKMod_ItemRespawnTime(push_list[x]) * 1000;
 				push_list[x]->think = RespawnItem;
 
 				// Adds gravity

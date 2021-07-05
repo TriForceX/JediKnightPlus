@@ -2,15 +2,15 @@
 
 <img align="left" width="110" height="110" src="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png">
 
-https://jkmod.github.io
+https://jkplus.github.io
 
-Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal of this mod is to reunite useful stuff and add custom ones to the game environment, specially making players ideas come true adding new features as well porting some from other mods and games.
+Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goal of this mod is to reunite useful stuff and add custom features to the game environment, specially making players ideas come true adding new features and porting some from other mods and games.
 
 <div align="center">
 
-[![version](https://img.shields.io/badge/Current%20Version-0.14.5-brightgreen.svg)](https://github.com/TriForceX/JediKnightPlus/releases)
-[![Wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
-[![Discord](https://img.shields.io/badge/Discord%20Chat-Join-7289DA.svg?logo=discord&longCache=true&style=flat)](https://discord.gznetwork.com/jkmod)
+[![version](https://img.shields.io/github/v/release/TriForceX/JediKnightPlus?include_prereleases&label=Current%20Version&color=brightgreen)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
+[![discord](https://img.shields.io/badge/Discord%20Chat-Join-5865F2.svg?logo=discord&style=flat&logoColor=white)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
 [![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](#license)
@@ -22,7 +22,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 - Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/releases)
 - Read more information and guides at **wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
 - See version changes history in the **changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
-- Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkmod)
+- Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkplus)
 
 # About
 I started to code the first version of this mod in 2005. Back then it was a private mod and only few people had access. So as a personal task and due to some people request i decided to re-code the mod into a public version, just as a legacy.
@@ -35,15 +35,20 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 **Description:** General server features _(No client plugin required)_
 
 - [x] Gameplay changer between 1.02, 1.03 and 1.04 no matter the server version
-- [ ] Improved bots AI (Artificial intelligence)
+- [x] Improved bots AI (Artificial intelligence)
+- [x] Custom bots actions (Enhanced bot_forGimmick)
 - [ ] Custom weapon features (Damage, ammo speed, firing rate, etc...)
 - [ ] Player accounts system (Save data such as kills, deaths, etc...)
-- [ ] Ranking system based on player skills
+- [ ] Ranking system (Based on player skills)
+- [x] Jetpack (Quake 3 & Jedi Academy style)
+- [x] Custom teleport frag
 - [ ] Chat censor filters
 - [x] Chat protection
 - [x] Allow black color in player names
 - [x] Prevent duplicated player names
-- [x] Teleport chat commands (Map areas, save & load, etc...)
+- [x] Map teleports chat commands (Based on map X Y Z origin)
+- [ ] Misc chat commands (Save & load pos, status, etc...)
+- [ ] Custom server closed feature (Password required)
 - [x] Welcome message on client begin (MOTD)
 - [x] Server news messages displayed constantly
 - [x] Alternate dimensions (Private duel, guns only, race defrag, etc...)
@@ -54,26 +59,28 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
 - [x] Chat protect feature (Players can't kill during chat)
 - [ ] Dual blade lightsaber gameplay (Fixed damages, custom combos, etc...)
-- [ ] Custom melee weapon
 - [x] Items get affected by force physics (Push, pull, etc...)
-- [x] Setup custom per-gametype configuration files
-- [x] Enable multiple duel challenges
+- [x] Custom per-gametype configuration files
+- [x] Multiple duel challenges
 - [x] Custom duel challenge modes (Full force, no force, etc...)
 - [x] Custom duel challenge start health and armor
-- [x] Custom duel stats (Health, armor and body hits)
+- [x] Duel stats feature (Health, armor and hits)
 - [x] Enable player chat and duel challenge ignore
 - [x] Enable chat in duel game type
-- [x] Closed server feature (Allow by password)
 - [x] Custom call vote system (Custom control, vote results, etc...)
-- [X] Improved slow-mo duel end functionally
+- [x] Alternative slow-mo duel end feature (Custom timescale)
+- [x] Custom private duel distance
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
+- [x] Custom client begin sound
 - [x] Force client plugin usage (Optional)
 - [x] Prevent player warping or lag scripts
-- [x] Custom server idle reset
+- [x] Server idle reset feature
 - [x] Custom map default music (For maps without background music)
-- [x] Load custom map cycle from file only
+- [x] Improved custom map cycle
 - [x] Disable kill when player teleport or spawn inside another player
+- [ ] Drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
+- [ ] Custom melee weapon
 - [ ] Portal gun (Experimental)
 
 ---
@@ -89,6 +96,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Spawn unlimited items and weapons
 - [ ] Private administrator chat room
 - [ ] Team management (Lock, force, shuffle, etc...)
+- [x] Toggle mod bitvalue cvars
+- [x] Reload config stuff (Teleport chats, server news, etc...)
+- [x] Change any shader or texture
+- [x] Change map background music
+- [x] Force dimension
+- [x] Alternative status command (Whois)
 - [x] Pause mode to instantly stop everyone on the server during game
 
 ---
@@ -96,14 +109,12 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 ### Map Modding
 **Description:** Ingame maps modification tools
 
-- [ ] Map auto fix to convert most of single player maps to be playable
+- [x] Various map fixes (Including single player maps to be playable)
 - [x] New custom map entities and fixed some BaseJK entities
 - [ ] Add models (GLM or MD3 format)
 - [ ] Add effects (EFX format)
 - [ ] Add any entity based on classname and parameters
 - [ ] Add pre-made useful utilities (NPC spawner, message consoles, assister, etc...)
-- [x] Change any shader or texture
-- [x] Change map background music
 - [ ] Modify entities properties
 - [ ] Delete entities
 - [ ] Clone entities
@@ -116,15 +127,17 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 **Description:** Additional features using the clientside plugin
 
 - [ ] Atmospheric effects (Rain, snow, etc...)
-- [ ] Extra info for scoreboard (Wins, losses, flag captures, etc...)
-- [ ] On-screen keyboard display to see key presses on screen
-- [x] Jedi Academy chat display mode
+- [x] Extra info for scoreboard (Kills, deaths, etc...)
+- [x] On-screen keyboard display (See key actions)
+- [x] Jedi Academy chat display mode (With chat history)
 - [x] Two chat icons (Jedi Outcast & Jedi Academy)
 - [x] Fixed 2D aspect ratio for non 4:3 screens
+- [x] Recommended client options pop-up for new players
 - [ ] Fire lightsaber style, to add real fire effects to the lightsaber
-- [x] Jetpack to fly around the map (Quake 3 & Jedi Academy style)
-- [ ] Grapple hook to climb on the walls
-- [ ] Fully drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
+- [x] Jetpack 3D model (With linked effects)
+- [x] Special movements camera
+- [x] Show player labels on head
+- [ ] Grapple hook feature
 - [x] Ingame clock showing the real time hours, minutes and seconds
 - [x] Ingame server list to join another server without disconnect
 - [ ] Speed-o-meter to display player speed ingame and best record
@@ -132,7 +145,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Custom lightsaber hilt support
 - [x] Enabled 3rd person damage blend
 - [x] Show player bounding hit boxes
-- [ ] Two alternative huds (Jedi Academy and basic)
+- [ ] Two alternative huds (Jedi Academy and simple enhanced)
 - [ ] Alternative FPS and server time style
 - [x] Alternative force points display on hud
 - [x] Display bacta indicator on belt (3D model)
@@ -149,15 +162,16 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom player hats
 - [x] Show player icons on scoreboard
 - [x] Server emotes menu for usage and binding
-- [x] Custom private duel finish animation
+- [x] Custom private duel end animation
 - [x] Toggle private duel glow
-- [x] Fixed force force rage recovery icon borders
+- [x] Fixed force force rage recovery icon (Borderless)
 - [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
-- [x] Enable 23 custom BaseJK player skins by surf files
+- [x] Enable more than 20 BaseJK hidden player skins
 - [x] Increased some limits on menus (Fov, camera range, name length, etc...)
 - [x] Macro scanning feature (anti script)
 - [x] Disruptor zoom walk and run enabled
+- [x] Many BaseJK language text updates
 - [ ] Show server maps on callvote menus
 
 ---
@@ -200,6 +214,7 @@ The following people supported and helped me directly on this project.
 - Padaget _(Some vVv mod tweaks)_
 - [VideoP / Loda](https://github.com/videoP) _(Some JAPro tweaks)_
 - Noodle _(User interface & modeling support)_
+- Smoo _(Support and testing)_
 - QK-Lite / Effect.ve _(General coding support)_
 - [MVSDK / JK2MV](https://github.com/mvdevs) _(Gameplay changer and MVAPI)_
 - x[Dsk]x Clan and 1.03 community _(Support and testing)_
@@ -208,9 +223,9 @@ The following people supported and helped me directly on this project.
 # Contact
 
 **Jedi Knight Plus Mod developed by Tr!Force**  
-Work copyrighted (C) with holder attribution 2005 - 2020
+Work copyrighted (C) with holder attribution 2005 - 2021
 
-Visit the mod page: https://jkmod.github.io
+Visit the mod page: https://jkplus.github.io
 
 Feel free to write me if you got questions regarding the mod\
 E-Mail: triforce@gznetwork.com

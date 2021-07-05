@@ -25,9 +25,11 @@ Spawn fields list and variables
 */
 
 // Spawn table struct
-typedef struct { 
+typedef struct 
+{ 
 	char	*name;
-	void(*spawn)(gentity_t *ent);
+	void	(*spawn)(gentity_t *ent);
+
 } spawn_t;
 
 // Base spawn list
@@ -246,11 +248,7 @@ void JKMod_CheckValidMapItems(void)
 			switch (check->item->giTag)
 			{
 				case PW_REDFLAG:
-					killMe = 1;
-					break;
 				case PW_BLUEFLAG:
-					killMe = 1;
-					break;
 				case PW_NEUTRALFLAG:
 					killMe = 1;
 					break;
@@ -276,11 +274,8 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 		int			i;
 
 		if (!name) return;
-
 		if (strlen(name) < 2) return;
-
 		if (name[0] != '*') return;
-
 		if (MAX_BRUSH_MODELS != 0)
 		{
 			iBuf[0] = '0';

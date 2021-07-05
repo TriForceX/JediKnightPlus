@@ -598,7 +598,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		client->ps.pm_type = PM_SPECTATOR;
 		client->ps.speed = 400;	// faster than normal
 		client->ps.basespeed = 400;
-		client->ps.forceHandExtend = jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.ClientPlugin ? HANDEXTEND_KNOCKDOWN : HANDEXTEND_NONE; // Tr!Force: [Plugin] Don't allow user actions
+		client->ps.forceHandExtend = jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.clientPlugin ? HANDEXTEND_KNOCKDOWN : HANDEXTEND_NONE; // Tr!Force: [Plugin] Don't allow user actions
 
 		// set up for pmove
 		memset (&pm, 0, sizeof(pm));
@@ -685,7 +685,7 @@ ClientTimerActions
 Actions that happen once a second
 ==================
 */
-void BaseJK2_ClientTimerActions( gentity_t *ent, int msec ) { // Tr!Force: [BaseJK2] client timer actions function
+void ClientTimerActions( gentity_t *ent, int msec ) {
 	gclient_t	*client;
 
 	client = ent->client;
@@ -704,6 +704,9 @@ void BaseJK2_ClientTimerActions( gentity_t *ent, int msec ) { // Tr!Force: [Base
 		if ( client->ps.stats[STAT_ARMOR] > client->ps.stats[STAT_MAX_HEALTH] ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
+
+		// Tr!Force: [JKMod] Launch custom client timer actions
+		JKMod_ClientTimerActions(ent, msec);
 	}
 }
 
@@ -1076,7 +1079,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	}
 
 	// Tr!Force: [Pause] Check pause think
-	if (level.jkmodLevel.pauseTime > level.time) 
+	if (level.jkmodLocals.pauseTime > level.time) 
 	{
 		JKMod_PauseClientThink(ent);
 		return;
@@ -1189,7 +1192,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			ucmd->rightmove = 0;
 			ucmd->upmove = 0;
 
-			// Tr!Force: [CustomDuel] Don't allow
+			// Tr!Force: [Duel] Don't allow
 			if (jkcvar_allowCustomDuel.integer)
 			{
 				ucmd->buttons = 0;
@@ -1201,7 +1204,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
 			ent->client->ps.duelInProgress = 0;
-			ent->client->pers.jkmodPers.CustomDuel = 0; // Tr!Force: [CustomDuel] Turn off force duels
+			ent->client->pers.jkmodPers.customDuel = 0; // Tr!Force: [Duel] Turn off force duels
 			JKMod_DimensionSet(ent, DIMENSION_FREE); // Tr!Force: [Dimensions] Remove duel flag
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
@@ -1212,23 +1215,22 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			{
 				char *duelmessage;
 
-				if(ent->client->pers.jkmodPers.CustomDuel == 1) {
+				if(ent->client->pers.jkmodPers.customDuel == 1) {
 					duelmessage = "won a force duel";
-				}
-				else {
+				} else {
 					duelmessage = "won a duel";
 				}
 
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " body hits\n\"",
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits\n\"",
 					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
 			}
 
 			ent->client->ps.duelInProgress = 0;
 			duelAgainst->client->ps.duelInProgress = 0;
 
-			// Tr!Force: [CustomDuel] Turn off force duels
-			ent->client->pers.jkmodPers.CustomDuel = 0;
-			duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
+			// Tr!Force: [Duel] Turn off force duels
+			ent->client->pers.jkmodPers.customDuel = 0;
+			duelAgainst->client->pers.jkmodPers.customDuel = 0;
 
 			// Tr!Force: [Dimensions] Remove duel flag
 			JKMod_DimensionSet(ent, DIMENSION_FREE);
@@ -1288,9 +1290,9 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				ent->client->ps.duelInProgress = 0;
 				duelAgainst->client->ps.duelInProgress = 0;
 
-				// Tr!Force: [CustomDuel] Turn off force duels
-				ent->client->pers.jkmodPers.CustomDuel = 0;
-				duelAgainst->client->pers.jkmodPers.CustomDuel = 0;
+				// Tr!Force: [Duel] Turn off force duels
+				ent->client->pers.jkmodPers.customDuel = 0;
+				duelAgainst->client->pers.jkmodPers.customDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
 				JKMod_DimensionSet(ent, DIMENSION_FREE);
@@ -1704,13 +1706,13 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 					if (faceKicked->health > 0 &&
 						faceKicked->client->ps.stats[STAT_HEALTH] > 0 &&
 						faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN
-						&& !JKMod_emoteIn(ent, -1) // Tr!Force: [Emotes] Prediction
+						&& !JKMod_EmoteIn(ent, -1) // Tr!Force: [Emotes] Prediction
 						)
 					{
 						if (Q_irand(1, 10) <= 3)
 						{ 
 							// Tr!Force: [Emotes] Prediction
-							if(JKMod_emoteIn(faceKicked, 2))
+							if(JKMod_EmoteIn(faceKicked, 2))
 							{
 								faceKicked->client->ps.forceHandExtend = HANDEXTEND_NONE;
 								faceKicked->client->ps.forceDodgeAnim = 0;

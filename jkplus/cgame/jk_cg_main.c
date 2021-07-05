@@ -8,19 +8,22 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 #include "../../code/cgame/cg_local.h"	// Original header
 
+// Extern stuff
+extern float CG_Cvar_Get(const char *cvar);
+
 /*
 =====================================================================
 Cvar table list
 =====================================================================
 */
 
-static qboolean jkmod_duel_warning = qfalse;
-
-typedef struct { // Cvar table struct
+typedef struct 
+{
 	vmCvar_t	*vmCvar;
 	char		*cvarName;
 	char		*defaultString;
 	int			cvarFlags;
+
 } cvarTable_t;
 
 vmCvar_t	jkcvar_cg_duelGlow;
@@ -54,11 +57,12 @@ vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
 vmCvar_t	jkcvar_cg_jetPackIdle;
 vmCvar_t	jkcvar_cg_clientPopUp;
+vmCvar_t	jkcvar_cg_resetClient;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
 
-static cvarTable_t	JKModCGCvarTable[] = {
+static cvarTable_t	JKModCGcvarTable[] = {
 
 	{ &jkcvar_cg_duelGlow,			"jk_cg_duelGlow",			"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_duelEnd,			"jk_cg_duelEnd",			"0",	CVAR_ARCHIVE },
@@ -91,13 +95,14 @@ static cvarTable_t	JKModCGCvarTable[] = {
 	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_jetPackIdle,		"jk_cg_jetPackIdle",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_clientPopUp,		"jk_cg_clientPopUp",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_resetClient,		"jk_cg_resetClient",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
 
 };
 
-static int JKModCGCvarTableSize = sizeof(JKModCGCvarTable) / sizeof(JKModCGCvarTable[0]);
+static int JKModCGcvarTableSize = ARRAY_LEN(JKModCGcvarTable);
 
 /*
 =====================================================================
@@ -108,9 +113,10 @@ void JKMod_CG_RegisterCvars(void)
 {
 	int			i;
 	cvarTable_t	*cv;
+	char		var[MAX_TOKEN_CHARS];
 
 	// Register all the cvars
-	for (i = 0, cv = JKModCGCvarTable; i < JKModCGCvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) {
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName,
 			cv->defaultString, cv->cvarFlags);
 	}
@@ -119,8 +125,12 @@ void JKMod_CG_RegisterCvars(void)
 	BaseJK2_CG_RegisterCvars();
 
 	// Set the client plugin version
-	trap_Cvar_Register(NULL, "jkmod_clientversion", "", CVAR_USERINFO | CVAR_ROM);
-	trap_Cvar_Set("jkmod_clientversion", JK_VERSION);
+	trap_Cvar_Register(NULL, "jkmod_client", "", CVAR_USERINFO | CVAR_ROM);
+	trap_Cvar_Set("jkmod_client", JK_VERSION);
+
+	// Update client pop-up count
+	trap_Cvar_VariableStringBuffer("jk_ui_resetClient", var, sizeof(var));
+	trap_Cvar_Set("jk_cg_resetClient", var);
 }
 
 void JKMod_CG_UpdateCvars(void)
@@ -129,7 +139,7 @@ void JKMod_CG_UpdateCvars(void)
 	cvarTable_t	*cv;
 
 	// Update all the cvars
-	for (i = 0, cv = JKModCGCvarTable; i < JKModCGCvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) {
 		trap_Cvar_Update(cv->vmCvar);
 	}
 
@@ -144,10 +154,7 @@ Only print when "developer 1"
 */
 void QDECL JKMod_CG_Printf(const char *msg, ...) 
 {
-	char var[MAX_TOKEN_CHARS];
-	trap_Cvar_VariableStringBuffer("developer", var, sizeof(var));
-
-	if (atoi(var))
+	if (CG_Cvar_Get("developer"))
 	{
 		va_list		argptr;
 		char		text[1024];
@@ -160,6 +167,11 @@ void QDECL JKMod_CG_Printf(const char *msg, ...)
 	}
 }
 
+/*
+=====================================================================
+Register client plugin media
+=====================================================================
+*/
 void JKMod_CG_RegisterMedia(void) 
 {
 	cgs.jkmodMedia.saberModel			= trap_R_RegisterModel("models/weapons2/saber/saber_w.md3");
@@ -176,6 +188,9 @@ void JKMod_CG_RegisterMedia(void)
 
 	cgs.jkmodMedia.hitBox				= trap_R_RegisterShader("jkmod_hitbox");
 	cgs.jkmodMedia.hitBoxNoCull			= trap_R_RegisterShader("jkmod_hitbox_nocull");
+	cgs.jkmodMedia.dotRed				= trap_R_RegisterShader("gfx/misc/borgeyeflare");
+	cgs.jkmodMedia.dotGreen				= trap_R_RegisterShader("gfx/mp/dmgshader_shields");
+	cgs.jkmodMedia.dotYellow			= trap_R_RegisterShader("gfx/mp/dmgshader_shieldsandhealth");
 	cgs.jkmodMedia.clockBg				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg");
 	cgs.jkmodMedia.jetpackIcon			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_jetpack_icon");
 
@@ -205,5 +220,5 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.keyAltOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_off");
 
 	
-	Com_Printf( S_COLOR_CYAN "----------- JKPlus Media Complete -----------\n" );
+	Com_Printf( S_COLOR_CYAN "------------ JK+ Client Complete ------------\n" );
 }

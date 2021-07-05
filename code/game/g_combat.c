@@ -2099,10 +2099,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// Tr!Force: [DropFlag] Client dropped flag timer reset
-	self->client->jkmodClient.DropFlagTime = 0;
+	self->client->jkmodClient.dropFlagTime = 0;
 
 	// Tr!force: [Teleport] Client teleport used off
-	self->client->jkmodClient.TeleportChatUsed = qfalse;
+	self->client->jkmodClient.teleportChatUsed = qfalse;
 
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,
@@ -3045,7 +3045,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// Tr!Force: [Emotes] If valid attacker, check his flags for attacking
 	if (attacker - g_entities >= 0 && attacker - g_entities < MAX_CLIENTS)
 	{
-		if (JKMod_emoteIn(attacker, -1))
+		if (JKMod_EmoteIn(attacker, -1))
 		{
 			return;
 		}
@@ -3086,8 +3086,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			{
 				return;
 			}
-			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
-			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.jkmodPers.CustomDuel == 1))
+			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
+			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.jkmodPers.customDuel == 1))
 			{
 				return;
 			}
@@ -3098,8 +3098,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			{
 				return;
 			}
-			// Tr!Force: [CustomDuel] Update for falling while dueling, or full force dueling
-			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.jkmodPers.CustomDuel == 1))
+			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
+			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.jkmodPers.customDuel == 1))
 			{
 				return;
 			}
@@ -3655,7 +3655,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			ScorePlum(attacker, client->ps.origin, take);
 
 		if (jkcvar_teleportChatTime.integer)
-			client->jkmodClient.TeleportChatTime = jkcvar_teleportChatTime.integer; // Tr!Force: [TeleportChat] Add delay on enemy hits
+			client->jkmodClient.teleportChatTime = jkcvar_teleportChatTime.integer; // Tr!Force: [TeleportChat] Add delay on enemy hits
 
 		G_LogWeaponDamage(attacker->s.number, mod, take);
 	}

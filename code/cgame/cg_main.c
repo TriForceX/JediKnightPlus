@@ -2213,7 +2213,7 @@ static qboolean CG_FeederSelection(float feederID, int index) {
 	return qtrue;
 }
 
-static float CG_Cvar_Get(const char *cvar) {
+/*static*/ float CG_Cvar_Get(const char *cvar) { // Tr!Force: [CGameGeneral] Allow cvar get in other places
 	char buff[128];
 	memset(buff, 0, sizeof(buff));
 	trap_Cvar_VariableStringBuffer(cvar, buff, sizeof(buff));

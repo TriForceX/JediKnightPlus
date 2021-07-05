@@ -36,8 +36,8 @@
 #define SB_RATING_WIDTH	    0 // (6 * BIGCHAR_WIDTH)
 #define SB_NAME_X			(SB_SCORELINE_X)
 #define SB_SCORE_X			(SB_SCORELINE_X + .55 * SB_SCORELINE_WIDTH)
-#define SB_PING_X			(SB_SCORELINE_X + .70 * SB_SCORELINE_WIDTH)
-#define SB_TIME_X			(SB_SCORELINE_X + .85 * SB_SCORELINE_WIDTH)
+#define SB_PING_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .72 : .70) * SB_SCORELINE_WIDTH) // TriForce: [Scoreboard] Extra info
+#define SB_TIME_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .87 : .85) * SB_SCORELINE_WIDTH) // TriForce: [Scoreboard] Extra info
 
 // The new and improved score board
 //
@@ -176,9 +176,29 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		else
 		{
 			// TriForce: [Scoreboard] Extra info
-			if (jkcvar_cg_scoreboardExtras.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))
+			if (jkcvar_cg_scoreboardExtras.integer)
 			{
-				CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i/%i", score->score, ci->losses),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+				float scoreScale = 1.0f;
+				float scoreAlign = 0;
+
+				if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)
+				{
+					if (largeFormat && (score->score > 999 || (score->score > 99 && score->captures > 9))) {
+						scoreScale = 0.84f;
+						scoreAlign = 3;
+					}
+
+					CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, score->captures),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+				}
+				else
+				{
+					if (largeFormat && (score->score > 99 && ci->losses > 9)) {
+						scoreScale = 0.84f;
+						scoreAlign = 3;
+					}
+
+					CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, ci->losses),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+				}
 			}
 			else
 			{
@@ -382,12 +402,14 @@ qboolean CG_DrawOldScoreboard( void ) {
 			UI_DrawProportionalString(x, y, s, UI_CENTER|UI_DROPSHADOW, colorTable[CT_WHITE]);
 		}
 	} else {
+		const char *sTo = CG_GetStripEdString("JKINGAME", "TO"); // Tr!Force: [CGameGeneral] Use translated text
+
 		if ( cg.teamScores[0] == cg.teamScores[1] ) {
-			s = va("Teams are tied at %i", cg.teamScores[0] );
+			s = va("%s %i", CG_GetStripEdString("JKINGAME", "TIED_AT"), cg.teamScores[0] ); // Tr!Force: [CGameGeneral] Use translated text
 		} else if ( cg.teamScores[0] >= cg.teamScores[1] ) {
-			s = va("Red leads %i to %i",cg.teamScores[0], cg.teamScores[1] );
+			s = va("%s %i %s %i", CG_GetStripEdString("JKINGAME", "RED_LEADS"), cg.teamScores[0], sTo, cg.teamScores[1] ); // Tr!Force: [CGameGeneral] Use translated text
 		} else {
-			s = va("Blue leads %i to %i",cg.teamScores[1], cg.teamScores[0] );
+			s = va("%s %i %s %i", CG_GetStripEdString("JKINGAME", "BLUE_LEADS"), cg.teamScores[1], sTo, cg.teamScores[0] ); // Tr!Force: [CGameGeneral] Use translated text
 		}
 
 		x = 0.5f * ( cgs.screenWidth - CG_Text_Width ( s, 1.0f, FONT_MEDIUM ) );
@@ -407,12 +429,23 @@ qboolean CG_DrawOldScoreboard( void ) {
 	//	the localised strings don't fit - since no-one's ever seen them to notice this.  Smegging brilliant. Thanks people.
 	//
 	CG_Text_Paint ( SB_NAME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "NAME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
-	if (cgs.gametype == GT_TOURNAMENT || (jkcvar_cg_scoreboardExtras.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))) // Tr!Force: [Scoreboard] Extra info
+	if (cgs.gametype == GT_TOURNAMENT)
 	{
 		char sWL[100];
 		trap_SP_GetStringTextString("INGAMETEXT_W_L", sWL,	sizeof(sWL));
 
 		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, sWL, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+	}
+	else if (jkcvar_cg_scoreboardExtras.integer) // Tr!Force: [Scoreboard] Extra info
+	{
+		if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)
+		{
+			CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("JKINGAME", "SCORE_CAPTURES"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		}
+		else
+		{
+			CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("INGAMETEXT", "W_L"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		}
 	}
 	else
 	{

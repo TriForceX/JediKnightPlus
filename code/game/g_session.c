@@ -191,7 +191,7 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					// Tr!Force: [Plugin] Don't allow
-					sess->sessionTeam = (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.ClientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
+					sess->sessionTeam = (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.clientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
 				}
 				break;
 			case GT_TOURNAMENT:
@@ -200,7 +200,7 @@ void G_InitSessionData( gclient_t *client, char *userinfo, qboolean isBot ) {
 					sess->sessionTeam = TEAM_SPECTATOR;
 				} else {
 					// Tr!Force: [Plugin] Don't allow
-					sess->sessionTeam = (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.ClientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
+					sess->sessionTeam = (jkcvar_pluginRequired.integer == 2 && !client->pers.jkmodPers.clientPlugin && !isBot) ? TEAM_SPECTATOR : TEAM_FREE;
 				}
 				break;
 			}

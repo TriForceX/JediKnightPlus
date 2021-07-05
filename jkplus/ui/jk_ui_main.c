@@ -10,37 +10,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 
 /*
 =====================================================================
-Cvar table list
-=====================================================================
-*/
-
-typedef struct { // Cvar table struct
-
-	vmCvar_t	*vmCvar;
-	char		*cvarName;
-	char		*defaultString;
-	int			cvarFlags;
-
-} cvarTable_t;
-
-vmCvar_t	jkcvar_ui_test1;
-vmCvar_t	jkcvar_ui_test2;
-
-static cvarTable_t	JKModUICvarTable[] = {
-
-	{ &jkcvar_ui_test1, "jk_ui_test1", "0", CVAR_ARCHIVE },
-	{ &jkcvar_ui_test2, "jk_ui_test2", "0", CVAR_ARCHIVE },
-
-};
-
-static int JKModUICvarTableSize = sizeof(JKModUICvarTable) / sizeof(JKModUICvarTable[0]);
-
-/*
-=====================================================================
 Emotes table list
 =====================================================================
 */
-jkmod_emotes_table_t jkmodEmotesTable[] =
+jkmod_ui_command_table_t JKModUIemotesTable[] =
 {
 	// cmd				title
 	{ "bar",			"Bartender" },
@@ -99,14 +72,14 @@ jkmod_emotes_table_t jkmodEmotesTable[] =
 	{ "writing2",		"Writing 2" },
 };
 
-jkmod_emotes_list_t jkmodEmotes;
+int JKModUIemotesTableSize = ARRAY_LEN(JKModUIemotesTable);
 
 /*
 =====================================================================
 Dimensions table list
 =====================================================================
 */
-jkmod_dimensions_table_t jkmodDimensionsTable[] =
+jkmod_ui_command_table_t JKModUIdimensionsTable[] =
 {
 	// cmd				title
 	{ "guns",			"Guns Arena" },
@@ -116,38 +89,129 @@ jkmod_dimensions_table_t jkmodDimensionsTable[] =
 	{ "cheats",			"Cheats Mode" },
 };
 
-jkmod_dimensions_list_t jkmodDimensions;
+int JKModUIdimensionsTableSize = ARRAY_LEN(JKModUIdimensionsTable);
+
+/*
+=====================================================================
+// Reset client pop-up list
+=====================================================================
+*/
+jkmod_ui_reset_client_t JKModUIresetClient[] =
+{
+	// interface cvars				default		recommended
+	{ "jk_cg_drawClock",			"0",		"2" },
+	{ "jk_cg_drawForcePoints",		"0",		"1" },
+	{ "jk_cg_drawInventory",		"0",		"1" },
+	{ "jk_cg_drawRaceTimer",		"1",		"1" },
+	{ "jk_cg_drawMovementKeys",		"0",		NULL },
+	{ "jk_cg_scoreboardIcons",		"0",		"1" },
+	{ "jk_cg_scoreboardExtras",		"0",		"1" },
+	{ "jk_cg_chatBox",				"0",		"1" },
+	{ "jk_cg_chatBoxTime",			"10",		"10" },
+	{ "jk_cg_chatBoxHeight",		"360",		"360" },
+	{ "jk_cg_chatBoxHistory",		"1",		"2" },
+	{ "cg_drawTimer",				"0",		NULL },
+	{ "cg_drawFPS",					"0",		NULL },
+	{ "cg_lagometer",				"0",		NULL },
+	{ "cg_hudFiles",				"0",		"0" },
+
+	// visuals cvars				default		recommended
+	{ "jk_cg_duelGlow",				"1",		"1" },
+	{ "jk_cg_duelEndOrbit",			"1.5",		"1.5" },
+	{ "jk_cg_duelEndDelay",			"1",		"1" },
+	{ "jk_cg_drawHitBox",			"0",		NULL },
+	{ "jk_cg_drawBactaModel",		"0",		"1" },
+	{ "jk_cg_drawPlayerNames",		"0",		NULL },
+	{ "jk_cg_chatIcon",				"0",		"1" },
+	{ "jk_cg_saberTrailSpeed",		"40",		"40" },
+	{ "jk_cg_damageBlend",			"0",		"1" },
+	{ "jk_cg_flagOpacity",			"255",		"127" },
+	{ "jk_cg_flagAlignment",		"0",		"1" },
+	{ "jk_cg_chatPlayerOpacity",	"1",		"1" },
+	{ "cg_dismember",				"0",		"2" },
+	{ "cg_simpleItems",				"0",		NULL },
+	{ "cg_shadows",					"1",		NULL },
+	{ "cg_scorePlums",				"1",		"2" },
+
+	// camera cvars					default		recommended
+	{ "jk_cg_duelEnd",				"0",		"1" },
+	{ "jk_cg_specialMoveCamera",	"0",		"1" },
+	{ "cg_fpls",					"0",		"0" },
+	{ "cg_fovAspectAdjust",			"0",		"1" },
+	{ "cg_fov",						"80",		NULL },
+	{ "cg_thirdPersonRange",		"80",		NULL },
+
+	// others cvars					default		recommended
+	{ "jk_cg_customHats",			"0",		NULL },
+	{ "jk_cg_customAnims",			"0",		"1" },
+	{ "jk_cg_jetPackIdle",			"0",		NULL },
+};
+
+int JKModUIresetClientSize = ARRAY_LEN(JKModUIresetClient);
+
+/*
+=====================================================================
+Cvar table list
+=====================================================================
+*/
+
+vmCvar_t	jkcvar_ui_votePoll;
+vmCvar_t	jkcvar_ui_emoteToggle;
+vmCvar_t	jkcvar_ui_dimensionToggle;
+vmCvar_t	jkcvar_ui_resetClient;
+
+vmCvar_t	jkcvar_ui_test1;
+vmCvar_t	jkcvar_ui_test2;
+
+static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
+
+	{ &jkcvar_ui_votePoll,			"jk_ui_votePoll",			"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_dimensionToggle,	"jk_ui_dimensionToggle",	"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_resetClient,		"jk_ui_resetClient",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+
+	{ &jkcvar_ui_test1,				"jk_ui_test1",				"0",	CVAR_ARCHIVE },
+	{ &jkcvar_ui_test2,				"jk_ui_test2",				"0",	CVAR_ARCHIVE },
+
+};
+
+static int JKModUIcvarTableSize = ARRAY_LEN(JKModUIcvarTable);
 
 /*
 =====================================================================
 Register / update cvars functions
 =====================================================================
 */
+
+// Register cvars
 void JKMod_UI_RegisterCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
+	int					i;
+	jkmod_ui_cvar_table_t	*cv;
 
 	// Register all the cvars
-	for (i = 0, cv = JKModUICvarTable; i < JKModUICvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModUIcvarTable; i < JKModUIcvarTableSize; i++, cv++) {
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 	}
 
-	// Set default temp cvars
-	trap_Cvar_Set("jk_ui_cmd_emoteToggle", va("%s", jkmodEmotesTable[0].cmd));
-	trap_Cvar_Set("jk_ui_cmd_dimensionToggle", va("%s", jkmodDimensionsTable[0].cmd));
+	// Set default cvars values
+	trap_Cvar_Set("jk_ui_votePoll", "");
+	trap_Cvar_Set("jk_ui_emoteToggle", va("%s", JKModUIemotesTable[0].cmd));
+	trap_Cvar_Set("jk_ui_dimensionToggle", va("%s", JKModUIdimensionsTable[0].cmd));
+	trap_Cvar_Set("jk_ui_resetClient", va("%i", JKModUIresetClientSize));
 
 	// Launch original register cvars function
 	BaseJK2_UI_RegisterCvars();
 }
 
+// Update cvars
 void JKMod_UI_UpdateCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
+	int					i;
+	jkmod_ui_cvar_table_t	*cv;
 
 	// Update all the cvars
-	for (i = 0, cv = JKModUICvarTable; i < JKModUICvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModUIcvarTable; i < JKModUIcvarTableSize; i++, cv++) {
 		trap_Cvar_Update(cv->vmCvar);
 	}
 
@@ -157,7 +221,7 @@ void JKMod_UI_UpdateCvars(void)
 
 /*
 =====================================================================
-Emotes functions
+Emotes list functions
 =====================================================================
 */
 static char *JKMod_UI_EmotesList(int index, int *actual) 
@@ -165,15 +229,12 @@ static char *JKMod_UI_EmotesList(int index, int *actual)
 	int i, c = 0;
 	*actual = 0;
 
-	for (i = 0; i < jkmodEmotes.count; i++)
+	for (i = 0; i < JKModUIemotesTableSize; i++)
 	{
-		if (c == index)
-		{
+		if (c == index) {
 			*actual = i;
-			return jkmodEmotesTable[i].title;
-		}
-		else
-		{
+			return JKModUIemotesTable[i].title;
+		} else {
 			c++;
 		}
 	}
@@ -182,7 +243,7 @@ static char *JKMod_UI_EmotesList(int index, int *actual)
 
 /*
 =====================================================================
-Dimensions functions
+Dimensions list functions
 =====================================================================
 */
 static char *JKMod_UI_DimensionsList(int index, int *actual)
@@ -190,15 +251,12 @@ static char *JKMod_UI_DimensionsList(int index, int *actual)
 	int i, c = 0;
 	*actual = 0;
 
-	for (i = 0; i < jkmodDimensions.count; i++)
+	for (i = 0; i < JKModUIdimensionsTableSize; i++)
 	{
-		if (c == index)
-		{
+		if (c == index) {
 			*actual = i;
-			return jkmodDimensionsTable[i].title;
-		}
-		else
-		{
+			return JKModUIdimensionsTable[i].title;
+		} else {
 			c++;
 		}
 	}
@@ -244,12 +302,10 @@ int JKMod_UI_FeederCount(float feederID)
 {
 	switch ((int)feederID)
 	{
-		case FEEDER_JK_EMOTES:
-			jkmodEmotes.count = (sizeof(jkmodEmotesTable) / sizeof(jkmodEmotesTable[0]));
-			return jkmodEmotes.count;
-		case FEEDER_JK_DIMENSIONS:
-			jkmodDimensions.count = (sizeof(jkmodDimensionsTable) / sizeof(jkmodDimensionsTable[0]));
-			return jkmodDimensions.count;
+		case FEEDER_JK_EMOTES: 
+			return JKModUIemotesTableSize;
+		case FEEDER_JK_DIMENSIONS: 
+			return JKModUIdimensionsTableSize;
 	}
 
 	// Launch original feeder count function
@@ -267,13 +323,69 @@ qboolean JKMod_UI_FeederSelection(float feederID, int index)
 
 	if (feederID == FEEDER_JK_EMOTES)
 	{
-		trap_Cvar_Set("jk_ui_cmd_emoteToggle", va("%s", jkmodEmotesTable[index].cmd));
+		trap_Cvar_Set("jk_ui_emoteToggle", va("%s", JKModUIemotesTable[index].cmd));
 	}
 	else if (feederID == FEEDER_JK_DIMENSIONS)
 	{
-		trap_Cvar_Set("jk_ui_cmd_dimensionToggle", va("%s", jkmodDimensionsTable[index].cmd));
+		trap_Cvar_Set("jk_ui_dimensionToggle", va("%s", JKModUIdimensionsTable[index].cmd));
 	}
 
 	// Final return, probably NULL
 	return BaseJK2_UI_FeederSelection(feederID, index);
+}
+
+/*
+=====================================================================
+Menu update function
+=====================================================================
+*/
+void JKMod_UI_Update(const char *name, int val)
+{
+	// Parse vote poll message
+	if (!Q_stricmp(name, "JKMod_votePoll"))
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("callvote poll \"%s\"\n", UI_Cvar_VariableString("jk_ui_votePoll")));
+	}
+	// Reset client menu options
+	else if (!Q_stricmp(name, "JKMod_resetClient"))
+	{
+		int i;
+		trap_Cvar_Set("jk_cg_clientPopUp", va("%i", (val ? JKModUIresetClientSize : 0)));
+
+		for (i = 0; i < JKModUIresetClientSize; i++)
+		{
+			if (val && JKModUIresetClient[i].recVal == NULL) continue;
+			trap_Cvar_Set(JKModUIresetClient[i].cvar, (val ? JKModUIresetClient[i].recVal : JKModUIresetClient[i].defVal));
+		}
+	}
+}
+
+/*
+=====================================================================
+Run menu script function
+=====================================================================
+*/
+qboolean JKMod_UI_RunMenuScript(const char **args, const char *name)
+{
+	// Rotate camera when using emotes menu
+	if (Q_stricmp(name, "JKMod_emoteCamera") == 0)
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, "emotecamera\n");
+		trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
+		return qtrue;
+	}
+	// Change dimension from menu
+	if (Q_stricmp(name, "JKMod_emoteToggle") == 0)
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote \"%s\"\n", UI_Cvar_VariableString("jk_ui_emoteToggle")));
+		return qtrue;
+	}
+	// Change dimension from menu
+	if (Q_stricmp(name, "JKMod_dimensionToggle") == 0)
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_dimensionToggle")));
+		return qtrue;
+	}
+
+	return qfalse;
 }

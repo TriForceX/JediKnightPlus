@@ -25,50 +25,64 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 	baseMessage = BaseJK2_ClientConnect(clientNum, firstTime, isBot);
 
 	// First time connect and allowed connect
-	if (baseMessage == NULL && firstTime)
+	if (baseMessage == NULL && firstTime && !isBot)
 	{
-		if (!isBot)
+		int		i = 0;
+		int		clientTempID;
+		char	clientIP[MAX_INFO_VALUE];
+		char	clientPass[MAX_INFO_VALUE];
+		char	clientChallenge[MAX_CHALLENGE];
+
+		Q_strncpyz(clientIP, Info_ValueForKey(userinfo, "ip"), sizeof(clientIP));
+		Q_strncpyz(clientPass, Info_ValueForKey(userinfo, "password"), sizeof(clientPass));
+		Q_strncpyz(clientChallenge, Info_ValueForKey(userinfo, "challenge"), sizeof(clientChallenge));
+
+		clientTempID = atoi(clientChallenge);
+		
+		while (++i < strlen(clientIP)) if (clientIP[i] == ':') clientIP[i] = 0;
+
+		// Closed server check
+		if (VALIDSTRINGCVAR(jkcvar_serverClosed.string) && Q_stricmp(jkcvar_serverClosed.string, clientPass))
 		{
-			vmCvar_t	clientTemp;
-			char		*clientIP;
-			char		*clientPass;
-			int			clientEnd, clientWait, num = 0;
+			char passError[MAX_INFO_VALUE];
+			char passPrint[MAX_INFO_VALUE];
+			char passCheck[MAX_INFO_VALUE];
 
-			clientIP = Info_ValueForKey(userinfo, "ip");
-			clientPass = Info_ValueForKey(userinfo, "password");
+			Q_strncpyz(passError, clientPass[0] ? "using password: " : "(no password set)", sizeof(passError));
+			Q_strncpyz(passPrint, clientPass, sizeof(passPrint));
 
-			while (++num < strlen(clientIP)) if (clientIP[num] == ':') clientIP[num] = 0;
+			// Reduce long pass
+			if (strlen(clientPass) > 16) JKMod_TruncateString(passPrint, clientPass, 16);
 
-			// Closed server
-			if (jkcvar_serverClosed.string[0] && strcmp(jkcvar_serverClosed.string, "0") != 0 && Q_stricmp(jkcvar_serverClosed.string, clientPass))
+			// Encode pass
+			JKMod_DummyEncode(passCheck, clientPass[0] ? clientPass : clientIP);
+
+			// Alert once
+			if (level.jkmodLocals.closedCheck[clientTempID] != atoi(passCheck))
 			{
-				G_Printf("Server closed for: %s using password: %s\n", clientIP, clientPass);
-				return va("%s", jkcvar_serverClosedText.string);
+				level.jkmodLocals.closedCheck[clientTempID] = atoi(passCheck);
+				trap_SendServerCommand(-1, va("print \"Server closed for: ^3%s ^7%s^1%s\n\"", clientIP, passError, passPrint));
+				G_Printf("Server closed for: %s %s%s\n", clientIP, passError, passPrint);
 			}
-
-			// Connect message
-			clientEnd = 5;
-			clientWait = clientEnd + 1;
-			
-			trap_Cvar_Register(&clientTemp, clientIP, "0", CVAR_ARCHIVE);
-			trap_SendConsoleCommand(EXEC_APPEND, va("wait %i; %s %i\n", clientWait, clientIP, clientWait));
-
-			g_entities[clientNum].client->jkmodClient.ConnectTime = clientTemp.integer;
-
-			if (g_entities[clientNum].client->jkmodClient.ConnectTime < clientEnd) {
-				return va("Server running " S_COLOR_CYAN "%s", GAMEVERSION);
-			}
-
-			g_entities[clientNum].client->jkmodClient.ConnectTime = 0;
-			trap_SendConsoleCommand(EXEC_APPEND, va("%s 0\n", clientIP));
-			G_LogPrintf("ClientMessage: %s is ready to join\n", clientIP);
-
-			// Show base client connect message
-			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", g_entities[clientNum].client->pers.netname, G_GetStripEdString("SVINGAME", "PLCONNECT")));
-
-			// Set client IP
-			Q_strncpyz(g_entities[clientNum].client->sess.jkmodSess.ClientIP, clientIP, sizeof(g_entities[clientNum].client->sess.jkmodSess.ClientIP));
+			return jkcvar_serverClosedText.string;
 		}
+
+		// Connect message
+		if (level.jkmodLocals.messageCheck[clientTempID] != clientTempID)
+		{
+			level.jkmodLocals.messageCheck[clientTempID] = clientTempID;
+			return "Server running " GAMEVERSION;
+		}
+		G_LogPrintf("ClientMessage: %i is ready to join\n", clientNum);
+			
+		// Show client connect and reconnect message
+		trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", g_entities[clientNum].client->pers.netname, (!Q_stricmp(level.jkmodLocals.reconnectedIP, clientIP) ? "reconnected" : G_GetStripEdString("SVINGAME", "PLCONNECT"))));
+
+		// Clear reconnected check
+		ARRAY_CLEAR(level.jkmodLocals.reconnectedIP);
+
+		// Set client IP
+		Q_strncpyz(g_entities[clientNum].client->sess.jkmodSess.clientIP, clientIP, sizeof(g_entities[clientNum].client->sess.jkmodSess.clientIP));
 	}
 
 	return baseMessage;
@@ -84,7 +98,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	gentity_t	*ent;
 	gclient_t	*client;
 	char		userinfo[MAX_INFO_VALUE];
-	qboolean	GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLevel.cvarTempUnlock == 2 : qtrue;
+	qboolean	GTconfigLoaded = jkcvar_gameTypeConfig.integer && level.newSession ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue;
 
 	// Set user data
 	ent	= &g_entities[clientNum];
@@ -110,11 +124,11 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
 
 	// Check client plugin
-	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.ClientPlugin)
+	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin)
 	{
-		char	*serverVersion = JK_VERSION;
-		char	*clientVersion;
-		char	*pluginVersion;
+		char	clientVersion[MAX_INFO_VALUE];
+		char	pluginVersion[MAX_INFO_VALUE];
+		char	clientEternal[MAX_INFO_VALUE];
 		int		allowDownload;
 
 		// Force to spectator mode
@@ -125,30 +139,42 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		}
 
 		// Get info
-		clientVersion = Info_ValueForKey(userinfo, "JK2MV");
-		pluginVersion = Info_ValueForKey(userinfo, "jkmod_clientversion");
+		Q_strncpyz(clientVersion, Info_ValueForKey(userinfo, "JK2MV"), sizeof(clientVersion));
+		Q_strncpyz(pluginVersion, Info_ValueForKey(userinfo, "jkmod_client"), sizeof(pluginVersion));
+		Q_strncpyz(clientEternal, Info_ValueForKey(userinfo, "cjp_client"), sizeof(clientEternal));
+
 		allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
 
-		// Show center print message
-		if (!pluginVersion[0])
+		// Check for EternalJK2
+		if (!strcmp(clientEternal, "1.4JAPRO")) 
 		{
-			trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", serverVersion));
-			G_LogPrintf("ClientPlugin: Player does not have any plugin\n", serverVersion);
+			trap_SendServerCommand(clientNum, "cp \"You are using ^1EternalJK2\nSome features may be ^3disabled^7\nPlease use JK2MV ^5https://jk2mv.org\"");
+			trap_SendServerCommand(clientNum, "print \"You are running in ^3Server Side^7 mode only due ^1EternalJK2^7 was detected\n\"");
+			G_LogPrintf("ClientPlugin: Player does not have any plugin (Using eternalJK2)\n");
 		}
 		else
 		{
-			trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, serverVersion));
-			G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, serverVersion);
-		}
+			// Show center print message
+			if (!VALIDSTRINGCVAR(pluginVersion))
+			{
+				trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", JK_VERSION));
+				G_LogPrintf("ClientPlugin: Player does not have any plugin\n");
+			}
+			else
+			{
+				trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, JK_VERSION));
+				G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, JK_VERSION);
+			}
 
-		// Show console print message
-		if (allowDownload)
-		{
-			trap_SendServerCommand(clientNum, va("print \"Update your client plugin typing ^2/%s_allowdownload 1^7 in the console and reconnect\n\"", (clientVersion[0] ? "mv" : "cl")));
-		}
-		else
-		{
-			trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2%s\n\"", serverVersion, JK_URL));
+			// Show console print message
+			if (allowDownload)
+			{
+				trap_SendServerCommand(clientNum, va("print \"Update your client plugin typing ^2/%s_allowdownload 1^7 in the console and reconnect\n\"", (clientVersion[0] ? "mv" : "cl")));
+			}
+			else
+			{
+				trap_SendServerCommand(clientNum, va("print \"Download ^5%s^7 client plugin from ^2%s\n\"", JK_VERSION, JK_URL));
+			}
 		}
 	}
 
@@ -162,31 +188,31 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			trap_SendServerCommand(clientNum, va("print \"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
 
 			// Random message
-			if (jkcvar_randomBegin.integer && !Q_stricmp(level.jkmodLevel.RandomBegin[0], "") == 0)
+			if (jkcvar_randomBegin.integer && VALIDSTRING(level.jkmodLocals.randomBegin[0]))
 			{
-				int random = JKMod_Rand() % level.jkmodLevel.RandomBeginCount;
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLevel.RandomBegin[random]));
+				int random = JKMod_Rand() % level.jkmodLocals.randomBeginCount;
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLocals.randomBegin[random]));
 			}
 			else
 			{
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStripEdString("SVINGAME", "PLENTER")));
 			}
-
+			
 			// Custom sound
-			if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string))
+			if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string) && !level.jkmodLocals.mapRestarted)
 			{
-				G_Sound(ent, CHAN_VOICE, G_SoundIndex(jkcvar_serverJoinSound.string));
+				G_Sound(ent, CHAN_AUTO, G_SoundIndex(jkcvar_serverJoinSound.string));
 			}
 		}
 
 		// Server motd time
-		if (!client->sess.jkmodSess.MotdSeen && *jkcvar_serverMotd.string && jkcvar_serverMotd.string[0] && !Q_stricmp(jkcvar_serverMotd.string, "0") == 0)
+		if (!client->sess.jkmodSess.motdSeen && VALIDSTRINGCVAR(jkcvar_serverMotd.string))
 		{
 			// Delay motd for non-plugin clients
-			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.ClientPlugin ? jkcvar_serverMotdTime.integer + 2 : 0;
+			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin ? jkcvar_serverMotdTime.integer + 2 : 0;
 			
-			client->jkmodClient.MotdTime = motdDelayed ? motdDelayed : jkcvar_serverMotdTime.integer;
-			client->sess.jkmodSess.MotdSeen = qtrue;
+			client->jkmodClient.motdTime = motdDelayed ? motdDelayed : jkcvar_serverMotdTime.integer;
+			client->sess.jkmodSess.motdSeen = qtrue;
 		}
 	}
 }
@@ -300,7 +326,7 @@ void JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *en
 		outBuffer[count] = p[i];
 		count++;
 		memset(tempBuffer, 0, sizeof(tempBuffer));
-		JKMod_sanitizeString(tempBuffer, outBuffer, sizeof(tempBuffer));
+		JKMod_SanitizeString(tempBuffer, outBuffer, sizeof(tempBuffer));
 
 		if (strlen(tempBuffer) >= MAX_NAME_PRINT)
 		{
@@ -311,7 +337,7 @@ void JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *en
 	// Check duplicated player names
 	if (jkcvar_noDuplicatedNames.integer)
 	{
-		num = JKMod_duplicatedNameCheck(ent, outBuffer);
+		num = JKMod_DuplicatedNameCheck(ent, outBuffer);
 
 		if (num)
 		{

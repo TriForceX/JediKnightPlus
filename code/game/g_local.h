@@ -324,7 +324,7 @@ typedef struct {
 } mvclientSession_t;
 
 //
-// #define MAX_NETNAME			36 // Tr!Force: [Header] Use this on main local header
+#define MAX_NETNAME			/*36*/MAX_NAME_BIG // Tr!Force: [Header] Use this on main local header
 #define	MAX_VOTE_COUNT		3
 
 // client data that stays across multiple respawns, but is cleared
@@ -534,7 +534,7 @@ typedef struct {
 	// MVSDK
 	qboolean	bboxEncoding;
 
-	jkmod_locals_t	jkmodLevel;			// Tr!Force: [JKMod] level locals
+	jkmod_locals_t	jkmodLocals;		// Tr!Force: [JKMod] level locals
 } level_locals_t;
 
 

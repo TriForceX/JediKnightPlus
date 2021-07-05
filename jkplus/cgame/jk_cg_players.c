@@ -36,44 +36,35 @@ void JKMod_CG_Player(centity_t *cent)
 	}
 
 	// Render custom hats models
-	if (cgs.jkmodCvar.customHats)
+	if (cgs.jkmodCGS.customHats)
 	{
 		qhandle_t jkmod_hatFile = 0;
 		vec4_t jkmod_hatDetails = { -0.3, 0, -2, 1 };
 
 		// Special case
-		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann")) {
+		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann")) 
+		{
 			jkmod_hatDetails[0] = 2;
 			jkmod_hatDetails[2] = -3;
 		}
 
 		switch (cgs.clientinfo[cent->currentState.number].jkmod_hat) 
 		{
-			case 1:
-				jkmod_hatFile = cgs.jkmodMedia.hatSanta; break;
-			case 2:
-				jkmod_hatFile = cgs.jkmodMedia.hatPumpkin; break;
-			case 3:
-				jkmod_hatFile = cgs.jkmodMedia.hatCap; break;
-			case 4:
-				jkmod_hatFile = cgs.jkmodMedia.hatCowboy; break;
-			case 5:
-				jkmod_hatFile = cgs.jkmodMedia.hatCringe; break;
-			case 6:
-				jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
-			case 7:
-				jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
-			case 8:
-				jkmod_hatFile = cgs.jkmodMedia.hatPirate; break;
+			case 1: jkmod_hatFile = cgs.jkmodMedia.hatSanta; break;
+			case 2: jkmod_hatFile = cgs.jkmodMedia.hatPumpkin; break;
+			case 3: jkmod_hatFile = cgs.jkmodMedia.hatCap; break;
+			case 4: jkmod_hatFile = cgs.jkmodMedia.hatCowboy; break;
+			case 5: jkmod_hatFile = cgs.jkmodMedia.hatCringe; break;
+			case 6: jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
+			case 7: jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
+			case 8: jkmod_hatFile = cgs.jkmodMedia.hatPirate; break;
 		}
 
-		if (jkmod_hatFile) {
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, jkmod_hatFile, "*head_top", jkmod_hatDetails);
-		}
+		if (jkmod_hatFile) JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, jkmod_hatFile, "*head_top", jkmod_hatDetails);
 	}
 
 	// Render jetpack model
-	if (cgs.jkmodCvar.jetPack)
+	if (cgs.jkmodCGS.jetPack)
 	{
 		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
 		{
@@ -133,14 +124,10 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 	qhandle_t hitboxShader, hitboxShader_nocull;
 
 	// Don't draw it if it's us in first-person
-	if (cent->currentState.number == cg.predictedPlayerState.clientNum && !cg.renderingThirdPerson) {
-		return;
-	}
+	if (cent->currentState.number == cg.predictedPlayerState.clientNum && !cg.renderingThirdPerson) return;
 
 	// Don't draw it for dead players
-	if (cent->currentState.eFlags & EF_DEAD) {
-		return;
-	}
+	if (cent->currentState.eFlags & EF_DEAD) return;
 
 	// Don't draw if is mindtricked
 	if (CG_IsMindTricked(cent->currentState.trickedentindex,
@@ -154,11 +141,6 @@ void JKMod_CG_AddHitBox(centity_t *cent)
 	// Get the shader handles
 	hitboxShader = cgs.jkmodMedia.hitBox;
 	hitboxShader_nocull = cgs.jkmodMedia.hitBoxNoCull;
-
-	// If they don't exist, forget it
-	if (!hitboxShader || !hitboxShader_nocull) {
-		return;
-	}
 
 	// Get the player's client info
 	ci = &cgs.clientinfo[cent->currentState.clientNum];
@@ -296,37 +278,23 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 	vec3_t boltOrg, bAngles;
 	refEntity_t re;
 
-	if (!cent->ghoul2)
-	{
+	if (!cent->ghoul2) 
 		return;
-	}
-
-	if (cent->currentState.eFlags & EF_DEAD)
-	{
+	if (cent->currentState.eFlags & EF_DEAD) 
 		return;
-	}
-
 	if (!cg.renderingThirdPerson && cent->currentState.clientNum == cg.clientNum)
-	{
 		return;
-	}
-
 	if (!cg.renderingThirdPerson && cg.snap->ps.clientNum == cent->currentState.clientNum && cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR && (cg.snap->ps.pm_flags & PMF_FOLLOW))
-	{
 		return;
-	}
-
 	if (cg.snap->ps.duelIndex && cg.snap->ps.duelInProgress && cg.snap->ps.duelIndex != cent->currentState.number && cent->currentState.clientNum != cg.clientNum)
-	{
 		return;
-	}
-
+	if (cent->currentState.weapon == WP_EMPLACED_GUN) // Fix me
+		return;
 	if (CG_IsMindTricked(cent->currentState.trickedentindex, 
 		cent->currentState.trickedentindex2, 
 		cent->currentState.trickedentindex3, 
 		cent->currentState.trickedentindex4, 
-		cg.snap->ps.clientNum))
-	{
+		cg.snap->ps.clientNum)) {
 		return;
 	}
 
@@ -354,7 +322,8 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		VectorCopy(boltOrg, re.lightingOrigin);
 		VectorCopy(boltOrg, re.origin);
 
-		if (modelDetails[3] != 1) {
+		if (modelDetails[3] != 1) 
+		{
 			re.modelScale[0] = modelDetails[3];
 			re.modelScale[1] = modelDetails[3];
 			re.modelScale[2] = modelDetails[3];
@@ -367,7 +336,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 			if (!JKMod_CG_EmoteUI())
 			{
 				re.renderfx |= RF_FORCE_ENT_ALPHA;
-				re.shaderRGBA[3] = 100; // Fixed ?
+				re.shaderRGBA[3] = 100; // Fixed num ?
 			}
 		}
 

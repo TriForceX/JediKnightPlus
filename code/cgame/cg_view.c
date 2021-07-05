@@ -1573,12 +1573,12 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	}
 
 	//Tr!Force: [MacroScan] See if we should force a scan for macros
-	if (cgs.jkmodCvar.macroScan)
+	if (cgs.jkmodCGS.macroScan)
 	{
 		// Scan once every second
 		if ((jkmod_macro_scan_time + 1000) < cg.time)
 		{
-			trap_SendConsoleCommand("jk_ui_macroscan\n");
+			trap_SendConsoleCommand("jk_ui_cmd_macroScan\n");
 			jkmod_macro_scan_time = cg.time;
 			jkmod_macro_scan = qfalse;
 		}
@@ -1586,7 +1586,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	else if (!jkmod_macro_scan)
 	{
 		// Find any disabled macros and re-enable them...
-		trap_SendConsoleCommand("jk_ui_macroenable\n");
+		trap_SendConsoleCommand("jk_ui_cmd_macroEnable\n");
 		jkmod_macro_scan = qtrue;
 	}
 

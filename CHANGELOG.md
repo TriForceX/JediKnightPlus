@@ -9,6 +9,26 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.15.0
+- Fix some compiling warnings
+- Fix private duel end check and duel timer
+- Fix engage force duel with no force powers on server
+- Added alternative names for some client commands
+- Added special movements camera and client menu tweaks
+- Added mini keyboard display and extra scoreboard info
+- Allow savepos and loadpos on race & cheats dimension
+- Added various tweaks for maps related stuff
+- Added custom bots AI functions (WIP)
+- Added max vote pass option for call votes
+- Added server client join sound option
+- Added private duel distance option and cvar changes
+- Added spectator no-clip movement
+- Show client pop-up only if plugin required is enabled
+- Added toggle mod rcon command
+- Added 2D style player flag
+- Updated mod website url
+- Added various tweaks and refactored stuff
+
 ## 0.14.5
 - Changed forcePlugin cvar to pluginRequired
 - Added recommended client options pop-up

@@ -323,7 +323,7 @@ typedef enum {
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,				// bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
-	// Tr!Force: [Stats] Custom player flags
+	// Tr!Force: [JKMod] Custom stats data
 	JK_PLAYER,
 	JK_DIMENSION,
 	JK_MOVEMENT,

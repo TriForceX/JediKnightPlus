@@ -13,7 +13,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 Inspect file function
 =====================================================================
 */
-static int InspectFile(char *filename)
+static int JKMod_UI_InspectFile(char *filename)
 {
 	char *name;
 	char *q, *r, *buf;
@@ -84,7 +84,7 @@ static int InspectFile(char *filename)
 				*r = 0; // Terminate filename string
 			}
 			// Recurse
-			if (InspectFile(name) == 1)
+			if (JKMod_UI_InspectFile(name) == 1)
 			{
 				BG_TempFree(len + 257); // Free the temp buffer
 				return 1;
@@ -134,7 +134,7 @@ static int InspectFile(char *filename)
 				*r = 0; // Terminate cvar name string
 			}
 			// Recurse
-			if (InspectFile(name) == 1)
+			if (JKMod_UI_InspectFile(name) == 1)
 			{
 				BG_TempFree(len + 257); // Free the temp buffer
 				return 1;
@@ -166,7 +166,7 @@ static int InspectFile(char *filename)
 Inspect cvar function
 =====================================================================
 */
-static int InspectCvar(char *cvarname)
+static int JKMod_UI_InspectCvar(char *cvarname)
 {
 	char *buf, *name;
 	char *q, *r;
@@ -220,7 +220,7 @@ static int InspectCvar(char *cvarname)
 				*r = 0; // Terminate filename string
 			}
 			// Recurse
-			if (InspectFile(name) == 1)
+			if (JKMod_UI_InspectFile(name) == 1)
 			{
 				BG_TempFree(512); // Free the temp buffer
 				return 1;
@@ -253,7 +253,7 @@ static int InspectCvar(char *cvarname)
 Macro scan function
 =====================================================================
 */
-void JKMod_MacroScan(void)
+void JKMod_UI_MacroScan(void)
 {
 	// Process binds and scan for macros
 	int i, j, macro;
@@ -306,7 +306,7 @@ void JKMod_MacroScan(void)
 							}
 							*r = 0; // Terminate filename string
 						}
-						if (InspectFile(name) == 1)
+						if (JKMod_UI_InspectFile(name) == 1)
 						{
 							macro = 1;
 							break;
@@ -355,7 +355,7 @@ void JKMod_MacroScan(void)
 							}
 							*r = 0; // Terminate cvar name string
 						}
-						if (InspectCvar(name) == 1)
+						if (JKMod_UI_InspectCvar(name) == 1)
 						{
 							macro = 1;
 							break;
@@ -404,7 +404,7 @@ void JKMod_MacroScan(void)
 				}
 				*r = 0; // Terminate filename string
 			}
-			if (InspectFile(fname) == 1) macro = 1;
+			if (JKMod_UI_InspectFile(fname) == 1) macro = 1;
 		}
 		else if (!Q_stricmpn(buf, "vstr ", 5) || !Q_stricmpn(buf, "vstr\t", 5))
 		{ 
@@ -432,7 +432,7 @@ void JKMod_MacroScan(void)
 				}
 				*r = 0; // Terminate cvar name string
 			}
-			if (InspectCvar(cname) == 1) macro = 1;
+			if (JKMod_UI_InspectCvar(cname) == 1) macro = 1;
 		}
 
 		if (macro == 1)
@@ -456,7 +456,7 @@ void JKMod_MacroScan(void)
 Macro enable function
 =====================================================================
 */
-void JKMod_MacroEnable(void) 
+void JKMod_UI_MacroEnable(void) 
 {
 	// Process binds and scan for macros, the re-enable them
 	int		i, j;
@@ -480,4 +480,38 @@ void JKMod_MacroEnable(void)
 			trap_Key_SetBinding(i, buf + findSize);
 		}
 	}
+}
+
+/*
+=====================================================================
+Console command function
+=====================================================================
+*/
+qboolean JKMod_UI_ConsoleCommand(char *cmd)
+{
+	// Scan command
+	if (Q_stricmp(cmd, "jk_ui_cmd_macroScan") == 0)
+	{
+		JKMod_UI_MacroScan();
+		return qtrue;
+	}
+	// Enable command
+	if (Q_stricmp(cmd, "jk_ui_cmd_macroEnable") == 0)
+	{
+		JKMod_UI_MacroEnable();
+		return qtrue;
+	}
+	// Open client options pop-up
+	if (Q_stricmp(cmd, "jk_ui_cmd_clientPopUp") == 0)
+	{
+		if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) 
+		{
+			trap_Cvar_Set("cl_paused", "1");
+			trap_Key_SetCatcher(KEYCATCH_UI);
+			Menus_ActivateByName("ingame_jkmod_popup");
+		}
+		return qtrue;
+	}
+
+	return qfalse;
 }
