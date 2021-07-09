@@ -296,14 +296,14 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 {
 	float thirdPersonRange = cg_thirdPersonRange.value;
 
-	// Tr!Force: [BackSwing] Back swing camera range
-	if (jkcvar_cg_specialMoveCamera.integer && !cg.jkmodCG.duelEnd &&
+	// Tr!Force: [SpecialMoveCamera] Camera range on saber move
+	if (jkcvar_cg_specialMoveCamera.integer && !cg.jkmodCG.duelEnd && (
 		cg.predictedPlayerState.saberMove == LS_A_BACK || 
 		cg.predictedPlayerState.saberMove == LS_A_BACK_CR || 
 		cg.predictedPlayerState.saberMove == LS_A_BACKSTAB || 
 		cg.predictedPlayerState.saberMove == LS_A_FLIP_STAB || 
 		cg.predictedPlayerState.saberMove == LS_A_FLIP_SLASH || 
-		cg.predictedPlayerState.saberMove == LS_A_JUMP_T__B_) 
+		cg.predictedPlayerState.saberMove == LS_A_JUMP_T__B_ )) 
 	{
 		float animLength = bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].numFrames * abs(bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].frameLerp);
 		float elapsedTime = (float)(animLength - cg.predictedPlayerState.legsTimer);
