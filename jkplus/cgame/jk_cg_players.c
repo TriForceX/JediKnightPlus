@@ -423,7 +423,9 @@ void JKMod_CG_EmoteCamera(void)
 	int cameraRange = 120;
 	int cameraVertOffset = 0;
 
+	if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) return;
 	if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) return;
+	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
 	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 	
 	if (cg_thirdPersonAngle.value != cameraAngle) cg.jkmodCG.prevCameraAngle = cg_thirdPersonAngle.value;
