@@ -192,7 +192,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 				}
 				else
 				{
-					if (largeFormat && (score->score > 99 && ci->losses > 9)) {
+					if (largeFormat && (score->score > 99 || ci->losses > 99)) {
 						scoreScale = 0.84f;
 						scoreAlign = 3;
 					}
@@ -210,14 +210,14 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	// TriForce: [Scoreboard] Extra info
 	if (jkcvar_cg_scoreboardExtras.integer)
 	{
-		char *jkmod_ping;
+		char *clientPing;
 		
 		if (score->ping != -1)
-			jkmod_ping = ci->botSkill != 0 ? "Bot" : va("%i", score->ping);
+			clientPing = ci->botSkill != 0 ? "Bot" : va("%i", score->ping);
 		else
-			jkmod_ping = "-";
+			clientPing = "-";
 
-		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, jkmod_ping,0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, clientPing, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 	}
 	else
 	{
