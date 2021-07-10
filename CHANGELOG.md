@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.15.1
+- Fix special move camera check
+- Fix emote camera check
+- Fix scoreboard extras scale check
+- Fix scoreboard icons alignment
+- Fix mini scoreboard translated text
+
 ## 0.15.0
 - Fix some compiling warnings
 - Fix private duel end check and duel timer

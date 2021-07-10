@@ -41,7 +41,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Player accounts system (Save data such as kills, deaths, etc...)
 - [ ] Ranking system (Based on player skills)
 - [x] Jetpack (Quake 3 & Jedi Academy style)
-- [x] Custom teleport frag
+- [x] Disable kill when player teleport or spawn inside another player
 - [ ] Chat censor filters
 - [x] Chat protection
 - [x] Allow black color in player names
@@ -76,9 +76,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Force client plugin usage (Optional)
 - [x] Prevent player warping or lag scripts
 - [x] Server idle reset feature
-- [x] Custom map default music (For maps without background music)
 - [x] Improved custom map cycle
-- [x] Disable kill when player teleport or spawn inside another player
 - [ ] Drivable vehicles (Tie Fighter, X-Wing, AT-ST, etc...)
 - [ ] Custom melee weapon
 - [ ] Portal gun (Experimental)
@@ -111,6 +109,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 
 - [x] Various map fixes (Including single player maps to be playable)
 - [x] New custom map entities and fixed some BaseJK entities
+- [x] Custom map default music (For maps without background music)
+- [x] Support for defrag & race maps
 - [ ] Add models (GLM or MD3 format)
 - [ ] Add effects (EFX format)
 - [ ] Add any entity based on classname and parameters
@@ -119,7 +119,6 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Delete entities
 - [ ] Clone entities
 - [ ] Save feature to get all changes automatically stored in a loadable file
-- [x] Support for defrag & race maps
 
 ---
 

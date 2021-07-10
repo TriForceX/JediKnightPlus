@@ -1635,12 +1635,26 @@ static float CG_DrawMiniScoreboard ( float y )
 
 	if ( cgs.gametype >= GT_TEAM )
 	{
-		strcpy ( temp, "Red: " );
-		Q_strcat ( temp, MAX_QPATH, cgs.scores1==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores1)) );
-		Q_strcat ( temp, MAX_QPATH, " Blue: " );
-		Q_strcat ( temp, MAX_QPATH, cgs.scores2==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores2)) );
+		// Tr!Force: [Scoreboard] Translated team scores
+		if (jkcvar_cg_scoreboardExtras.integer)
+		{
+			char *text;
+			int	scores1 = cgs.scores1 == SCORE_NOT_PRESENT ? 0 : cgs.scores1;
+			int	scores2 = cgs.scores2 == SCORE_NOT_PRESENT ? 0 : cgs.scores2;
 
-		CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( temp, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, temp, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
+			text = va("%s: %i %s: %i", CG_GetStripEdString("JKINGAME", "RED"), scores1, CG_GetStripEdString("JKINGAME", "BLUE"), scores2);
+
+			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( text, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, text, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
+		}
+		else
+		{
+			strcpy ( temp, "Red: " );
+			Q_strcat ( temp, MAX_QPATH, cgs.scores1==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores1)) );
+			Q_strcat ( temp, MAX_QPATH, " Blue: " );
+			Q_strcat ( temp, MAX_QPATH, cgs.scores2==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores2)) );
+
+			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( temp, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, temp, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
+		}
 		y += 15;
 	}
 	else
