@@ -2406,7 +2406,9 @@ void ClientDisconnect( int clientNum ) {
 	ent->client->pers.connected = CON_DISCONNECTED;
 	ent->client->ps.persistant[PERS_TEAM] = TEAM_FREE;
 	ent->client->sess.sessionTeam = TEAM_FREE;
-	ent->client->sess.losses = 0; // Tr!Force: [Scoreboard] Extra info
+
+	// Tr!Force: [Scoreboard] Extra info
+	if (g_gametype.integer != GT_TOURNAMENT) ent->client->sess.losses = 0;
 	
 	// Tr!Force: [JKMod] Check for reconnect
 	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));
