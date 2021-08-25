@@ -82,6 +82,7 @@ Dimensions table list
 jkmod_ui_command_table_t JKModUIdimensionsTable[] =
 {
 	// cmd				title
+	{ "normal",			"Normal" },
 	{ "guns",			"Guns Arena" },
 	{ "race",			"Race Defrag" },
 	{ "saber",			"Saber Only" },
