@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 =====================================================================
 [Description]: Local definitions for game module
 =====================================================================
@@ -9,7 +9,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2020
 #ifndef __JK_LOCAL_H__
 #define __JK_LOCAL_H__
 
-#include "../../jkplus/game/jk_version.h" // Version header
+#include "../../jkmod/game/jk_version.h" // Version header
 
 /*
 =====================================================================

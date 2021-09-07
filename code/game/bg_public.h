@@ -398,7 +398,7 @@ typedef enum {
 #define EF_DISINTEGRATION	0x02000000		// being disintegrated by the disruptor
 #define EF_INVULNERABLE		0x04000000		// just spawned in or whatever, so is protected
 
-#include "../../jkplus/game/jk_public.h"	// Tr!Force: [JKMod] Public header
+#include "../../jkmod/game/jk_public.h" // Tr!Force: [JKMod] Public header
 
 typedef enum {
 	EFFECT_NONE = 0,

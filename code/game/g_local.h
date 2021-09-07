@@ -96,7 +96,7 @@ extern int gEscapeTime;
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
-#include "../../jkplus/game/jk_local.h" // Tr!Force: [JKMod] Main header
+#include "../../jkmod/game/jk_local.h" // Tr!Force: [JKMod] Main header
 
 struct gentity_s {
 	entityState_t	s;				// communicated by server to clients

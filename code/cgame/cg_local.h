@@ -641,7 +641,7 @@ typedef struct {
 
 #define MAX_PREDICTED_EVENTS	16
 
-#include "../../jkplus/cgame/jk_cg_local.h" // Tr!Force: [JKMod] Main header
+#include "../../jkmod/cgame/jk_cg_local.h" // Tr!Force: [JKMod] Main header
  
 typedef struct {
 	int			clientFrame;		// incremented each frame
