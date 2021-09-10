@@ -192,7 +192,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		if (g_gametype.integer != GT_TOURNAMENT)
 		{
 			// Current mod version
-			trap_SendServerCommand(clientNum, va("print \"This server is running ^5%s ^7(Version: ^2%s.%s.%s ^7- Build: %s)\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, __DATE__));
+			trap_SendServerCommand(clientNum, va("print \"This server is running ^5%s ^7- Version: ^2%s.%s.%s\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH));
 
 			// Random message
 			if (jkcvar_randomBegin.integer && VALIDSTRING(level.jkmodLocals.randomBegin[0]))

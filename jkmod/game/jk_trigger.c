@@ -15,9 +15,8 @@ Check trigger contact
 */
 qboolean JKMod_InTrigger(vec3_t interpOrigin, gentity_t *trigger)
 {
-	vec3_t			mins, maxs;
-	static vec3_t	playerMins;
-	static vec3_t	playerMaxs;
+	vec3_t	mins, maxs;
+	vec3_t	playerMins, playerMaxs;
 
 	VectorSet(playerMins, -15, -15, DEFAULT_MINS_2);
 	VectorSet(playerMaxs, 15, 15, DEFAULT_MAXS_2);

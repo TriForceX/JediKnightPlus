@@ -932,6 +932,8 @@ void QDECL CG_Printf( const char *msg, ... ) {
 	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
+	cg.jkmodCG.consolePrint++;				// Tr!Force: [JKMod] Console print lines
+	cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [JKMod] Console print timestamp
 	trap_Print( text );
 }
 

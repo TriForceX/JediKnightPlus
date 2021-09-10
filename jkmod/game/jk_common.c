@@ -81,6 +81,28 @@ void JKMod_DummyEncode(char *buffer, const char *s)
 
 /*
 =====================================================================
+Replace multiple spaces by single space
+=====================================================================
+*/
+char *JKMod_TrimWhiteSpace(char *s)
+{
+    char *from, *to;
+    int spc = 0;
+    to = from = s;
+    while (1) {
+        if (spc && *from == ' ' && to[-1] == ' ')
+            ++from;
+        else {
+            spc = (*from==' ')? 1 : 0;
+            *to++ = *from++;
+            if (!to[-1]) break;
+        }
+    }
+    return s;
+}
+
+/*
+=====================================================================
 Cleans the given string from newlines and such
 =====================================================================
 */

@@ -45,6 +45,7 @@ typedef struct
 	int			customHats;		// Tr!Force: [CustomHats] Main cvar
 	int			jetPack;		// Tr!Force: [JetPack] Main cvar
 	int			pauseTime;		// Tr!Force: [Pause] Server pause time
+	qboolean	modCheck;		// Tr!Force: [ModCheck] Server mod check
 
 } jkmod_cgs_t;
 
@@ -60,7 +61,10 @@ typedef struct
 	int					prevCameraAngle;			// Saved camera angle
 	int					prevCameraRange;			// Saved camera range
 	int					prevCameraVertOffset;		// Saved camera vertical offset
-	int					raceBestTime;				// Saved camera vertical offset
+	int					raceBestTime;				// Last race best time
+	int					consolePrint;				// Console print lines
+	int					consolePrintTime;			// Console print timestamp
+	int					consoleNotifyTime;			// Console notify time
 
 } jkmod_cg_t;
 
@@ -183,6 +187,7 @@ void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf,
 void		JKMod_CG_Draw2D(void);
 qboolean	JKMod_CG_IconHUDActive(void);
 qboolean	JKMod_CG_CenterPrintActive(void);
+int			JKMod_CG_ConsolePrintActive(void);
 const char	*JKMod_CG_MsToString(const int ms);
 void		JKMod_CG_DrawClock(void);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);

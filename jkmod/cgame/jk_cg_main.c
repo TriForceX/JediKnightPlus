@@ -131,6 +131,9 @@ void JKMod_CG_RegisterCvars(void)
 	// Update client pop-up count
 	trap_Cvar_VariableStringBuffer("jk_ui_resetClient", var, sizeof(var));
 	trap_Cvar_Set("jk_cg_resetClient", var);
+
+	// Check console notify time
+	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
 }
 
 void JKMod_CG_UpdateCvars(void)
@@ -145,6 +148,9 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Launch original update cvars function
 	BaseJK2_CG_UpdateCvars();
+
+	// Check console notify time
+	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
 }
 
 /*
@@ -163,6 +169,8 @@ void QDECL JKMod_CG_Printf(const char *msg, ...)
 		Q_vsnprintf (text, sizeof(text), msg, argptr);
 		va_end (argptr);
 
+		cg.jkmodCG.consolePrint++;
+		cg.jkmodCG.consolePrintTime = cg.time;
 		trap_Print(text);
 	}
 }

@@ -151,6 +151,13 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCGS.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));			// Tr!Force: [CustomHats] Main cvar
 	cgs.jkmodCGS.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));					// Tr!Force: [JetPack] Main cvar
 
+	// Tr!Force: [GameName] Main cvar
+	if (!cgs.jkmodCGS.modCheck) 
+	{
+		char *gamename = Info_ValueForKey(info, "gamename");
+		cgs.jkmodCGS.modCheck = (qboolean)strstr(gamename, JK_SHORTNAME);
+	}
+
 	mapname = Info_ValueForKey( info, "mapname" );
 
 	//rww - You must do this one here, Info_ValueForKey always uses the same memory pointer.

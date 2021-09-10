@@ -889,7 +889,10 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		char timeLastStr[32];
 		char timeBestStr[32];
 
-		if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) return;
+		if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) {
+			trap_SendServerCommand(ent - g_entities, "cp \"You must be in race mode\n\"");
+			return;
+		}
 
 		Q_strncpyz(timeLastStr, JKMod_MsToString(timeLast), sizeof(timeLastStr));
 		Q_strncpyz(timeBestStr, JKMod_MsToString(timeBest), sizeof(timeBestStr));
@@ -970,7 +973,6 @@ void JKMod_WhoIs(gentity_t *ent)
 	else
 	{
 		G_Printf("Map: %s\n", JKMod_GetCurrentMap());
-		G_Printf("Gameplay: 1.0%i\n", jk2gameplay);
 		G_Printf("Num Name                         Type  Dimension    Plugin\n");
 		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
 	}
@@ -1080,25 +1082,21 @@ void JKMod_ClientCommand(int clientNum)
 
 		trap_Argv(1, arg1, sizeof(arg1));
 
+		// Main help
 		if(trap_Argc() < 2)
 		{
-			qtime_t		serverTime;
-			char		*serverTimeType;
-
-			trap_RealTime(&serverTime);
-			serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
-
 			trap_SendServerCommand(ent - g_entities, va("print \""
 				"^5[^7 Help ^5]^7\n"
-				"^7This server is running ^5%s ^7- Version: ^2%s.%s.%s\n"
-				"^7The current server gameplay is ^21.0%i ^7- The server time is %02i:%02i%s\n"
+				"^7This server is running ^5%s ^7- Version: ^2%s.%s.%s ^7(Build: %s)\n"
 				"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 				"^5----------\n"
 				"^7Topic list:\n"
 				"^3Admin          Accounts       Dimensions\n"
 				"^3Emotes         Commands       Duels\n"
 				"^3Build          About          Credits\n"
-				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, jk2gameplay, serverTime.tm_hour, serverTime.tm_min, serverTimeType));
+				"^5----------\n"
+				"^2Note: ^7For more information please visit ^5%s\n"
+				"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, JKMod_TrimWhiteSpace(__DATE__), JK_URL));
 			return;
 		}
 		// Help admin

@@ -71,6 +71,16 @@ void JKMod_CG_Draw2D(void)
 	{
 		JKMod_CG_DrawPauseString();
 	}
+
+	// Server mod check
+	if (!cgs.jkmodCGS.modCheck)
+	{
+		CG_CenterPrint(CG_GetStripEdString("JKINGAME", "MOD_ALERT"), cgs.screenHeight * .30, 0);
+	}
+
+	// Update console print lines
+	if (cg.jkmodCG.consolePrint > 3) cg.jkmodCG.consolePrint = 3;
+	if (cg.jkmodCG.consolePrint && (cg.jkmodCG.consolePrintTime + (cg.jkmodCG.consoleNotifyTime * 1000)) < cg.time) cg.jkmodCG.consolePrint = 0;
 }
 
 /*
@@ -633,7 +643,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 		trace_t		trace;
 		centity_t	*cent = &cg_entities[i];
 		vec3_t		diff;
-		float		scale, max = 0.9;
+		float		scale, max = 0.7;
 
 		// Skip
 		if (!cent || !cent->currentValid)
@@ -676,7 +686,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 			continue;
 
 		// Set dynamic scale
-		scale = 150 / VectorLength(diff);
+		scale = 120 / VectorLength(diff);
 
 		// Show name
 		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > max ? max : scale));
@@ -779,9 +789,15 @@ void JKMod_CG_DrawMovementKeys(void)
 	// Big
 	if (jkcvar_cg_drawMovementKeys.integer == 3) 
 	{
-		x = 16;
-		y = 44;
-		scale = 2;
+		int consoleLines = cg.jkmodCG.consolePrint;
+
+		x = 5;
+		y = 5;
+		scale = 1.7;
+
+		if (consoleLines == 1) y = 12;
+		else if (consoleLines == 2) y = 20;
+		else if (consoleLines == 3) y = 28;
 	} 
 	// Medium
 	else if (jkcvar_cg_drawMovementKeys.integer == 2) 

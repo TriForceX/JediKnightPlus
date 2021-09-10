@@ -1,7 +1,7 @@
 VERSION 1
 ID 137
 REFERENCE JKINGAME
-COUNT 11
+COUNT 12
 INDEX 0
 {
    REFERENCE RECORD
@@ -100,4 +100,13 @@ INDEX 10
    TEXT_LANGUAGE3 "Blau"
    TEXT_LANGUAGE6 "Blue"
    TEXT_LANGUAGE8 "Azul"
+}
+INDEX 11
+{
+   REFERENCE MOD_ALERT
+   TEXT_LANGUAGE1 "^1ALERT\nIncomplete mod detected\nDownload the full mod at:\n^5https://jkplus.github.io"
+   TEXT_LANGUAGE2 "^1ALERTE\nMod incomplet détecté\nTéléchargez le mod complet à:\n^5https://jkplus.github.io"
+   TEXT_LANGUAGE3 "^1ALARM\nUnvollständige mod detektiert\nLaden sie den vollständigen mod bei:\n^5https://jkplus.github.io"
+   TEXT_LANGUAGE6 "^1ALERT\nIncomplete mod detected\nDownload the full mod at:\n^5https://jkplus.github.io"
+   TEXT_LANGUAGE8 "^1ALERTA\nMod incompleto detectado\nDescarga el mod completo en:\n^5https://jkplus.github.io"
 }

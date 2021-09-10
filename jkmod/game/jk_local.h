@@ -383,6 +383,7 @@ void		JKMod_WhoIs(gentity_t *ent);
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 qboolean	JKMod_ValidNumber(const char *s);
 void		JKMod_DummyEncode(char *buffer, const char *s);
+char		*JKMod_TrimWhiteSpace(char* s);
 void		JKMod_TruncateString(char *buffer, const char *s, int limit);
 void		JKMod_StringEscape(char *in, char *out, int outSize);
 char		*JKMod_SanitizeString(char *dest, char *source, int destSize);

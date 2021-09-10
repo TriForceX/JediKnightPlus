@@ -98,7 +98,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		{
 			if (level.jkmodLocals.serverNewsNum == (jkcvar_serverNewsTime.integer * i))
 			{
-				trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5(^7%02i^5:^7%02i%s^5)^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodLocals.serverNews[(i-1)]));
+				trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodLocals.serverNews[(i-1)]));
 					
 				// Reset
 				if (level.jkmodLocals.serverNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
