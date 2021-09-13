@@ -9,8 +9,8 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Project & Versioning
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(MVSDK "JK2MV SDK")
-set(MVSDKURL "https://jk2mv.org")
+set(MVSDK "JediKnightPlus")
+set(MVSDKURL "https://jkplus.github.io")
 if(NOT InMV)
 	set(ProjectName ${MVSDK} CACHE STRING "Project Name")
 	project(${ProjectName})
@@ -147,7 +147,7 @@ if (NOT InMV)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4018 /wd4244 /wd4996 /wd4267 /wd4305")
 
 		# Multithreaded
-		set(CMAKE_C_FLAGS_RELEASE "/MT" CACHE TYPE INTERNAL FORCE)
+		set(CMAKE_C_FLAGS_RELEASE "/MT" CACHE INTERNAL "" FORCE) # Tr!Force: [CMake] Fix ?
 
 		# Platform
 		set(GlobalDefines ${GlobalDefines} "UNICODE" "_UNICODE")
@@ -200,3 +200,7 @@ if(BuildQVMs)
 endif()
 
 add_subdirectory(${SRCDir})
+
+# Tr!Force: [CMake] Add PK3 projects
+add_subdirectory("assets")
+set_property(TARGET assets PROPERTY PROJECT_LABEL "Build PK3")
