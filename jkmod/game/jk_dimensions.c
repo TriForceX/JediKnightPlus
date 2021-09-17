@@ -76,10 +76,10 @@ void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 
 /*
 =====================================================================
-Set dimension function
+Set dimension change function
 =====================================================================
 */
-qboolean JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say)
+qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 {
 	int		i;
 	char	*print = say ? "cp" : "print";

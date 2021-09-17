@@ -310,7 +310,7 @@ static void JKMod_svCmd_forceDimension(void)
 			{
 				if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 				{
-					JKMod_DimensionCmd(ent, arg2, qfalse);
+					JKMod_DimensionChange(ent, arg2, qfalse);
 				}
 			}
 		}
@@ -321,7 +321,7 @@ static void JKMod_svCmd_forceDimension(void)
 			if (target != -1)
 			{
 				gentity_t *ent = &g_entities[target];
-				JKMod_DimensionCmd(ent, arg2, qfalse);
+				JKMod_DimensionChange(ent, arg2, qfalse);
 			}
 		}
 	}
@@ -375,7 +375,7 @@ qboolean JKMod_ConsoleCommand(void)
 	}
 	if (!Q_stricmp(cmd, "whois"))
 	{
-		JKMod_WhoIs(NULL);
+		JKMod_Cmd_WhoIs(NULL);
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)

@@ -245,6 +245,15 @@ typedef struct
 
 } jkmod_bit_info_t;
 
+// Commands data
+typedef struct
+{
+	const char		*name;
+	void			(*func)(gentity_t *ent);
+	int				flags;
+
+} jkmod_commands_t;
+
 /*
 =====================================================================
 Re-routed functions
@@ -374,10 +383,10 @@ void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *e
 // jk_cmds.c
 qboolean	JKMod_IgnoreClientCheck(int option, int ignorer, int ignored);
 void		JKMod_IgnoreClientClear(int ignored);
+void		JKMod_Cmd_WhoIs(gentity_t *ent);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);
 void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
-void		JKMod_WhoIs(gentity_t *ent);
 
 // jk_common.c
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
@@ -401,7 +410,7 @@ float		JKMod_RandFloat(float min, float max);
 // jk_dimensions.c
 int			JKMod_DimensionIndex(unsigned dimension);
 void		JKMod_DimensionSettings(gentity_t *ent, unsigned dimension);
-qboolean	JKMod_DimensionCmd(gentity_t *ent, char *dimension, qboolean say);
+qboolean	JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say);
 qboolean	JKMod_DimensionCheck(int ent1, int ent2);
 void		JKMod_DimensionOwnerCheck(int owner, gentity_t *ent);
 unsigned	JKMod_DimensionGetFree(void);
