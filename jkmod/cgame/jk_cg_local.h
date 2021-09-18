@@ -161,8 +161,6 @@ extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
-extern vmCvar_t						jkcvar_cg_clientPopUp;
-extern vmCvar_t						jkcvar_cg_resetClient;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
@@ -194,7 +192,6 @@ void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);
 void		JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item);
 void		JKMod_CG_ChatBox_DrawStrings(void);
-void		JKMod_CG_ClientPopUp(void);
 void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);

@@ -159,7 +159,7 @@ Cvar table list
 vmCvar_t	jkcvar_ui_votePoll;
 vmCvar_t	jkcvar_ui_emoteToggle;
 vmCvar_t	jkcvar_ui_dimensionToggle;
-vmCvar_t	jkcvar_ui_resetClient;
+vmCvar_t	jkcvar_ui_clientPopUp;
 
 vmCvar_t	jkcvar_ui_test1;
 vmCvar_t	jkcvar_ui_test2;
@@ -169,7 +169,7 @@ static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
 	{ &jkcvar_ui_votePoll,			"jk_ui_votePoll",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_dimensionToggle,	"jk_ui_dimensionToggle",	"0",	CVAR_ARCHIVE | CVAR_ROM },
-	{ &jkcvar_ui_resetClient,		"jk_ui_resetClient",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_clientPopUp,		"jk_ui_clientPopUp",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 
 	{ &jkcvar_ui_test1,				"jk_ui_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_test2,				"jk_ui_test2",				"0",	CVAR_ARCHIVE },
@@ -199,7 +199,6 @@ void JKMod_UI_RegisterCvars(void)
 	trap_Cvar_Set("jk_ui_votePoll", "");
 	trap_Cvar_Set("jk_ui_emoteToggle", va("%s", JKModUIemotesTable[0].cmd));
 	trap_Cvar_Set("jk_ui_dimensionToggle", va("%s", JKModUIdimensionsTable[0].cmd));
-	trap_Cvar_Set("jk_ui_resetClient", va("%i", JKModUIresetClientSize));
 
 	// Launch original register cvars function
 	BaseJK2_UI_RegisterCvars();
@@ -208,7 +207,7 @@ void JKMod_UI_RegisterCvars(void)
 // Update cvars
 void JKMod_UI_UpdateCvars(void)
 {
-	int					i;
+	int						i;
 	jkmod_ui_cvar_table_t	*cv;
 
 	// Update all the cvars
@@ -216,6 +215,16 @@ void JKMod_UI_UpdateCvars(void)
 		trap_Cvar_Update(cv->vmCvar);
 	}
 
+	// Check client options pop-up
+	if (jkcvar_ui_clientPopUp.integer != JKModUIresetClientSize) 
+	{
+		if (Menus_FindByName("ingame")->window.flags & WINDOW_VISIBLE)
+		{
+			Menus_ActivateByName("ingame_jkmod_popup");
+			trap_Cvar_Set("jk_ui_clientPopUp", va("%i", JKModUIresetClientSize));
+		}
+	}
+	
 	// Launch original update cvars function
 	BaseJK2_UI_UpdateCvars();
 }
@@ -351,7 +360,7 @@ void JKMod_UI_Update(const char *name, int val)
 	else if (!Q_stricmp(name, "JKMod_resetClient"))
 	{
 		int i;
-		trap_Cvar_Set("jk_cg_clientPopUp", va("%i", (val ? JKModUIresetClientSize : 0)));
+		trap_Cvar_Set("jk_ui_clientPopUp", va("%i", (val ? JKModUIresetClientSize : 0)));
 
 		for (i = 0; i < JKModUIresetClientSize; i++)
 		{

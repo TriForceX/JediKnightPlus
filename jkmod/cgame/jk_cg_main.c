@@ -56,8 +56,6 @@ vmCvar_t	jkcvar_cg_chatBoxHistory;
 vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
 vmCvar_t	jkcvar_cg_jetPackIdle;
-vmCvar_t	jkcvar_cg_clientPopUp;
-vmCvar_t	jkcvar_cg_resetClient;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
@@ -94,8 +92,6 @@ static cvarTable_t	JKModCGcvarTable[] = {
 	{ &jkcvar_cg_customHats,		"jk_cg_customHats",			"0",	CVAR_ARCHIVE | CVAR_USERINFO },
 	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_jetPackIdle,		"jk_cg_jetPackIdle",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_clientPopUp,		"jk_cg_clientPopUp",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_resetClient,		"jk_cg_resetClient",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
@@ -127,10 +123,6 @@ void JKMod_CG_RegisterCvars(void)
 	// Set the client plugin version
 	trap_Cvar_Register(NULL, "jkmod_client", "", CVAR_USERINFO | CVAR_ROM);
 	trap_Cvar_Set("jkmod_client", JK_VERSION);
-
-	// Update client pop-up count
-	trap_Cvar_VariableStringBuffer("jk_ui_resetClient", var, sizeof(var));
-	trap_Cvar_Set("jk_cg_resetClient", var);
 
 	// Check console notify time
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");

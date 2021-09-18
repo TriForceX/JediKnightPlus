@@ -1590,9 +1590,6 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		jkmod_macro_scan = qtrue;
 	}
 
-	// Tr!Force: [JKMod] Show recommended client options pop-up
-	JKMod_CG_ClientPopUp();
-
 	trap_FX_AdjustTime( cg.time, cg.refdef.vieworg, cg.refdef.viewaxis );
 
 	CG_RunLightStyles();

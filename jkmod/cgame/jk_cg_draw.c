@@ -341,34 +341,6 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 
 /*
 =====================================================================
-Client options pop-up
-=====================================================================
-*/
-void JKMod_CG_ClientPopUp(void)
-{
-	if (!cgs.jkmodCGS.pluginRequired) return;
-	if (!cg.snap) return;
-	if (jkcvar_cg_clientPopUp.integer == jkcvar_cg_resetClient.integer) return;
-	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
-	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
-	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
-	
-	// Scan once every second
-	if ((jkmod_popup_count + 1000) < cg.time)
-	{
-		jkmod_popup_count = cg.time;
-
-		// Launch only when all center prints dissapear
-		if (!JKMod_CG_CenterPrintActive())
-		{
-			trap_SendConsoleCommand("jk_ui_cmd_clientPopUp\n");
-			trap_Cvar_Set("jk_cg_clientPopUp", va("%i", jkcvar_cg_resetClient.integer));
-		}
-	}
-}
-
-/*
-=====================================================================
 Draw inventory
 =====================================================================
 */
