@@ -57,7 +57,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	}
 
 	// Chat protect check
-	if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK))
+	if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK) && !(g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY))
 	{
 		if (client->jkmodClient.chatTime >= jkcvar_chatProtectTime.integer)
 		{

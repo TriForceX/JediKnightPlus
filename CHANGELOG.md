@@ -9,6 +9,17 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.15.2
+- Clear player deaths on map change or restart
+- Added normal dimension option to menus
+- Updated server batch files and config
+- Updated mod folder name and copyright note
+- Minimal server and client tweaks
+- Added assets PK3 build on VS projects
+- Console commands refactor
+- Show client options pop-up only on main menu
+- Prevent chat protect on CTF gametype
+
 ## 0.15.1
 - Fix special move camera check
 - Fix emote camera check

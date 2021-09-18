@@ -47,8 +47,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Allow black color in player names
 - [x] Prevent duplicated player names
 - [x] Map teleports chat commands (Based on map X Y Z origin)
-- [ ] Misc chat commands (Save & load pos, status, etc...)
-- [ ] Custom server closed feature (Password required)
+- [x] Misc chat commands (Save & load pos, status, etc...)
+- [x] Custom server closed feature (Password required)
 - [x] Welcome message on client begin (MOTD)
 - [x] Server news messages displayed constantly
 - [x] Alternate dimensions (Private duel, guns only, race defrag, etc...)
@@ -90,7 +90,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Ingame player statistics (Banned, kicked, reports, scripters, etc...)
 - [ ] Helpful commands for players (Teleport, weapons, force powers, etc...)
 - [ ] Punish commands for players (Slay, silence, sleep, rename, lock, etc...)
-- [ ] Ability to control bots actions (Fake chat, movements, emotes, etc...)
+- [x] Ability to control bots actions (Fake chat, movements, emotes, etc...)
 - [ ] Spawn unlimited items and weapons
 - [ ] Private administrator chat room
 - [ ] Team management (Lock, force, shuffle, etc...)
