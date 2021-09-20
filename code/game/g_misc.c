@@ -1534,14 +1534,9 @@ void SP_fx_runner( gentity_t *ent )
 	{
 		G_SpawnInt( "splashRadius", "16", &ent->splashRadius );
 		G_SpawnInt( "splashDamage", "5", &ent->splashDamage );
-
-		if (!JKMod_SpawnAngleHack( "angle", "0", ent->s.angles ))
-		{
-			// didn't have angles, so give us the default of up
-			VectorSet( ent->s.angles, -90, 0, 0 );
-		}
 	}
-	else if (!ent->s.angles[0] && !ent->s.angles[1] && !ent->s.angles[2])
+	
+	if (!ent->s.angles[0] && !ent->s.angles[1] && !ent->s.angles[2])
 	{
 		// didn't have angles, so give us the default of up
 		VectorSet( ent->s.angles, -90, 0, 0 );

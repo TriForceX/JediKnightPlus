@@ -479,6 +479,5 @@ qboolean	JKMod_G_CallSpawn(gentity_t *ent);
 void		JKMod_AddSpawnField(char *field, char *value);
 void		JKMod_CheckValidMapItems(void);
 void		JKMod_SetBrushModel(gentity_t *ent, const char *name);
-qboolean	JKMod_SpawnAngleHack(const char *key, const char *defaultString, float *out);
 
 #endif // __JK_LOCAL_H__

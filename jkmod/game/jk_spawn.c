@@ -320,24 +320,3 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 
 	trap_SetBrushModel(ent, name);
 }
-
-/*
-=====================================================================
-Get custom "angle" field from fx_runner
-=====================================================================
-*/
-qboolean JKMod_SpawnAngleHack(const char *key, const char *defaultString, float *out)
-{
-	char		*s;
-	qboolean	present;
-	float		temp = 0;
-
-	present = G_SpawnString( key, defaultString, &s );
-	sscanf( s, "%f", &temp );
-
-	out[0] = 0;
-	out[1] = temp;
-	out[2] = 0;
-
-	return present;
-}
