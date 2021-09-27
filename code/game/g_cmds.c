@@ -2008,10 +2008,9 @@ void Cmd_SetViewpos_f( gentity_t *ent ) {
 	char		buffer[MAX_TOKEN_CHARS];
 	int			i;
 
-	if ( !g_cheats.integer ) {
-		trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOCHEATS")));
-		return;
-	}
+	// Tr!Force: [Dimensions] Allow cheats for this one
+	if ( !CheatsOk( ent ) ) return;
+
 	if ( trap_Argc() != 5 ) {
 		trap_SendServerCommand( ent-g_entities, va("print \"usage: setviewpos x y z yaw\n\""));
 		return;
