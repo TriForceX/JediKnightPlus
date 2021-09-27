@@ -2208,8 +2208,9 @@ void SP_func_usable( gentity_t *self )
 	// Tr!Force: [MapFixes] Set proper spawnflags for func_usable on SP maps
 	if (jkcvar_mapFixes.integer)
 	{
-		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
+		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse) && !self->spawnflags && !(self->target && self->target[0]))
 		{
+			JKMod_Printf(S_COLOR_YELLOW "Prevent use removal for func_usable (%s)\n", self->model);
 			self->spawnflags |= 8;
 		}
 	}
