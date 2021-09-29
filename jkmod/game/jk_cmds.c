@@ -1549,9 +1549,8 @@ void JKMod_ClientCommand(int clientNum)
 	// Special case for emotes
 	if (!Q_stricmpn(cmd, "am", 2) && JKMod_EmoteCheck(cmd, ent)) return;
 
-	#ifdef _DEBUG
 	// Test command
-	if (Q_stricmp(cmd, "testcmd") == 0)
+	if (!Q_stricmp(cmd, "testcmd") && DEVELOPER)
 	{
 		char    arg1[MAX_TOKEN_CHARS];
 		char    arg2[MAX_TOKEN_CHARS];
@@ -1564,7 +1563,6 @@ void JKMod_ClientCommand(int clientNum)
 		trap_SendServerCommand(ent - g_entities, va("print \"Cvar1: %s Cvar2: %i Arg1: %s Arg2: %i\n\"", jkcvar_test1.string, jkcvar_test2.integer, arg1, atoi(arg2)));
 		return;
 	}
-	#endif
 
 	// Launch original client command function
 	BaseJK2_ClientCommand(clientNum);

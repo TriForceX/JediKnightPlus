@@ -28,6 +28,7 @@ Global definitions
 #define MAX_CHALLENGE				4
 
 #define DEFAULT						Q3_INFINITE // Workaround
+#define DEVELOPER					trap_Cvar_VariableIntegerValue("developer")
 
 /*
 =====================================================================
@@ -453,10 +454,13 @@ void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboo
 int			JKMod_ItemRespawnTime(gentity_t *ent);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 qboolean	JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special);
+qboolean	JKMod_ValidPlayerModel(const char* model);
 
 // jk_utils.c
+void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_AntiStuckBox(gentity_t *ent);
+qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs);
 void		JKMod_RemoveByClass(gentity_t *ent, char *name);
 void		JKMod_JetpackTryUse(gentity_t *ent);
 void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);

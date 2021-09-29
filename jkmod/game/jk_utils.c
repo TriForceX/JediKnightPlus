@@ -8,6 +8,64 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
+
+/*
+=====================================================================
+Draw box lines (Due clientside: 255 = red, 1 = black, 0 = white)
+=====================================================================
+*/
+void JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration)
+{
+	vec3_t	point1, point2, point3, point4;
+	vec3_t	bmins, bmaxs;
+	int		vec[3];
+	int		axis, i;
+
+	VectorAdd(orig, mins, bmins);
+	VectorAdd(orig, maxs, bmaxs);
+
+	for (axis = 0, vec[0] = 0, vec[1] = 1, vec[2] = 2; axis < 3; axis++, vec[0]++, vec[1]++, vec[2]++)
+	{
+		for (i = 0; i < 3; i++)
+		{
+			if (vec[i] > 2)
+			{
+				vec[i] = 0;
+			}
+		}
+
+		point1[vec[1]] = bmins[vec[1]];
+		point1[vec[2]] = bmins[vec[2]];
+
+		point2[vec[1]] = bmins[vec[1]];
+		point2[vec[2]] = bmaxs[vec[2]];
+
+		point3[vec[1]] = bmaxs[vec[1]];
+		point3[vec[2]] = bmaxs[vec[2]];
+		
+		point4[vec[1]] = bmaxs[vec[1]];
+		point4[vec[2]] = bmins[vec[2]];
+
+		//- face
+		point1[vec[0]] = point2[vec[0]] = point3[vec[0]] = point4[vec[0]] = bmins[vec[0]];
+
+		G_TestLine(point1, point2, color, duration);
+		G_TestLine(point2, point3, color, duration);
+		G_TestLine(point1, point4, color, duration);
+		G_TestLine(point4, point3, color, duration);
+
+		//+ face
+		point1[vec[0]] = point2[vec[0]] = point3[vec[0]] = point4[vec[0]] = bmaxs[vec[0]];
+
+		G_TestLine(point1, point2, color, duration);
+		G_TestLine(point2, point3, color, duration);
+		G_TestLine(point1, point4, color, duration);
+		G_TestLine(point4, point1, color, duration);
+	}
+}
+
 /*
 =====================================================================
 Check other clients in box
@@ -66,6 +124,34 @@ void JKMod_AntiStuckBox(gentity_t *ent)
 	}
 
 	JKMod_Printf(S_COLOR_YELLOW "Client %i checking pass box\n", ent->client->ps.clientNum);
+}
+
+/*
+=====================================================================
+Check solid terrain from client view/origin
+=====================================================================
+*/
+qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs)
+{
+	trace_t tr;
+	vec3_t fwd, dest, orig;
+
+	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
+
+	VectorCopy(ent->client->ps.origin, orig);
+	VectorMA(orig, distance, fwd, dest);
+
+	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_PLAYERSOLID);
+
+	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
+	{
+		if (DEVELOPER) JKMod_DrawBoxLines(dest, mins, maxs, 255, 500);
+		JKMod_Printf(S_COLOR_YELLOW "Can't spawn here, we are in solid\n");
+		return qfalse;
+	}
+
+	if (DEVELOPER) JKMod_DrawBoxLines(dest, mins, maxs, 0, 500);
+	return qtrue;
 }
 
 /*
@@ -209,19 +295,57 @@ gentity_t *JKMod_G_Spawn( int dimensionOwner )
 			break;
 		}
 	}
-	if ( i == ENTITYNUM_MAX_NORMAL ) {
-		for (i = 0; i < MAX_GENTITIES; i++) {
-			G_Printf("%4i: %s\n", i, g_entities[i].classname);
-		}
-		G_Error( "G_Spawn: no free entities" );
-	}
+	if ( i == ENTITYNUM_MAX_NORMAL )
+	{
+		gentity_t *found = NULL;
+		if ( g_mv_fixturretcrash.integer )
+		{ // TurretCrashFix - One last try!
+			G_Printf("G_Spawn: no free entities, trying to make room by deleting temp entities and missiles\n");
+			for ( i = MAX_CLIENTS; i < MAX_GENTITIES; i++ )
+			{
+				e = &g_entities[i];
 
+				if ( e && (e->s.eType == ET_EVENTS + EV_SABER_BLOCK || ((e->s.weapon == WP_TURRET || g_mv_fixturretcrash.integer == 2) && e->s.eType == ET_MISSILE)) )
+				{ // Delete all saber blocks and missiles...
+					// g_mv_fixturretcrash == 1 -> only missiles from the turret will be removed
+					// g_mv_fixturretcrash == 2 -> any missile will be removed
+					if ( !found ) found = e;
+					G_FreeEntity(e);
+				}
+			}
+		}
+
+		if ( !found )
+		{
+			for (i = 0; i < MAX_GENTITIES; i++) {
+				G_Printf("%4i: %s\n", i, g_entities[i].classname);
+			}
+			G_Error( "G_Spawn: no free entities" );
+		}
+	}
+	
 	// open up a new slot
 	level.num_entities++;
 
 	// let the server system know that there are more entities
-	trap_LocateGameData( level.gentities, level.num_entities, sizeof( gentity_t ),
-		&level.clients[0].ps, sizeof( level.clients[0] ) );
+	if ( jk2version == VERSION_1_02 && !mvStructConversionDisabled )
+	{ // 1.02
+		// initialize all clients for this game
+		memset( g_ps, 0, MAX_CLIENTS * sizeof(g_ps[0]) );
+
+		trap_LocateGameData( level.gentities, level.num_entities, sizeof( gentity_t ), 
+			(playerState_t*)&g_ps[0], sizeof( g_ps[0] ) );
+	}
+	else
+	{
+		trap_LocateGameData( level.gentities, level.num_entities, sizeof( gentity_t ), 
+			&level.clients[0].ps, sizeof( level.clients[0] ) );
+	}
+
+	if ( mvapi )
+	{
+		trap_MVAPI_LocateGameData( mv_entities, level.num_entities, sizeof( mvsharedEntity_t ) );
+	}
 
 	JKMod_G_InitGentity( e, dimensionOwner );
 	return e;

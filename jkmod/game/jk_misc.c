@@ -541,7 +541,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	// Cheats
 	ent->client->ps.dualBlade = qfalse;
 	ent->client->noclip = qfalse;
-	ent->flags &= ~FL_GODMODE;
+	ent->flags &= ~(FL_GODMODE | FL_NOTARGET);
 
 	// Timers
 	ent->client->ps.duelTime = 0;
@@ -600,6 +600,53 @@ qboolean JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special
 	{
 		return qfalse;
 	}
+}
+
+/*
+=====================================================================
+Check for valid player models
+=====================================================================
+*/
+qboolean JKMod_ValidPlayerModel(const char* model)
+{
+	int i;
+	char *models[] = {
+		"bespin_cop",
+		"chiss",
+		"desann",
+		"galak",
+		"gran",
+		"imperial",
+		"imperial_worker",
+		"jan",
+		"jedi",
+		"jeditrainer",
+		"kyle",
+		"lando",
+		"luke",
+		"monmothma",
+		"morgan",
+		"prisoner",
+		"rebel",
+		"reborn",
+		"reelo",
+		"rodian",
+		"shadowtrooper",
+		"stormpilot",
+		"stormtrooper",
+		"swamptrooper",
+		"tavion",
+		"trandoshan",
+		"ugnaught",
+		"weequay",
+	};
+
+	for (i = 0; i < ARRAY_LEN(models); i++)
+	{
+		if (!Q_stricmp(model, va("models/players/%s/model.glm", models[i]))) return qtrue;
+	}
+	
+	return qfalse;
 }
 
 /*

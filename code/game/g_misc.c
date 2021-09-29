@@ -3308,28 +3308,56 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 	// Tr!Force: [Dimensions] Check maximum allowed
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT)
 	{
-		gentity_t *found = NULL;
-		int	current = 0;
-		int	owned = 0;
-		int	limit = 3;
-		int	maximum = 9;
+		gentity_t	*found = NULL;
+		vec3_t		angles;
+		vec3_t		mins = { -15, -15, DEFAULT_MINS_2 }, maxs = { 15, 15, DEFAULT_MAXS_2 };
+		int			current = 0, maximum = MAX_CLIENTS;
 
-		// Find
-		while ((found = G_Find(found, FOFS(classname), "g2animent")) != NULL)
+		// Check others
+		while ((found = G_Find(found, FOFS(classname), "g2animent")) != NULL) current++;
+
+		// Check maximum
+		if (current == maximum)
 		{
-			current++;
-			if (found->s.owner != ent->s.number) {
-				continue;
-			}
-			owned++;
+			trap_SendServerCommand(ent - g_entities, "print \"You have reached the maximum allowed\n\"");
+			return;
 		}
 
-		// Check
-		if (owned == limit || current == maximum)
+		// Check args
+		if (argNum > 1)
 		{
-			char *message = current == maximum ? "The maximum limit allowed has been reached" : "You have reached the maximum allowed per player";
+			unsigned int	weaponnum;
+			char			weapon[MAX_STRING_CHARS];
+			char			model[MAX_STRING_CHARS];
 
-			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", message));
+			trap_Argv(3, weapon, sizeof(weapon));
+			trap_Argv(4, model, sizeof(model));
+
+			weaponnum = atoi(weapon);
+
+			if (argNum < 4) 
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"Usage: g2animent <type> <alignment> <weaponnum> <modelpath> <soundpath>\n\"");
+				return;
+			}
+
+			if (argNum > 4 && weaponnum < WP_NONE || weaponnum >= WP_NUM_WEAPONS)
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"Invalid weapon number\n\"");
+				return;
+			}
+			
+			if (argNum > 4 && !JKMod_ValidPlayerModel(model)) 
+			{
+				trap_SendServerCommand(ent - g_entities, "print \"Invalid player model\n\"");
+				return;
+			}
+		}
+
+		// Check solid
+		if (!JKMod_CheckSolid(ent, 128, mins, maxs))
+		{
+			trap_SendServerCommand(ent - g_entities, "print \"You can't spawn it here\n\"");
 			return;
 		}
 	}
