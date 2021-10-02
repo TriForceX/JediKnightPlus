@@ -115,9 +115,10 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Add effects (EFX format)
 - [ ] Add any entity based on classname and parameters
 - [ ] Add pre-made useful utilities (NPC spawner, message consoles, assister, etc...)
-- [ ] Modify entities properties
+- [ ] Create and modify entities
 - [ ] Delete entities
 - [ ] Clone entities
+- [x] Scan entities
 - [ ] Save feature to get all changes automatically stored in a loadable file
 
 ---

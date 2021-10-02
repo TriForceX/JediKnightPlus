@@ -164,6 +164,7 @@ extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
+extern vmCvar_t						cg_developer;
 
 /*
 =====================================================================

@@ -23,12 +23,10 @@ Global definitions
 #define MAX_FILE_VARS				64
 #define MAX_FILE_CHARS				1024
 #define MAX_FILE_LENGTH				131072 // 128kb
-#define MAX_BRUSH_MODELS			150
 #define MAX_IP_STRING				16
-#define MAX_CHALLENGE				4
+#define MAX_CHALLENGE				5
 
 #define DEFAULT						Q3_INFINITE // Workaround
-#define DEVELOPER					trap_Cvar_VariableIntegerValue("developer")
 
 /*
 =====================================================================
@@ -348,6 +346,7 @@ extern	vmCvar_t					jkcvar_botsAI;
 
 extern	vmCvar_t					jkcvar_test1;
 extern	vmCvar_t					jkcvar_test2;
+extern	vmCvar_t					developer;
 
 /*
 =====================================================================

@@ -3309,7 +3309,6 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT)
 	{
 		gentity_t	*found = NULL;
-		vec3_t		angles;
 		vec3_t		mins = { -15, -15, DEFAULT_MINS_2 }, maxs = { 15, 15, DEFAULT_MAXS_2 };
 		int			current = 0, maximum = MAX_CLIENTS;
 
@@ -3326,9 +3325,9 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 		// Check args
 		if (argNum > 1)
 		{
-			unsigned int	weaponnum;
-			char			weapon[MAX_STRING_CHARS];
-			char			model[MAX_STRING_CHARS];
+			int		weaponnum;
+			char	weapon[MAX_STRING_CHARS];
+			char	model[MAX_STRING_CHARS];
 
 			trap_Argv(3, weapon, sizeof(weapon));
 			trap_Argv(4, model, sizeof(model));

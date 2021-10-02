@@ -78,11 +78,15 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		// Show client connect and reconnect message
 		trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", g_entities[clientNum].client->pers.netname, (!Q_stricmp(level.jkmodLocals.reconnectedIP, clientIP) ? "reconnected" : G_GetStripEdString("SVINGAME", "PLCONNECT"))));
 
-		// Clear reconnected check
-		ARRAY_CLEAR(level.jkmodLocals.reconnectedIP);
-
 		// Set client IP
 		Q_strncpyz(g_entities[clientNum].client->sess.jkmodSess.clientIP, clientIP, sizeof(g_entities[clientNum].client->sess.jkmodSess.clientIP));
+
+		// Clear message and closed check
+		level.jkmodLocals.messageCheck[clientTempID] = 0;
+		level.jkmodLocals.closedCheck[clientTempID] = 0;
+
+		// Clear reconnect check
+		*level.jkmodLocals.reconnectedIP = '\0';
 	}
 
 	return baseMessage;

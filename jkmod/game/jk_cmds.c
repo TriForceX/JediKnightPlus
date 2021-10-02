@@ -19,6 +19,7 @@ extern int JKModDimensionDataSize;
 extern int G_ClientNumberFromName(const char* name);
 extern int G_ClientNumberFromStrippedName(const char* name);
 extern qboolean G_OtherPlayersDueling(void);
+extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 
 /*
 =====================================================================
@@ -967,6 +968,68 @@ static void JKMod_Cmd_Emote(gentity_t* ent)
 
 /*
 =====================================================================
+Entity scan function
+=====================================================================
+*/
+static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int linedelay)
+{
+	trace_t		tr;
+	vec3_t		fwd, dest, orig;
+	vec3_t		mins = { -5, -5, -5 }, maxs = { 5, 5, 5 };
+
+	if (!distance) distance = 200;
+	if (!boxdelay) boxdelay = 500;
+	if (!linedelay) linedelay = 500;
+
+	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
+
+	VectorCopy(ent->client->ps.origin, orig);
+	VectorMA(orig, distance, fwd, dest);
+
+	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_ALL);
+
+	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
+	{
+		gentity_t	*found = &g_entities[tr.entityNum];
+		char		 found_mins[20];
+		char		 found_maxs[20];
+		char		 found_angles[20];
+		char		 found_origin[40];
+
+		G_TestLine(orig, dest, 255, linedelay);
+
+		if (!found->inuse) return;
+				
+		Q_strncpyz(found_mins, va("%.0f %.0f %.0f", found->r.mins[0], found->r.mins[1], found->r.mins[2]), sizeof(found_mins));
+		Q_strncpyz(found_maxs, va("%.0f %.0f %.0f", found->r.maxs[0], found->r.maxs[1], found->r.maxs[2]), sizeof(found_maxs));
+		Q_strncpyz(found_angles, va("%.0f %.0f %.0f", found->s.angles[0], found->s.angles[1], found->s.angles[2]), sizeof(found_angles));
+		Q_strncpyz(found_origin, va("%.0f %.0f %.0f", found->s.origin[0], found->s.origin[1], found->s.origin[2]), sizeof(found_origin));
+
+		trap_SendServerCommand(ent - g_entities, va("print \"\n"
+			"^7Classname: ^3%-40.40s ^7Target:     ^3%-25.25s ^7Angles: ^3%-20.20s\n"
+			"^7Model:     ^3%-40.40s ^7Targetname: ^3%-25.25s ^7Mins:   ^3%-20.20s\n"
+			"^7Origin:    ^3%-40.40s ^7Spawnflags: ^3%-25.25i ^7Maxs:   ^3%-20.20s\n"
+			"^7\"", 
+			found->classname,
+			found->target,
+			found_angles,
+			found->model,
+			found->targetname,
+			found_mins,
+			found_origin,
+			found->spawnflags,
+			found_maxs));
+
+		JKMod_DrawBoxLines(found->s.origin, found->r.mins,  found->r.maxs, 255, boxdelay);
+		return;
+	}
+
+	G_TestLine(orig, dest, 0, linedelay);
+	return;
+}
+
+/*
+=====================================================================
 Check teleport say commands
 =====================================================================
 */
@@ -1550,17 +1613,39 @@ void JKMod_ClientCommand(int clientNum)
 	if (!Q_stricmpn(cmd, "am", 2) && JKMod_EmoteCheck(cmd, ent)) return;
 
 	// Test command
-	if (!Q_stricmp(cmd, "testcmd") && DEVELOPER)
+	if (!Q_stricmp(cmd, "test") && developer.integer)
 	{
-		char    arg1[MAX_TOKEN_CHARS];
-		char    arg2[MAX_TOKEN_CHARS];
+		int		i;
+		int		args = trap_Argc();
+		char	argcmd[MAX_TOKEN_CHARS];
+		char	arglist[MAX_STRING_CHARS] = { 0 };
 
-		trap_Argv(1, arg1, sizeof(arg1));
-		trap_Argv(2, arg2, sizeof(arg2));
+		for (i = 0; i < args; i++) 
+		{
+			if (i != 0) {
+				trap_Argv(i, argcmd, sizeof(argcmd));
+				Q_strcat(arglist, sizeof(arglist), va("Arg%i: %s\n", i, argcmd));
+			}
+		}
 
-		if (arg1[0] == '\0') strcpy(arg1, "empty");
+		trap_Argv(1, argcmd, sizeof(argcmd));
 
-		trap_SendServerCommand(ent - g_entities, va("print \"Cvar1: %s Cvar2: %i Arg1: %s Arg2: %i\n\"", jkcvar_test1.string, jkcvar_test2.integer, arg1, atoi(arg2)));
+		// Entity scan
+		if (!Q_stricmp(argcmd, "entity")) 
+		{
+			char arg2[MAX_TOKEN_CHARS];
+			char arg3[MAX_TOKEN_CHARS];
+			char arg4[MAX_TOKEN_CHARS];
+
+			trap_Argv(2, arg2, sizeof(arg2));
+			trap_Argv(3, arg3, sizeof(arg3));
+			trap_Argv(4, arg4, sizeof(arg4));
+
+			JKMod_Cmd_EntityScan(ent, atoi(arg2), atoi(arg3), atoi(arg4));
+			return;
+		}
+
+		trap_SendServerCommand(ent - g_entities, va("print \"CvarTest1: %s\nCvarTest2: %i\n%s\"", jkcvar_test1.string, jkcvar_test2.integer, arglist));
 		return;
 	}
 

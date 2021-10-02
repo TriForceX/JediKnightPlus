@@ -1485,7 +1485,7 @@ Cmd_Where_f
 ==================
 */
 void Cmd_Where_f( gentity_t *ent ) {
-	trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", vtos( ent->s.origin ) ) );
+	trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", vtos( ent->client->ps.origin ) ) ); // Workaround
 }
 
 static const char *gameNames[] = {
@@ -2750,8 +2750,7 @@ void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client comm
 	else if (Q_stricmp(cmd, "callvote") == 0) {
 		if (jkcvar_voteControl.integer) { // Tr!Force: [Vote] Custom callvote control
 			JKMod_CallVote(ent);
-		}
-		else {
+		} else {
 			Cmd_CallVote_f(ent);
 		}
 	}

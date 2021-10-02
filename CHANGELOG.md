@@ -9,6 +9,13 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.15.3
+- Fix fx_runner and target_speaker on map fixes cvar
+- Fix func_usable check on map fixes cvar
+- Allow setviewpos cmd on cheats dimension
+- Fixed g2animent spawn and minor refactor
+- Fixed func_usable removal & added entity scan test cmd
+
 ## 0.15.2
 - Clear player deaths on map change or restart
 - Added normal dimension option to menus

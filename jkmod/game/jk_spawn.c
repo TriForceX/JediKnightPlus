@@ -270,50 +270,19 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 {
 	if (jkcvar_mapFixes.integer)
 	{
-		char		iBuf[64];
-		int			i;
+		if (strlen(name) < 2 || name[0] != '*' || !name) return;
 
-		if (!name) return;
-		if (strlen(name) < 2) return;
-		if (name[0] != '*') return;
-		if (MAX_BRUSH_MODELS != 0)
-		{
-			iBuf[0] = '0';
-
-			for (i = 1; i < 20; i += 1)
-			{
-				iBuf[i] = name[i];
-			}
-
-			if (atoi(iBuf) == 0)
-			{
-				G_FreeEntity(ent);
-				JKMod_Printf(S_COLOR_YELLOW "Entitity freed (zero)\n");
-				return;
-			}
-
-			if (atoi(iBuf) > 127)
-			{
-				if (JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse))
-				{
-					G_FreeEntity(ent);
-					JKMod_Printf(S_COLOR_MAGENTA "Entitity freed (%i > %i)\n", atoi(iBuf), 127);
-					return;
-				}
-			}
-
-			if (atoi(iBuf) >= MAX_BRUSH_MODELS)
-			{
-				G_FreeEntity(ent);
-				JKMod_Printf(S_COLOR_YELLOW "Entitity freed (%i > %i)\n", atoi(iBuf), MAX_BRUSH_MODELS);
-				return;
-			}
-		}
-
-		if (Q_stricmp(name, "") == 0)
+		if (atoi(name + 1) == 0)
 		{
 			G_FreeEntity(ent);
-			JKMod_Printf(S_COLOR_YELLOW "Entitity freed (empty)\n");
+			JKMod_Printf(S_COLOR_MAGENTA "Entitity freed (zero)\n");
+			return;
+		}
+
+		if (atoi(name + 1) > 127 && strstr(ent->classname, "func_"))
+		{
+			G_FreeEntity(ent);
+			JKMod_Printf(S_COLOR_MAGENTA "Entitity freed (%i > %i)\n", atoi(name + 1), 127);
 			return;
 		}
 	}

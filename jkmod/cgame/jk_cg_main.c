@@ -59,6 +59,7 @@ vmCvar_t	jkcvar_cg_jetPackIdle;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
+vmCvar_t	cg_developer;
 
 static cvarTable_t	JKModCGcvarTable[] = {
 
@@ -95,6 +96,7 @@ static cvarTable_t	JKModCGcvarTable[] = {
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
+	{ &cg_developer,				"developer",				"0",	CVAR_NONE },
 
 };
 
@@ -152,7 +154,7 @@ Only print when "developer 1"
 */
 void QDECL JKMod_CG_Printf(const char *msg, ...) 
 {
-	if (CG_Cvar_Get("developer"))
+	if (cg_developer.integer)
 	{
 		va_list		argptr;
 		char		text[1024];

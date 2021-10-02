@@ -15,7 +15,7 @@ Only print when "developer 1"
 */
 void QDECL JKMod_Printf(const char *fmt, ...) 
 {
-	if (trap_Cvar_VariableIntegerValue("developer"))
+	if (developer.integer)
 	{
 		va_list		argptr;
 		char		text[1024];

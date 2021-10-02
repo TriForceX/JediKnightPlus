@@ -2154,12 +2154,16 @@ void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 	}
 	else
 	{
-		self->s.solid = 0;
-		self->r.contents = 0;
-		self->clipmask = 0;
-		self->r.svFlags |= SVF_NOCLIENT;
-		self->s.eFlags |= EF_NODRAW;
-		self->count = 0;
+		// Tr!Force: [MapFixes] Prevent use removal for func_usable on SP maps affected by target_scriptrunner
+		if (jkcvar_mapFixes.integer ? !(JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse) && !self->spawnflags && !(self->target && self->target[0])) : qtrue)
+		{
+			self->s.solid = 0;
+			self->r.contents = 0;
+			self->clipmask = 0;
+			self->r.svFlags |= SVF_NOCLIENT;
+			self->s.eFlags |= EF_NODRAW;
+			self->count = 0;
+		}
 
 		if(self->target && self->target[0])
 		{
@@ -2204,16 +2208,6 @@ void SP_func_usable( gentity_t *self )
 	InitMover( self );
 	VectorCopy( self->s.origin, self->s.pos.trBase );
 	VectorCopy( self->s.origin, self->r.currentOrigin );
-
-	// Tr!Force: [MapFixes] Set proper spawnflags for func_usable on SP maps
-	if (jkcvar_mapFixes.integer)
-	{
-		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap(), qtrue, qfalse) && !self->spawnflags && !(self->target && self->target[0]))
-		{
-			JKMod_Printf(S_COLOR_YELLOW "Prevent use removal for func_usable (%s)\n", self->model);
-			self->spawnflags |= 8;
-		}
-	}
 
 	self->count = 1;
 	if (self->spawnflags & 1)

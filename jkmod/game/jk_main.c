@@ -88,6 +88,7 @@ vmCvar_t	jkcvar_botsAI;
 
 vmCvar_t	jkcvar_test1;
 vmCvar_t	jkcvar_test2;
+vmCvar_t	developer;
 
 static jkmod_cvar_table_t JKModCvarTable[] = 
 {
@@ -158,6 +159,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 	{ &jkcvar_test1,				"jk_test1",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,				"jk_test2",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &developer,					"developer",				"0",					NULL,						CVAR_NONE,							0, qfalse },
 };
 
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);

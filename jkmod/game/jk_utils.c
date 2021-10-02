@@ -145,12 +145,12 @@ qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs
 
 	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
 	{
-		if (DEVELOPER) JKMod_DrawBoxLines(dest, mins, maxs, 255, 500);
+		if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 255, 500);
 		JKMod_Printf(S_COLOR_YELLOW "Can't spawn here, we are in solid\n");
 		return qfalse;
 	}
 
-	if (DEVELOPER) JKMod_DrawBoxLines(dest, mins, maxs, 0, 500);
+	if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 0, 500);
 	return qtrue;
 }
 
