@@ -44,6 +44,7 @@ typedef struct
 	int			macroScan;		// Tr!Force: [MacroScan] Main cvar
 	int			customHats;		// Tr!Force: [CustomHats] Main cvar
 	int			jetPack;		// Tr!Force: [JetPack] Main cvar
+	int			dualSaber;		// Tr!Force: [DualSaber] Main cvar
 	int			pauseTime;		// Tr!Force: [Pause] Server pause time
 	qboolean	modCheck;		// Tr!Force: [ModCheck] Server mod check
 

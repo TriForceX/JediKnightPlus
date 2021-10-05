@@ -4030,6 +4030,7 @@ static bind_t g_bindings[] =
 	{"kill",				-1,				-1,		-1,	-1},
 	{"savepos",				-1,				-1,		-1,	-1},
 	{"loadpos",				-1,				-1,		-1,	-1},
+	{"dualsaber",			-1,				-1,		-1,	-1},
 };
 
 

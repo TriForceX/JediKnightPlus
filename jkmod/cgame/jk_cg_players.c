@@ -86,8 +86,7 @@ void JKMod_CG_Player(centity_t *cent)
 		// Running
 		if (cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && cent->saberLength > 0)
 		{
-			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_RUN2;
-			if ((cent->currentState.legsAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.legsAnim = BOTH_RUN2;
+			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = cent->currentState.bolt2 ? BOTH_RUN1 : BOTH_RUN2;
 		}
 		// Thermal detonator
 		if (cent->currentState.weapon == WP_THERMAL)

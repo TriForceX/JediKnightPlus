@@ -85,6 +85,7 @@ vmCvar_t	jkcvar_mapCycleFromFile;
 vmCvar_t	jkcvar_jetPack;
 vmCvar_t	jkcvar_playerMovement;
 vmCvar_t	jkcvar_botsAI;
+vmCvar_t	jkcvar_dualSaber;
 
 vmCvar_t	jkcvar_test1;
 vmCvar_t	jkcvar_test2;
@@ -156,6 +157,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					JKMod_CVU_playerMovement,	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_dualSaber,			"jk_dualSaber",				"0",					JKMod_CVU_dualSaber,		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_test1,				"jk_test1",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_test2,				"jk_test2",					"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
@@ -384,6 +386,25 @@ void JKMod_CVU_serverClosed(void)
 		trap_Cvar_Set( "g_needpass", "1" );
 	} else {
 		trap_Cvar_Set( "g_needpass", "0" );
+	}
+}
+
+// Update dual saber cvar
+void JKMod_CVU_dualSaber(void)
+{
+	gentity_t *ent;
+	int i;
+
+	for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+	{
+		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+		{
+			if (!jkcvar_dualSaber.integer && ent->client->pers.jkmodPers.dualSaber) 
+			{
+				ent->client->ps.dualBlade = qfalse;
+				ent->client->pers.jkmodPers.dualSaber = qfalse;
+			}
+		}
 	}
 }
 

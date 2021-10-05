@@ -81,11 +81,12 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Commands:      Chat commands:\n"
 			"^3motd           !motd\n"
 			"^3dimension      !dimension\n"
-			"^3emote          !status\n"
-			"^3ignore         !savepos\n"
-			"^3dropflag       !loadpos\n"
-			"^3callvote       !teleports\n"
-			"^3whois          !racetime\n"
+			"^3dualsaber      !status\n"
+			"^3emote          !savepos\n"
+			"^3ignore         !loadpos\n"
+			"^3dropflag       !teleports\n"
+			"^3callvote       !racetime\n"
+			"^3whois\n"
 			"^3savepos\n"
 			"^3loadpos\n"
 			"^7\""));
@@ -899,7 +900,7 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't teleport during pause mode\n\""));
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack during pause mode\n\""));
 		return;
 	}
 	else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
@@ -963,6 +964,54 @@ static void JKMod_Cmd_Emote(gentity_t* ent)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));
 		return;
+	}
+}
+
+/*
+=====================================================================
+Dual saber command function
+=====================================================================
+*/
+static void JKMod_Cmd_DualSaber(gentity_t* ent)
+{
+	if (!jkcvar_dualSaber.integer)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
+		return;
+	}
+	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber in spectator\n\""));
+		return;
+	}
+	else if (level.jkmodLocals.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber during pause mode\n\""));
+		return;
+	}
+	else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber in this dimension\n\""));
+		return;
+	}
+	else
+	{
+		if (ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
+
+		// Disable
+		if (ent->client->ps.dualBlade)
+		{
+			ent->client->ps.dualBlade = qfalse;
+			ent->client->pers.jkmodPers.dualSaber = qfalse;
+			return;
+		}
+		// Enable
+		else
+		{
+			ent->client->ps.dualBlade = qtrue;
+			ent->client->pers.jkmodPers.dualSaber = qtrue;
+			return;
+		}
 	}
 }
 
@@ -1562,8 +1611,10 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "dimension",				JKMod_Cmd_Dimension },
 	{ "savepos",				JKMod_Cmd_TelePos },
 	{ "loadpos",				JKMod_Cmd_TelePos },
+
 	{ "jetpack",				JKMod_Cmd_JetPack },
 	{ "emote",					JKMod_Cmd_Emote },
+	{ "dualsaber",				JKMod_Cmd_DualSaber },
 };
 
 static const size_t JKModCommandsTableSize = ARRAY_LEN(JKModCommandsTable);

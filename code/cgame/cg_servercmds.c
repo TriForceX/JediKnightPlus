@@ -150,6 +150,7 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCGS.macroScan = atoi(Info_ValueForKey(info, "jk_macroScan"));				// Tr!Force: [MacroScan] Main cvar
 	cgs.jkmodCGS.customHats = atoi(Info_ValueForKey(info, "jk_customHats"));			// Tr!Force: [CustomHats] Main cvar
 	cgs.jkmodCGS.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));					// Tr!Force: [JetPack] Main cvar
+	cgs.jkmodCGS.dualSaber = atoi(Info_ValueForKey(info, "jk_dualSaber"));				// Tr!Force: [DualSaber] Main cvar
 
 	// Tr!Force: [GameName] Main cvar
 	if (!cgs.jkmodCGS.modCheck) 

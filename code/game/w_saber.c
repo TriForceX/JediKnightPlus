@@ -3688,8 +3688,12 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 
 		if (self->client->ps.dualBlade)
 		{
-			self->client->ps.saberIdleWound = 0;
-			self->client->ps.saberAttackWound = 0;
+			// Tr!Force: [DualSaber] Use proper saber timing
+			if (!self->client->pers.jkmodPers.dualSaber)
+			{
+				self->client->ps.saberIdleWound = 0;
+				self->client->ps.saberAttackWound = 0;
+			}
 		}
 
 		if (self->client->hasCurrentPosition && g_saberInterpolate.integer)
@@ -3871,8 +3875,12 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			VectorMA( boltOrigin, -12, rawAngles, otherOrg );
 			VectorMA( otherOrg, -40, rawAngles, otherEnd );
 
-			self->client->ps.saberIdleWound = 0;
-			self->client->ps.saberAttackWound = 0;
+			// Tr!Force: [DualSaber] Use proper saber timing
+			if (!self->client->pers.jkmodPers.dualSaber)
+			{
+				self->client->ps.saberIdleWound = 0;
+				self->client->ps.saberAttackWound = 0;
+			}
 
 			CheckSaberDamage(self, otherOrg, otherEnd, qfalse, (MASK_PLAYERSOLID|CONTENTS_LIGHTSABER|MASK_SHOT));
 		}

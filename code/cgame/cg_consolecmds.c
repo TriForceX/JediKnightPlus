@@ -562,4 +562,5 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("jetpack");				// Tr!Force: [JKMod] Add command for menus
 	trap_AddCommand ("savepos");				// Tr!Force: [JKMod] Add command for menus
 	trap_AddCommand ("loadpos");				// Tr!Force: [JKMod] Add command for menus
+	trap_AddCommand ("dualsaber");				// Tr!Force: [JKMod] Add command for menus
 }

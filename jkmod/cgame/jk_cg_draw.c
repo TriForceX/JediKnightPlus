@@ -582,7 +582,6 @@ void JKMod_CG_DrawPauseString(void)
 		if (sec <= 3 && sec != jkmod_pause_count) 
 		{
 			jkmod_pause_count = sec;
-
 			switch (sec) 
 			{
 				case 1: trap_S_StartLocalSound(cgs.media.count1Sound, CHAN_ANNOUNCER); break;

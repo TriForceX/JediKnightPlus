@@ -1696,9 +1696,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	memset( &client->ps, 0, sizeof( client->ps ) );
 	client->ps.eFlags = flags;
 
-	client->ps.stats[JK_PLAYER] = jksave_player;		// Tr!Force: [JKMod] Don't remove flags
-	client->ps.stats[JK_DIMENSION] = jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [JKMod] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1904,15 +1904,15 @@ void ClientSpawn(gentity_t *ent) {
 
 	saveSaberNum = client->ps.saberEntityNum;
 
-	jksave_player = client->ps.stats[JK_PLAYER]; // Tr!Force: [JKMod] Don't remove flags
-	jksave_dimension = client->ps.stats[JK_DIMENSION]; // Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT]; // Tr!Force: [JKMod] Don't remove flags
+	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [JKMod] Don't remove flags
+	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [JKMod] Don't remove flags
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
-	client->ps.stats[JK_PLAYER] = jksave_player; // Tr!Force: [JKMod] Don't remove flags
-	client->ps.stats[JK_DIMENSION] = jksave_dimension; // Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement; // Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [JKMod] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
@@ -2298,6 +2298,9 @@ void ClientSpawn(gentity_t *ent) {
 	{
 		JKMod_DimensionSettings(ent, client->ps.stats[JK_DIMENSION]);
 	}
+
+	// Tr!Force: [DualSaber] Check enable
+	if (client->ps.weapon == WP_SABER) client->ps.dualBlade = client->pers.jkmodPers.dualSaber;
 
 	// run the presend to set anything else
 	if ( ent->client->sess.spectatorState != SPECTATOR_FOLLOW )

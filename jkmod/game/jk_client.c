@@ -127,6 +127,9 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Set player movements
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
 
+		// Check dual saber
+	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;
+
 	// Check client losses
 	if (client->sess.losses != 0 && g_gametype.integer != GT_TOURNAMENT)
 	{

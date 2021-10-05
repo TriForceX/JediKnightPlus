@@ -2857,6 +2857,8 @@ void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client comm
 	{
 		Cmd_ToggleSaber_f(ent);
 
+		ent->client->pers.jkmodPers.dualSaber = qfalse; // Tr!Force: [DualSaber] Check disable
+
 		if (!ent->client->ps.saberHolstered)
 		{
 			if (ent->client->ps.dualBlade)

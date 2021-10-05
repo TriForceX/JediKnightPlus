@@ -35,7 +35,7 @@ Global definitions
 #define JK_PASS_THROUGH			( 1 << 30 )
 
 // Utilities
-#define	CVAR_NONE				(0x00000000u)
+#define CVAR_NONE				(0x00000000u)
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
 #define VALIDSTRINGCVAR(a)		((a != NULL) && (a[0] != '\0') && (*a != '0'))
 #define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))

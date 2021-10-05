@@ -181,6 +181,7 @@ typedef struct
 	int				customSettingsCount;	// Custom settings modification count
 	float			customGravity;			// Custom speed for custom settings
 	float			customSpeed;			// Custom gravity for custom settings
+	qboolean		dualSaber;				// Check for permanent dual saber
 
 } jkmod_pers_t;
 
@@ -343,6 +344,7 @@ extern	vmCvar_t					jkcvar_mapCycleFromFile;
 extern	vmCvar_t					jkcvar_jetPack;
 extern	vmCvar_t					jkcvar_playerMovement;
 extern	vmCvar_t					jkcvar_botsAI;
+extern	vmCvar_t					jkcvar_dualSaber;
 
 extern	vmCvar_t					jkcvar_test1;
 extern	vmCvar_t					jkcvar_test2;
@@ -437,6 +439,7 @@ void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_playerMovement(void);
 void		JKMod_CVU_pluginRequired(void);
 void		JKMod_CVU_serverClosed(void);
+void		JKMod_CVU_dualSaber(void);
 qboolean	JKMod_PauseFrameCheck(int levelTime);
 void		JKMod_PauseFrameRun(void);
 void		JKMod_ServerIdleCheck(void);

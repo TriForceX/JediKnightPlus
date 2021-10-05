@@ -450,6 +450,12 @@ typedef struct
 	vec3_t		oldPos[2];		
 	vec3_t		oldNormal[2];	// store this in case we don't have a connect-the-dots situation
 							//	..then we'll need the normal to project a mark blob onto the impact point
+
+	// Tr!Force: [DualSaber] Allow saber marks
+	qboolean	jkmod_haveOldPos[2];
+	vec3_t		jkmod_oldPos[2];		
+	vec3_t		jkmod_oldNormal[2];
+
 } saberTrail_t;
 
 typedef struct {
@@ -543,6 +549,7 @@ typedef struct {
 	mvversion_t		jk2gameplay;
 	// Tr!Force: [JKMod] Custom client info
 	int				jkmod_hat;
+	int				jkmod_color2;
 } clientInfo_t;
 
 

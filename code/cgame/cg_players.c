@@ -1018,6 +1018,8 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	v = Info_ValueForKey( configstring, "c2" );
 	CG_ColorFromString( v, newInfo.color2 );
 
+	newInfo.jkmod_color2 = atoi(v); // Tr!Force: [DualSaber] Added 2nd color
+
 	// bot skill
 	v = Info_ValueForKey( configstring, "skill" );
 	newInfo.botSkill = atoi( v );
@@ -4318,8 +4320,9 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	vec3_t futureAngles;
 	effectTrailArgStruct_t fx;
 	int scolor = 0;
+	int jkmod_color2 = 0; // Tr!Force: [DualSaber] Added 2nd color
 	vec3_t otherPos, otherDir, otherEnd;
-	float dualLen = 0.7;
+	float dualLen = cgs.jkmodCGS.dualSaber ? 1 : 0.7; // Tr!Force: [DualSaber] Fixed length
 
 	saberEnt = &cg_entities[cent->currentState.saberEntityNum];
 
@@ -4419,16 +4422,19 @@ Ghoul2 Insert Start
 	}
 
 	scolor = cgs.clientinfo[cent->currentState.number].icolor1;
+	jkmod_color2 = cgs.clientinfo[cent->currentState.number].jkmod_color2; // Tr!Force: [DualSaber] Added 2nd color
 
 	if (cgs.gametype >= GT_TEAM && !cgs.jediVmerc )
 	{
 		if (cgs.clientinfo[cent->currentState.number].team == TEAM_RED)
 		{
 			scolor = SABER_RED;
+			jkmod_color2 = SABER_RED; // Tr!Force: [DualSaber] Added 2nd color
 		}
 		else if (cgs.clientinfo[cent->currentState.number].team == TEAM_BLUE)
 		{
 			scolor = SABER_BLUE;
+			jkmod_color2 = SABER_BLUE; // Tr!Force: [DualSaber] Added 2nd color
 		}
 	}
 
@@ -4471,7 +4477,7 @@ Ghoul2 Insert Start
 
 			VectorCopy(trace.endpos, end);
 
-			if (cent->currentState.bolt2)
+			if (cent->currentState.bolt2 && !cgs.jkmodCGS.dualSaber) // Tr!Force: [DualSaber] Allow saber marks
 			{
 				break;
 			}
@@ -4506,7 +4512,7 @@ Ghoul2 Insert Start
 		}
 		else
 		{
-			if (cent->currentState.bolt2)
+			if (cent->currentState.bolt2 && !cgs.jkmodCGS.dualSaber) // Tr!Force: [DualSaber] Allow saber marks
 			{
 				break;
 			}
@@ -4547,6 +4553,36 @@ Ghoul2 Insert Start
 				dualSaberLen = VectorLength(v);
 
 				VectorCopy(trace.endpos, end);
+
+				// Tr!Force: [DualSaber] Allow saber marks
+				if (cgs.jkmodCGS.dualSaber)
+				{
+					if ( client->saberTrail.jkmod_haveOldPos[i] )
+					{
+						if ( trace.entityNum == ENTITYNUM_WORLD )
+						{
+							CG_CreateSaberMarks( client->saberTrail.jkmod_oldPos[i], trace.endpos, trace.plane.normal );
+				
+							if ( cg.time - client->saberHitWallSoundDebounceTime >= 100 )
+							{
+								client->saberHitWallSoundDebounceTime = cg.time;
+								trap_S_StartSound ( trace.endpos, -1, CHAN_WEAPON, trap_S_RegisterSound( va("sound/weapons/saber/saberhitwall%i", Q_irand(1, 3)) ) );
+							}
+						}
+					}
+					else
+					{
+						client->saberTrail.jkmod_haveOldPos[i] = qtrue;
+					}
+
+					VectorCopy( trace.endpos, client->saberTrail.jkmod_oldPos[i] );
+					VectorCopy( trace.plane.normal, client->saberTrail.jkmod_oldNormal[i] );
+				}
+			}
+			// Tr!Force: [DualSaber] Allow saber marks
+			else
+			{
+				client->saberTrail.jkmod_haveOldPos[i] = qfalse;
 			}
 		}
 	}
@@ -4566,6 +4602,7 @@ CheckTrail:
 		if ( (saberMoveData[cent->currentState.saberMove].trailLength > 0 || ((cent->currentState.powerups & (1 << PW_SPEED) && cg_speedTrail.integer)) || cent->currentState.saberInFlight) && cg.time < saberTrail->lastTime + 2000 ) // if we have a stale segment, don't draw until we have a fresh one
 		{
 			vec3_t	rgb1={255.0f,255.0f,255.0f};
+			vec3_t	jkmod_rgb2={255.0f,255.0f,255.0f}; // Tr!Force: [DualSaber] Added 2nd color
 
 			switch( scolor )
 			{
@@ -4589,6 +4626,32 @@ CheckTrail:
 					break;
 				default:
 					VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
+					break;
+			}
+
+			// Tr!Force: [DualSaber] Added 2nd color
+			switch( jkmod_color2 )
+			{
+				case SABER_RED:
+					VectorSet( jkmod_rgb2, 255.0f, 0.0f, 0.0f );
+					break;
+				case SABER_ORANGE:
+					VectorSet( jkmod_rgb2, 255.0f, 64.0f, 0.0f );
+					break;
+				case SABER_YELLOW:
+					VectorSet( jkmod_rgb2, 255.0f, 255.0f, 0.0f );
+					break;
+				case SABER_GREEN:
+					VectorSet( jkmod_rgb2, 0.0f, 255.0f, 0.0f );
+					break;
+				case SABER_BLUE:
+					VectorSet( jkmod_rgb2, 0.0f, 64.0f, 255.0f );
+					break;
+				case SABER_PURPLE:
+					VectorSet( jkmod_rgb2, 220.0f, 0.0f, 255.0f );
+					break;
+				default:
+					VectorSet( jkmod_rgb2, 0.0f, 64.0f, 255.0f );
 					break;
 			}
 
@@ -4658,6 +4721,9 @@ CheckTrail:
 			if (cent->currentState.bolt2)
 			{
 				float oldAlpha = 1.0f - ( diff / SABER_TRAIL_TIME );
+
+				// Tr!Force: [DualSaber] Added 2nd color
+				if (cgs.jkmodCGS.dualSaber) VectorCopy( jkmod_rgb2, rgb1 ); 
 
 				VectorCopy( otherPos, fx.mVerts[0].origin );
 				VectorMA( otherEnd, 3.0f, otherDir, fx.mVerts[1].origin );
@@ -4735,7 +4801,7 @@ JustDoIt:
 		
 		CG_DoSaber( org_, axis_[0], sideOneLen, scolor, renderfx );
 
-		CG_DoSaber( otherPos, otherDir, sideTwoLen, scolor, renderfx );
+		CG_DoSaber( otherPos, otherDir, sideTwoLen, (cgs.jkmodCGS.dualSaber ? jkmod_color2 : scolor), renderfx ); // Tr!Force: [DualSaber] Added 2nd color
 	}
 	else
 	{
