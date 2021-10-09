@@ -1104,6 +1104,7 @@ static qboolean JKMod_teleportCheck(gentity_t *ent)
 		}
 	}
 	
+	if (found) message[strlen(message) - 1] = '\0';
 	trap_SendServerCommand(ent - g_entities, va("cp \"%s\n\"", (found ? message : "This map doesn't have chat teleports")));
 	return qfalse;
 }

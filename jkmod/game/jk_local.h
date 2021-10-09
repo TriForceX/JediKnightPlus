@@ -282,6 +282,7 @@ Cvar registration
 
 extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
+extern	vmCvar_t					jkcvar_serverMotdTele;
 extern	vmCvar_t					jkcvar_serverIdle;
 extern	vmCvar_t					jkcvar_serverIdleFile;
 extern	vmCvar_t					jkcvar_serverClosed;

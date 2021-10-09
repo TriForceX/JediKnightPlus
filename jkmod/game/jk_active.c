@@ -80,6 +80,37 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		if (client->jkmodClient.motdTime <= jkcvar_serverMotdTime.integer)
 		{
 			JKMod_StringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
+
+			// Check map teleports
+			if (jkcvar_serverMotdTele.integer && jkcvar_teleportChat.integer)
+			{
+				int			i = 0;
+				char		command[MAX_TOKEN_CHARS];
+				char		map[MAX_TOKEN_CHARS];
+				char		message[MAX_STRING_CHARS] = { 0 };
+				qboolean	found = qfalse;
+
+				Q_strcat(message, sizeof(message), va("\n^7Teleports: %s", jkcvar_serverMotdTele.integer == 2 ? "\n" : ""));
+
+				for (i = 0; i < level.jkmodLocals.teleportChatsCount; i++)
+				{
+					strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
+					strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
+
+					if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
+					{
+						Q_strcat(message, sizeof(message), va("^3%s%s", command, jkcvar_serverMotdTele.integer == 2 ? "\n" : ", "));
+						found = qtrue;
+					}
+				}
+
+				if (found) 
+				{
+					message[strlen(message) - (jkcvar_serverMotdTele.integer == 2 ? 1 : 2)] = '\0';
+					Q_strcat(serverMotd, sizeof(serverMotd), message);
+				}
+			}
+
 			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.motdTime));
 		}
 
