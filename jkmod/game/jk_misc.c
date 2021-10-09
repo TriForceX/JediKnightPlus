@@ -561,48 +561,53 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 Check if is single player map
 =====================================================================
 */
-qboolean JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special)
+int JKMod_SPMapCheck(const char *mapname)
 {
+	int i;
+	char *maps[] = {
+		"artus_topside",
+		"cairn_assembly",
+		"cairn_reactor",
+		"doom_shields",
+		"bespin_streets",
+		"bespin_platform",
+		"yavin_temple",
+		"yavin_swamp",
+		"yavin_trial",
+		"yavin_canyon",
+		"yavin_courtyard",
+		"yavin_final",
+		"valley",
+		"pit",
+	};
+	char *special[] = {
+		"kejim_base",
+		"kejim_post",
+		"artus_detention",
+		"artus_mine",
+		"bespin_undercity",
+		"cairn_bay",
+		"cairn_dock1",
+		"doom_comm",
+		"doom_detention",
+		"ns_hideout",
+		"ns_starpad",
+		"ns_streets",
+	};
+
 	// Requires serverside or bsp modification
-	if (normal && (
-		Q_stricmp(mapname, "artus_topside") == 0 ||
-		Q_stricmp(mapname, "cairn_assembly") == 0 ||
-		Q_stricmp(mapname, "cairn_reactor") == 0 ||
-		Q_stricmp(mapname, "doom_shields") == 0 ||
-		Q_stricmp(mapname, "bespin_streets") == 0 ||
-		Q_stricmp(mapname, "bespin_platform") == 0 ||
-		Q_stricmp(mapname, "yavin_temple") == 0 ||
-		Q_stricmp(mapname, "yavin_swamp") == 0 ||
-		Q_stricmp(mapname, "yavin_trial") == 0 ||
-		Q_stricmp(mapname, "yavin_canyon") == 0 ||
-		Q_stricmp(mapname, "yavin_courtyard") == 0 ||
-		Q_stricmp(mapname, "yavin_final") == 0 ||
-		Q_stricmp(mapname, "valley") == 0 ||
-		Q_stricmp(mapname, "pit") == 0))
+	for (i = 0; i < ARRAY_LEN(maps); i++)
 	{
-		return qtrue;
+		if (!Q_stricmp(mapname, maps[i])) return 1;
 	}
+
 	// Requires engine and bsp modification
-	else if (special && (
-		Q_stricmp(mapname, "kejim_base") == 0 ||
-		Q_stricmp(mapname, "kejim_post") == 0 ||
-		Q_stricmp(mapname, "artus_detention") == 0 ||
-		Q_stricmp(mapname, "artus_mine") == 0 ||
-		Q_stricmp(mapname, "bespin_undercity") == 0 ||
-		Q_stricmp(mapname, "cairn_bay") == 0 ||
-		Q_stricmp(mapname, "cairn_dock1") == 0 ||
-		Q_stricmp(mapname, "doom_comm") == 0 ||
-		Q_stricmp(mapname, "doom_detention") == 0 ||
-		Q_stricmp(mapname, "ns_hideout") == 0 ||
-		Q_stricmp(mapname, "ns_starpad") == 0 ||
-		Q_stricmp(mapname, "ns_streets") == 0))
+	for (i = 0; i < ARRAY_LEN(special); i++)
 	{
-		return qtrue;
+		if (!Q_stricmp(mapname, special[i])) return 2;
 	}
-	else
-	{
-		return qfalse;
-	}
+	
+	return 0;
 }
 
 /*
@@ -610,7 +615,7 @@ qboolean JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special
 Check for valid player models
 =====================================================================
 */
-qboolean JKMod_ValidPlayerModel(const char* model)
+qboolean JKMod_ValidPlayerModel(const char* modelname)
 {
 	int i;
 	char *models[] = {
@@ -646,7 +651,7 @@ qboolean JKMod_ValidPlayerModel(const char* model)
 
 	for (i = 0; i < ARRAY_LEN(models); i++)
 	{
-		if (!Q_stricmp(model, va("models/players/%s/model.glm", models[i]))) return qtrue;
+		if (!Q_stricmp(modelname, va("models/players/%s/model.glm", models[i]))) return qtrue;
 	}
 	
 	return qfalse;

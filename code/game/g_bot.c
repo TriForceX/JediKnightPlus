@@ -180,7 +180,7 @@ qboolean G_DoesMapSupportGametype(const char *mapname, int gametype)
 		if (trap_FS_FOpenFile(va("maps/%s.bsp", mapname), &f, FS_READ) >= 0)
 		{
 			trap_FS_FCloseFile(f);
-			return !JKMod_SPMapCheck(mapname, qfalse, qtrue);
+			return JKMod_SPMapCheck(mapname) <= jkcvar_mapFixes.integer ? qtrue : !JKMod_SPMapCheck(mapname) ? qtrue : qfalse;
 		}
 		else
 		{

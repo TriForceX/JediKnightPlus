@@ -455,8 +455,8 @@ void		JKMod_SetGamePlay(char *option);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 int			JKMod_ItemRespawnTime(gentity_t *ent);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
-qboolean	JKMod_SPMapCheck(const char *mapname, qboolean normal, qboolean special);
-qboolean	JKMod_ValidPlayerModel(const char* model);
+int			JKMod_SPMapCheck(const char *mapname);
+qboolean	JKMod_ValidPlayerModel(const char* modelname);
 
 // jk_utils.c
 void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration);
