@@ -3372,10 +3372,18 @@ static void CG_DrawVote(void) {
 	int		sec;
 	char sYes[20];
 	char sNo[20];
+	// Tr!Force: [CGameGeneral] Vote vertical alignment
+	int jkmod_valign = jkcvar_cg_drawMovementKeys.integer == 3 || (trap_Key_GetCatcher() & KEYCATCH_MESSAGE) ? 67 : 5; // 58
+	int jkmod_consoleLines = cg.jkmodCG.consolePrint;
 
 	if ( !cgs.voteTime ) {
 		return;
 	}
+
+	// Tr!Force: [CGameGeneral] Vote vertical alignment
+	if (jkmod_consoleLines == 1) jkmod_valign += 7;
+	else if (jkmod_consoleLines == 2) jkmod_valign += 7*2.3;
+	else if (jkmod_consoleLines == 3) jkmod_valign += 7*3.3;
 
 	// play a talk beep whenever it is modified
 	if ( cgs.voteModified ) {
@@ -3392,9 +3400,9 @@ static void CG_DrawVote(void) {
 	trap_SP_GetStringTextString("MENUS0_NO",  sNo,  sizeof(sNo) );
 
 	s = va("VOTE(%i):%s" S_COLOR_WHITE " %s:%i %s:%i", sec, cgs.voteString, sYes, cgs.voteYes, sNo, cgs.voteNo);
-	CG_DrawSmallString( 4, 58, s, 1.0F );
+	CG_DrawSmallString( 4, jkmod_valign, s, 1.0F ); // Tr!Force: [CGameGeneral] Vote vertical alignment
 	s = CG_GetStripEdString("INGAMETEXT", "OR_PRESS_ESC_THEN_CLICK_VOTE");	//	s = "or press ESC then click Vote";
-	CG_DrawSmallString( 4, 58 + SMALLCHAR_HEIGHT + 2, s, 1.0F );
+	CG_DrawSmallString( 4, jkmod_valign + SMALLCHAR_HEIGHT + 2, s, 1.0F ); // Tr!Force: [CGameGeneral] Vote vertical alignment
 }
 
 /*

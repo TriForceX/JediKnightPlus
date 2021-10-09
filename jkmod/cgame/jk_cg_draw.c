@@ -766,9 +766,9 @@ void JKMod_CG_DrawMovementKeys(void)
 		y = 5;
 		scale = 1.7;
 
-		if (consoleLines == 1) y = 12;
-		else if (consoleLines == 2) y = 20;
-		else if (consoleLines == 3) y = 28;
+		if (consoleLines == 1) y += 7;
+		else if (consoleLines == 2) y += 7*2.3;
+		else if (consoleLines == 3) y += 7*3.3;
 	} 
 	// Medium
 	else if (jkcvar_cg_drawMovementKeys.integer == 2) 
