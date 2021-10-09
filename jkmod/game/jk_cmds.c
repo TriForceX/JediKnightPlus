@@ -65,6 +65,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3togglemod\n"
 			"^3forcedimension\n"
 			"^3whois\n"
+			"^3listdir\n"
 			"^5----------\n"
 			"^2Note: ^7To use ^5rcon ^7commands you must be logged with ^3/rconpassword <password>\n"
 			"^7\""));

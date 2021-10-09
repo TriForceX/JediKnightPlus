@@ -329,6 +329,55 @@ static void JKMod_svCmd_forceDimension(void)
 
 /*
 =====================================================================
+List directory function
+=====================================================================
+*/
+static void JKMod_svCmd_listDir(void)
+{
+	if (trap_Argc() < 2)
+	{
+		G_Printf("Usage: listdir <folder> [extension] [filter]\n");
+	}
+	else
+	{
+		char		arg1[MAX_STRING_CHARS];
+		char		arg2[MAX_STRING_CHARS];
+		char		arg3[MAX_STRING_CHARS];
+
+		int			numFiles;
+		int			filelen;
+		char		filelist[4096];
+		static char	filename[MAX_QPATH];
+		char		*fileptr;
+		int			i;
+
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+		trap_Argv(3, arg3, sizeof(arg3));
+
+		numFiles = trap_FS_GetFileList(arg1, VALIDSTRING(arg2) ? arg2 : "", filelist, sizeof(filelist));
+		fileptr = filelist;
+
+		G_Printf( "Directory of %s (ext: %s filter: %s)\n", arg1, arg2, arg3 );
+		G_Printf( "---------------\n" );
+
+		for (i = 0; i < numFiles; i++, fileptr += filelen+1)
+		{
+			filelen = strlen(fileptr);
+			strcpy(filename, va("%s/", arg1));
+			strcat(filename, fileptr);
+
+			if (trap_Argc() > 3) {
+				if (strstr(filename, arg3)) G_Printf("%s\n", filename);
+			} else {
+				G_Printf("%s\n", filename);
+			}
+		}
+	}
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */
@@ -376,6 +425,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "whois"))
 	{
 		JKMod_Cmd_WhoIs(NULL);
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "listdir"))
+	{
+		JKMod_svCmd_listDir();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)
