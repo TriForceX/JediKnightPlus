@@ -219,7 +219,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	{
 		char *clientPing;
 		
-		if (score->ping != -1)
+		if (score->ping != -1 && score->ping != 999)
 			clientPing = ci->botSkill != 0 ? "Bot" : va("%i", score->ping);
 		else
 			clientPing = "-";

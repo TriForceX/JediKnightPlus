@@ -142,8 +142,10 @@ void JKMod_CG_DrawClock(void)
 	trap_RealTime(&serverTime);
 	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
 
-	x = cgs.screenWidth - (cg_lagometer.integer ? 68 : 68);
-	y = cgs.screenHeight - (cg_lagometer.integer ? 175 : 123);
+	x = cgs.screenWidth - 68;
+	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR ? 36 : 123);
+
+	if (cg.snap->ps.pm_type == PM_SPECTATOR && cgs.gametype == GT_TOURNAMENT) y -= 97;
 
 	CG_DrawPic(x, y, 64, 32, cgs.jkmodMedia.clockBg);
 
@@ -354,12 +356,12 @@ void JKMod_CG_DrawInventory(int y)
 	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 	if (cg.snap->ps.stats[STAT_HEALTH] <= 0) return;
 
-	y += 8;
+	y += 5;
 
 	if (!cg.renderingThirdPerson && (cg.snap->ps.eFlags & JK_JETPACK_ACTIVE)) 
 	{
 		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.jkmodMedia.jetpackIcon);
-		if (cg.snap->ps.eFlags & JK_JETPACK_FLAMING) CG_DrawPic(xAlign + 20, y - 2.5, 8, 8, cgs.jkmodMedia.dotRed);
+		if (cgs.jkmodCGS.jetPack == 2 && (cg.snap->ps.eFlags & JK_JETPACK_FLAMING)) CG_DrawPic(xAlign + 4, y - 2, 8, 8, cgs.jkmodMedia.dotRed);
 		y += ico_size;
 	}
 
@@ -390,7 +392,7 @@ float JKMod_CG_DrawPowerupIcons(int y)
 	gitem_t	*item;
 
 	if (!cg.snap) return y;
-	if (cg.snap->ps.pm_type == PM_SPECTATOR)return y;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return y;
 
 	if (jkcvar_cg_drawInventory.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)) { 
 		ico_size = ICON_SIZE * 1.25;

@@ -2339,8 +2339,8 @@ CG_DrawDisconnect
 Should we draw something differnet for long lag vs no packets?
 ==============
 */
-static void CG_DrawDisconnect( void ) {
-	float		x, y;
+static void CG_DrawDisconnect( float x, float y ) { // Tr!Force: [CGameGeneral] Adjust for lagometer
+	//float		x, y;
 	int			cmdNum;
 	usercmd_t	cmd;
 	const char		*s;
@@ -2376,8 +2376,8 @@ static void CG_DrawDisconnect( void ) {
 		return;
 	}
 
-	x = cgs.screenWidth - 48;
-	y = cgs.screenHeight - 48;
+	// x = cgs.screenWidth - 48;
+	// y = cgs.screenHeight - 48;
 
 	CG_DrawPic( x, y, 48, 48, trap_R_RegisterShader("gfx/2d/net.tga" ) );
 }
@@ -2398,24 +2398,30 @@ static void CG_DrawLagometer( void ) {
 	int		color;
 	float	vscale;
 
+	// Tr!Force: [DrawClock] Adjust for clock
+	x = cgs.screenWidth - (jkcvar_cg_drawClock.integer ? 53 : 48);
+	y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 176 : 144);
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 89 : 48);
+	if (cg.snap->ps.pm_type == PM_SPECTATOR && cgs.gametype == GT_TOURNAMENT) y -= 97;
+
 	if ( !cg_lagometer.integer || cgs.localServer ) {
-		CG_DrawDisconnect();
+		CG_DrawDisconnect(x, y); // Tr!Force: [CGameGeneral] Adjust for lagometer
 		return;
 	}
 
-	if (trap_Key_GetCatcher() & KEYCATCH_UI) return; // Tr!Force: [Lagometer] Don't draw on UI
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return; // Tr!Force: [CGameGeneral] Don't draw lagometer on UI
 
 	//
 	// draw the graph
 	//
-	x = cgs.screenWidth - (jkcvar_cg_drawClock.integer ? 53 : 48); // Tr!Force: [DrawClock] Adjust for clock
-	y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 140 : 144); // Tr!Force: [DrawClock] Adjust for clock
+	// x = cgs.screenWidth - 48;
+	// y = cgs.screenHeight - 144;
 
 	trap_R_SetColor( NULL );
 	CG_DrawPic( x, y, 48, 48, cgs.media.lagometerShader );
-	x -= 1.0f; //lines the actual graph up with the background
+	// x -= 1.0f; //lines the actual graph up with the background
 
-	ax = x;
+	ax = x - 1.0f; // Tr!Force: [CGameGeneral] Adjust for lagometer (Don't alter x for disconnect)
 	ay = y;
 	aw = 48;
 	ah = 48;
@@ -2492,7 +2498,7 @@ static void CG_DrawLagometer( void ) {
 		CG_DrawBigString( ax, ay, "snc", 1.0 );
 	}
 
-	CG_DrawDisconnect();
+	CG_DrawDisconnect(x, y); // Tr!Force: [CGameGeneral] Adjust for lagometer
 }
 
 
@@ -3576,7 +3582,7 @@ static qboolean CG_DrawFollow( void )
 	const char	*s;
 	float		x;
 
-	if ( !(cg.snap->ps.pm_flags & PMF_FOLLOW) ) 
+	if ( !(cg.snap->ps.pm_flags & PMF_FOLLOW) || cg.scoreBoardShowing ) // Tr!Force: [CGameGeneral] Don't show while scoreboard showing 
 	{
 		return qfalse;
 	}
@@ -4448,11 +4454,11 @@ static void CG_Draw2D( void ) {
 	CG_DrawVote();
 	CG_DrawTeamVote();
 
-	CG_DrawLagometer();
-
 	if (!cg_paused.integer) {
 		CG_DrawUpperRight();
 	}
+
+	CG_DrawLagometer(); // Tr!Force: [CGameGeneral] Moved lagometer for powerup icons
 
 	if ( !CG_DrawFollow() ) {
 		CG_DrawWarmup();
