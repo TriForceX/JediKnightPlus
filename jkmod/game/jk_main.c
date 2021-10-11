@@ -772,4 +772,10 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	{
 		G_SoundIndex(jkcvar_serverJoinSound.string);
 	}
+
+	// Precache race sound
+	if (jkcvar_altDimension.integer & DIMENSION_RACE)
+	{
+		G_SoundIndex("sound/movers/sec_panel_pass");
+	}
 }

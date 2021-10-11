@@ -117,11 +117,15 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	if (timeLast == timeBest) {
 		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%s^7]\n\"", activator->client->pers.netname, timeLastStr));
 	} else if (timeLast < timeBest) {
-		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%s^7] which is a new personal record!\n\"", activator->client->pers.netname, timeLastStr));
+		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^5%s^7] which is a new personal record!\n\"", activator->client->pers.netname, timeLastStr));
 	} else {
-		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^3%s^7] and his record was [^2%s^7]\n\"", activator->client->pers.netname, timeLastStr, timeBestStr));
+		trap_SendServerCommand(-1, va("print \"%s " S_COLOR_WHITE "has finished the race in [^2%s^7] and his record was [^5%s^7]\n\"", activator->client->pers.netname, timeLastStr, timeBestStr));
 	}
 
+	// Play sound
+	if (timeLast < timeBest) G_Sound(activator, CHAN_AUTO, G_SoundIndex("sound/movers/sec_panel_pass"));
+
+	// Show info
 	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer finished!\""));
 
 	// Update timers
@@ -129,9 +133,7 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	activator->client->pers.jkmodPers.raceBestTime = timeLast > timeBest ? timeBest : timeLast;
 
 	// Update client
-	if (activator->client->pers.jkmodPers.clientPlugin) {
-		trap_SendServerCommand(activator - g_entities, va("raceBestTime %i", activator->client->pers.jkmodPers.raceBestTime));
-	}
+	ClientUserinfoChanged(activator - g_entities);
 	
 	// Reset timers
 	activator->client->ps.duelTime = 0;

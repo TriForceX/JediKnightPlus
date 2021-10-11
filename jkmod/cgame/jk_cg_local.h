@@ -62,7 +62,6 @@ typedef struct
 	int					prevCameraAngle;			// Saved camera angle
 	int					prevCameraRange;			// Saved camera range
 	int					prevCameraVertOffset;		// Saved camera vertical offset
-	int					raceBestTime;				// Last race best time
 	int					consolePrint;				// Console print lines
 	int					consolePrintTime;			// Console print timestamp
 	int					consoleNotifyTime;			// Console notify time

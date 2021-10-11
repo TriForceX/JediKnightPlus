@@ -424,6 +424,7 @@ typedef struct {
 	int				captures;
 	qboolean	perfect;
 	int				team;
+	int				besttime;
 } score_t;
 
 // each client has an associated clientInfo_t
@@ -549,6 +550,7 @@ typedef struct {
 	mvversion_t		jk2gameplay;
 	// Tr!Force: [JKMod] Custom client info
 	int				jkmod_hat;
+	int				jkmod_race;
 	int				jkmod_color2;
 } clientInfo_t;
 

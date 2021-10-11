@@ -1542,7 +1542,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		else if (timeLast <= timeBest)
 			G_Say(ent, NULL, SAY_ALL, va("^7Last Time: ^2%s", timeLastStr));
 		else
-			G_Say(ent, NULL, SAY_ALL, va("^7Last Time: ^3%s ^7Record: ^2%s", timeLastStr, timeBestStr));
+			G_Say(ent, NULL, SAY_ALL, va("^7Last Time: ^2%s ^7Record: ^5%s", timeLastStr, timeBestStr));
 
 		return;
 	}

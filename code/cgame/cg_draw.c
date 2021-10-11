@@ -1063,7 +1063,7 @@ void CG_DrawHUD(centity_t	*cent)
 			UI_DrawProportionalString( cgs.screenWidth-64, y+40, va( "%s", CG_GetStripEdString("JKINGAME", "RECORD") ),
 				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_HUD_ORANGE] );
 
-			UI_DrawProportionalString( cgs.screenWidth-114, y+40+14, va( "%s", JKMod_CG_MsToString(cg.jkmodCG.raceBestTime) ),
+			UI_DrawProportionalString( cgs.screenWidth-114, y+40+14, va( "%s", JKMod_CG_MsToString(cgs.clientinfo[cg.clientNum].jkmod_race) ),
 				UI_SMALLFONT|UI_DROPSHADOW, colorTable[CT_ICON_BLUE] );
 		}
 		else
@@ -1145,11 +1145,15 @@ void CG_DrawHUD(centity_t	*cent)
 	// Tr!Force: [Dimension] Show best race time
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
 	{
-		scoreStr = va("%s: %s", CG_GetStripEdString("JKINGAME", "RECORD"), JKMod_CG_MsToString(cg.jkmodCG.raceBestTime));
+		scoreStr = va("%s: %s", CG_GetStripEdString("JKINGAME", "RECORD"), JKMod_CG_MsToString(cgs.clientinfo[cg.clientNum].jkmod_race));
 	}
 	else
 	{	// Don't draw a bias.
-		scoreStr = va("%s: %i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Use translated text
+		if (jkcvar_cg_scoreboardExtras.integer) { // Tr!Force: [Scoreboard] Extra info
+			scoreStr = va("%s: %i/%i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], cgs.clientinfo[cg.clientNum].losses);
+		} else {
+			scoreStr = va("%s: %i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Use translated text
+		}
 	}
 	
 	// Tr!Force: [CGameGeneral] Don't draw score label when changing stuff or menu

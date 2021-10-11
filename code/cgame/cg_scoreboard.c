@@ -149,7 +149,19 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 
 		hcolor[3] = fade * 0.7;
-		CG_FillRect( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, largeFormat?SB_NORMAL_HEIGHT:SB_INTER_HEIGHT, hcolor );
+
+		// TriForce: [Dimension] Show race time
+		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+		{
+			float timeWidth = jkcvar_cg_scoreboardExtras.integer ? 19 : 12;
+			if (largeFormat) timeWidth += 8;
+
+			CG_FillRect( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + timeWidth, largeFormat?SB_NORMAL_HEIGHT:SB_INTER_HEIGHT, hcolor );
+		} 
+		else 
+		{
+			CG_FillRect( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, largeFormat?SB_NORMAL_HEIGHT:SB_INTER_HEIGHT, hcolor );
+		}
 	}
 
 	// Tr!Force: [ScoreboardIcons] Show players icons
@@ -213,13 +225,32 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 			clientPing = "-";
 
 		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, clientPing, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
+		
+		if (ci->team == TEAM_SPECTATOR) CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, "-",0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 	else
 	{
 		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, va("%i", score->ping),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 
-	CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	// TriForce: [Dimension] Show race time
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
+	{
+		float timeScale = 1.0f;
+		float timeAlign = 0;
+
+		if (largeFormat)
+		{
+			timeScale = 0.84f;
+			timeAlign = 3;
+		}
+		
+		CG_Text_Paint (SB_TIME_X, y + timeAlign, timeScale * scale, ci->jkmod_race ? colorWhite : colorMdGrey, va("%s", JKMod_CG_MsToString(ci->jkmod_race)),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	} 
+	else 
+	{
+		CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+	}
 
 	// add the "ready" marker for intermission exiting
 	if ( cg.snap->ps.stats[ STAT_CLIENTS_READY ] & ( 1 << score->client ) ) 
@@ -435,13 +466,13 @@ qboolean CG_DrawOldScoreboard( void ) {
 	}
 	else if (jkcvar_cg_scoreboardExtras.integer) // Tr!Force: [Scoreboard] Extra info
 	{
-		if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)
-		{
-			CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("JKINGAME", "SCORE_CAPTURES"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
-		}
-		else
-		{
-			CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("INGAMETEXT", "W_L"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("JKINGAME", "SCORE"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
+
+		// Subtitle
+		if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY) {
+			CG_Text_Paint ( SB_SCORE_X, y + 19, 0.5f, colorWhite, va("& %s", CG_GetStripEdString("JKINGAME", "CAPTURES")), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		} else {
+			CG_Text_Paint ( SB_SCORE_X, y + 19, 0.5f, colorWhite, va("& %s", CG_GetStripEdString("JKINGAME", "DEATHS")), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 		}
 	}
 	else
@@ -450,6 +481,11 @@ qboolean CG_DrawOldScoreboard( void ) {
 	}
 	CG_Text_Paint ( SB_PING_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS0", "PING"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 	CG_Text_Paint ( SB_TIME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "TIME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
+
+	// Tr!Force: [Scoreboard] Extra info
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) {
+		CG_Text_Paint ( SB_TIME_X, y + 19, 0.5f, colorWhite, CG_GetStripEdString("JKINGAME", "RECORD"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+	}
 
 	y = SB_TOP;
 
@@ -464,6 +500,18 @@ qboolean CG_DrawOldScoreboard( void ) {
 		lineHeight = SB_NORMAL_HEIGHT;
 		topBorderSize = 8;
 		bottomBorderSize = 8;
+	}
+
+	// Tr!Force: [ScoreboardIcons] Adjust team background
+	if (jkcvar_cg_scoreboardIcons.integer) {
+		topBorderSize = 6;
+		if (cg.numScores > SB_MAXCLIENTS_NORMAL) bottomBorderSize = 8;
+	}
+
+	// Tr!Force: [Scoreboard] Team thin border
+	if (jkcvar_cg_scoreboardExtras.integer) {
+		topBorderSize = -2;
+		bottomBorderSize = 0;
 	}
 
 	localClient = qfalse;
@@ -503,13 +551,14 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n1 = CG_TeamScoreboard( y, TEAM_RED, fade, team1MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n1 * lineHeight + bottomBorderSize, 0.33f, TEAM_RED );
 			CG_TeamScoreboard( y, TEAM_RED, fade, team1MaxCl, lineHeight, qfalse );
+			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_RED ); // Tr!Force: [Scoreboard] Team thin border
 			y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
-
 			//maxClients -= n1;
 
 			n2 = CG_TeamScoreboard( y, TEAM_BLUE, fade, team2MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n2 * lineHeight + bottomBorderSize, 0.33f, TEAM_BLUE );
 			CG_TeamScoreboard( y, TEAM_BLUE, fade, team2MaxCl, lineHeight, qfalse );
+			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_BLUE); // Tr!Force: [Scoreboard] Team thin border
 			y += (n2 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n2;
@@ -536,6 +585,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n1 = CG_TeamScoreboard( y, TEAM_BLUE, fade, team1MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n1 * lineHeight + bottomBorderSize, 0.33f, TEAM_BLUE );
 			CG_TeamScoreboard( y, TEAM_BLUE, fade, team1MaxCl, lineHeight, qfalse );
+			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_BLUE ); // Tr!Force: [Scoreboard] Team thin border
 			y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n1;
@@ -543,6 +593,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n2 = CG_TeamScoreboard( y, TEAM_RED, fade, team2MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n2 * lineHeight + bottomBorderSize, 0.33f, TEAM_RED );
 			CG_TeamScoreboard( y, TEAM_RED, fade, team2MaxCl, lineHeight, qfalse );
+			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_RED ); // Tr!Force: [Scoreboard] Team thin border
 			y += (n2 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n2;

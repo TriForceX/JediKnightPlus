@@ -1182,6 +1182,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	v = Info_ValueForKey( configstring, "jkhat" );
 	newInfo.jkmod_hat = atoi(v);
 
+	// Tr!Force: [Dimension] Get race best time info
+	v = Info_ValueForKey( configstring, "jkrace" );
+	newInfo.jkmod_race = atoi(v);
+
 	newInfo.ATST = wasATST;
 
 	if (cgs.gametype >= GT_TEAM	&& !cgs.jediVmerc )

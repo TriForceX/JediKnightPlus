@@ -1354,12 +1354,6 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
-	// Tr!Force: [Dimension] Get race best time updated info
-	if ( !strcmp( cmd, "raceBestTime" ) ) {
-		cg.jkmodCG.raceBestTime = atoi(CG_Argv(1));
-		return;
-	}
-
 	CG_Printf( "Unknown client game command: %s\n", cmd );
 }
 

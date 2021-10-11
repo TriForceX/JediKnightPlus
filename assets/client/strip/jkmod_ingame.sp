@@ -1,7 +1,7 @@
 VERSION 1
 ID 137
 REFERENCE JKINGAME
-COUNT 12
+COUNT 13
 INDEX 0
 {
    REFERENCE RECORD
@@ -40,12 +40,12 @@ INDEX 3
 }
 INDEX 4
 {
-   REFERENCE SCORE_CAPTURES
-   TEXT_LANGUAGE1 "S/C"
-   TEXT_LANGUAGE2 "S/C"
-   TEXT_LANGUAGE3 "P/C"
-   TEXT_LANGUAGE6 "S/C"
-   TEXT_LANGUAGE8 "P/C"
+   REFERENCE CAPTURES
+   TEXT_LANGUAGE1 "Captures"
+   TEXT_LANGUAGE2 "Captures"
+   TEXT_LANGUAGE3 "Erobert"
+   TEXT_LANGUAGE6 "Captures"
+   TEXT_LANGUAGE8 "Capturas"
 }
 INDEX 5
 {
@@ -109,4 +109,13 @@ INDEX 11
    TEXT_LANGUAGE3 "^1ALARM\nUnvollständige mod detektiert\nLaden sie den vollständigen mod bei:\n^5https://jkplus.github.io"
    TEXT_LANGUAGE6 "^1ALERT\nIncomplete mod detected\nDownload the full mod at:\n^5https://jkplus.github.io"
    TEXT_LANGUAGE8 "^1ALERTA\nMod incompleto detectado\nDescarga el mod completo en:\n^5https://jkplus.github.io"
+}
+INDEX 12
+{
+   REFERENCE DEATHS
+   TEXT_LANGUAGE1 "Deaths"
+   TEXT_LANGUAGE2 "Morts"
+   TEXT_LANGUAGE3 "Todesfälle"
+   TEXT_LANGUAGE6 "Deaths"
+   TEXT_LANGUAGE8 "Muertes"
 }
