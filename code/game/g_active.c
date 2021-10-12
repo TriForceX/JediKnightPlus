@@ -1676,8 +1676,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	if (client->ps.forceKickFlip)
 	{
 		gentity_t *faceKicked = &g_entities[client->ps.forceKickFlip-1];
+		qboolean faceKickedDamage = faceKicked->takedamage;
 
 		// Tr!Force: [ChatProtect] Prevent kicks
+		if ((faceKicked->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer) faceKickedDamage = qtrue;
 		if ((faceKicked->client->ps.stats[JK_PLAYER] & JK_CHAT_IN) && jkcvar_chatProtect.integer >= 2)
 		{
 			faceKicked = NULL;
@@ -1687,7 +1689,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			(!faceKicked->client->ps.duelInProgress || faceKicked->client->ps.duelIndex == ent->s.number) &&
 			(!ent->client->ps.duelInProgress || ent->client->ps.duelIndex == faceKicked->s.number))
 		{
-			if ( faceKicked && faceKicked->client && faceKicked->health && faceKicked->takedamage )
+			if ( faceKicked && faceKicked->client && faceKicked->health && /*faceKicked->takedamage*/ faceKickedDamage ) // Tr!Force: [ChatProtect] Prevent kicks
 			{//push them away and do pain
 				vec3_t oppDir;
 				int strength = (int)VectorNormalize2( client->ps.velocity, oppDir );

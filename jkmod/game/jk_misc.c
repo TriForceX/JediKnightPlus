@@ -372,14 +372,9 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 		if (forcepowers != ent->client->ps.fd.forcePowersKnown && forcepowers != g_forcePowerDisable.integer)
 		{
 			int i;
-			int customLevel, customCheck = -1;
-
-			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_SABER) 
-			{
-				customCheck = FP_SABERATTACK;
-				customLevel = FORCE_LEVEL_3;
-			}
-
+			int checkLevel = forcelevel;
+			int checkDimension = ent->client->ps.stats[JK_DIMENSION];
+			
 			i = 0;
 			while (i < NUM_FORCE_POWERS)
 			{
@@ -393,7 +388,9 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 				else 
 				{
 					ent->client->ps.fd.forcePowersKnown |= (1 << i);
-					if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = customCheck == i ? customLevel : forcelevel;
+					if (checkDimension == DIMENSION_SABER && (i == FP_SABERATTACK || i == FP_SABERDEFEND)) checkLevel = FORCE_LEVEL_3;
+					if (checkDimension == DIMENSION_SABER && (i == FP_LEVITATION && jk2gameplay == VERSION_1_04)) checkLevel = FORCE_LEVEL_3;
+					if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
 				}
 				i++;
 			}
@@ -530,7 +527,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	}
 
 	// Invulnerability
-	ent->client->pers.jkmodPers.invulnerability = invulnerability ? qtrue : qfalse;
+	ent->client->pers.jkmodPers.invulnerability = invulnerability;
 
 	// Speed
 	ent->client->pers.jkmodPers.customSpeed = speed;

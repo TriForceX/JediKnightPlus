@@ -435,7 +435,17 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	if (ent->client->ps.duelInProgress) return;
 
 	// Check duel challenge
-	if (jkcvar_altDimension.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) return;
+	if (jkcvar_altDimension.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Private duels are not allowed in this dimension\n\""));
+		return;
+	}
+
+	// Show custom duel warning
+	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 163837 || g_forcePowerDisable.integer == -1)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Force powers ^3disabled ^7by the server. Applying normal duel...\n\""));
+	}
 
 	// Allow multiple duels
 	if (jkcvar_allowMultiDuel.integer != 1)
@@ -601,17 +611,12 @@ Custom engage duel function
 */
 static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 {
-	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 229373)
-	{
-		trap_SendServerCommand(ent - g_entities, va("print \"^3Force duel ^7is disabled by the server\n\""));
+	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 163837 || g_forcePowerDisable.integer == -1) {
 		JKMod_EngageDuel(ent, 0);
-		return;
-	}
-	else
-	{
+	} else {
 		JKMod_EngageDuel(ent, 1);
-		return;
 	}
+	return;
 }
 
 /*

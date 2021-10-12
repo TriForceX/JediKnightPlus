@@ -25,7 +25,7 @@ jkmod_dimension_data_t JKModDimensionData[] =
     { DIMENSION_FREE,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		DEFAULT, DEFAULT,	"normal",	"Normal" },
     { DIMENSION_GUNS,	6,			262141,		FORCE_LEVEL_1,	qtrue,		qtrue,		qfalse,			qfalse,		250,	 800,		"guns",		"Guns Arena" },
 	{ DIMENSION_RACE,	65531,		229373,		FORCE_LEVEL_1,	qfalse,		qfalse,		qtrue,			qtrue,		250,	 800,		"race",		"Race Defrag" },
-	{ DIMENSION_SABER,	65531,		229373,		FORCE_LEVEL_1,	qfalse,		qfalse,		qfalse,			qfalse,		250,	 800,		"saber",	"Saber Only" },
+	{ DIMENSION_SABER,	65531,		163837,		FORCE_LEVEL_1,	qfalse,		qfalse,		qfalse,			qfalse,		250,	 800,		"saber",	"Saber Only" },
 	{ DIMENSION_INSTA,	65503,		262141,		FORCE_LEVEL_3,	qfalse,		qfalse,		qfalse,			qfalse,		415,	 800,		"insta",	"Insta Kill" },
 	{ DIMENSION_CHEAT,	DEFAULT,	DEFAULT,	DEFAULT,		qfalse,		qfalse,		qfalse,			qfalse,		250,	 800,		"cheats",	"Cheats Mode" },
 };
