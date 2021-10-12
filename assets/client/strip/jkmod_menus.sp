@@ -905,11 +905,11 @@ INDEX 99
 INDEX 100
 {
    REFERENCE CLIENT_CUSTOMHATS
-   TEXT_LANGUAGE1 "Custom hats:"
-   TEXT_LANGUAGE2 "Chapeau personnalisé:"
-   TEXT_LANGUAGE3 "Kundenspezifische hüte:"
-   TEXT_LANGUAGE6 "Custom hats:"
-   TEXT_LANGUAGE8 "Sombrero personalizado:"
+   TEXT_LANGUAGE1 "Hat:"
+   TEXT_LANGUAGE2 "Chapeau:"
+   TEXT_LANGUAGE3 "Hut:"
+   TEXT_LANGUAGE6 "Hat:"
+   TEXT_LANGUAGE8 "Sombrero:"
 }
 INDEX 101
 {

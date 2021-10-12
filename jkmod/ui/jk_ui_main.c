@@ -169,7 +169,7 @@ static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
 	{ &jkcvar_ui_votePoll,			"jk_ui_votePoll",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_dimensionToggle,	"jk_ui_dimensionToggle",	"0",	CVAR_ARCHIVE | CVAR_ROM },
-	{ &jkcvar_ui_clientPopUp,		"jk_ui_clientPopUp",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_clientPopUp,		"jk_ui_clientPopUp",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_ui_test1,				"jk_ui_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_test2,				"jk_ui_test2",				"0",	CVAR_ARCHIVE },

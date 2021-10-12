@@ -38,15 +38,8 @@ void JKMod_CG_Player(centity_t *cent)
 	// Render custom hats models
 	if (cgs.jkmodCGS.customHats)
 	{
-		qhandle_t jkmod_hatFile = 0;
-		vec4_t jkmod_hatDetails = { -0.3, 0, -2, 1 };
-
-		// Special case
-		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann")) 
-		{
-			jkmod_hatDetails[0] = 2;
-			jkmod_hatDetails[2] = -3;
-		}
+		qhandle_t	jkmod_hatFile = 0;
+		vec4_t		jkmod_hatDetails = { -0.3, 0, -2, 1 };
 
 		switch (cgs.clientinfo[cent->currentState.number].jkmod_hat) 
 		{
@@ -58,8 +51,34 @@ void JKMod_CG_Player(centity_t *cent)
 			case 6: jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
 			case 7: jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
 			case 8: jkmod_hatFile = cgs.jkmodMedia.hatPirate; break;
+			case 9: jkmod_hatFile = cgs.jkmodMedia.hatProbe; break;
+			case 10: jkmod_hatFile = cgs.jkmodMedia.hatDroid; break;
+			case 11: jkmod_hatFile = cgs.jkmodMedia.hatYsalamiri; break;
 		}
 
+		// Special cases
+		if (jkmod_hatFile == cgs.jkmodMedia.hatYsalamiri) {
+			jkmod_hatDetails[2] = -1;
+			jkmod_hatDetails[3] = 0.5;
+		}
+
+		if (jkmod_hatFile == cgs.jkmodMedia.hatDroid) {
+			jkmod_hatDetails[0] = -0.8;
+			jkmod_hatDetails[2] = -1;
+			jkmod_hatDetails[3] = 0.5;
+		}
+
+		if (jkmod_hatFile == cgs.jkmodMedia.hatProbe) {
+			jkmod_hatDetails[2] = 0;
+			jkmod_hatDetails[3] = 0.2;
+		}
+
+		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann"))  {
+			jkmod_hatDetails[0] += 2.5;
+			jkmod_hatDetails[2] -= 0.5;
+		}
+
+		// Show hat
 		if (jkmod_hatFile) JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, jkmod_hatFile, "*head_top", jkmod_hatDetails);
 	}
 

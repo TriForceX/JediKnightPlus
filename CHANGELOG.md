@@ -9,6 +9,17 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.15.4
+- Added dual saber command and cvar
+- Updated vote display alignment & dual saber running anim
+- Updated vote map and callvote checks
+- Show map teleports on motd
+- Added listdir server command
+- Updated race time display & scoreboard extras
+- Updated lagometer and clock display
+- Updated dimension force powers & fixed chat protect
+- Updated custom hats menu options
+
 ## 0.15.3
 - Fix fx_runner and target_speaker on map fixes cvar
 - Fix func_usable check on map fixes cvar

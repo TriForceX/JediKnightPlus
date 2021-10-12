@@ -187,6 +187,9 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.hatSombrero			= trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3");
 	cgs.jkmodMedia.hatGentleman			= trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3");
 	cgs.jkmodMedia.hatPirate			= trap_R_RegisterModel("models/items/jkmod_hats/pirate.md3");
+	cgs.jkmodMedia.hatProbe				= trap_R_RegisterModel("models/players/droids/probe_droid_head.md3");
+	cgs.jkmodMedia.hatDroid				= trap_R_RegisterModel("models/players/droids/r5d2_head.md3");
+	cgs.jkmodMedia.hatYsalamiri			= trap_R_RegisterModel("models/map_objects/mp/ysalimari.md3");
 
 	cgs.jkmodMedia.hitBox				= trap_R_RegisterShader("jkmod_hitbox");
 	cgs.jkmodMedia.hitBoxNoCull			= trap_R_RegisterShader("jkmod_hitbox_nocull");

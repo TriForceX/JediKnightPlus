@@ -82,6 +82,9 @@ typedef struct
 	qhandle_t	hatSombrero;
 	qhandle_t	hatGentleman;
 	qhandle_t	hatPirate;
+	qhandle_t	hatProbe;
+	qhandle_t	hatDroid;
+	qhandle_t	hatYsalamiri;
 	
 	qhandle_t	hitBox;
 	qhandle_t	hitBoxNoCull;

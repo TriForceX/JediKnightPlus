@@ -10,7 +10,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 [![version](https://img.shields.io/github/v/release/TriForceX/JediKnightPlus?include_prereleases&label=Current%20Version&color=brightgreen)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
-[![discord](https://img.shields.io/badge/Discord%20Chat-Join-5865F2.svg?logo=discord&style=flat&logoColor=white)](https://discord.gznetwork.com/jkplus)
+[![discord](https://img.shields.io/discord/539434081771847680.svg?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
 [![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](#license)
@@ -164,7 +164,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Server emotes menu for usage and binding
 - [x] Custom private duel end animation
 - [x] Toggle private duel glow
-- [x] Fixed force force rage recovery icon (Borderless)
+- [x] Fixed force rage recovery icon (Borderless)
 - [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
 - [x] Enable more than 20 BaseJK hidden player skins
