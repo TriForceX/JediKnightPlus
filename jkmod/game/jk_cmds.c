@@ -1000,6 +1000,11 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber in this dimension\n\""));
 		return;
 	}
+	else if (ent->client->ps.weapon != WP_SABER)
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"You can't enable it using this weapon\n\""));
+		return;
+	}
 	else
 	{
 		if (ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);

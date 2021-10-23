@@ -56,7 +56,7 @@ Dimension settings function
 */
 void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 {
-	if (jkcvar_altDimension.integer)
+	if (jkcvar_altDimension.integer && g_gametype.integer == GT_FFA)
 	{
 		int i = JKMod_DimensionIndex(dimension);
 
