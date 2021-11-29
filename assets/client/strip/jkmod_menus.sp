@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 142
+COUNT 144
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1279,4 +1279,22 @@ INDEX 141
    TEXT_LANGUAGE3 "Teleportieren auf die gespeicherte position."
    TEXT_LANGUAGE6 "Teleport to the saved position."
    TEXT_LANGUAGE8 "Teletransporta a la posición guardada."
+}
+INDEX 142
+{
+   REFERENCE CLIENT_IDENTIFYOBJ
+   TEXT_LANGUAGE1 "Identify objects:"
+   TEXT_LANGUAGE2 "Identifier objets:"
+   TEXT_LANGUAGE3 "Objekte identifizieren:"
+   TEXT_LANGUAGE6 "Identify objects:"
+   TEXT_LANGUAGE8 "Identificar objetos:"
+}
+INDEX 143
+{
+   REFERENCE CLIENT_IDENTIFYOBJ_DESC
+   TEXT_LANGUAGE1 "Identify map objects with the crosshair."
+   TEXT_LANGUAGE2 "Identifiez les objets de la carte avec le réticule."
+   TEXT_LANGUAGE3 "Identifizieren sie kartenobjekte mit dem fadenkreuz."
+   TEXT_LANGUAGE6 "Identify map objects with the crosshair."
+   TEXT_LANGUAGE8 "Identificar objetos del mapa con la retícula."
 }

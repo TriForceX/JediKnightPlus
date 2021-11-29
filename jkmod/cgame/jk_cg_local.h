@@ -21,6 +21,7 @@ Global definitions
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
 #define PLAYER_LABEL_DIST			512 // 1014
+#define USE_DISTANCE				64.0f
 
 /*
 =====================================================================
@@ -93,6 +94,8 @@ typedef struct
 	qhandle_t	dotYellow;
 	qhandle_t	clockBg;
 	qhandle_t	jetpackIcon;
+	qhandle_t	forceSwirl;
+	qhandle_t	useableHint;
 
 	sfxHandle_t	jetpackActiveSound;
 	sfxHandle_t	jetpackIdleSound;
@@ -155,6 +158,7 @@ extern vmCvar_t						jkcvar_cg_flagOpacity;
 extern vmCvar_t						jkcvar_cg_flagAlignment;
 extern vmCvar_t						jkcvar_cg_chatPlayerOpacity;
 extern vmCvar_t						jkcvar_cg_specialMoveCamera;
+extern vmCvar_t						jkcvar_cg_identifyObjects;
 
 extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;

@@ -47,6 +47,7 @@ vmCvar_t	jkcvar_cg_flagOpacity;
 vmCvar_t	jkcvar_cg_flagAlignment;
 vmCvar_t	jkcvar_cg_chatPlayerOpacity;
 vmCvar_t	jkcvar_cg_specialMoveCamera;
+vmCvar_t	jkcvar_cg_identifyObjects;
 
 vmCvar_t	jkcvar_cg_chatBox;
 vmCvar_t	jkcvar_cg_chatBoxTime;
@@ -84,6 +85,7 @@ static cvarTable_t	JKModCGcvarTable[] = {
 	{ &jkcvar_cg_flagAlignment,		"jk_cg_flagAlignment",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatPlayerOpacity,	"jk_cg_chatPlayerOpacity",	"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_specialMoveCamera,	"jk_cg_specialMoveCamera",	"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_identifyObjects,	"jk_cg_identifyObjects",	"1",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_chatBox,			"jk_cg_chatBox",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_chatBoxTime,		"jk_cg_chatBoxTime",		"10",	CVAR_ARCHIVE },
@@ -196,6 +198,8 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.dotRed				= trap_R_RegisterShader("gfx/misc/borgeyeflare");
 	cgs.jkmodMedia.dotGreen				= trap_R_RegisterShader("gfx/mp/dmgshader_shields");
 	cgs.jkmodMedia.dotYellow			= trap_R_RegisterShader("gfx/mp/dmgshader_shieldsandhealth");
+	cgs.jkmodMedia.forceSwirl			= trap_R_RegisterShader("gfx/hud/force_swirl");
+	cgs.jkmodMedia.useableHint			= trap_R_RegisterShader("gfx/hud/jkmod_useablehint");
 	cgs.jkmodMedia.clockBg				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg");
 	cgs.jkmodMedia.jetpackIcon			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_jetpack_icon");
 

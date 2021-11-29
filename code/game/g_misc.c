@@ -871,6 +871,7 @@ void SP_misc_shield_floor_unit( gentity_t *ent )
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 
@@ -912,6 +913,7 @@ void SP_misc_model_shield_power_converter( gentity_t *ent )
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 
@@ -1043,6 +1045,7 @@ void SP_misc_model_ammo_power_converter( gentity_t *ent )
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 
@@ -1154,6 +1157,7 @@ void SP_misc_model_health_power_converter( gentity_t *ent )
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.shouldtarget = qtrue;
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 

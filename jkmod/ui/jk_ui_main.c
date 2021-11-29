@@ -146,6 +146,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_customHats",			"0",		NULL },
 	{ "jk_cg_customAnims",			"0",		"1" },
 	{ "jk_cg_jetPackIdle",			"0",		NULL },
+	{ "jk_cg_identifyObjects",		"0",		"1" },
 };
 
 int JKModUIresetClientSize = ARRAY_LEN(JKModUIresetClient);

@@ -857,6 +857,7 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.generic1 |= GENERIC_USABLE | GENERIC_CONVERTER; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 	ent->classname = "jkmod_misc_power_converter";
@@ -969,6 +970,7 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 	if (ent->spawnflags & 128)
 	{
 		ent->r.svFlags |= SVF_PLAYER_USABLE;
+		ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 	}
 	
 	ent->use = BreakableBrushUse;

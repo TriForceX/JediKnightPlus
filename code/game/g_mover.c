@@ -741,6 +741,12 @@ void InitMover( gentity_t *ent ) {
 	if ( ent->s.pos.trDuration <= 0 ) {
 		ent->s.pos.trDuration = 1;
 	}
+
+	// Tr!Force: [IdentifyObjects] Check force swirl
+	if ( ent->spawnflags & SPF_BUTTON_FPUSHABLE )
+	{
+		ent->s.generic1 |= GENERIC_PUSHABLE;
+	}
 }
 
 
@@ -1347,6 +1353,7 @@ void SP_func_button( gentity_t *ent ) {
 	if ( (ent->spawnflags&SPF_BUTTON_USABLE) )
 	{
 		ent->r.svFlags |= SVF_PLAYER_USABLE;
+		ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 	}
 
 	InitMover( ent );
@@ -2105,6 +2112,7 @@ void func_usable_think( gentity_t *self )
 	if ( self->spawnflags & 8 )
 	{
 		self->r.svFlags |= SVF_PLAYER_USABLE;	//Replace the usable flag
+		self->s.generic1 |= GENERIC_USABLE;		// Tr!Force: [IdentifyObjects] Check usable hint
 		self->use = func_usable_use;
 		self->think = 0;
 	}
@@ -2131,6 +2139,7 @@ void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 	{//ALWAYS_ON
 		//Remove the ability to use the entity directly
 		self->r.svFlags &= ~SVF_PLAYER_USABLE;
+		self->s.generic1 &= ~GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 		//also remove ability to call any use func at all!
 		self->use = 0;
 		
@@ -2234,6 +2243,7 @@ void SP_func_usable( gentity_t *self )
 	*/
 
 	self->r.svFlags |= SVF_PLAYER_USABLE;
+	self->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
 
 	self->use = func_usable_use;
 

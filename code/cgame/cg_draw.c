@@ -2618,6 +2618,10 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	qhandle_t	hShader;
 	float		f;
 	float		x, y;
+	// Tr!Force: [IdentifyObjects] Check stuff
+	qboolean	jkmod_checkobject = jkcvar_cg_identifyObjects.integer && !(trap_Key_GetCatcher() & KEYCATCH_UI) && cg.snap->ps.stats[STAT_HEALTH] > 0;
+	qboolean	jkmod_forceswirl = qfalse;
+	qboolean	jkmod_useablehint = qfalse;
 
 	if ( !cg_drawCrosshair.integer ) 
 	{
@@ -2653,6 +2657,41 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		if ( cg.crosshairClientNum >= ENTITYNUM_WORLD )
 		{
 			trap_R_SetColor( NULL );
+		}
+		// Tr!Force: [IdentifyObjects] Check force swirl
+		else if (jkmod_checkobject && (cg.snap->ps.fd.forcePowersKnown & ((1 << FP_PUSH) | (1 << FP_PULL))) &&
+				((cg_entities[cg.crosshairClientNum].currentState.generic1 & GENERIC_PUSHABLE && 
+				  cg_entities[cg.crosshairClientNum].currentState.eType == ET_MOVER) || 
+				  cg_entities[cg.crosshairClientNum].currentState.eType == ET_PUSH_TRIGGER))
+		{
+			vec4_t	ecolor = {0,0,0,0};
+
+			ecolor[0] = 0.2f;
+			ecolor[1] = 0.5f;
+			ecolor[2] = 1.0f;
+			ecolor[3] = 1.0;
+
+			trap_R_SetColor( ecolor );
+
+			jkmod_forceswirl = qtrue;
+		}
+		// Tr!Force: [IdentifyObjects] Check usable hint
+		else if (jkmod_checkobject && (cg_entities[cg.crosshairClientNum].currentState.generic1 & GENERIC_USABLE))
+		{
+			if (cg_entities[cg.crosshairClientNum].currentState.generic1 & GENERIC_CONVERTER) {
+				vec4_t	ecolor = {0,0,0,0};
+
+				ecolor[0] = 1.0f;
+				ecolor[1] = 0.8f;
+				ecolor[2] = 0.3f;
+				ecolor[3] = 1.0;
+
+				trap_R_SetColor( ecolor );
+			} else {
+				trap_R_SetColor( NULL );
+			}
+
+			jkmod_useablehint = qtrue;
 		}
 		else if (chEntValid && (cg_entities[cg.crosshairClientNum].currentState.number < MAX_CLIENTS || cg_entities[cg.crosshairClientNum].currentState.shouldtarget))
 		{
@@ -2759,6 +2798,33 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	hShader = cgs.media.crosshairShader[ cg_drawCrosshair.integer % NUM_CROSSHAIRS ];
 	
 	CG_DrawPic(x + cg.refdef.x - 0.5f * w, y + cg.refdef.y - 0.5f * w, w, h, hShader);
+
+	// Tr!Force: [IdentifyObjects] Show force swirl
+	if (jkmod_forceswirl)
+	{
+		vec4_t	ecolor = { 0,0,0,0 };
+		ecolor[0] = ecolor[1] = ecolor[2] = (1 - ecolor[3]) * (sin(cg.time * 0.001f) * 0.08f + 0.35f); // don't draw full color
+		ecolor[3] = 1.0f;
+
+		w *= 2.0f;
+		h *= 2.0f;
+
+		trap_R_SetColor(ecolor);
+		CG_DrawPic(x + cg.refdef.x - 0.5f * w, y + cg.refdef.y - 0.5f * w, w, h, cgs.jkmodMedia.forceSwirl);
+	}
+
+	// Tr!Force: [IdentifyObjects] Show usable hint
+	if (jkmod_useablehint)
+	{
+		vec3_t	diff;
+		VectorSubtract(worldPoint, cg.predictedPlayerState.origin, diff);
+
+		if (VectorLength(diff) <= USE_DISTANCE)
+		{
+			trap_R_SetColor(NULL);
+			CG_DrawPic(22, (cgs.screenHeight / 2) - 32, 64, 64, cgs.jkmodMedia.useableHint);
+		}
+	}
 
 	trap_R_SetColor( NULL );
 

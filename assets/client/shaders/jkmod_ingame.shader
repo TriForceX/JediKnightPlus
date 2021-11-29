@@ -66,6 +66,18 @@ gfx/2d/net
         blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     }
 }
+gfx/hud/jkmod_useablehint
+{
+    {
+        map gfx/hud/jkmod_useablehint_circle
+        blendFunc GL_ONE GL_ONE
+        rgbGen wave sawtooth 0 1 0 0.75
+    }
+    {
+        map gfx/hud/jkmod_useablehint
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+    }
+}
 gfx/2d/numbers/zero
 {
     nopicmip

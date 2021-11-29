@@ -28,11 +28,11 @@ Global definitions
 #define JK_SPECTATOR_NOCLIP		( 1 << 4 )
 
 // Jetpack stuff
-#define JK_JETPACK_ACTIVE		( 1 << 28 )
-#define JK_JETPACK_FLAMING		( 1 << 29 )
+#define JK_JETPACK_ACTIVE		( 1 << 27 )
+#define JK_JETPACK_FLAMING		( 1 << 28 )
 
 // Other stuff
-#define JK_PASS_THROUGH			( 1 << 30 )
+#define JK_PASS_THROUGH			( 1 << 29 )
 
 // Utilities
 #define CVAR_NONE				(0x00000000u)
@@ -64,5 +64,15 @@ typedef enum
 	DIMENSION_MAX		= 7
 
 } jkmod_dimensions_t;
+
+// Generic map objects
+typedef enum
+{
+	/* List */
+	GENERIC_PUSHABLE	= ( 1 << 0 ),
+	GENERIC_USABLE		= ( 1 << 1 ),
+	GENERIC_CONVERTER	= ( 1 << 2 ),
+
+} jkmod_objects_t;
 
 #endif //__JK_PUBLIC_H__
