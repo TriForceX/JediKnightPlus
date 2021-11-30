@@ -132,15 +132,17 @@ Draw clock function
 */
 void JKMod_CG_DrawClock(void)
 {
-	qtime_t		serverTime;
-	char		*serverTimeType;
+	qtime_t		systemTime;
+	char		*systemTimeType;
+	int			systemTimeHour;
 	int			x, y;
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 
 	trap_R_SetColor(colorTable[CT_WHITE]); // Don't tint hud
-	trap_RealTime(&serverTime);
-	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
+	trap_RealTime(&systemTime);
+	systemTimeType = systemTime.tm_hour > 12 ? "pm" : "am";
+	systemTimeHour = systemTime.tm_hour > 12 && jkcvar_cg_drawClock.integer == 2 ? systemTime.tm_hour - 12 : systemTime.tm_hour;
 
 	x = cgs.screenWidth - 68;
 	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR ? 36 : 123);
@@ -149,19 +151,12 @@ void JKMod_CG_DrawClock(void)
 
 	CG_DrawPic(x, y, 64, 32, cgs.jkmodMedia.clockBg);
 
-	CG_Text_Paint(x + 8, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_hour), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
-	CG_Text_Paint(x + 29, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_min), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
-	CG_Text_Paint(x + 47, y + 13.5f, 0.4f, colorTable[CT_HUD_GREEN], va("%s", serverTimeType), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
+	CG_Text_Paint(x + 8, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", systemTimeHour), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
+	CG_Text_Paint(x + 29, y + 4, 0.85f, colorTable[CT_HUD_GREEN], va("%02i", systemTime.tm_min), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
+	CG_Text_Paint(x + 47, y + (jkcvar_cg_drawClock.integer == 2 ? 8.5f : 13.5f), 0.4f, colorTable[CT_HUD_GREEN], va("%02i", systemTime.tm_sec), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
 
-	if (jkcvar_cg_drawClock.integer == 2) 
-	{
-		if((cg.time >> 9) & 1) CG_Text_Paint(x + 24, y + 6, 0.7f, colorTable[CT_HUD_GREEN], ":", 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
-		CG_Text_Paint(x + 47, y + 8.5f, 0.4f, colorTable[CT_HUD_GREEN], va("%02i", serverTime.tm_sec), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
-	}
-	else 
-	{
-		CG_Text_Paint(x + 24, y + 6, 0.7f, colorTable[CT_HUD_GREEN], ":", 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
-	}
+	if (jkcvar_cg_drawClock.integer == 2) CG_Text_Paint(x + 47, y + 13.5f, 0.4f, colorTable[CT_HUD_GREEN], va("%s", systemTimeType), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
+	if ((cg.time >> 9) & 1) CG_Text_Paint(x + 24, y + 6, 0.7f, colorTable[CT_HUD_GREEN], ":", 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
 }
 
 /*

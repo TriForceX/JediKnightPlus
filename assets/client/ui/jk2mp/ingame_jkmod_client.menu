@@ -609,8 +609,8 @@
 			cvarFloatList
 			{
 				@MENUS0_OFF     0
-				"HH:mm:ss"      2
-				"HH:mm"       	1
+				"12 hr"      	2
+				"24 hr"       	1
 			}
 			rect				220 41 300 20
 			textalign			ITEM_ALIGN_RIGHT
