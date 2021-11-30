@@ -1794,9 +1794,14 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
   Text_Paint(rect->x, rect->y, scale, finalColor, text, 0, 0, textStyle, iMenuFont);
 }
 
-static void UI_DrawEffects(rectDef_t *rect, float scale, vec4_t color) 
+static void UI_DrawEffects(rectDef_t *rect, float scale, vec4_t color, qboolean dualsaber) 
 {
-	UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiSaberColorShaders[uiInfo.effectsColor]);
+	// Tr!Force: [DualSaber] Blade color menu
+	if (dualsaber) {
+		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiSaberColorShaders[uiInfo.effectsColor2]);
+	} else {
+		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiSaberColorShaders[uiInfo.effectsColor]);
+	}
 }
 
 static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboolean net) {
@@ -2048,10 +2053,12 @@ void UpdateForceStatus()
 		case TEAM_RED:
 			uiSkinColor = SKINCOLOR_RED;
 			uiInfo.effectsColor = SABER_RED;
+			uiInfo.effectsColor2 = SABER_RED; // Tr!Force: [DualSaber] Blade color menu
 			break;
 		case TEAM_BLUE:
 			uiSkinColor = SKINCOLOR_BLUE;
 			uiInfo.effectsColor = SABER_BLUE;
+			uiInfo.effectsColor2 = SABER_BLUE; // Tr!Force: [DualSaber] Blade color menu
 			break;
 		default:
 			//uiSkinColor = SKINCOLOR_DEFAULT;
@@ -3004,7 +3011,10 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
 		UI_DrawForceStars(&rect, scale, color, textStyle, findex, drawRank, 0, NUM_FORCE_POWER_LEVELS-1);
 		break;
     case UI_EFFECTS:
-      UI_DrawEffects(&rect, scale, color);
+      UI_DrawEffects(&rect, scale, color, qfalse);
+      break;
+	case UI_EFFECTS_2:
+      UI_DrawEffects(&rect, scale, color, qtrue);
       break;
     case UI_PLAYERMODEL:
       //UI_DrawPlayerModel(&rect);
@@ -3322,7 +3332,7 @@ static qboolean UI_Handicap_HandleKey(int flags, float *special, int key) {
   return qfalse;
 }
 
-static qboolean UI_Effects_HandleKey(int flags, float *special, int key) {
+static qboolean UI_Effects_HandleKey(int flags, float *special, int key, qboolean dualsaber) {
 	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER) {
 		
 		if ( !UI_TrueJediEnabled() )
@@ -3335,19 +3345,39 @@ static qboolean UI_Effects_HandleKey(int flags, float *special, int key) {
 			}
 		}
 				
-		if (key == A_MOUSE2) {
-			uiInfo.effectsColor--;
-		} else {
-			uiInfo.effectsColor++;
-		}
+		// Tr!Force: [DualSaber] Blade color menu
+		if (dualsaber)
+		{
+			if (key == A_MOUSE2) {
+				uiInfo.effectsColor2--;
+			} else {
+				uiInfo.effectsColor2++;
+			}
 		
-		if( uiInfo.effectsColor > 5 ) {
-			uiInfo.effectsColor = 0;
-		} else if (uiInfo.effectsColor < 0) {
-			uiInfo.effectsColor = 5;
-		}
+			if( uiInfo.effectsColor2 > 5 ) {
+				uiInfo.effectsColor2 = 0;
+			} else if (uiInfo.effectsColor2 < 0) {
+				uiInfo.effectsColor2 = 5;
+			}
 		
-		trap_Cvar_SetValue( "color1", /*uitogamecode[uiInfo.effectsColor]*/uiInfo.effectsColor );
+			trap_Cvar_SetValue( "color2", /*uitogamecode[uiInfo.effectsColor]*/uiInfo.effectsColor2 );
+		}
+		else
+		{
+			if (key == A_MOUSE2) {
+				uiInfo.effectsColor--;
+			} else {
+				uiInfo.effectsColor++;
+			}
+		
+			if( uiInfo.effectsColor > 5 ) {
+				uiInfo.effectsColor = 0;
+			} else if (uiInfo.effectsColor < 0) {
+				uiInfo.effectsColor = 5;
+			}
+		
+			trap_Cvar_SetValue( "color1", /*uitogamecode[uiInfo.effectsColor]*/uiInfo.effectsColor );
+		}
 		return qtrue;
 	}
 	return qfalse;
@@ -3807,7 +3837,10 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
 		return UI_ForcePowerRank_HandleKey(flags, special, key, uiForcePowersRank[findex], 0, NUM_FORCE_POWER_LEVELS-1, ownerDraw);
 		break;
     case UI_EFFECTS:
-      return UI_Effects_HandleKey(flags, special, key);
+      return UI_Effects_HandleKey(flags, special, key, qfalse);
+      break;
+	case UI_EFFECTS_2:
+      return UI_Effects_HandleKey(flags, special, key, qtrue);
       break;
     case UI_CLANNAME:
       return UI_ClanName_HandleKey(flags, special, key);
@@ -7451,6 +7484,7 @@ void _UI_Init( qboolean inGameLoad ) {
 
 	// sets defaults for ui temp cvars
 	uiInfo.effectsColor = /*gamecodetoui[*/(int)trap_Cvar_VariableValue("color1");//-1];
+	uiInfo.effectsColor2 = /*gamecodetoui[*/(int)trap_Cvar_VariableValue("color2");//-1]; // Tr!Force: [DualSaber] Blade color menu
 	uiInfo.currentCrosshair = (int)trap_Cvar_VariableValue("cg_drawCrosshair");
 	trap_Cvar_Set("ui_mousePitch", (trap_Cvar_VariableValue("m_pitch") >= 0) ? "0" : "1");
 

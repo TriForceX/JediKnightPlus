@@ -875,6 +875,7 @@ typedef struct {
 	int				forceConfigLightIndexBegin; //mark the index number light configs start at
 
 	int effectsColor;
+	int effectsColor2; // Tr!Force: [DualSaber] Blade color menu
 
 	qboolean inGameLoad;
 

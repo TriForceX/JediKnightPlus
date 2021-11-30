@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.16.0
+- Fix dimension settings conflict with jedi master
+- Added identify map objects option
+- Added 12 and 24 hour clock option
+- Added dual saber menu option
+
 ## 0.15.4
 - Added dual saber command and cvar
 - Updated vote display alignment & dual saber running anim

@@ -1921,6 +1921,126 @@
 				hide			keybindstatus
 			}
 		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_DUALSABER
+			descText			@JKMENUS_CLIENT_DUALSABER_DESC
+			cvar				"dualsaber"
+			rect				220 181 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight8
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight8
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_TEXT
+			text				@JKMENUS_CLIENT_DUALSABER_COLOR
+			rect				220 201 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+		}
+		
+		// Dual saber color
+		itemDef 
+		{
+			name				effectfield
+			group				clientBindsControls
+			style				0	
+			ownerdraw			UI_EFFECTS_2
+			rect				375 205 100 13
+			textalign			ITEM_ALIGN_LEFT		
+			textalignx			0
+			textaligny			0
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			forecolor			1 1 1 1
+			border				0
+			bordercolor			0 0 0 0
+			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			hideCvar 
+			{ 
+				"5" ; 
+				"6" ; 
+				"7" ; 
+				"8" ;
+			}
+			visible				1     
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+			mouseEnter 
+			{ 
+				setitemcolor effectentry forecolor 1 1 1 1
+			} 
+			mouseExit 
+			{ 
+				setitemcolor effectentry forecolor 0.65 0.65 1 1
+			}
+		}
+		
+		// Dual saber color
+		itemDef 
+		{
+			name				effectfield2
+			group				clientBindsControls
+			style				0	
+			ownerdraw			UI_EFFECTS_2
+			rect				375 205 100 13
+			textalign			ITEM_ALIGN_LEFT		
+			textalignx			0
+			textaligny			0
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			forecolor			1 1 1 1
+			border				0
+			bordercolor			0 0 0 0
+			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			showCvar 
+			{ 
+				"5" ; 
+				"6" ; 
+				"7" ; 
+				"8" ;
+			}
+			visible				1 
+			decoration
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+		}
 
 		//---------------------------------------------
 		//	OTHERS OPTIONS

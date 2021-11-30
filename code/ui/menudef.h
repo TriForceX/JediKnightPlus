@@ -305,6 +305,7 @@
 
 //extra, for patch
 #define UI_JEDI_NONJEDI 289
+#define UI_EFFECTS_2 290 // Tr!Force: [DualSaber] Blade color menu
 
 #define VOICECHAT_GETFLAG			"getflag"				// command someone to get the flag
 #define VOICECHAT_OFFENSE			"offense"				// command someone to go on offense

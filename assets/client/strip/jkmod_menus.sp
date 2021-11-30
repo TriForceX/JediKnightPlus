@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 144
+COUNT 147
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1298,3 +1298,31 @@ INDEX 143
    TEXT_LANGUAGE6 "Identify map objects with the crosshair."
    TEXT_LANGUAGE8 "Identificar objetos del mapa con la retícula."
 }
+INDEX 144
+{
+   REFERENCE CLIENT_DUALSABER
+   TEXT_LANGUAGE1 "Dual lightsaber:"
+   TEXT_LANGUAGE2 "Sabre laser double:"
+   TEXT_LANGUAGE3 "Doppellichtschwert:"
+   TEXT_LANGUAGE6 "Dual lightsaber:"
+   TEXT_LANGUAGE8 "Sáble láser doble:"
+}
+INDEX 145
+{
+   REFERENCE CLIENT_DUALSABER_COLOR
+   TEXT_LANGUAGE1 "2nd lightsaber color:"
+   TEXT_LANGUAGE2 "Couleur 2e sabre laser:"
+   TEXT_LANGUAGE3 "2. Lichtschwertfarbe:"
+   TEXT_LANGUAGE6 "2nd lightsaber color:"
+   TEXT_LANGUAGE8 "Color 2do sáble láser:"
+}
+INDEX 146
+{
+   REFERENCE CLIENT_DUALSABER_DESC
+   TEXT_LANGUAGE1 "Enables dual lightsaber."
+   TEXT_LANGUAGE2 "Activer le double sabre laser."
+   TEXT_LANGUAGE3 "Aktiviert doppellichtschwert."
+   TEXT_LANGUAGE6 "Enables dual lightsaber."
+   TEXT_LANGUAGE8 "Habilita el sáble láser doble."
+}
+
