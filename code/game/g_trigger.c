@@ -121,7 +121,7 @@ void multi_trigger( gentity_t *ent, gentity_t *activator ) {
 		// Tr!Force: [Dimensions] Ugly workaround because dont know why some defrag maps has "wait" "-1" on start timers
 		if (ent->target && (jkcvar_altDimension.integer & DIMENSION_RACE))
 		{
-			gentity_t	*target = NULL;;
+			gentity_t	*target = NULL;
 
 			target = G_PickTarget(ent->target);
 

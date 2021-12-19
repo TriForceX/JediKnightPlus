@@ -142,7 +142,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					JKMod_CVU_gamePlay,			CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					NULL,						CVAR_ARCHIVE | CVAR_LATCH,			0, qfalse },
+	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					JKMod_CVU_randomBegin,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					JKMod_CVU_serverNews,		CVAR_ARCHIVE,						0, qtrue },
@@ -181,7 +181,7 @@ void JKMod_G_RegisterCvars(void)
 	jkmod_cvar_table_t	*cv;
 
 	// Register all the cvars
-	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
+	for (i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
 	{
 		// Cvar latch temp unlock toggle
 		if (cv->cvarFlags & (CVAR_LATCH | CVAR_TEMP) && jkcvar_gameTypeConfig.integer) 
@@ -193,7 +193,9 @@ void JKMod_G_RegisterCvars(void)
 
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 
-		if(cv->vmCvar)
+		if (cv->update) cv->update();
+
+		if (cv->vmCvar)
 		{
 			cv->modificationCount = cv->vmCvar->modificationCount;
 		}
@@ -217,9 +219,9 @@ void JKMod_G_UpdateCvars(void)
 	jkmod_cvar_table_t	*cv;
 
 	// Update all the cvars
-	for(i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
+	for (i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
 	{
-		if(cv->vmCvar)
+		if (cv->vmCvar)
 		{
 			trap_Cvar_Update(cv->vmCvar);
 
@@ -227,14 +229,12 @@ void JKMod_G_UpdateCvars(void)
 			{
 				cv->modificationCount = cv->vmCvar->modificationCount;
 
-				// Normal tracking
-				if(cv->trackChange && !level.jkmodLocals.cvarToggleMod)
+				if (cv->update) cv->update();
+
+				if (cv->trackChange && !level.jkmodLocals.cvarToggleMod)
 				{
 					trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", cv->cvarName, cv->vmCvar->string));
 				}
-
-				// Update functions
-				if (cv->update) cv->update();
 			}
 		}
 	}
@@ -346,6 +346,21 @@ void JKMod_CVU_teleportChat(void)
 void JKMod_CVU_gamePlay(void)
 {
 	JKMod_SetGamePlay(jkcvar_gamePlay.string);
+}
+
+// Update alt dimension cvar
+void JKMod_CVU_altDimension(void)
+{
+	gentity_t *ent;
+	int i;
+
+	for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+	{
+		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+		{
+			JKMod_DimensionSet(ent, DIMENSION_FREE);
+		}
+	}
 }
 
 // Update player movement cvar

@@ -56,7 +56,7 @@ Dimension settings function
 */
 void JKMod_DimensionSettings(gentity_t *ent, unsigned dimension)
 {
-	if (jkcvar_altDimension.integer && g_gametype.integer == GT_FFA)
+	if (g_gametype.integer == GT_FFA)
 	{
 		int i = JKMod_DimensionIndex(dimension);
 
@@ -240,7 +240,7 @@ Dimension get free number
 */
 unsigned JKMod_DimensionGetFree(void)
 {
-	if (mvapi && jkcvar_altDimension.integer)
+	if (mvapi)
 	{
 		unsigned dimension;
 		qboolean free;
@@ -278,7 +278,7 @@ Dimension snapshot ignore apply
 */
 void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 {
-	if (mvapi && jkcvar_altDimension.integer)
+	if (mvapi)
 	{
 		int	i;
 		int	clientNum = ent->s.number;
@@ -336,7 +336,7 @@ Dimension check collide
 */
 qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 {
-	if (mvapi && jkcvar_altDimension.integer)
+	if (mvapi)
 	{
 		int owner1 = g_entities[ent1->s.number].jkmodEnt.dimensionOwner;
 		int owner2 = g_entities[ent2->s.number].jkmodEnt.dimensionOwner;
@@ -366,7 +366,7 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 {
 	trap_Trace(results, start, mins, maxs, end, passEntityNum, contentmask);
 
-	if (mvapi && jkcvar_altDimension.integer)
+	if (mvapi)
 	{
 		if (results->entityNum < ENTITYNUM_MAX_NORMAL) 
 		{
@@ -403,7 +403,7 @@ Dimensions check entities in box
 */
 int JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount, int entityNum)
 {
-	if (mvapi && jkcvar_altDimension.integer)
+	if (mvapi)
 	{
 		gentity_t	*passEnt = g_entities + entityNum;
 		int			fullCount;
