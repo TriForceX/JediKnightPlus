@@ -56,6 +56,7 @@ vmCvar_t	jkcvar_cg_chatBoxHistory;
 
 vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
+vmCvar_t	jkcvar_cg_customEffects;
 vmCvar_t	jkcvar_cg_jetPackIdle;
 
 vmCvar_t	jkcvar_cg_test1;
@@ -94,6 +95,7 @@ static cvarTable_t	JKModCGcvarTable[] = {
 
 	{ &jkcvar_cg_customHats,		"jk_cg_customHats",			"0",	CVAR_ARCHIVE | CVAR_USERINFO },
 	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_customEffects,		"jk_cg_customEffects",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_jetPackIdle,		"jk_cg_jetPackIdle",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },

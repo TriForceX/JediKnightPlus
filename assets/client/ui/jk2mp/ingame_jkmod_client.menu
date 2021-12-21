@@ -2084,9 +2084,9 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_JETPACKIDLE
-			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
-			cvar				"jk_cg_jetPackIdle"
+			text				@JKMENUS_CLIENT_CUSTOMEFFECTS
+			descText			@JKMENUS_CLIENT_CUSTOMEFFECTS_DESC
+			cvar				"jk_cg_customEffects"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -2116,19 +2116,13 @@
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_SHADOWS
-			descText			@JKMENUS_CLIENT_SHADOWS_DESC
-			cvar				"cg_shadows"
-			cvarFloatList
-			{
-				"2D"  			1
-				"3D"  			3
-				@MENUS0_OFF		0
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_JETPACKIDLE
+			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
+			cvar				"jk_cg_jetPackIdle"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
+			textalignx			151 
 			textaligny			-2
 			font				2
 			textscale			0.8
@@ -2140,15 +2134,15 @@
 			}
 
 			mouseEnter 
-			{ 
+			{
 				show			highlight4
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight4
-			} 
+				hide			keybindstatus
+			}
 		}
 		
 		itemDef 
@@ -2156,13 +2150,14 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_CHATBOXHISTORY
-			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
-			cvar				"jk_cg_chatBoxHistory"
+			text				@JKMENUS_CLIENT_SHADOWS
+			descText			@JKMENUS_CLIENT_SHADOWS_DESC
+			cvar				"cg_shadows"
 			cvarFloatList
 			{
-				@MENUS0_YES  		2
-				@MENUS0_NO			1
+				"2D"  			1
+				"3D"  			3
+				@MENUS0_OFF		0
 			}
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -2194,13 +2189,13 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_IDENTIFYOBJ
-			descText			@JKMENUS_CLIENT_IDENTIFYOBJ_DESC
-			cvar				"jk_cg_identifyObjects"
+			text				@JKMENUS_CLIENT_CHATBOXHISTORY
+			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
+			cvar				"jk_cg_chatBoxHistory"
 			cvarFloatList
 			{
-				@MENUS0_YES  		1
-				@MENUS0_NO			0
+				@MENUS0_YES  		2
+				@MENUS0_NO			1
 			}
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -2224,6 +2219,44 @@
 			{ 
 				hide			keybindstatus
 				hide			highlight6
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_IDENTIFYOBJ
+			descText			@JKMENUS_CLIENT_IDENTIFYOBJ_DESC
+			cvar				"jk_cg_identifyObjects"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
+			}
+			rect				220 161 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight7
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			keybindstatus
+				hide			highlight7
 			} 
 		}
 

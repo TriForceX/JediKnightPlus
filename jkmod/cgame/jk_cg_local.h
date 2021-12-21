@@ -167,6 +167,7 @@ extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
 extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
+extern vmCvar_t						jkcvar_cg_customEffects;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
 extern vmCvar_t						jkcvar_cg_test1;
@@ -217,5 +218,6 @@ void		JKMod_CG_DuelEnd(qboolean winner);
 qboolean	JKMod_CG_EmoteUI(void);
 void		JKMod_CG_EmoteCamera(void);
 float		JKMod_CG_GroundDistance(void);
+void		JKMod_CG_ForcePushBodyBlur(centity_t* cent);
 
 #endif // __JK_CG_LOCAL_H__

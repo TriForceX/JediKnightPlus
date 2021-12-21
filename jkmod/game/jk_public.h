@@ -26,12 +26,14 @@ Global definitions
 #define JK_DISRUPTOR_WALK		( 1 << 2 )
 #define JK_USE_STAND			( 1 << 3 )
 #define JK_SPECTATOR_NOCLIP		( 1 << 4 )
+#define JK_RESIST_PUSH			( 1 << 5 )
 
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 27 )
 #define JK_JETPACK_FLAMING		( 1 << 28 )
 
 // Other stuff
+#define JK_BODY_PUSH			( 1 << 18 )
 #define JK_PASS_THROUGH			( 1 << 29 )
 
 // Utilities
@@ -45,6 +47,9 @@ Global definitions
 Player / world information
 =====================================================================
 */
+
+// Given a boltmatrix, return in vec a normalised vector for the axis requested in flags
+void JKMod_BG_GiveMeVectorFromMatrix(mdxaBone_t *boltMatrix, int flags, vec3_t vec);
 
 // Dimension options
 typedef enum

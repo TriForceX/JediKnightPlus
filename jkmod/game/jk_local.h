@@ -195,6 +195,7 @@ typedef struct
 	int				voteWaitTime;		// Player callvote wait time
 	int				teleportChatTime;	// Teleport chat wait time
 	qboolean		teleportChatUsed;	// Teleport chat check used
+	int				pushEffectTime;		// Force push effect time
 	
 } jkmod_client_t;
 

@@ -320,6 +320,17 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		ent->client->ps.forceHandExtendTime = 0;
 	}
 
+	// Fullbody push effect
+	if (ent->client->jkmodClient.pushEffectTime > level.time)
+	{
+		ent->client->ps.eFlags |= JK_BODY_PUSH;
+	}
+	else if (ent->client->jkmodClient.pushEffectTime)
+	{
+		ent->client->jkmodClient.pushEffectTime = 0;
+		ent->client->ps.eFlags &= ~JK_BODY_PUSH;
+	}
+
 	// Launch original client think real function
 	BaseJK2_ClientThink_real(ent);
 }

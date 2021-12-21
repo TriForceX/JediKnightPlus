@@ -25,6 +25,12 @@ void JKMod_CG_Player(centity_t *cent)
 		JKMod_CG_AddHitBox(cent);
 	}
 
+	// Fullbody push effect
+	if (jkcvar_cg_customEffects.integer)
+	{
+		JKMod_CG_ForcePushBodyBlur(cent);
+	}
+
 	// Render bacta model
 	if (jkcvar_cg_drawBactaModel.integer)
 	{
@@ -473,4 +479,60 @@ float JKMod_CG_GroundDistance(void)
 	VectorSubtract(cg.predictedPlayerState.origin, tr.endpos, down);
 
 	return VectorLength(down) - 24.0f;
+}
+
+/*
+=====================================================================
+Force push body effect
+=====================================================================
+*/
+void JKMod_CG_ForcePushBodyBlur(centity_t *cent)
+{
+	vec3_t fxOrg;
+	mdxaBone_t	boltMatrix;
+	int bolt;
+	int i;
+	const char *cg_pushBoneNames[] =
+	{
+		"cranium",
+		"lower_lumbar",
+		"rhand",
+		"lhand",
+		"ltibia",
+		"rtibia",
+		"lradius",
+		"rradius",
+		NULL
+	};
+
+	if (!(cent->currentState.eFlags & JK_BODY_PUSH)) return;
+
+	if (cg.snap &&
+		CG_IsMindTricked(cent->currentState.trickedentindex,
+		cent->currentState.trickedentindex2,
+		cent->currentState.trickedentindex3,
+		cent->currentState.trickedentindex4,
+		cg.snap->ps.clientNum))
+	{
+		return; //this entity is mind-tricking the current client, so don't render it
+	}
+
+	assert(cent->ghoul2);
+
+	for (i = 0; cg_pushBoneNames[i]; i++)
+	{ //go through all the bones we want to put a blur effect on
+		bolt = trap_G2API_AddBolt(cent->ghoul2, 0, cg_pushBoneNames[i]);
+
+		if (bolt == -1)
+		{
+			assert(!"You've got an invalid bone/bolt name in cg_pushBoneNames");
+			continue;
+		}
+
+		trap_G2API_GetBoltMatrix(cent->ghoul2, 0, bolt, &boltMatrix, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
+		JKMod_BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, fxOrg);
+
+		//standard effect, don't be refractive (for now)
+		CG_ForcePushBlur(fxOrg, NULL);
+	}
 }

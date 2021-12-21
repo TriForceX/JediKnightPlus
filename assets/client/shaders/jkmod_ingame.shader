@@ -225,3 +225,21 @@ models/map_objects/mp/flag2
         rgbGen lightingDiffuse
     }
 }
+gfx/2d/jkmod_jsense
+{
+	nomipmaps
+	cull	twosided
+    {
+        map gfx/2d/jkmod_jedisns
+        blendFunc GL_ONE GL_ONE
+        glow
+        tcMod rotate 5
+        tcMod stretch sin 1.4 0.05 1 0.1
+    }
+    {
+        map gfx/2d/jkmod_jedisns1
+        blendFunc GL_ONE_MINUS_DST_COLOR GL_ONE
+        tcMod stretch sin 1.4 0.07 1 0.1
+        tcMod rotate 2
+    }
+}

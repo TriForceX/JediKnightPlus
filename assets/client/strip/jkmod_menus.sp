@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 147
+COUNT 149
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -898,7 +898,7 @@ INDEX 99
    REFERENCE CLIENT_CUSTOMANIMS_DESC
    TEXT_LANGUAGE1 "Custom animations for player models."
    TEXT_LANGUAGE2 "Animations personnalisées pour les modèles de joueurs."
-   TEXT_LANGUAGE3 "Benutzerdefinierte Animationen für Spielermodelle."
+   TEXT_LANGUAGE3 "Benutzerdefinierte animationen für spielermodelle."
    TEXT_LANGUAGE6 "Custom animations for player models."
    TEXT_LANGUAGE8 "Animaciones personalizadas para modelos de jugadores."
 }
@@ -1325,4 +1325,21 @@ INDEX 146
    TEXT_LANGUAGE6 "Enables dual lightsaber."
    TEXT_LANGUAGE8 "Habilita el sáble láser doble."
 }
-
+INDEX 147
+{
+   REFERENCE CLIENT_CUSTOMEFFECTS
+   TEXT_LANGUAGE1 "Custom effects:"
+   TEXT_LANGUAGE2 "Effets personnalisés:"
+   TEXT_LANGUAGE3 "Zusätzliche effekte :"
+   TEXT_LANGUAGE6 "Custom effects:"
+   TEXT_LANGUAGE8 "Efectos personalizados:"
+}
+INDEX 148
+{
+   REFERENCE CLIENT_CUSTOMEFFECTS_DESC
+   TEXT_LANGUAGE1 "Custom effects for player models."
+   TEXT_LANGUAGE2 "Effets personnalisés pour les modèles de joueurs."
+   TEXT_LANGUAGE3 "Benutzerdefinierte effekte für spielermodelle."
+   TEXT_LANGUAGE6 "Custom animations for player models."
+   TEXT_LANGUAGE8 "Efectos personalizados para modelos de jugadores."
+}

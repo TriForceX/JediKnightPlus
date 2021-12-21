@@ -4469,6 +4469,12 @@ static void CG_Draw2D( void ) {
 
 			CG_SaberClashFlare();
 
+			// Tr!Force: [CustomEffects] Force seeing overlay
+			if (jkcvar_cg_customEffects.integer && (cg.snap->ps.fd.forcePowersActive & (1 << FP_SEE)))
+			{
+				CG_DrawPic(0, 0, cgs.screenWidth, cgs.screenHeight, trap_R_RegisterShader("gfx/2d/jkmod_jsense"));
+			}
+
 			if (cg_drawStatus.integer)
 			{
 				CG_DrawStats();

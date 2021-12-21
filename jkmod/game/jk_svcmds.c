@@ -163,6 +163,7 @@ static jkmod_bit_info_t togglePlayerMovement[] =
 	"DISRUPTOR ZOOM WALK",
 	"BUTTON USE STAND",
 	"SPECTATOR NO-CLIP",
+	"RESIST PUSH ANIM",
 };
 
 // Options for jk_voteControl cvar
@@ -202,6 +203,7 @@ static void JKMod_svCmd_toggleMod(void)
 	if (trap_Argc() < 2)
 	{
 		G_Printf("Usage: togglemod <cvar> <option>\n");
+		G_Printf("Cvars: ^3jk_playerMovement^7, ^3jk_voteControl^7, ^3bot_forGimmick\n");
 	}
 	else
 	{

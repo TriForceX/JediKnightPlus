@@ -150,6 +150,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_SPECTATOR_NOCLIP;
 
+	// Resist Push/Pull animation
+	if (jkcvar_playerMovement.integer & JK_RESIST_PUSH) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_RESIST_PUSH;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_RESIST_PUSH;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 
