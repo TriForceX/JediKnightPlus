@@ -1748,6 +1748,12 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 	if ( client->ps.stats[STAT_HEALTH] <= 0 ) {
 		// wait for the attack button to be pressed
 		if ( level.time > client->respawnTime && !gDoSlowMoDuel ) {
+			// Tr!Force: [BotsAI] Instant respawn while static
+			if ( bot_forgimmick.integer && (ent->r.svFlags & SVF_BOT) ) {
+				respawn( ent );
+				return;
+			}
+
 			// forcerespawn is to prevent users from waiting out powerups
 			if ( g_forcerespawn.integer > 0 && 
 				( level.time - client->respawnTime ) > g_forcerespawn.integer * 1000 ) {

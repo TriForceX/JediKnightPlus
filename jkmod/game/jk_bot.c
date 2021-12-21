@@ -36,6 +36,7 @@ extern bot_state_t *botstates[MAX_CLIENTS];
 #define JK_BOT_JUMP			( 1 << 4 )
 #define JK_BOT_TAUNT		( 1 << 5 )
 #define JK_BOT_TALK			( 1 << 6 )
+#define JK_BOT_GOD			( 1 << 7 )
 
 /*
 =====================================================================
@@ -101,8 +102,16 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 		if (bot_forgimmick.integer & JK_BOT_JUMP) trap_EA_Jump(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_TALK) trap_EA_Talk(bs->client);
+		if (bot_forgimmick.integer & JK_BOT_GOD) {
+			g_entities[bs->client].flags |= FL_GODMODE;
+		}else {
+			g_entities[bs->client].flags &= ~FL_GODMODE;
+		}
 		return;
 	}
+
+	// Check god mode
+	if (g_entities[bs->client].flags & FL_GODMODE) g_entities[bs->client].flags &= ~FL_GODMODE;
 
 	// Add talk balloon
 	if (bs->doChat && bs->chatTime > level.time) {

@@ -350,6 +350,8 @@ extern	vmCvar_t					jkcvar_dualSaber;
 
 extern	vmCvar_t					jkcvar_test1;
 extern	vmCvar_t					jkcvar_test2;
+
+extern	vmCvar_t					bot_forgimmick;
 extern	vmCvar_t					developer;
 
 /*

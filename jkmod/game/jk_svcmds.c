@@ -192,6 +192,7 @@ static jkmod_bit_info_t toggleBotForGimmick[] =
 	"JUMP",
 	"TAUNT",
 	"TALK",
+	"GOD",
 };
 
 // Toggle mod command
