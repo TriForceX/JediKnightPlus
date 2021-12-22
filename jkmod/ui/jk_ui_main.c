@@ -117,8 +117,9 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "cg_hudFiles",				"0",		"0" },
 
 	// visuals cvars				default		recommended
+	{ "jk_cg_privateDuel",			"0",		"0" },
 	{ "jk_cg_duelGlow",				"1",		"1" },
-	{ "jk_cg_duelEndOrbit",			"1.5",		"1.5" },
+	{ "jk_cg_duelEndOrbit",			"3",		"3" },
 	{ "jk_cg_duelEndDelay",			"1",		"1" },
 	{ "jk_cg_drawHitBox",			"0",		NULL },
 	{ "jk_cg_drawBactaModel",		"0",		"1" },
@@ -145,6 +146,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	// others cvars					default		recommended
 	{ "jk_cg_customHats",			"0",		NULL },
 	{ "jk_cg_customAnims",			"0",		"1" },
+	{ "jk_cg_customEffects",		"0",		"1" },
 	{ "jk_cg_jetPackIdle",			"0",		NULL },
 	{ "jk_cg_identifyObjects",		"0",		"1" },
 };

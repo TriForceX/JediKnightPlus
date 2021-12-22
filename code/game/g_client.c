@@ -1168,6 +1168,14 @@ void ClientUserinfoChanged( int clientNum ) {
 		client->pers.jkmodPers.clientPlugin = qfalse;
 	}
 
+	// Tr!Force: [Duel] Private duel check
+	s = Info_ValueForKey( userinfo, "jk_cg_privateDuel" );
+	if ( !atoi( s ) ) {
+		client->pers.jkmodPers.privateDuel = qfalse;
+	} else {
+		client->pers.jkmodPers.privateDuel = qtrue;
+	}
+
 	// check the item prediction
 	s = Info_ValueForKey( userinfo, "cg_predictItems" );
 	if ( !atoi( s ) ) {

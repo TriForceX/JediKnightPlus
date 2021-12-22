@@ -1354,6 +1354,13 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Tr!Force: [Duels] Update private duel cvar from server cmd
+	if ( !strcmp( cmd, "jk_cg_privateDuel" ) )
+	{
+		trap_Cvar_Set("jk_cg_privateDuel", CG_Argv(1));
+		return;
+	}
+
 	CG_Printf( "Unknown client game command: %s\n", cmd );
 }
 

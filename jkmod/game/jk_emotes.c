@@ -186,7 +186,7 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 	}
 
 	// Don't allow when you are moving
-	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special)
+	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special && !(ent->client->ps.duelTime >= level.time))
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\n\"");
 		return;

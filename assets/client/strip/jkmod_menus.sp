@@ -410,11 +410,11 @@ INDEX 44
 INDEX 45
 {
    REFERENCE CLIENT_PRIVATEDUEL_DESC
-   TEXT_LANGUAGE1 "Hide other players when duelling. (If the dimension is available it will always be enabled)"
-   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel. (Si la dimension est disponible elle sera toujours activée)"
-   TEXT_LANGUAGE3 "Verstecke andere spieler beim duell. (Wenn die dimension verfügbar ist wird sie immer aktiviert)"
-   TEXT_LANGUAGE6 "Hide other players when duelling. (If the dimension is available it will always be enabled)"
-   TEXT_LANGUAGE8 "Esconde otros jugadores si estas en duelo. (Si la dimensión está habilitada se activará siempre)"
+   TEXT_LANGUAGE1 "Hide other players when duelling. (Only if the dimension is enabled)"
+   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel. (Uniquement si la dimension est activée)"
+   TEXT_LANGUAGE3 "Verstecke andere spieler beim duell. (Nur wenn die dimension aktiviert ist)"
+   TEXT_LANGUAGE6 "Hide other players when duelling. (Only if the dimension is enabled)"
+   TEXT_LANGUAGE8 "Esconde otros jugadores si estas en duelo. (Solo si la dimensión está habilitada)"
 }
 INDEX 46
 {

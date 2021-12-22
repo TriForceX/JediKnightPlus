@@ -165,6 +165,7 @@ typedef struct
 typedef struct
 {
 	qboolean		clientPlugin;			// Client plugin check
+	qboolean		privateDuel;			// Based on private duel userinfo
 	int				customDuel;				// Client is in custom duel
 	int				teleportChatOrigin[5];	// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check

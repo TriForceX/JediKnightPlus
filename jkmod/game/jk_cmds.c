@@ -120,14 +120,15 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Duels ^5]^7\n"
-			"^7Engage different duel challenge to another players\n"
-			"^7You can assign to a key using the following command: ^2/bind engage_duel_<type>\n"
+			"^7Engage different dueling challenges to another players\n"
+			"^7You can hide other players outside the duel by using the command: ^2/engage_private\n"
 			"^5----------\n"
 			"^7Command list:\n"
 			"^3engage_duel\n"
 			"^3engage_duel_force\n"
 			"^5----------\n"
-			"^2Note: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
+			"^2Note 1: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
+			"^2Note 2: ^7Private duels will work only if ^3duel dimension ^7is enabled by the server\n"
 			"^7\""));
 		return;
 	}
@@ -149,8 +150,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
-			"^2Note 1: ^7You will join in ^5duel ^7dimension automatically if is available in the server\n"
-			"^2Note 2: ^7You can also use this command on chat saying ^3!dimension <option>\n"
+			"^2Note: ^7You can also use this command on chat saying ^3!dimension <option>\n"
 			"^7\""));
 		return;
 	}
@@ -441,12 +441,6 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		return;
 	}
 
-	// Show custom duel warning
-	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 163837 || g_forcePowerDisable.integer == -1)
-	{
-		trap_SendServerCommand(ent - g_entities, va("print \"Force powers ^3disabled ^7by the server. Applying normal duel...\n\""));
-	}
-
 	// Allow multiple duels
 	if (jkcvar_allowMultiDuel.integer != 1)
 	{
@@ -518,7 +512,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			challenged->client->ps.duelInProgress = qtrue;
 
 			// Set dimension
-			if (jkcvar_altDimension.integer & DIMENSION_DUEL)
+			if ((jkcvar_altDimension.integer & DIMENSION_DUEL) && challenged->client->pers.jkmodPers.privateDuel)
 			{
 				unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
 
@@ -561,13 +555,15 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 		else
 		{
+			qboolean privateDuel = (jkcvar_altDimension.integer & DIMENSION_DUEL) && ent->client->pers.jkmodPers.privateDuel;
+
 			if (jkcvar_allowCustomDuel.integer) 
 			{
 				if (type == 1) 
 				{
 					// Print full force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
 					
 					ent->client->pers.jkmodPers.customDuel = type;
 					challenged->client->pers.jkmodPers.customDuel = type;
@@ -575,15 +571,15 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 				else 
 				{
 					// Print full no-force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (No force)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (No force)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (No force%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (No force%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
 				}
 			}
 			else 
 			{
 				// Print the message that a player has been challenged in private, only announce the actual duel initiation in private
-				G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE")));
-				G_CenterPrint(ent - g_entities, 3, va("%s %s\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname));
+				G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s %s\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? "(Private)" : ""));
+				G_CenterPrint(ent - g_entities, 3, va("%s %s %s\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? "(Private)" : ""));
 			}
 		}
 
@@ -612,9 +608,39 @@ Custom engage duel function
 static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 {
 	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 163837 || g_forcePowerDisable.integer == -1) {
+		trap_SendServerCommand(ent - g_entities, va("print \"Force powers ^3disabled ^7by the server. Applying normal duel...\n\""));
 		JKMod_EngageDuel(ent, 0);
 	} else {
 		JKMod_EngageDuel(ent, 1);
+	}
+	return;
+}
+
+/*
+=====================================================================
+Check private duel challenge
+=====================================================================
+*/
+static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
+{
+	if (jkcvar_altDimension.integer & DIMENSION_DUEL)
+	{
+		if (ent->client->pers.jkmodPers.privateDuel) {
+			ent->client->pers.jkmodPers.privateDuel = qfalse;
+			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^1disabled\n\""));
+		} else {
+			ent->client->pers.jkmodPers.privateDuel = qtrue;
+			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^2enabled\n\""));
+		}
+
+		// Update clientside
+		if (ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_privateDuel %i", (int)ent->client->pers.jkmodPers.privateDuel));
+		}
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Private duels are ^1disabled ^7by the server\n\""));
 	}
 	return;
 }
@@ -1617,6 +1643,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "engage_forceduel",		JKMod_Cmd_EngageDuel },
 	{ "engage_fullforceduel",	JKMod_Cmd_EngageDuel },
 	{ "engage_ff",				JKMod_Cmd_EngageDuel },
+	{ "engage_private",			JKMod_Cmd_EngagePrivate },
 
 	{ "whois",					JKMod_Cmd_WhoIs },
 	{ "macroalert",				JKMod_Cmd_MacroAlert },

@@ -26,6 +26,7 @@ typedef struct
 
 } cvarTable_t;
 
+vmCvar_t	jkcvar_cg_privateDuel;
 vmCvar_t	jkcvar_cg_duelGlow;
 vmCvar_t	jkcvar_cg_duelEnd;
 vmCvar_t	jkcvar_cg_duelEndOrbit;
@@ -65,9 +66,10 @@ vmCvar_t	cg_developer;
 
 static cvarTable_t	JKModCGcvarTable[] = {
 
+	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE | CVAR_USERINFO },
 	{ &jkcvar_cg_duelGlow,			"jk_cg_duelGlow",			"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_duelEnd,			"jk_cg_duelEnd",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_duelEndOrbit,		"jk_cg_duelEndOrbit",		"1.5",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_duelEndOrbit,		"jk_cg_duelEndOrbit",		"3",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_duelEndDelay,		"jk_cg_duelEndDelay",		"1",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
