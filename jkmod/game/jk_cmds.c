@@ -1296,8 +1296,9 @@ void JKMod_CallVote(gentity_t *ent)
 		&& Q_stricmp(arg1, "g_doWarmup") 
 		&& Q_stricmp(arg1, "timelimit") 
 		&& Q_stricmp(arg1, "fraglimit") 
-		&& Q_stricmp(arg1, "gameplay") 
-		&& Q_stricmp(arg1, "poll")) 
+		&& Q_stricmp(arg1, "poll") 
+		&& Q_stricmp(arg1, "itemphysics") 
+		&& Q_stricmp(arg1, "pausegame")) 
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Call Vote ^5]^7\n"
@@ -1314,8 +1315,9 @@ void JKMod_CallVote(gentity_t *ent)
 			"^3g_doWarmup\n"
 			"^3timelimit <time>\n"
 			"^3fraglimit <frags>\n"
-			"^3gameplay <version>\n"
 			"^3poll <question>\n"
+			"^3itemphysics\n"
+			"^3pausegame\n"
 			"^5----------\n"
 			"^2Note: ^7Some options may be disabled by the server\n"
 			"^7\""));
@@ -1348,12 +1350,13 @@ void JKMod_CallVote(gentity_t *ent)
 		level.votingGametypeTo = i;
 
 		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %d", arg1, i);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s %s", arg1, gameNames[i]);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Change game type to %s", gameNames[i]);
 	}
 	// Map vote
 	else if (!Q_stricmp(arg1, "map"))
 	{
 		char	s[MAX_STRING_CHARS];
+		char	*nextmap;
 
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_MAP))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
@@ -1368,12 +1371,14 @@ void JKMod_CallVote(gentity_t *ent)
 		trap_Cvar_VariableStringBuffer("nextmap", s, sizeof(s));
 
 		if (*s) {
+			nextmap = strchr(s, ' ');
 			Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s; set nextmap \"%s\"", arg1, arg2, s);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Change map to %s, then %s", arg2, nextmap+1);
 		} else {
 			Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Change map to %s", arg2);
 		}
 
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
 	}
 	// Client kick vote
 	else if (!Q_stricmp(arg1, "clientkick"))
@@ -1396,7 +1401,7 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "kick %s", g_entities[n].client->pers.netname);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[n].client->pers.netname, qfalse));
 	}
 	// Kick vote
 	else if (!Q_stricmp(arg1, "kick"))
@@ -1420,12 +1425,13 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		Com_sprintf(level.voteString, sizeof(level.voteString), "clientkick %d", clientid);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "kick %s", g_entities[clientid].client->pers.netname);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[clientid].client->pers.netname, qfalse));
 	}
 	// Next map vote
 	else if (!Q_stricmp(arg1, "nextmap"))
 	{
 		char	s[MAX_STRING_CHARS];
+		char	*nextmap;
 
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_NEXTMAP))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
@@ -1439,24 +1445,10 @@ void JKMod_CallVote(gentity_t *ent)
 			return;
 		}
 
+		nextmap = strchr(s, ' ');
+
 		Com_sprintf(level.voteString, sizeof(level.voteString), "vstr nextmap");
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
-	}
-	// Gameplay vote
-	else if (!Q_stricmp(arg1, "gameplay"))
-	{
-		if (!(jkcvar_voteControl.integer & (1 << VOTE_GAMEPLAY))) {
-			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
-			return;
-		} 
-
-		if (!(!Q_stricmp(arg2, "1.02") || !Q_stricmp(arg2, "1.03") || !Q_stricmp(arg2, "1.04"))) {
-			trap_SendServerCommand(ent - g_entities, "print \"Invalid gameplay version, use: ^31.02^7, ^31.03^7 or ^31.04\n\"");
-			return;
-		}
-
-		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Skip to next map %s", nextmap+1);
 	}
 	// Poll vote
 	else if (!Q_stricmp(arg1, "poll"))
@@ -1472,7 +1464,35 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 			
 		Com_sprintf(level.voteString, sizeof(level.voteString), "");
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", ConcatArgs(2));
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", Q_CleanStr(ConcatArgs(2), qfalse));
+	}
+	// Item physics
+	else if (!Q_stricmp(arg1, "itemphysics"))
+	{
+		int		val;
+		char	*action;
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_ITEMPHYSICS))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		val = trap_Cvar_VariableIntegerValue("jk_itemForcePhysics") == 0 ? 1 : 0;
+		action = val ? "Enable" : "Disable";
+
+		Com_sprintf(level.voteString, sizeof(level.voteString), "jk_itemForcePhysics %i", val);
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s map item force physics", action);
+	}
+	// Item physics
+	else if (!Q_stricmp(arg1, "pausegame"))
+	{
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_PAUSE))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		Com_sprintf(level.voteString, sizeof(level.voteString), "pause 60");
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for 60 seconds");
 	}
 	// Others
 	else
@@ -1495,8 +1515,13 @@ void JKMod_CallVote(gentity_t *ent)
 			}
 		}
 
-		Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s", level.voteString);
+		if (arg2[0] == '\0') {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s", arg1);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Apply %s", arg1);
+		} else {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "%s \"%s\"", arg1, arg2);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Change %s to %s", arg1, arg2);
+		}
 	}
 
 	trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLCALLEDVOTE")));

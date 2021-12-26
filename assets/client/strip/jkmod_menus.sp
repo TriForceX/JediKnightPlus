@@ -157,39 +157,39 @@ INDEX 16
 }
 INDEX 17
 {
-   REFERENCE VOTE_GAMEPLAY
-   TEXT_LANGUAGE1 "Gameplay:"
-   TEXT_LANGUAGE2 "Jouabilité:"
-   TEXT_LANGUAGE3 "Spielbarkeit:"
-   TEXT_LANGUAGE6 "Gameplay:"
-   TEXT_LANGUAGE8 "Jugabilidad:"
+   REFERENCE VOTE_ITEMPHYSICS
+   TEXT_LANGUAGE1 "Item Force Physics"
+   TEXT_LANGUAGE2 "Objet Force Physique"
+   TEXT_LANGUAGE3 "Kraftphysik an Objekten"
+   TEXT_LANGUAGE6 "Item Force Physics"
+   TEXT_LANGUAGE8 "Físicas items con fuerza"
 }
 INDEX 18
 {
-   REFERENCE VOTE_GAMEPLAY_102
-   TEXT_LANGUAGE1 "Change the gameplay to 1.02 style."
-   TEXT_LANGUAGE2 "Changez le jouabilité en style 1.02"
-   TEXT_LANGUAGE3 "Ändere das spielbarkeit auf 1.02 stil."
-   TEXT_LANGUAGE6 "Change the gameplay to 1.02 style."
-   TEXT_LANGUAGE8 "Cambiar la jugabilidad al estilo 1.02"
+   REFERENCE VOTE_ITEMPHYSICS_DESC
+   TEXT_LANGUAGE1 "Map items react to force powers."
+   TEXT_LANGUAGE2 "Les éléments de la carte réagissent à la force ."
+   TEXT_LANGUAGE3 "Kartenelemente reagieren auf Machtkräfte."
+   TEXT_LANGUAGE6 "Map items react to force powers."
+   TEXT_LANGUAGE8 "Los items del mapa reaccionan con la fuerza."
 }
 INDEX 19
 {
-   REFERENCE VOTE_GAMEPLAY_103
-   TEXT_LANGUAGE1 "Change the gameplay to 1.03 style."
-   TEXT_LANGUAGE2 "Changez le jouabilité en style 1.03"
-   TEXT_LANGUAGE3 "Ändere das spielbarkeit auf 1.03 stil."
-   TEXT_LANGUAGE6 "Change the gameplay to 1.03 style."
-   TEXT_LANGUAGE8 "Cambiar la jugabilidad al estilo 1.03"
+   REFERENCE VOTE_PAUSEGAME
+   TEXT_LANGUAGE1 "Pause Game"
+   TEXT_LANGUAGE2 "Suspendre le jeu"
+   TEXT_LANGUAGE3 "Spiel pausieren"
+   TEXT_LANGUAGE6 "Pause Game"
+   TEXT_LANGUAGE8 "Pausar el juego"
 }
 INDEX 20
 {
-   REFERENCE VOTE_GAMEPLAY_104
-   TEXT_LANGUAGE1 "Change the gameplay to 1.04 style."
-   TEXT_LANGUAGE2 "Changez le jouabilité en style 1.04"
-   TEXT_LANGUAGE3 "Ändere das spielbarkeit auf 1.04 stil."
-   TEXT_LANGUAGE6 "Change the gameplay to 1.04 style."
-   TEXT_LANGUAGE8 "Cambiar la jugabilidad al estilo 1.04"
+   REFERENCE VOTE_PAUSEGAME_DESC
+   TEXT_LANGUAGE1 "Pause game for 60 seconds."
+   TEXT_LANGUAGE2 "Pause du jeu pendant 60 secondes."
+   TEXT_LANGUAGE3 "Spiel 60 sekunden pausieren."
+   TEXT_LANGUAGE6 "Pause game for 60 seconds."
+   TEXT_LANGUAGE8 "Pausa el juego durante 60 segundos."
 }
 INDEX 21
 {

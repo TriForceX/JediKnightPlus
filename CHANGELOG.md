@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.16.1
+- Removed map restart requirement on dimension cvar
+- Fixed captures mini scoreboard
+- Added force resist anim and custom effects cvar
+- Added god option to bots in static mode
+- Make private duel dimension optional
+- Updated call vote options
+
 ## 0.16.0
 - Fix dimension settings conflict with jedi master
 - Added identify map objects option

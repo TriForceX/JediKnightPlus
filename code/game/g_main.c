@@ -2375,7 +2375,7 @@ void CheckVote( void ) {
 	// Tr!Force: [Vote] Check min/max vote pass
 	if ( jkcvar_voteMaxPass.integer )
 	{
-		if ( level.time - level.voteTime >= VOTE_TIME || (level.voteYes + level.voteNo) == level.numVotingClients)
+		if ( level.time - level.voteTime >= VOTE_TIME || (level.voteYes + level.voteNo) == level.numVotingClients )
 		{
 			if ( level.voteYes > level.voteNo )
 			{

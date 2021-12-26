@@ -178,8 +178,9 @@ static jkmod_bit_info_t toggleVoteControl[] =
 	"DO WARM UP",
 	"TIME LIMIT",
 	"FRAG LIMIT",
-	"GAMEPLAY",
 	"POLL",
+	"ITEM PHYSICS",
+	"PAUSE GAME",
 };
 
 // Options for bot_forGimmick cvar

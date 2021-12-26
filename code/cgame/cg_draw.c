@@ -3475,7 +3475,7 @@ static void CG_DrawVote(void) {
 	trap_SP_GetStringTextString("MENUS0_YES", sYes, sizeof(sYes) );
 	trap_SP_GetStringTextString("MENUS0_NO",  sNo,  sizeof(sNo) );
 
-	s = va("VOTE(%i):%s" S_COLOR_WHITE " %s:%i %s:%i", sec, cgs.voteString, sYes, cgs.voteYes, sNo, cgs.voteNo);
+	s = va("Vote(%i): %s" S_COLOR_WHITE " (%s:%i %s:%i)", sec, cgs.voteString, sYes, cgs.voteYes, sNo, cgs.voteNo);
 	CG_DrawSmallString( 4, jkmod_valign, s, 1.0F ); // Tr!Force: [CGameGeneral] Vote vertical alignment
 	s = CG_GetStripEdString("INGAMETEXT", "OR_PRESS_ESC_THEN_CLICK_VOTE");	//	s = "or press ESC then click Vote";
 	CG_DrawSmallString( 4, jkmod_valign + SMALLCHAR_HEIGHT + 2, s, 1.0F ); // Tr!Force: [CGameGeneral] Vote vertical alignment
