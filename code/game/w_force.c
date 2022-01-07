@@ -605,6 +605,12 @@ void WP_SpawnInitForcePowers( gentity_t *ent )
 
 int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forcePower)
 {
+	// Tr!Force: [GameGeneral] Drain model check
+	if (!Q_stricmp("jkmod_drain_model", other->classname)) 
+	{
+		return 1;
+	}
+
 	if (other && other->client && other->client->ps.usingATST)
 	{
 		return 0;
@@ -1816,14 +1822,15 @@ void ForceDrain( gentity_t *self )
 void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t impactPoint )
 {
 	gentity_t *tent;
+	qboolean jkmod_drainmodel = !Q_stricmp("jkmod_drain_model", traceEnt->classname); // Tr!Force: [GameGeneral] Drain model check
 
 	self->client->dangerTime = level.time;
 	self->client->ps.eFlags &= ~EF_INVULNERABLE;
 	self->client->invulnerableTimer = 0;
 
-	if ( traceEnt && traceEnt->takedamage )
+	if ( traceEnt && traceEnt->takedamage || jkmod_drainmodel ) // Tr!Force: [GameGeneral] Drain model check
 	{
-		if ( traceEnt->client && (!OnSameTeam(self, traceEnt) || g_friendlyFire.integer) && self->client->ps.fd.forceDrainTime < level.time && traceEnt->client->ps.fd.forcePower )
+		if ( traceEnt->client || jkmod_drainmodel && (!OnSameTeam(self, traceEnt) || g_friendlyFire.integer) && self->client->ps.fd.forceDrainTime < level.time && traceEnt->client->ps.fd.forcePower || jkmod_drainmodel ) // Tr!Force: [GameGeneral] Drain model check
 		{//an enemy or object
 			if (!traceEnt->client && traceEnt->s.eType == ET_GRAPPLE)
 			{ //g2animent
@@ -1889,7 +1896,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 					self->client->ps.stats[STAT_HEALTH] = self->health;
 				}
 
-				traceEnt->client->ps.fd.forcePowerRegenDebounceTime = level.time + 800; //don't let the client being drained get force power back right away
+				if (!jkmod_drainmodel) traceEnt->client->ps.fd.forcePowerRegenDebounceTime = level.time + 800; //don't let the client being drained get force power back right away // Tr!Force: [GameGeneral] Drain model check
 
 				//Drain the standard amount since we just drained someone else
 
@@ -1975,7 +1982,9 @@ int ForceShootDrain( gentity_t *self )
 		for ( e = 0 ; e < numListedEntities ; e++ ) 
 		{
 			traceEnt = entityList[e];
-
+			
+			if ( !Q_stricmp("jkmod_drain_model", traceEnt->classname) ) // Tr!Force: [GameGeneral] Drain model check
+				goto jkmod_drainstart;
 			if ( !traceEnt )
 				continue;
 			if ( traceEnt == self )
@@ -1994,6 +2003,7 @@ int ForceShootDrain( gentity_t *self )
 				continue;
 			//this is all to see if we need to start a saber attack, if it's in flight, this doesn't matter
 			// find the distance from the edge of the bounding box
+			jkmod_drainstart: // Tr!Force: [GameGeneral] Drain model check
 			for ( i = 0 ; i < 3 ; i++ ) 
 			{
 				if ( center[i] < traceEnt->r.absmin[i] ) 

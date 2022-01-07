@@ -1055,6 +1055,33 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 	trap_LinkEntity(ent);
 }
 
+// Drain model
+void JKMod_SP_DrainModel(gentity_t* ent)
+{
+	G_SpawnString("model", "", &ent->model);
+
+	ent->s.eType = ET_GENERAL;
+	ent->s.modelindex = G_ModelIndex(ent->model);
+	ent->s.modelindex2 = G_ModelIndex(ent->model);
+
+	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
+	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
+
+	if (!Q_stricmp(ent->model, ".glm"))
+	{
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
+	}
+
+	ent->r.contents = CONTENTS_SOLID;
+	ent->clipmask = MASK_SOLID;
+
+	G_SetOrigin(ent, ent->s.origin);
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
+
+	trap_LinkEntity(ent);
+}
+
 // Misc ion cannon
 void JKMod_SP_MiscIonCannon(gentity_t *ent)
 {

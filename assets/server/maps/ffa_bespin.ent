@@ -2935,3 +2935,12 @@
    "origin" "-1872 72 408"
    "type" "3"
 }
+// Custom entity 451
+{
+   "classname" "jkmod_drain_model"
+   "origin" "480 -1612 0"
+   "model" "models/map_objects/cinematics/statue.md3"
+   "mins" "-30 -30 -217"
+   "maxs" "30 30 217"
+   "angle" "45"
+}
