@@ -77,6 +77,7 @@ vmCvar_t	jkcvar_serverNewsTime;
 
 vmCvar_t	jkcvar_pluginRequired;
 vmCvar_t	jkcvar_macroScan;
+vmCvar_t	jkcvar_macroScanAlert;
 vmCvar_t	jkcvar_antiWarp;
 vmCvar_t	jkcvar_antiWarpTime;
 vmCvar_t	jkcvar_mapFixes;
@@ -150,6 +151,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					JKMod_CVU_pluginRequired,	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_macroScanAlert,		"jk_macroScanAlert",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },

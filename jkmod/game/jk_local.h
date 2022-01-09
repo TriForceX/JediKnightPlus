@@ -339,6 +339,7 @@ extern	vmCvar_t					jkcvar_serverNewsTime;
 
 extern	vmCvar_t					jkcvar_pluginRequired;
 extern	vmCvar_t					jkcvar_macroScan;
+extern	vmCvar_t					jkcvar_macroScanAlert;
 extern	vmCvar_t					jkcvar_antiWarp;
 extern	vmCvar_t					jkcvar_antiWarpTime;
 extern	vmCvar_t					jkcvar_mapFixes;

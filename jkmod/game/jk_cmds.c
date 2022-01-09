@@ -761,8 +761,15 @@ static void JKMod_Cmd_MacroAlert(gentity_t* ent)
 {
 	if (jkcvar_macroScan.integer)
 	{
-		G_Say(ent, NULL, SAY_ALL, va("^5Illegal macro detected^1! ^7(IP: ^3%s^7)", ent->client->sess.jkmodSess.clientIP));
-
+		if (jkcvar_macroScanAlert.integer)
+		{
+			G_Say(ent, NULL, SAY_ALL, va("^5Illegal macro detected^1! ^7(IP: ^3%s^7)", ent->client->sess.jkmodSess.clientIP));
+		}
+		else
+		{
+			G_LogPrintf("Illegal macro detected! (IP: %s)\n", ent->client->sess.jkmodSess.clientIP);
+		}
+		
 		if (jkcvar_macroScan.integer == 2)
 		{
 			SetTeam(ent, "spectator");
