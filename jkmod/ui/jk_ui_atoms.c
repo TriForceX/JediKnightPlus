@@ -446,7 +446,7 @@ void JKMod_UI_MacroScan(void)
 				if (buf[j] == ';') buf[j] = ':';
 			}
 			trap_Key_SetBinding(i, va("echo ^3Illegal macro: ^7%s", buf));
-			trap_Cmd_ExecuteText(EXEC_APPEND, va("macroalert\n"));
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("macroalert \"%s\"\n", buf));
 		}
 	}
 }

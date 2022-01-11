@@ -759,15 +759,25 @@ Macro alert command function
 */
 static void JKMod_Cmd_MacroAlert(gentity_t* ent)
 {
+	char    arg1[MAX_TOKEN_CHARS];
+	char	bind[MAX_TOKEN_CHARS];
+
+	trap_Argv(1, arg1, sizeof(arg1));
+
+	if (trap_Argc() < 2) {
+		strcpy(bind, "Unknown");
+	} else  {
+		JKMod_TrimWhiteSpace(arg1);
+		JKMod_TruncateString(bind, arg1, 25);
+	}
+
 	if (jkcvar_macroScan.integer)
 	{
+		G_LogPrintf("Illegal macro detected! (IP: %s Bind: %s)\n", ent->client->sess.jkmodSess.clientIP, bind);
+
 		if (jkcvar_macroScanAlert.integer)
 		{
-			G_Say(ent, NULL, SAY_ALL, va("^5Illegal macro detected^1! ^7(IP: ^3%s^7)", ent->client->sess.jkmodSess.clientIP));
-		}
-		else
-		{
-			G_LogPrintf("Illegal macro detected! (IP: %s)\n", ent->client->sess.jkmodSess.clientIP);
+			G_Say(ent, NULL, SAY_ALL, va("^5Illegal macro detected^1! ^7(Bind: ^3%s^7)", bind));
 		}
 		
 		if (jkcvar_macroScan.integer == 2)
