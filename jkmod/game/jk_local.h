@@ -445,6 +445,7 @@ void		JKMod_CVU_serverNews(void);
 void		JKMod_CVU_teleportChat(void);
 void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_altDimension(void);
+void		JKMod_CVU_jetPack(void);
 void		JKMod_CVU_playerMovement(void);
 void		JKMod_CVU_pluginRequired(void);
 void		JKMod_CVU_serverClosed(void);

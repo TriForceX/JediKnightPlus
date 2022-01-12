@@ -160,7 +160,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_mapDefaultMusic,		"jk_mapDefaultMusic",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_mapCycleFromFile,		"jk_mapCycleFromFile",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
-	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
+	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					JKMod_CVU_jetPack,			CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					JKMod_CVU_playerMovement,	CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dualSaber,			"jk_dualSaber",				"0",					JKMod_CVU_dualSaber,		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
@@ -363,6 +363,28 @@ void JKMod_CVU_altDimension(void)
 		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 		{
 			JKMod_DimensionSet(ent, DIMENSION_FREE);
+		}
+	}
+}
+
+// Update jetpack cvar
+void JKMod_CVU_jetPack(void)
+{
+	if (jkcvar_jetPack.integer == 0)
+	{
+		gentity_t *ent;
+		int i;
+
+		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+		{
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			{
+				if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) 
+				{
+					ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+					ent->client->ps.stats[JK_FUEL] = 0;
+				}
+			}
 		}
 	}
 }
