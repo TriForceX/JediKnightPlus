@@ -56,6 +56,7 @@ vmCvar_t	jkcvar_duelEndStats;
 vmCvar_t	jkcvar_duelEndSlow;
 vmCvar_t	jkcvar_duelEndSlowScale;
 vmCvar_t	jkcvar_duelDistance;
+vmCvar_t	jkcvar_duelPassThrough;
 
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
@@ -130,6 +131,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_duelEndSlow,			"jk_duelEndSlow",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndSlowScale,		"jk_duelEndTimeScale",		"0.5",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelDistance,			"jk_duelDistance",			"1024",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelPassThrough,		"jk_duelPassThrough",		"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					NULL,						CVAR_ARCHIVE,						0, qtrue },

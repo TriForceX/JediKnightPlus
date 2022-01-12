@@ -211,6 +211,54 @@ void JKMod_JetpackTryUse(gentity_t *ent)
 
 /*
 =====================================================================
+Get private duel partner
+=====================================================================
+*/
+gentity_t* JKMod_DuelGetPartner(gentity_t* ent)
+{
+	const int partnerID = ent->client->ps.duelIndex;
+	gentity_t* partner = &g_entities[ent->client->ps.duelIndex];
+
+	if (!ent->client->ps.duelInProgress) return NULL;
+	if (partnerID == ENTITYNUM_NONE) return NULL;
+	if (!partner->client->ps.duelInProgress) return NULL;
+	if (partner->client->ps.duelIndex != ent->s.number) return NULL;
+
+	return partner;
+}
+
+/*
+=====================================================================
+Check players dueling each other
+=====================================================================
+*/
+qboolean JKMod_DuelEachOther(gentity_t* ent1, gentity_t* ent2)
+{
+	const gentity_t* ent1Partner = JKMod_DuelGetPartner(ent1);
+	const gentity_t* ent2Partner = JKMod_DuelGetPartner(ent2);
+
+	if (!ent1->client->ps.duelInProgress || !ent2->client->ps.duelInProgress) return qfalse;
+	if (!ent1Partner || !ent2Partner) return qfalse;
+	if (ent1Partner != ent2 || ent2Partner != ent1) return qfalse;
+
+	return qtrue;
+}
+
+/*
+=====================================================================
+Check players duel isolation
+=====================================================================
+*/
+qboolean JKMod_DuelIsolationCheck(gentity_t* ent1, gentity_t* ent2)
+{
+	if (ent1->client->ps.duelInProgress || ent2->client->ps.duelInProgress) {
+		return JKMod_DuelEachOther(ent1, ent2);
+	}
+	return qtrue;
+}
+
+/*
+=====================================================================
 Init game entity with owner info
 =====================================================================
 */

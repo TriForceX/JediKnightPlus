@@ -201,25 +201,25 @@ Dimension snapshot ignore and owner check
 */
 void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 {
-	if (mvapi) 
+	assert(owner >= 0 && owner < MAX_GENTITIES);
+
+	if (owner >= MAX_CLIENTS && owner < ENTITYNUM_MAX_NORMAL) {
+		owner = g_entities[owner].jkmodEnt.dimensionOwner;
+		assert(owner < MAX_CLIENTS || owner == ENTITYNUM_NONE || owner == ENTITYNUM_WORLD);
+	}
+
+	ent->jkmodEnt.dimensionOwner = owner;
+
+	if (ent - g_entities < MAX_CLIENTS) {
+		ent->jkmodEnt.dimensionNumber = DIMENSION_FREE;
+	} else {
+		ent->jkmodEnt.dimensionNumber = DIMENSION_ALL;
+	}
+
+	if (mvapi)
 	{
-		uint8_t	*snapshotIgnore = mv_entities[ent->s.number].snapshotIgnore;
+		uint8_t *snapshotIgnore = mv_entities[ent->s.number].snapshotIgnore;
 		int	i;
-
-		assert(owner >= 0 && owner < MAX_GENTITIES);
-
-		if (owner >= MAX_CLIENTS && owner < ENTITYNUM_MAX_NORMAL) {
-			owner = g_entities[owner].jkmodEnt.dimensionOwner;
-			assert(owner < MAX_CLIENTS || owner == ENTITYNUM_NONE || owner == ENTITYNUM_WORLD);
-		}
-
-		ent->jkmodEnt.dimensionOwner = owner;
-
-		if (ent - g_entities < MAX_CLIENTS) {
-			ent->jkmodEnt.dimensionNumber = DIMENSION_FREE;
-		} else {
-			ent->jkmodEnt.dimensionNumber = DIMENSION_ALL;
-		}
 
 		if (owner == ENTITYNUM_WORLD) {
 			memset(snapshotIgnore, 0, sizeof(snapshotIgnore[0]) * MAX_CLIENTS);
@@ -240,35 +240,30 @@ Dimension get free number
 */
 unsigned JKMod_DimensionGetFree(void)
 {
-	if (mvapi)
+	unsigned dimension;
+	qboolean free;
+	int i;
+
+	for (dimension = 1 << DIMENSION_MAX; dimension != 0; dimension <<= 1) 
 	{
-		unsigned dimension;
-		qboolean free;
-		int i;
+		free = qtrue;
 
-		for (dimension = 1 << DIMENSION_MAX; dimension != 0; dimension <<= 1) 
+		for (i = 0; i < level.maxclients; i++) 
 		{
-			free = qtrue;
+			if (!g_entities[i].inuse) continue;
 
-			for (i = 0; i < level.maxclients; i++) 
+			if ((g_entities[i].jkmodEnt.dimensionNumber & dimension) != 0) 
 			{
-				if (!g_entities[i].inuse) continue;
-
-				if ((g_entities[i].jkmodEnt.dimensionNumber & dimension) != 0) 
-				{
-					free = qfalse;
-					break;
-				}
+				free = qfalse;
+				break;
 			}
-
-			if (free) return dimension;
 		}
 
-		assert(0);
-		return DIMENSION_FREE;
-	} else {
-		return 0;
+		if (free) return dimension;
 	}
+
+	assert(0);
+	return DIMENSION_FREE;
 }
 
 /*
@@ -278,29 +273,29 @@ Dimension snapshot ignore apply
 */
 void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 {
+	int	i;
+	int	clientNum = ent->s.number;
+
+	ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
+	ent->jkmodEnt.dimensionNumber = dimension;
+
+	// Check pass-trough
+	if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+
+	// Check stuck
+	if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
+
+	// Check saber
+	if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
+
+	// Update settings
+	ent->client->pers.jkmodPers.customSettingsCount++;
+
+	// Set settings
+	JKMod_DimensionSettings(ent, dimension);
+
 	if (mvapi)
 	{
-		int	i;
-		int	clientNum = ent->s.number;
-
-		ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
-		ent->jkmodEnt.dimensionNumber = dimension;
-
-		// Check pass-trough
-		if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
-
-		// Check stuck
-		if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
-
-		// Check saber
-		if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
-
-		// Update settings
-		ent->client->pers.jkmodPers.customSettingsCount++;
-
-		// Set settings
-		JKMod_DimensionSettings(ent, dimension);
-
 		for (i = 0; i < level.num_entities; i++) {
 			if (g_entities[i].inuse) {
 				int owner = g_entities[i].jkmodEnt.dimensionOwner;
@@ -324,9 +319,9 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 				}
 			}
 		}
-
-		JKMod_Printf(S_COLOR_YELLOW "Client %i changed dimension to %i\n", clientNum, dimension);
 	}
+
+	JKMod_Printf(S_COLOR_YELLOW "Client %i changed dimension to %i\n", clientNum, dimension);
 }
 
 /*
@@ -336,25 +331,19 @@ Dimension check collide
 */
 qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 {
-	if (mvapi)
-	{
-		int owner1 = g_entities[ent1->s.number].jkmodEnt.dimensionOwner;
-		int owner2 = g_entities[ent2->s.number].jkmodEnt.dimensionOwner;
+	int owner1 = ent1->jkmodEnt.dimensionOwner;
+	int owner2 = ent2->jkmodEnt.dimensionOwner;
 
-		if (g_entities[owner1].jkmodEnt.dimensionNumber == DIMENSION_RACE && 
-			g_entities[owner2].jkmodEnt.dimensionNumber == DIMENSION_RACE)
-		{
-			return (qboolean)!(JKMod_DimensionCheck(owner1, owner2));
-		}
-		else
-		{
-			return (qboolean)!!(JKMod_DimensionCheck(owner1, owner2));
-		}
-	}
-	else
+	if (ent1->jkmodEnt.dimensionNumber == DIMENSION_RACE && ent2->jkmodEnt.dimensionNumber == DIMENSION_RACE)
 	{
-		return qtrue;
+		return (qboolean)!(JKMod_DimensionCheck(owner1, owner2));
 	}
+	if (ent1->jkmodEnt.dimensionNumber == DIMENSION_FREE && ent2->jkmodEnt.dimensionNumber == DIMENSION_FREE && jkcvar_duelPassThrough.integer)
+	{
+		return (qboolean)!!(JKMod_DuelIsolationCheck(ent1, ent2));
+	}
+
+	return (qboolean)!!(JKMod_DimensionCheck(owner1, owner2));
 }
 
 /*
@@ -366,33 +355,30 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 {
 	trap_Trace(results, start, mins, maxs, end, passEntityNum, contentmask);
 
-	if (mvapi)
+	if (results->entityNum < ENTITYNUM_MAX_NORMAL) 
 	{
-		if (results->entityNum < ENTITYNUM_MAX_NORMAL) 
+		gentity_t	*passEnt = g_entities + passEntityNum;
+		gentity_t	*ent = g_entities + results->entityNum;
+
+		if (!JKMod_DimensionCollide(ent, passEnt)) 
 		{
-			gentity_t	*passEnt = g_entities + passEntityNum;
-			gentity_t	*ent = g_entities + results->entityNum;
+			int contents;
 
-			if (!JKMod_DimensionCollide(ent, passEnt)) 
-			{
-				int contents;
+			contents = ent->r.contents;
+			ent->r.contents = 0;
+			JKMod_DimensionTrace(results, start, mins, maxs, end, passEntityNum, contentmask);
+			ent->r.contents = contents;
 
-				contents = ent->r.contents;
-				ent->r.contents = 0;
-				JKMod_DimensionTrace(results, start, mins, maxs, end, passEntityNum, contentmask);
-				ent->r.contents = contents;
-
-				return;
-			}
+			return;
 		}
+	}
 
-		if (results->startsolid && start != end) 
-		{
-			trace_t tw;
+	if (results->startsolid && start != end) 
+	{
+		trace_t tw;
 
-			JKMod_DimensionTrace(&tw, start, mins, maxs, start, passEntityNum, contentmask);
-			results->startsolid = tw.startsolid;
-		}
+		JKMod_DimensionTrace(&tw, start, mins, maxs, start, passEntityNum, contentmask);
+		results->startsolid = tw.startsolid;
 	}
 }
 
@@ -403,28 +389,21 @@ Dimensions check entities in box
 */
 int JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount, int entityNum)
 {
-	if (mvapi)
+	gentity_t	*passEnt = g_entities + entityNum;
+	int			fullCount;
+	int			count;
+	int			i;
+
+	fullCount = trap_EntitiesInBox(mins, maxs, entityList, maxcount);
+
+	for (i = 0, count = 0; i < fullCount; i++) 
 	{
-		gentity_t	*passEnt = g_entities + entityNum;
-		int			fullCount;
-		int			count;
-		int			i;
-
-		fullCount = trap_EntitiesInBox(mins, maxs, entityList, maxcount);
-
-		for (i = 0, count = 0; i < fullCount; i++) 
+		if (JKMod_DimensionCollide(g_entities + entityList[i], passEnt)) 
 		{
-			if (JKMod_DimensionCollide(g_entities + entityList[i], passEnt)) 
-			{
-				entityList[count] = entityList[i];
-				count++;
-			}
+			entityList[count] = entityList[i];
+			count++;
 		}
+	}
 
-		return count;
-	}
-	else
-	{
-		return trap_EntitiesInBox(mins, maxs, entityList, maxcount);
-	}
+	return count;
 }

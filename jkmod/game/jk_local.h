@@ -318,6 +318,7 @@ extern	vmCvar_t					jkcvar_duelEndStats;
 extern	vmCvar_t					jkcvar_duelEndSlow;
 extern	vmCvar_t					jkcvar_duelEndSlowScale;
 extern	vmCvar_t					jkcvar_duelDistance;
+extern	vmCvar_t					jkcvar_duelPassThrough;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
@@ -473,6 +474,9 @@ void		JKMod_AntiStuckBox(gentity_t *ent);
 qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs);
 void		JKMod_RemoveByClass(gentity_t *ent, char *name);
 void		JKMod_JetpackTryUse(gentity_t *ent);
+gentity_t	*JKMod_DuelGetPartner(gentity_t* ent);
+qboolean	JKMod_DuelEachOther(gentity_t* ent1, gentity_t* ent2);
+qboolean	JKMod_DuelIsolationCheck(gentity_t* ent1, gentity_t* ent2);
 void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
