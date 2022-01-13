@@ -298,7 +298,7 @@ void Cmd_Give_f (gentity_t *ent)
 
 	if (give_all || Q_stricmp(name, "ammo") == 0)
 	{
-		int num = 999;
+		int num = INFINITE_AMMO; // Tr!Force: [InfiniteAmmo] Add ammo on cheats
 		if (trap_Argc() == 3) {
 			trap_Argv( 2, arg, sizeof( arg ) );
 			num = atoi(arg);

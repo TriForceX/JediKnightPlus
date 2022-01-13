@@ -3164,7 +3164,8 @@ static qboolean PM_DoChargedWeapons( void )
 			{
 				if (pm->ps->weaponChargeSubtractTime < pm->cmd.serverTime)
 				{
-					pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].altChargeSub;
+					// Tr!Force: [InfiniteAmmo] Ammo pmove check
+					if (pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] != INFINITE_AMMO) pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].altChargeSub;
 					pm->ps->weaponChargeSubtractTime = pm->cmd.serverTime + weaponData[pm->ps->weapon].altChargeSubTime;
 				}
 			}
@@ -3194,7 +3195,8 @@ static qboolean PM_DoChargedWeapons( void )
 			{
 				if (pm->ps->weaponChargeSubtractTime < pm->cmd.serverTime)
 				{
-					pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].chargeSub;
+					// Tr!Force: [InfiniteAmmo] Ammo pmove check
+					if (pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] != INFINITE_AMMO) pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] -= weaponData[pm->ps->weapon].chargeSub;
 					pm->ps->weaponChargeSubtractTime = pm->cmd.serverTime + weaponData[pm->ps->weapon].chargeSubTime;
 				}
 			}
@@ -3738,7 +3740,7 @@ static void PM_Weapon( void )
 		pm->ps->weapon == pm->cmd.weapon &&
 		(pm->ps->weaponTime <= 0 || pm->ps->weaponstate != WEAPON_FIRING) )
 	{
-		if ( pm->ps->ammo[ weaponData[pm->ps->weapon].ammoIndex ] != -1 )
+		if ( pm->ps->ammo[ weaponData[pm->ps->weapon].ammoIndex ] != INFINITE_AMMO ) // Tr!Force: [InfiniteAmmo] Ammo pmove check
 		{
 			// enough energy to fire this weapon?
 			if (pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] < weaponData[pm->ps->weapon].energyPerShot &&
@@ -3909,7 +3911,7 @@ static void PM_Weapon( void )
 	pm->ps->weaponstate = WEAPON_FIRING;
 
 	// take an ammo away if not infinite
-	if ( pm->ps->ammo[ weaponData[pm->ps->weapon].ammoIndex ] != -1 )
+	if ( pm->ps->ammo[ weaponData[pm->ps->weapon].ammoIndex ] != INFINITE_AMMO ) // Tr!Force: [InfiniteAmmo] Ammo pmove check
 	{
 		// enough energy to fire this weapon?
 		if ((pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] - amount) >= 0) 

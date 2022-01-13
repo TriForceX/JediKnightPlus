@@ -849,8 +849,11 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 	// Tr!Force: [ForcePoints] Draw it
 	if (jkcvar_cg_drawForcePoints.integer)
 	{
+		int value = cg.snap->ps.fd.forcePower;
+		int align = value < 10 ? 23 : value < 100 ? 26 : 28;
+
 		trap_R_SetColor(colorTable[CT_ICON_BLUE]);
-		CG_DrawNumField(x + 28, y + 39, 3, cg.snap->ps.fd.forcePower, 6, 12, NUM_FONT_SMALL, qfalse);
+		CG_DrawNumField(x + align, y + 39, 3, value, 6, 12, NUM_FONT_SMALL, qfalse);
 	}
 
 	if ( cent->currentState.weapon == WP_SABER )
@@ -925,7 +928,12 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 	numColor_i = CT_HUD_ORANGE;
 
 	trap_R_SetColor( colorTable[numColor_i] );	
-	CG_DrawNumField (x + 30, y + 26, 3, value, 6, 12, NUM_FONT_SMALL,qfalse);
+	
+	// Tr!Force: [InfiniteAmmo] Show on hud
+	if (value == INFINITE_AMMO)
+		CG_DrawRotatePic2(x + 41, y + 33, 8, 16, -90, cgs.media.smallnumberShaders[8]);
+	else
+		CG_DrawNumField(x + 30, y + 26, 3, value, 6, 12, NUM_FONT_SMALL, qfalse);
 
 
 //cg.snap->ps.ammo[weaponData[cg.snap->ps.weapon].ammoIndex]
@@ -1054,7 +1062,11 @@ void CG_DrawHUD(centity_t	*cent)
 		}
 		else
 		{
-			Com_sprintf(ammoString, sizeof(ammoString), "%i", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
+			// Tr!Force: [InfiniteAmmo] Show on hud
+			if (cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex] == INFINITE_AMMO)
+				Com_sprintf(ammoString, sizeof(ammoString), "--", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
+			else
+				Com_sprintf(ammoString, sizeof(ammoString), "%i", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
 		}
 		
 		// Tr!Force: [Dimension] Show best race time
