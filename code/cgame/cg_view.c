@@ -389,7 +389,7 @@ static void CG_UpdateThirdPersonTargetDamp(void)
 	// Automatically get the ideal target, to avoid jittering.
 	CG_CalcIdealThirdPersonViewTarget();
 
-	if (cg_thirdPersonTargetDamp.value>=1.0)
+	if (cg_thirdPersonTargetDamp.value>=1.0 || jkcvar_cg_strafeHelper.integer & (SHELPER_SUPEROLDSTYLE | SHELPER_OLDSTYLE | SHELPER_NEWBARS | SHELPER_OLDBARS | SHELPER_WEZE)) // Tr!Force: [StrafeHelper] No damping
 	{	// No damping.
 		VectorCopy(cameraIdealTarget, cameraCurTarget);
 	}
@@ -460,7 +460,7 @@ static void CG_UpdateThirdPersonCameraDamp(void)
 		}
 	}
 
-	if (dampfactor>=1.0)
+	if (dampfactor>=1.0 || jkcvar_cg_strafeHelper.integer & (SHELPER_SUPEROLDSTYLE | SHELPER_OLDSTYLE | SHELPER_NEWBARS | SHELPER_OLDBARS | SHELPER_WEZE)) // Tr!Force: [StrafeHelper] No damping
 	{	// No damping.
 		VectorCopy(cameraIdealLoc, cameraCurLoc);
 	}

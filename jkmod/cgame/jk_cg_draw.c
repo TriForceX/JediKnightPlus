@@ -78,6 +78,28 @@ void JKMod_CG_Draw2D(void)
 		CG_CenterPrint(CG_GetStripEdString("JKINGAME", "MOD_ALERT"), cgs.screenHeight * .30, 0);
 	}
 
+	// Strafe helper
+	if (jkcvar_cg_strafeHelper.integer)
+	{
+		centity_t *cent = &cg_entities[cg.snap->ps.clientNum];
+		
+		JKMod_CG_CalculateSpeed(cent);
+		JKMod_CG_StrafeHelper(cent);
+
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_CROSSHAIR)
+		{
+			vec4_t		hcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float		lineWidth;
+
+			lineWidth = jkcvar_cg_sHelperLineWidth.value;
+
+			if (lineWidth < 0.25f) lineWidth = 0.25f;
+			else if (lineWidth > 5) lineWidth = 5;
+
+			JKMod_CG_StrafeHelperDrawLine(cgs.screenWidth / 2, (SCREEN_HEIGHT / 2) - 5, cgs.screenWidth / 2, (SCREEN_HEIGHT / 2) + 5, lineWidth, hcolor, hcolor[3], 0); // 640x480, 320x240
+		}
+	}
+
 	// Update console print lines
 	if (cg.jkmodCG.consolePrint > 3) cg.jkmodCG.consolePrint = 3;
 	if (cg.jkmodCG.consolePrint && (cg.jkmodCG.consolePrintTime + (cg.jkmodCG.consoleNotifyTime * 1000)) < cg.time) cg.jkmodCG.consolePrint = 0;
@@ -830,4 +852,425 @@ void JKMod_CG_DrawMovementKeys(void)
 		CG_DrawPic(w * 3 + x, h + y, w, h, cgs.jkmodMedia.keyAltOn);
 	else
 		CG_DrawPic(w * 3 + x, h + y, w, h, cgs.jkmodMedia.keyAltOff);
+}
+
+/*
+=====================================================================
+Strafe helper
+=====================================================================
+*/
+
+// Strafe helper sound
+void JKMod_CG_StrafeHelperSound(float difference) 
+{
+	// Under aiming by a bit, but still good?
+	if (difference > -40.0f && difference < 10.0f) trap_S_StartLocalSound(cgs.jkmodMedia.strafeHelperSound, CHAN_LOCAL_SOUND);
+}
+
+// Strafe helper draw line
+void JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff)
+{
+	float stepx, stepy, length = (float)sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	int i;
+
+	if (length < 1) length = 1;
+	else if (length > 2000) length = 2000;
+
+	if (!ycutoff) ycutoff = 480;
+
+	stepx = (x2 - x1) / (length / size);
+	stepy = (y2 - y1) / (length / size);
+
+	trap_R_SetColor(color);
+
+	for (i = 0; i <= (length / size); i++) 
+	{
+		if (x1 < 640 && y1 < 480 && y1 < ycutoff) CG_DrawPic(x1, y1, size, size, cgs.media.whiteShader);
+		x1 += stepx;
+		y1 += stepy;
+	}
+}
+
+// Strafe helper draw speed
+void JKMod_CG_StrafeHelperDrawSpeed(int moveDir) 
+{
+	float length;
+	float diff;
+	float midx;
+	float midy;
+	vec3_t velocity_copy;
+	vec3_t viewangle_copy;
+	vec3_t velocity_angle;
+	float g_speed;
+	float accel;
+	float optiangle;
+	usercmd_t cmd = { 0 };
+
+	if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback) 
+	{
+		trap_GetUserCmd(trap_GetCurrentCmdNumber(), &cmd);
+	}
+	else if (cg.snap) 
+	{
+		moveDir = cg.snap->ps.movementDir;
+		switch (moveDir) 
+		{
+			case 0: // W
+				cmd.forwardmove = 127; break;
+			case 1: // WA
+				cmd.forwardmove = 127; cmd.rightmove = -127; break;
+			case 2: // A
+				cmd.rightmove = -127;	break;
+			case 3: // AS
+				cmd.rightmove = -127;	cmd.forwardmove = -127; break;
+			case 4: // S
+				cmd.forwardmove = -127; break;
+			case 5: // SD
+				cmd.forwardmove = -127; cmd.rightmove = 127; break;
+			case 6: // D
+				cmd.rightmove = 127; break;
+			case 7: // DW
+				cmd.rightmove = 127; cmd.forwardmove = 127;	break;
+			default:
+				break;
+		}
+	}
+	else 
+	{
+		return; // No cg.snap causes this to return.
+	}
+
+	midx = cgs.screenWidth / 2;
+	midy = SCREEN_HEIGHT / 2;
+	VectorCopy(cg.predictedPlayerState.velocity, velocity_copy);
+	velocity_copy[2] = 0;
+	VectorCopy(cg.refdefViewAngles, viewangle_copy);
+	viewangle_copy[PITCH] = 0;
+	length = VectorNormalize(velocity_copy);
+	g_speed = cg.predictedPlayerState.speed;
+	accel = g_speed;
+	accel *= 8.0f;
+	accel /= 1000;
+	optiangle = (g_speed - accel) / length;
+
+	if ((optiangle <= 1) && (optiangle >= -1))
+		optiangle = acos(optiangle);
+	else
+		optiangle = 0;
+
+	length /= 5;
+
+	if (length > (SCREEN_HEIGHT / 2)) length = (float)(SCREEN_HEIGHT / 2);
+
+	vectoangles(velocity_copy, velocity_angle);
+
+	diff = AngleSubtract(viewangle_copy[YAW], velocity_angle[YAW]);
+	diff = diff / 180 * M_PI;
+
+	JKMod_CG_StrafeHelperDrawLine(midx, midy, midx + length * sin(diff), midy - length * cos(diff), 1, colorRed, 0.75f, 0);
+	JKMod_CG_StrafeHelperDrawLine(midx, midy, midx + cmd.rightmove, midy - cmd.forwardmove, 1, colorCyan, 0.75f, 0);
+	JKMod_CG_StrafeHelperDrawLine(midx, midy, midx + length / 2 * sin(diff + optiangle), midy - length / 2 * cos(diff + optiangle), 1, colorRed, 0.75f, 0);
+	JKMod_CG_StrafeHelperDrawLine(midx, midy, midx + length / 2 * sin(diff - optiangle), midy - length / 2 * cos(diff - optiangle), 1, colorRed, 0.75f, 0);
+}
+
+// Strafe helper show line
+void JKMod_CG_StrafeHelperLine(vec3_t velocity, float diff, qboolean active, int moveDir) 
+{
+	vec3_t start, angs, forward, delta, line;
+	float x, y, startx, starty, lineWidth;
+	int sensitivity = jkcvar_cg_sHelperPrecision.integer;
+	static const int LINE_HEIGHT = 230; // 240 is midpoint, so it should be a little higher so crosshair is always on it.
+	static const vec4_t activeColor = { 0, 1, 0, 0.75 }, normalColor = { 1, 1, 1, 0.75 }, invertColor = { 0.5f, 1, 1, 0.75 }, wColor = { 1, 0.5, 0.5, 0.75 }, rearColor = { 0.5, 1,1, 0.75 }, centerColor = { 0.5, 1, 1, 0.75 };
+	vec4_t color = { 1, 1, 1, 0.75 };
+
+	if (jkcvar_cg_sHelperPrecision.integer < 100) sensitivity = 100;
+	else if (jkcvar_cg_sHelperPrecision.integer > 10000) sensitivity = 10000;
+
+	lineWidth = jkcvar_cg_sHelperLineWidth.value;
+
+	if (lineWidth < 0.25f) lineWidth = 0.25f;
+	else if (lineWidth > 5) lineWidth = 5;
+
+	if (active) 
+	{
+		color[0] = cg.jkmodCG.strafeHelperActiveColor[0];
+		color[1] = cg.jkmodCG.strafeHelperActiveColor[1];
+		color[2] = cg.jkmodCG.strafeHelperActiveColor[2];
+		color[3] = cg.jkmodCG.strafeHelperActiveColor[3];
+	}
+	else 
+	{
+		if (moveDir == 1 || moveDir == 7)
+			memcpy(color, normalColor, sizeof(vec4_t));
+		else if (moveDir == 2 || moveDir == 6)
+			memcpy(color, invertColor, sizeof(vec4_t));
+		else if (moveDir == 0)
+			memcpy(color, wColor, sizeof(vec4_t));
+		else if (moveDir == 8)
+			memcpy(color, centerColor, sizeof(vec4_t));
+		else if (moveDir == 9 || moveDir == 10)
+			memcpy(color, rearColor, sizeof(vec4_t));
+
+		color[3] = jkcvar_cg_sHelperInactiveAlpha.value / 255.0f;
+	}
+
+	VectorCopy(cg.refdef.vieworg, start);
+	VectorCopy(velocity, angs);
+
+	angs[YAW] += diff;
+	AngleVectors(angs, forward, NULL, NULL);
+	VectorScale(forward, sensitivity, delta); // Line length
+
+	line[0] = delta[0] + start[0];
+	line[1] = delta[1] + start[1];
+	line[2] = start[2];
+
+	if (!CG_WorldCoordToScreenCoord(line, &x, &y))
+		return;
+
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_NEWBARS) 
+	{
+		JKMod_CG_StrafeHelperDrawLine(x, (SCREEN_HEIGHT / 2) + 20, x, (SCREEN_HEIGHT / 2) - 20, lineWidth, color, 0.75f, 0);
+	}
+	// Not sure how to deal with multiple lines for W only so just fuck it for now.. Proper way is to tell which line we are closest to aiming at and display the shit for that...
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_OLDBARS && active && moveDir != 0) 
+	{ 
+		CG_FillRect(cgs.screenWidth / 2, SCREEN_HEIGHT / 2, (-4.444 * AngleSubtract(cg.predictedPlayerState.viewangles[YAW], angs[YAW])), 12, colorTable[CT_RED]);
+	}
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_OLDSTYLE) 
+	{
+		int cutoff = SCREEN_HEIGHT - jkcvar_cg_sHelperCutoff.integer; // Should be between 480 and LINE_HEIGHT
+
+		if (cutoff > SCREEN_HEIGHT) cutoff = SCREEN_HEIGHT;
+		if (cutoff < LINE_HEIGHT + 20) cutoff = LINE_HEIGHT + 20;
+
+		JKMod_CG_StrafeHelperDrawLine(cgs.screenWidth * 0.5, SCREEN_HEIGHT, x, LINE_HEIGHT, lineWidth, color, color[3], cutoff);
+	}
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) 
+	{
+		int cutoff = SCREEN_HEIGHT - jkcvar_cg_sHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
+
+		if (cutoff > SCREEN_HEIGHT) cutoff = SCREEN_HEIGHT;
+		if (cutoff < LINE_HEIGHT + 20) cutoff = LINE_HEIGHT + 20;
+		if (CG_WorldCoordToScreenCoord(start, &startx, &starty)) JKMod_CG_StrafeHelperDrawLine(startx, starty, x, y, lineWidth, color, color[3], cutoff);
+	}
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_WEZE) 
+	{
+		JKMod_CG_StrafeHelperDrawSpeed(moveDir);
+	}
+	// Dont do this shit for the center line since its not really a strafe
+	if (jkcvar_cg_strafeHelper.integer & SHELPER_SOUND && active && moveDir != 8) 
+	{
+		JKMod_CG_StrafeHelperSound(100 * AngleSubtract(cg.predictedPlayerState.viewangles[YAW], angs[YAW]));
+	}
+}
+
+// Strafe helper main draw
+void JKMod_CG_StrafeHelper(centity_t* cent)
+{
+	vec_t* velocity = cg.predictedPlayerState.velocity;
+	static vec3_t velocityAngle;
+	const float currentSpeed = cg.jkmodCG.currentSpeed;
+	float pmAccel = 10.0f, pmAirAccel = 1.0f, pmFriction = 6.0f, frametime, optimalDeltaAngle, baseSpeed = cg.predictedPlayerState.speed;
+	const int moveStyle = MV_JKA; // To-Do
+	int moveDir;
+	qboolean onGround;
+	usercmd_t cmd = { 0 };
+
+	if (moveStyle == MV_SIEGE) return; // No strafe in siege
+
+	if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback) 
+	{
+		trap_GetUserCmd(trap_GetCurrentCmdNumber(), &cmd);
+	}
+	else if (cg.snap) 
+	{
+		moveDir = cg.snap->ps.movementDir;
+		switch (moveDir) 
+		{
+			case 0: // W
+				cmd.forwardmove = 1; break;
+			case 1: // WA
+				cmd.forwardmove = 1; cmd.rightmove = -1; break;
+			case 2: // A
+				cmd.rightmove = -1;	break;
+			case 3: // AS
+				cmd.rightmove = -1;	cmd.forwardmove = -1; break;
+			case 4: // S
+				cmd.forwardmove = -1; break;
+			case 5: // SD
+				cmd.forwardmove = -1; cmd.rightmove = 1; break;
+			case 6: // D
+				cmd.rightmove = 1; break;
+			case 7: // DW
+				cmd.rightmove = 1; cmd.forwardmove = 1;	break;
+			default:
+				break;
+		}
+
+		if (cg.snap->ps.pm_flags & PMF_JUMP_HELD) cmd.upmove = 1;
+	}
+	else 
+	{
+		return; // No cg.snap causes this to return.
+	}
+
+	onGround = (qboolean)(cg.snap->ps.groundEntityNum == ENTITYNUM_WORLD); // Sadly predictedPlayerState makes it jerky so need to use cg.snap groundentityNum, and check for cg.snap earlier
+
+	if (moveStyle == MV_WSW) 
+	{
+		pmAccel = 12.0f;
+		pmFriction = 8.0f;
+	}
+	else if (moveStyle == MV_CPM || moveStyle == MV_RJCPM || moveStyle == MV_BOTCPM) 
+	{
+		pmAccel = 15.0f;
+		pmFriction = 8.0f;
+	}
+	else if (moveStyle == MV_SP) 
+	{
+		pmAirAccel = 4.0f;
+		pmAccel = 12.0f;
+	}
+	else if (moveStyle == MV_SLICK) 
+	{
+		pmFriction = 0.0f; // Unless walking?
+		pmAccel = 30.0f;
+	}
+
+	if (currentSpeed < (baseSpeed - 1)) return;
+
+	if (moveStyle == MV_SP) 
+	{
+		if (!(cg.predictedPlayerState.pm_flags & PMF_JUMP_HELD) && cmd.upmove > 0) { // Also, wishspeed *= scale.  Scale is different cuz of upmove in air.  Only works ingame not from spec
+			baseSpeed /= 1.41421356237f; // umm.. dunno.. divide by sqrt(2)
+		}
+	}
+
+	if (jkcvar_cg_sHelperFPS.value < 1)
+		frametime = ((float)cg.frametime * 0.001f);
+	else if (jkcvar_cg_sHelperFPS.value > 1000) // Invalid
+		frametime = 1;
+	else 
+		frametime = 1 / jkcvar_cg_sHelperFPS.value;
+
+	if (onGround)
+		optimalDeltaAngle = acos((double)((baseSpeed - (pmAccel * baseSpeed * frametime)) / (currentSpeed * (1 - pmFriction * (frametime))))) * (180.0f / M_PI) - 45.0f;
+	else
+		optimalDeltaAngle = acos((double)((baseSpeed - (pmAirAccel * baseSpeed * frametime)) / currentSpeed)) * (180.0f / M_PI) - 45.0f;
+
+	if (optimalDeltaAngle < 0 || optimalDeltaAngle > 360) optimalDeltaAngle = 0;
+
+	velocity[2] = 0;
+	vectoangles(velocity, velocityAngle); // We have the offset from our Velocity angle that we should be aiming at, so now we need to get our velocity angle.
+
+	//QW, CPM, PJK, WSW, RJCPM have center line
+	if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SWOOP || moveStyle == MV_BOTCPM || (moveStyle == MV_SLICK && !onGround)) 
+	{
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_CENTER) JKMod_CG_StrafeHelperLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8);
+	}
+
+	// Every style but QW has WA/WD lines
+	if (moveStyle != MV_QW && moveStyle != MV_SWOOP) 
+	{ 
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_WA) JKMod_CG_StrafeHelperLine(velocityAngle, (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 1);
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_WD) JKMod_CG_StrafeHelperLine(velocityAngle, (-optimalDeltaAngle - (jkcvar_cg_sHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7);
+	}
+
+	// JKA, Q3, RJQ3, Jetpack? have A/D
+	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP || (moveStyle == MV_SLICK && onGround)) 
+	{ 
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_A) JKMod_CG_StrafeHelperLine(velocityAngle, -(45.0f - (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 2);
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_D) JKMod_CG_StrafeHelperLine(velocityAngle, (45.0f - (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove > 0), 6);
+
+		//A/D backwards strafe?																																		  
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_REAR) 
+		{
+			JKMod_CG_StrafeHelperLine(velocityAngle, (225.0f - (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 9);
+			JKMod_CG_StrafeHelperLine(velocityAngle, (135.0f + (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove > 0), 10);
+		}
+	}
+
+	// W only
+	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_SWOOP || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP) 
+	{
+		if (jkcvar_cg_strafeHelper.integer & SHELPER_W) 
+		{
+			JKMod_CG_StrafeHelperLine(velocityAngle, (45.0f + (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0);
+			JKMod_CG_StrafeHelperLine(velocityAngle, (-45.0f - (optimalDeltaAngle + (jkcvar_cg_sHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0);
+		}
+	}
+}
+
+// Strafe helper toggle command
+void JKMod_CG_StrafeHelperToggle(void) 
+{
+	jkmod_cg_bit_info_t strafeTweaks[] = 
+	{
+		"Original style",
+		"Updated style",
+		"Cgaz style",
+		"Warsow style",
+		"Sound",
+		"W",
+		"WA",
+		"WD",
+		"A",
+		"D",
+		"Rear",
+		"Center",
+		"Accel bar",
+		"Weze style",
+		"Line Crosshair"
+	};
+	const int strafeTweaksSize = ARRAY_LEN(strafeTweaks);
+
+	if (trap_Argc() == 1) 
+	{
+		int i = 0;
+		for (i = 0; i < strafeTweaksSize; i++) {
+			if ((jkcvar_cg_strafeHelper.integer & (1 << i))) {
+				CG_Printf("%2d ^2[X]^7 %s\n", i, strafeTweaks[i].string);
+			} else {
+				CG_Printf("%2d ^1[ ]^7 %s\n", i, strafeTweaks[i].string);
+			}
+		}
+		CG_Printf("Example: ^3/strafehelper 13^7 (Toggles: ^5%s^7)\n", strafeTweaks[13].string);
+		return;
+	}
+	else 
+	{
+		char arg[8] = { 0 };
+		int index;
+		const uint32_t mask = (1 << strafeTweaksSize) - 1;
+
+		trap_Argv(1, arg, sizeof(arg));
+		index = atoi(arg);
+
+		if (index < 0 || index >= strafeTweaksSize) 
+		{
+			CG_Printf("^1Invalid option %i. Range is from 0 to %i\n", index, strafeTweaksSize - 1);
+			return;
+		}
+
+		// Radio button these options. Toggle index, and make sure everything else in this group (0,1,2,3,13) is turned off
+		if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 13)) 
+		{
+			int groupMask = (1 << 0) + (1 << 1) + (1 << 2) + (1 << 3) + (1 << 13);
+			int value = jkcvar_cg_strafeHelper.integer;
+
+			groupMask &= ~(1 << index);	// Remove index from groupmask
+			value &= ~(groupMask);		// Turn groupmask off
+			value ^= (1 << index);		// Toggle index item
+
+			trap_Cvar_Set("jk_cg_strafeHelper", va("%i", value));
+		}
+		else 
+		{
+			trap_Cvar_Set("jk_cg_strafeHelper", va("%i", (1 << index) ^ (jkcvar_cg_strafeHelper.integer & mask)));
+		}
+
+		trap_Cvar_Update(&jkcvar_cg_strafeHelper);
+		CG_Printf("Strafe Helper: %s %s^7\n", strafeTweaks[index].string, ((jkcvar_cg_strafeHelper.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+	}
 }

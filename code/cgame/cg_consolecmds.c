@@ -453,7 +453,8 @@ static consoleCommand_t	commands[] = {
 	{ "invprev", CG_PrevInventory_f },
 	{ "forcenext", CG_NextForcePower_f },
 	{ "forceprev", CG_PrevForcePower_f },
-	{ "emotecamera", JKMod_CG_EmoteCamera } // Tr!Force: [JKMod] Set emote camera
+	{ "emotecamera", JKMod_CG_EmoteCamera },		// Tr!Force: [Emotes] Set emote camera
+	{ "strafehelper", JKMod_CG_StrafeHelperToggle }	// Tr!Force: [StrafeHelper] Toggle command
 };
 
 

@@ -483,6 +483,17 @@ float JKMod_CG_GroundDistance(void)
 
 /*
 =====================================================================
+Check player speed
+=====================================================================
+*/
+void JKMod_CG_CalculateSpeed(centity_t* cent)
+{
+	const vec_t* const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
+	cg.jkmodCG.currentSpeed = (float)sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1]);
+}
+
+/*
+=====================================================================
 Force push body effect
 =====================================================================
 */

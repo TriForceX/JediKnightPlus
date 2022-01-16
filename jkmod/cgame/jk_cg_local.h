@@ -29,6 +29,18 @@ Player / world information
 =====================================================================
 */
 
+// Cvar table
+typedef struct 
+{
+	vmCvar_t	*vmCvar;
+	char		*cvarName;
+	char		*defaultString;
+	void		(*update)(void);
+	int			cvarFlags;
+	int			modificationCount;
+
+} jkmod_cg_cvar_table_t;
+
 // Chat box
 typedef struct jkmod_chatbox_s
 {
@@ -67,8 +79,60 @@ typedef struct
 	int					consolePrint;				// Console print lines
 	int					consolePrintTime;			// Console print timestamp
 	int					consoleNotifyTime;			// Console notify time
+	float				currentSpeed;				// Current player speed
+	vec4_t				strafeHelperActiveColor;	// Strafe helper active color
 
 } jkmod_cg_t;
+
+// Strafe helper options
+typedef enum
+{
+	SHELPER_SUPEROLDSTYLE	= ( 1 << 0 ),
+	SHELPER_OLDSTYLE		= ( 1 << 1 ),
+	SHELPER_NEWBARS			= ( 1 << 2 ),
+	SHELPER_OLDBARS			= ( 1 << 3 ),
+	SHELPER_SOUND			= ( 1 << 4 ),
+	SHELPER_W				= ( 1 << 5 ),
+	SHELPER_WA				= ( 1 << 6 ),
+	SHELPER_WD				= ( 1 << 7 ),
+	SHELPER_A				= ( 1 << 8 ),
+	SHELPER_D				= ( 1 << 9 ),
+	SHELPER_REAR			= ( 1 << 10 ),
+	SHELPER_CENTER			= ( 1 << 11 ),
+	SHELPER_ACCELMETER		= ( 1 << 12 ),
+	SHELPER_WEZE			= ( 1 << 13 ),
+	SHELPER_CROSSHAIR		= ( 1 << 14 ),
+
+} jkmod_shelper_option_t;
+
+// Movement style
+typedef enum
+{
+	MV_SIEGE,
+	MV_JKA,
+	MV_QW,
+	MV_CPM,
+	MV_Q3,
+	MV_PJK,
+	MV_WSW,
+	MV_RJQ3,
+	MV_RJCPM,
+	MV_SWOOP,
+	MV_JETPACK,
+	MV_SPEED,
+	MV_SP,
+	MV_SLICK,
+	MV_BOTCPM,
+	MV_NUMSTYLES
+
+} jkmod_movement_style_t;
+
+// Bit value data
+typedef struct 
+{ 
+	const char		*string;
+
+} jkmod_cg_bit_info_t;
 
 // Media
 typedef struct 
@@ -98,6 +162,7 @@ typedef struct
 	qhandle_t	forceSwirl;
 	qhandle_t	useableHint;
 
+	sfxHandle_t	strafeHelperSound;
 	sfxHandle_t	jetpackActiveSound;
 	sfxHandle_t	jetpackIdleSound;
 
@@ -167,6 +232,15 @@ extern vmCvar_t						jkcvar_cg_chatBoxTime;
 extern vmCvar_t						jkcvar_cg_chatBoxHeight;
 extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
+extern vmCvar_t						jkcvar_cg_strafeHelper;
+extern vmCvar_t						jkcvar_cg_sHelperCutoff;
+extern vmCvar_t						jkcvar_cg_sHelperPrecision;
+extern vmCvar_t						jkcvar_cg_sHelperLineWidth;
+extern vmCvar_t						jkcvar_cg_sHelperActiveColor;
+extern vmCvar_t						jkcvar_cg_sHelperInactiveAlpha;
+extern vmCvar_t						jkcvar_cg_sHelperOffset;
+extern vmCvar_t						jkcvar_cg_sHelperFPS;
+
 extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_customEffects;
@@ -189,6 +263,7 @@ void		BaseJK2_CG_UpdateCvars(void);
 // jk_cg_main.c
 void		JKMod_CG_RegisterCvars(void);
 void		JKMod_CG_UpdateCvars(void);
+void		JKMod_CG_CVU_sHelperColor(void);
 void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
 
@@ -211,6 +286,12 @@ void		JKMod_CG_DrawRaceTimer(void);
 void		JKMod_CG_DrawPauseString(void);
 void		JKMod_CG_DrawPlayerLabels(void);
 void		JKMod_CG_DrawMovementKeys(void);
+void		JKMod_CG_StrafeHelperSound(float difference);
+void		JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff);
+void		JKMod_CG_StrafeHelperDrawSpeed(int moveDir);
+void		JKMod_CG_StrafeHelperLine(vec3_t velocity, float diff, qboolean active, int moveDir);
+void		JKMod_CG_StrafeHelper(centity_t* cent);
+void		JKMod_CG_StrafeHelperToggle(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);
@@ -220,6 +301,7 @@ void		JKMod_CG_DuelEnd(qboolean winner);
 qboolean	JKMod_CG_EmoteUI(void);
 void		JKMod_CG_EmoteCamera(void);
 float		JKMod_CG_GroundDistance(void);
+void		JKMod_CG_CalculateSpeed(centity_t* cent);
 void		JKMod_CG_ForcePushBodyBlur(centity_t* cent);
 
 #endif // __JK_CG_LOCAL_H__

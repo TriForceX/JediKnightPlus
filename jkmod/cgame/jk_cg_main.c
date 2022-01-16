@@ -17,15 +17,6 @@ Cvar table list
 =====================================================================
 */
 
-typedef struct 
-{
-	vmCvar_t	*vmCvar;
-	char		*cvarName;
-	char		*defaultString;
-	int			cvarFlags;
-
-} cvarTable_t;
-
 vmCvar_t	jkcvar_cg_privateDuel;
 vmCvar_t	jkcvar_cg_duelGlow;
 vmCvar_t	jkcvar_cg_duelEnd;
@@ -55,6 +46,15 @@ vmCvar_t	jkcvar_cg_chatBoxTime;
 vmCvar_t	jkcvar_cg_chatBoxHeight;
 vmCvar_t	jkcvar_cg_chatBoxHistory;
 
+vmCvar_t	jkcvar_cg_strafeHelper;
+vmCvar_t	jkcvar_cg_sHelperCutoff;
+vmCvar_t	jkcvar_cg_sHelperPrecision;
+vmCvar_t	jkcvar_cg_sHelperLineWidth;
+vmCvar_t	jkcvar_cg_sHelperActiveColor;
+vmCvar_t	jkcvar_cg_sHelperInactiveAlpha;
+vmCvar_t	jkcvar_cg_sHelperOffset;
+vmCvar_t	jkcvar_cg_sHelperFPS;
+
 vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
 vmCvar_t	jkcvar_cg_customEffects;
@@ -64,45 +64,54 @@ vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
 vmCvar_t	cg_developer;
 
-static cvarTable_t	JKModCGcvarTable[] = {
+static jkmod_cg_cvar_table_t JKModCGcvarTable[] = 
+{
+	{ &jkcvar_cg_privateDuel,			"jk_cg_privateDuel",			"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
+	{ &jkcvar_cg_duelGlow,				"jk_cg_duelGlow",				"1",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_duelEnd,				"jk_cg_duelEnd",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_duelEndOrbit,			"jk_cg_duelEndOrbit",			"3",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_duelEndDelay,			"jk_cg_duelEndDelay",			"1",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawClock,				"jk_cg_drawClock",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawHitBox,			"jk_cg_drawHitBox",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawForcePoints,		"jk_cg_drawForcePoints",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawInventory,			"jk_cg_drawInventory",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawRaceTimer,			"jk_cg_drawRaceTimer",			"1",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawBactaModel,		"jk_cg_drawBactaModel",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawPlayerNames,		"jk_cg_drawPlayerNames",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawMovementKeys,		"jk_cg_drawMovementKeys",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_scoreboardIcons,		"jk_cg_scoreboardIcons",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_scoreboardExtras,		"jk_cg_scoreboardExtras",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_chatIcon,				"jk_cg_chatIcon",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_saberTrailSpeed,		"jk_cg_saberTrailSpeed",		"40",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_damageBlend,			"jk_cg_damageBlend",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_flagOpacity,			"jk_cg_flagOpacity",			"255",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_flagAlignment,			"jk_cg_flagAlignment",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_chatPlayerOpacity,		"jk_cg_chatPlayerOpacity",		"1",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_specialMoveCamera,		"jk_cg_specialMoveCamera",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_identifyObjects,		"jk_cg_identifyObjects",		"1",			NULL,						CVAR_ARCHIVE, 0 },
 
-	{ &jkcvar_cg_privateDuel,		"jk_cg_privateDuel",		"0",	CVAR_ARCHIVE | CVAR_USERINFO },
-	{ &jkcvar_cg_duelGlow,			"jk_cg_duelGlow",			"1",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_duelEnd,			"jk_cg_duelEnd",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_duelEndOrbit,		"jk_cg_duelEndOrbit",		"3",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_duelEndDelay,		"jk_cg_duelEndDelay",		"1",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawClock,			"jk_cg_drawClock",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawHitBox,		"jk_cg_drawHitBox",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawForcePoints,	"jk_cg_drawForcePoints",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawInventory,		"jk_cg_drawInventory",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawRaceTimer,		"jk_cg_drawRaceTimer",		"1",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawBactaModel,	"jk_cg_drawBactaModel",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawPlayerNames,	"jk_cg_drawPlayerNames",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_drawMovementKeys,	"jk_cg_drawMovementKeys",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_scoreboardIcons,	"jk_cg_scoreboardIcons",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_scoreboardExtras,	"jk_cg_scoreboardExtras",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatIcon,			"jk_cg_chatIcon",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_saberTrailSpeed,	"jk_cg_saberTrailSpeed",	"40",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_damageBlend,		"jk_cg_damageBlend",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_flagOpacity,		"jk_cg_flagOpacity",		"255",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_flagAlignment,		"jk_cg_flagAlignment",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatPlayerOpacity,	"jk_cg_chatPlayerOpacity",	"1",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_specialMoveCamera,	"jk_cg_specialMoveCamera",	"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_identifyObjects,	"jk_cg_identifyObjects",	"1",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_chatBox,				"jk_cg_chatBox",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_chatBoxTime,			"jk_cg_chatBoxTime",			"10",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_chatBoxHeight,			"jk_cg_chatBoxHeight",			"360",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_chatBoxHistory,		"jk_cg_chatBoxHistory",			"1",			NULL,						CVAR_ARCHIVE, 0 },
+	
+	{ &jkcvar_cg_strafeHelper,			"jk_cg_strafeHelper",			"992",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperCutoff,			"jk_cg_sHelperCutoff",			"240",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperPrecision,		"jk_cg_sHelperPrecision",		"256",			NULL,						CVAR_NONE, 0 },
+	{ &jkcvar_cg_sHelperLineWidth,		"jk_cg_sHelperLineWidth",		"1",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperActiveColor,	"jk_cg_sHelperActiveColor",		"0 255 0 200",	JKMod_CG_CVU_sHelperColor,	CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperInactiveAlpha,	"jk_cg_sHelperInactiveAlpha",	"200",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperOffset,			"jk_cg_sHelperOffset",			"75",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_sHelperFPS,			"jk_cg_sHelperFPS",				"0",			NULL,						CVAR_NONE, 0 },
 
-	{ &jkcvar_cg_chatBox,			"jk_cg_chatBox",			"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatBoxTime,		"jk_cg_chatBoxTime",		"10",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatBoxHeight,		"jk_cg_chatBoxHeight",		"360",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_chatBoxHistory,	"jk_cg_chatBoxHistory",		"1",	CVAR_ARCHIVE },
+	{ &jkcvar_cg_customHats,			"jk_cg_customHats",				"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
+	{ &jkcvar_cg_customAnims,			"jk_cg_customAnims",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_customEffects,			"jk_cg_customEffects",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_jetPackIdle,			"jk_cg_jetPackIdle",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 
-	{ &jkcvar_cg_customHats,		"jk_cg_customHats",			"0",	CVAR_ARCHIVE | CVAR_USERINFO },
-	{ &jkcvar_cg_customAnims,		"jk_cg_customAnims",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_customEffects,		"jk_cg_customEffects",		"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_jetPackIdle,		"jk_cg_jetPackIdle",		"0",	CVAR_ARCHIVE },
-
-	{ &jkcvar_cg_test1,				"jk_cg_test1",				"0",	CVAR_ARCHIVE },
-	{ &jkcvar_cg_test2,				"jk_cg_test2",				"0",	CVAR_ARCHIVE },
-	{ &cg_developer,				"developer",				"0",	CVAR_NONE },
+	{ &jkcvar_cg_test1,					"jk_cg_test1",					"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_test2,					"jk_cg_test2",					"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &cg_developer,					"developer",					"0",			NULL,						CVAR_NONE, 0 },
 
 };
 
@@ -113,16 +122,18 @@ static int JKModCGcvarTableSize = ARRAY_LEN(JKModCGcvarTable);
 Register / update cvars functions
 =====================================================================
 */
+
+// Register cvars
 void JKMod_CG_RegisterCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
-	char		var[MAX_TOKEN_CHARS];
+	int						i;
+	jkmod_cg_cvar_table_t	*cv;
+	char					var[MAX_TOKEN_CHARS];
 
 	// Register all the cvars
-	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) {
-		trap_Cvar_Register(cv->vmCvar, cv->cvarName,
-			cv->defaultString, cv->cvarFlags);
+	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) 
+	{
+		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 	}
 
 	// Launch original register cvars function
@@ -136,14 +147,23 @@ void JKMod_CG_RegisterCvars(void)
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
 }
 
+// Update cvars
 void JKMod_CG_UpdateCvars(void)
 {
-	int			i;
-	cvarTable_t	*cv;
+	int						i;
+	jkmod_cg_cvar_table_t	*cv;
 
 	// Update all the cvars
-	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) {
+	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) 
+	{
 		trap_Cvar_Update(cv->vmCvar);
+
+		if(cv->modificationCount != cv->vmCvar->modificationCount)
+		{
+			cv->modificationCount = cv->vmCvar->modificationCount;
+
+			if (cv->update) cv->update();
+		}
 	}
 
 	// Launch original update cvars function
@@ -151,6 +171,31 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Check console notify time
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
+}
+
+// Update strafe helper active color
+void JKMod_CG_CVU_sHelperColor(void)
+{
+	int i;
+
+	if (sscanf(jkcvar_cg_sHelperActiveColor.string, "%f %f %f %f", &cg.jkmodCG.strafeHelperActiveColor[0], &cg.jkmodCG.strafeHelperActiveColor[1], &cg.jkmodCG.strafeHelperActiveColor[2], &cg.jkmodCG.strafeHelperActiveColor[3]) != 4)
+	{
+		cg.jkmodCG.strafeHelperActiveColor[0] = 0;
+		cg.jkmodCG.strafeHelperActiveColor[1] = 255;
+		cg.jkmodCG.strafeHelperActiveColor[2] = 0;
+		cg.jkmodCG.strafeHelperActiveColor[3] = 200;
+	}
+
+	for (i = 0; i < 4; i++) 
+	{
+		if (cg.jkmodCG.strafeHelperActiveColor[i] < 0) cg.jkmodCG.strafeHelperActiveColor[i] = 0;
+		else if (cg.jkmodCG.strafeHelperActiveColor[i] > 255) cg.jkmodCG.strafeHelperActiveColor[i] = 255;
+	}
+
+	cg.jkmodCG.strafeHelperActiveColor[0] /= 255.0f;
+	cg.jkmodCG.strafeHelperActiveColor[1] /= 255.0f;
+	cg.jkmodCG.strafeHelperActiveColor[2] /= 255.0f;
+	cg.jkmodCG.strafeHelperActiveColor[3] /= 255.0f;
 }
 
 /*
@@ -211,6 +256,7 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.jetpackActive		= trap_FX_RegisterEffect("jkmod_jetpack/idle");
 	cgs.jkmodMedia.jetpackIdle			= trap_FX_RegisterEffect("jkmod_jetpack/ground");
 
+	cgs.jkmodMedia.strafeHelperSound	= trap_S_RegisterSound("sound/interface/update.mp3");
 	cgs.jkmodMedia.jetpackActiveSound	= trap_S_RegisterSound("sound/effects/fire_lp.wav");
 	cgs.jkmodMedia.jetpackIdleSound		= trap_S_RegisterSound("sound/effects/torch_burning_lp.wav");
 
