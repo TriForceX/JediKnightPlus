@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.16.2
+- Added drain model map entity
+- Added cvar for silent macro scan alerts
+- Show player illegal bind instead IP on scan alert
+- Added duel pass through feature
+- Disable jetpack if cvar turned off
+- Added infinite ammo for instagib and cheats
+- Fixed execute linux server bash
+
 ## 0.16.1
 - Removed map restart requirement on dimension cvar
 - Fixed captures mini scoreboard

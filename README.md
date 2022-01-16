@@ -70,6 +70,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom call vote system (Custom control, vote results, etc...)
 - [x] Alternative slow-mo duel end feature (Custom timescale)
 - [x] Custom private duel distance
+- [x] Dueling players pass-through feature
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
 - [x] Custom client begin sound
@@ -164,6 +165,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Server emotes menu for usage and binding
 - [x] Custom private duel end animation
 - [x] Toggle private duel glow
+- [x] Smooth dueling players pass-through
 - [x] Fixed force rage recovery icon (Borderless)
 - [x] Enable first person lightsaber option on menus
 - [ ] Enable first person turret chair view
