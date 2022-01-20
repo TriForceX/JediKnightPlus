@@ -1362,6 +1362,13 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Tr!Force: [Duels] Update auto duel cvar from server cmd
+	if ( !strcmp( cmd, "jk_cg_autoDuel" ) )
+	{
+		trap_Cvar_Set("jk_cg_autoDuel", CG_Argv(1));
+		return;
+	}
+
 	CG_Printf( "Unknown client game command: %s\n", cmd );
 }
 

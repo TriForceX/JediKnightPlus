@@ -120,16 +120,20 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Duels ^5]^7\n"
-			"^7Engage different dueling challenges to another players\n"
-			"^7You can hide other players outside the duel by using the command: ^2/engage_private\n"
+			"^7Choose between different dueling challenges actions\n"
+			"^7Your private duels are %s ^7and auto duel accept is %s\n"
 			"^5----------\n"
 			"^7Command list:\n"
 			"^3engage_duel\n"
 			"^3engage_duel_force\n"
+			"^3engage_private\n"
+			"^3engage_auto\n"
 			"^5----------\n"
 			"^2Note 1: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
 			"^2Note 2: ^7Private duels will work only if ^3duel dimension ^7is enabled by the server\n"
-			"^7\""));
+			"^7\"", 
+			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
+			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled")));
 		return;
 	}
 	// Help dimensions
@@ -512,7 +516,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			challenged->client->ps.duelInProgress = qtrue;
 
 			// Set dimension
-			if ((jkcvar_altDimension.integer & DIMENSION_DUEL) && challenged->client->pers.jkmodPers.privateDuel)
+			if ((jkcvar_altDimension.integer & DIMENSION_DUEL) && challenged->client->sess.jkmodSess.privateDuel)
 			{
 				unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
 
@@ -555,7 +559,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 		else
 		{
-			qboolean privateDuel = (jkcvar_altDimension.integer & DIMENSION_DUEL) && ent->client->pers.jkmodPers.privateDuel;
+			qboolean privateDuel = (jkcvar_altDimension.integer & DIMENSION_DUEL) && ent->client->sess.jkmodSess.privateDuel;
 
 			if (jkcvar_allowCustomDuel.integer) 
 			{
@@ -594,6 +598,22 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 		ent->client->ps.duelIndex = challenged->s.number;
 		ent->client->ps.duelTime = level.time + 5000;
+
+		// Auto duel view and challenge enemy
+		if (challenged->client->sess.jkmodSess.autoDuel)
+		{
+			vec3_t entDir, otherAngles, lookAng;
+
+			VectorSubtract(ent->client->ps.origin, challenged->client->ps.origin, entDir);
+			VectorCopy(challenged->client->ps.viewangles, otherAngles);
+			vectoangles(entDir, lookAng);
+
+			otherAngles[YAW] = vectoyaw(entDir);
+			otherAngles[PITCH] = lookAng[PITCH];
+
+			SetClientViewAngle(challenged, otherAngles);
+			JKMod_EngageDuel(challenged, type);
+		}
 	}
 }
 
@@ -625,22 +645,44 @@ static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
 {
 	if (jkcvar_altDimension.integer & DIMENSION_DUEL)
 	{
-		if (ent->client->pers.jkmodPers.privateDuel) {
-			ent->client->pers.jkmodPers.privateDuel = qfalse;
+		if (ent->client->sess.jkmodSess.privateDuel) {
+			ent->client->sess.jkmodSess.privateDuel = qfalse;
 			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^1disabled\n\""));
 		} else {
-			ent->client->pers.jkmodPers.privateDuel = qtrue;
+			ent->client->sess.jkmodSess.privateDuel = qtrue;
 			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^2enabled\n\""));
 		}
 
 		// Update clientside
 		if (ent->client->pers.jkmodPers.clientPlugin) {
-			trap_SendServerCommand(ent - g_entities, va("jk_cg_privateDuel %i", (int)ent->client->pers.jkmodPers.privateDuel));
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_privateDuel %i", (int)ent->client->sess.jkmodSess.privateDuel));
 		}
 	}
 	else
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"Private duels are ^1disabled ^7by the server\n\""));
+	}
+	return;
+}
+
+/*
+=====================================================================
+Check private duel challenge
+=====================================================================
+*/
+static void JKMod_Cmd_EngageAuto(gentity_t* ent)
+{
+	if (ent->client->sess.jkmodSess.autoDuel) {
+		ent->client->sess.jkmodSess.autoDuel = qfalse;
+		trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^1disabled\n\""));
+	} else {
+		ent->client->sess.jkmodSess.autoDuel = qtrue;
+		trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^2enabled\n\""));
+	}
+
+	// Update clientside
+	if (ent->client->pers.jkmodPers.clientPlugin) {
+		trap_SendServerCommand(ent - g_entities, va("jk_cg_autoDuel %i", (int)ent->client->sess.jkmodSess.autoDuel));
 	}
 	return;
 }
@@ -1686,6 +1728,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "engage_fullforceduel",	JKMod_Cmd_EngageDuel },
 	{ "engage_ff",				JKMod_Cmd_EngageDuel },
 	{ "engage_private",			JKMod_Cmd_EngagePrivate },
+	{ "engage_auto",			JKMod_Cmd_EngageAuto },
 
 	{ "whois",					JKMod_Cmd_WhoIs },
 	{ "macroalert",				JKMod_Cmd_MacroAlert },

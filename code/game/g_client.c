@@ -1169,11 +1169,25 @@ void ClientUserinfoChanged( int clientNum ) {
 	}
 
 	// Tr!Force: [Duel] Private duel check
-	s = Info_ValueForKey( userinfo, "jk_cg_privateDuel" );
-	if ( !atoi( s ) ) {
-		client->pers.jkmodPers.privateDuel = qfalse;
-	} else {
-		client->pers.jkmodPers.privateDuel = qtrue;
+	if (client->pers.jkmodPers.clientPlugin)
+	{
+		s = Info_ValueForKey( userinfo, "jk_cg_privateDuel" );
+		if ( !atoi( s ) ) {
+			client->sess.jkmodSess.privateDuel = qfalse;
+		} else {
+			client->sess.jkmodSess.privateDuel = qtrue;
+		}
+	}
+
+	// Tr!Force: [Duel] Auto duel check
+	if (client->pers.jkmodPers.clientPlugin)
+	{
+		s = Info_ValueForKey( userinfo, "jk_cg_autoDuel" );
+		if ( !atoi( s ) ) {
+			client->sess.jkmodSess.autoDuel = qfalse;
+		} else {
+			client->sess.jkmodSess.autoDuel = qtrue;
+		}
 	}
 
 	// check the item prediction

@@ -120,6 +120,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 
 	// visuals cvars				default		recommended
 	{ "jk_cg_privateDuel",			"0",		"0" },
+	{ "jk_cg_autoDuel",				"0",		"0" },
 	{ "jk_cg_duelGlow",				"1",		"1" },
 	{ "jk_cg_duelEndOrbit",			"3",		"3" },
 	{ "jk_cg_duelEndDelay",			"1",		"1" },

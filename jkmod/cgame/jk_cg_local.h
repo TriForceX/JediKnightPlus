@@ -235,6 +235,7 @@ Cvar registration
 */
 
 extern vmCvar_t						jkcvar_cg_privateDuel;
+extern vmCvar_t						jkcvar_cg_autoDuel;
 extern vmCvar_t						jkcvar_cg_duelGlow;
 extern vmCvar_t						jkcvar_cg_duelEnd;
 extern vmCvar_t						jkcvar_cg_duelEndOrbit;

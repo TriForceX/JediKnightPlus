@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 149
+COUNT 151
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1330,7 +1330,7 @@ INDEX 147
    REFERENCE CLIENT_CUSTOMEFFECTS
    TEXT_LANGUAGE1 "Custom effects:"
    TEXT_LANGUAGE2 "Effets personnalisés:"
-   TEXT_LANGUAGE3 "Zusätzliche effekte :"
+   TEXT_LANGUAGE3 "Zusätzliche effekte:"
    TEXT_LANGUAGE6 "Custom effects:"
    TEXT_LANGUAGE8 "Efectos personalizados:"
 }
@@ -1342,4 +1342,22 @@ INDEX 148
    TEXT_LANGUAGE3 "Benutzerdefinierte effekte für spielermodelle."
    TEXT_LANGUAGE6 "Custom animations for player models."
    TEXT_LANGUAGE8 "Efectos personalizados para modelos de jugadores."
+}
+INDEX 149
+{
+   REFERENCE CLIENT_AUTODUEL
+   TEXT_LANGUAGE1 "Auto duel:"
+   TEXT_LANGUAGE2 "Duel automatique:"
+   TEXT_LANGUAGE3 "Auto-duell:"
+   TEXT_LANGUAGE6 "Auto duel:"
+   TEXT_LANGUAGE8 "Duelo automático:"
+}
+INDEX 150
+{
+   REFERENCE CLIENT_AUTODUEL_DESC
+   TEXT_LANGUAGE1 "Automatically accept dueling challenges."
+   TEXT_LANGUAGE2 "Accepter les défis du duel automatiquement."
+   TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen."
+   TEXT_LANGUAGE6 "Automatically accept dueling challenges."
+   TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente."
 }

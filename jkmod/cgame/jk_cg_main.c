@@ -18,6 +18,7 @@ Cvar table list
 */
 
 vmCvar_t	jkcvar_cg_privateDuel;
+vmCvar_t	jkcvar_cg_autoDuel;
 vmCvar_t	jkcvar_cg_duelGlow;
 vmCvar_t	jkcvar_cg_duelEnd;
 vmCvar_t	jkcvar_cg_duelEndOrbit;
@@ -68,6 +69,7 @@ vmCvar_t	cg_developer;
 static jkmod_cg_cvar_table_t JKModCGcvarTable[] = 
 {
 	{ &jkcvar_cg_privateDuel,			"jk_cg_privateDuel",			"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
+	{ &jkcvar_cg_autoDuel,				"jk_cg_autoDuel",				"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
 	{ &jkcvar_cg_duelGlow,				"jk_cg_duelGlow",				"1",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_duelEnd,				"jk_cg_duelEnd",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_duelEndOrbit,			"jk_cg_duelEndOrbit",			"3",			NULL,						CVAR_ARCHIVE, 0 },

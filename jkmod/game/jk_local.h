@@ -156,6 +156,8 @@ typedef struct
 typedef struct
 {
 	qboolean		motdSeen;					// Server motd seen
+	qboolean		privateDuel;				// Private duel challenges
+	qboolean		autoDuel;					// Auto accept duel challenges
 	char			clientIP[MAX_IP_STRING];	// Client IP string
 	int				ignoredPlayer[2];			// Client ignored player chats & duels
 	int				ignoredAll[2];				// Client ignored all chats & duels
@@ -166,7 +168,6 @@ typedef struct
 typedef struct
 {
 	qboolean		clientPlugin;			// Client plugin check
-	qboolean		privateDuel;			// Based on private duel userinfo
 	int				customDuel;				// Client is in custom duel
 	int				teleportChatOrigin[5];	// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check
