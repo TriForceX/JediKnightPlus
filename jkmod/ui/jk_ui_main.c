@@ -111,6 +111,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_chatBoxTime",			"10",		"10" },
 	{ "jk_cg_chatBoxHeight",		"360",		"360" },
 	{ "jk_cg_chatBoxHistory",		"1",		"2" },
+	{ "jk_cg_speedMeter",			"256",		"256" },
 	{ "jk_cg_strafeHelper",			"992",		"992" },
 	{ "cg_drawTimer",				"0",		NULL },
 	{ "cg_drawFPS",					"0",		NULL },

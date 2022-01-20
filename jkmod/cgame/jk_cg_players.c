@@ -438,33 +438,6 @@ qboolean JKMod_CG_EmoteUI(void)
 
 /*
 =====================================================================
-Check player emote camera
-=====================================================================
-*/
-void JKMod_CG_EmoteCamera(void)
-{
-	int cameraAngle = 180;
-	int cameraRange = 120;
-	int cameraVertOffset = 0;
-
-	if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) return;
-	if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) return;
-	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
-	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
-	
-	if (cg_thirdPersonAngle.value != cameraAngle) cg.jkmodCG.prevCameraAngle = cg_thirdPersonAngle.value;
-	if (cg_thirdPersonRange.value != cameraRange) cg.jkmodCG.prevCameraRange = cg_thirdPersonRange.value;
-	if (cg_thirdPersonVertOffset.value != cameraVertOffset) cg.jkmodCG.prevCameraVertOffset = cg_thirdPersonVertOffset.value;
-	
-	cg_thirdPersonAngle.value = cg_thirdPersonAngle.value != cameraAngle ? cameraAngle : cg.jkmodCG.prevCameraAngle;
-	cg_thirdPersonRange.value = cg_thirdPersonRange.value != cameraRange ? cameraRange : cg.jkmodCG.prevCameraRange;
-	cg_thirdPersonVertOffset.value = cg_thirdPersonVertOffset.value != cameraVertOffset ? cameraVertOffset : cg.jkmodCG.prevCameraVertOffset;
-
-	cg.jkmodCG.emoteCamera = !cg.jkmodCG.emoteCamera ? qtrue : qfalse;
-}
-
-/*
-=====================================================================
 Check player ground distance
 =====================================================================
 */

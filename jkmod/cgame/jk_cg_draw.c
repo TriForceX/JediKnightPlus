@@ -24,6 +24,8 @@ Custom draw functions
 */
 void JKMod_CG_Draw2D(void)
 {
+	centity_t *cent = &cg_entities[cg.snap->ps.clientNum];
+
 	// Draw clock
 	if (jkcvar_cg_drawClock.integer)
 	{
@@ -78,18 +80,21 @@ void JKMod_CG_Draw2D(void)
 		CG_CenterPrint(CG_GetStripEdString("JKINGAME", "MOD_ALERT"), cgs.screenHeight * .30, 0);
 	}
 
+	// Calculate speed
+	if (jkcvar_cg_strafeHelper.integer || jkcvar_cg_speedMeter.integer & SMETER_ENABLE)
+	{
+		JKMod_CG_CalculateSpeed(cent);
+	}
+
 	// Strafe helper
 	if (jkcvar_cg_strafeHelper.integer)
 	{
-		centity_t *cent = &cg_entities[cg.snap->ps.clientNum];
-		
-		JKMod_CG_CalculateSpeed(cent);
 		JKMod_CG_StrafeHelper(cent);
 
 		if (jkcvar_cg_strafeHelper.integer & SHELPER_CROSSHAIR)
 		{
-			vec4_t		hcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
-			float		lineWidth;
+			vec4_t	hcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float	lineWidth;
 
 			lineWidth = jkcvar_cg_sHelperLineWidth.value;
 
@@ -99,6 +104,18 @@ void JKMod_CG_Draw2D(void)
 			JKMod_CG_StrafeHelperDrawLine(cgs.screenWidth / 2, (SCREEN_HEIGHT / 2) - 5, cgs.screenWidth / 2, (SCREEN_HEIGHT / 2) + 5, lineWidth, hcolor, hcolor[3], 0); // 640x480, 320x240
 		}
 	}
+
+	// Speed meter
+	if (jkcvar_cg_speedMeter.integer & SMETER_ENABLE)
+	{
+		if ((jkcvar_cg_speedMeter.integer & SMETER_ACCELMETER) || (jkcvar_cg_strafeHelper.integer & SHELPER_ACCELMETER)) JKMod_CG_SpeedMeterAccel();
+		if (jkcvar_cg_speedMeter.integer & SMETER_JUMPHEIGHT) JKMod_CG_SpeedMeterJumpHeight(cent);
+		if (jkcvar_cg_speedMeter.integer & SMETER_JUMPDISTANCE) JKMod_CG_SpeedMeterJumpDistance();
+		if (jkcvar_cg_speedMeter.integer & SMETER_VERTICALSPEED) JKMod_CG_SpeedMeterVerticalSpeed();
+
+		JKMod_CG_SpeedMeter();
+	}
+		
 
 	// Update console print lines
 	if (cg.jkmodCG.consolePrint > 3) cg.jkmodCG.consolePrint = 3;
@@ -519,19 +536,21 @@ void JKMod_CG_DrawDimensionString(void)
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
 
-	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_DUEL) dimensionStr = "Private Duel";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_GUNS) dimensionStr = "Guns Arena";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) dimensionStr = "Race Defrag";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_SABER) dimensionStr = "Saber Only";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) dimensionStr = "Insta Kill";
-	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT) dimensionStr = "Cheats Mode";
+	switch (cg.snap->ps.stats[JK_DIMENSION]) 
+	{
+		case DIMENSION_DUEL: dimensionStr = "[Private Duel]"; break;
+		case DIMENSION_GUNS: dimensionStr = "[Guns Arena]"; break;
+		case DIMENSION_RACE: dimensionStr = "[Race Defrag]"; break;
+		case DIMENSION_SABER: dimensionStr = "[Saber Only]"; break;
+		case DIMENSION_INSTA: dimensionStr = "[Insta Kill]"; break;
+		case DIMENSION_CHEAT: dimensionStr = "[Cheats Mode]"; break;
+	}
 
 	if (dimensionStr) {
 		if (cg_hudFiles.integer) {
-			vec4_t textColor = { .875f, .718f, .121f, 1.0f };
-			UI_DrawProportionalString(0.5f * cgs.screenWidth, cgs.screenHeight - 25, va("%s", dimensionStr), UI_CENTER | UI_SMALLFONT | UI_DROPSHADOW, textColor);
+			CG_Text_Paint(85, cgs.screenHeight - 20, 0.7, colorTable[CT_LTORANGE], dimensionStr, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 		} else {
-			UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, va("[%s]", dimensionStr), UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
+			UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, dimensionStr, UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
 		}
 	}
 }
@@ -799,7 +818,7 @@ void JKMod_CG_DrawMovementKeys(void)
 	// Small
 	else 
 	{
-		x = cgs.screenWidth - 165;
+		x = cgs.screenWidth - (cg_hudFiles.integer ? 185 : 165);
 		y = cg_hudFiles.integer ? 443 : 423;
 		scale = 1;
 	}
@@ -873,6 +892,9 @@ void JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, float
 	float stepx, stepy, length = (float)sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	int i;
 
+	if (trap_Key_GetCatcher() & (KEYCATCH_UI|KEYCATCH_MESSAGE)) return;
+	if (cg.scoreBoardShowing) return;
+
 	if (length < 1) length = 1;
 	else if (length > 2000) length = 2000;
 
@@ -885,7 +907,7 @@ void JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, float
 
 	for (i = 0; i <= (length / size); i++) 
 	{
-		if (x1 < 640 && y1 < 480 && y1 < ycutoff) CG_DrawPic(x1, y1, size, size, cgs.media.whiteShader);
+		if (x1 < cgs.screenWidth && y1 < SCREEN_HEIGHT && y1 < ycutoff) CG_DrawPic(x1, y1, size, size, cgs.media.whiteShader);
 		x1 += stepx;
 		y1 += stepy;
 	}
@@ -1014,7 +1036,12 @@ void JKMod_CG_StrafeHelperLine(vec3_t velocity, float diff, qboolean active, int
 		color[3] = jkcvar_cg_sHelperInactiveAlpha.value / 255.0f;
 	}
 
-	VectorCopy(cg.refdef.vieworg, start);
+	if (!(jkcvar_cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) && !cg.renderingThirdPerson) {
+		VectorCopy(cg.refdef.vieworg, start);
+	} else {
+		VectorCopy(cg.predictedPlayerState.origin, start);
+	}
+
 	VectorCopy(velocity, angs);
 
 	angs[YAW] += diff;
@@ -1077,6 +1104,8 @@ void JKMod_CG_StrafeHelper(centity_t* cent)
 	qboolean onGround;
 	usercmd_t cmd = { 0 };
 
+	if (trap_Key_GetCatcher() & (KEYCATCH_UI|KEYCATCH_MESSAGE)) return;
+	if (cg.scoreBoardShowing) return;
 	if (moveStyle == MV_SIEGE) return; // No strafe in siege
 
 	if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback) 
@@ -1202,75 +1231,290 @@ void JKMod_CG_StrafeHelper(centity_t* cent)
 	}
 }
 
-// Strafe helper toggle command
-void JKMod_CG_StrafeHelperToggle(void) 
-{
-	jkmod_cg_bit_info_t strafeTweaks[] = 
-	{
-		"Original style",
-		"Updated style",
-		"Cgaz style",
-		"Warsow style",
-		"Sound",
-		"W",
-		"WA",
-		"WD",
-		"A",
-		"D",
-		"Rear",
-		"Center",
-		"Accel bar",
-		"Weze style",
-		"Line Crosshair"
-	};
-	const int strafeTweaksSize = ARRAY_LEN(strafeTweaks);
+/*
+=====================================================================
+Draw speed meter
+=====================================================================
+*/
 
-	if (trap_Argc() == 1) 
+// Draw accel meter
+void JKMod_CG_SpeedMeterAccel(void)
+{
+	const float optimalAccel = cg.predictedPlayerState.speed * ((float)cg.frametime / 1000.0f);
+	const float potentialSpeed = (float)sqrt(cg.jkmodCG.previousSpeed * cg.jkmodCG.previousSpeed - optimalAccel * optimalAccel + 2 * (250 * optimalAccel));
+	float actualAccel, total, percentAccel, percentAccelFinal, x, y, width, height;
+	const float accel = cg.jkmodCG.currentSpeed - cg.jkmodCG.previousSpeed;
+	static int t, i, previous, lastupdate;
+	unsigned int frameTime;
+	static float previousTimes[PERCENT_SAMPLES];
+	static unsigned int index;
+	vec4_t bgColor = { 0.5f, 0.5f, 0.5f, 0.5f };
+	vec4_t accelColor1 = { 1.0f, 0.0f, 0.0f, 0.5f }; // colorTable[CT_GREEN]
+	vec4_t accelColor2 = { 0.0f, 1.0f, 0.0f, 0.5f }; // colorTable[CT_RED]
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
+
+	width = 43;
+	height = 13;
+	x = 0.5f * cgs.screenWidth - (width / 2);
+	y = cgs.screenHeight - 19;
+
+	CG_FillRect(x, y, width, height, bgColor);
+	CG_DrawRect(x - 1, y - 1, width + 1, height + 2, 0.5f, colorTable[CT_BLACK]);
+
+	actualAccel = accel;
+
+	if (actualAccel < 0) actualAccel = 0.001f;
+	else if (actualAccel >(potentialSpeed - cg.jkmodCG.currentSpeed)) actualAccel = (potentialSpeed - cg.jkmodCG.currentSpeed) * 0.99f;
+
+	t = trap_Milliseconds();
+	frameTime = t - previous;
+	previous = t;
+	lastupdate = t;
+	previousTimes[index % PERCENT_SAMPLES] = actualAccel / (potentialSpeed - cg.jkmodCG.currentSpeed);
+	index++;
+
+	total = 0;
+	
+	for (i = 0; i < PERCENT_SAMPLES; i++) total += previousTimes[i];
+	if (!total) total = 1;
+
+	percentAccel = total / (float)PERCENT_SAMPLES;
+
+	if (percentAccel && cg.jkmodCG.currentSpeed) 
 	{
-		int i = 0;
-		for (i = 0; i < strafeTweaksSize; i++) {
-			if ((jkcvar_cg_strafeHelper.integer & (1 << i))) {
-				CG_Printf("%2d ^2[X]^7 %s\n", i, strafeTweaks[i].string);
-			} else {
-				CG_Printf("%2d ^1[ ]^7 %s\n", i, strafeTweaks[i].string);
-			}
+		percentAccelFinal = 36 * percentAccel;
+		CG_FillRect(x, y, percentAccelFinal, height, (percentAccelFinal > (width / 2) ? accelColor1 : accelColor2));
+	}
+	cg.jkmodCG.previousSpeed = cg.jkmodCG.currentSpeed;
+}
+
+// Draw jump height
+void JKMod_CG_SpeedMeterJumpHeight(centity_t *cent)
+{
+	const vec_t* const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
+	char jumpHeightStr[32] = { 0 };
+	float x, y;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
+
+	x = 0.5f * cgs.screenWidth;
+	y = cgs.screenHeight - 23;
+
+	// Coming back from a tele or w/e
+	if (cg.predictedPlayerState.fd.forceJumpZStart == -65536) return;
+
+	// If we were going up, and we are now going down, print our height.
+	if (cg.predictedPlayerState.fd.forceJumpZStart && (cg.jkmodCG.lastZSpeed > 0) && (velocity[2] <= 0)) 
+	{
+		cg.jkmodCG.lastJumpHeight = cg.predictedPlayerState.origin[2] - cg.predictedPlayerState.fd.forceJumpZStart;
+		cg.jkmodCG.lastJumpHeightTime = cg.time;
+	}
+
+	if ((cg.jkmodCG.lastJumpHeightTime > cg.time - 1500) && (cg.jkmodCG.lastJumpHeight > 0.0f)) 
+	{
+		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.0f", cg.jkmodCG.lastJumpHeight);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.jkmodCG.lastJumpHeight * 0.05f);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.jkmodCG.lastJumpHeight * 0.03106855f);
+
+		UI_DrawScaledProportionalString(x + 60, y - 10, "Height:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
+		UI_DrawScaledProportionalString(x + 60, y, jumpHeightStr, UI_CENTER | UI_DROPSHADOW, colorWhite, 0.7);
+	}
+	cg.jkmodCG.lastZSpeed = velocity[2];
+}
+
+// Draw jump distance
+void JKMod_CG_SpeedMeterJumpDistance(void)
+{
+	char jumpDistanceStr[64] = { 0 };
+	float x, y;
+
+	if (!cg.snap) return;
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
+
+	x = 0.5f * cgs.screenWidth;
+	y = cgs.screenHeight - 23;
+
+	if (cg.predictedPlayerState.groundEntityNum == ENTITYNUM_WORLD) 
+	{
+		//We were just in the air, but now we arnt
+		if (!cg.jkmodCG.wasOnGround) 
+		{
+			vec3_t distance;
+
+			VectorSubtract(cg.predictedPlayerState.origin, cg.jkmodCG.lastGroundPosition, distance);
+			cg.jkmodCG.lastJumpDistance = (float)sqrt(distance[0] * distance[0] + distance[1] * distance[1]);
+			cg.jkmodCG.lastJumpDistanceTime = cg.time;
 		}
-		CG_Printf("Example: ^3/strafehelper 13^7 (Toggles: ^5%s^7)\n", strafeTweaks[13].string);
-		return;
+
+		VectorCopy(cg.predictedPlayerState.origin, cg.jkmodCG.lastGroundPosition);
+		cg.jkmodCG.wasOnGround = qtrue;
 	}
 	else 
 	{
-		char arg[8] = { 0 };
-		int index;
-		const uint32_t mask = (1 << strafeTweaksSize) - 1;
+		cg.jkmodCG.wasOnGround = qfalse;
+	}
 
-		trap_Argv(1, arg, sizeof(arg));
-		index = atoi(arg);
+	if ((cg.jkmodCG.lastJumpDistanceTime > cg.time - 1500) && (cg.jkmodCG.lastJumpDistance > 0.0f)) 
+	{
+		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.0f", cg.jkmodCG.lastJumpDistance);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.jkmodCG.lastJumpDistance * 0.05f);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.jkmodCG.lastJumpDistance * 0.03106855f);
 
-		if (index < 0 || index >= strafeTweaksSize) 
+		UI_DrawScaledProportionalString(x - 60, y - 10, "Distance:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
+		UI_DrawScaledProportionalString(x - 60, y, jumpDistanceStr, UI_CENTER | UI_DROPSHADOW, colorWhite, 0.7);
+	}
+}
+
+// Draw vertical speed
+void JKMod_CG_SpeedMeterVerticalSpeed(void) 
+{
+	char speedStr5[64] = { 0 };
+	float vertspeed = cg.predictedPlayerState.velocity[2];
+	float x, y;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
+
+	x = 0.5f * cgs.screenWidth;
+	y = cgs.screenHeight - 23;
+
+	if (vertspeed < 0) vertspeed = -vertspeed;
+	if (vertspeed) 
+	{
+		qboolean lastGroundShown = (cg.jkmodCG.lastGroundTime > cg.time - 1500) && cg.jkmodCG.lastGroundSpeed;
+
+		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+			Com_sprintf(speedStr5, sizeof(speedStr5), "%.0f", vertspeed);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+			Com_sprintf(speedStr5, sizeof(speedStr5), "%.1f", vertspeed * 0.05f);
+		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+			Com_sprintf(speedStr5, sizeof(speedStr5), "%.1f", vertspeed * 0.03106855f);
+
+		UI_DrawScaledProportionalString(x, y - (lastGroundShown ? 60 : 30)  - 10, "Vertical:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
+		UI_DrawScaledProportionalString(x, y - (lastGroundShown ? 60 : 30), speedStr5, UI_CENTER | UI_DROPSHADOW, colorWhite, 0.7);
+	}
+}
+
+// Draw speed meter
+void JKMod_CG_SpeedMeter(void)
+{
+	const char *accelStr, *accelColor;
+	char speedStr[32] = { 0 };
+	vec4_t colorSpeed = { 1, 1, 1, 1 };
+	const float currentSpeed = cg.jkmodCG.currentSpeed;
+	static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
+	const float accel = currentSpeed - lastSpeed;
+	float total, avgAccel;
+	int t, i;
+	unsigned int frameTime;
+	static unsigned int index;
+	static int	previous, lastupdate;
+	float x, y;
+
+	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
+	if (cg.scoreBoardShowing) return;
+	if (JKMod_CG_IconHUDActive()) return;
+
+	x = 0.5f * cgs.screenWidth;
+	y = cgs.screenHeight - 23;
+
+	lastSpeed = currentSpeed;
+
+	if (currentSpeed > 250)
+	{
+		colorSpeed[1] = 1 / ((currentSpeed / 250)*(currentSpeed / 250));
+		colorSpeed[2] = 1 / ((currentSpeed / 250)*(currentSpeed / 250));
+	}
+
+	t = trap_Milliseconds();
+	frameTime = t - previous;
+	previous = t;
+
+	// Don't sample faster than this
+	if (t - lastupdate > 5)
+	{
+		lastupdate = t;
+		previousAccels[index % ACCEL_SAMPLES] = accel;
+		index++;
+	}
+
+	total = 0;
+
+	for (i = 0; i < ACCEL_SAMPLES; i++) total += previousAccels[i];
+	if (!total) total = 1;
+
+	avgAccel = total / (float)ACCEL_SAMPLES - 0.0625f;
+
+	if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+	{
+		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "µps:" : avgAccel < 0.0f ? S_COLOR_RED "µps:" : S_COLOR_WHITE "µps:";
+		Com_sprintf(speedStr, sizeof(speedStr), "%.0f", currentSpeed);
+	}
+	else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+	{
+		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "kph:" : avgAccel < 0.0f ? S_COLOR_RED "kph:" : S_COLOR_WHITE "kph:";
+		Com_sprintf(speedStr, sizeof(speedStr), "%.1f", currentSpeed * 0.05f);
+	}
+	else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+	{
+		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "mph:" : avgAccel < 0.0f ? S_COLOR_RED "mph:" : S_COLOR_WHITE "mph:";
+		Com_sprintf(speedStr, sizeof(speedStr), "%.1f", currentSpeed * 0.03106855f);
+	}
+
+	UI_DrawScaledProportionalString(x, y - 10, accelStr, UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
+	UI_DrawScaledProportionalString(x, y, speedStr, UI_CENTER | UI_DROPSHADOW, colorSpeed, 0.7);
+
+	if (jkcvar_cg_speedMeter.integer & SMETER_GROUNDSPEED) 
+	{
+		char speedStr4[32] = { 0 };
+		vec4_t colorGroundSpeed = { 1, 1, 1, 1 };
+
+		// On ground or Moving down
+		if (cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE || cg.predictedPlayerState.velocity[2] < 0) 
 		{
-			CG_Printf("^1Invalid option %i. Range is from 0 to %i\n", index, strafeTweaksSize - 1);
-			return;
+			cg.jkmodCG.firstTimeInAir = qfalse;
+		}
+		// Moving up for first time
+		else if (!cg.jkmodCG.firstTimeInAir) 
+		{
+			cg.jkmodCG.firstTimeInAir = qtrue;
+			cg.jkmodCG.lastGroundSpeed = currentSpeed;
+			cg.jkmodCG.lastGroundTime = cg.time;
 		}
 
-		// Radio button these options. Toggle index, and make sure everything else in this group (0,1,2,3,13) is turned off
-		if ((index == 0 || index == 1 || index == 2 || index == 3 || index == 13)) 
+		if (cg.jkmodCG.lastGroundSpeed > 250) 
 		{
-			int groupMask = (1 << 0) + (1 << 1) + (1 << 2) + (1 << 3) + (1 << 13);
-			int value = jkcvar_cg_strafeHelper.integer;
-
-			groupMask &= ~(1 << index);	// Remove index from groupmask
-			value &= ~(groupMask);		// Turn groupmask off
-			value ^= (1 << index);		// Toggle index item
-
-			trap_Cvar_Set("jk_cg_strafeHelper", va("%i", value));
+			colorGroundSpeed[1] = 1 / ((cg.jkmodCG.lastGroundSpeed / 250)*(cg.jkmodCG.lastGroundSpeed / 250));
+			colorGroundSpeed[2] = 1 / ((cg.jkmodCG.lastGroundSpeed / 250)*(cg.jkmodCG.lastGroundSpeed / 250));
 		}
-		else 
+		if ((cg.jkmodCG.lastGroundTime > cg.time - 1500)) 
 		{
-			trap_Cvar_Set("jk_cg_strafeHelper", va("%i", (1 << index) ^ (jkcvar_cg_strafeHelper.integer & mask)));
-		}
+			if (cg.jkmodCG.lastGroundSpeed) 
+			{
+				if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+					Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.jkmodCG.lastGroundSpeed);
+				else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+					Com_sprintf(speedStr4, sizeof(speedStr4), "%.1f", cg.jkmodCG.lastGroundSpeed * 0.05f);
+				else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+					Com_sprintf(speedStr4, sizeof(speedStr4), "%.1f", cg.jkmodCG.lastGroundSpeed * 0.03106855f);
 
-		trap_Cvar_Update(&jkcvar_cg_strafeHelper);
-		CG_Printf("Strafe Helper: %s %s^7\n", strafeTweaks[index].string, ((jkcvar_cg_strafeHelper.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				UI_DrawScaledProportionalString(x, y - 30 - 10, "Ground:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
+				UI_DrawScaledProportionalString(x, y - 30, speedStr4, UI_CENTER | UI_DROPSHADOW, colorSpeed, 0.7);
+			}
+		}
 	}
 }

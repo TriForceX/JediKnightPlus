@@ -46,6 +46,7 @@ vmCvar_t	jkcvar_cg_chatBoxTime;
 vmCvar_t	jkcvar_cg_chatBoxHeight;
 vmCvar_t	jkcvar_cg_chatBoxHistory;
 
+vmCvar_t	jkcvar_cg_speedMeter;
 vmCvar_t	jkcvar_cg_strafeHelper;
 vmCvar_t	jkcvar_cg_sHelperCutoff;
 vmCvar_t	jkcvar_cg_sHelperPrecision;
@@ -95,6 +96,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_chatBoxHeight,			"jk_cg_chatBoxHeight",			"360",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatBoxHistory,		"jk_cg_chatBoxHistory",			"1",			NULL,						CVAR_ARCHIVE, 0 },
 	
+	{ &jkcvar_cg_speedMeter,			"jk_cg_speedMeter",				"256",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_strafeHelper,			"jk_cg_strafeHelper",			"992",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_sHelperCutoff,			"jk_cg_sHelperCutoff",			"240",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_sHelperPrecision,		"jk_cg_sHelperPrecision",		"256",			NULL,						CVAR_NONE, 0 },

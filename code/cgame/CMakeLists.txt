@@ -40,6 +40,7 @@ set(MVCGAMESOURCES
 	"${SRCDir}/cgame/cg_main.c" # keep this on top (qvm compiler needs VM_Main as the first compiled function)
 	"${JKModDir}/cgame/jk_cg_main.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_consolecmds.c"
+	"${JKModDir}/cgame/jk_cg_consolecmds.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_draw.c"
 	"${JKModDir}/cgame/jk_cg_draw.c" # Tr!Force: [CMake] JKMod sources
 	"${SRCDir}/cgame/cg_drawtools.c"
