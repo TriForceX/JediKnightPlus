@@ -155,7 +155,7 @@ void JKMod_CG_SpeedMeterToggle(void)
 				CG_Printf("%2d ^1[ ]^7 %s\n", i, sMeterSettings[i].string);
 			}
 		}
-		CG_Printf("Example: ^3/speedmeter 0^7 (Toggles: ^5%s^7)\n", sMeterSettings[0].string);
+		CG_Printf("Example: ^3/speedometer 0^7 (Toggles: ^5%s^7)\n", sMeterSettings[0].string);
 		return;
 	}
 	else 

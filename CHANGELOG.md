@@ -9,6 +9,12 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.17.0
+- Added strafe helper client command
+- Added speed meter client command
+- Added auto duel challenge option
+- Added base dimension option & cvar calculator
+
 ## 0.16.2
 - Added drain model map entity
 - Added cvar for silent macro scan alerts

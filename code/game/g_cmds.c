@@ -846,7 +846,10 @@ void StopFollowing( gentity_t *ent ) {
 	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
 
 	// Tr!Force: [Dimensions] Check dimension
-	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
+	if (jkcvar_altDimensionBase.integer) 
+		JKMod_DimensionSet(ent, jkcvar_altDimensionBase.integer);
+	else if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) 
+		JKMod_DimensionSet(ent, DIMENSION_FREE);
 }
 
 /*

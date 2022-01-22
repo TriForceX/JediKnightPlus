@@ -535,6 +535,7 @@ void JKMod_CG_DrawDimensionString(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	switch (cg.snap->ps.stats[JK_DIMENSION]) 
 	{
@@ -894,6 +895,7 @@ void JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, float
 
 	if (trap_Key_GetCatcher() & (KEYCATCH_UI|KEYCATCH_MESSAGE)) return;
 	if (cg.scoreBoardShowing) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	if (length < 1) length = 1;
 	else if (length > 2000) length = 2000;
@@ -1106,6 +1108,7 @@ void JKMod_CG_StrafeHelper(centity_t* cent)
 
 	if (trap_Key_GetCatcher() & (KEYCATCH_UI|KEYCATCH_MESSAGE)) return;
 	if (cg.scoreBoardShowing) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 	if (moveStyle == MV_SIEGE) return; // No strafe in siege
 
 	if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback) 
@@ -1255,6 +1258,7 @@ void JKMod_CG_SpeedMeterAccel(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	width = 43;
 	height = 13;
@@ -1301,6 +1305,7 @@ void JKMod_CG_SpeedMeterJumpHeight(centity_t *cent)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	x = 0.5f * cgs.screenWidth;
 	y = cgs.screenHeight - 23;
@@ -1340,6 +1345,7 @@ void JKMod_CG_SpeedMeterJumpDistance(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	x = 0.5f * cgs.screenWidth;
 	y = cgs.screenHeight - 23;
@@ -1388,6 +1394,7 @@ void JKMod_CG_SpeedMeterVerticalSpeed(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	x = 0.5f * cgs.screenWidth;
 	y = cgs.screenHeight - 23;
@@ -1428,6 +1435,7 @@ void JKMod_CG_SpeedMeter(void)
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
+	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
 	x = 0.5f * cgs.screenWidth;
 	y = cgs.screenHeight - 23;

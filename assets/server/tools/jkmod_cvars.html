@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>Jedi Knight Plus Cvar Calculator</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	* {
+		box-sizing: border-box;
+	}
+	body {
+		padding: 0px;
+		margin: 0px;
+	}
+	body {
+		font-size: 16px;
+		font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial,"Liberation Sans",sans-serif;
+		color: white;
+		background-color: #000141;
+		background-size: cover;
+		background-position: center center;
+		background-image: url("https://user-images.githubusercontent.com/16083854/150473350-55a662fd-9e86-499e-8590-a306f2aadede.jpg");
+	}
+	a, a:visited, a:hover, a:active {
+		color: deepskyblue;
+	}
+	h1 {
+		float: left;
+		width: 100%;
+		text-align: center;
+		margin: 0px;
+	}
+	h4 {
+		float: left;
+		width: 100%;
+		text-align: center;
+		font-weight: normal;
+		margin: 10px 0px 0px 0px;
+	}
+	img {
+		vertical-align: middle;
+	}
+	.container {
+		margin: 0 auto;
+		width: 600px;
+	}
+	.header {
+		float: left;
+		width: 100%;
+		text-align: center;
+		margin: 30px 0px;
+	}
+	.header img {
+		width: 110px;
+		height: 110px;
+		border-radius: 8px;
+		margin-bottom: 20px;
+	}
+	.footer {
+		float: left;
+		width: 100%;
+		text-align: center;
+		margin-bottom: 30px;
+		border-top: 1px solid gray;
+		padding-top: 30px;
+	}
+	.title {
+		float: left;
+		width: 100%;
+		text-align: left;
+		margin-bottom: 30px;
+		border-top: 1px solid gray;
+		padding-top: 30px;
+	}
+	.bitboxes {
+		float: left;
+		width: 100%;
+		margin-bottom: 30px;
+	}
+	.bitbox {
+		min-width: 200px;
+		float: left;
+		cursor: pointer;
+	}
+	.bitbox:hover {
+		color: lime;
+	}
+	.checked {
+		color: deepskyblue;
+	}
+	.cvar {
+		float: left;
+		font-weight: bold;
+	}
+	.cvar small {
+		font-weight: normal;
+	}
+	.cvar_edit {
+		float: right;
+	}
+	.hidden {
+		display: none;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+	<!-- Header -->
+	<div class="header">
+		<img src="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png">
+		<h1>Jedi Knight Plus Cvar Calculator</h1>
+		<h4><b>Tip:</b> Paste the value in the input field to show the current options</h4>
+	</div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_emotesEnabled:</span>
+	  <span class="cvar_edit">
+		  <input id="emotesenabled" class="value" value="0" type="number">
+		  <input name="emotesenabled" class="select-all" value="All" type="button">
+		  <input name="emotesenabled" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+	<div class="bitboxes">
+		<label class="bitbox"><input class="box" name="emotesenabled" num="0" type="checkbox"> Bar</label></label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="1" type="checkbox"> Beg</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="2" type="checkbox"> Cocky</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="3" type="checkbox"> ComeOn</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="4" type="checkbox"> ComTalk</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="5" type="checkbox"> CrossArms</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="6" type="checkbox"> DontKillMe</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="7" type="checkbox"> DontKnow</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="8" type="checkbox"> DontKnow2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="9" type="checkbox"> Explain</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="10" type="checkbox"> Explain2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="11" type="checkbox"> FakeDead</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="12" type="checkbox"> Flip</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="13" type="checkbox"> HandHips</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="14" type="checkbox"> Hug</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="15" type="checkbox"> Kiss</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="16" type="checkbox"> Kneel</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="17" type="checkbox"> Laugh</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="18" type="checkbox"> LookAround</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="19" type="checkbox"> LookAround2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="20" type="checkbox"> Nod</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="21" type="checkbox"> Point</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="22" type="checkbox"> Point2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="23" type="checkbox"> Punch</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="24" type="checkbox"> Punch2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="25" type="checkbox"> Sit</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="26" type="checkbox"> Sit2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="27" type="checkbox"> Sit3</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="28" type="checkbox"> Shake</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="29" type="checkbox"> Super</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="30" type="checkbox"> Super2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="31" type="checkbox"> Surrender</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="32" type="checkbox"> Spin</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="33" type="checkbox"> Spin2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="34" type="checkbox"> Spin3</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="35" type="checkbox"> Spin4</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="36" type="checkbox"> Taunt2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="37" type="checkbox"> Taunt3</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="38" type="checkbox"> Think</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="39" type="checkbox"> Threaten</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="40" type="checkbox"> ThumbsUp</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="41" type="checkbox"> ThumbsDown</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="42" type="checkbox"> TossBack</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="43" type="checkbox"> TossOver</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="44" type="checkbox"> TossUp</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="45" type="checkbox"> Type</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="46" type="checkbox"> Type2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="47" type="checkbox"> Victory</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="48" type="checkbox"> Waitning</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="49" type="checkbox"> WatchOut</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="50" type="checkbox"> Wave</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="51" type="checkbox"> Wave2</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="52" type="checkbox"> Write</label>
+		<label class="bitbox"><input class="box" name="emotesenabled" num="53" type="checkbox"> Write2</label>
+	</div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_voteControl:</span>
+	  <span class="cvar_edit">
+		  <input id="votecontrol" class="value" value="0" type="number">
+		  <input name="votecontrol" class="select-all" value="All" type="button">
+		  <input name="votecontrol" class="select-none" value="None" type="button">
+		  <!-- <input name="votecontrol" class="default" value="Default" type="button" defval="3647"> -->
+	  </span>
+	</div>
+	<div class="bitboxes">
+		<label class="bitbox"><input class="box" name="votecontrol" num="0" type="checkbox"> Map Restart</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="1" type="checkbox"> Next Map</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="2" type="checkbox"> Map</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="3" type="checkbox"> Game Type</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="4" type="checkbox"> Kick</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="5" type="checkbox"> Client Kick</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="6" type="checkbox"> Do Warm Up</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="7" type="checkbox"> Time Limit</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="8" type="checkbox"> Frag Limit</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="9" type="checkbox"> Poll</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="10" type="checkbox"> Item Force Physics</label>
+		<label class="bitbox"><input class="box" name="votecontrol" num="11" type="checkbox"> Pause Game</label>
+	</div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_altDimension:</span>
+	  <span class="cvar_edit">
+		  <input id="altdimension" class="value" value="0" type="number">
+		  <input name="altdimension" class="select-all" value="All" type="button">
+		  <input name="altdimension" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox hidden"><input class="box" name="altdimension" num="0" type="checkbox"> Normal</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="1" type="checkbox"> Private Duel</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="2" type="checkbox"> Guns Arena</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="3" type="checkbox"> Race Defrag</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="4" type="checkbox"> Saber Only</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="5" type="checkbox"> Insta Kill</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="6" type="checkbox"> Cheats Mode</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_altDimensionBase:</span>
+	  <span class="cvar_edit">
+		  <input id="altdimensionbase" class="value" value="0" type="number">
+		  <input name="altdimensionbase" class="select-none" value="Disable" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="0" type="radio"> Normal</label>
+		<label class="bitbox hidden"><input class="box" name="altdimensionbase" num="1" type="radio"> Private Duel</label>
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="2" type="radio"> Guns Arena</label>
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="3" type="radio"> Race Defrag</label>
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="4" type="radio"> Saber Only</label>
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="5" type="radio"> Insta Kill</label>
+		<label class="bitbox"><input class="box" name="altdimensionbase" num="6" type="radio"> Cheats Mode</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_playerMovement:</span>
+	  <span class="cvar_edit">
+		  <input id="playermovement" class="value" value="0" type="number">
+		  <input name="playermovement" class="select-all" value="All" type="button">
+		  <input name="playermovement" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox"><input class="box" name="playermovement" num="0" type="checkbox"> JKA Jetpack Style</label>
+		<label class="bitbox"><input class="box" name="playermovement" num="1" type="checkbox"> Weapon Stand Fix</label>
+		<label class="bitbox"><input class="box" name="playermovement" num="2" type="checkbox"> Disruptor Zoom Walk</label>
+		<label class="bitbox"><input class="box" name="playermovement" num="3" type="checkbox"> Button Use Stand</label>
+		<label class="bitbox"><input class="box" name="playermovement" num="4" type="checkbox"> Spectator No-Clip</label>
+		<label class="bitbox"><input class="box" name="playermovement" num="5" type="checkbox"> Force Push Resist</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">bot_forGimmick: <small>(Using jk_botsAI enabled)</small></span>
+	  <span class="cvar_edit">
+		  <input id="botforgimmick" class="value" value="0" type="number">
+		  <input name="botforgimmick" class="select-all" value="All" type="button">
+		  <input name="botforgimmick" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox hidden"><input class="box" name="botforgimmick" num="0" type="checkbox"> Static</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="1" type="checkbox"> Attack</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="2" type="checkbox"> Alt Attack</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="3" type="checkbox"> Crouch</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="4" type="checkbox"> Jump</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="5" type="checkbox"> Gesture</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="6" type="checkbox"> Talk</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">g_forcePowerDisable:</span>
+	  <span class="cvar_edit">
+		  <input id="forcedisable" class="value" value="0" type="number">
+		  <input name="forcedisable" class="select-all" value="All" type="button">
+		  <input name="forcedisable" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox"><input class="box" name="forcedisable" num="0" type="checkbox"> Heal</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="1" type="checkbox"> Jump</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="2" type="checkbox"> Speed</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="3" type="checkbox"> Push</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="4" type="checkbox"> Pull</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="5" type="checkbox"> Mind Trick</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="6" type="checkbox"> Grip</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="7" type="checkbox"> Lightning</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="8" type="checkbox"> Rage</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="9" type="checkbox"> Protect</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="10" type="checkbox"> Absorb</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="11" type="checkbox"> Team Heal</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="12" type="checkbox"> Team Energize</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="13" type="checkbox"> Drain</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="14" type="checkbox"> Seeing</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="15" type="checkbox"> Saber Attack</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="16" type="checkbox"> Saber Defend</label>
+		<label class="bitbox"><input class="box" name="forcedisable" num="17" type="checkbox"> Saber Throw</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">g_weaponDisable:</span>
+	  <span class="cvar_edit">
+		  <input id="weapondisable" class="value" value="0" type="number">
+		  <input name="weapondisable" class="select-all" value="All" type="button">
+		  <input name="weapondisable" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes">
+		<label class="bitbox hidden"><input class="box" name="weapondisable" num="0" type="checkbox"> None</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="1" type="checkbox"> Stun Baton</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="2" type="checkbox"> Lightsaber</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="3" type="checkbox"> Blaster Pistol</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="4" type="checkbox"> Blaster Rifle</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="5" type="checkbox"> Disruptor Rifle</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="6" type="checkbox"> Bowcaster</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="7" type="checkbox"> Heavy Repeater</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="8" type="checkbox"> DEMP 2</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="9" type="checkbox"> Flechette</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="10" type="checkbox"> Merr Sonn</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="11" type="checkbox"> Thermal Detonators</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="12" type="checkbox"> Trip Mines</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="13" type="checkbox"> Detonation Packs</label>
+		<label class="bitbox hidden"><input class="box" name="weapondisable" num="14" type="checkbox"> Emplaced Gun</label>
+		<label class="bitbox hidden"><input class="box" name="weapondisable" num="15" type="checkbox"> Turret Gun</label>
+    </div>
+	<!-- Footer -->
+	<div class="footer">
+		More info at <a href="https://jkplus.github.io" target="_blank">https://jkplus.github.io</a>
+		<img src="https://github.githubassets.com/favicons/favicon-dark.png" width="20">
+	</div>
+	<!-- Script -->
+    <script type="text/javascript">
+	function updateValue(field) {
+		var value = Number(field.value);
+		var boxes = document.getElementsByName(field.id);
+		var i;
+		field.checkValidity();
+		for (i = 0; i < boxes.length; i++) {
+			var num = boxes[i].getAttribute("num");
+			if (value & (1 << num)) {
+				boxes[i].checked = true;
+				boxes[i].parentNode.classList.add("checked")
+			} else {
+				boxes[i].checked = false;
+				boxes[i].parentNode.classList.remove("checked")
+			}
+		}
+	}
+	function updateCheckbox(box) {
+		var field = document.getElementById(box.name);
+		var num = box.getAttribute("num");
+		var boxes = document.getElementsByName(box.name);
+		var value = 0;
+		var i;
+		for (i = 0; i < boxes.length; i++) {
+			var num = boxes[i].getAttribute("num");
+			if (boxes[i].checked) {
+				value |= (1 << num);
+				boxes[i].parentNode.classList.add("checked")
+			} else {
+				boxes[i].parentNode.classList.remove("checked")
+			}
+		}
+		field.value = value;
+	}
+	function setOwnerValue(button, value) {
+		var field = document.getElementById(button.name);
+		field.value = value;
+		field.onchange();
+	}
+	window.onload = function () {
+		var elements;
+		var i;
+		elements = document.getElementsByClassName("box");
+		for (i = 0; i < elements.length; i++) {
+			elements[i].onchange = function () {
+				updateCheckbox(this);
+			};
+		}
+		elements = document.getElementsByClassName("value");
+		for (i = 0; i < elements.length; i++) {
+			updateValue(elements[i]);
+			elements[i].onchange = elements[i].oninput = function () {
+				updateValue(this);
+			};
+		}
+		elements = document.getElementsByClassName("default");
+		for (i = 0; i < elements.length; i++) {
+			elements[i].onclick = function () { 
+				setOwnerValue(this, this.getAttribute("defval")); 
+			};
+		}
+		elements = document.getElementsByClassName("select-all");
+		for (i = 0; i < elements.length; i++) {
+			elements[i].onclick = function () {
+				setOwnerValue(this, -1);
+			};
+		}
+		elements = document.getElementsByClassName("select-none");
+		for (i = 0; i < elements.length; i++) {
+			elements[i].onclick = function () {
+				setOwnerValue(this, 0);
+			};
+		}
+	}
+    </script>
+</body>
+</html>

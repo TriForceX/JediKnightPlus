@@ -71,6 +71,7 @@ vmCvar_t	jkcvar_emotesPunchDamage;
 vmCvar_t	jkcvar_gamePlay;
 vmCvar_t	jkcvar_gameTypeConfig;
 vmCvar_t	jkcvar_altDimension;
+vmCvar_t	jkcvar_altDimensionBase;
 vmCvar_t	jkcvar_altDimensionTime;
 vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
@@ -146,7 +147,8 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_gamePlay,				"jk_gamePlay",				"0",					JKMod_CVU_gamePlay,			CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_altDimensionBase,		"jk_altDimensionBase",		"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					JKMod_CVU_randomBegin,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					JKMod_CVU_serverNews,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
@@ -171,6 +173,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 };
 
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
+static int JKModCvarAltDimensionBase = 0;
 
 /*
 =====================================================================
@@ -209,7 +212,8 @@ void JKMod_G_RegisterCvars(void)
 	if (!mvapi && jkcvar_altDimension.integer != 0) 
 	{
 		trap_Cvar_Set("jk_altDimension", "0");
-		G_Printf("Warning: Dimensions has been disabled (MVAPI not available).\n");
+		trap_Cvar_Set("jk_altDimensionBase", "0");
+		G_Printf(S_COLOR_YELLOW "WARNING: Dimensions has been disabled (MVAPI not available).\n");
 	}
 
 	// Launch original register cvars function
@@ -356,13 +360,39 @@ void JKMod_CVU_gamePlay(void)
 void JKMod_CVU_altDimension(void)
 {
 	gentity_t *ent;
-	int i;
+	int i, num, dimensions = jkcvar_altDimension.integer;
+	
+	if (jkcvar_altDimensionBase.integer && JKModCvarAltDimensionBase) 
+	{
+		dimensions &= ~JKModCvarAltDimensionBase;
+	}
+	if (jkcvar_altDimensionBase.integer == DIMENSION_DUEL) 
+	{
+		G_Printf(S_COLOR_YELLOW "WARNING: Generic dimensions are not meant to be used as base!\n");
+		dimensions &= ~DIMENSION_DUEL;
+		trap_Cvar_Set("jk_altDimensionBase", va("%i", dimensions));
+	}
+	if (jkcvar_altDimensionBase.integer && !(jkcvar_altDimension.integer & jkcvar_altDimensionBase.integer))
+	{
+		dimensions |= jkcvar_altDimensionBase.integer;
+		JKModCvarAltDimensionBase = jkcvar_altDimensionBase.integer;
+		trap_Cvar_Set("jk_altDimension", va("%i", dimensions));
+	}
+	if (!jkcvar_altDimensionBase.integer && JKModCvarAltDimensionBase)
+	{
+		G_Printf(S_COLOR_YELLOW "WARNING: Base dimension have been disabled! Adding normal back...\n");
+		dimensions |= DIMENSION_FREE;
+		trap_Cvar_Set("jk_altDimension", va("%i", dimensions));
+	}
 
 	for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
 	{
 		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 		{
-			JKMod_DimensionSet(ent, DIMENSION_FREE);
+			if (jkcvar_altDimensionBase.integer) 
+				JKMod_DimensionSet(ent, jkcvar_altDimensionBase.integer);
+			else
+				JKMod_DimensionSet(ent, DIMENSION_FREE);
 		}
 	}
 }

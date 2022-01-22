@@ -81,9 +81,10 @@ Set dimension change function
 */
 qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 {
-	int		i;
-	char	*print = say ? "cp" : "print";
-	char	message[MAX_STRING_CHARS] = { 0 };
+	int			i;
+	char		*print = say ? "cp" : "print";
+	char		message[MAX_STRING_CHARS] = { 0 };
+	qboolean	baseCmd = qfalse;
 
 	if (!jkcvar_altDimension.integer)
 	{
@@ -125,6 +126,9 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 		// Message
 		Q_strcat(message, sizeof(message), "^7Usage: ^2!dimension <option>\n^7Option list:\n");
 
+		// Base?
+		if (!Q_stricmp(dimension, "base")) baseCmd = qtrue;
+
 		// Start
 		for (i = 0; i < JKModDimensionDataSize; i++)
 		{
@@ -132,36 +136,37 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 			Q_strcat(message, sizeof(message), va("^3%s\n", JKModDimensionData[i].command));
 
 			// Command
-			if (!Q_stricmp(dimension, JKModDimensionData[i].command))
+			if (!Q_stricmp(dimension, JKModDimensionData[i].command) || baseCmd)
 			{
-				qboolean	dimensionFree = JKModDimensionData[i].dimension == DIMENSION_FREE;
-				int			dimensionIndex = JKModDimensionData[i].dimension;
-				char		*dimensionName = JKModDimensionData[i].name;
+				int		dimensionBase = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
+				int		dimensionBaseIndex = JKMod_DimensionIndex(dimensionBase);
+				int		dimensionIndex = JKModDimensionData[baseCmd ? dimensionBaseIndex : i].dimension;
+				char	*dimensionName = JKModDimensionData[baseCmd ? dimensionBaseIndex : i].name;
 
 				// Delay
 				ent->client->jkmodClient.dimensionTime = jkcvar_altDimensionTime.integer;
 
 				// Check
-				if (!(jkcvar_altDimension.integer & dimensionIndex) && !dimensionFree)
+				if (!(jkcvar_altDimension.integer & dimensionIndex))
 				{
 					trap_SendServerCommand(ent - g_entities, "print \"This dimension is disabled by server\n\"");
 					return qfalse;
 				}
 				// Enable
-				else if (ent->client->ps.stats[JK_DIMENSION] != dimensionIndex && !dimensionFree)
+				else if (ent->client->ps.stats[JK_DIMENSION] != dimensionIndex)
 				{
 					JKMod_DimensionSet(ent, dimensionIndex);
 					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", dimensionName));
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " joined the ^3%s ^7dimension\n\"", ent->client->pers.netname, dimensionName));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s ^3%s ^7dimension\n\"", ent->client->pers.netname, (dimensionIndex != dimensionBase ? "joined the" : "back to"), dimensionName));
 					return qtrue;
 				}
 				// Disable
-				else if (ent->client->ps.stats[JK_DIMENSION] > 1)
+				else if (dimensionIndex != dimensionBase)
 				{
-					JKMod_DimensionSet(ent, DIMENSION_FREE);
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", JKModDimensionData[0].name));
-					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s ^3%s ^7dimension\n\"", ent->client->pers.netname, (dimensionFree ? "back to" : "left the"), dimensionName));
-					return dimensionFree;
+					JKMod_DimensionSet(ent, dimensionBase);
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", JKModDimensionData[dimensionBaseIndex].name));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " back to ^3%s ^7dimension\n\"", ent->client->pers.netname, JKModDimensionData[dimensionBaseIndex].name));
+					return qtrue;
 				}
 				else
 				{
@@ -211,7 +216,7 @@ void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 	ent->jkmodEnt.dimensionOwner = owner;
 
 	if (ent - g_entities < MAX_CLIENTS) {
-		ent->jkmodEnt.dimensionNumber = DIMENSION_FREE;
+		ent->jkmodEnt.dimensionNumber = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
 	} else {
 		ent->jkmodEnt.dimensionNumber = DIMENSION_ALL;
 	}

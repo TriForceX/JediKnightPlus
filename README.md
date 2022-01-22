@@ -71,6 +71,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Alternative slow-mo duel end feature (Custom timescale)
 - [x] Custom private duel distance
 - [x] Dueling players pass-through feature
+- [x] Auto duel challenge feature
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
 - [x] Custom client begin sound
@@ -141,8 +142,8 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Grapple hook feature
 - [x] Ingame clock showing the real time hours, minutes and seconds
 - [x] Ingame server list to join another server without disconnect
-- [ ] Speed-o-meter to display player speed ingame and best record
-- [ ] Strafe jumping helper/efficiency meter
+- [x] Speedometer to display different player speeds
+- [x] Strafe jumping helper/efficiency meter
 - [ ] Custom lightsaber hilt support
 - [x] Enabled 3rd person damage blend
 - [x] Show player bounding hit boxes

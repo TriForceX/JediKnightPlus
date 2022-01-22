@@ -81,7 +81,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^5----------\n"
 			"^7Commands:      Chat commands:      Plugin commands:\n"
 			"^3motd           !motd               strafehelper\n"
-			"^3dimension      !dimension          speedmeter\n"
+			"^3dimension      !dimension          speedometer\n"
 			"^3dualsaber      !status\n"
 			"^3emote          !savepos\n"
 			"^3ignore         !loadpos\n"
@@ -149,12 +149,13 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Option list:\n\""));
 
 		for (i = 0; i < JKModDimensionDataSize; i++) {
-			trap_SendServerCommand(ent - g_entities, va("print \"^3%s\n\"", JKModDimensionData[i].command));
+			trap_SendServerCommand(ent - g_entities, va("print \"%s%s\n\"", (jkcvar_altDimension.integer & JKModDimensionData[i].dimension ? S_COLOR_YELLOW : S_COLOR_RED), JKModDimensionData[i].command));
 		}
 			
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
-			"^2Note: ^7You can also use this command on chat saying ^3!dimension <option>\n"
+			"^2Note 1: ^7You can also use this command on chat saying ^5!dimension <option>\n"
+			"^2Note 2: ^7Dimensions marked in ^3yellow ^7are available to use\n"
 			"^7\""));
 		return;
 	}
