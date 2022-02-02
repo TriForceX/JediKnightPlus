@@ -1162,7 +1162,7 @@ void CG_DrawHUD(centity_t	*cent)
 	else
 	{	// Don't draw a bias.
 		if (jkcvar_cg_scoreboardExtras.integer) { // Tr!Force: [Scoreboard] Extra info
-			scoreStr = va("%s: %i/%i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY ? cg.snap->ps.persistant[PERS_CAPTURES] : cgs.clientinfo[cg.clientNum].losses));
+			scoreStr = va("%s: %i/%i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY ? cg.snap->ps.persistant[PERS_CAPTURES] : cgs.clientinfo[cg.snap->ps.clientNum].losses));
 		} else {
 			scoreStr = va("%s: %i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Use translated text
 		}
