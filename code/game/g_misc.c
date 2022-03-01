@@ -545,9 +545,10 @@ void SP_misc_holocron(gentity_t *ent)
 
 	if (HasSetSaberOnly())
 	{
-		if (ent->count == FP_SABERATTACK ||
+		if (!jkcvar_allowSaberHolocrons.integer && ( // Tr!Force: [GameGeneral] NOT having saber holocrons in saber only mode is pointless
+			ent->count == FP_SABERATTACK ||
 			ent->count == FP_SABERDEFEND ||
-			ent->count == FP_SABERTHROW)
+			ent->count == FP_SABERTHROW))
 		{ //having saber holocrons in saber only mode is pointless
 			G_FreeEntity(ent);
 			return;

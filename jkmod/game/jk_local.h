@@ -294,6 +294,7 @@ extern	vmCvar_t					jkcvar_serverClosedText;
 extern	vmCvar_t					jkcvar_serverJoinSound;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
+extern	vmCvar_t					jkcvar_allowSaberHolocrons;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_allowCustomDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
