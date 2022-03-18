@@ -167,7 +167,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		{
 			trap_SendServerCommand(clientNum, "cp \"You are using ^1EternalJK2\nSome features may be ^3disabled^7\nPlease use JK2MV ^5https://jk2mv.org\"");
 			trap_SendServerCommand(clientNum, "print \"You are running in ^3Server Side^7 mode only due ^1EternalJK2^7 was detected\n\"");
-			G_LogPrintf("ClientPlugin: Player does not have any plugin (Using eternalJK2)\n");
+			G_LogPrintf("ClientPlugin: Player does not have any plugin (Using EternalJK2)\n");
 		}
 		else
 		{

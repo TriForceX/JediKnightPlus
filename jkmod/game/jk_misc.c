@@ -202,32 +202,22 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	// Use temp events at source and destination to prevent the effect from getting dropped by a second player event
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) 
 	{
-		if (efxfile[0] == '\0')
-		{
-			tent = JKMod_G_TempEntity(player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number);
-			tent->s.clientNum = player->s.clientNum;
-			tent->s.otherEntityNum = player->s.clientNum;
+		vec3_t temporigin;
 
-			tent = JKMod_G_TempEntity(origin, EV_PLAYER_TELEPORT_IN, player->s.number);
-			tent->s.clientNum = player->s.clientNum;
-			tent->s.otherEntityNum = player->s.clientNum;
+		temporigin[YAW] = 0;
+		temporigin[PITCH] = -90;
+		temporigin[ROLL] = 0;
+
+		if (efxfile != NULL) 
+		{
+			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), player->client->ps.origin, temporigin, player->s.number);
+			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), origin, temporigin, player->s.number);
 		}
-		else
+		
+		if (efxsound != NULL) 
 		{
-			if (strcmp(efxfile, "none") != 0)
-			{
-				vec3_t temporigin;
-
-				temporigin[YAW] = 0;
-				temporigin[PITCH] = -90;
-				temporigin[ROLL] = 0;
-
-				JKMod_G_PlayEffect_ID(G_EffectIndex(efxfile), player->client->ps.origin, temporigin, player->s.number);
-				JKMod_G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/teleout")), player->s.number);
-
-				JKMod_G_PlayEffect_ID(G_EffectIndex(efxfile), origin, temporigin, player->s.number);
-				JKMod_G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!efxsound[0] == '\0' ? efxsound : "sound/player/telein")), player->s.number);
-			}
+			JKMod_G_SoundAtLoc(player->client->ps.origin, CHAN_VOICE, G_SoundIndex((!strcmp(efxsound, "default") ? "sound/player/teleout" : efxsound)), player->s.number);
+			JKMod_G_SoundAtLoc(origin, CHAN_VOICE, G_SoundIndex((!strcmp(efxsound, "default") ? "sound/player/telein" : efxsound)), player->s.number);
 		}
 	}
 

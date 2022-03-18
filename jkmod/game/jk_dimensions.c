@@ -280,6 +280,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 {
 	int	i;
 	int	clientNum = ent->s.number;
+	vec3_t spawnOrigin, spawnAngles;
 
 	ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
 	ent->jkmodEnt.dimensionNumber = dimension;
@@ -298,6 +299,12 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 
 	// Set settings
 	JKMod_DimensionSettings(ent, dimension);
+
+	// Get random spawn point
+	SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
+	
+	// Set new spawn point
+	JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
 
 	if (mvapi)
 	{
