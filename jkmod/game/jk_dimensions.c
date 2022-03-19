@@ -294,6 +294,14 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 	// Check saber
 	if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
 
+	// Clear saved teleport
+	ARRAY_CLEAR(ent->client->pers.jkmodPers.teleportChat);
+	ent->client->pers.jkmodPers.teleportChatCheck = 0;
+	
+	// Clear custom spawn
+	ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
+	ent->client->pers.jkmodPers.customSpawnCheck = 0;
+
 	// Update settings
 	ent->client->pers.jkmodPers.customSettingsCount++;
 

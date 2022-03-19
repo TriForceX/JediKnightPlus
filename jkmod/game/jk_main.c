@@ -350,6 +350,25 @@ void JKMod_CVU_teleportChat(void)
 			trap_Cvar_Set("jk_teleportChat", "0");
 		}
 	}
+	else
+	{
+		gentity_t *ent;
+		int i;
+
+		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+		{
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			{
+				// Clear saved teleport
+				ARRAY_CLEAR(ent->client->pers.jkmodPers.teleportChat);
+				ent->client->pers.jkmodPers.teleportChatCheck = 0;
+	
+				// Clear custom spawn
+				ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
+				ent->client->pers.jkmodPers.customSpawnCheck = 0;
+			}
+		}
+	}
 }
 
 // Update gameplay cvar

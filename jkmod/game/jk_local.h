@@ -170,7 +170,7 @@ typedef struct
 {
 	qboolean		clientPlugin;			// Client plugin check
 	int				customDuel;				// Client is in custom duel
-	int				teleportChatOrigin[5];	// Player teleport x y z pitch yaw
+	int				teleportChat[5];		// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check
 	int				jetackUseDelay;			// Jetpack usage delay
 	qboolean		buttonUseAnim;			// Button use animation use check
@@ -186,7 +186,7 @@ typedef struct
 	float			customGravity;			// Custom speed for custom settings
 	float			customSpeed;			// Custom gravity for custom settings
 	int				customSpawn[5];			// Player spawn x y z pitch yaw
-	qboolean		customSpawnCheck;		// Player spawn check
+	int				customSpawnCheck;		// Player spawn check
 	qboolean		dualSaber;				// Check for permanent dual saber
 
 } jkmod_pers_t;

@@ -879,11 +879,11 @@ static qboolean JKMod_savePosition(gentity_t *ent, qboolean say)
 	else
 	{
 		ent->client->ps.viewangles[2] = 0.0f;
-		ent->client->pers.jkmodPers.teleportChatOrigin[0] = ent->client->ps.origin[0];
-		ent->client->pers.jkmodPers.teleportChatOrigin[1] = ent->client->ps.origin[1];
-		ent->client->pers.jkmodPers.teleportChatOrigin[2] = ent->client->ps.origin[2];
-		ent->client->pers.jkmodPers.teleportChatOrigin[3] = ent->client->ps.viewangles[PITCH];
-		ent->client->pers.jkmodPers.teleportChatOrigin[4] = ent->client->ps.viewangles[YAW];
+		ent->client->pers.jkmodPers.teleportChat[0] = ent->client->ps.origin[0];
+		ent->client->pers.jkmodPers.teleportChat[1] = ent->client->ps.origin[1];
+		ent->client->pers.jkmodPers.teleportChat[2] = ent->client->ps.origin[2];
+		ent->client->pers.jkmodPers.teleportChat[3] = ent->client->ps.viewangles[PITCH];
+		ent->client->pers.jkmodPers.teleportChat[4] = ent->client->ps.viewangles[YAW];
 
 		trap_SendServerCommand(ent - g_entities, va("%s \"Saved position!\n\"", print));
 
@@ -930,11 +930,11 @@ static qboolean JKMod_loadPosition(gentity_t *ent, qboolean say)
 	{
 		vec3_t temporigin, tempangles;
 
-		temporigin[0] = ent->client->pers.jkmodPers.teleportChatOrigin[0];
-		temporigin[1] = ent->client->pers.jkmodPers.teleportChatOrigin[1];
-		temporigin[2] = ent->client->pers.jkmodPers.teleportChatOrigin[2];
-		tempangles[PITCH] = ent->client->pers.jkmodPers.teleportChatOrigin[3];
-		tempangles[YAW] = ent->client->pers.jkmodPers.teleportChatOrigin[4];
+		temporigin[0] = ent->client->pers.jkmodPers.teleportChat[0];
+		temporigin[1] = ent->client->pers.jkmodPers.teleportChat[1];
+		temporigin[2] = ent->client->pers.jkmodPers.teleportChat[2];
+		tempangles[PITCH] = ent->client->pers.jkmodPers.teleportChat[3];
+		tempangles[YAW] = ent->client->pers.jkmodPers.teleportChat[4];
 		tempangles[ROLL] = 0.0f;
 
 		JKMod_TeleportPlayer(ent, temporigin, tempangles, qfalse, 0, "thermal/shockwave", "sound/interface/secret_area");
@@ -1012,7 +1012,7 @@ static qboolean JKMod_saveSpawn(gentity_t *ent, qboolean say)
 
 		// Teleport check
 		if (!ent->client->pers.jkmodPers.customSpawnCheck) {
-			ent->client->pers.jkmodPers.customSpawnCheck = qtrue; 
+			ent->client->pers.jkmodPers.customSpawnCheck = 1; 
 			return qtrue;
 		} else {
 			return qfalse;
@@ -1051,7 +1051,7 @@ static qboolean JKMod_resetSpawn(gentity_t *ent, qboolean say)
 
 		// Teleport check
 		if (ent->client->pers.jkmodPers.customSpawnCheck) {
-			ent->client->pers.jkmodPers.customSpawnCheck = qfalse;
+			ent->client->pers.jkmodPers.customSpawnCheck = 0;
 			return qtrue;
 		} else {
 			return qfalse;
