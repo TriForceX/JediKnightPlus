@@ -1016,6 +1016,8 @@ void TryUse( gentity_t *ent )
 	
 	if ( trace.fraction == 1.0f || trace.entityNum < 1 )
 	{
+		// Tr!Force: [ButtonUse] Unset valid target
+		if (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) ent->client->pers.jkmodPers.buttonUseAnimValid = qfalse;
 		return;
 	}
 
