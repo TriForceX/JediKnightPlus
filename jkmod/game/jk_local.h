@@ -147,6 +147,7 @@ typedef struct
 	qboolean		itemSpawnedBefore;	// Reset original item position
 	int				dimensionOwner;		// Dimension owner number
 	unsigned		dimensionNumber;	// Current dimension number
+	unsigned		dimensionNumberOld;	// Previous dimension number
 	int				time1;				// Entity think time for pause
 	int				time2;				// Entity sync time for pause
 

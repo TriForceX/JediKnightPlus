@@ -300,11 +300,17 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 	// Set settings
 	JKMod_DimensionSettings(ent, dimension);
 
-	// Get random spawn point
-	SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
-	
-	// Set new spawn point
-	JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
+	// Set random spawn point
+	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && 
+		ent->jkmodEnt.dimensionNumberOld && 
+		ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber) 
+	{
+		SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
+		JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
+	}
+
+	// Update previous dimension
+	ent->jkmodEnt.dimensionNumberOld = ent->jkmodEnt.dimensionNumber;
 
 	if (mvapi)
 	{
