@@ -2242,6 +2242,16 @@ void ClientSpawn(gentity_t *ent) {
 	// Start with a small amount of armor as well.
 	client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;
 
+	// Tr!Force: [GameGeneral] Custom spawn point
+	if (ent->client->pers.jkmodPers.customSpawnCheck) 
+	{
+		spawn_origin[0] = ent->client->pers.jkmodPers.customSpawn[0];
+		spawn_origin[1] = ent->client->pers.jkmodPers.customSpawn[1];
+		spawn_origin[2] = ent->client->pers.jkmodPers.customSpawn[2];
+		spawn_angles[0] = ent->client->pers.jkmodPers.customSpawn[3];
+		spawn_angles[1] = ent->client->pers.jkmodPers.customSpawn[4];
+	}
+
 	G_SetOrigin( ent, spawn_origin );
 	VectorCopy( spawn_origin, client->ps.origin );
 

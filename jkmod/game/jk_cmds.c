@@ -85,11 +85,13 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3dualsaber      !status\n"
 			"^3emote          !savepos\n"
 			"^3ignore         !loadpos\n"
-			"^3dropflag       !teleports\n"
-			"^3callvote       !racetime\n"
-			"^3whois\n"
-			"^3savepos\n"
+			"^3dropflag       !savespawn\n"
+			"^3callvote       !resetspawn\n"
+			"^3whois          !racetime\n"
+			"^3savepos        !teleports\n"
 			"^3loadpos\n"
+			"^3savespawn\n"
+			"^3resetspawn\n"
 			"^7\""));
 		return;
 	}
@@ -975,6 +977,109 @@ static void JKMod_Cmd_TelePos(gentity_t* ent)
 
 /*
 =====================================================================
+Save position for teleport
+=====================================================================
+*/
+static qboolean JKMod_saveSpawn(gentity_t *ent, qboolean say)
+{
+	char *print = say ? "cp" : "print";
+
+	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"Save spawn is not available\n\"", print));
+		return qfalse;
+	}
+	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn in spectator\n\"", print));
+		return qfalse;
+	}
+	else if (level.jkmodLocals.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn during pause mode\n\"", print));
+		return qfalse;
+	}
+	else
+	{
+		ent->client->ps.viewangles[2] = 0.0f;
+		ent->client->pers.jkmodPers.customSpawn[0] = ent->client->ps.origin[0];
+		ent->client->pers.jkmodPers.customSpawn[1] = ent->client->ps.origin[1];
+		ent->client->pers.jkmodPers.customSpawn[2] = ent->client->ps.origin[2];
+		ent->client->pers.jkmodPers.customSpawn[3] = ent->client->ps.viewangles[PITCH];
+		ent->client->pers.jkmodPers.customSpawn[4] = ent->client->ps.viewangles[YAW];
+
+		trap_SendServerCommand(ent - g_entities, va("%s \"Saved spawn point!\n\"", print));
+
+		// Teleport check
+		if (!ent->client->pers.jkmodPers.customSpawnCheck) {
+			ent->client->pers.jkmodPers.customSpawnCheck = qtrue; 
+			return qtrue;
+		} else {
+			return qfalse;
+		}
+	}
+}
+
+/*
+=====================================================================
+Load position for teleport
+=====================================================================
+*/
+static qboolean JKMod_resetSpawn(gentity_t *ent, qboolean say)
+{
+	char *print = say ? "cp" : "print";
+
+	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"Reset spawn is not available\n\"", print));
+		return qfalse;
+	}
+	else if (!ent->client->pers.jkmodPers.customSpawnCheck)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"You don't have any saved spawn\n\"", print));
+		return qfalse;
+	}
+	else if (level.jkmodLocals.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't reset spawn during pause mode\n\"", print));
+		return qfalse;
+	}
+	else
+	{
+		ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
+		trap_SendServerCommand(ent - g_entities, va("%s \"Spawn point reset!\n\"", print));
+
+		// Teleport check
+		if (ent->client->pers.jkmodPers.customSpawnCheck) {
+			ent->client->pers.jkmodPers.customSpawnCheck = qfalse;
+			return qtrue;
+		} else {
+			return qfalse;
+		}
+	}
+}
+
+/*
+=====================================================================
+Teleport save/reset spawn position command function
+=====================================================================
+*/
+static void JKMod_Cmd_SpawnPos(gentity_t* ent)
+{
+	char    cmd[MAX_TOKEN_CHARS];
+	trap_Argv(0, cmd, sizeof(cmd));
+
+	if (!Q_stricmp(cmd, "savespawn") || !Q_stricmp(cmd, "amsavespawn")) {
+		JKMod_saveSpawn(ent, qfalse);
+		return;
+	} else {
+		JKMod_resetSpawn(ent, qfalse);
+		return;
+	}
+}
+
+/*
+=====================================================================
 JetPack command function
 =====================================================================
 */
@@ -1694,6 +1799,16 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		if (!JKMod_loadPosition(ent, qtrue)) return;
 	}
+	// Teleport chat (Save spawn point)
+	else if (Q_stricmp(p, "!savespawn") == 0)
+	{
+		if (!JKMod_saveSpawn(ent, qtrue)) return;
+	}
+	// Teleport chat (Reset spawn point)
+	else if (Q_stricmp(p, "!resetspawn") == 0)
+	{
+		if (!JKMod_resetSpawn(ent, qtrue)) return;
+	}
 	// Teleport chat check
 	else if (Q_stricmp(p, "!teleports") == 0)
 	{
@@ -1734,8 +1849,11 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "whois",					JKMod_Cmd_WhoIs },
 	{ "macroalert",				JKMod_Cmd_MacroAlert },
 	{ "dimension",				JKMod_Cmd_Dimension },
+
 	{ "savepos",				JKMod_Cmd_TelePos },
 	{ "loadpos",				JKMod_Cmd_TelePos },
+	{ "savespawn",				JKMod_Cmd_SpawnPos },
+	{ "resetspawn",				JKMod_Cmd_SpawnPos },
 
 	{ "jetpack",				JKMod_Cmd_JetPack },
 	{ "emote",					JKMod_Cmd_Emote },
