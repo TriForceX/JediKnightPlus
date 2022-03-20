@@ -39,6 +39,7 @@ vmCvar_t	jkcvar_noDuplicatedNames;
 vmCvar_t	jkcvar_chatProtect;
 vmCvar_t	jkcvar_chatProtectTime;
 vmCvar_t	jkcvar_playerIgnore;
+vmCvar_t	jkcvar_spawnActivateSaber;
 vmCvar_t	jkcvar_teleportChat;
 vmCvar_t	jkcvar_teleportChatTime;
 vmCvar_t	jkcvar_teleportFrag;
@@ -117,6 +118,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_chatProtect,			"jk_chatProtect",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportFrag,			"jk_teleportFrag",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },

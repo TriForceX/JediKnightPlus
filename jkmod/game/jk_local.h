@@ -305,6 +305,7 @@ extern	vmCvar_t					jkcvar_noDuplicatedNames;
 extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
+extern	vmCvar_t					jkcvar_spawnActivateSaber;
 extern	vmCvar_t					jkcvar_teleportChat;
 extern	vmCvar_t					jkcvar_teleportChatTime;
 extern	vmCvar_t					jkcvar_teleportFrag;
