@@ -1355,9 +1355,9 @@ INDEX 149
 INDEX 150
 {
    REFERENCE CLIENT_AUTODUEL_DESC
-   TEXT_LANGUAGE1 "Automatically accept dueling challenges."
-   TEXT_LANGUAGE2 "Accepter les défis du duel automatiquement."
-   TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen."
-   TEXT_LANGUAGE6 "Automatically accept dueling challenges."
-   TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente."
+   TEXT_LANGUAGE1 "Automatically accept dueling challenges. (Only if server allows it)"
+   TEXT_LANGUAGE2 "Accepter les défis du duel automatiquement. (Uniquement si le serveur le permet)"
+   TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen. (Nur wenn der server es zulässt)"
+   TEXT_LANGUAGE6 "Automatically accept dueling challenges. (Only if server allows it)"
+   TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente. (Solo si el servidor lo permite)"
 }

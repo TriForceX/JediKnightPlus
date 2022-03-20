@@ -324,6 +324,7 @@ extern	vmCvar_t					jkcvar_duelEndSlow;
 extern	vmCvar_t					jkcvar_duelEndSlowScale;
 extern	vmCvar_t					jkcvar_duelDistance;
 extern	vmCvar_t					jkcvar_duelPassThrough;
+extern	vmCvar_t					jkcvar_duelAutoAccept;
 
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;

@@ -420,6 +420,7 @@ void JKMod_CG_DuelEnd(qboolean winner)
 	if (cg.jkmodCG.duelEndLead < cg.time) CG_AddBufferedSound(winner ? cgs.media.winnerSound : cgs.media.loserSound);
 
 	cg.jkmodCG.duelEnd = qtrue;
+	cg.jkmodCG.duelEndWinner = winner;
 	cg.jkmodCG.duelEndLead = 0;
 	cg.jkmodCG.duelEndRange = cg_thirdPersonRange.value;
 

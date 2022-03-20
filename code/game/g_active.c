@@ -1205,7 +1205,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		{
 			ent->client->ps.duelInProgress = 0;
 			ent->client->pers.jkmodPers.customDuel = 0; // Tr!Force: [Duel] Turn off force duels
-			JKMod_DimensionSet(ent, DIMENSION_FREE); // Tr!Force: [Dimensions] Remove duel flag
+			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE); // Tr!Force: [Dimensions] Remove duel flag
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
@@ -1233,8 +1233,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			duelAgainst->client->pers.jkmodPers.customDuel = 0;
 
 			// Tr!Force: [Dimensions] Remove duel flag
-			JKMod_DimensionSet(ent, DIMENSION_FREE);
-			JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
+			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
+			if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -1295,8 +1295,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->pers.jkmodPers.customDuel = 0;
 
 				// Tr!Force: [Dimensions] Remove duel flag
-				JKMod_DimensionSet(ent, DIMENSION_FREE);
-				JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
+				if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
+				if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);

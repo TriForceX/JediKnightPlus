@@ -1267,7 +1267,7 @@ static int CG_CalcViewValues( void ) {
 	}
 
 	// Tr!Force: [DuelEnd] Camera check
-	if (cg.jkmodCG.duelEnd && cg.renderingThirdPerson && !cg_cameraOrbit.integer) 
+	if (cg.jkmodCG.duelEnd && cg.jkmodCG.duelEndWinner && cg.renderingThirdPerson && !cg_cameraOrbit.integer) 
 	{
 		if (cg_thirdPersonAngle.value > -360)
 		{

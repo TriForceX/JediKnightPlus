@@ -72,6 +72,7 @@ typedef struct
 	jkmod_chatbox_t		chatItems[CHATBOX_ITEMS];	// Chat items count
 	int					chatItemActive;				// Chat item active
 	qboolean			duelEnd;					// Duel end active
+	qboolean			duelEndWinner;				// Duel end winner
 	float				duelEndRange;				// Duel end original range
 	int					duelEndLead;				// Duel end lead check
 	qboolean			emoteCamera;				// Check emote camera

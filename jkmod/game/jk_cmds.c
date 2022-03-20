@@ -132,7 +132,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3engage_auto\n"
 			"^5----------\n"
 			"^2Note 1: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
-			"^2Note 2: ^7Private duels will work only if ^3duel dimension ^7is enabled by the server\n"
+			"^2Note 2: ^7Private and auto duels will work only if the server ^2allows ^7them\n"
 			"^7\"", 
 			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
 			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled")));
@@ -603,7 +603,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		ent->client->ps.duelTime = level.time + 5000;
 
 		// Auto duel view and challenge enemy
-		if (challenged->client->sess.jkmodSess.autoDuel)
+		if (challenged->client->sess.jkmodSess.autoDuel && jkcvar_duelAutoAccept.integer)
 		{
 			vec3_t entDir, otherAngles, lookAng;
 
@@ -675,17 +675,24 @@ Check private duel challenge
 */
 static void JKMod_Cmd_EngageAuto(gentity_t* ent)
 {
-	if (ent->client->sess.jkmodSess.autoDuel) {
-		ent->client->sess.jkmodSess.autoDuel = qfalse;
-		trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^1disabled\n\""));
-	} else {
-		ent->client->sess.jkmodSess.autoDuel = qtrue;
-		trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^2enabled\n\""));
-	}
+	if (jkcvar_duelAutoAccept.integer)
+	{
+		if (ent->client->sess.jkmodSess.autoDuel) {
+			ent->client->sess.jkmodSess.autoDuel = qfalse;
+			trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^1disabled\n\""));
+		} else {
+			ent->client->sess.jkmodSess.autoDuel = qtrue;
+			trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^2enabled\n\""));
+		}
 
-	// Update clientside
-	if (ent->client->pers.jkmodPers.clientPlugin) {
-		trap_SendServerCommand(ent - g_entities, va("jk_cg_autoDuel %i", (int)ent->client->sess.jkmodSess.autoDuel));
+		// Update clientside
+		if (ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_autoDuel %i", (int)ent->client->sess.jkmodSess.autoDuel));
+		}
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Auto duels are ^1disabled ^7by the server\n\""));
 	}
 	return;
 }
