@@ -681,11 +681,11 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 			
 			if (level.jkmodLocals.pauseTimeCustom) {
 				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
-				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
+				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\"", level.jkmodLocals.pauseTimeCustom));
 			}
 			else {
 				trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
-				trap_SendServerCommand(-1, "cp \"PAUSE\n\"");
+				trap_SendServerCommand(-1, "cp \"PAUSE\"");
 			}
 		}
 
@@ -701,7 +701,7 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 	{
 		JKMod_PauseTimeRestore(levelTime - pauseLast);
 		trap_SendServerCommand(-1, va("print \"Game unpaused after %s\n\"", JKMod_MsToWord((levelTime - pauseLast + 1000), qfalse)));
-		trap_SendServerCommand(-1, va("cp \"%s\n\"", G_GetStripEdString("SVINGAME", "BEGIN_DUEL")));
+		trap_SendServerCommand(-1, va("cp \"%s\"", G_GetStripEdString("SVINGAME", "BEGIN_DUEL")));
 		
 		pauseLast = 0;
 		pauseTime = 0;

@@ -222,14 +222,14 @@ static void JKMod_Cmd_DropFlag(gentity_t *ent)
 
 	if (!(g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't drop a flag in this game type\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't drop a flag in this game type\"");
 		return;
 	}
 
 	if ((ent->client->sess.sessionTeam == TEAM_RED && ent->client->ps.powerups[PW_BLUEFLAG] == 0) || 
 		(ent->client->sess.sessionTeam == TEAM_BLUE && ent->client->ps.powerups[PW_REDFLAG] == 0))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You don't have any flag to drop\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You don't have any flag to drop\"");
 		return;
 	}
 
@@ -493,12 +493,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		// Tr!Force: [Ignore] Apply duel ignore
 		if (JKMod_IgnoreClientCheck(1, challenged->s.number, ent->s.number))
 		{
-			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\"");
 			return;
 		}
 		if (JKMod_IgnoreClientCheck(1, ent->s.number, challenged->s.number))
 		{
-			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\"");
 			return;
 		}
 
@@ -870,17 +870,17 @@ static qboolean JKMod_savePosition(gentity_t *ent, qboolean say)
 
 	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"This teleport is not available\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"This teleport is not available%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport in spectator\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport in spectator%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport during pause mode\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport during pause mode%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else
@@ -892,7 +892,7 @@ static qboolean JKMod_savePosition(gentity_t *ent, qboolean say)
 		ent->client->pers.jkmodPers.teleportChat[3] = ent->client->ps.viewangles[PITCH];
 		ent->client->pers.jkmodPers.teleportChat[4] = ent->client->ps.viewangles[YAW];
 
-		trap_SendServerCommand(ent - g_entities, va("%s \"Saved position!\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"Saved position!%s\"", print, (say ? "" : "\n")));
 
 		// Teleport check
 		if (ent->client->pers.jkmodPers.teleportChatCheck != 1) {
@@ -915,22 +915,22 @@ static qboolean JKMod_loadPosition(gentity_t *ent, qboolean say)
 
 	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"This teleport is not available\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"This teleport is not available%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (!ent->client->pers.jkmodPers.teleportChatCheck)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You don't have any saved position\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You don't have any saved position%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport in spectator\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport in spectator%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport during pause mode\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't teleport during pause mode%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else
@@ -993,17 +993,17 @@ static qboolean JKMod_saveSpawn(gentity_t *ent, qboolean say)
 
 	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"Save spawn is not available\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"Save spawn is not available%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn in spectator\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn in spectator%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn during pause mode\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't save spawn during pause mode%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else
@@ -1015,7 +1015,7 @@ static qboolean JKMod_saveSpawn(gentity_t *ent, qboolean say)
 		ent->client->pers.jkmodPers.customSpawn[3] = ent->client->ps.viewangles[PITCH];
 		ent->client->pers.jkmodPers.customSpawn[4] = ent->client->ps.viewangles[YAW];
 
-		trap_SendServerCommand(ent - g_entities, va("%s \"Saved spawn point!\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"Saved spawn point!%s\"", print, (say ? "" : "\n")));
 
 		// Teleport check
 		if (!ent->client->pers.jkmodPers.customSpawnCheck) {
@@ -1038,23 +1038,23 @@ static qboolean JKMod_resetSpawn(gentity_t *ent, qboolean say)
 
 	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"Reset spawn is not available\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"Reset spawn is not available%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (!ent->client->pers.jkmodPers.customSpawnCheck)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You don't have any saved spawn\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You don't have any saved spawn%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("%s \"You can't reset spawn during pause mode\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"You can't reset spawn during pause mode%s\"", print, (say ? "" : "\n")));
 		return qfalse;
 	}
 	else
 	{
 		ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
-		trap_SendServerCommand(ent - g_entities, va("%s \"Spawn point reset!\n\"", print));
+		trap_SendServerCommand(ent - g_entities, va("%s \"Spawn point reset!%s\"", print, (say ? "" : "\n")));
 
 		// Teleport check
 		if (ent->client->pers.jkmodPers.customSpawnCheck) {
@@ -1299,7 +1299,7 @@ static qboolean JKMod_teleportCheck(gentity_t *ent)
 	char		message[MAX_STRING_CHARS] = { 0 };
 	qboolean	found = qfalse;
 
-	Q_strcat(message, sizeof(message), "^7Teleports available for this map:\n");
+	Q_strcat(message, sizeof(message), "^7Teleports available for this map:");
 
 	for (i = 0; i < level.jkmodLocals.teleportChatsCount; i++)
 	{
@@ -1308,13 +1308,12 @@ static qboolean JKMod_teleportCheck(gentity_t *ent)
 
 		if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
 		{
-			Q_strcat(message, sizeof(message), va("^3%s\n", command));
+			Q_strcat(message, sizeof(message), va("\n^3%s", command));
 			found = qtrue;
 		}
 	}
 	
-	if (found) message[strlen(message) - 1] = '\0';
-	trap_SendServerCommand(ent - g_entities, va("cp \"%s\n\"", (found ? message : "This map doesn't have chat teleports")));
+	trap_SendServerCommand(ent - g_entities, va("cp \"%s\"", (found ? message : "This map doesn't have chat teleports")));
 	return qfalse;
 }
 
@@ -1348,17 +1347,17 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 			{
 				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\n\""));
+					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\""));
 					return qfalse;
 				}
 				else if (level.jkmodLocals.pauseTime > level.time)
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\n\""));
+					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\""));
 					return qfalse;
 				}
 				else if (JKMod_PlayerMoving(ent, qtrue, qtrue))
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\n\""));
+					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\""));
 					return qfalse;
 				}
 				else if (ent->client->ps.pm_type == PM_DEAD)
@@ -1394,7 +1393,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 				}
 				else
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You need to respawn to teleport again\n\""));
+					trap_SendServerCommand(ent - g_entities, va("cp \"You need to respawn to teleport again\""));
 					return qfalse;
 				}
 			}
@@ -1762,10 +1761,10 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 	{
 		if (ent->client->sess.jkmodSess.playerStatus) {
 			ent->client->sess.jkmodSess.playerStatus = qfalse;
-			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^1disabled\n\""));
+			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^1disabled\""));
 		} else {
 			ent->client->sess.jkmodSess.playerStatus = qtrue;
-			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^2enabled\n\""));
+			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^2enabled\""));
 		}
 
 		if (ent->client->sess.jkmodSess.playerStatusSeen) ent->client->sess.jkmodSess.playerStatusSeen = qfalse;
@@ -1807,7 +1806,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		char timeBestStr[32];
 
 		if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) {
-			trap_SendServerCommand(ent - g_entities, "cp \"You must be in race mode\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"You must be in race mode\"");
 			return;
 		}
 
@@ -1815,7 +1814,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		Q_strncpyz(timeBestStr, JKMod_MsToString(timeBest), sizeof(timeBestStr));
 
 		if (!timeLast && !timeBest)
-			trap_SendServerCommand(ent - g_entities, "cp \"You don't have any record\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"You don't have any record\"");
 		else if (timeLast <= timeBest)
 			G_Say(ent, NULL, SAY_ALL, va("^7Last Time: ^2%s", timeLastStr));
 		else

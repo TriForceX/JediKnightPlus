@@ -747,7 +747,7 @@ void SetTeam( gentity_t *ent, char *s ) {
 	// Tr!Force: [Pause] Don't allow
 	if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't change team during pause mode\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't change team during pause mode\"");
 		return;
 	}
 

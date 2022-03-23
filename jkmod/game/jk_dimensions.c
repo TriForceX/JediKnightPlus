@@ -93,7 +93,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\"");
 		return qfalse;
 	}
 	else if (ent->client->ps.pm_type == PM_DEAD)
@@ -124,7 +124,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 	else
 	{
 		// Message
-		Q_strcat(message, sizeof(message), "^7Usage: ^2!dimension <option>\n^7Option list:\n");
+		Q_strcat(message, sizeof(message), "^7Usage: ^2!dimension <option>\n^7Option list:");
 
 		// Base?
 		if (!Q_stricmp(dimension, "base")) baseCmd = qtrue;
@@ -133,7 +133,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 		for (i = 0; i < JKModDimensionDataSize; i++)
 		{
 			// Add to message
-			Q_strcat(message, sizeof(message), va("^3%s\n", JKModDimensionData[i].command));
+			Q_strcat(message, sizeof(message), va("\n^3%s", JKModDimensionData[i].command));
 
 			// Command
 			if (!Q_stricmp(dimension, JKModDimensionData[i].command) || baseCmd)
@@ -156,7 +156,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 				else if (ent->client->ps.stats[JK_DIMENSION] != dimensionIndex)
 				{
 					JKMod_DimensionSet(ent, dimensionIndex);
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", dimensionName));
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\"", dimensionName));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s ^3%s ^7dimension\n\"", ent->client->pers.netname, (dimensionIndex != dimensionBase ? "joined the" : "back to"), dimensionName));
 					return qtrue;
 				}
@@ -164,7 +164,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 				else if (dimensionIndex != dimensionBase)
 				{
 					JKMod_DimensionSet(ent, dimensionBase);
-					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\n\"", JKModDimensionData[dimensionBaseIndex].name));
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\"", JKModDimensionData[dimensionBaseIndex].name));
 					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " back to ^3%s ^7dimension\n\"", ent->client->pers.netname, JKModDimensionData[dimensionBaseIndex].name));
 					return qtrue;
 				}
@@ -177,7 +177,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 		}
 
 		// Not found
-		trap_SendServerCommand(ent - g_entities, va("%s \"%s\n\"", print, (say ? message : "Usage: dimension <option>\nSee ^3/help dimensions ^7for more information")));
+		trap_SendServerCommand(ent - g_entities, va("%s \"%s\"", print, (say ? message : "Usage: dimension <option>\nSee ^3/help dimensions ^7for more information\n")));
 		return qfalse;
 	}
 }

@@ -178,7 +178,7 @@ void JKMod_SetGamePlay(char *option)
 	{
 		MV_SetGamePlay(version);
 		trap_SendServerCommand(-1, va("print \"Server gameplay changed to 1.0%i\n\"", version));
-		trap_SendServerCommand(-1, va("cp \"Gameplay changed to 1.0%i\n\"", version));
+		trap_SendServerCommand(-1, va("cp \"Gameplay changed to 1.0%i\"", version));
 	}
 
 	trap_Cvar_Set("jk_gamePlay", va("%i", version == jk2startversion ? 0 : version));

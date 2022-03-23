@@ -146,49 +146,49 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 	// Check version compatibility
 	if (JKModEmotesData[emoteIndex].compatible == qfalse && jk2gameplay == VERSION_1_02)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote in JK2 1.02 version\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote in JK2 1.02 version\"");
 		return;
 	}
 
 	// Exception for duel gametype
 	if (g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this gametype\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this gametype\"");
 		return;
 	}
 
 	// Don't allow in spectator
 	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in spectator mode\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in spectator mode\"");
 		return;
 	}
 
 	// Don't allow in race dimension
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this dimension\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this dimension\"");
 		return;
 	}
 
 	// Don't allow in duel
 	if (ent->client->ps.duelInProgress)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in private duels\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in private duels\"");
 		return;
 	}
 
 	// Bit values for emotes! Let the people choose!
 	if (!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emote disabled by the server\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"Emote disabled by the server\"");
 		return;
 	}
 
 	// Don't allow when you are moving
 	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special && !(ent->client->ps.duelTime >= level.time))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\"");
 		return;
 	}
 
@@ -436,7 +436,7 @@ void JKMod_EmoteCmdHug(gentity_t *ent)
 	}
 	else
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
 		return;
 	}
 }
@@ -530,7 +530,7 @@ void JKMod_EmoteCmdKiss(gentity_t *ent)
 	}
 	else
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\n\"");
+		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
 		return;
 	}
 }
