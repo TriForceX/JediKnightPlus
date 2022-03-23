@@ -191,7 +191,7 @@ void JKMod_JetpackTryUse(gentity_t *ent)
 {
 	if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 	{
-		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING &&  ent->client->pers.jkmodPers.jetackUseDelay <= level.time) {
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING && ent->client->pers.jkmodPers.jetackUseDelay <= level.time) {
 			// Disable
 			ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
 			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;

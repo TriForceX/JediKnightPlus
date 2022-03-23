@@ -1182,6 +1182,9 @@ void AdjustTournamentScores( void ) {
 			ClientUserinfoChanged( clientNum );
 			trap_SetConfigstring ( CS_CLIENT_DUELWINNER, va("%i", clientNum ) );
 
+			// Tr!Force: [PlayerStatus] Announce score
+			if (jkcvar_chatAutoStatus.integer && level.clients[clientNum].sess.jkmodSess.playerStatus) JKMod_playerStatus(&g_entities[clientNum], qtrue);
+
 			clientNum = level.sortedClients[clFailure];
 
 			level.clients[ clientNum ].sess.losses++;
@@ -1198,6 +1201,9 @@ void AdjustTournamentScores( void ) {
 			ClientUserinfoChanged( clientNum );
 			trap_SetConfigstring ( CS_CLIENT_DUELWINNER, va("%i", clientNum ) );
 
+			// Tr!Force: [PlayerStatus] Announce score
+			if (jkcvar_chatAutoStatus.integer && level.clients[clientNum].sess.jkmodSess.playerStatus) JKMod_playerStatus(&g_entities[clientNum], qtrue);
+
 			clientNum = level.sortedClients[clFailure];
 
 			level.clients[ clientNum ].sess.losses++;
@@ -1212,6 +1218,9 @@ void AdjustTournamentScores( void ) {
 			ClientUserinfoChanged( clientNum );
 
 			trap_SetConfigstring ( CS_CLIENT_DUELWINNER, va("%i", clientNum ) );
+
+			// Tr!Force: [PlayerStatus] Announce score
+			if (jkcvar_chatAutoStatus.integer && level.clients[clientNum].sess.jkmodSess.playerStatus) JKMod_playerStatus(&g_entities[clientNum], qtrue);
 		}
 
 		clientNum = level.sortedClients[1];

@@ -159,6 +159,8 @@ typedef struct
 	qboolean		motdSeen;					// Server motd seen
 	qboolean		privateDuel;				// Private duel challenges
 	qboolean		autoDuel;					// Auto accept duel challenges
+	qboolean		playerStatus;				// Player status tracking
+	qboolean		playerStatusSeen;			// Player status tracking check
 	char			clientIP[MAX_IP_STRING];	// Client IP string
 	int				ignoredPlayer[2];			// Client ignored player chats & duels
 	int				ignoredAll[2];				// Client ignored all chats & duels
@@ -173,6 +175,7 @@ typedef struct
 	int				teleportChat[5];		// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check
 	int				jetackUseDelay;			// Jetpack usage delay
+	int				playerStatusDelay;		// Player status tracking delay
 	qboolean		buttonUseAnim;			// Button use animation use check
 	qboolean		buttonUseAnimValid;		// Button use animation valid target
 	int				raceStartTime;			// Start time for racers
@@ -301,9 +304,12 @@ extern	vmCvar_t					jkcvar_allowSaberHolocrons;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_allowCustomDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
+
 extern	vmCvar_t					jkcvar_noDuplicatedNames;
 extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
+extern	vmCvar_t					jkcvar_chatAutoStatus;
+extern	vmCvar_t					jkcvar_chatAutoStatusTime;
 extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_spawnActivateSaber;
 extern	vmCvar_t					jkcvar_teleportChat;
@@ -404,6 +410,7 @@ void		JKMod_IgnoreClientClear(int ignored);
 void		JKMod_Cmd_WhoIs(gentity_t *ent);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);
+qboolean	JKMod_playerStatus(gentity_t *ent, qboolean announce);
 void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
 
 // jk_common.c

@@ -1146,12 +1146,18 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 	switch ( mode ) {
 	default:
 	case SAY_ALL:
-		G_LogPrintf( "say: %s: %s\n", ent->client->pers.netname, chatText );
+		// Tr!Force: [PlayerStatus] Don't add to log
+		if (jkcvar_chatAutoStatus.integer ? ent->client->pers.jkmodPers.playerStatusDelay <= level.time : qtrue) 
+			G_LogPrintf( "say: %s: %s\n", ent->client->pers.netname, chatText );
+
 		Com_sprintf (name, sizeof(name), "%s%c%c"EC": ", ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		color = COLOR_GREEN;
 		break;
 	case SAY_TEAM:
-		G_LogPrintf( "sayteam: %s: %s\n", ent->client->pers.netname, chatText );
+		// Tr!Force: [PlayerStatus] Don't add to log
+		if (jkcvar_chatAutoStatus.integer ? ent->client->pers.jkmodPers.playerStatusDelay <= level.time : qtrue) 
+			G_LogPrintf( "sayteam: %s: %s\n", ent->client->pers.netname, chatText );
+
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 			Com_sprintf (name, sizeof(name), EC"(%s%c%c"EC") (%s)"EC": ", 
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE, location);

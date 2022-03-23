@@ -2435,6 +2435,9 @@ void ClientDisconnect( int clientNum ) {
 			level.clients[ level.sortedClients[0] ].ps.persistant[PERS_SCORE] = 0;
 			level.clients[ level.sortedClients[0] ].sess.wins++;
 			ClientUserinfoChanged( level.sortedClients[0] );
+
+			// Tr!Force: [PlayerStatus] Announce score
+			if (jkcvar_chatAutoStatus.integer && level.clients[level.sortedClients[0]].sess.jkmodSess.playerStatus) JKMod_playerStatus(&g_entities[level.sortedClients[0]], qtrue);
 		}
 		else if ( level.sortedClients[0] == clientNum ) {
 			level.clients[ level.sortedClients[1] ].ps.persistant[PERS_SCORE] = 0;

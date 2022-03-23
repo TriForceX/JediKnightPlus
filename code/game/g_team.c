@@ -746,6 +746,9 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 	// other gets another 10 frag bonus
 	AddScore(other, ent->r.currentOrigin, CTF_CAPTURE_BONUS);
 
+	// Tr!Force: [PlayerStatus] Announce score
+	if (jkcvar_chatAutoStatus.integer && other->client->sess.jkmodSess.playerStatus) JKMod_playerStatus(other, qtrue);
+
 	Team_CaptureFlagSound( ent, team );
 
 	// Ok, let's do the player loop, hand out the bonuses

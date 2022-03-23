@@ -1975,6 +1975,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 					(self->client && self->client->ps.isJediMaster))
 				{
 					AddScore( attacker, self->r.currentOrigin, 1 );
+
+					// Tr!Force: [PlayerStatus] Announce score
+					if (jkcvar_chatAutoStatus.integer && attacker->client->sess.jkmodSess.playerStatus && !attacker->client->ps.isJediMaster) JKMod_playerStatus(attacker, qtrue);
 					
 					if (self->client && self->client->ps.isJediMaster)
 					{
@@ -1995,6 +1998,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			else
 			{
 				AddScore( attacker, self->r.currentOrigin, 1 );
+
+				// Tr!Force: [PlayerStatus] Announce score
+				if (jkcvar_chatAutoStatus.integer && attacker->client->sess.jkmodSess.playerStatus && g_gametype.integer < GT_JEDIMASTER) JKMod_playerStatus(attacker, qtrue);
 			}
 
 			if( meansOfDeath == MOD_STUN_BATON ) {

@@ -1721,6 +1721,61 @@ void JKMod_CallVote(gentity_t *ent)
 
 /*
 =====================================================================
+Show current player status
+=====================================================================
+*/
+qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
+{
+	qboolean isCTF = g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY;
+	qboolean isDuel = g_gametype.integer == GT_TOURNAMENT;
+
+	if (ent->client->ps.pm_type == PM_DEAD) return qfalse;
+
+	if (announce)
+	{
+		if (ent->client->pers.jkmodPers.playerStatusDelay <= level.time) 
+		{
+			ent->client->pers.jkmodPers.playerStatusDelay = level.time + (jkcvar_chatAutoStatusTime.integer*1000);
+
+			G_Say(ent, NULL, SAY_ALL, va("I have %s ^5%i ^2and %s ^3%i ^2times! My health %s ^1%i^7/^2%i",
+				(isCTF || isDuel ? "scored" : "killed"), 
+				(isDuel ? ent->client->sess.wins : ent->client->ps.persistant[PERS_SCORE]),
+				(isCTF ? "captured" : (isDuel ? "lost" : "died")), 
+				(isCTF ? ent->client->ps.persistant[PERS_CAPTURES] : ent->client->sess.losses),
+				(jkcvar_chatAutoStatus.integer || isDuel ? "was" : "is"),
+				ent->client->ps.stats[STAT_HEALTH],
+				ent->client->ps.stats[STAT_ARMOR])
+			);
+		}
+
+		if (!jkcvar_chatAutoStatus.integer && !ent->client->sess.jkmodSess.playerStatusSeen)
+		{
+			ent->client->sess.jkmodSess.playerStatus = qfalse;
+			ent->client->sess.jkmodSess.playerStatusSeen = qtrue;
+
+			trap_SendServerCommand(ent - g_entities, va("print \"Auto status tracking is ^1disabled ^7by the server\n\""));
+		}
+
+		return !announce;
+	}
+	else
+	{
+		if (ent->client->sess.jkmodSess.playerStatus) {
+			ent->client->sess.jkmodSess.playerStatus = qfalse;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^1disabled\n\""));
+		} else {
+			ent->client->sess.jkmodSess.playerStatus = qtrue;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^2enabled\n\""));
+		}
+
+		if (ent->client->sess.jkmodSess.playerStatusSeen) ent->client->sess.jkmodSess.playerStatusSeen = qfalse;
+
+		return !announce && ent->client->sess.jkmodSess.playerStatus;
+	}
+}
+
+/*
+=====================================================================
 Custom say function
 =====================================================================
 */
@@ -1741,18 +1796,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	// Player stats
 	else if (Q_stricmp(p, "!status") == 0)
 	{
-		qboolean isCTF = g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY;
-		qboolean isDuel = g_gametype.integer == GT_TOURNAMENT;
-
-		if (ent->client->ps.pm_type == PM_DEAD) return;
-
-		G_Say(ent, NULL, SAY_ALL, va("^7Health: ^1%i ^7Armor: ^2%i ^7%s: ^5%i ^7%s: ^3%i",
-			ent->client->ps.stats[STAT_HEALTH],
-			ent->client->ps.stats[STAT_ARMOR],
-			(isCTF ? "Score" : "Kills"), (isDuel ? ent->client->sess.wins : ent->client->ps.persistant[PERS_SCORE]),
-			(isCTF ? "Captures" : "Deaths"), (isCTF ? ent->client->ps.persistant[PERS_CAPTURES] : ent->client->sess.losses))
-		);
-		return;
+		if (!JKMod_playerStatus(ent, (jkcvar_chatAutoStatus.integer ? qfalse : qtrue))) return;
 	}
 	// Race time
 	else if (Q_stricmp(p, "!racetime") == 0)
