@@ -2903,6 +2903,7 @@
 	"classname" "jkmod_misc_power_converter"
 	"origin" "408 -1416 0"
 	"type" "1"
+	"chargemax" "50"
 }
 // entity 446
 {
@@ -2922,6 +2923,7 @@
 	"classname" "jkmod_misc_power_converter"
 	"origin" "-1872 128 408"
 	"type" "1"
+	"chargemax" "50"
 }
 // entity 449
 {

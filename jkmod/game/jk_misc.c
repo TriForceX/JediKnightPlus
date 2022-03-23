@@ -677,17 +677,13 @@ extern void SP_fx_runner(gentity_t *ent);
 void JKMod_EnergyStationCheck(gentity_t *ent)
 {
 	if (ent->fly_sound_debounce_time < level.time) ent->s.loopSound = 0;
-	if (ent->count < ent->boltpoint4) ent->count++;
-
-	ent->nextthink = level.time + ent->bolt_Head;
+	ent->nextthink = level.time + STATION_RECHARGE_TIME;
 }
 
 // Energy station use function
 void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
-	int dif, add, give;
-	int stop = 1;
-	int currentAmmo;
+	int addAmount = 0, getAmount = 0, maxAmount = 0, currentAmmo = 0;
 	qboolean typeAmmo;
 	qboolean typeHealth;
 	qboolean typeShield;
@@ -699,10 +695,27 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	typeAmmo = self->watertype == STATION_AMMO_TYPE;
 	typeHealth =  self->watertype == STATION_HEALTH_TYPE;
 	typeShield = self->watertype == STATION_SHIELD_TYPE;
-	
-	// Set amount
-	give = typeHealth ? 5 : 2;
+
+	// Check weapon
+	if (typeAmmo && activator->client->ps.weapon < WP_BRYAR_PISTOL) 
+	{
+		trap_SendServerCommand(activator->client->ps.clientNum, "cp \"This weapon does not use ammo\"");
+		return;
+	}
+
+	// Get data
 	currentAmmo = weaponData[activator->client->ps.weapon].ammoIndex;
+	addAmount = self->boltpoint4;
+	maxAmount = typeAmmo ? ammoData[currentAmmo].max : self->count;
+
+	// Set data
+	if (typeAmmo)
+		getAmount = activator->client->ps.ammo[currentAmmo];
+	else if (typeHealth)
+		getAmount = activator->health;
+	else if (typeShield)
+		getAmount = activator->client->ps.stats[STAT_ARMOR];
+	
 
 	if (self->setTime < level.time)
 	{
@@ -717,86 +730,36 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 				self->s.loopSound = G_SoundIndex("sound/interface/shieldcon_run.wav");
 		}
 
-		self->setTime = level.time + 100;
+		self->setTime = level.time + self->bolt_Head;
 
-		// Energy check
-		if (typeHealth)
-			dif = activator->client->ps.stats[STAT_MAX_HEALTH] - activator->health;
-		else if (typeShield)
-			dif = activator->client->ps.stats[STAT_MAX_HEALTH] - activator->client->ps.stats[STAT_ARMOR];
-
-		if ((typeAmmo && self->count) || dif > 0)
+		// Amount check
+		if (getAmount < maxAmount)
 		{
-			if (typeAmmo) 
-			{
-				int i = AMMO_BLASTER;
-
-				while (i < AMMO_MAX)
-				{
-					add = ammoData[i].max*0.1;
-
-					if (add < 1) add = 1;
-					if (activator->client->ps.ammo[i] < ammoData[i].max)
-					{
-						activator->client->ps.ammo[i] += add;
-
-						if (activator->client->ps.ammo[i] > ammoData[i].max)
-						{
-							activator->client->ps.ammo[i] = ammoData[i].max;
-						}
-					}
-					i++;
-				}
-			}
-			else 
-			{
-				if (dif > give) 
-					add = give;
-				else 
-					add = dif;
-
-				if (self->count < add) add = self->count;
-			}
-
-			self->count -= add;
-
-			if (self->count <= 0 && typeShield) self->setTime = 0;
-
-			stop = 0;
+			if (typeAmmo)
+				activator->client->ps.ammo[currentAmmo] += ((getAmount + addAmount) > maxAmount ? 1 : addAmount);
+			else if (typeHealth)
+				activator->health += ((getAmount + addAmount) > maxAmount ? 1 : addAmount);
+			else if (typeShield)
+				activator->client->ps.stats[STAT_ARMOR] += ((getAmount + addAmount) > maxAmount ? 1 : addAmount);
 
 			self->fly_sound_debounce_time = level.time + 50;
-
-			if (typeHealth)
-				activator->health += add;
-			else if (typeShield)
-				activator->client->ps.stats[STAT_ARMOR] += add;
 		}
-
-		// Stop check
-		if ((typeHealth || typeAmmo) && stop)
+		else
 		{
-			self->s.loopSound = 0;
-		}
-		else if (typeShield && (stop || self->count <= 0))
-		{
-			if (self->s.loopSound && self->setTime < level.time) {
-				G_Sound(self, CHAN_AUTO, G_SoundIndex("sound/interface/shieldcon_done.mp3"));
-			}
+			self->setTime = 0;
+			if (self->s.loopSound && self->setTime < level.time) G_Sound(self, CHAN_AUTO, G_SoundIndex("sound/interface/shieldcon_done.mp3"));
 
 			self->s.loopSound = 0;
-
-			if (self->setTime < level.time) {
-				self->setTime = level.time + self->bolt_Head + 100;
-			}
+			if (self->setTime < level.time) self->setTime = level.time + STATION_RECHARGE_TIME + self->bolt_Head;
 		}
 
 		// Show data
 		if (typeAmmo)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Ammo\n^3%i\n\"", activator->client->ps.ammo[currentAmmo]));
+			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Ammo: ^3%i\"", (getAmount > 999 ? 999 : getAmount)));
 		else if (typeHealth)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health\n^1%i\n\"", activator->client->ps.stats[STAT_HEALTH]));
+			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health: ^1%i\"", getAmount));
 		else if (typeShield)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield\n^2%i\n\"", activator->client->ps.stats[STAT_ARMOR]));
+			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield: ^2%i\"", getAmount));
 	}
 }
 
@@ -813,11 +776,11 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 	gentity_t	*effect;
 	char		*fxFile;
 	char		*mins, *maxs;
-	int			count;
-	qboolean	chargeRate;
 
 	G_SpawnInt("type", "1", &ent->watertype);
-	G_SpawnInt("count", "0", &ent->count);
+	G_SpawnInt("chargemax", "0", &ent->count);
+	G_SpawnInt("chargerate", "0", &ent->bolt_Head);
+	G_SpawnInt("chargeamount", "0", &ent->boltpoint4);
 	G_SpawnString("model", "", &ent->model);
 
 	if (ent->watertype != STATION_SHIELD_TYPE && ent->watertype != STATION_HEALTH_TYPE && ent->watertype != STATION_AMMO_TYPE)
@@ -849,31 +812,17 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 		ent->s.modelGhoul2 = 1;
 	}
 
-	if (!ent->health)
-	{
-		ent->health = 999;
-	}
+	if (!ent->health) ent->health = 999;
+	if (!ent->count) ent->count = 100;
+	if (!ent->bolt_Head) ent->bolt_Head = 100;
+	if (!ent->boltpoint4) ent->boltpoint4 = 5;
 
 	ent->s.eFlags = 0;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
 	ent->s.generic1 |= GENERIC_USABLE | GENERIC_CONVERTER; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
-	ent->classname = "jkmod_misc_power_converter";
 	ent->use = JKMod_EnergyStationUse;
-
-	count = ent->watertype == STATION_SHIELD_TYPE ? 50 : 100;
-	chargeRate = ent->watertype == STATION_SHIELD_TYPE ? qtrue : qfalse;
-
-	if (!ent->count) ent->count = count;
-
-	if (chargeRate) 
-	{
-		G_SpawnInt("chargerate", "0", &ent->bolt_Head);
-		if (!ent->bolt_Head) ent->bolt_Head = STATION_RECHARGE_TIME;
-	}
-
-	ent->boltpoint4 = ent->count; // initial value
 	ent->think = JKMod_EnergyStationCheck;
 	ent->nextthink = level.time + STATION_RECHARGE_TIME;
 
