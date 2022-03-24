@@ -76,6 +76,10 @@ qboolean BG_SaberInAttack( int move )
 	case LS_A_JUMP_T__B_:
 	case LS_A_FLIP_STAB:
 	case LS_A_FLIP_SLASH:
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_JUMP: // Tr!Force: [PlayerMovement] Dual saber moves
 		return qtrue;
 		break;
 	}
@@ -93,6 +97,10 @@ qboolean BG_SaberInSpecial( int move )
 	case LS_A_JUMP_T__B_:
 	case LS_A_FLIP_STAB:
 	case LS_A_FLIP_SLASH:
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_JUMP: // Tr!Force: [PlayerMovement] Dual saber moves
 		return qtrue;
 	}
 	return qfalse;
@@ -982,6 +990,12 @@ void PM_StartTorsoAnim( int anim ) {
 		anim = BOTH_STAND1;
 	}
 	*/
+
+	// Tr!Force: [PlayerMovement] Dual saber moves	
+	if ((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->weapon == WP_SABER && pm->ps->dualBlade && !pm->ps->saberHolstered && (anim & ~ANIM_TOGGLEBIT) == BOTH_RUN1)
+	{
+		anim = BOTH_T1_T__BR;
+	}
 
 	pm->ps->torsoAnim = ( ( pm->ps->torsoAnim & ANIM_TOGGLEBIT ) ^ ANIM_TOGGLEBIT )
 		| anim;

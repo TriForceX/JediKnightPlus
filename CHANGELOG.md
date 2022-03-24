@@ -9,6 +9,22 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.18.0
+- Fix mini scoreboard death on spectator
+- Allow saber holocrons for saber only mode
+- Added random respawn on dimension change
+- Fix random respawn on dimension change
+- Updated server config and example map
+- Added save & reset spawn commands
+- Clear teleports on dimension change
+- Fixed animation check for useable targets
+- Added auto duel cvar & fixed some duel stuff
+- Added cvar to disable activate saber on spawn
+- Updated status chat command
+- Updated misc power converter usage
+- Center prints cleanup
+- Added custom dual saber moves
+
 ## 0.17.0
 - Added strafe helper client command
 - Added speed meter client command

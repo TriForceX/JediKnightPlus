@@ -1528,6 +1528,8 @@ qboolean G_SaberInBackAttack(int move)
 	case LS_A_BACK:
 	case LS_A_BACK_CR:
 	case LS_A_BACKSTAB:
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
 		return qtrue;
 	}
 
@@ -1696,10 +1698,13 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 		if (self->client->ps.saberMove == LS_A_BACK ||
 			self->client->ps.saberMove == LS_A_BACK_CR ||
 			self->client->ps.saberMove == LS_A_BACKSTAB ||
-			self->client->ps.saberMove == LS_A_JUMP_T__B_)
+			self->client->ps.saberMove == LS_A_JUMP_T__B_ ||
+			self->client->ps.saberMove == LS_JK_DUAL_SPIN1 || // Tr!Force: [PlayerMovement] Dual saber moves
+			self->client->ps.saberMove == LS_JK_DUAL_SPIN2 || // Tr!Force: [PlayerMovement] Dual saber moves
+			self->client->ps.saberMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerMovement] Dual saber moves
 		{
 			unblockable = qtrue;
-			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
+			if (self->client->ps.saberMove == LS_A_JUMP_T__B_ || self->client->ps.saberMove == LS_JK_DUAL_TORNADO) // Tr!Force: [PlayerMovement] Dual saber moves
 			{ //do extra damage for special unblockables
 				dmg += 40;
 			}
@@ -2093,7 +2098,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 				dmg = G_GetAttackDamage(self, 2, 120, 0.5f);
 			}
 			else if (saberInSpecial &&
-					 (self->client->ps.saberMove == LS_A_JUMP_T__B_))
+					 (self->client->ps.saberMove == LS_A_JUMP_T__B_ || self->client->ps.saberMove == LS_JK_DUAL_TORNADO)) // Tr!Force: [PlayerMovement] Dual saber moves
 			{
 				dmg = G_GetAttackDamage(self, 2, 180, 0.65f);
 			}
@@ -2109,7 +2114,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 		else if (self->client->ps.fd.saberAnimLevel == 2)
 		{
 			if (saberInSpecial &&
-				(self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH))
+				(self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH || self->client->ps.saberMove == LS_JK_DUAL_TORNADO)) // Tr!Force: [PlayerMovement] Dual saber moves
 			{ //a well-timed hit with this can do a full 85
 				if ( jk2gameplay == VERSION_1_04 ) dmg = G_GetAttackDamage(self, 2, 80, 0.5f);
 				else							   dmg = G_GetAttackDamage(self, 2, 100, 0.5f);
@@ -2157,11 +2162,11 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 
 		if (!inBackAttack || jk2gameplay != VERSION_1_04)
 		{
-			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
+			if (self->client->ps.saberMove == LS_A_JUMP_T__B_ || self->client->ps.saberMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerMovement] Dual saber moves
 			{ //do extra damage for special unblockables
 				dmg += 5; //This is very tiny, because this move has a huge damage ramp
 			}
-			else if (self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH)
+			else if (self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH || self->client->ps.saberMove == LS_JK_DUAL_JUMP) // Tr!Force: [PlayerMovement] Dual saber moves
 			{
 				dmg += 5; //ditto
 				if (dmg <= 40 || G_GetAnimPoint(self) <= 0.4f)
@@ -3368,6 +3373,7 @@ runMin:
 	G_RunObject(saberent);
 }
 
+extern void StandardSetBodyAnim(gentity_t *self, int anim, int flags); // Tr!Force: [PlayerMovement] Dual saber moves
 void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 { //rww - keep the saber position as updated as possible on the server so that we can try to do realistic-looking contact stuff
 	mdxaBone_t	boltMatrix;
@@ -3693,6 +3699,12 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			{
 				self->client->ps.saberIdleWound = 0;
 				self->client->ps.saberAttackWound = 0;
+			}
+
+			// Tr!Force: [PlayerMovement] Dual saber moves
+			if ((self->client->ps.stats[JK_MOVEMENT] & JK_DUAL_MOVES) && self->client->ps.dualBlade && (self->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) 
+			{
+				StandardSetBodyAnim(self, BOTH_T1_T__BR, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_RESTART);
 			}
 		}
 

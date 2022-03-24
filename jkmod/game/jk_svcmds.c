@@ -164,6 +164,7 @@ static jkmod_bit_info_t togglePlayerMovement[] =
 	"BUTTON USE STAND",
 	"SPECTATOR NO-CLIP",
 	"RESIST PUSH ANIM",
+	"DUAL SABER MOVES",
 };
 
 // Options for jk_voteControl cvar

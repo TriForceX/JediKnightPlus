@@ -303,7 +303,11 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		cg.predictedPlayerState.saberMove == LS_A_BACKSTAB || 
 		cg.predictedPlayerState.saberMove == LS_A_FLIP_STAB || 
 		cg.predictedPlayerState.saberMove == LS_A_FLIP_SLASH || 
-		cg.predictedPlayerState.saberMove == LS_A_JUMP_T__B_ )) 
+		cg.predictedPlayerState.saberMove == LS_A_JUMP_T__B_ ||
+		cg.predictedPlayerState.saberMove == LS_JK_DUAL_SPIN1 ||
+		cg.predictedPlayerState.saberMove == LS_JK_DUAL_SPIN2 ||
+		cg.predictedPlayerState.saberMove == LS_JK_DUAL_TORNADO ||
+		cg.predictedPlayerState.saberMove == LS_JK_DUAL_JUMP )) 
 	{
 		float animLength = bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].numFrames * abs(bgGlobalAnimations[cg.predictedPlayerState.legsAnim&~ANIM_TOGGLEBIT].frameLerp);
 		float elapsedTime = (float)(animLength - cg.predictedPlayerState.legsTimer);

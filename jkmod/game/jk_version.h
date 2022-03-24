@@ -17,7 +17,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 
 // Version
 #define JK_MAJOR 			"0"
-#define JK_MINOR 			"17"
+#define JK_MINOR 			"18"
 #define JK_PATCH 			"0"
 
 // Public

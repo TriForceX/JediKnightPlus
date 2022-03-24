@@ -113,7 +113,7 @@ int JKMod_EmoteIn(gentity_t *ent, int type)
 
 	for (i = 0; i < EMOTE_NUM_EMOTES; i++)
 	{
-		if ((ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[i].startAnim)
+		if ((ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[i].startAnim && ent->client->ps.saberMove == LS_NONE)
 		{
 			switch (type)
 			{

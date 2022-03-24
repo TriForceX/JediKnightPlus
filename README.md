@@ -58,7 +58,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [ ] Clan system (Tag protection, member role, etc...)
 - [x] Over 50 player emotes (Sit, kiss, surrender, etc...)
 - [x] Chat protect feature (Players can't kill during chat)
-- [ ] Dual blade lightsaber gameplay (Fixed damages, custom combos, etc...)
+- [x] Dual blade lightsaber gameplay (Fixed damages, custom combos, etc...)
 - [x] Items get affected by force physics (Push, pull, etc...)
 - [x] Custom per-gametype configuration files
 - [x] Multiple duel challenges
@@ -72,6 +72,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 - [x] Custom private duel distance
 - [x] Dueling players pass-through feature
 - [x] Auto duel challenge feature
+- [x] Auto player status tracking feature
 - [x] Drop flag command for CTF & CTY game types
 - [x] Random client begin messages
 - [x] Custom client begin sound

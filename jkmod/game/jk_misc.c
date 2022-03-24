@@ -156,6 +156,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_RESIST_PUSH;
 
+	// Dual saber moves
+	if (jkcvar_playerMovement.integer & JK_DUAL_MOVES) 
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_DUAL_MOVES;
+	else 
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DUAL_MOVES;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 

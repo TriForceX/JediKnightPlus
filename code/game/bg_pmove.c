@@ -4433,7 +4433,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 			ps->speed *= 0.5f;
 		}
 	}
-	else if ( ps->weapon == WP_SABER && BG_SaberInAttack( ps->saberMove ) )
+	else if ( ps->weapon == WP_SABER && BG_SaberInAttack( ps->saberMove ) && !((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade && BG_SaberInSpecial(ps->saberMove)) ) // Tr!Force: [PlayerMovement] Dual saber moves
 	{//if attacking with saber while running, drop your speed
 		switch( ps->fd.saberAnimLevel )
 		{

@@ -990,6 +990,12 @@ typedef enum {
 	LS_REFLECT_LR,
 	LS_REFLECT_LL,
 
+	// Tr!Force: [PlayerMovement] Dual saber moves
+	LS_JK_DUAL_SPIN1,
+	LS_JK_DUAL_SPIN2,
+	LS_JK_DUAL_TORNADO,
+	LS_JK_DUAL_JUMP,
+
 	LS_MOVE_MAX//
 } saberMoveName_t;
 
