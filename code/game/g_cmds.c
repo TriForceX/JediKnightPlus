@@ -2796,7 +2796,7 @@ void BaseJK2_ClientCommand( int clientNum ) { // Tr!Force: [BaseJK2] Client comm
 		}
 	}
 #endif
-	else if (Q_stricmp(cmd, "g2animent") == 0 && CheatsOk( ent ) && jk2version != VERSION_1_02) // Tr!Force: [Gameplay] Don't allow this
+	else if (Q_stricmp(cmd, "g2animent") == 0 && CheatsOk( ent ) && jk2startversion != VERSION_1_02) // Tr!Force: [Gameplay] Don't allow this
 	{
 		G_CreateExampleAnimEnt(ent);
 	}
