@@ -1092,7 +1092,7 @@ JetPack command function
 */
 static void JKMod_Cmd_JetPack(gentity_t* ent)
 {
-	if (!jkcvar_jetPack.integer)
+	if (!jkcvar_jetPack.integer && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_GUNS | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
 		return;

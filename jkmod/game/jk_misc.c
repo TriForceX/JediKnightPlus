@@ -509,10 +509,8 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	// Jetpack
 	if (jetpack) 
 	{
-		if (jkcvar_jetPack.integer) {
-			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-			ent->client->ps.stats[JK_FUEL] = 100;
-		}
+		ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+		ent->client->ps.stats[JK_FUEL] = 100;
 	}
 	else 
 	{

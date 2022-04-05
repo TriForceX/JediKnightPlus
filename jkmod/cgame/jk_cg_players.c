@@ -89,13 +89,10 @@ void JKMod_CG_Player(centity_t *cent)
 	}
 
 	// Render jetpack model
-	if (cgs.jkmodCGS.jetPack)
+	if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
 	{
-		if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
-		{
-			vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
-			JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.jetpackModel, "*chestg", jkmod_jetPackDetails);
-		}
+		vec4_t jkmod_jetPackDetails = { 0, 0, 0, 1 };
+		JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.jetpackModel, "*chestg", jkmod_jetPackDetails);
 	}
 
 	// Render saber model

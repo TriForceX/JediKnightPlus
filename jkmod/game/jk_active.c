@@ -143,7 +143,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	}
 
 	// Check jetpack fuel
-	if (jkcvar_jetPack.integer == 1 && (ent->client->ps.eFlags & JK_JETPACK_ACTIVE))
+	if (jkcvar_jetPack.integer != 2 && (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && !(ent->client->ps.stats[JK_DIMENSION] & DIMENSION_CHEAT))
 	{
 		int amount = 5;
 

@@ -50,16 +50,16 @@ void JKMod_CG_Draw2D(void)
 		JKMod_CG_DrawPlayerLabels();
 	}
 
-	// Draw Jetpack Fuel
-	if (cgs.jkmodCGS.jetPack == 1)
-	{
-		JKMod_CG_DrawJetPackFuel();
-	}
-
 	// Draw movement keys
 	if (jkcvar_cg_drawMovementKeys.integer)
 	{
 		JKMod_CG_DrawMovementKeys(); 
+	}
+
+	// Draw Jetpack Fuel
+	if (cent->currentState.eFlags & JK_JETPACK_ACTIVE)
+	{
+		JKMod_CG_DrawJetPackFuel();
 	}
 
 	// Draw Dimension indicator
@@ -395,7 +395,7 @@ void JKMod_CG_DrawInventory(int y)
 	if (!cg.renderingThirdPerson && (cg.snap->ps.eFlags & JK_JETPACK_ACTIVE)) 
 	{
 		CG_DrawPic(xAlign, y, ico_size, ico_size, cgs.jkmodMedia.jetpackIcon);
-		if (cgs.jkmodCGS.jetPack == 2 && (cg.snap->ps.eFlags & JK_JETPACK_FLAMING)) CG_DrawPic(xAlign + 4, y - 2, 8, 8, cgs.jkmodMedia.dotRed);
+		if ((cgs.jkmodCGS.jetPack == 2 || cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_CHEAT) && (cg.snap->ps.eFlags & JK_JETPACK_FLAMING)) CG_DrawPic(xAlign + 4, y - 2, 8, 8, cgs.jkmodMedia.dotRed);
 		y += ico_size;
 	}
 
@@ -491,7 +491,6 @@ void JKMod_CG_DrawJetPackFuel(void)
 	float percent;
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
-	if (!(cg.snap->ps.eFlags & JK_JETPACK_ACTIVE))  return;
 	if (!(cg.snap->ps.stats[JK_FUEL] < 100)) return;
 	
 	x = 5;

@@ -257,13 +257,10 @@ void Cmd_Give_f (gentity_t *ent)
 	// Tr!Force: [JetPack] Apply on give command
 	if (give_all || Q_stricmp( name, "jetpack") == 0) 
 	{
-		if (jkcvar_jetPack.integer)
-		{
-			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-			ent->client->ps.stats[JK_FUEL] = 100;
+		ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+		ent->client->ps.stats[JK_FUEL] = 100;
 
-			if (!give_all) return;
-		}
+		if (!give_all) return;
 	}
 
 	if (give_all || Q_stricmp( name, "health") == 0)
