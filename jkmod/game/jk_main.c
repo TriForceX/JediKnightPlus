@@ -344,7 +344,7 @@ void JKMod_CVU_serverNews(void)
 // Update teleport chat
 void JKMod_CVU_teleportChat(void)
 {
-	if (jkcvar_teleportChat.integer == 1) // 2 is for save/load enable
+	if (jkcvar_teleportChat.integer)
 	{
 		static char		*linestart;
 
@@ -361,14 +361,16 @@ void JKMod_CVU_teleportChat(void)
 			trap_Cvar_Set("jk_teleportChat", "0");
 		}
 	}
-	else
+
+	// Save/load check
+	if (jkcvar_teleportChat.integer != 2)
 	{
 		gentity_t *ent;
 		int i;
 
 		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
 		{
-			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE)
 			{
 				// Clear saved teleport
 				ARRAY_CLEAR(ent->client->pers.jkmodPers.teleportChat);
