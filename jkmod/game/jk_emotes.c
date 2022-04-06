@@ -93,8 +93,12 @@ int JKMod_EmoteCheck(char *cmd, gentity_t *ent)
 	{
 		if (Q_stricmp(cmd, JKModEmotesData[i].cmd) == 0 || Q_stricmp (cmd, va("am%s", JKModEmotesData[i].cmd)) == 0)
 		{
-			JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
-			return 1;
+			if (JKModEmotesData[i].compatible == qfalse && jk2startversion == VERSION_1_02) {
+				return 0;
+			} else{
+				JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
+				return 1;
+			}
 		}
 	}
 
@@ -142,13 +146,6 @@ Emote launch function
 void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;
-
-	// Check version compatibility
-	if (JKModEmotesData[emoteIndex].compatible == qfalse && jk2gameplay == VERSION_1_02)
-	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote in JK2 1.02 version\"");
-		return;
-	}
 
 	// Exception for duel gametype
 	if (g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)

@@ -16,6 +16,8 @@ extern char *ConcatArgs(int start);
 extern void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *chatText);
 extern jkmod_dimension_data_t JKModDimensionData[];
 extern int JKModDimensionDataSize;
+extern jkmod_emotes_data_t JKModEmotesData[];
+extern int JKModEmotesDataSize;
 extern int G_ClientNumberFromName(const char* name);
 extern int G_ClientNumberFromStrippedName(const char* name);
 extern qboolean G_OtherPlayersDueling(void);
@@ -75,13 +77,13 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	else if (!Q_stricmp(arg1, "commands"))
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5[^7 Command ^5]^7\n"
+			"^5[^7 Commands ^5]^7\n"
 			"^7You can perform some console commands to perform a special action\n"
 			"^7Chat commands are meant to be used on ^2chat ^7while typing\n"
 			"^5----------\n"
-			"^7Commands:      Chat commands:      Plugin commands:\n"
-			"^3motd           !motd               strafehelper\n"
-			"^3dimension      !dimension          speedometer\n"
+			"^7Commands:      Chat commands:   Plugin commands:\n"
+			"^3motd           !motd            strafehelper\n"
+			"^3dimension      !dimension       speedometer\n"
 			"^3dualsaber      !status\n"
 			"^3emote          !savepos\n"
 			"^3ignore         !loadpos\n"
@@ -98,22 +100,31 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	// Help emotes
 	else if(!Q_stricmp(arg1, "emotes"))
 	{
+		int i;
+		char *emoteStatus;
+		char *emoteLine;
+
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Emotes ^5]^7\n"
 			"^7Emotes are visual animations that allows you to sit down, greet someone, etc...\n"
-			"^7There are over 50 emotes to choose from. (Some might be disabled by the server)\n"
-			"^7You can play an emote animation by using the following command: ^2/emote <animation>\n"
+			"^7There are over 50 emotes to choose from. (Some may be disabled by the server)\n"
+			"^7Play an emote animation by using the following command: ^2/emote <animation>\n"
+			"^5----------\n\""));
+			
+		for (i = 0; i < JKModEmotesDataSize; i++) 
+		{
+			emoteLine = (i % 6 == 5 || i == (JKModEmotesDataSize-1)) ? "\n" : "";
+			emoteStatus = S_COLOR_YELLOW;
+			if (!(jkcvar_emotesEnabled.integer & (1 << JKModEmotesData[i].emoteIndex))) emoteStatus = S_COLOR_RED;
+			if (!JKModEmotesData[i].compatible && jk2startversion == VERSION_1_02) emoteStatus = S_COLOR_RED;
+
+			trap_SendServerCommand(ent - g_entities, va("print \"%s%-15s%s\"", emoteStatus, JKModEmotesData[i].cmd, emoteLine));
+		}
+
+		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
-			"^7Animation list:\n"
-			"^3Bar            Beg            Buried        Cocky       ComeOn      ComTalk\n"
-			"^3CrossArms      DontKillMe     DontKnow      DontKnow2   Explain     Explain2\n"
-			"^3FakeDead       Flip           HandHips      Hi          Hug         Kiss\n"
-			"^3Kneel          Laugh          Look          Look2       Nod         Point\n"
-			"^3Point2         Punch          Sit           Sit2        Sit3        Shake\n"
-			"^3Super          Super2         Surrender     Spin        Spin2       Spin3\n"
-			"^3Spin4          Taunt2         Taunt3        Think       Threaten    ThumbsUp\n"
-			"^3ThumbsDown     TossBack       TossOver      TossUp      Type        Type2\n"
-			"^3Victory        Victory2       Waiting       WatchOut    Writing     Writing2\n"
+			"^2Note 1: ^7You can also use this command by using ^5/am<animation>\n"
+			"^2Note 2: ^7Emotes marked in ^1Red ^7are not available to use\n"
 			"^7\""));
 		return;
 	}
