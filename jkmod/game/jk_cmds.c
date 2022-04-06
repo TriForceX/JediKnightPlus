@@ -124,7 +124,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command by using ^5/am<animation>\n"
-			"^2Note 2: ^7Emotes marked in ^1Red ^7are not available to use\n"
+			"^2Note 2: ^7Emotes marked in ^1red ^7are not available to use\n"
 			"^7\""));
 		return;
 	}
@@ -139,14 +139,16 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Command list:\n"
 			"^3engage_duel\n"
 			"^3engage_duel_force\n"
-			"^3engage_private\n"
-			"^3engage_auto\n"
+			"%sengage_private\n"
+			"%sengage_auto\n"
 			"^5----------\n"
 			"^2Note 1: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
-			"^2Note 2: ^7Private and auto duels will work only if the server ^2allows ^7them\n"
+			"^2Note 2: ^7Private and auto will be marked in ^1red ^7if the server have them disabled\n"
 			"^7\"", 
 			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
-			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled")));
+			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled"),
+			(jkcvar_altDimension.integer & DIMENSION_DUEL ? S_COLOR_YELLOW : S_COLOR_RED),
+			(jkcvar_duelAutoAccept.integer ? S_COLOR_YELLOW : S_COLOR_RED)));
 		return;
 	}
 	// Help dimensions
@@ -168,7 +170,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command on chat saying ^5!dimension <option>\n"
-			"^2Note 2: ^7Dimensions marked in ^3yellow ^7are available to use\n"
+			"^2Note 2: ^7Dimensions marked in ^1Red ^7are not available to use\n"
 			"^7\""));
 		return;
 	}
@@ -789,7 +791,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		if (ent) {
 			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-9s %-12s %s%-15s\n\"",
 				num,
-				Q_CleanStr(name, qfalse),
+				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
 				ignored,
 				dimension,
@@ -800,7 +802,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		} else {
 			G_Printf("%-3i %-28s %-5s %-12s %-15s\n",
 				num,
-				Q_CleanStr(name, qfalse),
+				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
 				dimension,
 				plugin
@@ -1583,7 +1585,7 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[n].client->pers.netname, qfalse));
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[n].client->pers.netname, (qboolean)(jk2startversion == VERSION_1_02)));
 	}
 	// Kick vote
 	else if (!Q_stricmp(arg1, "kick"))
@@ -1607,7 +1609,7 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		Com_sprintf(level.voteString, sizeof(level.voteString), "clientkick %d", clientid);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[clientid].client->pers.netname, qfalse));
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[clientid].client->pers.netname, (qboolean)(jk2startversion == VERSION_1_02)));
 	}
 	// Next map vote
 	else if (!Q_stricmp(arg1, "nextmap"))
@@ -1834,7 +1836,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		return;
 	}
 	// Dimension trigger
-	else if (Q_stricmpn(p, "!dimension", strlen("!dimension")) == 0)
+	else if (Q_stricmpn(p, "!dim", strlen("!dim")) == 0)
 	{
 		char dimension[MAX_STRING_CHARS] = "";
 		int i = 0, pos = 0, part = 0;

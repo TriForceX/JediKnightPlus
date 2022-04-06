@@ -133,7 +133,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 		for (i = 0; i < JKModDimensionDataSize; i++)
 		{
 			// Add to message
-			Q_strcat(message, sizeof(message), va("\n^3%s", JKModDimensionData[i].command));
+			Q_strcat(message, sizeof(message), va("\n%s%s", (jkcvar_altDimension.integer & JKModDimensionData[i].dimension ? S_COLOR_YELLOW : S_COLOR_RED), JKModDimensionData[i].command));
 
 			// Command
 			if (!Q_stricmp(dimension, JKModDimensionData[i].command) || baseCmd)
