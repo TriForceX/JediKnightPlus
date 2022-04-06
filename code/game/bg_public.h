@@ -994,7 +994,6 @@ typedef enum {
 	LS_JK_DUAL_SPIN1,
 	LS_JK_DUAL_SPIN2,
 	LS_JK_DUAL_TORNADO,
-	LS_JK_DUAL_JUMP,
 
 	LS_MOVE_MAX//
 } saberMoveName_t;

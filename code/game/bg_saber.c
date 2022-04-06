@@ -254,7 +254,6 @@ saberMoveData_t	saberMoveData[LS_MOVE_MAX] = {//							NB:randomized
 	{"Dual Spin 1",	BOTH_BUTTERFLY_LEFT,	Q_R,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_READY,		200	}, // LS_JK_DUAL_SPIN1
 	{"Dual Spin 2",	BOTH_BUTTERFLY_FL1,		Q_R,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_READY,		200	}, // LS_JK_DUAL_SPIN2
 	{"Dual Tornado",BOTH_FJSS_TL_BR,		Q_L,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_T1__R_T_,	200	}, // LS_JK_DUAL_TORNADO
-	{"Dual Jump",	BOTH_JUMPFLIPSTABDOWN,	Q_R,	Q_T,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_T1_T___R,	200	}, // LS_JK_DUAL_JUMP
 };
 
 
@@ -1146,13 +1145,13 @@ saberMoveName_t PM_SaberFlipOverAttackMove(trace_t *tr)
 	pm->ps->fd.forceJumpSound = 1;
 	pm->cmd.upmove = 0;
 
-	if ( (jk2gameplay == VERSION_1_02 ? Q_irand( 0, 1 ) : PM_irand_timesync( 0, 1 )) )
+	if ( (jk2gameplay == VERSION_1_02 ? Q_irand( 0, 1 ) : PM_irand_timesync( 0, 1 )) || (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ) // Tr!Force: [PlayerMovement] Dual saber moves
 	{
-		return (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_JUMP : LS_A_FLIP_STAB; // Tr!Force: [PlayerMovement] Dual saber moves
+		return LS_A_FLIP_STAB;
 	}
 	else
 	{
-		return (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_JUMP : LS_A_FLIP_SLASH; // Tr!Force: [PlayerMovement] Dual saber moves
+		return LS_A_FLIP_SLASH;
 	}
 }
 
@@ -1490,8 +1489,7 @@ void PM_WeaponLightsaber(void)
 	}
 
 	if( (pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN2 ||
-		(pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1 ||
-		((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade && !pm->ps->saberHolstered && (pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_T1_T__BR)) // Tr!Force: [PlayerMovement] Dual saber moves	
+		(pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1 )
 	{
 		if ((pm->ps->torsoAnim & ~ANIM_TOGGLEBIT) != (pm->ps->legsAnim & ~ANIM_TOGGLEBIT))
 		{
@@ -1953,7 +1951,7 @@ void PM_SetSaberMove(short newMove)
 	int	anim = saberMoveData[newMove].animToUse;
 	int parts = SETANIM_TORSO;
 	
-	if ( newMove == LS_READY || ((newMove == LS_A_FLIP_STAB || newMove == LS_A_FLIP_SLASH || newMove == LS_JK_DUAL_JUMP) && jk2gameplay != VERSION_1_02) ) // Tr!Force: [PlayerMovement] Dual saber moves
+	if ( newMove == LS_READY || ((newMove == LS_A_FLIP_STAB || newMove == LS_A_FLIP_SLASH) && jk2gameplay != VERSION_1_02) ) // Tr!Force: [PlayerMovement] Dual saber moves
 	{//finished with a kata (or in a special move) reset attack counter
 		pm->ps->saberAttackChainCount = 0;
 	}
@@ -2007,7 +2005,6 @@ void PM_SetSaberMove(short newMove)
 		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerMovement] Dual saber moves
 		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerMovement] Dual saber moves
 		|| newMove == LS_JK_DUAL_TORNADO // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_JUMP // Tr!Force: [PlayerMovement] Dual saber moves
 		|| jk2gameplay == VERSION_1_02 )
 	{
 		setflags |= SETANIM_FLAG_OVERRIDE;
@@ -2045,8 +2042,7 @@ void PM_SetSaberMove(short newMove)
 		|| newMove == LS_A_FLIP_SLASH
 		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerMovement] Dual saber moves
 		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_TORNADO // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_JUMP ) // Tr!Force: [PlayerMovement] Dual saber moves
+		|| newMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerMovement] Dual saber moves
 	{
 		parts = SETANIM_BOTH;
 	}

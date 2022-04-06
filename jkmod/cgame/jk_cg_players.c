@@ -106,7 +106,7 @@ void JKMod_CG_Player(centity_t *cent)
 	if (jkcvar_cg_customAnims.integer)
 	{
 		// Running
-		if (cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && cent->saberLength > 0 && !cent->currentState.bolt2)
+		if (cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && !cent->currentState.shouldtarget > 0 && !cent->currentState.bolt2)
 		{
 			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_RUN2;
 		}
@@ -125,6 +125,12 @@ void JKMod_CG_Player(centity_t *cent)
 		{
 			if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_FORCEPUSH) cent->currentState.torsoAnim = BOTH_MINDTRICK1;
 		}
+	}
+
+	// Dual saber custom animation
+	if ((cg.snap->ps.stats[JK_MOVEMENT] & JK_DUAL_MOVES) && cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && !cent->currentState.shouldtarget && cent->currentState.bolt2)
+	{
+		if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_T1_T__BR;
 	}
 }
 
