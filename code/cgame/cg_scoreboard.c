@@ -36,8 +36,8 @@
 #define SB_RATING_WIDTH	    0 // (6 * BIGCHAR_WIDTH)
 #define SB_NAME_X			(SB_SCORELINE_X)
 #define SB_SCORE_X			(SB_SCORELINE_X + .55 * SB_SCORELINE_WIDTH)
-#define SB_PING_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .72 : .70) * SB_SCORELINE_WIDTH) // TriForce: [Scoreboard] Extra info
-#define SB_TIME_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .87 : .85) * SB_SCORELINE_WIDTH) // TriForce: [Scoreboard] Extra info
+#define SB_PING_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .72 : .70) * SB_SCORELINE_WIDTH) // Tr!Force: [Scoreboard] Extra info
+#define SB_TIME_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .87 : .85) * SB_SCORELINE_WIDTH) // Tr!Force: [Scoreboard] Extra info
 
 // The new and improved score board
 //
@@ -150,7 +150,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 
 		hcolor[3] = fade * 0.7;
 
-		// TriForce: [Dimension] Show race time
+		// Tr!Force: [Dimension] Show race time
 		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 		{
 			float timeWidth = jkcvar_cg_scoreboardExtras.integer ? 19 : 12;
@@ -182,7 +182,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 		else
 		{
-			// TriForce: [Scoreboard] Extra info
+			// Tr!Force: [Scoreboard] Extra info
 			if (jkcvar_cg_scoreboardExtras.integer)
 			{
 				float scoreScale = 1.0f;
@@ -204,7 +204,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 						scoreAlign = 3;
 					}
 
-					CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, ci->losses),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+					CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, score->deaths),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 				}
 			}
 			else
@@ -214,7 +214,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 	}
 
-	// TriForce: [Scoreboard] Extra info
+	// Tr!Force: [Scoreboard] Extra info
 	if (jkcvar_cg_scoreboardExtras.integer)
 	{
 		char *clientPing;
@@ -233,7 +233,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, va("%i", score->ping),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 
-	// TriForce: [Dimension] Show race time
+	// Tr!Force: [Dimension] Show race time
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
 	{
 		float timeScale = 1.0f;

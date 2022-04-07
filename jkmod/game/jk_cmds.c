@@ -1749,11 +1749,11 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 		{
 			ent->client->pers.jkmodPers.playerStatusDelay = level.time + (jkcvar_chatAutoStatusTime.integer*1000);
 
-			G_Say(ent, NULL, SAY_ALL, va("I have %s ^5%i ^2and %s ^3%i ^2times! My health %s ^1%i^7/^2%i",
+			G_Say(ent, NULL, SAY_ALL, va("I %s ^5%i ^2and %s ^3%i ^2times! My health %s ^1%i^7/^2%i",
 				(isCTF || isDuel ? "scored" : "killed"), 
 				(isDuel ? ent->client->sess.wins : ent->client->ps.persistant[PERS_SCORE]),
 				(isCTF ? "captured" : (isDuel ? "lost" : "died")), 
-				(isCTF ? ent->client->ps.persistant[PERS_CAPTURES] : ent->client->sess.losses),
+				(isCTF ? ent->client->ps.persistant[PERS_CAPTURES] : ent->client->ps.persistant[PERS_KILLED]),
 				(jkcvar_chatAutoStatus.integer || isDuel ? "was" : "is"),
 				ent->client->ps.stats[STAT_HEALTH],
 				ent->client->ps.stats[STAT_ARMOR])

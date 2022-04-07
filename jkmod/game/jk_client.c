@@ -133,13 +133,6 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Check dual saber
 	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;
 
-	// Check client losses
-	if (client->sess.losses != 0 && g_gametype.integer != GT_TOURNAMENT)
-	{
-		client->sess.losses = 0;
-		ClientUserinfoChanged(clientNum);
-	}
-
 	// Check client plugin
 	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin)
 	{

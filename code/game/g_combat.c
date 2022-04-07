@@ -1810,13 +1810,6 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 		return;
 	}
 
-	// Tr!Force: [Scoreboard] Extra info
-	if (g_gametype.integer != GT_TOURNAMENT)
-	{
-		self->client->sess.losses++;
-		ClientUserinfoChanged(self->s.number);
-	}
-
 	if (g_slowmoDuelEnd.integer && g_gametype.integer == GT_TOURNAMENT && attacker && attacker->inuse && attacker->client)
 	{
 		if (!gDoSlowMoDuel)

@@ -46,7 +46,7 @@ CG_ParseScores
 =================
 */
 static void CG_ParseScores( void ) {
-	int		i, powerups, readScores;
+	int		i, powerups, readScores, scoreOffset; // Tr!Force: [Scoreboard] Extra info
 
 	cg.numScores = atoi( CG_Argv( 1 ) );
 
@@ -68,21 +68,28 @@ static void CG_ParseScores( void ) {
 
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i = 0 ; i < readScores ; i++ ) {
+		// Tr!Force: [Scoreboard] Extra info
+		if (cgs.jkmodCGS.modCheck) {
+			scoreOffset = 15;
+			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
+		} else {
+			scoreOffset = 14;
+		}
 		//
-		cg.scores[i].client = atoi( CG_Argv( i * 14 + 4 ) );
-		cg.scores[i].score = atoi( CG_Argv( i * 14 + 5 ) );
-		cg.scores[i].ping = atoi( CG_Argv( i * 14 + 6 ) );
-		cg.scores[i].time = atoi( CG_Argv( i * 14 + 7 ) );
-		cg.scores[i].scoreFlags = atoi( CG_Argv( i * 14 + 8 ) );
-		powerups = atoi( CG_Argv( i * 14 + 9 ) );
-		cg.scores[i].accuracy = atoi(CG_Argv(i * 14 + 10));
-		cg.scores[i].impressiveCount = atoi(CG_Argv(i * 14 + 11));
-		cg.scores[i].excellentCount = atoi(CG_Argv(i * 14 + 12));
-		cg.scores[i].guantletCount = atoi(CG_Argv(i * 14 + 13));
-		cg.scores[i].defendCount = atoi(CG_Argv(i * 14 + 14));
-		cg.scores[i].assistCount = atoi(CG_Argv(i * 14 + 15));
-		cg.scores[i].perfect = atoi(CG_Argv(i * 14 + 16));
-		cg.scores[i].captures = atoi(CG_Argv(i * 14 + 17));
+		cg.scores[i].client = atoi( CG_Argv( i * scoreOffset + 4 ) );
+		cg.scores[i].score = atoi( CG_Argv( i * scoreOffset + 5 ) );
+		cg.scores[i].ping = atoi( CG_Argv( i * scoreOffset + 6 ) );
+		cg.scores[i].time = atoi( CG_Argv( i * scoreOffset + 7 ) );
+		cg.scores[i].scoreFlags = atoi( CG_Argv( i * scoreOffset + 8 ) );
+		powerups = atoi( CG_Argv( i * scoreOffset + 9 ) );
+		cg.scores[i].accuracy = atoi(CG_Argv(i * scoreOffset + 10));
+		cg.scores[i].impressiveCount = atoi(CG_Argv(i * scoreOffset + 11));
+		cg.scores[i].excellentCount = atoi(CG_Argv(i * scoreOffset + 12));
+		cg.scores[i].guantletCount = atoi(CG_Argv(i * scoreOffset + 13));
+		cg.scores[i].defendCount = atoi(CG_Argv(i * scoreOffset + 14));
+		cg.scores[i].assistCount = atoi(CG_Argv(i * scoreOffset + 15));
+		cg.scores[i].perfect = atoi(CG_Argv(i * scoreOffset + 16));
+		cg.scores[i].captures = atoi(CG_Argv(i * scoreOffset + 17));
 
 		if ( cg.scores[i].client < 0 || cg.scores[i].client >= MAX_CLIENTS ) {
 			cg.scores[i].client = 0;

@@ -58,17 +58,37 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 		}
 		perfect = ( cl->ps.persistant[PERS_RANK] == 0 && cl->ps.persistant[PERS_KILLED] == 0 ) ? 1 : 0;
 
-		Com_sprintf (entry, sizeof(entry),
-			" %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
-			cl->ps.persistant[PERS_SCORE], ping, (level.time - cl->pers.enterTime)/60000,
-			scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy, 
-			cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
-			cl->ps.persistant[PERS_EXCELLENT_COUNT],
-			cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT], 
-			cl->ps.persistant[PERS_DEFEND_COUNT], 
-			cl->ps.persistant[PERS_ASSIST_COUNT], 
-			perfect,
-			cl->ps.persistant[PERS_CAPTURES]);
+		// Tr!Force: [Scoreboard] Extra info
+		if (ent->client->pers.jkmodPers.clientPlugin) 
+		{
+			Com_sprintf (entry, sizeof(entry),
+				" %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+				cl->ps.persistant[PERS_SCORE], ping, (level.time - cl->pers.enterTime)/60000,
+				scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy, 
+				cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
+				cl->ps.persistant[PERS_EXCELLENT_COUNT],
+				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT], 
+				cl->ps.persistant[PERS_DEFEND_COUNT], 
+				cl->ps.persistant[PERS_ASSIST_COUNT], 
+				perfect,
+				cl->ps.persistant[PERS_CAPTURES],
+				cl->ps.persistant[PERS_KILLED]);
+		}
+		else
+		{
+			Com_sprintf (entry, sizeof(entry),
+				" %i %i %i %i %i %i %i %i %i %i %i %i %i %i", level.sortedClients[i],
+				cl->ps.persistant[PERS_SCORE], ping, (level.time - cl->pers.enterTime)/60000,
+				scoreFlags, g_entities[level.sortedClients[i]].s.powerups, accuracy, 
+				cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
+				cl->ps.persistant[PERS_EXCELLENT_COUNT],
+				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT], 
+				cl->ps.persistant[PERS_DEFEND_COUNT], 
+				cl->ps.persistant[PERS_ASSIST_COUNT], 
+				perfect,
+				cl->ps.persistant[PERS_CAPTURES]);
+		}
+
 		j = strlen(entry);
 		if (stringlength + j > 1022)
 			break;
@@ -788,11 +808,6 @@ void SetTeam( gentity_t *ent, char *s ) {
 			}
 		}
 	}
-
-	// Tr!Force: [Scoreboard] Extra info
-	if ( team != TEAM_SPECTATOR && oldTeam == TEAM_SPECTATOR && g_gametype.integer != GT_TOURNAMENT ) { 
-		ent->client->sess.losses = 0;
-    }
 
 	client->sess.sessionTeam = team;
 	client->sess.spectatorState = specState;

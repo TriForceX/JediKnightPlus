@@ -422,6 +422,7 @@ typedef struct {
 	int				defendCount;
 	int				assistCount;
 	int				captures;
+	int				deaths; // Tr!Force: [Scoreboard] Extra info
 	qboolean	perfect;
 	int				team;
 	int				besttime;
