@@ -184,6 +184,18 @@ static jkmod_bit_info_t toggleVoteControl[] =
 	"PAUSE GAME",
 };
 
+// Options for jk_altDimension cvar
+static jkmod_bit_info_t toggleAltDimension[] = 
+{
+	"NORMAL",
+	"PRIVATE DUEL",
+	"GUNS ARENA",
+	"RACE DEFRAG",
+	"SABER ONLY",
+	"INSTA KILL",
+	"CHEATS MODE",
+};
+
 // Options for bot_forGimmick cvar
 static jkmod_bit_info_t toggleBotForGimmick[] = 
 {
@@ -206,12 +218,12 @@ static void JKMod_svCmd_toggleMod(void)
 	if (trap_Argc() < 2)
 	{
 		G_Printf("Usage: togglemod <cvar> <option>\n");
-		G_Printf("Cvars: ^3jk_playerMovement^7, ^3jk_voteControl^7, ^3bot_forGimmick\n");
+		G_Printf("Cvars: ^3jk_playerMovement^7, ^3jk_voteControl^7, ^3jk_altDimension^7, ^3bot_forGimmick\n");
 	}
 	else
 	{
 		int bits;
-		int i, val;
+		int i, val, start = 0;
 		int toggleModSize;
 		jkmod_bit_info_t *toggleModOptions;
 
@@ -228,6 +240,12 @@ static void JKMod_svCmd_toggleMod(void)
 			toggleModOptions = toggleVoteControl;
 			toggleModSize = ARRAY_LEN(toggleVoteControl);
 		}
+		else if (!Q_stricmp(arg1, "jk_altDimension")) 
+		{
+			toggleModOptions = toggleAltDimension;
+			toggleModSize = ARRAY_LEN(toggleAltDimension);
+			start = 1;
+		}
 		else if (!Q_stricmp(arg1, "bot_forGimmick")) 
 		{
 			toggleModOptions = toggleBotForGimmick;
@@ -243,12 +261,12 @@ static void JKMod_svCmd_toggleMod(void)
 
 		if (trap_Argc() != 3) 
 		{
-			for (i = 0; i < toggleModSize; i++) 
+			for (i = start; i < toggleModSize; i++) 
 			{
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
-			G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
 			return;
 		}
 
@@ -256,7 +274,7 @@ static void JKMod_svCmd_toggleMod(void)
 		{
 			val = atoi(arg2);
 
-			if (val >= 0 && val < toggleModSize) 
+			if (val >= start && val < toggleModSize) 
 			{
 				level.jkmodLocals.cvarToggleMod = qtrue;
 				bits ^= (1 << val);
@@ -266,23 +284,23 @@ static void JKMod_svCmd_toggleMod(void)
 			else 
 			{
 				G_Printf("^1Specified an option that does not exist\n");
-				for (i = 0; i < toggleModSize; i++) 
+				for (i = start; i < toggleModSize; i++) 
 				{
 					if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 					else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 				}
-				G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+				G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
 			}
 		}
 		else 
 		{
 			G_Printf("^1Specified an option is not valid\n");
-			for(i = 0; i < toggleModSize; i++ ) 
+			for(i = start; i < toggleModSize; i++ ) 
 			{
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
-			G_Printf("Example: ^3/togglemod %s 0^7 (Toggles: ^5%s^7)\n", arg1, toggleModOptions[0].string);
+			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
 		}
 	}
 }

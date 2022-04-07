@@ -423,10 +423,13 @@ void JKMod_CVU_altDimension(void)
 	{
 		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 		{
-			if (jkcvar_altDimensionBase.integer) 
-				JKMod_DimensionSet(ent, jkcvar_altDimensionBase.integer);
-			else
-				JKMod_DimensionSet(ent, DIMENSION_FREE);
+			int dimensionBase = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
+
+			if (ent->client->ps.stats[JK_DIMENSION] != dimensionBase) {
+				trap_SendServerCommand(ent - g_entities, "cp \"Server changed dimensions!\nYou are back to the default one\"");
+			}
+
+			JKMod_DimensionSet(ent, dimensionBase);
 		}
 	}
 }

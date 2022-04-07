@@ -9,6 +9,16 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.18.1
+- Added a PS script for my lazy friends
+- Fix clean save & load spawn check
+- Fix g2animent version check
+- Fix jetpack cvar check
+- Fix dual saber animations & damages
+- Fix emote compatibility check
+- Updated dimension command info
+- Updated dimension toggle command
+
 ## 0.18.0
 - Fix mini scoreboard death on spectator
 - Allow saber holocrons for saber only mode
