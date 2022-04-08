@@ -1212,7 +1212,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
 		{
 			// Tr!Force: [Duel] Display duel end stats
-			if (jkcvar_duelEndStats.integer == 1)
+			if (jkcvar_duelEndStats.integer)
 			{
 				char *duelmessage;
 
@@ -1222,8 +1222,8 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 					duelmessage = "won a duel";
 				}
 
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE " health, " S_COLOR_GREEN "%d" S_COLOR_WHITE " armor and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits\n\"",
-					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.persistant[PERS_HITS]));
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE "/" S_COLOR_GREEN "%d" S_COLOR_WHITE " health and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits on opponent\n\"",
+					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], duelAgainst->client->pers.jkmodPers.duelHitCount+1));
 			}
 
 			ent->client->ps.duelInProgress = 0;
@@ -1232,6 +1232,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Duel] Turn off force duels
 			ent->client->pers.jkmodPers.customDuel = 0;
 			duelAgainst->client->pers.jkmodPers.customDuel = 0;
+
+			// Tr!Force: [Duel] Reset hit count
+			ent->client->pers.jkmodPers.duelHitCount = 0;
+			duelAgainst->client->pers.jkmodPers.duelHitCount = 0;
 
 			// Tr!Force: [Duel] Check duel stuck
 			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
@@ -1297,6 +1301,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				// Tr!Force: [Duel] Turn off force duels
 				ent->client->pers.jkmodPers.customDuel = 0;
 				duelAgainst->client->pers.jkmodPers.customDuel = 0;
+
+				// Tr!Force: [Duel] Reset hit count
+				ent->client->pers.jkmodPers.duelHitCount = 0;
+				duelAgainst->client->pers.jkmodPers.duelHitCount = 0;
 
 				// Tr!Force: [Duel] Check duel stuck
 				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);

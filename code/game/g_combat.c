@@ -3657,6 +3657,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		if (jkcvar_teleportChatTime.integer)
 			client->jkmodClient.teleportChatTime = jkcvar_teleportChatTime.integer; // Tr!Force: [TeleportChat] Add delay on enemy hits
 
+		if (jkcvar_duelEndStats.integer && client->ps.duelInProgress && client->ps.duelIndex == attacker->s.number) // Tr!Force: [Duel] Update hit count
+			client->pers.jkmodPers.duelHitCount++;
+
 		G_LogWeaponDamage(attacker->s.number, mod, take);
 	}
 }

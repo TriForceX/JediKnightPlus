@@ -190,6 +190,7 @@ typedef struct
 	float			customSpeed;			// Custom gravity for custom settings
 	int				customSpawn[5];			// Player spawn x y z pitch yaw
 	int				customSpawnCheck;		// Player spawn check
+	int				duelHitCount;			// Number of hits that damage the opponent
 	qboolean		dualSaber;				// Check for permanent dual saber
 
 } jkmod_pers_t;

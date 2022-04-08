@@ -543,6 +543,10 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			ent->client->ps.duelTime = level.time + 2000;
 			challenged->client->ps.duelTime = level.time + 2000;
 
+			// Reset hit count
+			ent->client->pers.jkmodPers.duelHitCount = 0;
+			challenged->client->pers.jkmodPers.duelHitCount = 0;
+
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
