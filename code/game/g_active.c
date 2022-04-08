@@ -1205,6 +1205,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		{
 			ent->client->ps.duelInProgress = 0;
 			ent->client->pers.jkmodPers.customDuel = 0; // Tr!Force: [Duel] Turn off force duels
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent); // Tr!Force: [Duel] Check duel stuck
 			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE); // Tr!Force: [Dimensions] Remove duel flag
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 		}
@@ -1231,6 +1232,9 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Duel] Turn off force duels
 			ent->client->pers.jkmodPers.customDuel = 0;
 			duelAgainst->client->pers.jkmodPers.customDuel = 0;
+
+			// Tr!Force: [Duel] Check duel stuck
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 
 			// Tr!Force: [Dimensions] Remove duel flag
 			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
@@ -1294,9 +1298,13 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				ent->client->pers.jkmodPers.customDuel = 0;
 				duelAgainst->client->pers.jkmodPers.customDuel = 0;
 
+				// Tr!Force: [Duel] Check duel stuck
+				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
+				if (duelAgainst->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(duelAgainst)) JKMod_AntiStuckBox(duelAgainst);
+
 				// Tr!Force: [Dimensions] Remove duel flag
 				if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
-				if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
+				if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);

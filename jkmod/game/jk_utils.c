@@ -251,8 +251,10 @@ Check players duel isolation
 */
 qboolean JKMod_DuelIsolationCheck(gentity_t* ent1, gentity_t* ent2)
 {
-	if (ent1->client->ps.duelInProgress || ent2->client->ps.duelInProgress) {
-		return JKMod_DuelEachOther(ent1, ent2);
+	if (jkcvar_duelPassThrough.integer) {
+		if (ent1->client->ps.duelInProgress || ent2->client->ps.duelInProgress) {
+			return JKMod_DuelEachOther(ent1, ent2);
+		}
 	}
 	return qtrue;
 }

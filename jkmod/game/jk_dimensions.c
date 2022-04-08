@@ -363,14 +363,10 @@ qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 
 	if (ent1->jkmodEnt.dimensionNumber == DIMENSION_RACE && ent2->jkmodEnt.dimensionNumber == DIMENSION_RACE)
 	{
-		return (qboolean)!(JKMod_DimensionCheck(owner1, owner2));
-	}
-	if (ent1->jkmodEnt.dimensionNumber == DIMENSION_FREE && ent2->jkmodEnt.dimensionNumber == DIMENSION_FREE && jkcvar_duelPassThrough.integer)
-	{
-		return (qboolean)!!(JKMod_DuelIsolationCheck(ent1, ent2));
+		return !JKMod_DimensionCheck(owner1, owner2);
 	}
 
-	return (qboolean)!!(JKMod_DimensionCheck(owner1, owner2));
+	return JKMod_DimensionCheck(owner1, owner2);
 }
 
 /*
@@ -387,7 +383,7 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 		gentity_t	*passEnt = g_entities + passEntityNum;
 		gentity_t	*ent = g_entities + results->entityNum;
 
-		if (!JKMod_DimensionCollide(ent, passEnt)) 
+		if (!JKMod_DimensionCollide(ent, passEnt) || !JKMod_DuelIsolationCheck(ent, passEnt)) 
 		{
 			int contents;
 
