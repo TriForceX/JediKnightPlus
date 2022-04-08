@@ -647,6 +647,8 @@ typedef enum {
 	EV_TAUNT_PATROL,
 
 	EV_BODY_QUEUE_COPY,
+
+	EV_MAX,					// Tr!Force: [GameGeneral] Max event count
 	
 } entity_event_t;			// There is a maximum of 256 events (8 bits transmission, 2 high bits for uniqueness)
 

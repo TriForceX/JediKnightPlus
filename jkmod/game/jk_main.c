@@ -213,7 +213,7 @@ void JKMod_G_RegisterCvars(void)
 
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 
-		if (cv->update) cv->update();
+		if (cv->update && (jkcvar_gameTypeConfig.integer ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue)) cv->update();
 
 		if (cv->vmCvar)
 		{

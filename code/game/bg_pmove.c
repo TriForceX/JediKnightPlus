@@ -4673,6 +4673,12 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->cmd.rightmove = pm->cmd.upmove = 0;
 	}
 
+	// Tr!Force: [PlayerMovement] Dual saber moves
+	if ( pm->ps->saberMove == LS_JK_DUAL_SPIN1 || pm->ps->saberMove == LS_JK_DUAL_SPIN2 || pm->ps->saberMove == LS_JK_DUAL_TORNADO )
+	{
+		pm->cmd.upmove = 0;
+	}
+
 	if ( pm->ps->saberMove == LS_A_BACK || pm->ps->saberMove == LS_A_BACK_CR 
 		|| pm->ps->saberMove == LS_A_BACKSTAB || pm->ps->saberMove == LS_A_FLIP_STAB ||
 		pm->ps->saberMove == LS_A_FLIP_SLASH || pm->ps->saberMove == LS_A_JUMP_T__B_ )

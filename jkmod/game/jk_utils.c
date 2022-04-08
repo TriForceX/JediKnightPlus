@@ -271,7 +271,7 @@ void JKMod_G_InitGentity( gentity_t *e, int dimensionOwner )
 	e->s.modelGhoul2 = 0; //assume not
 	e->freetime = 0;
 
-	JKMod_DimensionOwnerCheck( dimensionOwner, e);
+	JKMod_DimensionOwnerCheck( dimensionOwner, e );
 }
 
 /*
@@ -408,6 +408,8 @@ gentity_t *JKMod_G_TempEntity( const vec3_t origin, entity_event_t event, int di
 {
 	gentity_t		*e;
 	vec3_t		snapped;
+	
+	assert(0 <= (int)(event & ~EV_EVENT_BITS) && (event & ~EV_EVENT_BITS) < EV_MAX);
 
 	e = JKMod_G_Spawn( dimensionOwner );
 	e->s.eType = ET_EVENTS + event;
