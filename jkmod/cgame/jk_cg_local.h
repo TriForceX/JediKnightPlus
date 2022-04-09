@@ -55,14 +55,15 @@ typedef struct jkmod_chatbox_s
 // Client game static
 typedef struct
 {
-	int			pluginRequired;		// Tr!Force: [Plugin] Main cvar
-	int			macroScan;			// Tr!Force: [MacroScan] Main cvar
-	int			customHats;			// Tr!Force: [CustomHats] Main cvar
-	int			jetPack;			// Tr!Force: [JetPack] Main cvar
-	int			dualSaber;			// Tr!Force: [DualSaber] Main cvar
-	int			duelPassThrough;	// Tr!Force: [DuelPassThrough] Main cvar
-	int			pauseTime;			// Tr!Force: [Pause] Server pause time
-	qboolean	modCheck;			// Tr!Force: [ModCheck] Server mod check
+	int			pluginRequired;			// Tr!Force: [Plugin] Main cvar
+	int			macroScan;				// Tr!Force: [MacroScan] Main cvar
+	int			customHats;				// Tr!Force: [CustomHats] Main cvar
+	int			jetPack;				// Tr!Force: [JetPack] Main cvar
+	int			dualSaber;				// Tr!Force: [DualSaber] Main cvar
+	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
+	int			pauseTime;				// Tr!Force: [Pause] Server pause time
+	char		gameName[MAX_OSPATH];	// Tr!Force: [Plugin] Server game name
+	qboolean	modCheck;				// Tr!Force: [Plugin] Server mod check
 
 } jkmod_cgs_t;
 

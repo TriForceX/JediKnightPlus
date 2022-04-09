@@ -161,10 +161,11 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCGS.duelPassThrough = atoi(Info_ValueForKey(info, "jk_duelPassThrough"));	// Tr!Force: [DuelPassThrough] Main cvar
 
 	// Tr!Force: [GameName] Main cvar
-	if (!cgs.jkmodCGS.modCheck) 
+	if (cgs.jkmodCGS.gameName[0] == '\0') 
 	{
 		char *gamename = Info_ValueForKey(info, "gamename");
-		cgs.jkmodCGS.modCheck = (qboolean)strstr(gamename, JK_SHORTNAME);
+		Com_sprintf(cgs.jkmodCGS.gameName, sizeof(cgs.jkmodCGS.gameName), "%s", gamename);
+		cgs.jkmodCGS.modCheck = (qboolean)!strcmp(gamename, GAMEVERSION);
 	}
 
 	mapname = Info_ValueForKey( info, "mapname" );

@@ -226,7 +226,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 
 		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, clientPing, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 		
-		if (ci->team == TEAM_SPECTATOR) CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, "-",0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+		if (ci->team == TEAM_SPECTATOR && cgs.gametype != GT_TOURNAMENT) CG_Text_Paint (SB_SCORE_X, y, 1.0f * scale, colorWhite, "-",0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 	else
 	{

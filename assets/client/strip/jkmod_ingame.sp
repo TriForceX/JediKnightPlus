@@ -1,7 +1,7 @@
 VERSION 1
 ID 137
 REFERENCE JKINGAME
-COUNT 13
+COUNT 14
 INDEX 0
 {
    REFERENCE RECORD
@@ -111,6 +111,15 @@ INDEX 11
    TEXT_LANGUAGE8 "^1ALERTA\nMod incompleto detectado\nDescarga el mod completo en:\n^5https://jkplus.github.io"
 }
 INDEX 12
+{
+   REFERENCE MOD_MISMATCH
+   TEXT_LANGUAGE1 "Client and server version do not match!"
+   TEXT_LANGUAGE2 "Versions client et serveur ne correspondent pas!"
+   TEXT_LANGUAGE3 "Client-und serverversion stimmen nicht überein!"
+   TEXT_LANGUAGE6 "Client and server version do not match!"
+   TEXT_LANGUAGE8 "Versión de cliente y servidor no conciden!"
+}
+INDEX 13
 {
    REFERENCE DEATHS
    TEXT_LANGUAGE1 "Deaths"

@@ -43,12 +43,18 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 			"^5----------\n"
 			"^7Topic list:\n"
-			"^3Admin          Accounts       Dimensions\n"
+			"^3Admin          ^1Accounts       ^3Dimensions\n"
 			"^3Emotes         Commands       Duels\n"
-			"^3Build          About          Credits\n"
+			"^1Build          ^3About          Credits\n"
 			"^5----------\n"
-			"^2Note: ^7For more information please visit ^5%s\n"
-			"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, JKMod_TrimWhiteSpace(__DATE__), JK_URL));
+			"^2Note 1: ^7Commands marked in ^1red ^7are not available to use\n"
+			"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, JKMod_TrimWhiteSpace(__DATE__)));
+
+		if (!ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("print \"^2Note 2: ^7Plugin not detected or invalid, download from ^5%s\n\"", JK_URL));
+		} else {
+			trap_SendServerCommand(ent - g_entities, va("print \"^2Note 2: ^7More information at the mod website ^5%s\n\"", JK_URL));
+		}
 		return;
 	}
 	// Help admin
