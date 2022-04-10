@@ -1773,9 +1773,7 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 
 		if (!jkcvar_chatAutoStatus.integer && !ent->client->sess.jkmodSess.playerStatusSeen)
 		{
-			ent->client->sess.jkmodSess.playerStatus = qfalse;
 			ent->client->sess.jkmodSess.playerStatusSeen = qtrue;
-
 			trap_SendServerCommand(ent - g_entities, va("print \"Auto status tracking is ^1disabled ^7by the server\n\""));
 		}
 
@@ -1792,6 +1790,11 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 		}
 
 		if (ent->client->sess.jkmodSess.playerStatusSeen) ent->client->sess.jkmodSess.playerStatusSeen = qfalse;
+
+		// Update clientside
+		if (ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_chatAutoStatus %i", (int)ent->client->sess.jkmodSess.playerStatus));
+		}
 
 		return !announce && ent->client->sess.jkmodSess.playerStatus;
 	}

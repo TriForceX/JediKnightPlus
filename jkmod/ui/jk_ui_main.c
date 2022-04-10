@@ -133,6 +133,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_flagOpacity",			"255",		"127" },
 	{ "jk_cg_flagAlignment",		"0",		"1" },
 	{ "jk_cg_chatPlayerOpacity",	"1",		"1" },
+	{ "jk_cg_chatAutoStatus",		"0",		"0" },
 	{ "cg_dismember",				"0",		"2" },
 	{ "cg_simpleItems",				"0",		NULL },
 	{ "cg_shadows",					"1",		NULL },

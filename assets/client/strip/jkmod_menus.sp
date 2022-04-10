@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 151
+COUNT 153
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1360,4 +1360,22 @@ INDEX 150
    TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen. (Nur wenn der server es zulässt)"
    TEXT_LANGUAGE6 "Automatically accept dueling challenges. (Only if server allows it)"
    TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente. (Solo si el servidor lo permite)"
+}
+INDEX 151
+{
+   REFERENCE CLIENT_AUTOSTATUS
+   TEXT_LANGUAGE1 "Auto status:"
+   TEXT_LANGUAGE2 "Statut automatique:"
+   TEXT_LANGUAGE3 "Auto-status:"
+   TEXT_LANGUAGE6 "Auto status:"
+   TEXT_LANGUAGE8 "Estado automático:"
+}
+INDEX 152
+{
+   REFERENCE CLIENT_AUTOSTATUS_DESC
+   TEXT_LANGUAGE1 "Share your status when you score a point. (Only if server allows it)"
+   TEXT_LANGUAGE2 "Partagez votre statut lorsque vous marquez un point. (Uniquement si le serveur le permet)"
+   TEXT_LANGUAGE3 "Teilen sie ihren status mit wenn sie einen punkt erzielen. (Nur wenn der server es zulässt)"
+   TEXT_LANGUAGE6 "Share your status when you score a point. (Only if server allows it)"
+   TEXT_LANGUAGE8 "Comparte tu estado cuando anotas un punto. (Solo si el servidor lo permite)"
 }

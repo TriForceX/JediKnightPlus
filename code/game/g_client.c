@@ -1190,6 +1190,17 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
+	// Tr!Force: [PlayerStatus] Auto status check
+	if (client->pers.jkmodPers.clientPlugin)
+	{
+		s = Info_ValueForKey( userinfo, "jk_cg_chatAutoStatus" );
+		if ( !atoi( s ) ) {
+			client->sess.jkmodSess.playerStatus = qfalse;
+		} else {
+			client->sess.jkmodSess.playerStatus = qtrue;
+		}
+	}
+
 	// check the item prediction
 	s = Info_ValueForKey( userinfo, "cg_predictItems" );
 	if ( !atoi( s ) ) {
