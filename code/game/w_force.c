@@ -1947,6 +1947,7 @@ int ForceShootDrain( gentity_t *self )
 	vec3_t	end, forward;
 	gentity_t	*traceEnt;
 	int			gotOneOrMore = 0;
+	qboolean	jkmod_drainmodel = qfalse; // Tr!Force: [GameGeneral] Drain model check
 
 	if ( self->health <= 0 )
 	{
@@ -1982,28 +1983,27 @@ int ForceShootDrain( gentity_t *self )
 		for ( e = 0 ; e < numListedEntities ; e++ ) 
 		{
 			traceEnt = entityList[e];
+
+			jkmod_drainmodel = !Q_stricmp("jkmod_drain_model", traceEnt->classname); // Tr!Force: [GameGeneral] Drain model check
 			
-			if ( !Q_stricmp("jkmod_drain_model", traceEnt->classname) ) // Tr!Force: [GameGeneral] Drain model check
-				goto jkmod_drainstart;
 			if ( !traceEnt )
 				continue;
 			if ( traceEnt == self )
 				continue;
 			if ( !traceEnt->inuse )
 				continue;
-			if ( !traceEnt->takedamage )
+			if ( !traceEnt->takedamage && !jkmod_drainmodel )
 				continue;
-			if ( traceEnt->health <= 0 )//no torturing corpses
+			if ( traceEnt->health <= 0 && !jkmod_drainmodel )//no torturing corpses
 				continue;
-			if ( !traceEnt->client )
+			if ( !traceEnt->client && !jkmod_drainmodel )
 				continue;
-			if ( !traceEnt->client->ps.fd.forcePower )
+			if ( !traceEnt->client->ps.fd.forcePower && !jkmod_drainmodel )
 				continue;
-			if (OnSameTeam(self, traceEnt))
+			if ( OnSameTeam(self, traceEnt) && !jkmod_drainmodel )
 				continue;
 			//this is all to see if we need to start a saber attack, if it's in flight, this doesn't matter
 			// find the distance from the edge of the bounding box
-			jkmod_drainstart: // Tr!Force: [GameGeneral] Drain model check
 			for ( i = 0 ; i < 3 ; i++ ) 
 			{
 				if ( center[i] < traceEnt->r.absmin[i] ) 
@@ -2041,6 +2041,15 @@ int ForceShootDrain( gentity_t *self )
 				continue;
 			}
 
+			// Tr!Force: [GameGeneral] Drain model check
+			if ( jkmod_drainmodel )
+			{
+				vec3_t mid_org;
+				VectorCopy( ent_org, mid_org );
+				mid_org[2] += traceEnt->r.maxs[2] / 2;
+				VectorCopy( mid_org, ent_org );
+			}
+
 			//Now check and see if we can actually hit it
 			trap_Trace( &tr, self->client->ps.origin, vec3_origin, vec3_origin, ent_org, self->s.number, MASK_SHOT );
 			if ( tr.fraction < 1.0f && tr.entityNum != traceEnt->s.number )
@@ -2058,7 +2067,10 @@ int ForceShootDrain( gentity_t *self )
 		VectorMA( self->client->ps.origin, 2048, forward, end );
 		
 		trap_Trace( &tr, self->client->ps.origin, vec3_origin, vec3_origin, end, self->s.number, MASK_SHOT );
-		if ( tr.entityNum == ENTITYNUM_NONE || tr.fraction == 1.0 || tr.allsolid || tr.startsolid || !g_entities[tr.entityNum].client || !g_entities[tr.entityNum].inuse )
+		
+		jkmod_drainmodel = !Q_stricmp("jkmod_drain_model", g_entities[tr.entityNum].classname); // Tr!Force: [GameGeneral] Drain model check
+
+		if ( (tr.entityNum == ENTITYNUM_NONE || tr.fraction == 1.0 || tr.allsolid || tr.startsolid || !g_entities[tr.entityNum].client || !g_entities[tr.entityNum].inuse) && !jkmod_drainmodel ) // Tr!Force: [GameGeneral] Drain model check
 		{
 			return 0;
 		}

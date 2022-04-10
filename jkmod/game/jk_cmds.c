@@ -1265,6 +1265,7 @@ static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int
 	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
 
 	VectorCopy(ent->client->ps.origin, orig);
+	orig[2] += ent->r.maxs[2] / 2;
 	VectorMA(orig, distance, fwd, dest);
 
 	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_ALL);

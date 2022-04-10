@@ -537,7 +537,7 @@ void JKMod_EmoteCmdPunch(gentity_t *ent)
 {
 	trace_t tr;
 	vec3_t fPos;
-	int cmd = Q_irand(0, 2) ? BOTH_MELEE1 : BOTH_MELEE2;
+	int cmd = JKMod_Rand() % 2 ? BOTH_MELEE1 : BOTH_MELEE2;
 
 	// Special cases to disallow the use of the emote
 	if (ent->client->ps.forceRestricted || 
