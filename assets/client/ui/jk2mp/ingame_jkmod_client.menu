@@ -1091,10 +1091,16 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_YESNO
+			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_PLAYERLABEL
 			descText			@JKMENUS_CLIENT_PLAYERLABEL_DESC
 			cvar				"jk_cg_drawPlayerNames"
+			cvarFloatList
+			{
+				@MENUS0_NO							0
+				@JKMENUS_CLIENT_PLAYERLABEL_DYN		1
+				@JKMENUS_CLIENT_PLAYERLABEL_FIX		2
+			}
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151

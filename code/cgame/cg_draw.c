@@ -3329,8 +3329,9 @@ static void CG_DrawCrosshairNames( void ) {
 	// Tr!Force: [PlayerLabels] Prevent crosshair names override
 	if (jkcvar_cg_drawPlayerNames.integer)
 	{
+		float distance = jkcvar_cg_drawPlayerNames.integer == 1 ? 520 : 800;
 		VectorSubtract(cg_entities[cg.crosshairClientNum].lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) < PLAYER_LABEL_DIST) return;
+		if (VectorLength(diff) < distance) return;
 	}
 
 	// draw the name of the player being looked at

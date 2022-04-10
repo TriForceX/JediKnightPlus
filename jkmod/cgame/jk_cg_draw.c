@@ -659,7 +659,9 @@ void JKMod_CG_DrawPlayerLabels(void)
 		trace_t		trace;
 		centity_t	*cent = &cg_entities[i];
 		vec3_t		diff;
-		float		scale, max = 0.7;
+		float		scale = 0.5;
+		float		max = 0.62;
+		float		distance = jkcvar_cg_drawPlayerNames.integer == 1 ? 520 : 800;
 
 		// Skip
 		if (!cent || !cent->currentValid)
@@ -685,7 +687,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 
 		// Max distance
 		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) >= PLAYER_LABEL_DIST)
+		if (VectorLength(diff) >= distance)
 			continue;
 
 		// Do trace
@@ -702,7 +704,7 @@ void JKMod_CG_DrawPlayerLabels(void)
 			continue;
 
 		// Set dynamic scale
-		scale = 120 / VectorLength(diff);
+		if (jkcvar_cg_drawPlayerNames.integer == 1) scale = 120 / VectorLength(diff);
 
 		// Show name
 		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > max ? max : scale));

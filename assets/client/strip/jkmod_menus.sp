@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 153
+COUNT 155
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1378,4 +1378,22 @@ INDEX 152
    TEXT_LANGUAGE3 "Teilen sie ihren status mit wenn sie einen punkt erzielen. (Nur wenn der server es zulässt)"
    TEXT_LANGUAGE6 "Share your status when you score a point. (Only if server allows it)"
    TEXT_LANGUAGE8 "Comparte tu estado cuando anotas un punto. (Solo si el servidor lo permite)"
+}
+INDEX 153
+{
+   REFERENCE CLIENT_PLAYERLABEL_DYN
+   TEXT_LANGUAGE1 "Dynamic size"
+   TEXT_LANGUAGE2 "Taille dynamique"
+   TEXT_LANGUAGE3 "Dynamische größe"
+   TEXT_LANGUAGE6 "Dynamic size"
+   TEXT_LANGUAGE8 "Tamaño dinámico"
+}
+INDEX 154
+{
+   REFERENCE CLIENT_PLAYERLABEL_FIX
+   TEXT_LANGUAGE1 "Fixed size"
+   TEXT_LANGUAGE2 "Taille fixe"
+   TEXT_LANGUAGE3 "Feste größe"
+   TEXT_LANGUAGE6 "Fixed size"
+   TEXT_LANGUAGE8 "Tamaño fijo"
 }
