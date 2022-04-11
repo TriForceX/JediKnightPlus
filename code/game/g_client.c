@@ -1280,6 +1280,8 @@ void ClientUserinfoChanged( int clientNum ) {
 		Q_strncpyz( model, "kyle/default", sizeof(model) );
 	}
 
+	JKMod_PlayerModelInfo(ent, model); // Tr!Force: [GameGeneral] Update model and skin name
+
 	Q_strncpyz( forcePowers, Info_ValueForKey (userinfo, "forcepowers"), sizeof( forcePowers ) );
 
 	team = client->sess.sessionTeam;

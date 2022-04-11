@@ -30,8 +30,7 @@ Help command function
 */
 static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 {
-	char    arg1[MAX_TOKEN_CHARS];
-
+	char arg1[MAX_TOKEN_CHARS];
 	trap_Argv(1, arg1, sizeof(arg1));
 
 	// Main help
@@ -96,7 +95,8 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3dropflag       !savespawn\n"
 			"^3callvote       !resetspawn\n"
 			"^3whois          !racetime\n"
-			"^3savepos        !teleports\n"
+			"^3taunt2         !teleports\n"
+			"^3savepos\n"
 			"^3loadpos\n"
 			"^3savespawn\n"
 			"^3resetspawn\n"
@@ -346,9 +346,9 @@ Ignore client cmd
 */
 static void JKMod_Cmd_IgnoreClient(gentity_t *ent)
 {
-	int			option;
-	char		arg1[MAX_TOKEN_CHARS];
-	char		arg2[MAX_TOKEN_CHARS];
+	int		option;
+	char	arg1[MAX_TOKEN_CHARS];
+	char	arg2[MAX_TOKEN_CHARS];
 
 	trap_Argv(1, arg1, sizeof(arg1));
 	trap_Argv(2, arg2, sizeof(arg2));
@@ -875,7 +875,7 @@ Dimension command function
 */
 void JKMod_Cmd_Dimension(gentity_t* ent)
 {
-	char    arg1[MAX_TOKEN_CHARS];
+	char arg1[MAX_TOKEN_CHARS];
 	trap_Argv(1, arg1, sizeof(arg1));
 
 	JKMod_DimensionChange(ent, arg1, qfalse);
@@ -993,7 +993,7 @@ Teleport save/load position command function
 */
 static void JKMod_Cmd_TelePos(gentity_t* ent)
 {
-	char    cmd[MAX_TOKEN_CHARS];
+	char cmd[MAX_TOKEN_CHARS];
 	trap_Argv(0, cmd, sizeof(cmd));
 
 	if (!Q_stricmp(cmd, "savepos") || !Q_stricmp(cmd, "amsavepos")) {
@@ -1096,7 +1096,7 @@ Teleport save/reset spawn position command function
 */
 static void JKMod_Cmd_SpawnPos(gentity_t* ent)
 {
-	char    cmd[MAX_TOKEN_CHARS];
+	char cmd[MAX_TOKEN_CHARS];
 	trap_Argv(0, cmd, sizeof(cmd));
 
 	if (!Q_stricmp(cmd, "savespawn") || !Q_stricmp(cmd, "amsavespawn")) {
@@ -1169,7 +1169,7 @@ Emote command function
 */
 static void JKMod_Cmd_Emote(gentity_t* ent)
 {
-	char    arg1[MAX_TOKEN_CHARS];
+	char arg1[MAX_TOKEN_CHARS];
 	trap_Argv(1, arg1, sizeof(arg1));
 
 	if (trap_Argc() < 2)
@@ -1243,6 +1243,46 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 			ent->client->ps.dualBlade = qtrue;
 			ent->client->pers.jkmodPers.dualSaber = qtrue;
 			return;
+		}
+	}
+}
+
+/*
+=====================================================================
+Taunt2 command function
+=====================================================================
+*/
+static void JKMod_Cmd_Taunt2(gentity_t* ent)
+{
+	char sound[MAX_TOKEN_CHARS];
+
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		return;
+	}
+	else if (level.jkmodLocals.pauseTime > level.time)
+	{
+		return;
+	}
+	else if (ent->client->ps.torsoTimer < 1 && ent->client->ps.forceHandExtend == HANDEXTEND_NONE && ent->client->ps.legsTimer < 1 && ent->client->ps.weaponTime < 1 && (ent->client->ps.saberLockTime < ent->client->pers.cmd.serverTime || jk2gameplay == VERSION_1_02)) 
+	{
+		// Animation
+		ent->client->ps.forceHandExtend = HANDEXTEND_TAUNT;
+		ent->client->ps.forceDodgeAnim = BOTH_ENGAGETAUNT;
+		ent->client->ps.forceHandExtendTime = ent->client->pers.cmd.serverTime + 1000;
+		ent->client->ps.weaponTime = 100;
+
+		if (jkcvar_allowTaunt2.integer) 
+		{
+			trap_Argv(1, sound, sizeof(sound));
+			if (trap_Argc() < 2) Com_sprintf(sound, sizeof(sound), "taunt");
+
+			G_MuteSound(ent->s.number, CHAN_VOICE);
+			G_Sound(ent, CHAN_VOICE, G_SoundIndex(va("%s/%s", ent->client->pers.jkmodPers.modelSounds, sound)));
+		}
+		else
+		{
+			G_AddEvent(ent, EV_TAUNT, 0);
 		}
 	}
 }
@@ -1935,6 +1975,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "jetpack",				JKMod_Cmd_JetPack },
 	{ "emote",					JKMod_Cmd_Emote },
 	{ "dualsaber",				JKMod_Cmd_DualSaber },
+	{ "taunt2",					JKMod_Cmd_Taunt2 },
 };
 
 static const size_t JKModCommandsTableSize = ARRAY_LEN(JKModCommandsTable);

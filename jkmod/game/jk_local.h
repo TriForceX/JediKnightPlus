@@ -92,8 +92,8 @@ typedef enum
 	EMOTE_SPINR,
 	EMOTE_SPIN2,
 	EMOTE_SPIN2R,
-	EMOTE_TAUNT2,
 	EMOTE_TAUNT3,
+	EMOTE_TAUNT4,
 	EMOTE_THINK,
 	EMOTE_THREATEN,
 	EMOTE_THUMBSUP,
@@ -192,6 +192,9 @@ typedef struct
 	int				customSpawnCheck;		// Player spawn check
 	int				duelHitCount;			// Number of hits that damage the opponent
 	qboolean		dualSaber;				// Check for permanent dual saber
+	char			modelName[MAX_QPATH];	// Player model name
+	char			modelSounds[MAX_QPATH];	// Player sounds path
+	char			skinName[MAX_QPATH];	// Player skin name
 
 } jkmod_pers_t;
 
@@ -302,6 +305,7 @@ extern	vmCvar_t					jkcvar_serverJoinSound;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
 extern	vmCvar_t					jkcvar_allowSaberHolocrons;
+extern	vmCvar_t					jkcvar_allowTaunt2;
 extern	vmCvar_t					jkcvar_allowMultiDuel;
 extern	vmCvar_t					jkcvar_allowCustomDuel;
 extern	vmCvar_t					jkcvar_allowDuelChat;
@@ -477,6 +481,7 @@ const char	*JKMod_GetMapMusic(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_PlayerMovementCheck(gentity_t *ent);
+void		JKMod_PlayerModelInfo(gentity_t *ent, const char* modelname);
 void		JKMod_SetGamePlay(char *option);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 int			JKMod_ItemRespawnTime(gentity_t *ent);

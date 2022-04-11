@@ -32,6 +32,7 @@ vmCvar_t	jkcvar_serverJoinSound;
 
 vmCvar_t	jkcvar_allowBlackNames;
 vmCvar_t	jkcvar_allowSaberHolocrons;
+vmCvar_t	jkcvar_allowTaunt2;
 vmCvar_t	jkcvar_allowMultiDuel;
 vmCvar_t	jkcvar_allowCustomDuel;
 vmCvar_t	jkcvar_allowDuelChat;
@@ -115,6 +116,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 	{ &jkcvar_allowBlackNames,		"jk_allowBlackNames",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowSaberHolocrons,	"jk_allowSaberHolocrons",	"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_allowTaunt2,			"jk_allowTaunt2",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowMultiDuel,		"jk_allowMultiDuel",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowCustomDuel,		"jk_allowCustomDuel",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_allowDuelChat,		"jk_allowDuelChat",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },

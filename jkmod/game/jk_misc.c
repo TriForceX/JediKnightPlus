@@ -167,6 +167,79 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 
 /*
 =====================================================================
+Player model, skin and sounds info
+=====================================================================
+*/
+void JKMod_PlayerModelInfo(gentity_t *ent, const char* modelname)
+{
+	int				i;
+	int				fLen = 0;
+	char			soundpath[MAX_QPATH];
+	char			soundfull[MAX_QPATH];
+	fileHandle_t	f;
+	char			model[MAX_QPATH];
+	char			*skin;
+
+	// Get model and skin
+	Q_strncpyz( model, modelname, sizeof( model ) );
+
+	skin = Q_strrchr( model, '/' );
+	if ( skin ) {
+		*skin++ = '\0';
+	} else {
+		skin = "default";
+	}
+
+	// Get sound
+	if (skin[0] == '\0' || !Q_stricmp( "default", skin)) {	
+		fLen = trap_FS_FOpenFile(va("models/players/%s/sounds.cfg", model), &f, FS_READ);
+		if (!f) {
+			fLen = trap_FS_FOpenFile(va("models/players/%s/sounds_default.cfg", model), &f, FS_READ);
+		}
+	} else {
+		fLen = trap_FS_FOpenFile(va("models/players/%s/sounds_%s.cfg", model, skin), &f, FS_READ);
+		if (!f) {
+			fLen = trap_FS_FOpenFile(va("models/players/%s/sounds.cfg", model), &f, FS_READ);
+		}
+	}
+
+	soundpath[0] = 0;
+
+	if (f) {
+		trap_FS_Read(soundpath, fLen, f);
+		i = fLen;
+		while (i > 0) {
+			i--;
+			if (soundpath[i] == '\n') {
+				if (i > 0) i--; 
+				break;
+			}
+		}
+		soundpath[i] = '\0';
+		trap_FS_FCloseFile(f);
+	}
+
+	// Check sound
+	if (soundpath[0]) {
+		Q_strncpyz(soundfull, va("sound/%s", soundpath), sizeof(soundfull));
+	} else {
+		Q_strncpyz(soundfull, va("sound/chars/%s/misc", model), sizeof(soundfull));
+	}
+
+	// Check path
+	if (trap_FS_FOpenFile(va("%s/taunt.mp3", soundfull), &f, FS_READ) >= 0) {
+		trap_FS_FCloseFile(f);
+		Q_strncpyz(ent->client->pers.jkmodPers.modelSounds, soundfull, sizeof(ent->client->pers.jkmodPers.modelSounds));
+	} else {
+		Q_strncpyz(ent->client->pers.jkmodPers.modelSounds, "sound/chars/mp_generic_male/misc", sizeof(ent->client->pers.jkmodPers.modelSounds));
+	}
+
+	Q_strncpyz(ent->client->pers.jkmodPers.modelName, model, sizeof(ent->client->pers.jkmodPers.modelName));
+	Q_strncpyz(ent->client->pers.jkmodPers.skinName, skin, sizeof(ent->client->pers.jkmodPers.skinName));
+}
+
+/*
+=====================================================================
 Gameplay changer
 =====================================================================
 */
