@@ -115,6 +115,9 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	// use the precise origin for linking
 	VectorCopy( player->client->ps.origin, player->r.currentOrigin );
 
+	// Tr!Force: [Emotes] Chair emote disable
+	if (player->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(player);
+
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
 		if (jkcvar_teleportFrag.integer) trap_LinkEntity (player); // Tr!Force: [TeleFrag] Allow kill and unlink
 	}

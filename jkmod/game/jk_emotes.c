@@ -91,13 +91,12 @@ int JKMod_EmoteCheck(char *cmd, gentity_t *ent)
 	// Now start on the checks for each command possibility
 	for (i = 0; i < JKModEmotesDataSize; i++)
 	{
-		if (Q_stricmp(cmd, JKModEmotesData[i].cmd) == 0 || Q_stricmp (cmd, va("am%s", JKModEmotesData[i].cmd)) == 0)
+		if (Q_stricmp(cmd, JKModEmotesData[i].cmd) == 0 || Q_stricmp(cmd, va("am%s", JKModEmotesData[i].cmd)) == 0)
 		{
 			if (JKModEmotesData[i].compatible == qfalse && jk2startversion == VERSION_1_02) {
 				return 0;
 			} else{
-				JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
-				return 1;
+				return JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
 			}
 		}
 	}
@@ -143,56 +142,59 @@ int JKMod_EmoteIn(gentity_t *ent, int type)
 Emote launch function
 =====================================================================
 */
-void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
+int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;
+
+	// Check client
+	if (!ent || !ent->client) return 0;
 
 	// Exception for duel gametype
 	if (g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this gametype\"");
-		return;
+		return 0;
 	}
 
 	// Don't allow in spectator
 	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in spectator mode\"");
-		return;
+		return 0;
 	}
 
 	// Don't allow in race dimension
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this dimension\"");
-		return;
+		return 0;
 	}
 
 	// Don't allow in duel
 	if (ent->client->ps.duelInProgress)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in private duels\"");
-		return;
+		return 0;
 	}
 
 	// Bit values for emotes! Let the people choose!
 	if (!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Emote disabled by the server\"");
-		return;
+		return 0;
 	}
 
 	// Don't allow when you are moving
 	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special && !(ent->client->ps.duelTime >= level.time))
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\"");
-		return;
+		return 0;
 	}
 
 	// You have a weapon but the emote isnt a freezing/walking one, disallow
 	if (ent->client->ps.weapon != WP_SABER && !JKModEmotesData[emoteIndex].special && JKModEmotesData[emoteIndex].endAnim == -1)
 	{
-		return;
+		return 0;
 	}
 
 	// Now that everything goes through here, we have to check if its a hug or a kiss to use their special commands
@@ -201,28 +203,28 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "hug") == 0)
 		{
 			JKMod_EmoteCmdHug(ent);
-			return;
+			return 1;
 		}
 		else if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "kiss") == 0)
 		{
 			JKMod_EmoteCmdKiss(ent);
-			return;
+			return 1;
 		}
 		else if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "punch") == 0)
 		{
 			JKMod_EmoteCmdPunch(ent);
-			return;
+			return 1;
 		}
 	}
 
 	// If emotes are disabled, you can still exit an emote
-	if (jkcvar_emotesEnabled.integer == 0 && !JKMod_EmoteIn(ent, -1)) return;
+	if (jkcvar_emotesEnabled.integer == 0 && !JKMod_EmoteIn(ent, -1)) return 0;
 
 	// This is a special type of emote
 	if (JKModEmotesData[emoteIndex].endAnim != -1)
 	{
 		// You seem to be airbourne, please stay at the ground
-		if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE) return;
+		if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE) return 0;
 
 		ent->client->ps.saberMove = LS_NONE;
 		ent->client->ps.saberBlocked = 0;
@@ -266,6 +268,7 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 			ent->client->ps.forceHandExtendTime = 0;
 
 			StandardSetBodyAnim(ent, JKModEmotesData[emoteIndex].endAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+			return 1;
 		}
 		// We are starting the given animation
 		else
@@ -306,6 +309,7 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 
 				pm->ps->legsTimer = ((pm->ps->ping < 20) ? 20 : pm->ps->ping) * 3.5;
 			}
+			return 1;
 		}
 	}
 	// Normal type of emote.
@@ -314,7 +318,7 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		// If you are not allowed emote breaks, you cant do it while being in air / on player
 		if (!jkcvar_emotesBreak.value && (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || ent->client->ps.groundEntityNum < MAX_CLIENTS))
 		{
-			return;
+			return 0;
 		}
 
 		// Toggle on/off lightsaber
@@ -335,6 +339,7 @@ void JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		{
 			StandardSetBodyAnim(ent, JKModEmotesData[emoteIndex].startAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 		}
+		return 1;
 	}
 }
 

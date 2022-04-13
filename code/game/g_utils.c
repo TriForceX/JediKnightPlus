@@ -1018,6 +1018,9 @@ void TryUse( gentity_t *ent )
 	{
 		// Tr!Force: [ButtonUse] Unset valid target
 		if (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) ent->client->pers.jkmodPers.buttonUseAnimValid = qfalse;
+
+		// Tr!Force: [Emotes] Chair emote disable
+		if (ent->client->jkmodClient.chairModelUsed && ent->client->jkmodClient.chairModelDelay < level.time) JKMod_ChairModelDisable(ent);
 		return;
 	}
 
@@ -1027,7 +1030,7 @@ void TryUse( gentity_t *ent )
 	if ( ValidUseTarget( target ) )
 	{
 		// Tr!Force: [ButtonUse] Set valid target
-		if (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) ent->client->pers.jkmodPers.buttonUseAnimValid = qtrue;
+		if ((ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) && Q_stricmp("jkmod_chair_model", target->classname)) ent->client->pers.jkmodPers.buttonUseAnimValid = qtrue;
 
 		/*
 		NPC_SetAnim( ent, SETANIM_TORSO, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD );

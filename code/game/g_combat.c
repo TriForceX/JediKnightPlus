@@ -2104,6 +2104,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// Tr!force: [Teleport] Client teleport used off
 	self->client->jkmodClient.teleportChatUsed = qfalse;
 
+	// Tr!Force: [Emotes] Chair emote disable
+	if (self->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(self);
+
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,
 	// or they would get stale scoreboards

@@ -2466,6 +2466,9 @@ void ClientDisconnect( int clientNum ) {
 	ent->client->pers.connected = CON_DISCONNECTED;
 	ent->client->ps.persistant[PERS_TEAM] = TEAM_FREE;
 	ent->client->sess.sessionTeam = TEAM_FREE;
+
+	// Tr!Force: [Emotes] Chair emote disable
+	if (ent->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(ent);
 	
 	// Tr!Force: [JKMod] Check for reconnect
 	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));

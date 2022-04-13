@@ -2946,3 +2946,36 @@
 	"maxs" "30 30 217"
 	"angle" "45"
 }
+// entity 452
+{
+	"classname" "jkmod_chair_model"
+	"origin" "816 -1613 0"
+	"model" "models/map_objects/cinematics/chair.md3"
+	"mins" "-6 -6 -14"
+	"maxs" "6 6 14"
+	"angle" "0"
+	"type" "1"
+	"offsetY" "6"
+}
+// entity 453
+{
+	"classname" "jkmod_chair_model"
+	"origin" "896 -1613 0"
+	"model" "models/map_objects/cinematics/chair.md3"
+	"mins" "-6 -6 -14"
+	"maxs" "6 6 14"
+	"angle" "0"
+	"type" "2"
+	"offsetY" "-2"
+}
+// entity 454
+{
+	"classname" "jkmod_chair_model"
+	"origin" "976 -1613 0"
+	"model" "models/map_objects/cinematics/chair.md3"
+	"mins" "-6 -6 -14"
+	"maxs" "6 6 14"
+	"angle" "0"
+	"type" "3"
+	"offsetY" "6"
+}

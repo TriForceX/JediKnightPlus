@@ -39,6 +39,7 @@ extern spawn_t spawns[];
 void JKMod_SP_MiscModel(gentity_t *ent);
 void JKMod_SP_MiscPowerConverter(gentity_t *ent);
 void JKMod_SP_DrainModel(gentity_t* ent);
+void JKMod_SP_ChairModel(gentity_t* ent);
 
 void JKMod_SP_TimerStart(gentity_t *self);
 void JKMod_SP_TimerStop(gentity_t *self);
@@ -53,6 +54,7 @@ spawn_t	jkmod_spawns[] = {
 	{"jkmod_misc_model",				JKMod_SP_MiscModel},
 	{"jkmod_misc_power_converter",		JKMod_SP_MiscPowerConverter},
 	{"jkmod_drain_model",				JKMod_SP_DrainModel},
+	{"jkmod_chair_model",				JKMod_SP_ChairModel},
 
 	{"jkmod_timer_start",				JKMod_SP_TimerStart},
 	{"jkmod_timer_stop",				JKMod_SP_TimerStop},

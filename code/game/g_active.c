@@ -1114,6 +1114,11 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		{
 			client->ps.pm_type = client->ps.forceGripChangeMovetype;
 		}
+		// Tr!Force: [Emotes] Chair emote player freeze
+		else if (ent->client->jkmodClient.chairModelUsed)
+		{
+			client->ps.pm_type = PM_FREEZE;
+		}
 		else
 		{
 			client->ps.pm_type = PM_NORMAL;

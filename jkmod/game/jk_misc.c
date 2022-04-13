@@ -342,6 +342,9 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	// Use the precise origin for linking
 	VectorCopy(player->client->ps.origin, player->r.currentOrigin);
 
+	// Chair emote disable
+	if (player->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(player);
+
 	// Link entity
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR && jkcvar_teleportFrag.integer) trap_LinkEntity(player);
 }
@@ -749,6 +752,8 @@ extern void BreakableBrushDie(gentity_t *self, gentity_t *inflictor, gentity_t *
 extern void BreakableBrushPain(gentity_t *self, gentity_t *attacker, int damage);
 extern void BreakableBrushUse(gentity_t *self, gentity_t *other, gentity_t *activator);
 extern void SP_fx_runner(gentity_t *ent);
+extern void StandardSetBodyAnim(gentity_t *self, int anim, int flags);
+extern jkmod_emotes_data_t JKModEmotesData[];
 
 // Check recharge
 void JKMod_EnergyStationCheck(gentity_t *ent)
@@ -1094,6 +1099,142 @@ void JKMod_SP_DrainModel(gentity_t* ent)
 
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
+
+	G_SetOrigin(ent, ent->s.origin);
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
+
+	trap_LinkEntity(ent);
+}
+
+// Chair model disable function
+void JKMod_ChairModelDisable(gentity_t *ent)
+{
+	// Unset
+	ent->client->ps.pm_type = PM_NORMAL;
+	ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+	ent->client->ps.forceDodgeAnim = 0;
+	ent->client->ps.forceHandExtendTime = 0;
+	StandardSetBodyAnim(ent, BOTH_STAND1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+
+	// Adjust
+	if (ent->client->jkmodClient.chairModelUsed != 1) ent->client->ps.origin[2] += 5;
+	
+	// Clear
+	ent->client->jkmodClient.chairModelUsed = 0;
+	ent->client->jkmodClient.chairModelDelay = level.time + 1000;
+	level.jkmodLocals.chairModelCheck[ent->client->jkmodClient.chairModelNum] = -1;
+}
+
+// Chair model use function
+void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator)
+{
+	int emote = EMOTE_SIT;
+	int checkNum = level.jkmodLocals.chairModelCheck[self->s.number];
+
+	if (!activator || !activator->client) return;
+	if (activator->client->ps.duelInProgress) return;
+	if (self->count > level.time) return;
+	if (activator->client->jkmodClient.chairModelDelay > level.time) return;
+	
+	// Check user
+	if (checkNum != -1 && checkNum != activator->client->ps.clientNum) {
+		// lol
+		if (g_entities[checkNum].client->ps.stats[JK_DIMENSION] != activator->client->ps.stats[JK_DIMENSION]) {
+			trap_SendServerCommand(activator->client->ps.clientNum, "cp \"There's a ghost sitting here\"");
+		} else {
+			trap_SendServerCommand(activator->client->ps.clientNum, "cp \"Take another seat\"");
+		}
+		return;
+	}
+
+	// Set emote
+	if (self->watertype == 2) emote = EMOTE_SIT2;
+	if (self->watertype == 3) emote = EMOTE_SIT3;
+
+	// Delay
+	self->count = level.time + 1000;
+
+	// Disable emote
+	if (activator->client->jkmodClient.chairModelUsed)
+	{
+		JKMod_ChairModelDisable(activator);
+	}
+	// Enable emote
+	else if (JKMod_EmoteCheck(JKModEmotesData[emote].cmd, activator))
+	{
+		vec3_t	startspot, endspot, angles;
+
+		// Get top
+		VectorCopy(self->s.origin, startspot);
+		startspot[2] += self->r.maxs[2] + 4;
+		VectorCopy(startspot, endspot);
+
+		// Set anim
+		StandardSetBodyAnim(activator, JKModEmotesData[emote].startAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+		activator->client->ps.pm_type = PM_FREEZE;
+		activator->client->jkmodClient.chairModelNum = self->s.number;
+		activator->client->jkmodClient.chairModelUsed = self->watertype;
+		activator->client->jkmodClient.chairModelDelay = level.time + 1000;
+
+		// Move
+		VectorCopy(endspot, activator->client->ps.origin);
+
+		if (self->watertype == 1) activator->client->ps.origin[2] += activator->r.maxs[2] / 2;
+		if (self->watertype != 1) activator->client->ps.origin[2] += 5;
+
+		// Custom pos
+		if (self->bolt_Head) activator->client->ps.origin[0] += self->bolt_Head;
+		if (self->bolt_Waist) activator->client->ps.origin[1] += self->bolt_Waist;
+
+		// View
+		VectorCopy(self->s.angles, angles); 
+		angles[YAW] = self->s.angles[YAW] + 90;
+		SetClientViewAngle(activator, angles);
+
+		// Check stuck
+		if (JKMod_OthersInBox(activator)) JKMod_AntiStuckBox(activator);
+		
+		// Lock user
+		level.jkmodLocals.chairModelCheck[self->s.number] = activator->client->ps.clientNum;
+	}
+}
+
+// Chair model
+void JKMod_SP_ChairModel(gentity_t* ent)
+{
+	G_SpawnInt("type", "", &ent->watertype);
+	G_SpawnInt("offsetX", "0", &ent->bolt_Head);
+	G_SpawnInt("offsetY", "0", &ent->bolt_Waist);
+	G_SpawnString("model", "", &ent->model);
+
+	if (ent->watertype != 1 && ent->watertype != 2 && ent->watertype != 3)
+	{
+		G_Printf(S_COLOR_RED "ERROR: jkmod_chair_model doesn't have a valid type (%i)\n", ent->watertype);
+		G_FreeEntity(ent);
+		return;
+	}
+
+	ent->s.eType = ET_GENERAL;
+	ent->s.modelindex = G_ModelIndex(ent->model);
+	ent->s.modelindex2 = G_ModelIndex(ent->model);
+
+	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
+	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
+
+	if (!Q_stricmp(ent->model, ".glm"))
+	{
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
+	}
+
+	ent->r.svFlags |= SVF_PLAYER_USABLE;
+	ent->s.generic1 |= GENERIC_USABLE; // Tr!Force: [IdentifyObjects] Check usable hint
+	ent->r.contents = CONTENTS_SOLID;
+	ent->clipmask = MASK_SOLID;
+	ent->use = JKMod_ChairModelUse;
+	ent->count = 0;
+
+	level.jkmodLocals.chairModelCheck[ent->s.number] = -1;
 
 	G_SetOrigin(ent, ent->s.origin);
 	VectorCopy(ent->s.angles, ent->s.apos.trBase);

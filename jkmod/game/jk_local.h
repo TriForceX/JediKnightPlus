@@ -209,6 +209,9 @@ typedef struct
 	int				teleportChatTime;	// Teleport chat wait time
 	qboolean		teleportChatUsed;	// Teleport chat check used
 	int				pushEffectTime;		// Force push effect time
+	int				chairModelNum;		// Check chair model number
+	int				chairModelUsed;		// Check chair model usage
+	int				chairModelDelay;	// Check chair model delay
 	
 } jkmod_client_t;
 
@@ -231,6 +234,7 @@ typedef struct
 	char			reconnectedIP[MAX_IP_STRING];				// Check IP for client reconnect
 	int				closedCheck[MAX_CHALLENGE];					// Closed server check
 	int				messageCheck[MAX_CHALLENGE];				// Connect message check
+	unsigned		chairModelCheck[MAX_CLIENTS];				// Chair model usage check
 
 } jkmod_locals_t;
 
@@ -452,7 +456,7 @@ int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *en
 // jk_emotes.c
 int			JKMod_EmoteCheck(char *cmd, gentity_t *ent);
 int			JKMod_EmoteIn(gentity_t *ent, int type);
-void		JKMod_EmotePlay(gentity_t *ent, int emoteIndex);
+int			JKMod_EmotePlay(gentity_t *ent, int emoteIndex);
 void		JKMod_EmoteCmdHug(gentity_t *ent);
 void		JKMod_EmoteCmdKiss(gentity_t *ent);
 void		JKMod_EmoteCmdPunch(gentity_t *ent);
@@ -488,6 +492,7 @@ int			JKMod_ItemRespawnTime(gentity_t *ent);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 int			JKMod_SPMapCheck(const char *mapname);
 qboolean	JKMod_ValidPlayerModel(const char* modelname);
+void		JKMod_ChairModelDisable(gentity_t *ent);
 
 // jk_utils.c
 void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration);

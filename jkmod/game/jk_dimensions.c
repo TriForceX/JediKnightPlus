@@ -308,6 +308,15 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 	// Set settings
 	JKMod_DimensionSettings(ent, dimension);
 
+	// Check emotes
+	if (ent->client->jkmodClient.chairModelUsed) { 
+		JKMod_ChairModelDisable(ent);
+	} else {
+		ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+		ent->client->ps.forceDodgeAnim = 0;
+		ent->client->ps.forceHandExtendTime = 0;
+	}
+
 	// Set random spawn point
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && 
 		ent->client->ps.pm_type != PM_DEAD && !ent->client->ps.duelInProgress && 

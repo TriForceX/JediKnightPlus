@@ -831,9 +831,6 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set default timescale
 	trap_Cvar_Set("timescale", "1");
 
-	// Set default bots settings
-	trap_Cvar_Set("bot_forGimmick", "0");
-
 	// Set map restarted check
 	level.jkmodLocals.mapRestarted = (qboolean)restart;
 
@@ -872,6 +869,12 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	if (jkcvar_gameTypeConfig.integer)
 	{
 		JKMod_GameTypeConfig();
+	}
+	
+	// Clear bots settings
+	if (bot_forgimmick.integer) 
+	{
+		trap_Cvar_Set("bot_forGimmick", "1");
 	}
 
 	// Check server closed
