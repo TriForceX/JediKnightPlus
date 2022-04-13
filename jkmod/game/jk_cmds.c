@@ -94,9 +94,9 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3ignore         !loadpos\n"
 			"^3dropflag       !savespawn\n"
 			"^3callvote       !resetspawn\n"
-			"^3whois          !racetime\n"
-			"^3taunt2         !teleports\n"
-			"^3savepos\n"
+			"^3whois          !where\n"
+			"^3taunt2         !racetime\n"
+			"^3savepos        !teleports\n"
 			"^3loadpos\n"
 			"^3savespawn\n"
 			"^3resetspawn\n"
@@ -727,10 +727,17 @@ Who is / status function
 */
 void JKMod_Cmd_WhoIs(gentity_t *ent)
 {
-	int	num;
+	int			num;
+	const char	*mapname = JKMod_GetCurrentMap();
 
 	if (ent) 
 	{
+		
+		trap_SendServerCommand(ent - g_entities, va("cp \""
+			"You are in the ^3%s ^7dimension\n"
+			"Open console for player list\"",
+			JKModDimensionData[JKMod_DimensionIndex(ent->client->ps.stats[JK_DIMENSION])].name));
+		
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
 			"^7List of all players connected on the server\n"
@@ -738,14 +745,14 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			"^7\""));
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5--- ---------------------------- ----- --------- ------------ ---------------\n"
-			"^7Num Name                         Type  Ignore    Dimension    Plugin\n"
-			"^5--- ---------------------------- ----- --------- ------------ ---------------\n"
+			"^5---------------------------------------------------------------------------------------\n"
+			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignore    ^5|^7 Dimension    ^5|^7 Plugin\n"
+			"^5---------------------------------------------------------------------------------------\n"
 			"^7\""));
 	}
 	else
 	{
-		G_Printf("Map: %s\n", JKMod_GetCurrentMap());
+		G_Printf("Map: %s\n", mapname);
 		G_Printf("Num Name                         Type  Dimension    Plugin\n");
 		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
 	}
@@ -799,7 +806,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 		// Player print
 		if (ent) {
-			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i %-28s %-5s %-9s %-12s %s%-15s\n\"",
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-9s ^5|^7 %-12s ^5|^7 %s%-15s\n\"",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
@@ -821,7 +828,13 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 	}
 
 	if (ent) {
-		trap_SendServerCommand(ent - g_entities, va("print \"^5--- ---------------------------- ----- --------- ------------ ---------------\n\""));
+		trap_SendServerCommand(ent - g_entities, va("print \"^5---------------------------------------------------------------------------------------\n\""));
+		trap_SendServerCommand(ent - g_entities, va("print \"Your position in ^3%s ^7is: ^2(^7%i^2) (^7%i^2) (^7%i^2) : (^7%i^2)\n\"",
+			mapname,
+			(int)ent->client->ps.origin[0],
+			(int)ent->client->ps.origin[1],
+			(int)ent->client->ps.origin[2],
+			(int)ent->client->ps.viewangles[YAW]));
 	} else {
 		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
 	}
@@ -1858,6 +1871,11 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	if (Q_stricmp(p, "!motd") == 0)
 	{
 		JKMod_Cmd_ShowMotd(ent);
+	}
+	// Show whois
+	if (Q_stricmp(p, "!where") == 0)
+	{
+		JKMod_Cmd_WhoIs(ent);
 	}
 	// Player stats
 	else if (Q_stricmp(p, "!status") == 0)

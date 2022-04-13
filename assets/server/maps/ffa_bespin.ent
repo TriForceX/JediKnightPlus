@@ -2956,6 +2956,7 @@
 	"angle" "0"
 	"type" "1"
 	"offsetY" "6"
+	"viewAngles" "90"
 }
 // entity 453
 {
@@ -2967,6 +2968,7 @@
 	"angle" "0"
 	"type" "2"
 	"offsetY" "-2"
+	"viewAngles" "90"
 }
 // entity 454
 {
@@ -2978,4 +2980,5 @@
 	"angle" "0"
 	"type" "3"
 	"offsetY" "6"
+	"viewAngles" "90"
 }

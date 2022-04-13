@@ -9,6 +9,19 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.18.2
+- Fix death count on scoreboard
+- Fix dual saber moves animation bug
+- Fix dimension saber throw bug
+- Fix duel hits count stats
+- Fix client plugin warnings
+- Fix drain model entity alignment
+- Added auto status to clientside options
+- Added 2nd option for player names draw
+- Added taunt2 client command and cvar
+- Added chair emote map entity
+- Added new field to chair model & whois updated
+
 ## 0.18.1
 - Added a PS script for my lazy friends
 - Fix clean save & load spawn check

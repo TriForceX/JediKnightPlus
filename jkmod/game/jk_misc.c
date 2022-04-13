@@ -1187,8 +1187,9 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 		if (self->bolt_Waist) activator->client->ps.origin[1] += self->bolt_Waist;
 
 		// View
-		VectorCopy(self->s.angles, angles); 
-		angles[YAW] = self->s.angles[YAW] + 90;
+		VectorCopy(self->s.angles, angles);
+		angles[YAW] = self->s.angles[YAW];
+		if (self->bolt_Motion) angles[YAW] += self->bolt_Motion;
 		SetClientViewAngle(activator, angles);
 
 		// Check stuck
@@ -1205,6 +1206,7 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 	G_SpawnInt("type", "", &ent->watertype);
 	G_SpawnInt("offsetX", "0", &ent->bolt_Head);
 	G_SpawnInt("offsetY", "0", &ent->bolt_Waist);
+	G_SpawnInt("viewAngles", "0", &ent->bolt_Motion);
 	G_SpawnString("model", "", &ent->model);
 
 	if (ent->watertype != 1 && ent->watertype != 2 && ent->watertype != 3)
