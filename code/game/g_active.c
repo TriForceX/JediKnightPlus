@@ -1208,11 +1208,14 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		if (!duelAgainst || !duelAgainst->client || !duelAgainst->inuse ||
 			duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
-			ent->client->ps.duelInProgress = 0;
-			ent->client->pers.jkmodPers.customDuel = 0; // Tr!Force: [Duel] Turn off force duels
+			// ent->client->ps.duelInProgress = 0;
+			// G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+
+			JKMod_DuelRemove(ent); // Tr!Force: [Duel] Remove duel status
+
 			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent); // Tr!Force: [Duel] Check duel stuck
 			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE); // Tr!Force: [Dimensions] Remove duel flag
-			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+			
 		}
 		else if (duelAgainst->health < 1 || duelAgainst->client->ps.stats[STAT_HEALTH] < 1)
 		{
@@ -1231,16 +1234,15 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], duelAgainst->client->pers.jkmodPers.duelHitCount+1));
 			}
 
-			ent->client->ps.duelInProgress = 0;
-			duelAgainst->client->ps.duelInProgress = 0;
+			// ent->client->ps.duelInProgress = 0;
+			// duelAgainst->client->ps.duelInProgress = 0;
 
-			// Tr!Force: [Duel] Turn off force duels
-			ent->client->pers.jkmodPers.customDuel = 0;
-			duelAgainst->client->pers.jkmodPers.customDuel = 0;
+			// G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+			// G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
-			// Tr!Force: [Duel] Reset hit count
-			ent->client->pers.jkmodPers.duelHitCount = 0;
-			duelAgainst->client->pers.jkmodPers.duelHitCount = 0;
+			// Tr!Force: [Duel] Remove duel status
+			JKMod_DuelRemove(ent);
+			JKMod_DuelRemove(duelAgainst); 
 
 			// Tr!Force: [Duel] Check duel stuck
 			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
@@ -1248,9 +1250,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Dimensions] Remove duel flag
 			if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 			if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
-
-			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
-			G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
 			//Winner gets full health.. providing he's still alive
 			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
@@ -1261,12 +1260,9 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 					ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_MAX_HEALTH] * 0.25;
 				}
-				else
+				else if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
 				{
-					if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
-					{
-						ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
-					}
+					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 				}
 
 				if (g_spawnInvulnerability.integer)
@@ -1300,16 +1296,15 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 
 			if (subLen >= jkcvar_duelDistance.integer) // Tr!Force: [Duel] Custom max distance
 			{
-				ent->client->ps.duelInProgress = 0;
-				duelAgainst->client->ps.duelInProgress = 0;
+				// ent->client->ps.duelInProgress = 0;
+				// duelAgainst->client->ps.duelInProgress = 0;
 
-				// Tr!Force: [Duel] Turn off force duels
-				ent->client->pers.jkmodPers.customDuel = 0;
-				duelAgainst->client->pers.jkmodPers.customDuel = 0;
+				// G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+				// G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
-				// Tr!Force: [Duel] Reset hit count
-				ent->client->pers.jkmodPers.duelHitCount = 0;
-				duelAgainst->client->pers.jkmodPers.duelHitCount = 0;
+				// Tr!Force: [Duel] Remove duel status
+				JKMod_DuelRemove(ent);
+				JKMod_DuelRemove(duelAgainst); 
 
 				// Tr!Force: [Duel] Check duel stuck
 				if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
@@ -1318,9 +1313,6 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				// Tr!Force: [Dimensions] Remove duel flag
 				if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(ent, DIMENSION_FREE);
 				if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
-
-				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
-				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
 
 				trap_SendServerCommand( -1, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "PLDUELSTOP")) );
 			}

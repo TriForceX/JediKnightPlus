@@ -97,6 +97,12 @@
 	.cvar_edit {
 		float: right;
 	}
+	.cvar_edit input[type="text"] {
+		width: 120px;
+	}
+	.cvar_edit input[value="Disable"] {
+		width: 72px;
+	}
 	.hidden {
 		display: none;
 	}
@@ -112,11 +118,11 @@
 	</div>
 	<!-- Section -->
 	<div class="title">
-      <span class="cvar">jk_emotesEnabled:</span>
+      <span class="cvar">jk_emotesEnabled: <small>(Check ingame for 1.02 compatibility)</small></span>
 	  <span class="cvar_edit">
-		  <input id="emotesenabled" class="value" value="0" type="number">
-		  <input name="emotesenabled" class="select-all" value="All" type="button">
-		  <input name="emotesenabled" class="select-none" value="None" type="button">
+		  <input id="emotesenabled" class="value" value="0" type="text">
+		  <input alt="emotesenabled" class="select-all" value="All" type="button">
+		  <input alt="emotesenabled" class="select-none" value="None" type="button">
 	  </span>
 	</div>
 	<div class="bitboxes">
@@ -179,10 +185,10 @@
 	<div class="title">
       <span class="cvar">jk_voteControl:</span>
 	  <span class="cvar_edit">
-		  <input id="votecontrol" class="value" value="0" type="number">
-		  <input name="votecontrol" class="select-all" value="All" type="button">
-		  <input name="votecontrol" class="select-none" value="None" type="button">
-		  <!-- <input name="votecontrol" class="default" value="Default" type="button" defval="3647"> -->
+		  <input id="votecontrol" class="value" value="0" type="text">
+		  <input alt="votecontrol" class="select-all" value="All" type="button">
+		  <input alt="votecontrol" class="select-none" value="None" type="button">
+		  <!--<input alt="votecontrol" class="default" value="Default" type="button" defval="3647">-->
 	  </span>
 	</div>
 	<div class="bitboxes">
@@ -203,14 +209,14 @@
 	<div class="title">
       <span class="cvar">jk_altDimension:</span>
 	  <span class="cvar_edit">
-		  <input id="altdimension" class="value" value="0" type="number">
-		  <input name="altdimension" class="select-all" value="All" type="button">
-		  <input name="altdimension" class="select-none" value="None" type="button">
+		  <input id="altdimension" class="value" value="0" type="text">
+		  <input alt="altdimension" class="select-all" value="All" type="button">
+		  <input alt="altdimension" class="select-none" value="None" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
-		<label class="bitbox hidden"><input class="box" name="altdimension" num="0" type="checkbox"> Normal</label>
-		<label class="bitbox"><input class="box" name="altdimension" num="1" type="checkbox"> Private Duel</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="0" type="checkbox"> Normal</label>
+		<label class="bitbox"><input class="box" name="altdimension" num="1" type="checkbox" needs="0"> Private Duel</label>
 		<label class="bitbox"><input class="box" name="altdimension" num="2" type="checkbox"> Guns Arena</label>
 		<label class="bitbox"><input class="box" name="altdimension" num="3" type="checkbox"> Race Defrag</label>
 		<label class="bitbox"><input class="box" name="altdimension" num="4" type="checkbox"> Saber Only</label>
@@ -219,14 +225,14 @@
     </div>
 	<!-- Section -->
 	<div class="title">
-      <span class="cvar">jk_altDimensionBase:</span>
+      <span class="cvar">jk_altDimensionBase: <small>(Not required for normal dimension)</small></span>
 	  <span class="cvar_edit">
-		  <input id="altdimensionbase" class="value" value="0" type="number">
-		  <input name="altdimensionbase" class="select-none" value="Disable" type="button">
+		  <input id="altdimensionbase" class="value" value="0" type="text">
+		  <input alt="altdimensionbase" class="select-none" value="Disable" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
-		<label class="bitbox"><input class="box" name="altdimensionbase" num="0" type="radio"> Normal</label>
+		<label class="bitbox hidden"><input class="box" name="altdimensionbase" num="0" type="radio"> Normal</label>
 		<label class="bitbox hidden"><input class="box" name="altdimensionbase" num="1" type="radio"> Private Duel</label>
 		<label class="bitbox"><input class="box" name="altdimensionbase" num="2" type="radio"> Guns Arena</label>
 		<label class="bitbox"><input class="box" name="altdimensionbase" num="3" type="radio"> Race Defrag</label>
@@ -238,9 +244,9 @@
 	<div class="title">
       <span class="cvar">jk_playerMovement:</span>
 	  <span class="cvar_edit">
-		  <input id="playermovement" class="value" value="0" type="number">
-		  <input name="playermovement" class="select-all" value="All" type="button">
-		  <input name="playermovement" class="select-none" value="None" type="button">
+		  <input id="playermovement" class="value" value="0" type="text">
+		  <input alt="playermovement" class="select-all" value="All" type="button">
+		  <input alt="playermovement" class="select-none" value="None" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
@@ -256,13 +262,13 @@
 	<div class="title">
       <span class="cvar">bot_forGimmick: <small>(Using jk_botsAI enabled)</small></span>
 	  <span class="cvar_edit">
-		  <input id="botforgimmick" class="value" value="0" type="number">
-		  <input name="botforgimmick" class="select-all" value="All" type="button">
-		  <input name="botforgimmick" class="select-none" value="None" type="button">
+		  <input id="botforgimmick" class="value" value="0" type="text">
+		  <input alt="botforgimmick" class="select-all" value="All" type="button">
+		  <input alt="botforgimmick" class="select-none" value="None" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
-		<label class="bitbox hidden"><input class="box" name="botforgimmick" num="0" type="checkbox"> Static</label>
+		<label class="bitbox"><input class="box" name="botforgimmick" num="0" type="checkbox"> Static</label>
 		<label class="bitbox"><input class="box" name="botforgimmick" num="1" type="checkbox"> Attack</label>
 		<label class="bitbox"><input class="box" name="botforgimmick" num="2" type="checkbox"> Alt Attack</label>
 		<label class="bitbox"><input class="box" name="botforgimmick" num="3" type="checkbox"> Crouch</label>
@@ -274,9 +280,9 @@
 	<div class="title">
       <span class="cvar">g_forcePowerDisable:</span>
 	  <span class="cvar_edit">
-		  <input id="forcedisable" class="value" value="0" type="number">
-		  <input name="forcedisable" class="select-all" value="All" type="button">
-		  <input name="forcedisable" class="select-none" value="None" type="button">
+		  <input id="forcedisable" class="value" value="0" type="text">
+		  <input alt="forcedisable" class="select-all" value="All" type="button">
+		  <input alt="forcedisable" class="select-none" value="None" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
@@ -303,9 +309,9 @@
 	<div class="title">
       <span class="cvar">g_weaponDisable:</span>
 	  <span class="cvar_edit">
-		  <input id="weapondisable" class="value" value="0" type="number">
-		  <input name="weapondisable" class="select-all" value="All" type="button">
-		  <input name="weapondisable" class="select-none" value="None" type="button">
+		  <input id="weapondisable" class="value" value="0" type="text">
+		  <input alt="weapondisable" class="select-all" value="All" type="button">
+		  <input alt="weapondisable" class="select-none" value="None" type="button">
 	  </span>
 	</div>
     <div class="bitboxes">
@@ -359,6 +365,12 @@
 			var num = boxes[i].getAttribute("num");
 			if (boxes[i].checked) {
 				value |= (1 << num);
+				if (boxes[i].hasAttribute("needs")) {
+					var needs = boxes[i].getAttribute("needs");
+					value |= (1 << needs);
+					boxes[needs].parentNode.classList.add("checked")
+					boxes[needs].checked = true;
+				}
 				boxes[i].parentNode.classList.add("checked")
 			} else {
 				boxes[i].parentNode.classList.remove("checked")
@@ -367,7 +379,7 @@
 		field.value = value;
 	}
 	function setOwnerValue(button, value) {
-		var field = document.getElementById(button.name);
+		var field = document.getElementById(button.alt);
 		field.value = value;
 		field.onchange();
 	}

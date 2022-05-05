@@ -235,6 +235,7 @@ typedef struct
 	int				closedCheck[MAX_CHALLENGE];					// Closed server check
 	int				messageCheck[MAX_CHALLENGE];				// Connect message check
 	unsigned		chairModelCheck[MAX_CLIENTS];				// Chair model usage check
+	unsigned		dimensionBase;								// Global base dimension
 
 } jkmod_locals_t;
 
@@ -447,7 +448,7 @@ void		JKMod_DimensionSettings(gentity_t *ent, unsigned dimension);
 qboolean	JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say);
 qboolean	JKMod_DimensionCheck(int ent1, int ent2);
 void		JKMod_DimensionOwnerCheck(int owner, gentity_t *ent);
-unsigned	JKMod_DimensionGetFree(void);
+unsigned	JKMod_DimensionGetCustom(void);
 void		JKMod_DimensionSet(gentity_t *ent, unsigned dimension);
 qboolean	JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2);
 void		JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
@@ -504,6 +505,7 @@ void		JKMod_JetpackTryUse(gentity_t *ent);
 gentity_t	*JKMod_DuelGetPartner(gentity_t* ent);
 qboolean	JKMod_DuelEachOther(gentity_t* ent1, gentity_t* ent2);
 qboolean	JKMod_DuelIsolationCheck(gentity_t* ent1, gentity_t* ent2);
+void		JKMod_DuelRemove(gentity_t *ent);
 void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);

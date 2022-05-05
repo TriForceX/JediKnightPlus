@@ -729,6 +729,7 @@ G_InitGame
 */
 void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Force: BaseJk2 Init game function
 	int					i;
+	unsigned			jkmod_dimensionBase; // Tr!Force: [Dimensions] Global base dimension
 
 	B_InitAlloc(); //make sure everything is clean
 
@@ -784,10 +785,11 @@ void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Fo
 	G_InitMemory();
 
 	// set some level globals
+	jkmod_dimensionBase = level.jkmodLocals.dimensionBase ? level.jkmodLocals.dimensionBase : DIMENSION_FREE; // Tr!Force: [Dimensions] Global base dimension
 	memset( &level, 0, sizeof( level ) );
 	level.time = levelTime;
 	level.startTime = levelTime;
-
+	level.jkmodLocals.dimensionBase = g_gametype.integer == GT_FFA ? jkmod_dimensionBase : DIMENSION_FREE; // Tr!Force: [Dimensions] Global base dimension
 	level.snd_fry = G_SoundIndex("sound/player/fry.wav");	// FIXME standing in lava / slime
 
 	//trap_SP_RegisterServer("mp_svgame");

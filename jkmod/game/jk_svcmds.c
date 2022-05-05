@@ -8,6 +8,10 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern jkmod_dimension_data_t JKModDimensionData[];
+extern int JKModDimensionDataSize;
+
 /*
 =====================================================================
 Gameplay command function
@@ -218,13 +222,21 @@ static void JKMod_svCmd_toggleMod(void)
 	if (trap_Argc() < 2)
 	{
 		G_Printf("Usage: togglemod <cvar> <option>\n");
-		G_Printf("Cvars: ^3jk_playerMovement^7, ^3jk_voteControl^7, ^3jk_altDimension^7, ^3bot_forGimmick\n");
+		G_Printf("Cvars:\n"
+			"^3jk_playerMovement\n"
+			"^3jk_voteControl\n"
+			"^3jk_altDimension\n"
+			"^3jk_altDimensionBase\n"
+			"^3bot_forGimmick\n"
+			);
 	}
 	else
 	{
 		int bits;
 		int i, val, start = 0;
 		int toggleModSize;
+		char *toggleModNote;
+		qboolean toggleModRadio = qfalse;
 		jkmod_bit_info_t *toggleModOptions;
 
 		trap_Argv(1, arg1, sizeof(arg1));
@@ -244,12 +256,21 @@ static void JKMod_svCmd_toggleMod(void)
 		{
 			toggleModOptions = toggleAltDimension;
 			toggleModSize = ARRAY_LEN(toggleAltDimension);
-			start = 1;
+			toggleModNote = "Dimensions defined as base should be changed first before disable";
+		}
+		else if (!Q_stricmp(arg1, "jk_altDimensionBase")) 
+		{
+			toggleModOptions = toggleAltDimension;
+			toggleModSize = ARRAY_LEN(toggleAltDimension);
+			toggleModNote = "For normal dimension change this cvar manually to 0";
+			toggleModRadio = qtrue;
+			start = 2;
 		}
 		else if (!Q_stricmp(arg1, "bot_forGimmick")) 
 		{
 			toggleModOptions = toggleBotForGimmick;
 			toggleModSize = ARRAY_LEN(toggleBotForGimmick);
+			toggleModNote = "Any of these actions will make the bots static";
 		}
 		else
 		{
@@ -267,6 +288,7 @@ static void JKMod_svCmd_toggleMod(void)
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 			return;
 		}
 
@@ -277,9 +299,15 @@ static void JKMod_svCmd_toggleMod(void)
 			if (val >= start && val < toggleModSize) 
 			{
 				level.jkmodLocals.cvarToggleMod = qtrue;
-				bits ^= (1 << val);
-				trap_Cvar_Set(arg1, va("%i",bits));
-				trap_SendServerCommand(-1, va("print \"Server: %s %s %s\n\"", arg1, ((bits & (1 << val)) ? "enabled" : "disabled"), toggleModOptions[val].string));
+				if (toggleModRadio) {
+					bits = (1 << val);
+					trap_Cvar_Set(arg1, va("%i",bits));
+					trap_SendServerCommand(-1, va("print \"Server: %s changed to %s\n\"", arg1, toggleModOptions[val].string));
+				} else {
+					bits ^= (1 << val);
+					trap_Cvar_Set(arg1, va("%i",bits));
+					trap_SendServerCommand(-1, va("print \"Server: %s %s %s\n\"", arg1, ((bits & (1 << val)) ? "enabled" : "disabled"), toggleModOptions[val].string));
+				}
 			}
 			else 
 			{
@@ -290,6 +318,7 @@ static void JKMod_svCmd_toggleMod(void)
 					else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 				}
 				G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+				if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 			}
 		}
 		else 
@@ -301,6 +330,7 @@ static void JKMod_svCmd_toggleMod(void)
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
 			}
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 		}
 	}
 }
@@ -321,19 +351,51 @@ static void JKMod_svCmd_forceDimension(void)
 	}
 	else
 	{
+		int i;
+		unsigned dimension;
+		qboolean found = qfalse;
+
 		trap_Argv(1, arg1, sizeof(arg1));
 		trap_Argv(2, arg2, sizeof(arg2));
+
+		if (g_gametype.integer != GT_FFA) {
+			G_Printf("You can't change dimension in this game type\n");
+			return;
+		}
+
+		for (i = 0; i < JKModDimensionDataSize; i++)
+		{
+			if (!Q_stricmp(arg2, JKModDimensionData[i].command)) {
+				dimension = JKModDimensionData[i].dimension;
+				found = qtrue;
+				break;
+			} 
+		}
+
+		if (!found) {
+			G_Printf("Dimension %s doesn't exist\n", arg2);
+			return;
+		}
+
+		if (!(jkcvar_altDimension.integer & dimension)) {
+			G_Printf("Dimension %s is not available\n", arg2);
+			return;
+		}
 
 		if (!Q_stricmp(arg1, "all"))
 		{
 			gentity_t *ent;
-			int i;
 
 			for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
 			{
 				if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 				{
-					JKMod_DimensionChange(ent, arg2, qfalse);
+					if (ent->client->ps.duelInProgress)
+					{
+						JKMod_DuelRemove(ent);
+					}
+
+					JKMod_DimensionSet(ent, dimension);
 				}
 			}
 		}
@@ -344,7 +406,19 @@ static void JKMod_svCmd_forceDimension(void)
 			if (target != -1)
 			{
 				gentity_t *ent = &g_entities[target];
-				JKMod_DimensionChange(ent, arg2, qfalse);
+
+				if (ent->client->ps.duelInProgress)
+				{
+					gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
+
+					JKMod_DuelRemove(ent);
+					JKMod_DuelRemove(duelAgainst);
+
+					if (duelAgainst->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(duelAgainst)) JKMod_AntiStuckBox(duelAgainst);
+					if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
+				}
+				
+				JKMod_DimensionSet(ent, dimension);
 			}
 		}
 	}

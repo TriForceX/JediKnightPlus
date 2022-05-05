@@ -540,10 +540,10 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			// Set dimension
 			if ((jkcvar_altDimension.integer & DIMENSION_DUEL) && challenged->client->sess.jkmodSess.privateDuel)
 			{
-				unsigned DIMENSION_DUEL_FREE = JKMod_DimensionGetFree();
+				unsigned DIMENSION_CUSTOM_DIM = JKMod_DimensionGetCustom();
 
-				JKMod_DimensionSet(ent, DIMENSION_DUEL_FREE);
-				JKMod_DimensionSet(challenged, DIMENSION_DUEL_FREE);
+				JKMod_DimensionSet(ent, DIMENSION_CUSTOM_DIM);
+				JKMod_DimensionSet(challenged, DIMENSION_CUSTOM_DIM);
 			}
 
 			ent->client->ps.duelTime = level.time + 2000;

@@ -122,10 +122,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	trap_GetUserinfo(clientNum, userinfo, sizeof(userinfo));
 
 	// Set default dimension and refresh
-	if (jkcvar_altDimensionBase.integer) 
-		JKMod_DimensionSet(ent, jkcvar_altDimensionBase.integer);
-	else if (client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) 
-		JKMod_DimensionSet(ent, DIMENSION_FREE);
+	JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
 
 	// Set player movements
 	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);

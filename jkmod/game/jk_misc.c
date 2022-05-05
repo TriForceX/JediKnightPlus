@@ -327,13 +327,9 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	SetClientViewAngle(player, angles);
 
 	// Kill anything at the destination
-	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) 
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR && jkcvar_teleportFrag.integer) 
 	{
-		if (jkcvar_teleportFrag.integer) {
-			G_KillBox(player);
-		} else {
-			JKMod_AntiStuckBox(player);
-		}
+		G_KillBox(player);
 	}
 
 	// Save results of pmove
@@ -342,11 +338,15 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	// Use the precise origin for linking
 	VectorCopy(player->client->ps.origin, player->r.currentOrigin);
 
+	// Link entity
+	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) trap_LinkEntity(player);
+
+	
 	// Chair emote disable
 	if (player->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(player);
 
-	// Link entity
-	if (player->client->sess.sessionTeam != TEAM_SPECTATOR && jkcvar_teleportFrag.integer) trap_LinkEntity(player);
+	// Check stuck
+	if (!jkcvar_teleportFrag.integer && JKMod_OthersInBox(player)) JKMod_AntiStuckBox(player);
 }
 
 /*

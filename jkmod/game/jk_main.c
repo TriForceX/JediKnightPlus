@@ -188,7 +188,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 };
 
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
-static int JKModCvarAltDimensionBase = 0;
+static int JKModCvarAltDimension = 0;
 
 /*
 =====================================================================
@@ -201,6 +201,7 @@ void JKMod_G_RegisterCvars(void)
 {
 	int					i;
 	jkmod_cvar_table_t	*cv;
+	qboolean			GTconfigLoaded = jkcvar_gameTypeConfig.integer ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue;
 
 	// Register all the cvars
 	for (i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
@@ -215,7 +216,7 @@ void JKMod_G_RegisterCvars(void)
 
 		trap_Cvar_Register(cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags);
 
-		if (cv->update && (jkcvar_gameTypeConfig.integer ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue)) cv->update();
+		if (cv->update && GTconfigLoaded) cv->update();
 
 		if (cv->vmCvar)
 		{
@@ -240,6 +241,7 @@ void JKMod_G_UpdateCvars(void)
 {
 	int					i;
 	jkmod_cvar_table_t	*cv;
+	qboolean			GTconfigLoaded = jkcvar_gameTypeConfig.integer ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue;
 
 	// Update all the cvars
 	for (i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
@@ -252,7 +254,7 @@ void JKMod_G_UpdateCvars(void)
 			{
 				cv->modificationCount = cv->vmCvar->modificationCount;
 
-				if (cv->update) cv->update();
+				if (cv->update && GTconfigLoaded) cv->update();
 
 				if (cv->trackChange && !level.jkmodLocals.cvarToggleMod)
 				{
@@ -395,43 +397,68 @@ void JKMod_CVU_gamePlay(void)
 // Update alt dimension cvar
 void JKMod_CVU_altDimension(void)
 {
-	gentity_t *ent;
-	int i, num, dimensions = jkcvar_altDimension.integer;
+	JKModCvarAltDimension = !JKModCvarAltDimension ? 1 : 2;
 	
-	if (jkcvar_altDimensionBase.integer && JKModCvarAltDimensionBase) 
+	if (JKModCvarAltDimension > 1 && g_gametype.integer == GT_FFA) 
 	{
-		dimensions &= ~JKModCvarAltDimensionBase;
-	}
-	if (jkcvar_altDimensionBase.integer == DIMENSION_DUEL) 
-	{
-		G_Printf(S_COLOR_YELLOW "WARNING: Generic dimensions are not meant to be used as base!\n");
-		dimensions &= ~DIMENSION_DUEL;
-		trap_Cvar_Set("jk_altDimensionBase", va("%i", dimensions));
-	}
-	if (jkcvar_altDimensionBase.integer && !(jkcvar_altDimension.integer & jkcvar_altDimensionBase.integer))
-	{
-		dimensions |= jkcvar_altDimensionBase.integer;
-		JKModCvarAltDimensionBase = jkcvar_altDimensionBase.integer;
-		trap_Cvar_Set("jk_altDimension", va("%i", dimensions));
-	}
-	if (!jkcvar_altDimensionBase.integer && JKModCvarAltDimensionBase)
-	{
-		G_Printf(S_COLOR_YELLOW "WARNING: Base dimension have been disabled! Adding normal back...\n");
-		dimensions |= DIMENSION_FREE;
-		trap_Cvar_Set("jk_altDimension", va("%i", dimensions));
-	}
+		gentity_t *ent;
+		int i;
+		int dimension = jkcvar_altDimension.integer;
+		int dimensionBase = jkcvar_altDimensionBase.integer;
 
-	for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
-	{
-		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+		JKModCvarAltDimension = 3;
+
+		// Check dimensions
+		if (dimensionBase == DIMENSION_DUEL) 
 		{
-			int dimensionBase = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
-
-			if (ent->client->ps.stats[JK_DIMENSION] != dimensionBase) {
-				trap_SendServerCommand(ent - g_entities, "cp \"Server changed dimensions!\nYou are back to the default one\"");
+			dimensionBase = DIMENSION_FREE;
+			G_Printf(S_COLOR_YELLOW "WARNING: Generic dimensions are not meant to be used as base!\n");
+		}
+		if (dimension != -1 && !dimensionBase && !(dimension & DIMENSION_FREE)) 
+		{
+			for (i = 0; i < DIMENSION_MAX; i++)
+			{
+				int dim = (1 << i);
+				if (dim == DIMENSION_DUEL) continue;
+				if (dim == DIMENSION_FREE) continue;
+				if (dimension & dim) { dimensionBase = dim; break; }
 			}
+			G_Printf(S_COLOR_YELLOW "WARNING: Normal dimension not present! Adding a new one...\n");
+		}
+		if (dimension != -1 && dimensionBase && !(dimension & dimensionBase))
+		{
+			dimension |= dimensionBase;
+			G_Printf(S_COLOR_YELLOW "WARNING: Base dimension is not present! Adding it back...\n");
+		}
 
-			JKMod_DimensionSet(ent, dimensionBase);
+		// Update dimensions
+		if (jkcvar_altDimension.integer != dimension) trap_Cvar_Set("jk_altDimension", va("%i", dimension));
+		if (jkcvar_altDimensionBase.integer != dimensionBase) trap_Cvar_Set("jk_altDimensionBase", va("%i", dimensionBase));
+
+		level.jkmodLocals.dimensionBase = dimensionBase ? dimensionBase : DIMENSION_FREE;
+
+		// Check clients
+		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+		{
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			{
+				if (dimension && ent->client->ps.duelInProgress && !(dimension & DIMENSION_FREE)) 
+				{
+					JKMod_DuelRemove(ent);
+				}
+				if (dimension && !(ent->client->ps.stats[JK_DIMENSION] & dimension) || (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL && !(dimension & DIMENSION_FREE))) 
+				{
+					trap_SendServerCommand(ent - g_entities, "cp \"Server changed dimensions!\nYou are back to the default one\"");
+
+					if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL && (dimension & DIMENSION_FREE)) {
+						// Back to normal
+						JKMod_DimensionSet(ent, DIMENSION_FREE);
+					} else {
+						// Back to base
+						JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
+					}
+				}
+			}
 		}
 	}
 }

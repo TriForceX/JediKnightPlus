@@ -138,7 +138,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say)
 			// Command
 			if (!Q_stricmp(dimension, JKModDimensionData[i].command) || baseCmd)
 			{
-				int		dimensionBase = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
+				int		dimensionBase = level.jkmodLocals.dimensionBase;
 				int		dimensionBaseIndex = JKMod_DimensionIndex(dimensionBase);
 				int		dimensionIndex = JKModDimensionData[baseCmd ? dimensionBaseIndex : i].dimension;
 				char	*dimensionName = JKModDimensionData[baseCmd ? dimensionBaseIndex : i].name;
@@ -216,7 +216,7 @@ void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 	ent->jkmodEnt.dimensionOwner = owner;
 
 	if (ent - g_entities < MAX_CLIENTS) {
-		ent->jkmodEnt.dimensionNumber = jkcvar_altDimensionBase.integer ? jkcvar_altDimensionBase.integer : DIMENSION_FREE;
+		ent->jkmodEnt.dimensionNumber = level.jkmodLocals.dimensionBase;
 	} else {
 		ent->jkmodEnt.dimensionNumber = DIMENSION_ALL;
 	}
@@ -240,18 +240,18 @@ void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 
 /*
 =====================================================================
-Dimension get free number
+Dimension get custom number
 =====================================================================
 */
-unsigned JKMod_DimensionGetFree(void)
+unsigned JKMod_DimensionGetCustom(void)
 {
 	unsigned dimension;
-	qboolean free;
+	qboolean available;
 	int i;
 
-	for (dimension = 1 << DIMENSION_MAX; dimension != 0; dimension <<= 1) 
+	for (dimension = (1 << DIMENSION_MAX); dimension != 0; dimension <<= 1) 
 	{
-		free = qtrue;
+		available = qtrue;
 
 		for (i = 0; i < level.maxclients; i++) 
 		{
@@ -259,16 +259,16 @@ unsigned JKMod_DimensionGetFree(void)
 
 			if ((g_entities[i].jkmodEnt.dimensionNumber & dimension) != 0) 
 			{
-				free = qfalse;
+				available = qfalse;
 				break;
 			}
 		}
 
-		if (free) return dimension;
+		if (available) return dimension;
 	}
 
 	assert(0);
-	return DIMENSION_FREE;
+	return level.jkmodLocals.dimensionBase;
 }
 
 /*
@@ -282,82 +282,90 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 	int	clientNum = ent->s.number;
 	vec3_t spawnOrigin, spawnAngles;
 
-	ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
-	ent->jkmodEnt.dimensionNumber = dimension;
+	if (ent->client->ps.stats[JK_DIMENSION] != dimension) 
+	{
+		// Set new dimension
+		ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : dimension;
+		ent->jkmodEnt.dimensionNumber = dimension;
 
-	// Check pass-trough
-	if (ent->client->ps.eFlags & JK_PASS_THROUGH) ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		// Check saber
+		if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
 
-	// Check stuck
-	if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
-
-	// Check saber
-	if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
-
-	// Clear saved teleport
-	ARRAY_CLEAR(ent->client->pers.jkmodPers.teleportChat);
-	ent->client->pers.jkmodPers.teleportChatCheck = 0;
+		// Clear saved teleport
+		ARRAY_CLEAR(ent->client->pers.jkmodPers.teleportChat);
+		ent->client->pers.jkmodPers.teleportChatCheck = 0;
 	
-	// Clear custom spawn
-	ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
-	ent->client->pers.jkmodPers.customSpawnCheck = 0;
+		// Clear custom spawn
+		ARRAY_CLEAR(ent->client->pers.jkmodPers.customSpawn);
+		ent->client->pers.jkmodPers.customSpawnCheck = 0;
 
-	// Update settings
-	ent->client->pers.jkmodPers.customSettingsCount++;
+		// Update settings
+		ent->client->pers.jkmodPers.customSettingsCount++;
 
-	// Set settings
-	JKMod_DimensionSettings(ent, dimension);
+		// Set settings
+		JKMod_DimensionSettings(ent, dimension);
 
-	// Check emotes
-	if (ent->client->jkmodClient.chairModelUsed) { 
-		JKMod_ChairModelDisable(ent);
-	} else {
-		ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
-		ent->client->ps.forceDodgeAnim = 0;
-		ent->client->ps.forceHandExtendTime = 0;
-	}
+		// Check emotes
+		if (ent->client->jkmodClient.chairModelUsed) { 
+			JKMod_ChairModelDisable(ent);
+		} else {
+			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+			ent->client->ps.forceDodgeAnim = 0;
+			ent->client->ps.forceHandExtendTime = 0;
+		}
 
-	// Set random spawn point
-	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && 
-		ent->client->ps.pm_type != PM_DEAD && !ent->client->ps.duelInProgress && 
-		ent->jkmodEnt.dimensionNumberOld && 
-		ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber) 
-	{
-		SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
-		JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
-	}
+		// Set random spawn point
+		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && 
+			ent->client->ps.pm_type != PM_DEAD && !ent->client->ps.duelInProgress && 
+			ent->jkmodEnt.dimensionNumberOld && 
+			ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber) 
+		{
+			SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
+			JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
+		}
 
-	// Update previous dimension
-	ent->jkmodEnt.dimensionNumberOld = ent->jkmodEnt.dimensionNumber;
+		// Check stuck anyways
+		if (ent->client->ps.duelInProgress && !jkcvar_duelPassThrough.integer && JKMod_OthersInBox(ent))
+		{
+			JKMod_AntiStuckBox(ent);
+		}
 
-	if (mvapi)
-	{
-		for (i = 0; i < level.num_entities; i++) {
-			if (g_entities[i].inuse) {
-				int owner = g_entities[i].jkmodEnt.dimensionOwner;
+		// Update previous dimension
+		ent->jkmodEnt.dimensionNumberOld = ent->jkmodEnt.dimensionNumber;
 
-				if (JKMod_DimensionCheck(owner, clientNum)) {
-					mv_entities[i].snapshotIgnore[clientNum] = 0;
-				} else {
-					mv_entities[i].snapshotIgnore[clientNum] = 1;
+		if (mvapi)
+		{
+			for (i = 0; i < level.num_entities; i++) {
+				if (g_entities[i].inuse) {
+					int owner = g_entities[i].jkmodEnt.dimensionOwner;
+
+					if (JKMod_DimensionCheck(owner, clientNum)) {
+						mv_entities[i].snapshotIgnore[clientNum] = 0;
+					} else {
+						mv_entities[i].snapshotIgnore[clientNum] = 1;
+					}
+				}
+			}
+
+			for (i = 0; i < level.maxclients; i++) {
+				if (g_entities[i].inuse) {
+					int owner = g_entities[i].jkmodEnt.dimensionOwner;
+
+					if (JKMod_DimensionCheck(owner, clientNum)) {
+						mv_entities[clientNum].snapshotIgnore[i] = 0;
+					} else {
+						mv_entities[clientNum].snapshotIgnore[i] = 1;
+					}
 				}
 			}
 		}
 
-		for (i = 0; i < level.maxclients; i++) {
-			if (g_entities[i].inuse) {
-				int owner = g_entities[i].jkmodEnt.dimensionOwner;
-
-				if (JKMod_DimensionCheck(owner, clientNum)) {
-					mv_entities[clientNum].snapshotIgnore[i] = 0;
-				} else {
-					mv_entities[clientNum].snapshotIgnore[i] = 1;
-				}
-			}
-		}
+		JKMod_Printf(S_COLOR_YELLOW "Client %i changed dimension to %i\n", clientNum, dimension);
 	}
-
-	JKMod_Printf(S_COLOR_YELLOW "Client %i changed dimension to %i\n", clientNum, dimension);
+	else
+	{
+		JKMod_Printf(S_COLOR_YELLOW "Client %i already in dimension %i\n", clientNum, dimension);
+	}
 }
 
 /*
