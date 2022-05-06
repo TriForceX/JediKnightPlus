@@ -50,8 +50,11 @@ Player / world information
 =====================================================================
 */
 
-// Given a boltmatrix, return in vec a normalised vector for the axis requested in flags
+// Get normalised vector for the axis requested
 void JKMod_BG_GiveMeVectorFromMatrix(mdxaBone_t *boltMatrix, int flags, vec3_t vec);
+
+// Check dual saber anims
+qboolean JKMod_BG_SpinningDualAnim(int anim);
 
 // Dimension options
 typedef enum

@@ -222,6 +222,22 @@ qboolean BG_SpinningSaberAnim( int anim )
 	return qfalse;
 }
 
+// Tr!Force: [PlayerMovement] Dual saber moves
+qboolean JKMod_BG_SpinningDualAnim( int anim )
+{
+	if ((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade)
+	{
+		switch ( (jk2gameplay == VERSION_1_02 ? anim : anim&~ANIM_TOGGLEBIT) )
+		{
+		case BOTH_BUTTERFLY_LEFT:
+		case BOTH_BUTTERFLY_FL1:
+			return qtrue;
+			break;
+		}
+	}
+	return qfalse;
+}
+
 qboolean BG_SaberInSpecialAttack( int anim )
 {
 	switch ( anim&~ANIM_TOGGLEBIT )

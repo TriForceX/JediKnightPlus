@@ -2046,7 +2046,7 @@ void PM_SetSaberMove(short newMove)
 	{
 		parts = SETANIM_BOTH;
 	}
-	else if ( BG_SpinningSaberAnim( anim ) && !((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade) ) // Tr!Force: [PlayerMovement] Dual saber moves
+	else if ( BG_SpinningSaberAnim( anim ) && !JKMod_BG_SpinningDualAnim( anim ) ) // Tr!Force: [PlayerMovement] Dual saber moves
 	{//spins must be played on entire body
 		parts = SETANIM_BOTH;
 	}
