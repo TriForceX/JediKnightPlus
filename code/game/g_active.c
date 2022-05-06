@@ -1118,6 +1118,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		else if (ent->client->jkmodClient.chairModelUsed)
 		{
 			client->ps.pm_type = PM_FREEZE;
+			VectorClear(client->ps.velocity);
 		}
 		else
 		{

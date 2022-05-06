@@ -3198,7 +3198,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	}
 
 	// figure momentum add, even if the damage won't be taken
-	if ( knockback && targ->client ) {
+	if ( knockback && targ->client && !targ->client->jkmodClient.chairModelUsed ) { // Tr!Force: [Emotes] Chair emote player prevent momentum
 		vec3_t	kvel;
 		float	mass;
 

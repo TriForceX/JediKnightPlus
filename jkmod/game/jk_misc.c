@@ -1122,6 +1122,7 @@ void JKMod_ChairModelDisable(gentity_t *ent)
 	// Clear
 	ent->client->jkmodClient.chairModelUsed = 0;
 	ent->client->jkmodClient.chairModelDelay = level.time + 1000;
+	VectorClear(ent->client->ps.velocity);
 	level.jkmodLocals.chairModelCheck[ent->client->jkmodClient.chairModelNum] = -1;
 }
 
