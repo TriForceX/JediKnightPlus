@@ -2574,7 +2574,7 @@ CheckCvars
 void CheckCvars( void ) {
 	static int lastMod = -1;
 	
-	if ( VALIDSTRINGCVAR(jkcvar_serverClosed.string) ) return; // Tr!Force: [JKMod] Server closed on top
+	if ( VALIDCVAR(jkcvar_serverClosed.string) ) return; // Tr!Force: [JKMod] Server closed on top
 
 	if ( g_password.modificationCount != lastMod ) {
 		lastMod = g_password.modificationCount;
@@ -2828,6 +2828,9 @@ start = trap_Milliseconds();
 		}
 	}
 end = trap_Milliseconds();
+
+	// Tr!Force: [JKMod] Check server news
+	JKMod_ServerNewsCheck();
 
 	// Tr!Force: [JKMod] Check server idle
 	JKMod_ServerIdleCheck();

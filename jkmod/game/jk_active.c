@@ -8,9 +8,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 
 #include "../../code/game/g_local.h" // Original header
 
-// Extern stuff
-extern int trap_RealTime(qtime_t *qtime);
-
 /*
 =====================================================================
 Client timer actions function
@@ -18,14 +15,7 @@ Client timer actions function
 */
 void JKMod_ClientTimerActions(gentity_t *ent, int msec) 
 {
-	gclient_t	*client;
-	qtime_t		serverTime;
-	char		*serverTimeType;
-	char		serverMotd[MAX_STRING_CHARS];
-
-	trap_RealTime(&serverTime);
-	serverTimeType = (serverTime.tm_hour > 11 && serverTime.tm_hour < 24) ? "pm" : "am";
-
+	gclient_t *client;
 	client = ent->client;
 
 	// Drop flag check
@@ -79,6 +69,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 	{
 		if (client->jkmodClient.motdTime <= jkcvar_serverMotdTime.integer)
 		{
+			char serverMotd[MAX_STRING_CHARS];
 			JKMod_StringEscape(jkcvar_serverMotd.string, serverMotd, MAX_STRING_CHARS);
 
 			// Check map teleports
@@ -115,31 +106,6 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		}
 
 		client->jkmodClient.motdTime--;
-	}
-
-	// Server news
-	if (jkcvar_serverNews.integer && VALIDSTRING(level.jkmodLocals.serverNews[0]) && g_gametype.integer != GT_TOURNAMENT)
-	{
-		int i;
-		int total = level.jkmodLocals.serverNewsCount;
-			
-		level.jkmodLocals.serverNewsNum++;
-
-		for (i = 1; i < (jkcvar_serverNewsTime.integer * total); i++)
-		{
-			if (level.jkmodLocals.serverNewsNum == (jkcvar_serverNewsTime.integer * i))
-			{
-				// Check player
-				if (client->ps.stats[JK_DIMENSION] != DIMENSION_RACE) {
-					trap_SendServerCommand(client->ps.clientNum, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", serverTime.tm_hour, serverTime.tm_min, serverTimeType, level.jkmodLocals.serverNews[(i - 1)]));
-				}
-
-				// Reset
-				if (level.jkmodLocals.serverNewsNum == ((jkcvar_serverNewsTime.integer * total))) {
-					level.jkmodLocals.serverNewsNum = 0;
-				}
-			}
-		}
 	}
 
 	// Check jetpack fuel

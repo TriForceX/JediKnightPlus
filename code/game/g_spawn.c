@@ -804,18 +804,18 @@ void SP_worldspawn( void )
 	{
 		const char *SPmapDefaultMusic = JKMod_GetMapMusic();
 
-		if (!G_SpawnString( "music", VALIDSTRINGCVAR(SPmapDefaultMusic) ? SPmapDefaultMusic : "", &text ))
+		if (!G_SpawnString( "music", VALIDCVAR(SPmapDefaultMusic) ? SPmapDefaultMusic : "", &text ))
 		{
-			if (VALIDSTRINGCVAR(SPmapDefaultMusic))
+			if (VALIDCVAR(SPmapDefaultMusic))
 			{
 				G_Printf(S_COLOR_YELLOW "No map music, setting the default: %s\n", SPmapDefaultMusic);
 			}
 		}
 	}
 	// Tr!Force: [JKMod] Set default music if empty
-	else if (!G_SpawnString( "music", VALIDSTRINGCVAR(jkcvar_mapDefaultMusic.string) ? jkcvar_mapDefaultMusic.string : "", &text ))
+	else if (!G_SpawnString( "music", VALIDCVAR(jkcvar_mapDefaultMusic.string) ? jkcvar_mapDefaultMusic.string : "", &text ))
 	{
-		if (VALIDSTRINGCVAR(jkcvar_mapDefaultMusic.string))
+		if (VALIDCVAR(jkcvar_mapDefaultMusic.string))
 		{
 			G_Printf(S_COLOR_YELLOW "No map music, setting the default: %s\n", jkcvar_mapDefaultMusic.string);
 		}

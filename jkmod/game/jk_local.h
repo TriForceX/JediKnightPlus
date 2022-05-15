@@ -223,6 +223,7 @@ typedef struct
 	char			serverNews[MAX_FILE_VARS][MAX_FILE_CHARS];	// Server news strings
 	int				serverNewsCount;							// Server news total count
 	int				serverNewsNum;								// Server news current number
+	int				serverNewsTime;								// Server news timer
 	char			*teleportChats[MAX_FILE_CHARS];				// Teleport chat strings
 	int				teleportChatsCount;							// Teleport chat total count
 	int				idleTime;									// Server idle time
@@ -465,8 +466,6 @@ void		JKMod_EmoteCmdPunch(gentity_t *ent);
 // jk_main.c
 void		JKMod_G_RegisterCvars(void);
 void		JKMod_G_UpdateCvars(void);
-void		JKMod_CVU_randomBegin(void);
-void		JKMod_CVU_serverNews(void);
 void		JKMod_CVU_teleportChat(void);
 void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_altDimension(void);
@@ -477,6 +476,10 @@ void		JKMod_CVU_serverClosed(void);
 void		JKMod_CVU_dualSaber(void);
 qboolean	JKMod_PauseFrameCheck(int levelTime);
 void		JKMod_PauseFrameRun(void);
+void		JKMod_TeleportChatLoad(void);
+void		JKMod_RandomBeginLoad(void);
+void		JKMod_ServerNewsLoad(void);
+void		JKMod_ServerNewsCheck(void);
 void		JKMod_ServerIdleCheck(void);
 void		JKMod_GameTypeConfig(void);
 

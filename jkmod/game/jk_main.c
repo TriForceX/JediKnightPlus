@@ -14,6 +14,7 @@ extern void CheckVote(void);
 extern void CheckTeamVote(team_t team);
 extern void CheckCvars(void);
 extern int G_ParseInfos(char *buf, int max, char *infos[]);
+extern int trap_RealTime(qtime_t *qtime);
 
 /*
 =====================================================================
@@ -164,8 +165,8 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionBase,		"jk_altDimensionBase",		"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					JKMod_CVU_randomBegin,		CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					JKMod_CVU_serverNews,		CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					JKMod_CVU_pluginRequired,	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
@@ -271,102 +272,17 @@ void JKMod_G_UpdateCvars(void)
 	if (level.jkmodLocals.cvarToggleMod) level.jkmodLocals.cvarToggleMod = qfalse;
 }
 
-// Update random begin cvar
-void JKMod_CVU_randomBegin(void) 
+
+// Update gameplay cvar
+void JKMod_CVU_gamePlay(void)
 {
-	if (jkcvar_randomBegin.integer && g_gametype.integer != GT_TOURNAMENT)
-	{
-		static char		*linestart;
-		static char		*lineend;
-		static int		count;
-
-		level.jkmodLocals.randomBeginCount = 0;
-		linestart = JKMod_ReadFile("config/random_begin.cfg");
-
-		if (linestart)
-		{
-			lineend = strchr(linestart, '\n');
-			while (lineend)
-			{
-				*lineend = 0;
-				Q_strncpyz(level.jkmodLocals.randomBegin[count++], linestart, sizeof(level.jkmodLocals.randomBegin[0]));
-				level.jkmodLocals.randomBeginCount++;
-				linestart = lineend + 1;
-				lineend = strchr(linestart, '\n');
-				if (count >= MAX_FILE_VARS) break;
-			}
-			if (count < MAX_FILE_VARS) {
-				Q_strncpyz(level.jkmodLocals.randomBegin[count++], linestart, sizeof(level.jkmodLocals.randomBegin[0]));
-				level.jkmodLocals.randomBeginCount++;
-			}
-			G_Printf("%i random begin messages loaded\n", level.jkmodLocals.randomBeginCount);
-		}
-		else
-		{
-			trap_Cvar_Set("jk_randomBegin", "0");
-		}
-	}
-}
-
-// Update server news cvar
-void JKMod_CVU_serverNews(void)
-{
-	if (jkcvar_serverNews.integer && g_gametype.integer != GT_TOURNAMENT)
-	{
-		static char		*linestart;
-		static char		*lineend;
-		static int		count;
-
-		level.jkmodLocals.serverNewsCount = 0;
-		linestart = JKMod_ReadFile("config/server_news.cfg");
-
-		if (linestart)
-		{
-			lineend = strchr(linestart, '\n');
-			while (lineend)
-			{
-				*lineend = 0;
-				Q_strncpyz(level.jkmodLocals.serverNews[count++], linestart, sizeof(level.jkmodLocals.serverNews[0]));
-				level.jkmodLocals.serverNewsCount++;
-				linestart = lineend + 1;
-				lineend = strchr(linestart, '\n');
-				if (count >= MAX_FILE_VARS) break;
-			}
-			if (count < MAX_FILE_VARS) {
-				Q_strncpyz(level.jkmodLocals.serverNews[count++], linestart, sizeof(level.jkmodLocals.serverNews[0]));
-				level.jkmodLocals.serverNewsCount++;
-			}
-			G_Printf("%i server news loaded\n", level.jkmodLocals.serverNewsCount);
-		}
-		else
-		{
-			trap_Cvar_Set("jk_serverNews", "0");
-		}
-	}
+	JKMod_SetGamePlay(jkcvar_gamePlay.string);
 }
 
 // Update teleport chat
 void JKMod_CVU_teleportChat(void)
 {
-	if (jkcvar_teleportChat.integer)
-	{
-		static char		*linestart;
-
-		level.jkmodLocals.teleportChatsCount = 0;
-		linestart = JKMod_ReadFile("config/teleport_chats.cfg");
-
-		if (linestart)
-		{
-			level.jkmodLocals.teleportChatsCount += G_ParseInfos(linestart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
-			G_Printf("%i teleport chats loaded\n", level.jkmodLocals.teleportChatsCount);
-		}
-		else
-		{
-			trap_Cvar_Set("jk_teleportChat", "0");
-		}
-	}
-
-	// Save/load check
+	// Save/load pos check
 	if (jkcvar_teleportChat.integer != 2)
 	{
 		gentity_t *ent;
@@ -386,12 +302,6 @@ void JKMod_CVU_teleportChat(void)
 			}
 		}
 	}
-}
-
-// Update gameplay cvar
-void JKMod_CVU_gamePlay(void)
-{
-	JKMod_SetGamePlay(jkcvar_gamePlay.string);
 }
 
 // Update alt dimension cvar
@@ -521,7 +431,7 @@ void JKMod_CVU_pluginRequired(void)
 // Update server closed cvar
 void JKMod_CVU_serverClosed(void)
 {
-	if (VALIDSTRINGCVAR(jkcvar_serverClosed.string)) {
+	if (VALIDCVAR(jkcvar_serverClosed.string)) {
 		trap_Cvar_Set( "g_needpass", "1" );
 	} else {
 		trap_Cvar_Set( "g_needpass", "0" );
@@ -564,6 +474,7 @@ void JKMod_PauseTimeRestore(int msec)
 	ADJUST(level.exitTime);
 	ADJUST(level.voteTime);
 	ADJUST(level.jkmodLocals.idleTime);
+	ADJUST(level.jkmodLocals.serverNewsTime);
 
 	level.startTime += msec;
 
@@ -781,6 +692,146 @@ void JKMod_PauseFrameRun(void)
 
 /*
 =====================================================================
+Teleport chats load
+=====================================================================
+*/
+void JKMod_TeleportChatLoad(void)
+{
+	if (g_gametype.integer != GT_TOURNAMENT)
+	{
+		char	*lineStart;
+
+		level.jkmodLocals.teleportChatsCount = 0;
+		lineStart = JKMod_ReadFile("config/teleport_chats.cfg");
+
+		if (lineStart[0]) {
+			level.jkmodLocals.teleportChatsCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
+		}
+
+		if (level.jkmodLocals.teleportChatsCount) {
+			G_Printf("%i teleport chats loaded\n", level.jkmodLocals.teleportChatsCount);
+		}
+	}
+}
+
+/*
+=====================================================================
+Random begin messages load
+=====================================================================
+*/
+void JKMod_RandomBeginLoad(void) 
+{
+	if (g_gametype.integer != GT_TOURNAMENT)
+	{
+		char	*lineStart;
+		char	*lineEnd;
+		int		lineNum = 0;
+		int		itemCount = 0;
+
+		level.jkmodLocals.randomBeginCount = 0;
+		lineStart = JKMod_ReadFile("config/random_begin.cfg");
+		lineEnd = strchr(lineStart, '\n');
+
+		while (lineEnd || lineStart[0])
+		{
+			*lineEnd = 0;
+			if (VALIDTEXT(lineStart))
+			{
+				Q_strncpyz(level.jkmodLocals.randomBegin[itemCount], lineStart, sizeof(level.jkmodLocals.randomBegin[0]));
+				level.jkmodLocals.randomBeginCount++;
+				itemCount++;
+			}
+			lineStart = lineEnd + 1;
+			lineEnd = strchr(lineStart, '\n');
+			lineNum++;
+			if (lineNum >= MAX_FILE_VARS) break;
+		}
+		
+		if (itemCount) {
+			G_Printf("%i random begin messages loaded\n", level.jkmodLocals.randomBeginCount);
+		}
+	}
+}
+
+/*
+=====================================================================
+Server news load
+=====================================================================
+*/
+void JKMod_ServerNewsLoad(void)
+{
+	if (g_gametype.integer != GT_TOURNAMENT)
+	{
+		char	*lineStart;
+		char	*lineEnd;
+		int		lineNum = 0;
+		int		itemCount = 0;
+
+		level.jkmodLocals.serverNewsCount = 0;
+		lineStart = JKMod_ReadFile("config/server_news.cfg");
+		lineEnd = strchr(lineStart, '\n');
+
+		while (lineEnd || lineStart[0])
+		{
+			*lineEnd = 0;
+			if (VALIDTEXT(lineStart))
+			{
+				Q_strncpyz(level.jkmodLocals.serverNews[itemCount], lineStart, sizeof(level.jkmodLocals.serverNews[0]));
+				level.jkmodLocals.serverNewsCount++;
+				itemCount++;
+			}
+			lineStart = lineEnd + 1;
+			lineEnd = strchr(lineStart, '\n');
+			lineNum++;
+			if (lineNum >= MAX_FILE_VARS) break;
+		}
+		
+		if (itemCount) {
+			G_Printf("%i server news loaded\n", level.jkmodLocals.serverNewsCount);
+		}
+	}
+}
+
+/*
+=====================================================================
+Server news check
+=====================================================================
+*/
+void JKMod_ServerNewsCheck(void)
+{
+	if (jkcvar_serverNews.integer && level.jkmodLocals.serverNewsCount && level.numVotingClients > 0 && g_gametype.integer != GT_TOURNAMENT)
+	{
+		if (level.jkmodLocals.serverNewsTime < level.time)
+		{
+			qtime_t		systemTime;
+			char		*systemTimeType;
+			gentity_t	*ent;
+			int			i;
+
+			level.jkmodLocals.serverNewsTime = level.time + (jkcvar_serverNewsTime.integer * 1000);
+
+			trap_RealTime(&systemTime);
+			systemTimeType = (systemTime.tm_hour > 11 && systemTime.tm_hour < 24) ? "pm" : "am";
+
+			for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+			{
+				if (ent && ent->client && ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE)
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", systemTime.tm_hour, systemTime.tm_min, systemTimeType, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
+				}
+			}
+
+			if (level.jkmodLocals.serverNewsNum < (level.jkmodLocals.serverNewsCount - 1)) {
+				level.jkmodLocals.serverNewsNum++;
+			} else {
+				level.jkmodLocals.serverNewsNum = 0;
+			}
+		}
+	}
+}
+
+/*
+=====================================================================
 Server idle check
 =====================================================================
 */
@@ -819,25 +870,28 @@ Custom GameType Config
 */
 void JKMod_GameTypeConfig(void)
 {
-	static char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
-	static fileHandle_t	f;
-
-	if (level.newSession)
+	if (jkcvar_gameTypeConfig.integer)
 	{
-		if (trap_FS_FOpenFile(va("config/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
-		{
-			G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
-			trap_SendConsoleCommand(EXEC_APPEND, va("exec config/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
-			trap_FS_FCloseFile(f);
-		}
-		else
-		{
-			G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
-			trap_SendConsoleCommand(EXEC_APPEND, "exec config/game_type/default.cfg\n");
-		}
-	}
+		char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
+		fileHandle_t	f;
 
-	trap_SendConsoleCommand(EXEC_APPEND, "checkcvars\n");
+		if (level.newSession)
+		{
+			if (trap_FS_FOpenFile(va("config/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
+			{
+				G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
+				trap_SendConsoleCommand(EXEC_APPEND, va("exec config/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
+				trap_FS_FCloseFile(f);
+			}
+			else
+			{
+				G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
+				trap_SendConsoleCommand(EXEC_APPEND, "exec config/game_type/default.cfg\n");
+			}
+		}
+
+		trap_SendConsoleCommand(EXEC_APPEND, "checkcvars\n");
+	}
 }
 
 /*
@@ -861,41 +915,28 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set map restarted check
 	level.jkmodLocals.mapRestarted = (qboolean)restart;
 
-	// Check gameplay
-	if (jkcvar_gamePlay.integer)
-	{
-		JKMod_SetGamePlay(jkcvar_gamePlay.string);
-	}
+	// Set server idle time
+	level.jkmodLocals.idleTime = levelTime;
+
+	// Set server news time
+	level.jkmodLocals.serverNewsTime = level.time + (jkcvar_serverNewsTime.integer * 1000);
 
 	// Set random begin message
-	if (jkcvar_randomBegin.integer)
-	{
-		JKMod_CVU_randomBegin();
-	}
+	JKMod_RandomBeginLoad();
 
 	// Set server news
-	if (jkcvar_serverNews.integer)
-	{
-		JKMod_CVU_serverNews();
-	}
+	JKMod_ServerNewsLoad();
 
 	// Set teleport chats
-	if (jkcvar_teleportChat.integer)
-	{
-		JKMod_CVU_teleportChat();
-	}
+	JKMod_TeleportChatLoad();
+
+	// Check gametype config
+	JKMod_GameTypeConfig();
 
 	// Check server idle
 	if (jkcvar_serverIdle.integer)
 	{
-		level.jkmodLocals.idleTime = levelTime;
 		G_Printf("%i minutes set for server idle\n", jkcvar_serverIdle.integer);
-	}
-
-	// Check gametype config
-	if (jkcvar_gameTypeConfig.integer)
-	{
-		JKMod_GameTypeConfig();
 	}
 	
 	// Clear bots settings
@@ -905,13 +946,13 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	}
 
 	// Check server closed
-	if (VALIDSTRINGCVAR(jkcvar_serverClosed.string))
+	if (VALIDCVAR(jkcvar_serverClosed.string))
 	{
 		trap_Cvar_Set("g_needpass", "1");
 	}
 
 	// Precache join sound
-	if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string))
+	if (VALIDCVAR(jkcvar_serverJoinSound.string))
 	{
 		G_SoundIndex(jkcvar_serverJoinSound.string);
 	}

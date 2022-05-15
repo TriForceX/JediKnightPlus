@@ -41,7 +41,8 @@ Global definitions
 #define INFINITE_AMMO			0x7fff
 #define CVAR_NONE				(0x00000000u)
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
-#define VALIDSTRINGCVAR(a)		((a != NULL) && (a[0] != '\0') && (*a != '0'))
+#define VALIDCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
+#define VALIDTEXT(a)			((a != NULL) && (a[0] != '\0') && (a[0] != ' '))
 #define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))
 
 /*

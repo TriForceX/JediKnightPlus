@@ -42,7 +42,7 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		while (++i < strlen(clientIP)) if (clientIP[i] == ':') clientIP[i] = 0;
 
 		// Closed server check
-		if (VALIDSTRINGCVAR(jkcvar_serverClosed.string) && Q_stricmp(jkcvar_serverClosed.string, clientPass))
+		if (VALIDCVAR(jkcvar_serverClosed.string) && Q_stricmp(jkcvar_serverClosed.string, clientPass))
 		{
 			char passError[MAX_INFO_VALUE];
 			char passPrint[MAX_INFO_VALUE];
@@ -130,6 +130,9 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Check dual saber
 	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;
 
+	// Check server news
+	if (jkcvar_serverNews.integer && level.jkmodLocals.serverNewsCount && level.numVotingClients == 1) level.jkmodLocals.serverNewsTime = level.time + (jkcvar_serverNewsTime.integer * 1000);
+
 	// Check client plugin
 	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin)
 	{
@@ -162,7 +165,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		else
 		{
 			// Show center print message
-			if (!VALIDSTRINGCVAR(pluginVersion))
+			if (!VALIDCVAR(pluginVersion))
 			{
 				trap_SendServerCommand(clientNum, va("cp \"Please download\n^5%s^7 client plugin\nCheck the console or enable downloads in main menu\"", JK_VERSION));
 				G_LogPrintf("ClientPlugin: Player does not have any plugin\n");
@@ -195,7 +198,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			trap_SendServerCommand(clientNum, va("print \"This server is running ^5%s ^7- Version: ^2%s.%s.%s\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH));
 
 			// Random message
-			if (jkcvar_randomBegin.integer && VALIDSTRING(level.jkmodLocals.randomBegin[0]))
+			if (jkcvar_randomBegin.integer && level.jkmodLocals.randomBeginCount)
 			{
 				int random = JKMod_Rand() % level.jkmodLocals.randomBeginCount;
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, level.jkmodLocals.randomBegin[random]));
@@ -206,14 +209,14 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			}
 			
 			// Custom sound
-			if (VALIDSTRINGCVAR(jkcvar_serverJoinSound.string) && !level.jkmodLocals.mapRestarted)
+			if (VALIDCVAR(jkcvar_serverJoinSound.string) && !level.jkmodLocals.mapRestarted)
 			{
 				G_Sound(ent, CHAN_AUTO, G_SoundIndex(jkcvar_serverJoinSound.string));
 			}
 		}
 
 		// Server motd time
-		if (!client->sess.jkmodSess.motdSeen && VALIDSTRINGCVAR(jkcvar_serverMotd.string))
+		if (!client->sess.jkmodSess.motdSeen && VALIDCVAR(jkcvar_serverMotd.string))
 		{
 			// Delay motd for non-plugin clients
 			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin ? jkcvar_serverMotdTime.integer + 2 : 0;

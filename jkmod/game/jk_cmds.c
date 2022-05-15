@@ -67,6 +67,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Rcon commands:\n"
 			"^3gameplay\n"
 			"^3pause\n"
+			"^3reload\n"
 			"^3remapshader\n"
 			"^3changemusic\n"
 			"^3togglemod\n"
@@ -291,7 +292,7 @@ Motd function
 */
 static void JKMod_Cmd_ShowMotd(gentity_t *ent)
 {
-	if (VALIDSTRINGCVAR(jkcvar_serverMotd.string))
+	if (VALIDCVAR(jkcvar_serverMotd.string))
 	{
 		ent->client->jkmodClient.motdTime = jkcvar_serverMotdTime.integer;
 	}
@@ -526,7 +527,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
 
 			// Custom start emote
-			if (VALIDSTRINGCVAR(jkcvar_duelStartEmote.string) && 
+			if (VALIDCVAR(jkcvar_duelStartEmote.string) && 
 				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, ent) && 
 				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, challenged))
 			{

@@ -44,13 +44,22 @@ static void JKMod_svCmd_reload(void)
 	if (trap_Argc() < 2)
 	{
 		G_Printf("Usage: reload <option>\n");
+		G_Printf("Options:\n"
+			"^3random_begin\n"
+			"^3server_news\n"
+			"^3teleport_chats\n"
+			);
 	}
 	else
 	{
-		if (!Q_stricmp(arg1, "random_begin")) JKMod_CVU_randomBegin();
-		else if (!Q_stricmp(arg1, "server_news")) JKMod_CVU_serverNews();
-		else if (!Q_stricmp(arg1, "teleport_chats")) JKMod_CVU_teleportChat();
-		else G_Printf("Option %s not allowed\n", arg1);
+		if (!Q_stricmp(arg1, "random_begin")) 
+			JKMod_RandomBeginLoad();
+		else if (!Q_stricmp(arg1, "server_news")) 
+			JKMod_ServerNewsLoad();
+		else if (!Q_stricmp(arg1, "teleport_chats")) 
+			JKMod_TeleportChatLoad();
+		else 
+			G_Printf("Option %s not allowed\n", arg1);
 	}
 }
 
