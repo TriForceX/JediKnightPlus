@@ -289,8 +289,8 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 
 		if (efxfile != NULL) 
 		{
-			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), player->client->ps.origin, temporigin, player->s.number);
-			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), origin, temporigin, player->s.number);
+			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), player->client->ps.origin, temporigin, player->s.number, qfalse);
+			JKMod_G_PlayEffect_ID(G_EffectIndex((!strcmp(efxfile, "default") ? "mp/spawn" : efxfile)), origin, temporigin, player->s.number, qfalse);
 		}
 		
 		if (efxsound != NULL) 

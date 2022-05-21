@@ -2059,6 +2059,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		{
 			vec3_t fxDir;
 
+			if (es->generic1 == GENERIC_SERVERSIDE) break; // Tr!Force: [JKMod] Don't render serverside only
+
 			AngleVectors(es->angles, fxDir, 0, 0);
 			
 			if (!fxDir[0] && !fxDir[1] && !fxDir[2])

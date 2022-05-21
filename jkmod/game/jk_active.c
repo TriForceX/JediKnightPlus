@@ -115,6 +115,11 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 
 		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING)
 		{
+			if (!ent->client->pers.jkmodPers.clientPlugin) {
+				// Show fuel
+				trap_SendServerCommand(client->ps.clientNum, va("cp \"" NEWLINES "Fuel: ^3%i", ent->client->ps.stats[JK_FUEL]));
+			}
+
 			if (ent->client->ps.stats[JK_FUEL] > 0) {
 				// Reduce
 				ent->client->ps.stats[JK_FUEL] -= amount;
@@ -123,7 +128,8 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 				ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
 			}
 		}
-		else if (ent->client->ps.stats[JK_FUEL] < 100) {
+		else if (ent->client->ps.stats[JK_FUEL] < 100) 
+		{
 			// Recharge
 			ent->client->ps.stats[JK_FUEL] += amount;
 		}
@@ -248,6 +254,26 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	if (!(ent->client->ps.eFlags & JK_JETPACK_ACTIVE) || ent->client->ps.pm_type == PM_DEAD)
 	{
 		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
+	}
+
+	// Check jetpack effect
+	if ((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->pers.jkmodPers.jetpackFxDelay <= level.time)
+	{
+		static vec3_t temporigin, tempangles;
+
+		temporigin[0] = ent->client->ps.origin[0];
+		temporigin[1] = ent->client->ps.origin[1];
+		temporigin[2] = ent->client->ps.origin[2];
+		tempangles[PITCH] = -90;
+
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING) {
+			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxActive, temporigin, tempangles, ent->s.number, qtrue);
+		} else {
+			temporigin[2] -= 20;
+			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxIdle, temporigin, tempangles, ent->s.number, qtrue);
+		}
+
+		ent->client->pers.jkmodPers.jetpackFxDelay = level.time + 150;
 	}
 
 	// Check invulnerability

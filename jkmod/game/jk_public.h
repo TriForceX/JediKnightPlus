@@ -83,6 +83,7 @@ typedef enum
 	GENERIC_PUSHABLE	= ( 1 << 0 ),
 	GENERIC_USABLE		= ( 1 << 1 ),
 	GENERIC_CONVERTER	= ( 1 << 2 ),
+	GENERIC_SERVERSIDE	= ( 1 << 3 ),
 
 } jkmod_objects_t;
 

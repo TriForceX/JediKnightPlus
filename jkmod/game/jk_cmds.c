@@ -1874,7 +1874,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		JKMod_Cmd_ShowMotd(ent);
 	}
 	// Show whois
-	if (Q_stricmp(p, "!where") == 0)
+	else if (Q_stricmp(p, "!where") == 0)
 	{
 		JKMod_Cmd_WhoIs(ent);
 	}
@@ -2073,6 +2073,19 @@ void JKMod_ClientCommand(int clientNum)
 			trap_Argv(4, arg4, sizeof(arg4));
 
 			JKMod_Cmd_EntityScan(ent, atoi(arg2), atoi(arg3), atoi(arg4));
+			return;
+		}
+
+		// Entity scan
+		if (!Q_stricmp(argcmd, "effect")) 
+		{
+			char arg2[MAX_TOKEN_CHARS];
+			char arg3[MAX_TOKEN_CHARS];
+
+			trap_Argv(2, arg2, sizeof(arg2));
+			trap_Argv(3, arg3, sizeof(arg3));
+
+			JKMod_G_PlayEffect_ID(G_EffectIndex(arg2), ent->client->ps.origin, ent->client->ps.viewangles, ent->s.number, atoi(arg3));
 			return;
 		}
 

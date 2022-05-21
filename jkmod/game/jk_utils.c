@@ -191,17 +191,17 @@ void JKMod_JetpackTryUse(gentity_t *ent)
 {
 	if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 	{
-		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING && ent->client->pers.jkmodPers.jetackUseDelay <= level.time) {
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING && ent->client->pers.jkmodPers.jetpackUseDelay <= level.time) {
 			// Disable
 			ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
-			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
+			ent->client->pers.jkmodPers.jetpackUseDelay = level.time + 800;
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack off\n\""));
 		}
 		else if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE &&
-			ent->client->pers.jkmodPers.jetackUseDelay <= level.time &&
+			ent->client->pers.jkmodPers.jetpackUseDelay <= level.time &&
 			!(BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim) || JKMod_PlayerMoving(ent, qfalse, qtrue))) {
 			// Enable
-			ent->client->pers.jkmodPers.jetackUseDelay = level.time + 800;
+			ent->client->pers.jkmodPers.jetpackUseDelay = level.time + 800;
 			ent->client->ps.eFlags |= JK_JETPACK_FLAMING;
 			if (!ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack on\n\""));
@@ -314,14 +314,17 @@ gentity_t *JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t
 Play effect by ID function
 =====================================================================
 */
-gentity_t *JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner)
+gentity_t *JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner, qboolean serverSide)
 {
 	gentity_t	*te;
+	gentity_t	*efxOwner = &g_entities[dimensionOwner];
 
 	te = JKMod_G_TempEntity( org, EV_PLAY_EFFECT_ID, dimensionOwner );
 	VectorCopy(ang, te->s.angles);
 	VectorCopy(org, te->s.origin);
 	te->s.eventParm = fxID;
+	
+	if (serverSide) te->s.generic1 = GENERIC_SERVERSIDE; // Don't render on clientside
 
 	return te;
 }

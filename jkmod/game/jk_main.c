@@ -921,6 +921,12 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set server news time
 	level.jkmodLocals.serverNewsTime = level.time + (jkcvar_serverNewsTime.integer * 1000);
 
+	// Set jetpack active effect
+	level.jkmodLocals.jetpackFxActive = G_EffectIndex("env/small_fire");
+
+	// Set jetpack idle effect
+	level.jkmodLocals.jetpackFxIdle = G_EffectIndex("env/thruster");
+
 	// Set random begin message
 	JKMod_RandomBeginLoad();
 

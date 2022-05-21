@@ -27,6 +27,7 @@ Global definitions
 #define MAX_CHALLENGE				5
 
 #define DEFAULT						Q3_INFINITE // Workaround
+#define NEWLINES					"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 /*
 =====================================================================
@@ -174,7 +175,8 @@ typedef struct
 	int				customDuel;				// Client is in custom duel
 	int				teleportChat[5];		// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check
-	int				jetackUseDelay;			// Jetpack usage delay
+	int				jetpackUseDelay;		// Jetpack usage delay
+	int				jetpackFxDelay;			// Jetpack effects delay
 	int				playerStatusDelay;		// Player status tracking delay
 	qboolean		buttonUseAnim;			// Button use animation use check
 	qboolean		buttonUseAnimValid;		// Button use animation valid target
@@ -237,6 +239,8 @@ typedef struct
 	int				messageCheck[MAX_CHALLENGE];				// Connect message check
 	unsigned		chairModelCheck[MAX_CLIENTS];				// Chair model usage check
 	unsigned		dimensionBase;								// Global base dimension
+	int				jetpackFxActive;							// Server jetpack active effect
+	int				jetpackFxIdle;								// Server jetpack idle effect
 
 } jkmod_locals_t;
 
@@ -511,7 +515,7 @@ qboolean	JKMod_DuelIsolationCheck(gentity_t* ent1, gentity_t* ent2);
 void		JKMod_DuelRemove(gentity_t *ent);
 void		JKMod_G_InitGentity(gentity_t *e, int dimensionOwner);
 gentity_t	*JKMod_G_PlayEffect(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
-gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner);
+gentity_t	*JKMod_G_PlayEffect_ID(effectTypes_t fxID, const vec3_t org, const vec3_t ang, int dimensionOwner, qboolean serverSide);
 gentity_t	*JKMod_G_Spawn(int dimensionOwner);
 gentity_t	*JKMod_G_TempEntity(const vec3_t origin, entity_event_t event, int dimensionOwner);
 gentity_t	*JKMod_G_SoundTempEntity(const vec3_t origin, int event, int channel, int dimensionOwner);

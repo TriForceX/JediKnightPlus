@@ -277,8 +277,13 @@ void Cmd_Give_f (gentity_t *ent)
 	// Tr!Force: [JetPack] Apply on give command
 	if (give_all || Q_stricmp( name, "jetpack") == 0) 
 	{
-		ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
-		ent->client->ps.stats[JK_FUEL] = 100;
+		if (!(ent->client->ps.eFlags & JK_JETPACK_ACTIVE))
+		{
+			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+			ent->client->ps.stats[JK_FUEL] = 100;
+			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack equiped\n\""));
+			trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
+		}
 
 		if (!give_all) return;
 	}
