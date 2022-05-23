@@ -301,6 +301,7 @@ void		JKMod_CG_UpdateCvars(void);
 void		JKMod_CG_CVU_sHelperColor(void);
 void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
+char		*JKMod_CG_StrTok(char *str, const char *delim);
 
 // jk_cg_consolecmds.c
 void		JKMod_CG_EmoteCamera(void);
@@ -313,6 +314,7 @@ qboolean	JKMod_CG_IconHUDActive(void);
 qboolean	JKMod_CG_CenterPrintActive(void);
 int			JKMod_CG_ConsolePrintActive(void);
 const char	*JKMod_CG_MsToString(const int ms);
+qboolean	JKMod_CG_HasLeadingColorCode(char *msg);
 void		JKMod_CG_DrawClock(void);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);

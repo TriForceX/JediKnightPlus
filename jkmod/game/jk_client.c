@@ -358,7 +358,7 @@ void JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *en
 	}
 
 	// don't allow empty names
-	if (*p == 0 || colorlessLen == 0) {
+	if (*p == 0 || colorlessLen == 0 || !VALIDTEXT(p)) {
 		Q_strncpyz(p, "Padawan", outSize);
 	}
 	else // Give the player his current name

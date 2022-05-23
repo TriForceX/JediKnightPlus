@@ -204,7 +204,10 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 						scoreAlign = 3;
 					}
 
-					CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, score->deaths),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+					if (cgs.jkmodCGS.modCheck)
+						CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i/%i", score->score, score->deaths),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+					else
+						CG_Text_Paint (SB_SCORE_X, y + scoreAlign, scoreScale * scale, colorWhite, va("%i", score->score),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 				}
 			}
 			else
@@ -471,7 +474,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 		// Subtitle
 		if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY) {
 			CG_Text_Paint ( SB_SCORE_X, y + 19, 0.5f, colorWhite, va("& %s", CG_GetStripEdString("JKINGAME", "CAPTURES")), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
-		} else {
+		} else if (cgs.jkmodCGS.modCheck) {
 			CG_Text_Paint ( SB_SCORE_X, y + 19, 0.5f, colorWhite, va("& %s", CG_GetStripEdString("JKINGAME", "DEATHS")), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 		}
 	}

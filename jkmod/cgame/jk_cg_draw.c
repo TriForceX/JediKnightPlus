@@ -173,6 +173,24 @@ const char *JKMod_CG_MsToString(const int ms)
 
 /*
 =====================================================================
+Check leading color code
+=====================================================================
+*/
+qboolean JKMod_CG_HasLeadingColorCode(char *msg) 
+{
+	if (msg[0] == '^') {
+#if 0
+	if (msg[1] == '1' || msg[1] == '2' || msg[1] == '3' || msg[1] == '4' || msg[1] == '5' || msg[1] == '6' || msg[1] == '7' || msg[1] == '8' || msg[1] == '9' || msg[1] == '0') {
+#else
+	if (msg[1] >= '0' && msg[1] <= '9') {
+#endif
+		return qtrue;
+	} }
+	return qfalse;
+}
+
+/*
+=====================================================================
 Draw clock function
 =====================================================================
 */
@@ -239,6 +257,10 @@ void JKMod_CG_ChatBox_AddString(char *chatStr)
 {
 	jkmod_chatbox_t *chat = &cg.jkmodCG.chatItems[cg.jkmodCG.chatItemActive];
 	float chatLen;
+	char *token;
+	char *search = "^7: ^2";
+	char name[MAX_SAY_TEXT + 64 + 36], msg[MAX_SAY_TEXT + 64];
+	qboolean regular = qfalse, teamchat = qfalse, personal = qfalse;
 
 	if (jkcvar_cg_chatBoxTime.integer <= 0) // Don't bother then.
 	{ 
@@ -250,6 +272,52 @@ void JKMod_CG_ChatBox_AddString(char *chatStr)
 	if (strlen(chatStr) > sizeof(chat->string)) // Too long, terminate at proper len.
 	{ 
 		chatStr[sizeof(chat->string) - 1] = 0;
+	}
+
+	// Check chat type
+	if (strstr(chatStr, "^7: ^2")) {
+		regular = qtrue;
+		search = "^7: ^2";
+	}
+	if (strstr(chatStr, "^7): ^5")) {
+		teamchat = qtrue;
+		search = "^7): ^5";
+	}
+	if (strstr(chatStr, "^7]: ^6")) {
+		personal = qtrue;
+		search = "^7]: ^6";
+	}
+
+	// Check 1.02 dropshadows
+	if (regular || teamchat || personal) 
+	{
+		token = JKMod_CG_StrTok(chatStr, search);
+		if (token) Q_strncpyz(name, token, sizeof(name));
+		token = JKMod_CG_StrTok(NULL, search);
+
+		if (token) Q_strncpyz(msg, token, sizeof(msg));
+
+		if (regular) {
+			if (!JKMod_CG_HasLeadingColorCode(msg))
+				Q_strcat(name, sizeof(name), "^7: ^0^0^2");
+			else
+				Q_strcat(name, sizeof(name), "^7: ^0^0");
+		}
+		else if (teamchat) {
+			if (!JKMod_CG_HasLeadingColorCode(msg))
+				Q_strcat(name, sizeof(name), "^7): ^0^0^5");
+			else
+				Q_strcat(name, sizeof(name), "^7): ^0^0"); 
+		}
+		else if (personal) {
+			if (!JKMod_CG_HasLeadingColorCode(msg))
+				Q_strcat(name, sizeof(name), "^7]: ^0^0^6");
+			else
+				Q_strcat(name, sizeof(name), "^7]: ^0^0"); 
+		}
+
+		Q_strcat(name, sizeof(name), msg);
+		strcpy(chatStr, name);
 	}
 
 	strcpy(chat->string, chatStr);
@@ -267,6 +335,14 @@ void JKMod_CG_ChatBox_AddString(char *chatStr)
 		chatLen = 0;
 		while (chat->string[i])
 		{
+			const char *checkColor = (const char *)(chat->string + i);
+
+			// Check special colored strings
+			if (Q_IsColorString(checkColor) || Q_IsColorString_1_02(checkColor)) {
+				i += 2;
+				continue;
+			}
+
 			s[0] = chat->string[i];
 			s[1] = 0;
 			chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
