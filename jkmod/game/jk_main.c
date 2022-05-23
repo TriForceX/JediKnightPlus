@@ -48,6 +48,8 @@ vmCvar_t	jkcvar_playerIgnore;
 vmCvar_t	jkcvar_spawnActivateSaber;
 vmCvar_t	jkcvar_teleportChat;
 vmCvar_t	jkcvar_teleportChatTime;
+vmCvar_t	jkcvar_teleportChatFx;
+vmCvar_t	jkcvar_teleportChatSound;
 vmCvar_t	jkcvar_teleportFrag;
 
 vmCvar_t	jkcvar_voteAnyMap;
@@ -131,6 +133,8 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChatFx,		"jk_teleportChatFx",		"default",				NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teleportChatSound,	"jk_teleportChatSound",		"default",				NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportFrag,			"jk_teleportFrag",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_voteAnyMap,			"jk_voteAnyMap",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },

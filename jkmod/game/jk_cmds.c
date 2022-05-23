@@ -1465,7 +1465,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 					tempangles[YAW] = realrotation;
 					tempangles[ROLL] = 0.0f;
 
-					JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, 300, "cinematics/hugesparks", "default");
+					JKMod_TeleportPlayer(ent, temporigin, tempangles, qtrue, 300, jkcvar_teleportChatFx.string, jkcvar_teleportChatSound.string);
 					ent->client->jkmodClient.teleportChatUsed = jkcvar_teleportChatTime.integer ? qfalse : qtrue;
 					return qtrue;
 				}

@@ -329,6 +329,8 @@ extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_spawnActivateSaber;
 extern	vmCvar_t					jkcvar_teleportChat;
 extern	vmCvar_t					jkcvar_teleportChatTime;
+extern	vmCvar_t					jkcvar_teleportChatFx;
+extern	vmCvar_t					jkcvar_teleportChatSound;
 extern	vmCvar_t					jkcvar_teleportFrag;
 
 extern	vmCvar_t					jkcvar_voteAnyMap;
