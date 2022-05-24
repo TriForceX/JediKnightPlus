@@ -308,7 +308,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		// Check emotes
 		if (ent->client->jkmodClient.chairModelUsed) { 
 			JKMod_ChairModelDisable(ent);
-		} else {
+		} else if (!ent->client->ps.duelInProgress) {
 			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;

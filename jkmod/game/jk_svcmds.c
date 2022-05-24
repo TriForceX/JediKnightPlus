@@ -435,6 +435,109 @@ static void JKMod_svCmd_forceDimension(void)
 
 /*
 =====================================================================
+Force dimension function
+=====================================================================
+*/
+static void JKMod_svCmd_teleportPlayer(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+	int		target, destiny;
+
+	if (trap_Argc() < 3)
+	{
+		G_Printf("Usage: teleport <targetplayer> <destinyplayer|coordinates>\n");
+		G_Printf("Note: Coordinates must be in double quotes\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		target = JKMod_CheckValidClient(NULL, arg1);
+
+		if (target != -1)
+		{
+			vec3_t temporigin, tempangles, tempfwd;
+			gentity_t *targetPlayer = &g_entities[target];
+			destiny = JKMod_CheckValidClient(NULL, arg2);
+
+			// To player
+			if (destiny != -1)
+			{
+				gentity_t *destinyPlayer = &g_entities[destiny];
+				vec3_t mins = { -15, -15, DEFAULT_MINS_2 }, maxs = { 15, 15, DEFAULT_MAXS_2 };
+
+				if (target == destiny)
+				{
+					G_Printf("You can't teleport him to himself\n");
+					return;
+				}
+
+				if (!JKMod_CheckSolid(destinyPlayer, 50, mins, maxs, qfalse))
+				{
+					G_Printf("You can't teleport in this place\n");
+					return;
+				}
+
+				tempangles[ROLL] = 0;
+				tempangles[PITCH] = 0;
+				tempangles[YAW] = AngleNormalize360(destinyPlayer->client->ps.viewangles[YAW] + 180);
+			
+				VectorCopy(destinyPlayer->client->ps.origin, temporigin);
+				AngleVectors(destinyPlayer->client->ps.viewangles, tempfwd, NULL, NULL);
+				tempfwd[2] = 0;
+				VectorNormalize(tempfwd);
+				VectorMA(destinyPlayer->client->ps.origin, 50, tempfwd, temporigin);
+				temporigin[2] = destinyPlayer->client->ps.origin[2] + 5;
+
+				destinyPlayer->client->ps.forceHandExtend = HANDEXTEND_FORCEPULL;
+				destinyPlayer->client->ps.forceHandExtendTime = level.time + 300;
+
+				if (targetPlayer->client->ps.stats[JK_DIMENSION] != destinyPlayer->client->ps.stats[JK_DIMENSION])
+				{
+					int destinyDimension = destinyPlayer->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL ? DIMENSION_FREE : destinyPlayer->client->ps.stats[JK_DIMENSION];
+					
+					if (targetPlayer->client->ps.duelInProgress)
+					{
+						gentity_t *duelAgainst = &g_entities[targetPlayer->client->ps.duelIndex];
+
+						JKMod_DuelRemove(targetPlayer);
+						JKMod_DuelRemove(duelAgainst);
+
+						if (duelAgainst->client->ps.stats[JK_DIMENSION] == DIMENSION_FREE && jkcvar_duelPassThrough.integer && JKMod_OthersInBox(duelAgainst)) JKMod_AntiStuckBox(duelAgainst);
+						if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
+					}
+
+					JKMod_DimensionSet(targetPlayer, destinyDimension);
+				}
+			}
+			// To coords
+			else
+			{
+				G_Printf("Checking coordinates...\n");
+				sscanf(arg2, "%f %f %f %f", &temporigin[0], &temporigin[1], &temporigin[2], &tempangles[YAW]);
+
+				if (temporigin[0] && temporigin[1] && temporigin[2]) 
+				{
+					tempangles[ROLL] = 0;
+					tempangles[PITCH] = 0;
+				}
+				else
+				{
+					G_Printf("Invalid coordinates!\n");
+					return;
+				}
+			}
+			
+			JKMod_TeleportPlayer(targetPlayer, temporigin, tempangles, qfalse, 0, "default", "default");
+			G_Printf("Player teleported!\n");
+		}
+	}
+}
+
+/*
+=====================================================================
 List directory function
 =====================================================================
 */
@@ -526,6 +629,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "forcedimension"))
 	{
 		JKMod_svCmd_forceDimension();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "teleport"))
+	{
+		JKMod_svCmd_teleportPlayer();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "whois"))

@@ -131,7 +131,7 @@ void JKMod_AntiStuckBox(gentity_t *ent)
 Check solid terrain from client view/origin
 =====================================================================
 */
-qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs)
+qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs, qboolean elevation)
 {
 	trace_t tr;
 	vec3_t fwd, dest, orig;
@@ -139,8 +139,8 @@ qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs
 	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
 
 	VectorCopy(ent->client->ps.origin, orig);
+	if (!elevation) fwd[2] = 0;
 	VectorMA(orig, distance, fwd, dest);
-
 	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_PLAYERSOLID);
 
 	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)

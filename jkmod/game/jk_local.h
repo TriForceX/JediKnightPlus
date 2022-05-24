@@ -508,7 +508,7 @@ void		JKMod_ChairModelDisable(gentity_t *ent);
 void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_AntiStuckBox(gentity_t *ent);
-qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs);
+qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs, qboolean elevation);
 void		JKMod_RemoveByClass(gentity_t *ent, char *name);
 void		JKMod_JetpackTryUse(gentity_t *ent);
 gentity_t	*JKMod_DuelGetPartner(gentity_t* ent);

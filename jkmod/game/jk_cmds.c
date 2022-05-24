@@ -71,6 +71,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3remapshader\n"
 			"^3changemusic\n"
 			"^3togglemod\n"
+			"^3teleport\n"
 			"^3forcedimension\n"
 			"^3whois\n"
 			"^3listdir\n"

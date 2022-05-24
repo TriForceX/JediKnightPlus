@@ -3362,9 +3362,9 @@ void G_CreateExampleAnimEnt(gentity_t *ent)
 		}
 
 		// Check solid
-		if (!JKMod_CheckSolid(ent, 128, mins, maxs))
+		if (!JKMod_CheckSolid(ent, 128, mins, maxs, qtrue))
 		{
-			trap_SendServerCommand(ent - g_entities, "print \"You can't spawn it here\n\"");
+			trap_SendServerCommand(ent - g_entities, "print \"You can't spawn in this place\n\"");
 			return;
 		}
 	}
