@@ -2560,12 +2560,12 @@ static void PM_CheckDuck (void)
 			pm->maxs[2] = 7;
 			pm->ps->viewheight = CROUCH_VIEWHEIGHT;
 		}
-		else if ((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_SIT1 || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_STAND5TOSIT3)
+		else if ((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_SIT1 || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_STAND5TOSIT3 || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_CROUCH3)
 		{
 			pm->maxs[2] = 26;
 			pm->ps->viewheight = CROUCH_VIEWHEIGHT;
 		}
-		else if ((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_DEATH1 || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_DISMEMBER_RARM)
+		else if ((pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_DEATH1 || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_RIGHTHANDCHOPPEDOFF || (pm->ps->legsAnim&~ANIM_TOGGLEBIT) == BOTH_DISMEMBER_RARM)
 		{
 			pm->maxs[2] = -8;
 			pm->ps->viewheight = DEAD_VIEWHEIGHT;

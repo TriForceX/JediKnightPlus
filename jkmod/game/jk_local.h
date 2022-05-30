@@ -62,6 +62,7 @@ typedef enum
 	EMOTE_COCKY,
 	EMOTE_COMEON,
 	EMOTE_COMTALK,
+	EMOTE_CONVULSION,
 	EMOTE_CROSSARMS,
 	EMOTE_DONTKILLME,
 	EMOTE_DONTKNOW,
@@ -69,9 +70,12 @@ typedef enum
 	EMOTE_EXPLAIN,
 	EMOTE_EXPLAIN2,
 	EMOTE_FAKEDEAD,
+	EMOTE_FAKEDEAD2,
+	EMOTE_FALLING,
 	EMOTE_FLIP,
+	EMOTE_GETUP,
+	EMOTE_GREET,
 	EMOTE_HANDHIPS,
-	EMOTE_HI,
 	EMOTE_HUG,
 	EMOTE_KISS,
 	EMOTE_KNEEL,
@@ -81,7 +85,9 @@ typedef enum
 	EMOTE_NOD,
 	EMOTE_POINT,
 	EMOTE_POINT2,
+	EMOTE_POSING,
 	EMOTE_PUNCH,
+	EMOTE_REVERENCE,
 	EMOTE_SIT,
 	EMOTE_SIT2,
 	EMOTE_SIT3,
@@ -90,9 +96,9 @@ typedef enum
 	EMOTE_SUPER2,
 	EMOTE_SURRENDER,
 	EMOTE_SPIN,
-	EMOTE_SPINR,
 	EMOTE_SPIN2,
-	EMOTE_SPIN2R,
+	EMOTE_SPIN3,
+	EMOTE_SPIN4,
 	EMOTE_TAUNT3,
 	EMOTE_TAUNT4,
 	EMOTE_THINK,
@@ -465,9 +471,9 @@ int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *en
 int			JKMod_EmoteCheck(char *cmd, gentity_t *ent);
 int			JKMod_EmoteIn(gentity_t *ent, int type);
 int			JKMod_EmotePlay(gentity_t *ent, int emoteIndex);
-void		JKMod_EmoteCmdHug(gentity_t *ent);
-void		JKMod_EmoteCmdKiss(gentity_t *ent);
-void		JKMod_EmoteCmdPunch(gentity_t *ent);
+void		JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert);
+void		JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert);
+void		JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert);
 
 // jk_main.c
 void		JKMod_G_RegisterCvars(void);

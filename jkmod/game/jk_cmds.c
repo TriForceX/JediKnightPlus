@@ -527,14 +527,6 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		{
 			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
 
-			// Custom start emote
-			if (VALIDCVAR(jkcvar_duelStartEmote.string) && 
-				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, ent) && 
-				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, challenged))
-			{
-				duelEmote = qtrue;
-			}
-
 			// Enable duel
 			ent->client->ps.duelInProgress = qtrue;
 			challenged->client->ps.duelInProgress = qtrue;
@@ -560,6 +552,14 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
 			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+
+			// Custom start emote
+			if (VALIDCVAR(jkcvar_duelStartEmote.string) && 
+				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, ent) && 
+				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, challenged))
+			{
+				duelEmote = qtrue;
+			}
 
 			// Default start health and shield
 			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0)
@@ -1972,6 +1972,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	// cmd						// function
 	{ "help",					JKMod_Cmd_HelpInfo },
 	{ "info",					JKMod_Cmd_HelpInfo },
+	{ "admin",					JKMod_Cmd_HelpInfo },
 	{ "dropflag",				JKMod_Cmd_DropFlag },
 	{ "motd",					JKMod_Cmd_ShowMotd },
 	{ "ignore",					JKMod_Cmd_IgnoreClient },
@@ -2034,7 +2035,7 @@ void JKMod_ClientCommand(int clientNum)
 	// Check commands list
 	for (i = 0, command = JKModCommandsTable; i < JKModCommandsTableSize; i++, command++)
 	{
-		if (!Q_stricmp(cmd, command->name) || (!Q_stricmpn(cmd, "am", 2) && !Q_stricmp((cmd + 2), command->name)))
+		if (!Q_stricmp(cmd, command->name) || !Q_stricmp(cmd, va("am%s", command->name)))
 		{
 			command->func(ent);
 			return;
@@ -2042,7 +2043,14 @@ void JKMod_ClientCommand(int clientNum)
 	}
 
 	// Special case for emotes
-	if (!Q_stricmpn(cmd, "am", 2) && JKMod_EmoteCheck(cmd, ent)) return;
+	for (i = 0; i < JKModEmotesDataSize; i++)
+	{
+		if (!Q_stricmp(cmd, va("am%s", JKModEmotesData[i].cmd)))
+		{
+			JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
+			return;
+		}
+	}
 
 	// Test command
 	if (!Q_stricmp(cmd, "test") && developer.integer)
@@ -2063,7 +2071,7 @@ void JKMod_ClientCommand(int clientNum)
 		trap_Argv(1, argcmd, sizeof(argcmd));
 
 		// Entity scan
-		if (!Q_stricmp(argcmd, "entity")) 
+		if (!Q_stricmp(argcmd, "scan")) 
 		{
 			char arg2[MAX_TOKEN_CHARS];
 			char arg3[MAX_TOKEN_CHARS];
@@ -2077,7 +2085,7 @@ void JKMod_ClientCommand(int clientNum)
 			return;
 		}
 
-		// Entity scan
+		// Effect play
 		if (!Q_stricmp(argcmd, "effect")) 
 		{
 			char arg2[MAX_TOKEN_CHARS];

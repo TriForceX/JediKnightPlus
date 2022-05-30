@@ -20,61 +20,67 @@ Emote table list
 */
 jkmod_emotes_data_t JKModEmotesData[EMOTE_NUM_EMOTES] =
 {
-	// Emote				Command			Special		Start animation				End animation			Compatible all		Toggle saber
-	{ EMOTE_BAR,			"bar",			qfalse,		BOTH_BARTENDER_IDLE1,		-1,						qtrue,				qfalse },
-	{ EMOTE_BEG,			"beg",			qtrue,		BOTH_KNEES1,				-1,						qtrue,				qfalse },
-	{ EMOTE_BURIED,			"buried",		qfalse,		BOTH_DISMEMBER_RARM,		BOTH_FORCE_GETUP_B1,	qtrue,				qfalse },
-	{ EMOTE_COCKY,			"cocky",		qfalse,		BOTH_TALKGESTURE6,			BOTH_TALKGESTURE6STOP,	qfalse,				qfalse },
-	{ EMOTE_COMEON,			"comeon",		qfalse,		BOTH_COME_ON1,				-1,						qtrue,				qfalse },
-	{ EMOTE_COMTALK,		"comtalk",		qtrue,		BOTH_TALKCOMM1,				BOTH_TALKCOMM1STOP,		qfalse,				qfalse },
-	{ EMOTE_CROSSARMS,		"crossarms",	qtrue,		BOTH_TALKGESTURE11START,	BOTH_TALKGESTURE11STOP,	qfalse,				qfalse },
-	{ EMOTE_DONTKILLME,		"dontkillme",	qfalse,		BOTH_BARTENDER_COWERLOOP,	BOTH_FORCE_GETUP_B1,	qtrue,				qfalse },
-	{ EMOTE_DONTKNOW,		"dontknow",		qfalse,		BOTH_TALKGESTURE1,			-1,						qfalse,				qfalse },
-	{ EMOTE_DONTKNOW2,		"dontknow2",	qfalse,		BOTH_TALKGESTURE10,			-1,						qfalse,				qfalse },
-	{ EMOTE_EXPLAIN,		"explain",		qfalse,		BOTH_TALKGESTURE3,			-1,						qfalse,				qfalse },
-	{ EMOTE_EXPLAIN2,		"explain2",		qfalse,		BOTH_TALKGESTURE9,			-1,						qfalse,				qfalse },
-	{ EMOTE_FAKEDEAD,		"fakedead",		qfalse,		BOTH_DEATH1,				BOTH_FORCE_GETUP_B1,	qtrue,				qfalse },
-	{ EMOTE_FLIP,			"flip",			qfalse,		BOTH_STAND1TO2,				-1,						qtrue,				qfalse },
-	{ EMOTE_HANDHIPS,		"handhips",		qtrue,		BOTH_STAND5TOSTAND8,		BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_HI,				"hi",			qfalse,		BOTH_PAUSE1START,			-1,						qtrue,				qfalse },
-	{ EMOTE_HUG,			"hug",			qfalse,		-1,							-1,						qfalse,				qfalse },
-	{ EMOTE_KISS,			"kiss",			qfalse,		-1,							-1,						qfalse,				qfalse },
-	{ EMOTE_KNEEL,			"kneel",		qfalse,		BOTH_FORCEHEAL_START,		BOTH_FORCEHEAL_STOP,	qtrue,				qfalse },
-	{ EMOTE_LAUGH,			"laugh",		qfalse,		BOTH_LAUGH1STOP,			-1,						qtrue,				qfalse },
-	{ EMOTE_LOOK,			"look",			qfalse,		BOTH_TALKGESTURE18,			-1,						qfalse,				qfalse },
-	{ EMOTE_LOOK2,			"look2",		qfalse,		BOTH_EXAMINE3,				-1,						qtrue,				qfalse },
-	{ EMOTE_NOD,			"nod",			qfalse,		BOTH_HEADNOD,				-1,						qtrue,				qfalse },
-	{ EMOTE_POINT,			"point",		qfalse,		BOTH_TALKGESTURE12,			-1,						qfalse,				qfalse },
-	{ EMOTE_POINT2,			"point2",		qtrue,		BOTH_TALKGESTURE6START,		BOTH_TALKGESTURE6STOP,	qfalse,				qfalse },
-	{ EMOTE_PUNCH,			"punch",		qtrue,		-1,							-1,						qtrue,				qfalse },
-	{ EMOTE_SIT,			"sit",			qfalse,		BOTH_SIT2,					BOTH_SIT2TOSTAND5,		qtrue,				qfalse },
-	{ EMOTE_SIT2,			"sit2",			qfalse,		BOTH_SIT1,					BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_SIT3,			"sit3",			qfalse,		BOTH_STAND5TOSIT3,			BOTH_SIT3TOSTAND5,		qtrue,				qfalse },
-	{ EMOTE_SHAKE,			"shake",		qfalse,		BOTH_HEADSHAKE,				-1,						qtrue,				qfalse },
-	{ EMOTE_SUPER,			"super",		qtrue,		BOTH_FORCEFOUNTAIN1_MIDDLE,	BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_SUPER2,			"super2",		qfalse,		BOTH_FORCEFOUNTAIN1_STOP,	-1,						qtrue,				qfalse },
-	{ EMOTE_SURRENDER,		"surrender",	qtrue,		TORSO_SURRENDER_START,		BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_SPIN,			"spin",			qtrue,		BOTH_FJSS_TL_BR,			-1,						qtrue,				qtrue },
-	{ EMOTE_SPINR,			"spin2",		qtrue,		BOTH_FJSS_TR_BL,			-1,						qtrue,				qtrue },
-	{ EMOTE_SPIN2,			"spin3",		qtrue,		BOTH_BUTTERFLY_FR1,			-1,						qtrue,				qfalse },
-	{ EMOTE_SPIN2R,			"spin4",		qtrue,		BOTH_BUTTERFLY_FL1,			-1,						qtrue,				qfalse },
-	{ EMOTE_TAUNT3,			"taunt3",		qfalse,		BOTH_GESTURE1,				-1,						qtrue,				qfalse },
-	{ EMOTE_TAUNT4,			"taunt4",		qfalse,		BOTH_SABERKILLER1,			-1,						qtrue,				qtrue },
-	{ EMOTE_THINK,			"think",		qfalse,		BOTH_TALKGESTURE5START,		BOTH_TALKGESTURE5START,	qfalse,				qfalse },
-	{ EMOTE_THREATEN,		"threaten",		qfalse,		BOTH_THREATEN1,				-1,						qtrue,				qfalse },
-	{ EMOTE_THUMBSUP,		"thumbsup",		qfalse,		BOTH_THUMBING1,				-1,						qtrue,				qfalse },
-	{ EMOTE_THUMBSDOWN,		"thumbsdown",	qfalse,		BOTH_LEANRIGHT3START,		-1,						qtrue,				qfalse },
-	{ EMOTE_TOSSBACK,		"tossback",		qfalse,		BOTH_BARTENDER_THROW1,		-1,						qtrue,				qfalse },
-	{ EMOTE_TOSSOVER,		"tossover",		qfalse,		BOTH_SABERTHROW2START,		-1,						qtrue,				qfalse },
-	{ EMOTE_TOSSUP,			"tossup",		qfalse,		BOTH_SABERTHROW1START,		-1,						qtrue,				qfalse },
-	{ EMOTE_TYPE,			"type",			qfalse,		BOTH_CONSOLE1,				BOTH_CONSOLE1STOP,		qtrue,				qfalse },
-	{ EMOTE_TYPE2,			"type2",		qfalse,		BOTH_CONSOLE2,				BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_VICTORY,		"victory",		qfalse,		BOTH_SABERTHROW1STOP,		-1,						qtrue,				qfalse },
-	{ EMOTE_VICTORY2,		"victory2",		qfalse,		BOTH_TALKGESTURE19START,	-1,						qfalse,				qfalse },
-	{ EMOTE_WAITING,		"waiting",		qtrue,		BOTH_STAND4,				BOTH_STAND1,			qtrue,				qfalse },
-	{ EMOTE_WATCHOUT,		"watchout",		qfalse,		BOTH_TALKGESTURE18,			-1,						qfalse,				qfalse },
-	{ EMOTE_WRITING,		"writing",		qfalse,		BOTH_SILENCEGESTURE1,		BOTH_STAND1,			qtrue,				qtrue },
-	{ EMOTE_WRITING2,		"writing2",		qfalse,		BOTH_UNCROUCH3,				BOTH_STAND1,			qtrue,				qtrue },
+	// Emote				Command			Special		Start animation				End animation				Compatible all	Toggle saber
+	{ EMOTE_BAR,			"bar",			qfalse,		BOTH_BARTENDER_IDLE1,		-1,							qtrue,			qfalse },
+	{ EMOTE_BEG,			"beg",			qtrue,		BOTH_KNEES1,				-1,							qtrue,			qfalse },
+	{ EMOTE_BURIED,			"buried",		qfalse,		BOTH_DISMEMBER_RARM,		BOTH_FORCE_GETUP_B1,		qtrue,			qfalse },
+	{ EMOTE_COCKY,			"cocky",		qfalse,		BOTH_TALKGESTURE6,			BOTH_TALKGESTURE6STOP,		qfalse,			qfalse },
+	{ EMOTE_COMEON,			"comeon",		qfalse,		BOTH_COME_ON1,				-1,							qtrue,			qfalse },
+	{ EMOTE_COMTALK,		"comtalk",		qtrue,		BOTH_TALKCOMM1,				BOTH_TALKCOMM1STOP,			qfalse,			qfalse },
+	{ EMOTE_CONVULSION,		"convulsion",	qtrue,		BOTH_PAIN20,				BOTH_PAIN20,				qtrue,			qfalse },
+	{ EMOTE_CROSSARMS,		"crossarms",	qtrue,		BOTH_TALKGESTURE11START,	BOTH_TALKGESTURE11STOP,		qfalse,			qfalse },
+	{ EMOTE_DONTKILLME,		"dontkillme",	qfalse,		BOTH_BARTENDER_COWERLOOP,	BOTH_FORCE_GETUP_B1,		qtrue,			qfalse },
+	{ EMOTE_DONTKNOW,		"dontknow",		qfalse,		BOTH_TALKGESTURE1,			-1,							qfalse,			qfalse },
+	{ EMOTE_DONTKNOW2,		"dontknow2",	qfalse,		BOTH_TALKGESTURE10,			-1,							qfalse,			qfalse },
+	{ EMOTE_EXPLAIN,		"explain",		qfalse,		BOTH_TALKGESTURE3,			-1,							qfalse,			qfalse },
+	{ EMOTE_EXPLAIN2,		"explain2",		qfalse,		BOTH_TALKGESTURE9,			-1,							qfalse,			qfalse },
+	{ EMOTE_FAKEDEAD,		"fakedead",		qfalse,		BOTH_DEATH1,				BOTH_FORCE_GETUP_B1,		qtrue,			qfalse },
+	{ EMOTE_FAKEDEAD2,		"fakedead2",	qfalse,		BOTH_RIGHTHANDCHOPPEDOFF,	BOTH_RIGHTHANDCHOPPEDOFF,	qtrue,			qfalse },
+	{ EMOTE_FALLING,		"falling",		qfalse,		BOTH_FALLDEATH1INAIR,		BOTH_FALLDEATH1INAIR,		qtrue,			qfalse },
+	{ EMOTE_FLIP,			"flip",			qfalse,		BOTH_STAND1TO2,				-1,							qtrue,			qfalse },
+	{ EMOTE_GETUP,			"getup",		qfalse,		BOTH_FORCE_GETUP_B6,		-1,							qtrue,			qfalse },
+	{ EMOTE_GREET,			"greet",		qfalse,		BOTH_PAUSE1START,			-1,							qtrue,			qfalse },
+	{ EMOTE_HANDHIPS,		"handhips",		qtrue,		BOTH_STAND5TOSTAND8,		BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_HUG,			"hug",			qfalse,		-1,							-1,							qfalse,			qfalse },
+	{ EMOTE_KISS,			"kiss",			qfalse,		-1,							-1,							qfalse,			qfalse },
+	{ EMOTE_KNEEL,			"kneel",		qfalse,		BOTH_FORCEHEAL_START,		BOTH_FORCEHEAL_STOP,		qtrue,			qfalse },
+	{ EMOTE_LAUGH,			"laugh",		qfalse,		BOTH_LAUGH1STOP,			-1,							qtrue,			qfalse },
+	{ EMOTE_LOOK,			"look",			qfalse,		BOTH_TALKGESTURE18,			-1,							qfalse,			qfalse },
+	{ EMOTE_LOOK2,			"look2",		qfalse,		BOTH_EXAMINE3,				-1,							qtrue,			qfalse },
+	{ EMOTE_NOD,			"nod",			qfalse,		BOTH_HEADNOD,				-1,							qtrue,			qfalse },
+	{ EMOTE_POINT,			"point",		qfalse,		BOTH_TALKGESTURE12,			-1,							qfalse,			qfalse },
+	{ EMOTE_POINT2,			"point2",		qtrue,		BOTH_TALKGESTURE6START,		BOTH_TALKGESTURE6STOP,		qfalse,			qfalse },
+	{ EMOTE_POSING,			"posing",		qtrue,		BOTH_HUGGER1,				BOTH_HUGGERSTOP1,			qfalse,			qfalse },
+	{ EMOTE_PUNCH,			"punch",		qtrue,		-1,							-1,							qtrue,			qfalse },
+	{ EMOTE_REVERENCE,		"reverence",	qfalse,		BOTH_CROUCH3,				BOTH_CROUCH3,				qtrue,			qfalse },
+	{ EMOTE_SIT,			"sit",			qfalse,		BOTH_SIT2,					BOTH_SIT2TOSTAND5,			qtrue,			qfalse },
+	{ EMOTE_SIT2,			"sit2",			qfalse,		BOTH_SIT1,					BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_SIT3,			"sit3",			qfalse,		BOTH_STAND5TOSIT3,			BOTH_SIT3TOSTAND5,			qtrue,			qfalse },
+	{ EMOTE_SHAKE,			"shake",		qfalse,		BOTH_HEADSHAKE,				-1,							qtrue,			qfalse },
+	{ EMOTE_SUPER,			"super",		qtrue,		BOTH_FORCEFOUNTAIN1_MIDDLE,	BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_SUPER2,			"super2",		qfalse,		BOTH_FORCEFOUNTAIN1_STOP,	-1,							qtrue,			qfalse },
+	{ EMOTE_SURRENDER,		"surrender",	qtrue,		TORSO_SURRENDER_START,		BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_SPIN,			"spin",			qtrue,		BOTH_FJSS_TL_BR,			-1,							qtrue,			qtrue },
+	{ EMOTE_SPIN2,			"spin2",		qtrue,		BOTH_FJSS_TR_BL,			-1,							qtrue,			qtrue },
+	{ EMOTE_SPIN3,			"spin3",		qtrue,		BOTH_BUTTERFLY_FR1,			-1,							qtrue,			qfalse },
+	{ EMOTE_SPIN4,			"spin4",		qtrue,		BOTH_BUTTERFLY_FL1,			-1,							qtrue,			qfalse },
+	{ EMOTE_TAUNT3,			"taunt3",		qfalse,		BOTH_GESTURE1,				-1,							qtrue,			qfalse },
+	{ EMOTE_TAUNT4,			"taunt4",		qfalse,		BOTH_SABERKILLER1,			-1,							qtrue,			qtrue },
+	{ EMOTE_THINK,			"think",		qfalse,		BOTH_TALKGESTURE5START,		BOTH_TALKGESTURE5START,		qfalse,			qfalse },
+	{ EMOTE_THREATEN,		"threaten",		qfalse,		BOTH_THREATEN1,				-1,							qtrue,			qfalse },
+	{ EMOTE_THUMBSUP,		"thumbsup",		qfalse,		BOTH_THUMBING1,				-1,							qtrue,			qfalse },
+	{ EMOTE_THUMBSDOWN,		"thumbsdown",	qfalse,		BOTH_LEANRIGHT3START,		-1,							qtrue,			qfalse },
+	{ EMOTE_TOSSBACK,		"tossback",		qfalse,		BOTH_BARTENDER_THROW1,		-1,							qtrue,			qfalse },
+	{ EMOTE_TOSSOVER,		"tossover",		qfalse,		BOTH_SABERTHROW2START,		-1,							qtrue,			qfalse },
+	{ EMOTE_TOSSUP,			"tossup",		qfalse,		BOTH_SABERTHROW1START,		-1,							qtrue,			qfalse },
+	{ EMOTE_TYPE,			"type",			qfalse,		BOTH_CONSOLE1,				BOTH_CONSOLE1STOP,			qtrue,			qfalse },
+	{ EMOTE_TYPE2,			"type2",		qfalse,		BOTH_CONSOLE2,				BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_VICTORY,		"victory",		qfalse,		BOTH_SABERTHROW1STOP,		-1,							qtrue,			qfalse },
+	{ EMOTE_VICTORY2,		"victory2",		qfalse,		BOTH_TALKGESTURE19START,	-1,							qfalse,			qfalse },
+	{ EMOTE_WAITING,		"waiting",		qtrue,		BOTH_STAND4,				BOTH_STAND1,				qtrue,			qfalse },
+	{ EMOTE_WATCHOUT,		"watchout",		qfalse,		BOTH_TALKGESTURE18,			-1,							qfalse,			qfalse },
+	{ EMOTE_WRITING,		"writing",		qfalse,		BOTH_SILENCEGESTURE1,		BOTH_STAND1,				qtrue,			qtrue },
+	{ EMOTE_WRITING2,		"writing2",		qfalse,		BOTH_UNCROUCH3,				BOTH_STAND1,				qtrue,			qtrue },
 };
 
 int JKModEmotesDataSize = ARRAY_LEN(JKModEmotesData);
@@ -91,13 +97,9 @@ int JKMod_EmoteCheck(char *cmd, gentity_t *ent)
 	// Now start on the checks for each command possibility
 	for (i = 0; i < JKModEmotesDataSize; i++)
 	{
-		if (Q_stricmp(cmd, JKModEmotesData[i].cmd) == 0 || Q_stricmp(cmd, va("am%s", JKModEmotesData[i].cmd)) == 0)
+		if (!Q_stricmp(cmd, JKModEmotesData[i].cmd) || !Q_stricmp(cmd, va("am%s", JKModEmotesData[i].cmd)))
 		{
-			if (JKModEmotesData[i].compatible == qfalse && jk2startversion == VERSION_1_02) {
-				return 0;
-			} else{
-				return JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
-			}
+			return JKMod_EmotePlay(ent, JKModEmotesData[i].emoteIndex);
 		}
 	}
 
@@ -145,49 +147,60 @@ Emote launch function
 int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 {
 	int	cmd;
+	qboolean showAlert = qtrue;
 
 	// Check client
 	if (!ent || !ent->client) return 0;
 
+	// check alert
+	if (ent->client->ps.duelInProgress && ent->client->ps.duelTime >= level.time) showAlert = qfalse;
+
+	// Compatible check
+	if (JKModEmotesData[emoteIndex].compatible == qfalse && jk2startversion == VERSION_1_02)
+	{
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emote not available\"");
+		return 0;
+	}
+
 	// Exception for duel gametype
 	if (g_gametype.integer == GT_TOURNAMENT || g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this gametype\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this gametype\"");
 		return 0;
 	}
 
 	// Don't allow in spectator
 	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in spectator mode\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in spectator mode\"");
 		return 0;
 	}
 
 	// Don't allow in race dimension
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this dimension\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in this dimension\"");
 		return 0;
 	}
 
 	// Don't allow in duel
-	if (ent->client->ps.duelInProgress)
+	if (ent->client->ps.duelInProgress && ent->client->ps.duelTime <= level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in private duels\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emotes disabled in private duels\"");
 		return 0;
 	}
 
 	// Bit values for emotes! Let the people choose!
 	if (!(jkcvar_emotesEnabled.integer & (1 << emoteIndex)))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"Emote disabled by the server\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"Emote disabled by the server\"");
 		return 0;
 	}
 
 	// Don't allow when you are moving
 	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special && !(ent->client->ps.duelTime >= level.time))
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\"");
 		return 0;
 	}
 
@@ -202,17 +215,17 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 	{
 		if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "hug") == 0)
 		{
-			JKMod_EmoteCmdHug(ent);
+			JKMod_EmoteCmdHug(ent, showAlert);
 			return 1;
 		}
 		else if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "kiss") == 0)
 		{
-			JKMod_EmoteCmdKiss(ent);
+			JKMod_EmoteCmdKiss(ent, showAlert);
 			return 1;
 		}
 		else if (Q_stricmp(JKModEmotesData[emoteIndex].cmd, "punch") == 0)
 		{
-			JKMod_EmoteCmdPunch(ent);
+			JKMod_EmoteCmdPunch(ent, showAlert);
 			return 1;
 		}
 	}
@@ -350,7 +363,7 @@ Custom emotes function
 */
 
 // Hug emote
-void JKMod_EmoteCmdHug(gentity_t *ent)
+void JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert)
 {
 	trace_t tr;
 	vec3_t fPos;
@@ -438,13 +451,13 @@ void JKMod_EmoteCmdHug(gentity_t *ent)
 	}
 	else
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
 		return;
 	}
 }
 
 // Kiss emote
-void JKMod_EmoteCmdKiss(gentity_t *ent)
+void JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert)
 {
 	trace_t tr;
 	vec3_t fPos;
@@ -532,17 +545,17 @@ void JKMod_EmoteCmdKiss(gentity_t *ent)
 	}
 	else
 	{
-		trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You need someone in front of you\"");
 		return;
 	}
 }
 
 // Punch emote
-void JKMod_EmoteCmdPunch(gentity_t *ent)
+void JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert)
 {
 	trace_t tr;
 	vec3_t fPos;
-	int cmd = JKMod_Rand() % 2 ? BOTH_MELEE1 : BOTH_MELEE2;
+	int cmd = jk2startversion == VERSION_1_02 ? BOTH_MELEE2 : (JKMod_Rand() % 2 ? BOTH_MELEE1 : BOTH_MELEE2);
 
 	// Special cases to disallow the use of the emote
 	if (ent->client->ps.forceRestricted || 
