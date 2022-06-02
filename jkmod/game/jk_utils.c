@@ -533,7 +533,7 @@ gentity_t *JKMod_LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity, int 
 	dropped->classname = item->classname;
 	dropped->item = item;
 
-	if (!itemRegistered[dropped->s.modelindex]) { // Workaround
+	if (!itemRegistered[dropped->s.modelindex]) { // Save item registered
 		RegisterItem(item); 
 		SaveRegisteredItems();
 	}

@@ -1425,6 +1425,13 @@ void Touch_Item (gentity_t *ent, gentity_t *other, trace_t *trace) {
 		}
 	}
 
+	// Tr!Force: [GameGeneral] Item pickup rules pre-check
+	if ( ent->s.modelindex < 1 || ent->s.modelindex >= bg_numItems || ent->item->giType == IT_BAD ) { 
+		G_Printf( "BG_CanItemBeGrabbed: index out of range (Pre-check)\n" );
+		G_FreeEntity( ent );
+		return;
+	}
+
 	// the same pickup rules are used for client side and server side
 	if ( !BG_CanItemBeGrabbed( g_gametype.integer, &ent->s, &other->client->ps ) ) {
 		return;
@@ -2023,7 +2030,10 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	// Register the item even if we're going to remove it, as unpatched clients
 	// don't update their item registration on map_restart and we might enable
 	// weapons after a map_restart.
-	RegisterItem( item );
+	if (!itemRegistered[item - bg_itemlist]) { // Tr!Force: [GameGeneral] Save item registered
+		RegisterItem(item);
+		SaveRegisteredItems();
+	}
 
 	if (g_gametype.integer == GT_TOURNAMENT)
 	{
