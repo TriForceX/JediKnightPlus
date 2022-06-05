@@ -447,7 +447,6 @@ static void JKMod_svCmd_teleportPlayer(void)
 	if (trap_Argc() < 3)
 	{
 		G_Printf("Usage: teleport <targetplayer> <destinyplayer|coordinates>\n");
-		G_Printf("Note: Coordinates must be in double quotes\n");
 	}
 	else
 	{
@@ -515,8 +514,21 @@ static void JKMod_svCmd_teleportPlayer(void)
 			// To coords
 			else
 			{
+				
+				char	arg3[MAX_STRING_CHARS];
+				char	arg4[MAX_STRING_CHARS];
+				char	arg5[MAX_STRING_CHARS];
+
+				trap_Argv(3, arg3, sizeof(arg3));
+				trap_Argv(4, arg4, sizeof(arg4));
+				trap_Argv(5, arg5, sizeof(arg5));
+
 				G_Printf("Checking coordinates...\n");
-				sscanf(arg2, "%f %f %f %f", &temporigin[0], &temporigin[1], &temporigin[2], &tempangles[YAW]);
+
+				temporigin[0] = atoi(arg2);
+				temporigin[1] = atoi(arg3);
+				temporigin[2] = atoi(arg4);
+				tempangles[YAW] = atoi(arg5);
 
 				if (temporigin[0] && temporigin[1] && temporigin[2]) 
 				{

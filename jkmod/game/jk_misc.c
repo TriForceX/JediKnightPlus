@@ -754,6 +754,10 @@ extern void BreakableBrushUse(gentity_t *self, gentity_t *other, gentity_t *acti
 extern void SP_fx_runner(gentity_t *ent);
 extern void StandardSetBodyAnim(gentity_t *self, int anim, int flags);
 extern jkmod_emotes_data_t JKModEmotesData[];
+extern void Blocked_Door(gentity_t *ent, gentity_t *other);
+extern void InitMover(gentity_t *ent);
+extern void Think_MatchTeam(gentity_t *ent);
+extern void Think_SpawnNewDoorTrigger(gentity_t *ent);
 
 // Check recharge
 void JKMod_EnergyStationCheck(gentity_t *ent)
@@ -1243,6 +1247,134 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 	VectorCopy(ent->s.angles, ent->s.apos.trBase);
 
 	trap_LinkEntity(ent);
+}
+
+// Door model
+void JKMod_SP_DoorModel(gentity_t* ent)
+{
+	vec3_t	abs_movedir;
+	float	distance;
+	vec3_t	size;
+	float	lip;
+	char	*sound;
+	int		soundon = 0;
+	char	*model;
+	float	modelAngle;
+	float	modelPitch;
+	float	modelRoll;
+
+	G_SpawnInt("sound", "1", &soundon);
+	G_SpawnFloat("lip", "8", &lip);
+	G_SpawnFloat("modelAngle", "0", &modelAngle);
+	G_SpawnFloat("modelPitch", "0", &modelPitch);
+	G_SpawnFloat("modelRoll", "0", &modelRoll);
+
+	if (soundon)
+	{
+		G_SpawnString("soundstart", "sound/movers/doors/door1start.wav", &sound);
+		ent->sound1to2 = ent->sound2to1 = G_SoundIndex(sound);
+
+		G_SpawnString("soundstop", "sound/movers/doors/door1stop.wav", &sound);
+		ent->soundPos1 = ent->soundPos2 = G_SoundIndex(sound);
+
+		G_SpawnString("soundmove", "sound/movers/doors/door1move.wav", &sound);
+		ent->soundLoop = G_SoundIndex(sound);
+	}
+	else
+	{
+		ent->sound1to2 = ent->sound2to1 = ent->soundPos1 = ent->soundPos2 = 0;
+	}
+
+	ent->blocked = Blocked_Door;
+
+	// default speed of 400
+	if (!ent->speed) ent->speed = 400;
+
+	// default wait of 2 seconds
+	if (!ent->wait) ent->wait = 2;
+
+	// default damage of 2 points
+	G_SpawnInt("dmg", "2", &ent->damage);
+
+	// first position at start
+	VectorCopy(ent->s.origin, ent->pos1);
+
+	// calculate second position
+	G_SpawnString( "model", "", &model );
+	
+	ent->s.modelindex = G_ModelIndex( model );
+	ent->s.modelindex2 = G_ModelIndex( model );
+
+	if (!Q_stricmp(ent->model,".glm"))
+	{	
+		ent->s.g2radius = 100;
+		ent->s.modelGhoul2 = 1;
+	}
+	
+	ent->r.contents = CONTENTS_SOLID;
+	ent->clipmask = MASK_SOLID;
+
+	if (ent->r.maxs[2] == 0 && ent->r.mins[2] == 0)
+	{
+		JKMod_Printf(S_COLOR_YELLOW "Door spawned without collision box.\n");
+		VectorSet(ent->r.maxs, 25, 25, 21);
+		VectorScale(ent->r.maxs, -1, ent->r.mins);
+	}
+
+	trap_LinkEntity(ent);
+	G_SetMovedir (ent->s.angles, ent->movedir);
+	ent->s.angles[YAW] = modelAngle;
+	ent->s.angles[PITCH] = modelPitch;
+	ent->s.angles[ROLL] = modelRoll;
+	G_SetAngles(ent, ent->s.angles);
+	abs_movedir[0] = fabs(ent->movedir[0]);
+	abs_movedir[1] = fabs(ent->movedir[1]);
+	abs_movedir[2] = fabs(ent->movedir[2]);
+	VectorSubtract(ent->r.maxs, ent->r.mins, size);
+	distance = DotProduct( abs_movedir, size) + lip;
+	VectorMA(ent->pos1, distance, ent->movedir, ent->pos2);
+
+	// if "start_open", reverse position 1 and 2
+	if (ent->spawnflags & 1) {
+		vec3_t	temp;
+
+		VectorCopy(ent->pos2, temp);
+		VectorCopy(ent->s.origin, ent->pos2);
+		VectorCopy(temp, ent->pos1);
+	}
+
+	// Fix doors and elevators for SP maps
+	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	{
+		 if (ent->spawnflags & 64) ent->boltpoint1 = 1;
+	}
+
+	InitMover(ent);
+
+	ent->s.modelindex = G_ModelIndex(model);
+	ent->s.modelindex2 = G_ModelIndex(model);
+	ent->r.contents = CONTENTS_SOLID;
+	ent->clipmask = MASK_SOLID;
+
+	trap_LinkEntity(ent);
+
+	ent->nextthink = level.time + FRAMETIME;
+
+	if (!(ent->flags & FL_TEAMSLAVE)) 
+	{
+		int health;
+
+		G_SpawnInt("health", "0", &health);
+
+		if (health) ent->takedamage = qtrue;
+
+		if (ent->targetname || health) {
+			// non touch/shoot doors
+			ent->think = Think_MatchTeam;
+		} else {
+			ent->think = Think_SpawnNewDoorTrigger;
+		}
+	}
 }
 
 // Misc ion cannon

@@ -9,6 +9,19 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.18.3
+- Fix dimension checks and validations
+- Fix dual saber spinning animation
+- Fix chair model emote player momentum
+- Fix server news and reload commands checks
+- Added jetpack effect for non plugin users
+- Added more checks for JKA chatbox
+- Added teleport chat effect & sound cvars
+- Added teleport rcon command
+- Added new emotes & updated checks
+- Added extra checks for item spawn
+- Added custom door map entity
+
 ## 0.18.2
 - Fix death count on scoreboard
 - Fix dual saber moves animation bug
