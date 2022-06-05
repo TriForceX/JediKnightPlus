@@ -430,6 +430,7 @@ void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *e
 // jk_cmds.c
 qboolean	JKMod_IgnoreClientCheck(int option, int ignorer, int ignored);
 void		JKMod_IgnoreClientClear(int ignored);
+void		JKMod_Cmd_ToggleConsole(gentity_t *ent);
 void		JKMod_Cmd_WhoIs(gentity_t *ent);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);

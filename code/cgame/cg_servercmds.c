@@ -1384,6 +1384,17 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Tr!Force: [JKMod] Toggle console from server
+	if ( !strcmp(cmd, "jk_cg_toggleConsole") )
+	{
+		if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) {
+			trap_Key_SetCatcher(0);
+		} else {
+			trap_Key_SetCatcher(KEYCATCH_CONSOLE);
+		}
+		return;
+	}
+
 	CG_Printf( "Unknown client game command: %s\n", cmd );
 }
 

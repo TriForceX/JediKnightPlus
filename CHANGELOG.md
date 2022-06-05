@@ -21,6 +21,7 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 - Added new emotes & updated checks
 - Added extra checks for item spawn
 - Added custom door map entity
+- Added toggle console server command
 
 ## 0.18.2
 - Fix death count on scoreboard

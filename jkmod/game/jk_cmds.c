@@ -724,6 +724,18 @@ static void JKMod_Cmd_EngageAuto(gentity_t* ent)
 
 /*
 =====================================================================
+Send toggle console function
+=====================================================================
+*/
+void JKMod_Cmd_ToggleConsole(gentity_t *ent)
+{
+	if (ent->client->pers.jkmodPers.clientPlugin) {
+		trap_SendServerCommand(ent - g_entities, "jk_cg_toggleConsole");
+	}
+}
+
+/*
+=====================================================================
 Who is / status function
 =====================================================================
 */
@@ -1878,6 +1890,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	else if (Q_stricmp(p, "!where") == 0)
 	{
 		JKMod_Cmd_WhoIs(ent);
+		JKMod_Cmd_ToggleConsole(ent);
 	}
 	// Player stats
 	else if (Q_stricmp(p, "!status") == 0)

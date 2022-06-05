@@ -2030,9 +2030,10 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 	// Register the item even if we're going to remove it, as unpatched clients
 	// don't update their item registration on map_restart and we might enable
 	// weapons after a map_restart.
-	if (!itemRegistered[item - bg_itemlist]) { // Tr!Force: [GameGeneral] Save item registered
+	if (!itemRegistered[item - bg_itemlist]) // Tr!Force: [GameGeneral] Save item registered
+	{
 		RegisterItem(item);
-		SaveRegisteredItems();
+		if (level.numConnectedClients) SaveRegisteredItems();
 	}
 
 	if (g_gametype.integer == GT_TOURNAMENT)
