@@ -28,6 +28,7 @@ Global definitions
 #define JK_SPECTATOR_NOCLIP		( 1 << 4 )
 #define JK_RESIST_PUSH			( 1 << 5 )
 #define JK_DUAL_MOVES			( 1 << 6 )
+#define JK_GHOST_SABERS			( 1 << 7 )
 
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 27 )

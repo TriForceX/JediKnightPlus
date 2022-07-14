@@ -178,6 +178,7 @@ static jkmod_bit_info_t togglePlayerMovement[] =
 	"SPECTATOR NO-CLIP",
 	"RESIST PUSH ANIM",
 	"DUAL SABER MOVES",
+	"GHOST SABERS",
 };
 
 // Options for jk_voteControl cvar

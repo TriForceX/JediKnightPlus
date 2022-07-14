@@ -162,6 +162,12 @@ void JKMod_PlayerMovementCheck(gentity_t *ent)
 	else 
 		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DUAL_MOVES;
 
+	// Ghost Sabers
+	if (jkcvar_playerMovement.integer & JK_GHOST_SABERS)
+		ent->client->ps.stats[JK_MOVEMENT] |= JK_GHOST_SABERS;
+	else
+		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_GHOST_SABERS;
+
 	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
 }
 

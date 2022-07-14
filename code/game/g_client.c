@@ -1842,7 +1842,7 @@ void ClientSpawn(gentity_t *ent) {
 	index = ent - g_entities;
 	client = ent->client;
 
-	if ( ent->client->ps.saberInFlight && ent->client->ps.saberEntityNum >= MAX_CLIENTS && ent->client->ps.saberEntityNum < MAX_GENTITIES )
+	if ( ent->client->ps.saberInFlight && ent->client->ps.saberEntityNum >= MAX_CLIENTS && ent->client->ps.saberEntityNum < MAX_GENTITIES && !(ent->client->ps.stats[JK_MOVEMENT] & JK_GHOST_SABERS)) // Tr!Force: [PlayerMovement] Ghost Sabers
 	{
 		gentity_t *saberent = &g_entities[ent->client->ps.saberEntityNum];
 
