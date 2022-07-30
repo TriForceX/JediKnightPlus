@@ -361,9 +361,10 @@ static void JKMod_svCmd_forceDimension(void)
 	}
 	else
 	{
-		int i;
-		unsigned dimension;
-		qboolean found = qfalse;
+		int			i;
+		unsigned	dimension;
+		char*		dimensionName;
+		qboolean	found = qfalse;
 
 		trap_Argv(1, arg1, sizeof(arg1));
 		trap_Argv(2, arg2, sizeof(arg2));
@@ -377,6 +378,7 @@ static void JKMod_svCmd_forceDimension(void)
 		{
 			if (!Q_stricmp(arg2, JKModDimensionData[i].command)) {
 				dimension = JKModDimensionData[i].dimension;
+				dimensionName = JKModDimensionData[i].name;
 				found = qtrue;
 				break;
 			} 
@@ -405,6 +407,7 @@ static void JKMod_svCmd_forceDimension(void)
 						JKMod_DuelRemove(ent);
 					}
 
+					trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\"", dimensionName));
 					JKMod_DimensionSet(ent, dimension);
 				}
 			}
@@ -428,6 +431,7 @@ static void JKMod_svCmd_forceDimension(void)
 					if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 				}
 				
+				trap_SendServerCommand(ent - g_entities, va("cp \"%s\nDimension\"", dimensionName));
 				JKMod_DimensionSet(ent, dimension);
 			}
 		}
