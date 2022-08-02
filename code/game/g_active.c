@@ -1170,6 +1170,14 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 2);
 
 				ent->client->ps.duelTime = 0;
+
+				// Tr!Force: [Emotes] Disable emotes
+				if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
+				{
+					ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+					ent->client->ps.forceDodgeAnim = 0;
+					ent->client->ps.forceHandExtendTime = 0;
+				}
 			}
 
 			if (duelAgainst && duelAgainst->client && duelAgainst->inuse &&
@@ -1188,6 +1196,14 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 2);
 
 				duelAgainst->client->ps.duelTime = 0;
+
+				// Tr!Force: [Emotes] Disable emotes
+				if (duelAgainst->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
+				{
+					duelAgainst->client->ps.forceHandExtend = HANDEXTEND_NONE;
+					duelAgainst->client->ps.forceDodgeAnim = 0;
+					duelAgainst->client->ps.forceHandExtendTime = 0;
+				}
 			}
 		}
 		else
