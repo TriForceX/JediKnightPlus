@@ -760,7 +760,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5---------------------------------------------------------------------------------------\n"
-			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignore    ^5|^7 Dimension    ^5|^7 Plugin\n"
+			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored   ^5|^7 Dimension    ^5|^7 Plugin\n"
 			"^5---------------------------------------------------------------------------------------\n"
 			"^7\""));
 	}

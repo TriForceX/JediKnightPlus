@@ -88,30 +88,27 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 
 	if (bot_forgimmick.integer)
 	{
-		// if (bot_forgimmick.integer & JK_BOT_STATIC)
-		// {
-			bs->wpCurrent = NULL;
-			bs->currentEnemy = NULL;
-			bs->wpDestination = NULL;
-			bs->wpDirection = 0;
-		// }
-
 		if (bot_forgimmick.integer & JK_BOT_ATTACK) trap_EA_Attack(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_JUMP) trap_EA_Jump(bs->client);
 		if (bot_forgimmick.integer & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_TALK) trap_EA_Talk(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_GOD) {
-			g_entities[bs->client].flags |= FL_GODMODE;
-		}else {
-			g_entities[bs->client].flags &= ~FL_GODMODE;
+		if (bot_forgimmick.integer & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
+
+		if (bot_forgimmick.integer & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK))
+		{
+			bs->wpCurrent = NULL;
+			bs->currentEnemy = NULL;
+			bs->wpDestination = NULL;
+			bs->wpDirection = 0;
+			return;
 		}
-		return;
 	}
 
 	// Check god mode
-	if (g_entities[bs->client].flags & FL_GODMODE) g_entities[bs->client].flags &= ~FL_GODMODE;
+	if (!(bot_forgimmick.integer & JK_BOT_GOD) && (g_entities[bs->client].flags & FL_GODMODE)) {
+		g_entities[bs->client].flags &= ~FL_GODMODE;
+	}
 
 	// Add talk balloon
 	if (bs->doChat && bs->chatTime > level.time) {
