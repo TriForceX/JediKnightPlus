@@ -188,6 +188,7 @@ qboolean G_DoesMapSupportGametype(const char *mapname, int gametype)
 		}
 	}
 
+	// Tr!Force: [Vote] Moved for gametype not supported maps
 	if (!g_arenaInfos[0])
 	{
 		return qfalse;
@@ -467,7 +468,6 @@ G_RemoveRandomBot
 */
 int G_RemoveRandomBot( int team ) {
 	int i;
-	char netname[MAX_NETNAME]; // Workaround
 	gclient_t	*cl;
 
 	for ( i=0 ; i< g_maxclients.integer ; i++ ) {
@@ -481,9 +481,10 @@ int G_RemoveRandomBot( int team ) {
 		if ( team >= 0 && (int)cl->sess.sessionTeam != team ) {
 			continue;
 		}
-		strcpy(netname, cl->pers.netname);
-		Q_CleanStr(netname, (qboolean)(jk2startversion == VERSION_1_02));
-		trap_SendConsoleCommand( EXEC_INSERT, va("kick \"%s\"\n", netname) ); // Workaround
+
+		// Drop the client
+		trap_DropClient( i, G_GetStripEdString("SVINGAME","WAS_KICKED") );
+
 		return qtrue;
 	}
 	return qfalse;

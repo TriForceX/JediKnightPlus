@@ -668,6 +668,9 @@ void InitMover( gentity_t *ent ) {
 	qboolean	lightSet, colorSet;
 	char		*sound;
 
+	// Tunnel high modelindex values through time2
+	MV_ModelindexToTime2( ent );
+
 	// if the "model2" key is set, use a seperate model
 	// for drawing, but clip against the brushes
 	if ( ent->model2 ) {

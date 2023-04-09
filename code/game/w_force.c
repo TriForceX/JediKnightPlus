@@ -4172,7 +4172,7 @@ void FindGenericEnemyIndex(gentity_t *self)
 	float tlen;
 	gentity_t *ent;
 	gentity_t *besten = NULL;
-	float blen = 99999999;
+	float blen;
 	vec3_t a;
 
 	while (i < MAX_CLIENTS)
@@ -4185,7 +4185,7 @@ void FindGenericEnemyIndex(gentity_t *self)
 			VectorSubtract(ent->client->ps.origin, self->client->ps.origin, a);
 			tlen = VectorLength(a);
 
-			if (tlen < blen &&
+			if ((!besten || tlen < blen) &&
 				InFront(ent->client->ps.origin, self->client->ps.origin, self->client->ps.viewangles, 0.8f ) &&
 				OrgVisible(self->client->ps.origin, ent->client->ps.origin, self->s.number))
 			{
@@ -5008,7 +5008,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	{//don't regen force power while throwing saber
 		if ( self->client->ps.saberEntityNum < ENTITYNUM_NONE && self->client->ps.saberEntityNum > 0 )//player is 0
 		{//
-			if ( &g_entities[self->client->ps.saberEntityNum] != NULL && g_entities[self->client->ps.saberEntityNum].s.pos.trType == TR_LINEAR )
+			if ( g_entities[self->client->ps.saberEntityNum].s.pos.trType == TR_LINEAR )
 			{//fell to the ground and we're trying to pull it back
 				usingForce = qtrue;
 			}

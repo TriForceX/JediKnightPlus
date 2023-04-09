@@ -484,6 +484,10 @@ gentity_t *G_Spawn( void ) {
 			}
 			G_Error( "G_Spawn: no free entities" );
 		}
+
+		// reuse this slot
+		G_InitGentity( found );
+		return found;
 	}
 	
 	// open up a new slot

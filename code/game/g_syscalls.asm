@@ -248,9 +248,13 @@ equ trap_MVAPI_ControlFixes								-704	;MVAPI_CONTROL_FIXES
 equ trap_MVAPI_GetVersion								-705    ;MVAPI_GET_VERSION
 equ trap_FS_FLock										-709	;MVAPI_FS_FLOCK
 equ trap_MVAPI_SetVersion								-710	;MVAPI_SET_VERSION
+equ trap_MVAPI_Print									-714	;MVAPI_PRINT
 
 ; JK2MV Syscalls [Game]
 equ trap_MVAPI_SendConnectionlessPacket					-701	;G_MVAPI_SEND_CONNECTIONLESSPACKET
 equ trap_MVAPI_GetConnectionlessPacket					-702	;G_MVAPI_GET_CONNECTIONLESSPACKET
 equ trap_MVAPI_LocateGameData							-703	;G_MVAPI_LOCATE_GAME_DATA
 equ trap_MVAPI_DisableStructConversion					-706	;G_MVAPI_DISABLE_STRUCT_CONVERSION
+equ trap_MVAPI_ResetServerTime							-711	;G_MVAPI_RESET_SERVER_TIME
+equ trap_MVAPI_EnablePlayerSnapshots					-712	;G_MVAPI_ENABLE_PLAYERSNAPSHOTS
+equ trap_MVAPI_EnableSubmodelBypass				        -713	;G_MVAPI_ENABLE_SUBMODELBYPASS

@@ -115,6 +115,12 @@
 #define idarm32	0
 #endif
 
+#if defined(ARCH_ARM64) && !defined(Q3_VM)
+#define idarm64	1
+#else
+#define idarm64	0
+#endif
+
 #if (defined(powerc) || defined(powerpc) || defined(ppc) || defined(__ppc) || defined(__ppc__)) && !defined(Q3_VM)
 #define idppc	1
 #else
@@ -168,6 +174,9 @@
 #define Q_LITTLE_ENDIAN
 #elif idarm32
 #define ARCH_STRING "arm"
+#define Q_LITTLE_ENDIAN
+#elif idarm64
+#define ARCH_STRING "arm64"
 #define Q_LITTLE_ENDIAN
 #elif idppc
 #define ARCH_STRING "ppc"
@@ -281,7 +290,7 @@ typedef enum {
 
 #define ARRAY_LEN(x) (sizeof (x) / sizeof( *(x) ))
 
-#define VALID_INDEX(x,y) (y >= 0 && y < ARRAY_LEN(x))
+#define VALID_INDEX(x,y) (y >= 0 && (size_t)y < ARRAY_LEN(x))
 
 //
 // these aren't needed by any of the VMs.  put in another header?

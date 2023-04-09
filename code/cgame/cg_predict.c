@@ -274,7 +274,7 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 		return;
 	}
 
-	f = (float)( cg.time - prev->serverTime ) / ( next->serverTime - prev->serverTime );
+	f = cg.frameInterpolation;
 
 	i = next->ps.bobCycle;
 	if ( i < prev->ps.bobCycle ) {
@@ -292,6 +292,7 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 			f * (next->ps.velocity[i] - prev->ps.velocity[i] );
 	}
 
+	cg.predictedTimeFrac = f * (next->ps.commandTime - prev->ps.commandTime);
 }
 
 /*
@@ -858,6 +859,8 @@ void CG_PredictPlayerState( void ) {
 			CG_Printf("WARNING: dropped event\n");
 		}
 	}
+
+	cg.predictedTimeFrac = 0.0f;
 
 	// fire events and other transition triggered things
 	CG_TransitionPlayerState( &cg.predictedPlayerState, &oldPlayerState );

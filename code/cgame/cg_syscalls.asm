@@ -200,7 +200,9 @@ equ trap_MVAPI_ControlFixes						-704	;MVAPI_CONTROL_FIXES
 equ trap_MVAPI_GetVersion						-705    ;MVAPI_GET_VERSION
 equ trap_FS_FLock								-709	;MVAPI_FS_FLOCK
 equ trap_MVAPI_SetVersion						-710	;MVAPI_SET_VERSION
+equ trap_MVAPI_Print							-714	;MVAPI_PRINT
 
 ; JK2MV Syscalls [CGame]
 equ trap_R_AddRefEntityToScene2					-707	;CG_MVAPI_R_ADDREFENTITYTOSCENE2
 equ trap_MVAPI_SetVirtualScreen					-708	;CG_MVAPI_SETVIRTUALSCREEN
+equ trap_MVAPI_EnableSubmodelBypass				-713	;CG_MVAPI_ENABLE_SUBMODELBYPASS

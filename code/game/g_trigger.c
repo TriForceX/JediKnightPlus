@@ -11,6 +11,9 @@ void InitTrigger( gentity_t *self ) {
 	trap_SetBrushModel( self, self->model );
 	self->r.contents = CONTENTS_TRIGGER;		// replaces the -1 from trap_SetBrushModel
 	self->r.svFlags = SVF_NOCLIENT;
+
+	// Tunnel high modelindex values through time2
+	MV_ModelindexToTime2( self );
 }
 
 

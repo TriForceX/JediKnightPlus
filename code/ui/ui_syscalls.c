@@ -641,3 +641,8 @@ qboolean trap_FS_RMDLPrefix(const char *qpath) {
 qboolean trap_UI_DeleteDLFile(const dlfile_t *file) {
 	return syscall(UI_MVAPI_DELDLFILE, file);
 }
+
+void trap_MVAPI_Print( int flags, const char *string )
+{
+	syscall( MVAPI_PRINT, string );
+}

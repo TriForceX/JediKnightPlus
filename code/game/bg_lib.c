@@ -1004,7 +1004,193 @@ double fabs( double x ) {
 	return x < 0 ? -x : x;
 }
 
+// returns value of x normalized to [0.5, 1) range
+// stores exponent in exp
+float frexpf( float x, int *exp )
+{
+    unsigned int * const binary32 = (unsigned int *) &x;
+    int exponent;
 
+	// assume "floating point little endian". Can be dynamically
+	// tested but engine does the same assumption in Q_rsqrt
+    exponent = (*binary32 >> 23) & 0xff;
+    // NaN or +-infinity
+    if (exponent == 0xff)
+		return x;
+
+    // IEEE-754 exponent is biased by 127 and mantissa is normalized
+    // to [1, 2) range
+    *exp = exponent - 127 + 1;
+
+    // set exponent to -1 (0x7e) to get value in [0.5, 1) range
+    *binary32 = (*binary32 & ~( 0xffU << 23)) | (0x7eU << 23);
+    return x;
+}
+
+static const float expftable[192] = {
+	1.401298464e-45f, 5.605193857e-45f, 1.401298464e-44f, 3.783505854e-44f,
+	1.008934894e-43f, 2.746544990e-43f, 7.468920815e-43f, 2.030481475e-42f,
+	5.521115949e-42f, 1.500790655e-41f, 4.079600219e-41f, 1.108945566e-40f,
+	3.014403192e-40f, 8.194008692e-40f, 2.227363909e-39f, 6.054601485e-39f,
+	1.645811454e-38f, 4.473779311e-38f, 1.216099272e-37f, 3.305700520e-37f,
+	8.985826178e-37f, 2.442600708e-36f, 6.639676956e-36f, 1.804851329e-35f,
+	4.906094995e-35f, 1.333614871e-34f, 3.625141008e-34f, 9.854154449e-34f,
+	2.678636997e-33f, 7.281290454e-33f, 1.979259919e-32f, 5.380185922e-32f,
+	1.462486242e-31f, 3.975449954e-31f, 1.080639292e-30f, 2.937482142e-30f,
+	7.984904045e-30f, 2.170521994e-29f, 5.900090598e-29f, 1.603810939e-28f,
+	4.359610133e-28f, 1.185064850e-27f, 3.221340277e-27f, 8.756510893e-27f,
+	2.380266371e-26f, 6.470234679e-26f, 1.758792259e-25f, 4.780892995e-25f,
+	1.299581387e-24f, 3.532628391e-24f, 9.602679948e-24f, 2.610279046e-23f,
+	7.095474414e-23f, 1.928749893e-22f, 5.242885696e-22f, 1.425164038e-21f,
+	3.873997809e-21f, 1.053061747e-20f, 2.862518610e-20f, 7.781132280e-20f,
+	2.115131070e-19f, 5.749522024e-19f, 1.562882184e-18f, 4.248354131e-18f,
+	1.154822386e-17f, 3.139132888e-17f, 8.533047630e-17f, 2.319522699e-16f,
+	6.305116854e-16f, 1.713908382e-15f, 4.658886192e-15f, 1.266416578e-14f,
+	3.442477084e-14f, 9.357622912e-14f, 2.543665690e-13f, 6.914400151e-13f,
+	1.879528868e-12f, 5.109088933e-12f, 1.388794375e-11f, 3.775134372e-11f,
+	1.026187954e-10f, 2.789468101e-10f, 7.582560690e-10f, 2.061153692e-09f,
+	5.602796449e-09f, 1.522997906e-08f, 4.139937815e-08f, 1.125351758e-07f,
+	3.059023186e-07f, 8.315287232e-07f, 2.260329438e-06f, 6.144212421e-06f,
+	1.670170059e-05f, 4.539993097e-05f, 1.234098017e-04f, 3.354626242e-04f,
+	9.118819726e-04f, 2.478752285e-03f, 6.737946998e-03f, 1.831563935e-02f,
+	4.978706688e-02f, 1.353352815e-01f, 3.678794503e-01f, 1.000000000e+00f,
+	2.718281746e+00f, 7.389056206e+00f, 2.008553696e+01f, 5.459814835e+01f,
+	1.484131622e+02f, 4.034288025e+02f, 1.096633179e+03f, 2.980958008e+03f,
+	8.103083984e+03f, 2.202646484e+04f, 5.987414062e+04f, 1.627547969e+05f,
+	4.424134062e+05f, 1.202604250e+06f, 3.269017250e+06f, 8.886111000e+06f,
+	2.415495200e+07f, 6.565996800e+07f, 1.784823040e+08f, 4.851651840e+08f,
+	1.318815744e+09f, 3.584912896e+09f, 9.744803840e+09f, 2.648912282e+10f,
+	7.200490291e+10f, 1.957296046e+11f, 5.320482488e+11f, 1.446257099e+12f,
+	3.931334246e+12f, 1.068647422e+13f, 2.904884983e+13f, 7.896295696e+13f,
+	2.146435743e+14f, 5.834617106e+14f, 1.586013445e+15f, 4.311231532e+15f,
+	1.171914254e+16f, 3.185593135e+16f, 8.659340405e+16f, 2.353852703e+17f,
+	6.398434745e+17f, 1.739274975e+18f, 4.727839526e+18f, 1.285159988e+19f,
+	3.493427058e+19f, 9.496119530e+19f, 2.581312893e+20f, 7.016735587e+20f,
+	1.907346641e+21f, 5.184705458e+21f, 1.409349036e+22f, 3.831008190e+22f,
+	1.041375899e+23f, 2.830753218e+23f, 7.694785471e+23f, 2.091659449e+24f,
+	5.685720022e+24f, 1.545538893e+25f, 4.201210453e+25f, 1.142007396e+26f,
+	3.104297783e+26f, 8.438356823e+26f, 2.293783118e+27f, 6.235148842e+27f,
+	1.694889207e+28f, 4.607186548e+28f, 1.252363185e+29f, 3.404276173e+29f,
+	9.253781621e+29f, 2.515438700e+30f, 6.837671138e+30f, 1.858671706e+31f,
+	5.052393560e+31f, 1.373382962e+32f, 3.733241850e+32f, 1.014800419e+33f,
+	2.758513550e+33f, 7.498416982e+33f, 2.038281025e+34f, 5.540622485e+34f,
+	1.506097362e+35f, 4.093996852e+35f, 1.112863728e+36f, 3.025077342e+36f,
+	8.223013027e+36f, 2.235246529e+37f, 6.076030347e+37f, 1.651636266e+38f
+};
+
+float expf( float x )
+{
+    float		fracX;
+    float		result;
+	float		sum;
+	int			i;
+
+	if (x >= 0.0f) {
+		if (x >= 1.0f) {
+			int intX = x;
+			if (intX >= 89) {
+				// errno = ERANGE;
+				return HUGE_VALF;
+			}
+			result = expftable[intX + 103];
+			fracX = x - intX;
+		} else {
+			result = 1.0f;
+			fracX = x;
+		}
+	} else { // x < 0.0f
+		if (x <= -1.0f) {
+			int intX = x;
+			if (intX < -103) {
+				// errno = ERANGE;
+				return 0.0f;
+			}
+			result = expftable[intX + 103];
+			fracX = x - intX;
+		} else {
+			result = 1.0f;
+			fracX = x;
+		}
+	}
+
+	// 11 was found experimentally, gives 1 ULP error in [0, 1] range
+
+	/*
+	sum = 1.0f;
+	float power = 1.0f;
+	for (i = 1; i < 12; i++) {
+		power *= fracX / i;
+		sum += power;
+	}
+	*/
+
+	// optimization: Horner's scheme for computing Taylor series
+
+	sum = 0.0f;
+
+	for (i = 11; i > 0; i--)
+		sum = 1.0f + fracX * sum / i;
+
+    // result has 1 ULP accuracy too
+
+    result *= sum;
+
+    return result;
+}
+
+float logf( float a )
+{
+	// using floats for intermediate results decreases accuracy by few
+	// ULP due to accumulation of round-off errors. acceptable
+	float	sum;
+	float	z;
+	float	fraca;
+	int		log2a;
+	int		i;
+
+	assert(a > 0.0f);
+
+	fraca = frexpf(a, &log2a);
+
+	// fraca is in [0.5, 1) range. Decent for Taylor series but we can
+	// make it [sqrt(0.5), sqrt(2))
+
+	if (fraca < (float) M_SQRT1_2) {
+		fraca *= 2.0f;
+		log2a--;
+	}
+
+	// a = fraca * 2^log2a
+	// ln(a) = ln(fraca) + log2a * ln(2)
+
+	// Taylor series around 1
+	z = fraca - 1.0f;
+	sum = 0.0f;
+
+	// 16 iterations gives 1 ULP precision in our range. if log2a != 0
+	// it can be lower, but disregard this
+
+	/*
+	double power = - 1.0;
+
+	for (i = 1; i < 17; i++) {
+		power *= - z;
+		sum += power / i;
+	}
+	*/
+
+	// optimization: Horner's scheme for computing Taylor series
+
+	for (i = 16; i > 0; i--)
+		sum = z * ((1.0f / i) - sum);
+
+	return sum + log2a * (float) M_LN2;
+}
+
+float powf( float x, float y )
+{
+	return expf(logf(x) * y);
+}
 
 //=========================================================
 

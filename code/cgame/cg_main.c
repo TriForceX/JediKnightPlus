@@ -153,6 +153,7 @@ This must be the very first function compiled into the .q3vm file
 */
 qboolean menuInJK2MV = qfalse;
 int mvapi = 0;
+qboolean submodelBypass = qfalse;
 int Init_serverMessageNum;
 int Init_serverCommandSequence;
 int Init_clientNum;
@@ -320,6 +321,9 @@ void MVAPI_AfterInit(void)
 		MV_SetGameVersion( jk2version, qfalse );
 		MV_SetGamePlay( jk2startversion );
 	}
+
+	// Let the engine know we support more than 256 submodels
+	if ( mvapi >= 4 ) submodelBypass = trap_MVAPI_EnableSubmodelBypass( qtrue );
 
 	// Call CG_Init now, because we delayed it earilier
 	CG_Init( Init_serverMessageNum, Init_serverCommandSequence, Init_clientNum );
@@ -580,9 +584,13 @@ vmCvar_t	cg_recordSPDemo;
 vmCvar_t	cg_recordSPDemoName;
 
 vmCvar_t	cg_ui_myteam;
+vmCvar_t	cg_com_maxfps;
 
 vmCvar_t	cg_mv_fixbrokenmodelsclient;
 vmCvar_t	cg_drawPlayerSprites;
+vmCvar_t	cg_developer;
+vmCvar_t	cg_smoothCamera;
+vmCvar_t	cg_smoothCameraFPS;
 
 vmCvar_t	cg_MVSDK;
 vmCvar_t	mvsdk_cgFlags;
@@ -736,9 +744,13 @@ static cvarTable_t cvarTable[] = { // bk001129
 	{ &cg_trueLightning, "cg_trueLightning", "0.0", CVAR_ARCHIVE},
 
 	{ &cg_ui_myteam, "ui_myteam", "0", CVAR_ROM|CVAR_INTERNAL},
+	{ &cg_com_maxfps, "com_maxfps", "", 0},
 
+	{ &cg_developer, "cg_developer", "0", CVAR_TEMP},
 	{ &cg_mv_fixbrokenmodelsclient, "mv_fixbrokenmodelsclient", "2", CVAR_ARCHIVE },
 	{ &cg_drawPlayerSprites, "cg_drawPlayerSprites", "3", CVAR_ARCHIVE },
+	{ &cg_smoothCamera, "cg_smoothCamera", "1", CVAR_ARCHIVE },
+	{ &cg_smoothCameraFPS, "cg_smoothCameraFPS", "0", CVAR_ARCHIVE },
 
 	{ &cg_MVSDK, "cg_MVSDK", MVSDK_VERSION, CVAR_ROM | CVAR_USERINFO },
 
@@ -935,6 +947,21 @@ void QDECL CG_Printf( const char *msg, ... ) {
 	cg.jkmodCG.consolePrint++;				// Tr!Force: [JKMod] Console print lines
 	cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [JKMod] Console print timestamp
 	trap_Print( text );
+}
+
+void QDECL CG_DPrintf( const char *msg, ... ) {
+	va_list		argptr;
+	char		text[1024];
+
+	if (cg_developer.integer) {
+		va_start (argptr, msg);
+		Q_vsnprintf (text, sizeof(text), msg, argptr);
+		va_end (argptr);
+
+		cg.jkmodCG.consolePrint++;				// Tr!Force: [JKMod] Console print lines
+		cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [JKMod] Console print timestamp
+		trap_Print( text );
+	}
 }
 
 Q_NORETURN void QDECL CG_Error( const char *msg, ... ) {
@@ -1613,8 +1640,14 @@ Ghoul2 Insert End
 
 	// register the inline models
 	cgs.numInlineModels = trap_CM_NumInlineModels();
+
+	// Considering the cgame module doesn't make use of the ~ 2 mb memory pool in BG we can safely allocate some of it
+	// for the inline models instead of having them hardcoded to 256. In a QVM the qhandle_t should be 4 byte and the
+	// vec3_t should be 12 byte. For 256 models that's barely 4 kb.
+	cgs.inlineDrawModel = (qhandle_t*)BG_Alloc( cgs.numInlineModels * sizeof(qhandle_t) );
+	cgs.inlineModelMidpoints = (vec3_t*)BG_Alloc( cgs.numInlineModels * sizeof(vec3_t) );
 	for ( i = 1 ; i < cgs.numInlineModels ; i++ ) {
-		char	name[10];
+		char	name[16];
 		vec3_t			mins, maxs;
 		int				j;
 
@@ -2448,6 +2481,8 @@ void MV_UpdateCgFlags( void )
 
 	// Check for the features and determine the flags
 	intValue |= MVSDK_CGFLAG_SUBMODEL_WORKAROUND;
+	intValue |= MVSDK_CGFLAG_SUBMODEL_TIME2;
+	if ( submodelBypass ) intValue |= MVSDK_CGFLAG_SUBMODEL_BYPASS;
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!! Forks of MVSDK should NOT modify the mvsdk_cgFlags                          !!!

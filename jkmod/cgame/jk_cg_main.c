@@ -65,7 +65,6 @@ vmCvar_t	jkcvar_cg_jetPackIdle;
 
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
-vmCvar_t	cg_developer;
 
 static jkmod_cg_cvar_table_t JKModCGcvarTable[] = 
 {
@@ -117,7 +116,6 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 
 	{ &jkcvar_cg_test1,					"jk_cg_test1",					"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_test2,					"jk_cg_test2",					"0",			NULL,						CVAR_ARCHIVE, 0 },
-	{ &cg_developer,					"developer",					"0",			NULL,						CVAR_NONE, 0 },
 
 };
 

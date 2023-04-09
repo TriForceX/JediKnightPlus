@@ -533,6 +533,7 @@ typedef struct {
 
 	// MVSDK
 	qboolean	bboxEncoding;
+	qboolean	modelindexTime2;
 
 	jkmod_locals_t	jkmodLocals;		// Tr!Force: [JKMod] level locals
 } level_locals_t;
@@ -845,6 +846,7 @@ void mysrand( unsigned seed );
 int myrand( void );
 
 void MV_BBoxToTime2( gentity_t *ent );
+void MV_ModelindexToTime2( gentity_t *ent );
 
 //
 // g_client.c
@@ -1338,6 +1340,9 @@ int trap_MVAPI_GetVersion( void );                                              
 int trap_FS_FLock( fileHandle_t h, flockCmd_t cmd, qboolean nb );                                                 // Level: 3
 void trap_MVAPI_SetVersion( mvversion_t version );                                                                // Level: 3
 
+/* Level 4 */
+void trap_MVAPI_Print( int flags, const char *string );                                                           // Level: 4
+
 // JK2MV Syscalls [Game]
 /* Level 1 */
 qboolean trap_MVAPI_SendConnectionlessPacket( const mvaddr_t *addr, const char *message );                        // Level: 1
@@ -1346,6 +1351,11 @@ qboolean trap_MVAPI_LocateGameData( mvsharedEntity_t *mvEnts, int numGEntities, 
 
 /* Level 2 */
 qboolean trap_MVAPI_DisableStructConversion( qboolean disable );                                                  // Level: 2
+
+/* Level 4 */
+qboolean trap_MVAPI_ResetServerTime( qboolean enable );                                                           // Level: 4
+qboolean trap_MVAPI_EnablePlayerSnapshots( qboolean enable );                                                     // Level: 4
+qboolean trap_MVAPI_EnableSubmodelBypass( qboolean enable );                                                      // Level: 4
 
 #include "../api/mvapi.h"
 #include "g_multiversion.h"
