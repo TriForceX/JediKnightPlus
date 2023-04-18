@@ -1349,8 +1349,8 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 		VectorCopy(temp, ent->pos1);
 	}
 
-	// Fix doors and elevators for SP maps
-	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	// Allow door use button
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORUSE) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
 	{
 		 if (ent->spawnflags & 64) ent->boltpoint1 = 1;
 	}
@@ -1378,6 +1378,10 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 			// non touch/shoot doors
 			ent->think = Think_MatchTeam;
 		} else {
+			// Fix doors trigger spawn
+			if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(JKMod_GetCurrentMap())) {
+				JKMod_DoorFix(ent);
+			}
 			ent->think = Think_SpawnNewDoorTrigger;
 		}
 	}

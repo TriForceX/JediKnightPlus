@@ -30,6 +30,23 @@ Global definitions
 #define JK_DUAL_MOVES			( 1 << 6 )
 #define JK_GHOST_SABERS			( 1 << 7 )
 
+// Map fixes stuff
+#define JK_MAP_SPVOTE			( 1 << 0 )
+#define JK_MAP_FXDAMAGE			( 1 << 1 )
+#define JK_MAP_FXANGLES			( 1 << 2 )
+#define JK_MAP_TURRET			( 1 << 3 )
+#define JK_MAP_SPEAKERSOUND		( 1 << 4 )
+#define JK_MAP_SPEAKERFLAGS		( 1 << 5 )
+#define JK_MAP_SPMUSIC			( 1 << 6 )
+#define JK_MAP_LOOPINGSOUND		( 1 << 7 )
+#define JK_MAP_FUNCSTATIC		( 1 << 8 )
+#define JK_MAP_BRUSHMODEL		( 1 << 9 )
+#define JK_MAP_FUNCUSABLE		( 1 << 10 )
+#define JK_MAP_SPAWNPRINT		( 1 << 11 )
+#define JK_MAP_SPELEVATORS		( 1 << 12 )
+#define JK_MAP_SPDOORUSE		( 1 << 13 )
+#define JK_MAP_SPDOORTRIGGER	( 1 << 14 )
+
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 27 )
 #define JK_JETPACK_FLAMING		( 1 << 28 )

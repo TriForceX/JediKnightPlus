@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-	<title>Jedi Knight Plus Cvar Calculator</title>
+	<title>Jedi Knight Plus Calculator</title>
+	<link href="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png" rel="icon">
 	<meta charset="utf-8">
 	<style type="text/css">
 	* {
@@ -41,7 +42,7 @@
 	}
 	.container {
 		margin: 0 auto;
-		width: 600px;
+		width: 670px;
 	}
 	.header {
 		float: left;
@@ -76,10 +77,14 @@
 		width: 100%;
 		margin-bottom: 30px;
 	}
+	.bitboxes.large .bitbox {
+		min-width: 33.3%;
+	}
 	.bitbox {
-		min-width: 200px;
+		min-width: 25%;
 		float: left;
 		cursor: pointer;
+		margin-bottom: 3px;
 	}
 	.bitbox:hover {
 		color: lime;
@@ -99,6 +104,7 @@
 	}
 	.cvar_edit input[type="text"] {
 		width: 120px;
+		margin-right: 2px;
 	}
 	.cvar_edit input[value="Disable"] {
 		width: 72px;
@@ -113,8 +119,8 @@
 	<!-- Header -->
 	<div class="header">
 		<img src="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png">
-		<h1>Jedi Knight Plus Cvar Calculator</h1>
-		<h4><b>Tip:</b> Paste the value in the input field to show the current options</h4>
+		<h1>Jedi Knight Plus Calculator</h1>
+		<h4><b>Tip:</b> Paste the cvar value in the input field to show the current options</h4>
 	</div>
 	<!-- Section -->
 	<div class="title">
@@ -237,7 +243,7 @@
 		  <input alt="altdimensionbase" class="select-none" value="Disable" type="button">
 	  </span>
 	</div>
-    <div class="bitboxes">
+    <div class="bitboxes large">
 		<label class="bitbox hidden"><input class="box" name="altdimensionbase" num="0" type="radio"> Normal</label>
 		<label class="bitbox hidden"><input class="box" name="altdimensionbase" num="1" type="radio"> Private Duel</label>
 		<label class="bitbox"><input class="box" name="altdimensionbase" num="2" type="radio"> Guns Arena</label>
@@ -255,7 +261,7 @@
 		  <input alt="playermovement" class="select-none" value="None" type="button">
 	  </span>
 	</div>
-    <div class="bitboxes">
+    <div class="bitboxes large">
 		<label class="bitbox"><input class="box" name="playermovement" num="0" type="checkbox"> JKA Jetpack Style</label>
 		<label class="bitbox"><input class="box" name="playermovement" num="1" type="checkbox"> Weapon Stand Fix</label>
 		<label class="bitbox"><input class="box" name="playermovement" num="2" type="checkbox"> Disruptor Zoom Walk</label>
@@ -264,6 +270,32 @@
 		<label class="bitbox"><input class="box" name="playermovement" num="5" type="checkbox"> Force Push Resist</label>
 		<label class="bitbox"><input class="box" name="playermovement" num="6" type="checkbox"> Dual Saber Moves</label>
 		<label class="bitbox"><input class="box" name="playermovement" num="7" type="checkbox"> Ghost Sabers</label>
+    </div>
+	<!-- Section -->
+	<div class="title">
+      <span class="cvar">jk_mapFixes: <small>(Some stuff is experimental, use with caution)</small></span>
+	  <span class="cvar_edit">
+		  <input id="mapfixes" class="value" value="0" type="text">
+		  <input alt="mapfixes" class="select-all" value="All" type="button">
+		  <input alt="mapfixes" class="select-none" value="None" type="button">
+	  </span>
+	</div>
+    <div class="bitboxes large">
+		<label class="bitbox"><input class="box" name="mapfixes" num="0" type="checkbox"> SP Maps Voting</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="1" type="checkbox"> FX Runner Damage</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="2" type="checkbox"> FX Runner Angles</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="3" type="checkbox"> Turret Chair Model</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="4" type="checkbox"> Targ. Speaker Sounds</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="5" type="checkbox"> Targ. Speaker Spawnflags</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="6" type="checkbox"> SP Default Music</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="7" type="checkbox"> SP No Looping Sound</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="8" type="checkbox"> Func Static Spawn</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="9" type="checkbox"> No Bad Brush Model</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="10" type="checkbox"> No Func Usable Remove</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="11" type="checkbox"> No Print Bad Spawn</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="12" type="checkbox"> SP Elevator Return</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="13" type="checkbox"> SP Door Use Button</label>
+		<label class="bitbox"><input class="box" name="mapfixes" num="14" type="checkbox"> SP Door Trigger</label>
     </div>
 	<!-- Section -->
 	<div class="title">
@@ -334,9 +366,9 @@
 		<label class="bitbox"><input class="box" name="weapondisable" num="8" type="checkbox"> DEMP 2</label>
 		<label class="bitbox"><input class="box" name="weapondisable" num="9" type="checkbox"> Flechette</label>
 		<label class="bitbox"><input class="box" name="weapondisable" num="10" type="checkbox"> Merr Sonn</label>
-		<label class="bitbox"><input class="box" name="weapondisable" num="11" type="checkbox"> Thermal Detonators</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="11" type="checkbox"> Thermal Detonator</label>
 		<label class="bitbox"><input class="box" name="weapondisable" num="12" type="checkbox"> Trip Mines</label>
-		<label class="bitbox"><input class="box" name="weapondisable" num="13" type="checkbox"> Detonation Packs</label>
+		<label class="bitbox"><input class="box" name="weapondisable" num="13" type="checkbox"> Detonation Pack</label>
 		<label class="bitbox hidden"><input class="box" name="weapondisable" num="14" type="checkbox"> Emplaced Gun</label>
 		<label class="bitbox hidden"><input class="box" name="weapondisable" num="15" type="checkbox"> Turret Gun</label>
     </div>

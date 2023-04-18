@@ -198,7 +198,7 @@ void SP_target_speaker( gentity_t *ent ) {
 
 	if ( !G_SpawnString( "noise", "NOSOUND", &s ) ) {
 		// Tr!Force: [MapFixes] Speakers playing bad soundfiles
-		if (jkcvar_mapFixes.integer) 
+		if (jkcvar_mapFixes.integer & JK_MAP_SPEAKERSOUND)
 		{
 			JKMod_Printf(S_COLOR_YELLOW "Removing target_speaker without a noise key at %s\n", vtos(ent->s.origin));
 			G_FreeEntity(ent);
@@ -211,7 +211,7 @@ void SP_target_speaker( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [MapFixes] Streamed MP3 files with bad spawnflags
-	if (jkcvar_mapFixes.integer)
+	if (jkcvar_mapFixes.integer & JK_MAP_SPEAKERFLAGS)
 	{
 		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap()) && strstr(s, ".mp3") && ent->spawnflags & (1 | 2)) 
 		{

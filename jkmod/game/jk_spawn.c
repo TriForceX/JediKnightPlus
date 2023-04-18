@@ -118,7 +118,7 @@ qboolean JKMod_G_CallSpawn(gentity_t *ent)
 	}
 
 	// Print only in developer mode
-	if (jkcvar_mapFixes.integer) {
+	if (jkcvar_mapFixes.integer & JK_MAP_SPAWNPRINT) {
 		JKMod_Printf("%s doesn't have a spawn function\n", ent->classname);
 	} else {
 		G_Printf("%s doesn't have a spawn function\n", ent->classname);
@@ -274,7 +274,7 @@ Custom set brush model function
 */
 void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 {
-	if (jkcvar_mapFixes.integer)
+	if (jkcvar_mapFixes.integer & JK_MAP_BRUSHMODEL)
 	{
 		if (strlen(name) < 2 || name[0] != '*' || !name) return;
 
@@ -294,4 +294,35 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 	}
 
 	trap_SetBrushModel(ent, name);
+}
+
+/*
+=====================================================================
+Door entity trigger fix
+=====================================================================
+*/
+void JKMod_DoorFix(gentity_t* ent)
+{
+	if ((!ent->targetname) || (Q_stricmp(ent->targetname, "") == 0))
+	{
+		ent->targetname = G_Alloc(128);
+
+		if (ent->model)
+		{
+			char model2[512];
+			JKMod_StringClear(model2, 510);
+			strcpy(model2, ent->model);
+
+			ent->targetname[0] = model2[0];
+			ent->targetname[1] = model2[1];
+			ent->targetname[2] = model2[2];
+			ent->targetname[3] = model2[3];
+			ent->targetname[4] = model2[4];
+			ent->targetname[5] = model2[5];
+			ent->targetname[6] = model2[6];
+			ent->targetname[7] = model2[7];
+			ent->targetname[8] = model2[8];
+			ent->targetname[9] = '\0';
+		}
+	}
 }

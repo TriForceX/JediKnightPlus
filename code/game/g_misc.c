@@ -1421,18 +1421,19 @@ void fx_runner_think( gentity_t *ent )
 	}
 
 	// Tr!Force: [MapFixes] Add fx missing think
-	if (jkcvar_mapFixes.integer)
+	if (jkcvar_mapFixes.integer & JK_MAP_FXANGLES)
 	{
 		BG_EvaluateTrajectory( &ent->s.pos, level.time, ent->r.currentOrigin );
 		BG_EvaluateTrajectory( &ent->s.apos, level.time, ent->r.currentAngles );
 
 		VectorCopy(ent->r.currentAngles, ent->s.angles);
 		VectorCopy(ent->r.currentOrigin, ent->s.origin);
-
-		if ( ent->spawnflags & 4 ) // damage
-		{
-			G_RadiusDamage( ent->r.currentOrigin, ent, ent->splashDamage, ent->splashRadius, ent, MOD_UNKNOWN );
-		}
+	}
+	
+	// Tr!Force: [MapFixes] Add fx missing think (damage)
+	if ((jkcvar_mapFixes.integer & JK_MAP_FXDAMAGE) && (ent->spawnflags & 4))
+	{
+		G_RadiusDamage( ent->r.currentOrigin, ent, ent->splashDamage, ent->splashRadius, ent, MOD_UNKNOWN );
 	}
 }
 
@@ -1538,7 +1539,7 @@ void SP_fx_runner( gentity_t *ent )
 	G_SpawnFloat( "random", "0", &ent->random );
 
 	// Tr!Force: [MapFixes] Add fx missing fields
-	if (jkcvar_mapFixes.integer)
+	if (jkcvar_mapFixes.integer & JK_MAP_FXDAMAGE)
 	{
 		G_SpawnInt( "splashRadius", "16", &ent->splashRadius );
 		G_SpawnInt( "splashDamage", "5", &ent->splashDamage );
@@ -1551,7 +1552,7 @@ void SP_fx_runner( gentity_t *ent )
 	}
 
 	// Tr!Force: [MapFixes] Add fx angles field
-	if (jkcvar_mapFixes.integer) G_SetAngles(ent, ent->s.angles);
+	if (jkcvar_mapFixes.integer & JK_MAP_FXANGLES) G_SetAngles(ent, ent->s.angles);
 
 	// make us useable if we can be targeted
 	if ( ent->targetname )

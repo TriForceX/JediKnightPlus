@@ -444,6 +444,7 @@ qboolean	JKMod_ValidNumber(const char *s);
 void		JKMod_DummyEncode(char *buffer, const char *s);
 char		*JKMod_TrimWhiteSpace(char* s);
 void		JKMod_TruncateString(char *buffer, const char *s, int limit);
+void		JKMod_StringClear(char* str, int len);
 void		JKMod_StringEscape(char *in, char *out, int outSize);
 char		*JKMod_SanitizeString(char *dest, char *source, int destSize);
 int			JKMod_DuplicatedNameCheck(gentity_t *ent, char *clientName);
@@ -543,5 +544,6 @@ qboolean	JKMod_G_CallSpawn(gentity_t *ent);
 void		JKMod_AddSpawnField(char *field, char *value);
 void		JKMod_CheckValidMapItems(void);
 void		JKMod_SetBrushModel(gentity_t *ent, const char *name);
+void		JKMod_DoorFix(gentity_t* ent);
 
 #endif // __JK_LOCAL_H__

@@ -180,7 +180,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_macroScanAlert,		"jk_macroScanAlert",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarp,				"jk_antiWarp",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_antiWarpTime,			"jk_antiWarpTime",			"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_mapFixes,				"jk_mapFixes",				"0",					NULL,						CVAR_ARCHIVE | CVAR_LATCH,			0, qtrue },
 	{ &jkcvar_mapDefaultMusic,		"jk_mapDefaultMusic",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_mapCycleFromFile,		"jk_mapCycleFromFile",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 

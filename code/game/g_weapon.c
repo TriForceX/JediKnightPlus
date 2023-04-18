@@ -3385,7 +3385,7 @@ void SP_emplaced_gun( gentity_t *ent )
 	// amount of ammo that this little poochie has
 	G_SpawnInt( "count", "600", &ent->count );
 
-	ent->s.modelindex = G_ModelIndex( jkcvar_mapFixes.integer ? "models/map_objects/imp_mine/turret_chair.glm" : name ); // Tr!Force: [MapFixes] Turret chair model
+	ent->s.modelindex = G_ModelIndex( (jkcvar_mapFixes.integer & JK_MAP_TURRET) ? "models/map_objects/imp_mine/turret_chair.glm" : name ); // Tr!Force: [MapFixes] Turret chair model
 	ent->s.modelGhoul2 = 1;
 	ent->s.g2radius = 110;
 	//trap_G2API_InitGhoul2Model( ent->s.ghoul2, name, ent->s.modelindex );

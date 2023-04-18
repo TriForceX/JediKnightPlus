@@ -210,6 +210,26 @@ static jkmod_bit_info_t toggleAltDimension[] =
 	"CHEATS MODE",
 };
 
+// Options for jk_mapFixes cvar
+static jkmod_bit_info_t toggleMapFixes[] =
+{
+	"SP MAPS VOTING",
+	"FX RUNNER DAMAGE",
+	"FX RUNNER ANGLES",
+	"TURRET CHAIR MODEL",
+	"TARG. SPEAKER SOUND",
+	"TARG. SPEAKER FLAGS",
+	"SP DEFAULT MUSIC",
+	"NO LOOPING SOUND",
+	"FUNC STATIC SPAWN",
+	"NO BAD BRUSH MODEL",
+	"NO FUNC USABLE REMOVE",
+	"NO PRINT BAD SPAWN",
+	"SP ELEVATOR RETURN",
+	"SP DOOR USE BUTTON",
+	"SP DOOR TRIGGER SPAWN",
+};
+
 // Options for bot_forGimmick cvar
 static jkmod_bit_info_t toggleBotForGimmick[] = 
 {
@@ -275,6 +295,12 @@ static void JKMod_svCmd_toggleMod(void)
 			toggleModNote = "For normal dimension change this cvar manually to 0";
 			toggleModRadio = qtrue;
 			start = 2;
+		}
+		else if (!Q_stricmp(arg1, "jk_mapFixes"))
+		{
+			toggleModOptions = toggleMapFixes;
+			toggleModSize = ARRAY_LEN(toggleMapFixes);
+			toggleModNote = "Map restart is required to apply changes";
 		}
 		else if (!Q_stricmp(arg1, "bot_forGimmick")) 
 		{

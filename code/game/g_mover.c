@@ -594,8 +594,8 @@ void Use_BinaryMover( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 
 	// if all the way up, just delay before coming down
 	if ( ent->moverState == MOVER_POS2 && other && other->client ) {
-		// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
-		if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+		// Tr!Force: [MapFixes] Fix elevator return
+		if ((jkcvar_mapFixes.integer & JK_MAP_SPELEVATORS) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
 		{
 			if (ent->boltpoint1 == 0)
 			{
@@ -678,7 +678,7 @@ void InitMover( gentity_t *ent ) {
 	}
 
 	// Tr!Force: [MapFixes] Don't use constant looping sound on SP maps
-	if (jkcvar_mapFixes.integer)
+	if (jkcvar_mapFixes.integer & JK_MAP_LOOPINGSOUND)
 	{
 		if (!(level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap())))
 		{
@@ -907,8 +907,8 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent ) {
 
 	// create a trigger with this size
 	other = JKMod_G_Spawn ( ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
-	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
-	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap())) 
+	// Tr!Force: [MapFixes] Fix doors trigger spawn
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
 	{
 		VectorCopy(mins, other->s.origin);
 		G_SetOrigin(other, other->s.origin);
@@ -930,8 +930,8 @@ void Think_SpawnNewDoorTrigger( gentity_t *ent ) {
 }
 
 void Think_MatchTeam( gentity_t *ent ) {
-	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
-	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	// Tr!Force: [MapFixes] Fix doors trigger spawn
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
 	{
 		int	i;
 		int	success = 0; 
@@ -1047,8 +1047,8 @@ void SP_func_door (gentity_t *ent) {
 		VectorCopy( temp, ent->pos1 );
 	}
 
-	// Tr!Force: [MapFixes] Fix doors and elevators for SP maps
-	if (jkcvar_mapFixes.integer && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	// Tr!Force: [MapFixes] Allow door use button
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORUSE) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
 	{
 		 if (ent->spawnflags & 64) ent->boltpoint1 = 1;
 	}
@@ -1068,6 +1068,10 @@ void SP_func_door (gentity_t *ent) {
 			// non touch/shoot doors
 			ent->think = Think_MatchTeam;
 		} else {
+			// Tr!Force: [MapFixes] Fix doors trigger spawn
+			if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(JKMod_GetCurrentMap())) {
+				JKMod_DoorFix(ent);
+			}
 			ent->think = Think_SpawnNewDoorTrigger;
 		}
 	}
@@ -1581,7 +1585,7 @@ void SP_func_static( gentity_t *ent ) {
 	VectorCopy( ent->s.origin, ent->s.pos.trBase );
 	VectorCopy( ent->s.origin, ent->r.currentOrigin );
 	// Tr!Force: [MapFixes] Spawn func static
-	if (jkcvar_mapFixes.integer) trap_LinkEntity(ent);
+	if (jkcvar_mapFixes.integer & JK_MAP_FUNCSTATIC) trap_LinkEntity(ent);
 }
 
 
@@ -2167,7 +2171,7 @@ void func_usable_use (gentity_t *self, gentity_t *other, gentity_t *activator)
 	else
 	{
 		// Tr!Force: [MapFixes] Prevent use removal for func_usable on SP maps affected by target_scriptrunner
-		if (jkcvar_mapFixes.integer ? !(JKMod_SPMapCheck(JKMod_GetCurrentMap()) && !self->spawnflags && !(self->target && self->target[0])) : qtrue)
+		if ((jkcvar_mapFixes.integer & JK_MAP_FUNCUSABLE) ? !(JKMod_SPMapCheck(JKMod_GetCurrentMap()) && !self->spawnflags && !(self->target && self->target[0])) : qtrue)
 		{
 			self->s.solid = 0;
 			self->r.contents = 0;
