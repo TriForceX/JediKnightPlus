@@ -1289,7 +1289,8 @@ static void CG_ServerCommand( void ) {
 			if (jkcvar_cg_chatBox.integer)
 			{
 				JKMod_CG_ChatBox_AddString( text );
-				// CG_Printf("[skipnotify]%s\n", text); // Fix me
+				if (mvapi >= 4) trap_MVAPI_Print(MVPRINT_SKIPNOTIFY, va("%s\n", text));
+
 			}
 			else {
 				CG_Printf("%s\n", text);
@@ -1307,7 +1308,7 @@ static void CG_ServerCommand( void ) {
 		if (jkcvar_cg_chatBox.integer)
 		{
 			JKMod_CG_ChatBox_AddString( text );
-			// CG_Printf("[skipnotify]%s\n", text); // Fix me
+			if (mvapi >= 4) trap_MVAPI_Print(MVPRINT_SKIPNOTIFY, va("%s\n", text));
 		}
 		else {
 			CG_Printf("%s\n", text);
