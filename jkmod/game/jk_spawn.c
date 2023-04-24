@@ -276,7 +276,10 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 {
 	if (jkcvar_mapFixes.integer & JK_MAP_BRUSHMODEL)
 	{
-		if (strlen(name) < 2 || name[0] != '*' || !name) return;
+		if (strlen(name) < 2 || name[0] != '*' || !name) {
+			JKMod_Printf(S_COLOR_MAGENTA "Entitity stopped (invalid)\n");
+			return;
+		}
 
 		if (atoi(name + 1) == 0)
 		{
@@ -285,7 +288,7 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 			return;
 		}
 
-		if (atoi(name + 1) > 127 && strstr(ent->classname, "func_"))
+		if (atoi(name + 1) > 127 && strstr(ent->classname, "func_") && (mvapi < 4 || (mvapi >= 4 && !g_submodelWorkaround.integer)))
 		{
 			G_FreeEntity(ent);
 			JKMod_Printf(S_COLOR_MAGENTA "Entitity freed (%i > %i)\n", atoi(name + 1), 127);

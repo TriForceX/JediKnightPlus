@@ -200,7 +200,7 @@ The following people supported and helped me directly on this project.
 - [Rich Whitehouse](https://www.richwhitehouse.com) _(Melee weapon from Hydroball)_
 - NTxC / Reality~ _(1.02 gameplay support)_
 - Tox Laximus _(Bots AI support)_
-- [McMonkey](https://github.com/mcmonkey4eva) _(Map modding support)_
+- [McMonkey](https://github.com/mcmonkey4eva) _(Map modding support and fixes)_
 - JediDog~ _(1.03 gameplay support)_
 - [NewAge](https://github.com/erfg12) _(Admin management support)_
 - Mr.Wonko _(JK2 base improvements support)_
