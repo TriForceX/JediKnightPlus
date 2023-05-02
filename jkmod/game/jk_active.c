@@ -251,9 +251,11 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check jetpack flaming
-	if (!(ent->client->ps.eFlags & JK_JETPACK_ACTIVE) || ent->client->ps.pm_type == PM_DEAD)
+	if ((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.pm_type == PM_DEAD)
 	{
-		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
+		ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
+		ent->client->ps.stats[JK_FUEL] = 0;
+		ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
 	}
 
 	// Check jetpack effect
@@ -266,9 +268,13 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		temporigin[2] = ent->client->ps.origin[2];
 		tempangles[PITCH] = -90;
 
-		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING) {
+		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING) 
+		{
+			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
 			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxActive, temporigin, tempangles, ent->s.number, qtrue);
-		} else {
+		} 
+		else if (ent->client->pers.jkmodPers.jetpackFxDisplay)
+		{
 			temporigin[2] -= 20;
 			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxIdle, temporigin, tempangles, ent->s.number, qtrue);
 		}

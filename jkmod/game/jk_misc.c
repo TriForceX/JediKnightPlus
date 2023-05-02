@@ -592,11 +592,15 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 	if (jetpack) 
 	{
 		ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
+		ent->client->ps.eFlags &= ~JK_JETPACK_FLAMING;
 		ent->client->ps.stats[JK_FUEL] = 100;
+		ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
 	}
-	else 
+	else if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) 
 	{
-		if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+		ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
+		ent->client->ps.stats[JK_FUEL] = 0;
+		ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
 	}
 
 	// Pass-through

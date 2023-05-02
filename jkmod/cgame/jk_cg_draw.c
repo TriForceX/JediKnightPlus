@@ -575,6 +575,7 @@ void JKMod_CG_DrawJetPackFuel(void)
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (!(cg.snap->ps.stats[JK_FUEL] < 100)) return;
+	if (cg.snap->ps.stats[STAT_HEALTH] <= 0) return;
 	
 	x = 5;
 	y = (cgs.screenHeight / 2) - (height / 2);

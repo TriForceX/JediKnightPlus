@@ -393,8 +393,9 @@ void JKMod_CVU_jetPack(void)
 			{
 				if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) 
 				{
-					ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+					ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
 					ent->client->ps.stats[JK_FUEL] = 0;
+					ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
 				}
 			}
 		}

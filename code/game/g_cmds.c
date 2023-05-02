@@ -281,6 +281,7 @@ void Cmd_Give_f (gentity_t *ent)
 		{
 			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 			ent->client->ps.stats[JK_FUEL] = 100;
+			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack equiped\n\""));
 			trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
 		}

@@ -550,8 +550,17 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 			G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 
-			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
-			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) challenged->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+			// Disable jetpack
+			if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE) {
+				ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
+				ent->client->ps.stats[JK_FUEL] = 0;
+				ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
+			}
+			if (challenged->client->ps.eFlags & JK_JETPACK_ACTIVE) {
+				challenged->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
+				challenged->client->ps.stats[JK_FUEL] = 0;
+				challenged->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
+			}
 
 			// Custom start emote
 			if (VALIDCVAR(jkcvar_duelStartEmote.string) && 
@@ -1172,8 +1181,9 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 		// Disable
 		if (ent->client->ps.eFlags & JK_JETPACK_ACTIVE)
 		{
-			ent->client->ps.eFlags &= ~JK_JETPACK_ACTIVE;
+			ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
 			ent->client->ps.stats[JK_FUEL] = 0;
+			ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack disabled\n\""));
 			return;
 		}
@@ -1182,6 +1192,7 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 		{
 			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 			ent->client->ps.stats[JK_FUEL] = 100;
+			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack equiped\n\""));
 			trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
 			return;

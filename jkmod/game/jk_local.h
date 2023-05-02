@@ -183,6 +183,7 @@ typedef struct
 	int				teleportChatCheck;		// Player teleport check
 	int				jetpackUseDelay;		// Jetpack usage delay
 	int				jetpackFxDelay;			// Jetpack effects delay
+	qboolean		jetpackFxDisplay;		// Jetpack effects display
 	int				playerStatusDelay;		// Player status tracking delay
 	qboolean		buttonUseAnim;			// Button use animation use check
 	qboolean		buttonUseAnimValid;		// Button use animation valid target
