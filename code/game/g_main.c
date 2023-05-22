@@ -2140,7 +2140,7 @@ void CheckExitRules( void ) {
 			if ( cl->ps.persistant[PERS_SCORE] >= g_fraglimit.integer ) {
 				LogExit( "Kill limit hit." );
 				gDuelExit = qfalse;
-				trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s.\n\"",
+				trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"",
 												cl->pers.netname,
 												G_GetStripEdString("SVINGAME", "HIT_THE_KILL_LIMIT")
 												) 
