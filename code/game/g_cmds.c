@@ -583,7 +583,7 @@ Let everyone know about a team change
 */
 void BroadcastTeamChange( gclient_t *client, int oldTeam )
 {
-	// Tr!Force: [JKMod] Clear map restarted
+	// Tr!Force: [General] Clear map restarted
 	if (level.jkmodLocals.mapRestarted) level.jkmodLocals.mapRestarted = qfalse;
 
 	client->ps.fd.forceDoInit = 1; //every time we change teams make sure our force powers are set right
@@ -858,7 +858,7 @@ void StopFollowing( gentity_t *ent ) {
 	ent->client->ps.clientNum = ent - g_entities;
 	ent->client->ps.weapon = WP_NONE;
 
-	// Workaround
+	// Tr!Force: [BaseJK] Workaround
 	ent->client->ps.duelInProgress = qfalse; 
 	ent->client->ps.zoomMode = 0;
 	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
@@ -1509,7 +1509,7 @@ Cmd_Where_f
 ==================
 */
 void Cmd_Where_f( gentity_t *ent ) {
-	trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", vtos( ent->client->ps.origin ) ) ); // Workaround
+	trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", vtos( ent->client->ps.origin ) ) ); // Tr!Force: [BaseJK] Workaround
 }
 
 static const char *gameNames[] = {

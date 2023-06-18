@@ -661,7 +661,7 @@ void BaseJK2_G_UpdateCvars( void ) { // Tr!Force: [BaseJK2] Update cvars functio
 			if ( cv->modificationCount != cv->vmCvar->modificationCount ) {
 				cv->modificationCount = cv->vmCvar->modificationCount;
 
-				if ( cv->trackChange && !level.jkmodLocals.cvarToggleMod ) { // Tr!Force: [JKMod] Toggle mod check
+				if ( cv->trackChange && !level.jkmodLocals.cvarToggleMod ) { // Tr!Force: [General] Toggle mod check
 					trap_SendServerCommand( -1, va("print \"Server: %s changed to %s\n\"", 
 						cv->cvarName, cv->vmCvar->string ) );
 				}
@@ -2140,7 +2140,7 @@ void CheckExitRules( void ) {
 			if ( cl->ps.persistant[PERS_SCORE] >= g_fraglimit.integer ) {
 				LogExit( "Kill limit hit." );
 				gDuelExit = qfalse;
-				trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"",
+				trap_SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", // Tr!Force: [BaseJK] Workaround
 												cl->pers.netname,
 												G_GetStripEdString("SVINGAME", "HIT_THE_KILL_LIMIT")
 												) 
@@ -2584,7 +2584,7 @@ CheckCvars
 void CheckCvars( void ) {
 	static int lastMod = -1;
 	
-	if ( VALIDCVAR(jkcvar_serverClosed.string) ) return; // Tr!Force: [JKMod] Server closed on top
+	if ( VALIDCVAR(jkcvar_serverClosed.string) ) return; // Tr!Force: [General] Server closed on top
 
 	if ( g_password.modificationCount != lastMod ) {
 		lastMod = g_password.modificationCount;
@@ -2663,7 +2663,7 @@ void G_RunFrame( int levelTime ) {
 			float timeDif = (level.time - gSlowMoDuelTime); //difference in time between when the slow motion was initiated and now
 			float useDif = 0; //the difference to use when actually setting the timescale
 
-			// Tr!Force: [JKMod] Slow-mo duel end workaround
+			// Tr!Force: [General] Slow-mo duel end workaround
 			if (jkcvar_duelEndSlow.integer)
 			{
 				char buf[128];
@@ -2839,10 +2839,10 @@ start = trap_Milliseconds();
 	}
 end = trap_Milliseconds();
 
-	// Tr!Force: [JKMod] Check server news
+	// Tr!Force: [General] Check server news
 	JKMod_ServerNewsCheck();
 
-	// Tr!Force: [JKMod] Check server idle
+	// Tr!Force: [General] Check server idle
 	JKMod_ServerIdleCheck();
 
 	// see if it is time to do a tournement restart

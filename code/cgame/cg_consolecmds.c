@@ -558,11 +558,11 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("loaddefered");	// spelled wrong, but not changing for demo
 	trap_AddCommand ("jk_ui_cmd_macroScan");	// Tr!Force: [MacroScan] Force scan of key binds to purge macros
 	trap_AddCommand ("jk_ui_cmd_macroEnable");	// Tr!Force: [MacroScan] Force scan of key binds to purge macros
-	trap_AddCommand ("emote");					// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("dropflag");				// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("engage_duel_force");		// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("jetpack");				// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("savepos");				// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("loadpos");				// Tr!Force: [JKMod] Add command for menus
-	trap_AddCommand ("dualsaber");				// Tr!Force: [JKMod] Add command for menus
+	trap_AddCommand ("emote");					// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("dropflag");				// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("engage_duel_force");		// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("jetpack");				// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("savepos");				// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("loadpos");				// Tr!Force: [General] Add command for menus
+	trap_AddCommand ("dualsaber");				// Tr!Force: [General] Add command for menus
 }

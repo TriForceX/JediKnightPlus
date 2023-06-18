@@ -1182,7 +1182,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		MV_SetGamePlay( newInfo.jk2gameplay );
 	}
 
-	// Tr!Force: [JKMod] Custom client info
+	// Tr!Force: [General] Custom client info
 	v = Info_ValueForKey( configstring, "jkhat" );
 	newInfo.jkmod_hat = atoi(v);
 
@@ -3440,7 +3440,7 @@ static void CG_PlayerSprites( centity_t *cent ) {
 		return; //this entity is mind-tricking the current client, so don't render it
 	}
 
-	// Tr!Force: [JKMod] Don't show on emote menu
+	// Tr!Force: [General] Don't show on emote menu
 	if ( JKMod_CG_EmoteUI() ) return;
 
 	if ( cent->currentState.eFlags & EF_CONNECTION && cg_drawPlayerSprites.integer & 1 ) {

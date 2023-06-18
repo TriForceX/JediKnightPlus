@@ -1275,7 +1275,7 @@ static void CG_ServerCommand( void ) {
 	if ( !strcmp( cmd, "print" ) ) {
 		char strEd[MAX_STRIPED_SV_STRING];
 		CG_CheckSVStripEdRef(strEd, CG_Argv(1));
-		if (strstr(strEd, "This server is running JK2MV")) return; // Tr!Force: [JKMod] Skip JK2MV message
+		if (strstr(strEd, "This server is running JK2MV")) return; // Tr!Force: [General] Skip JK2MV message
 		CG_Printf( "%s", strEd );
 		return;
 	}
@@ -1385,7 +1385,7 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
-	// Tr!Force: [JKMod] Toggle console from server
+	// Tr!Force: [General] Toggle console from server
 	if ( !strcmp(cmd, "jk_cg_toggleConsole") )
 	{
 		if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) {

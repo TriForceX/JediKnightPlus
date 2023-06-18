@@ -1716,7 +1716,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	{ //always force first person when zoomed
 		cg.renderingThirdPerson = 0;
 	}
-	// Tr!Force: [JKMod] Check emote camera
+	// Tr!Force: [General] Check emote camera
 	else if (cg.jkmodCG.emoteCamera) 
 	{
 		cg.renderingThirdPerson = 1;

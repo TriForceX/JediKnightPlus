@@ -812,7 +812,7 @@ void SP_worldspawn( void )
 			}
 		}
 	}
-	// Tr!Force: [JKMod] Set default music if empty
+	// Tr!Force: [General] Set default music if empty
 	else if (!G_SpawnString( "music", VALIDCVAR(jkcvar_mapDefaultMusic.string) ? jkcvar_mapDefaultMusic.string : "", &text ))
 	{
 		if (VALIDCVAR(jkcvar_mapDefaultMusic.string))

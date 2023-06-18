@@ -672,7 +672,7 @@ qboolean ClientInactivityTimer( gclient_t *client ) {
 		}
 		if ( level.time > client->inactivityTime - 10000 && !client->inactivityWarning ) {
 			client->inactivityWarning = qtrue;
-			trap_SendServerCommand( client - level.clients, "cp \"Ten seconds until inactivity drop!\"" ); // Workaround
+			trap_SendServerCommand( client - level.clients, "cp \"Ten seconds until inactivity drop!\"" ); // Tr!Force: [BaseJK] Workaround
 		}
 	}
 	return qtrue;
@@ -705,7 +705,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 
-		// Tr!Force: [JKMod] Launch custom client timer actions
+		// Tr!Force: [General] Launch custom client timer actions
 		JKMod_ClientTimerActions(ent, msec);
 	}
 }
@@ -1126,7 +1126,7 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 		}
 	}
 
-	if (client->pers.jkmodPers.customSettings) // Tr!Force: [JKMod] Apply custom settings
+	if (client->pers.jkmodPers.customSettings) // Tr!Force: [General] Apply custom settings
 	{
 		client->ps.gravity = client->pers.jkmodPers.customGravity;
 

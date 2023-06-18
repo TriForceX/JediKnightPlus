@@ -550,7 +550,7 @@ typedef struct {
 	int				torsoAnim;
 
 	mvversion_t		jk2gameplay;
-	// Tr!Force: [JKMod] Custom client info
+	// Tr!Force: [General] Custom client info
 	int				jkmod_hat;
 	int				jkmod_race;
 	int				jkmod_color2;
@@ -652,7 +652,7 @@ typedef struct {
 
 #define MAX_PREDICTED_EVENTS	16
 
-#include "../../jkmod/cgame/jk_cg_local.h" // Tr!Force: [JKMod] Main header
+#include "../../jkmod/cgame/jk_cg_local.h" // Tr!Force: [General] Main header
  
 typedef struct {
 	int			clientFrame;		// incremented each frame
@@ -886,7 +886,7 @@ Ghoul2 Insert End
 
 	char				sharedBuffer[MAX_CG_SHARED_BUFFER_SIZE];
 
-	jkmod_cg_t			jkmodCG;		// Tr!Force: [JKMod] Client game
+	jkmod_cg_t			jkmodCG;		// Tr!Force: [General] Client game
 } cg_t;
 
 #define MAX_TICS	14
@@ -1433,8 +1433,8 @@ Ghoul2 Insert End
 
 	int				mvsdk_svFlags;
 
-	jkmod_cgs_t		jkmodCGS;		// Tr!Force: [JKMod] Client game static
-	jkmod_media_t	jkmodMedia;		// Tr!Force: [JKMod] Client media
+	jkmod_cgs_t		jkmodCGS;		// Tr!Force: [General] Client game static
+	jkmod_media_t	jkmodMedia;		// Tr!Force: [General] Client media
 
 } cgs_t;
 

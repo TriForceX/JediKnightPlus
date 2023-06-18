@@ -9,6 +9,23 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.19.1
+- Fix jetpack idle effect on die and some tweaks
+- Fix mvapi level bump ahead of jk2mv release
+- Fix extra dot from kill limit message
+- Fix mod version from string to integer
+- Fix mod code comments categories
+
+## 0.19.0
+- Added option to enable ghost sabers
+- Added message when force dimension
+- Fix emote disable on duel start
+- Added cvar to show motd always and bot tweaks
+- Merge updates from mvsdk
+- Make sp maps fixes toggleable
+- Show JKA style chat lines on console
+- Fix entity deletion due submodel workaround
+
 ## 0.18.3
 - Fix dimension checks and validations
 - Fix dual saber spinning animation

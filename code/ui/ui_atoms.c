@@ -356,7 +356,7 @@ qboolean UI_ConsoleCommand( int realTime ) {
 		return qtrue;
 	}
 
-	// Tr!Force: [JKMod] Check custom console commands
+	// Tr!Force: [General] Check custom console commands
 	if ( JKMod_UI_ConsoleCommand(cmd) ) {
 		return qtrue;
 	}

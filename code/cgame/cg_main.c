@@ -944,8 +944,8 @@ void QDECL CG_Printf( const char *msg, ... ) {
 	Q_vsnprintf (text, sizeof(text), msg, argptr);
 	va_end (argptr);
 
-	cg.jkmodCG.consolePrint++;				// Tr!Force: [JKMod] Console print lines
-	cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [JKMod] Console print timestamp
+	cg.jkmodCG.consolePrint++;				// Tr!Force: [General] Console print lines
+	cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [General] Console print timestamp
 	trap_Print( text );
 }
 
@@ -958,8 +958,8 @@ void QDECL CG_DPrintf( const char *msg, ... ) {
 		Q_vsnprintf (text, sizeof(text), msg, argptr);
 		va_end (argptr);
 
-		cg.jkmodCG.consolePrint++;				// Tr!Force: [JKMod] Console print lines
-		cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [JKMod] Console print timestamp
+		cg.jkmodCG.consolePrint++;				// Tr!Force: [General] Console print lines
+		cg.jkmodCG.consolePrintTime = cg.time;	// Tr!Force: [General] Console print timestamp
 		trap_Print( text );
 	}
 }
@@ -2605,7 +2605,7 @@ Ghoul2 Insert End
 	cgDC.Assets.qhMediumFont = trap_R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
 	
-	trap_SP_Register("jkmod_ingame"); // Tr!Force: [JKMod] Load ingame texts
+	trap_SP_Register("jkmod_ingame"); // Tr!Force: [General] Load ingame texts
 
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );
@@ -2786,9 +2786,9 @@ Ghoul2 Insert End
 
 	CG_RegisterGraphics();
 
-	CG_LoadingString( "client plugin" );	// Tr!Force: [JKMod] Register media
+	CG_LoadingString( "client plugin" );	// Tr!Force: [General] Register media
 
-	JKMod_CG_RegisterMedia();				// Tr!Force: [JKMod] Register media
+	JKMod_CG_RegisterMedia();				// Tr!Force: [General] Register media
 
 	CG_LoadingString( "clients" );
 

@@ -96,7 +96,7 @@ extern int gEscapeTime;
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
 
-#include "../../jkmod/game/jk_local.h" // Tr!Force: [JKMod] Main header
+#include "../../jkmod/game/jk_local.h" // Tr!Force: [General] Main header
 
 struct gentity_s {
 	entityState_t	s;				// communicated by server to clients
@@ -250,7 +250,7 @@ struct gentity_s {
 
 	gitem_t		*item;			// for bonus items
 
-	jkmod_ent_t	jkmodEnt;		// Tr!Force: [JKMod] server entity
+	jkmod_ent_t	jkmodEnt;		// Tr!Force: [General] server entity
 };
 
 #define DAMAGEREDIRECT_HEAD		1
@@ -314,7 +314,7 @@ typedef struct {
 	int			updateUITime;		// only update userinfo for FP/SL if < level.time
 	qboolean	teamLeader;			// true when this client is a team leader
 
-	jkmod_sess_t	jkmodSess;		// Tr!Force: [JKMod] client session
+	jkmod_sess_t	jkmodSess;		// Tr!Force: [General] client session
 } clientSession_t;
 
 // JK2MV
@@ -345,7 +345,7 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
-	jkmod_pers_t	jkmodPers;		// Tr!Force: [JKMod] client persistant
+	jkmod_pers_t	jkmodPers;		// Tr!Force: [General] client persistant
 } clientPersistant_t;
 
 
@@ -438,7 +438,7 @@ struct gclient_s {
 
 	qboolean	fjDidJump;
 
-	jkmod_client_t	jkmodClient;	// Tr!Force: [JKMod] client clear
+	jkmod_client_t	jkmodClient;	// Tr!Force: [General] client clear
 };
 
 
@@ -535,7 +535,7 @@ typedef struct {
 	qboolean	bboxEncoding;
 	qboolean	modelindexTime2;
 
-	jkmod_locals_t	jkmodLocals;		// Tr!Force: [JKMod] level locals
+	jkmod_locals_t	jkmodLocals;		// Tr!Force: [General] level locals
 } level_locals_t;
 
 
@@ -852,7 +852,7 @@ void MV_ModelindexToTime2( gentity_t *ent );
 // g_client.c
 //
 char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot );
-void SetupGameGhoul2Model( gclient_t *client, char *modelname ); // Tr!Force: [JKMod] Gameplay clean client g2 instances
+void SetupGameGhoul2Model( gclient_t *client, char *modelname ); // Tr!Force: [General] Gameplay clean client g2 instances
 void ClientUserinfoChanged( int clientNum );
 void ClientDisconnect( int clientNum );
 void ClientBegin( int clientNum, qboolean allowTeamReset );

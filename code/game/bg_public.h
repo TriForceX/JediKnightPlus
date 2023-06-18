@@ -326,7 +326,7 @@ typedef enum {
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,				// bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
-	// Tr!Force: [JKMod] Custom stats data
+	// Tr!Force: [General] Custom stats data
 	JK_PLAYER,
 	JK_DIMENSION,
 	JK_MOVEMENT,
@@ -401,7 +401,7 @@ typedef enum {
 #define EF_DISINTEGRATION	0x02000000		// being disintegrated by the disruptor
 #define EF_INVULNERABLE		0x04000000		// just spawned in or whatever, so is protected
 
-#include "../../jkmod/game/jk_public.h" // Tr!Force: [JKMod] Public header
+#include "../../jkmod/game/jk_public.h" // Tr!Force: [General] Public header
 
 typedef enum {
 	EFFECT_NONE = 0,

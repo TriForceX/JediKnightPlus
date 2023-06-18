@@ -1136,8 +1136,8 @@ void ClientUserinfoChanged( int clientNum ) {
 	char	redTeam[MAX_INFO_STRING];
 	char	blueTeam[MAX_INFO_STRING];
 	char	userinfo[MAX_INFO_STRING];
-	int		jkmod_hat;		// Tr!Force: [JKMod] Custom client info
-	int		jkmod_race;		// Tr!Force: [JKMod] Custom client info
+	int		jkmod_hat;		// Tr!Force: [General] Custom client info
+	int		jkmod_race;		// Tr!Force: [General] Custom client info
 
 	// NameCrashFix (whitelisted characters)
 	static const char	validChars[]  = " ~QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm1234567890<>?,./';:][{}`-=!@#$^&*()_+|";
@@ -1234,7 +1234,7 @@ void ClientUserinfoChanged( int clientNum ) {
 		ptr = strstr( s, "@@@" );
 	}
 	
-	JKMod_ClientCleanName( s, ent->client->pers.netname, sizeof(ent->client->pers.netname), ent); // Tr!Force: [JKMod] Client clean name
+	JKMod_ClientCleanName( s, ent->client->pers.netname, sizeof(ent->client->pers.netname), ent); // Tr!Force: [General] Client clean name
 	Info_RemoveKey( userinfo, "name" );
 	Info_SetValueForKey( userinfo, "name", ent->client->pers.netname );
 	trap_SetUserinfo( clientNum, userinfo );
@@ -1327,7 +1327,7 @@ void ClientUserinfoChanged( int clientNum ) {
 	}
 	*/
 
-	// Tr!Force: [JKMod] Custom user info
+	// Tr!Force: [General] Custom user info
 	s = Info_ValueForKey( userinfo, "jk_cg_customHats" );
 	if ( ! *s || atoi( s ) != 0 ) {
 		jkmod_hat = atoi( s );
@@ -1335,7 +1335,7 @@ void ClientUserinfoChanged( int clientNum ) {
 		jkmod_hat = 0;
 	}
 
-	// Tr!Force: [JKMod] Custom user info
+	// Tr!Force: [General] Custom user info
 	jkmod_race = client->pers.jkmodPers.raceBestTime;
 
 	// team task (0 = none, 1 = offence, 2 = defence)
@@ -1357,7 +1357,7 @@ void ClientUserinfoChanged( int clientNum ) {
 			client->pers.netname, team, model,  c1, c2, 
 			client->pers.maxHealth, client->sess.wins, client->sess.losses,
 			Info_ValueForKey( userinfo, "skill" ), teamTask, teamLeader, jk2gameplay, 
-			// Tr!Force: [JKMod] Custom user info
+			// Tr!Force: [General] Custom user info
 			jkmod_hat,
 			jkmod_race
 		);
@@ -1365,7 +1365,7 @@ void ClientUserinfoChanged( int clientNum ) {
 		s = va("n\\%s\\t\\%i\\model\\%s\\g_redteam\\%s\\g_blueteam\\%s\\c1\\%s\\c2\\%s\\hc\\%i\\w\\%i\\l\\%i\\tt\\%d\\tl\\%d\\mvgp\\%i\\jkhat\\%i\\jkrace\\%i",
 			client->pers.netname, client->sess.sessionTeam, model, redTeam, blueTeam, c1, c2, 
 			client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader, jk2gameplay, 
-			// Tr!Force: [JKMod] Custom user info
+			// Tr!Force: [General] Custom user info
 			jkmod_hat,
 			jkmod_race
 		);
@@ -1610,9 +1610,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	gentity_t	*tent;
 	int			flags, i;
 	char		userinfo[MAX_INFO_VALUE], *modelname;
-	int			jksave_player;		// Tr!Force: [JKMod] Don't remove flags
+	int			jksave_player;		// Tr!Force: [General] Don't remove flags
 	int			jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
-	int			jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
+	int			jksave_movement;	// Tr!Force: [General] Don't remove flags
 
 	ent = g_entities + clientNum;
 	
@@ -1707,9 +1707,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	// world to the new position
 	flags = client->ps.eFlags;
 
-	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [JKMod] Don't remove flags
+	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [General] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [JKMod] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [General] Don't remove flags
 
 	i = 0;
 
@@ -1737,9 +1737,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	memset( &client->ps, 0, sizeof( client->ps ) );
 	client->ps.eFlags = flags;
 
-	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
 	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [General] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1835,9 +1835,9 @@ void ClientSpawn(gentity_t *ent) {
 	void		*ghoul2save;
 	int		saveSaberNum = ENTITYNUM_NONE;
 	int		wDisable = 0;
-	int		jksave_player;		// Tr!Force: [JKMod] Don't remove flags
+	int		jksave_player;		// Tr!Force: [General] Don't remove flags
 	int		jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
-	int		jksave_movement;	// Tr!Force: [JKMod] Don't remove flags
+	int		jksave_movement;	// Tr!Force: [General] Don't remove flags
 
 	index = ent - g_entities;
 	client = ent->client;
@@ -1945,15 +1945,15 @@ void ClientSpawn(gentity_t *ent) {
 
 	saveSaberNum = client->ps.saberEntityNum;
 
-	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [JKMod] Don't remove flags
+	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [General] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [JKMod] Don't remove flags
+	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [General] Don't remove flags
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
-	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
 	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [JKMod] Don't remove flags
+	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [General] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
@@ -2470,10 +2470,10 @@ void ClientDisconnect( int clientNum ) {
 	// Tr!Force: [Emotes] Chair emote disable
 	if (ent->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(ent);
 	
-	// Tr!Force: [JKMod] Check for reconnect
+	// Tr!Force: [General] Check for reconnect
 	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));
 
-	// Tr!Force: [JKMod] Clear ignored client
+	// Tr!Force: [General] Clear ignored client
 	JKMod_IgnoreClientClear(clientNum);
 	
 	trap_SetConfigstring( CS_PLAYERS + clientNum, "");

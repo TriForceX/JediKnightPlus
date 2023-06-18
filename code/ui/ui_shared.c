@@ -4023,7 +4023,7 @@ static bind_t g_bindings[] =
 	{"saveDemo",		-1,					-1,		-1,	-1},
 	{"saveDemoLast",	-1,					-1,		-1,	-1},
 
-	// Tr!Force: [JKMod] Add command for menus
+	// Tr!Force: [General] Add command for menus
 	{"dropflag", 			-1,				-1,		-1,	-1},
 	{"engage_duel_force",	-1,				-1,		-1,	-1},
 	{"jetpack",				-1,				-1,		-1,	-1},

@@ -177,7 +177,7 @@ extern vmCvar_t	ui_sensitivity;
 #define QM_LOSTFOCUS			2
 #define QM_ACTIVATED			3
 
-#include "../../jkmod/ui/jk_ui_local.h" // Tr!Force: [JKMod] Main header
+#include "../../jkmod/ui/jk_ui_local.h" // Tr!Force: [General] Main header
 
 typedef struct _tag_menuframework
 {
