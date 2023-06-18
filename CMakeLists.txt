@@ -212,6 +212,6 @@ endif()
 
 add_subdirectory(${SRCDir})
 
-# Tr!Force: [CMake] Add PK3 projects
+# Tr!Force: [CMake] Add mod project
 add_subdirectory("assets")
-set_property(TARGET assets PROPERTY PROJECT_LABEL "Build PK3")
+set_property(TARGET assets PROPERTY PROJECT_LABEL "Build Mod")

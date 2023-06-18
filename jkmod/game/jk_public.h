@@ -56,6 +56,8 @@ Global definitions
 #define JK_PASS_THROUGH			( 1 << 29 )
 
 // Utilities
+#define VAL(x) #x
+#define STR(x) VAL(x)
 #define INFINITE_AMMO			0x7fff
 #define CVAR_NONE				(0x00000000u)
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))

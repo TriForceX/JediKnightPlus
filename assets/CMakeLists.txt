@@ -5,11 +5,11 @@ endif(NOT InMVSDK)
 
 # Get current version
 file(READ "${CMAKE_SOURCE_DIR}/jkmod/game/jk_version.h" VER)
-string(REGEX MATCH "JK_MAJOR 			\"([0-9]*)\"" _ ${VER})
+string(REGEX MATCH "JK_MAJOR 			([0-9]*)" _ ${VER})
 set(VER_MAJOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "JK_MINOR 			\"([0-9]*)\"" _ ${VER})
+string(REGEX MATCH "JK_MINOR 			([0-9]*)" _ ${VER})
 set(VER_MINOR ${CMAKE_MATCH_1})
-string(REGEX MATCH "JK_PATCH 			\"([0-9]*)\"" _ ${VER})
+string(REGEX MATCH "JK_PATCH 			([0-9]*)" _ ${VER})
 set(VER_PATCH ${CMAKE_MATCH_1})
 
 # Generate PK3 file

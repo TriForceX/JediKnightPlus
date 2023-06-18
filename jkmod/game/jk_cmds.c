@@ -38,7 +38,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Help ^5]^7\n"
-			"^7This server is running ^5%s ^7- Version: ^2%s.%s.%s ^7(Build: %s)\n"
+			"^7This server is running ^5%s ^7- Version: ^2%i.%i.%i ^7(Build: %s)\n"
 			"^7You can read the desired help topic using following command: ^2/help <topic>\n"
 			"^5----------\n"
 			"^7Topic list:\n"

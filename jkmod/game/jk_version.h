@@ -16,12 +16,12 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 #define JK_URL  			"https://jkplus.github.io"
 
 // Version
-#define JK_MAJOR 			"0"
-#define JK_MINOR 			"19"
-#define JK_PATCH 			"0"
+#define JK_MAJOR 			0
+#define JK_MINOR 			19
+#define JK_PATCH 			1
 
 // Public
-#define JK_VERSION			JK_SHORTNAME " v" JK_MAJOR "." JK_MINOR "." JK_PATCH
+#define JK_VERSION			JK_SHORTNAME " v" STR(JK_MAJOR) "." STR(JK_MINOR) "." STR(JK_PATCH)
 #define GAMEVERSION			JK_COLOR JK_VERSION
 
 #endif //__JK_VERSION_H__
