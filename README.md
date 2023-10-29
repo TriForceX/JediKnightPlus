@@ -193,7 +193,7 @@ The next list is all *features* from the original **Jedi Knight Plus** private m
 
 The following people supported and helped me directly on this project.
 
-- [DeathSpike](https://github.com/Deathspike) _(Client plugin support)_
+- [DeathSpike](https://github.com/Deathspike) _(Client plugin support and emotes base)_
 - Lee Oates _(Anti-script base code)_
 - Nerevar _(Ingame effects, serverlist and santa hat)_
 - Kaiser / TVpath _(General modding support)_
@@ -227,7 +227,7 @@ The following people supported and helped me directly on this project.
 # Contact
 
 **Jedi Knight Plus Mod developed by Tr!Force**  
-Work copyrighted (C) with holder attribution 2005 - 2021
+Work copyrighted (C) with holder attribution 2005 - 2023
 
 Visit the mod page: https://jkplus.github.io
 

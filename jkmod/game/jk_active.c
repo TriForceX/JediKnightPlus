@@ -192,12 +192,17 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 
 		// Keep the client informed about to predict the emote leg timers
-		if (!(ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)) ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
+		ent->client->pers.jkmodPers.emoteLastTime = level.time;
 	}
-	else if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
+	// Leaving an emote
+	else if (ent->client->pers.jkmodPers.emoteLastTime && ent->client->pers.jkmodPers.emoteLastTime != level.time)
 	{
-		if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
-		ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
+		if (!JKMod_EmoteOut(ent))
+		{
+			if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
+			ent->client->ps.stats[JK_PLAYER] &= ~JK_EMOTE_IN;
+			ent->client->pers.jkmodPers.emoteLastTime = 0;
+		}
 	}
 
 	// Check player pass-through

@@ -86,7 +86,7 @@ qboolean JKMod_OthersInBox(gentity_t *ent)
 	for (i = 0; i < num; i++)
 	{
 		other = &g_entities[touch[i]];
-		if (other->client && other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.eFlags & JK_PASS_THROUGH)) 
+		if (trap_EntityContact(mins, maxs, other) && other->client && other->client->ps.clientNum != ent->client->ps.clientNum && !(other->client->ps.eFlags & JK_PASS_THROUGH))
 		{
 			return qtrue;
 		}

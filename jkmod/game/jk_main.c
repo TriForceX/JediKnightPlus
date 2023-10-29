@@ -582,6 +582,7 @@ void JKMod_PauseTimeRestore(int msec)
 			ADJUST(client->pers.teamState.lastreturnedflag);
 			ADJUST(client->pers.teamState.flagsince);
 			ADJUST(client->pers.jkmodPers.raceStartTime);
+			ADJUST(client->pers.jkmodPers.emoteLastTime);
 		}
 	}
 

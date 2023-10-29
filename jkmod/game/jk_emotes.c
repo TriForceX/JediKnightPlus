@@ -116,26 +116,51 @@ int JKMod_EmoteIn(gentity_t *ent, int type)
 {
 	int	i;
 
-	for (i = 0; i < EMOTE_NUM_EMOTES; i++)
+	if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
 	{
-		if ((ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[i].startAnim && ent->client->ps.saberMove == LS_NONE)
+		for (i = 0; i < EMOTE_NUM_EMOTES; i++)
 		{
-			switch (type)
+			if ((ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[i].startAnim)
 			{
-				// Looking for any emote
-				case -1:
-				default: return 1; break;
-				// Looking for freeze emote
-				case 0: if (!JKModEmotesData[i].special && JKModEmotesData[i].endAnim != -1 && (ent->client->ps.forceHandExtend == HANDEXTEND_DODGE)) return 1; break;
-				// Looking for non-freezing emotes
-				case 1: if (!JKModEmotesData[i].special && JKModEmotesData[i].endAnim == -1) return 1; break;
-				// Looking for special emote
-				case 2: if (JKModEmotesData[i].special && (ent->client->ps.forceHandExtend == HANDEXTEND_TAUNT)) return 1; break;
+				switch (type)
+				{
+					// Looking for any emote
+					case -1:
+					default: return 1; break;
+					// Looking for freeze emote
+					case 0: if (!JKModEmotesData[i].special && JKModEmotesData[i].endAnim != -1 && (ent->client->ps.forceHandExtend == HANDEXTEND_DODGE)) return 1; break;
+					// Looking for non-freezing emotes
+					case 1: if (!JKModEmotesData[i].special && JKModEmotesData[i].endAnim == -1) return 1; break;
+					// Looking for special emote
+					case 2: if (JKModEmotesData[i].special && (ent->client->ps.forceHandExtend == HANDEXTEND_TAUNT)) return 1; break;
+				}
 			}
 		}
 	}
 
-	// No match, result 0
+	return 0;
+}
+
+/*
+=====================================================================
+Emote check leaving out
+=====================================================================
+*/
+int JKMod_EmoteOut(gentity_t* ent)
+{
+	int	i;
+
+	if (ent->client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)
+	{
+		for (i = 0; i < EMOTE_NUM_EMOTES; i++)
+		{
+			if ((ent->client->ps.torsoAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[i].endAnim && JKModEmotesData[i].endAnim != -1 && JKModEmotesData[i].endAnim != BOTH_STAND1)
+			{
+				return 1;
+			}
+		}
+	}
+
 	return 0;
 }
 
@@ -146,7 +171,6 @@ Emote launch function
 */
 int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 {
-	int	cmd;
 	qboolean showAlert = qtrue;
 
 	// Check client
@@ -246,41 +270,12 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		// Are we already using the emote? Then lets go back to standing up position
 		if ((ent->client->ps.legsAnim & ~ANIM_TOGGLEBIT) == JKModEmotesData[emoteIndex].startAnim)
 		{
-			if (emoteIndex == EMOTE_SIT)
-			{
-				switch (Q_irand(1, 10))
-				{
-					case 1:
-					case 2:
-						cmd = BOTH_FORCE_GETUP_B5;
-						break;
-					case 3:
-					case 4:
-					case 5:
-						cmd = BOTH_FORCE_GETUP_B6;
-						break;
-					case 6:
-					case 7:
-						cmd = BOTH_SIT2TOSTAND5;
-						break;
-					case 8:
-					case 9:
-					case 10:
-					default:
-						cmd = BOTH_FORCE_GETUP_F1;
-						break;
-				}
-			}
-			else
-			{
-				cmd = JKModEmotesData[emoteIndex].endAnim;
-			}
-
 			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
 
 			StandardSetBodyAnim(ent, JKModEmotesData[emoteIndex].endAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+			ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 			return 1;
 		}
 		// We are starting the given animation
@@ -322,6 +317,7 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 
 				pm->ps->legsTimer = ((pm->ps->ping < 20) ? 20 : pm->ps->ping) * 3.5;
 			}
+			ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 			return 1;
 		}
 	}
@@ -352,6 +348,7 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		{
 			StandardSetBodyAnim(ent, JKModEmotesData[emoteIndex].startAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 		}
+		ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 		return 1;
 	}
 }
@@ -431,7 +428,7 @@ void JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert)
 				SetClientViewAngle(ent, entAngles);
 
 				StandardSetBodyAnim(ent, BOTH_HUGGER1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-
+				ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 				ent->client->ps.saberMove = LS_NONE;
 				ent->client->ps.saberBlocked = 0;
 				ent->client->ps.saberBlocking = 0;
@@ -442,7 +439,7 @@ void JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert)
 				SetClientViewAngle(other, otherAngles);
 
 				StandardSetBodyAnim(other, BOTH_HUGGEE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-
+				other->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 				other->client->ps.saberMove = LS_NONE;
 				other->client->ps.saberBlocked = 0;
 				other->client->ps.saberBlocking = 0;
@@ -525,7 +522,7 @@ void JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert)
 				SetClientViewAngle(ent, entAngles);
 
 				StandardSetBodyAnim(ent, BOTH_KISSER1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-
+				ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 				ent->client->ps.saberMove = LS_NONE;
 				ent->client->ps.saberBlocked = 0;
 				ent->client->ps.saberBlocking = 0;
@@ -536,7 +533,7 @@ void JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert)
 				SetClientViewAngle(other, otherAngles);
 
 				StandardSetBodyAnim(other, BOTH_KISSEE1LOOP, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-
+				other->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 				other->client->ps.saberMove = LS_NONE;
 				other->client->ps.saberBlocked = 0;
 				other->client->ps.saberBlocking = 0;
@@ -586,7 +583,7 @@ void JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert)
 	if (ent->client->ps.weapon == WP_SABER && !ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
 
 	StandardSetBodyAnim(ent, cmd, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
-
+	ent->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 	ent->client->ps.saberMove = LS_NONE;
 	ent->client->ps.saberBlocked = 0;
 	ent->client->ps.saberBlocking = 0;
@@ -616,6 +613,7 @@ void JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert)
 		{
 			if (other->client->ps.weapon != WP_SABER) return;
 			StandardSetBodyAnim(other, BOTH_PAIN20, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
+			other->client->ps.stats[JK_PLAYER] |= JK_EMOTE_IN;
 			other->client->ps.saberMove = LS_NONE;
 			other->client->ps.saberBlocked = 0;
 			other->client->ps.saberBlocking = 0;

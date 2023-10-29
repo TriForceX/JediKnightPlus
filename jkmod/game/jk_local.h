@@ -179,6 +179,7 @@ typedef struct
 {
 	qboolean		clientPlugin;			// Client plugin check
 	int				customDuel;				// Client is in custom duel
+	int				emoteLastTime;			// Emote last time used
 	int				teleportChat[5];		// Player teleport x y z pitch yaw
 	int				teleportChatCheck;		// Player teleport check
 	int				jetpackUseDelay;		// Jetpack usage delay
@@ -474,6 +475,7 @@ int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *en
 // jk_emotes.c
 int			JKMod_EmoteCheck(char *cmd, gentity_t *ent);
 int			JKMod_EmoteIn(gentity_t *ent, int type);
+int			JKMod_EmoteOut(gentity_t* ent);
 int			JKMod_EmotePlay(gentity_t *ent, int emoteIndex);
 void		JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert);
 void		JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert);
