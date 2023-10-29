@@ -46,6 +46,7 @@ Global definitions
 #define JK_MAP_SPELEVATORS		( 1 << 12 )
 #define JK_MAP_SPDOORUSE		( 1 << 13 )
 #define JK_MAP_SPDOORTRIGGER	( 1 << 14 )
+#define JK_MAP_SPECDOORSTUCK	( 1 << 15 )
 
 // Jetpack stuff
 #define JK_JETPACK_ACTIVE		( 1 << 27 )

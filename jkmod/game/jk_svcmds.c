@@ -228,6 +228,7 @@ static jkmod_bit_info_t toggleMapFixes[] =
 	"SP ELEVATOR RETURN",
 	"SP DOOR USE BUTTON",
 	"SP DOOR TRIGGER SPAWN",
+	"SPECTATOR DOOR STUCK",
 };
 
 // Options for bot_forGimmick cvar
@@ -257,6 +258,7 @@ static void JKMod_svCmd_toggleMod(void)
 			"^3jk_voteControl\n"
 			"^3jk_altDimension\n"
 			"^3jk_altDimensionBase\n"
+			"^3jk_mapFixes\n"
 			"^3bot_forGimmick\n"
 			);
 	}
