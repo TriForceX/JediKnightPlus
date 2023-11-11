@@ -156,7 +156,7 @@ static cvarTable_t		gameCvarTable[] = {
 
 	// noset vars
 	{ &g_gamename, "gamename", GAMEVERSION , CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
-	{ &g_gamedate, "gamedate", __DATE__ , CVAR_ROM, 0, qfalse  },
+	{ &g_gamedate, "gamedate", __DATE__ , CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  }, // Tr!Force: [General] Send game date to clients
 	{ &g_restarted, "g_restarted", "0", CVAR_ROM, 0, qfalse  },
 	{ NULL, "sv_mapname", "", CVAR_SERVERINFO | CVAR_ROM, 0, qfalse  },
 
@@ -590,8 +590,12 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	int			i;
 	cvarTable_t	*cv;
 	qboolean remapped = qfalse;
+	char *gamedate = JKMod_TrimWhiteSpace(__DATE__); // Tr!Force: [General] Remove extra spaces on game date
 
 	for ( i = 0, cv = gameCvarTable ; i < gameCvarTableSize ; i++, cv++ ) {
+
+		// Tr!Force: [General] Remove extra spaces on game date
+		if (cv->vmCvar == &g_gamedate) cv->defaultString = gamedate;
 
 		// Tr!Force: [GameTypeConfig] Cvar latch temp unlock toggle
 		if (cv->vmCvar != &g_gametype && cv->cvarFlags & (CVAR_LATCH | CVAR_TEMP) && jkcvar_gameTypeConfig.integer) 
@@ -619,14 +623,14 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		return;
 	}
 
-	if ( strcmp(g_gamename.string, GAMEVERSION) || strcmp(g_gamedate.string, __DATE__) ) {
+	if ( strcmp(g_gamename.string, GAMEVERSION) || strcmp(g_gamedate.string, gamedate) ) {
 		// Inform the host about the unexpected change
 		G_Printf( S_COLOR_YELLOW "WARNING: The gamename or gamedate changed after mapchange.\n"
 		          S_COLOR_YELLOW "         This could indiciate unexpected side-effects due to module updates at runtime.\n"
 		          S_COLOR_YELLOW "         You might want to restart the server.\n" );
 
 		trap_Cvar_Set( "gamename", GAMEVERSION );
-		trap_Cvar_Set( "gamedate", __DATE__ );
+		trap_Cvar_Set( "gamedate", gamedate);
 	}
 
 	if (remapped) {
@@ -738,14 +742,15 @@ G_InitGame
 ============
 */
 void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Force: BaseJk2 Init game function
-	int					i;
-	unsigned			jkmod_dimensionBase; // Tr!Force: [Dimensions] Global base dimension
+	int			i;
+	unsigned	jkmod_dimensionBase;						// Tr!Force: [Dimensions] Global base dimension
+	char		*gamedate = JKMod_TrimWhiteSpace(__DATE__);	// Tr!Force: [General] Remove extra spaces on game date
 
 	B_InitAlloc(); //make sure everything is clean
 
 	G_Printf ("------- Game Initialization -------\n");
 	G_Printf ("gamename: %s\n", GAMEVERSION);
-	G_Printf ("gamedate: %s\n", __DATE__);
+	G_Printf ("gamedate: %s\n", gamedate);
 	
 	if ( jk2version == VERSION_UNDEF )
 	{ // We don't know the version of the server, yet...

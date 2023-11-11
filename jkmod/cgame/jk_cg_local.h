@@ -61,8 +61,11 @@ typedef struct
 	int			dualSaber;				// Tr!Force: [DualSaber] Main cvar
 	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
 	int			pauseTime;				// Tr!Force: [Pause] Server pause time
+	char		gameDate[MAX_QPATH];	// Tr!Force: [Plugin] Server game date
 	char		gameName[MAX_OSPATH];	// Tr!Force: [Plugin] Server game name
-	qboolean	modCheck;				// Tr!Force: [Plugin] Server mod check
+	qboolean	pluginCheck;			// Tr!Force: [Plugin] Client plugin check
+	float		clientVersion;			// Tr!Force: [Plugin] Client mod version
+	float		serverVersion;			// Tr!Force: [Plugin] Server mod version
 
 } jkmod_cgs_t;
 
@@ -300,6 +303,8 @@ void		JKMod_CG_UpdateCvars(void);
 void		JKMod_CG_CVU_sHelperColor(void);
 void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
+float		JKMod_CG_GetVersion(const char *s);
+qboolean	JKMod_CG_CheckVersion(const char *s);
 char		*JKMod_CG_StrTok(char *str, const char *delim);
 
 // jk_cg_consolecmds.c

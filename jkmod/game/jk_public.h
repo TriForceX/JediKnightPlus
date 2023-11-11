@@ -64,7 +64,9 @@ Global definitions
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
 #define VALIDCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
 #define VALIDTEXT(a)			((a != NULL) && (a[0] != '\0') && (a[0] != ' '))
+#define VALIDDIGIT(a)			((a >= '0' && a <= '9'))
 #define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))
+#define VERSION_FLOAT(x,y,z)	atof(va("%d.%02d%02d", x, y, z))
 
 /*
 =====================================================================

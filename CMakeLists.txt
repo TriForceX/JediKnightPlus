@@ -115,6 +115,7 @@ set(RCC "q3rcc")
 set(ASM "q3asm")
 
 # Directories
+set(AssetsDir "${CMAKE_CURRENT_SOURCE_DIR}/assets") # Tr!Force: [CMake] Mod assets folder
 set(JKModDir "${CMAKE_CURRENT_SOURCE_DIR}/jkmod") # Tr!Force: [CMake] Main mod code folder
 set(SRCDir "${CMAKE_CURRENT_SOURCE_DIR}/code")
 set(QVMDir "${CMAKE_BINARY_DIR}/out/vm")
@@ -211,7 +212,4 @@ if(BuildQVMs)
 endif()
 
 add_subdirectory(${SRCDir})
-
-# Tr!Force: [CMake] Add mod project
-add_subdirectory("assets")
-set_property(TARGET assets PROPERTY PROJECT_LABEL "Build Mod")
+add_subdirectory(${AssetsDir}) # Tr!Force: [CMake] Add mod assets folder

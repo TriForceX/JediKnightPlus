@@ -86,8 +86,8 @@ static void CG_Obituary( entityState_t *ent ) {
 	char		*message;
 	const char	*targetInfo;
 	const char	*attackerInfo;
-	char		targetName[32];
-	char		attackerName[32];
+	char		targetName[MAX_QPATH + 2] = { 0 }; // Workaround
+	char		attackerName[MAX_QPATH + 2] = { 0 }; // Workaround
 	gender_t	gender;
 	clientInfo_t	*ci;
 

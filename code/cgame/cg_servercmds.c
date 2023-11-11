@@ -69,7 +69,7 @@ static void CG_ParseScores( void ) {
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i = 0 ; i < readScores ; i++ ) {
 		// Tr!Force: [Scoreboard] Extra info
-		if (cgs.jkmodCGS.modCheck) {
+		if (cgs.jkmodCGS.pluginCheck) {
 			scoreOffset = 15;
 			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
 		} else {
@@ -160,12 +160,18 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCGS.dualSaber = atoi(Info_ValueForKey(info, "jk_dualSaber"));				// Tr!Force: [DualSaber] Main cvar
 	cgs.jkmodCGS.duelPassThrough = atoi(Info_ValueForKey(info, "jk_duelPassThrough"));	// Tr!Force: [DuelPassThrough] Main cvar
 
-	// Tr!Force: [GameName] Main cvar
-	if (cgs.jkmodCGS.gameName[0] == '\0') 
+	Com_sprintf(cgs.jkmodCGS.gameDate, sizeof(cgs.jkmodCGS.gameDate), "%s", Info_ValueForKey(info, "gamedate")); // Tr!Force: [Plugin] Main cvar
+	Com_sprintf(cgs.jkmodCGS.gameName, sizeof(cgs.jkmodCGS.gameName), "%s", Info_ValueForKey(info, "gamename")); // Tr!Force: [Plugin] Main cvar
+
+	// Tr!Force: [Plugin] Main server info check
+	if (cgs.jkmodCGS.gameName[0])
 	{
-		char *gamename = Info_ValueForKey(info, "gamename");
-		Com_sprintf(cgs.jkmodCGS.gameName, sizeof(cgs.jkmodCGS.gameName), "%s", gamename);
-		cgs.jkmodCGS.modCheck = (qboolean)!strcmp(gamename, GAMEVERSION);
+		if (strstr(cgs.jkmodCGS.gameName, JK_SHORTNAME)) 
+		{
+			float serverVer = JKMod_CG_GetVersion(cgs.jkmodCGS.gameName + 11);
+			cgs.jkmodCGS.pluginCheck = cgs.jkmodCGS.clientVersion >= serverVer && cgs.jkmodCGS.gameDate[0];
+			cgs.jkmodCGS.serverVersion = serverVer;
+		}
 	}
 
 	mapname = Info_ValueForKey( info, "mapname" );

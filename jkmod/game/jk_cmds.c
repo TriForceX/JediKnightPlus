@@ -47,7 +47,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^1Build          ^3About          Credits\n"
 			"^5----------\n"
 			"^2Note 1: ^7Commands marked in ^1red ^7are not available to use\n"
-			"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, JKMod_TrimWhiteSpace(__DATE__)));
+			"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, g_gamedate.string));
 
 		if (!ent->client->pers.jkmodPers.clientPlugin) {
 			trap_SendServerCommand(ent - g_entities, va("print \"^2Note 2: ^7Plugin not detected or invalid, download from ^5%s\n\"", JK_URL));
@@ -755,7 +755,6 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 	if (ent) 
 	{
-		
 		trap_SendServerCommand(ent - g_entities, va("cp \""
 			"You are in the ^3%s ^7dimension\n"
 			"Open console for player list\"",
@@ -764,33 +763,34 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
 			"^7List of all players connected on the server\n"
-			"^7Client plugin status: ^2Valid^7, ^3Invalid^7, ^1No plugin\n"
+			"^7Client plugin status: ^2Valid^7, ^5Newer, ^3Older^7, ^1Invalid\n"
 			"^7\""));
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5---------------------------------------------------------------------------------------\n"
-			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored   ^5|^7 Dimension    ^5|^7 Plugin\n"
-			"^5---------------------------------------------------------------------------------------\n"
+			"^5----------------------------------------------------------------------------------------------------\n"
+			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored   ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
+			"^5----------------------------------------------------------------------------------------------------\n"
 			"^7\""));
 	}
 	else
 	{
 		G_Printf("Map: %s\n", mapname);
-		G_Printf("Num Name                         Type  Dimension    Plugin\n");
-		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
+		G_Printf("Num Name                         Type  Dimension    Plugin          Game\n");
+		G_Printf("--- ---------------------------- ----- ------------ -------------- -----------\n");
 	}
 
 	for (num = 0; num < level.maxclients; num++)
 	{
 		gentity_t 	*user = &g_entities[num];
 		char		userinfo[MAX_INFO_VALUE] = { 0 };
-		char		name[MAX_STRING_CHARS] = "";
-		char		ignored[MAX_STRING_CHARS] = "";
+		char        name[MAX_STRING_CHARS] = { 0 };
+		char		ignored[MAX_STRING_CHARS] = { 0 };
 		char		*value;
 		char		*type;
 		char		*dimension;
 		char		*status;
 		char		*plugin;
+		char		*gameversion;
 
 		// Check
 		if (!user || !user->client || !user->inuse) continue;
@@ -800,6 +800,18 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		trap_GetUserinfo(num, userinfo, sizeof(userinfo));
 
 		// Find info
+		value = Info_ValueForKey(userinfo, "JK2MV");
+		if (strstr(value, "ETJK2")) {
+			gameversion = "EternalJK2";
+;		} 
+		else if (value[0] || (user->r.svFlags & SVF_BOT && mvapi)) {
+			gameversion = "JK2MV";
+		} 
+		else {
+			gameversion = "BaseJK2";
+		}
+
+		// Check plugin
 		value = Info_ValueForKey(userinfo, "jkmod_client");
 		if (value[0]) {
 			plugin = value;
@@ -825,33 +837,35 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		strcpy(name, user->client->pers.netname);
 		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : va("%s", JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name));
 		type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
-		status = strcmp(plugin, "No plugin") ? (user->client->pers.jkmodPers.clientPlugin ? S_COLOR_GREEN : S_COLOR_YELLOW) : S_COLOR_RED;
+		status = user->client->pers.jkmodPers.clientVersion ? (user->client->pers.jkmodPers.clientVersion == level.jkmodLocals.serverVersion ? S_COLOR_GREEN : (user->client->pers.jkmodPers.clientVersion > level.jkmodLocals.serverVersion ? S_COLOR_CYAN : S_COLOR_YELLOW)) : S_COLOR_RED;
 
 		// Player print
 		if (ent) {
-			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-9s ^5|^7 %-12s ^5|^7 %s%-15s\n\"",
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-9s ^5|^7 %-12s ^5|^7 %s%-15s ^5|^7 %-9s\n\"",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
 				ignored,
 				dimension,
 				status,
-				plugin
+				plugin,
+				gameversion
 			));
 		// Server print
 		} else {
-			G_Printf("%-3i %-28s %-5s %-12s %-15s\n",
+			G_Printf("%-3i %-28s %-5s %-12s %-15s %-9s\n",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
 				dimension,
-				plugin
+				plugin,
+				gameversion
 			);
 		}
 	}
 
 	if (ent) {
-		trap_SendServerCommand(ent - g_entities, va("print \"^5---------------------------------------------------------------------------------------\n\""));
+		trap_SendServerCommand(ent - g_entities, va("print \"^5----------------------------------------------------------------------------------------------------\n\""));
 		trap_SendServerCommand(ent - g_entities, va("print \"Your position in ^3%s ^7is: ^2(^7%i^2) (^7%i^2) (^7%i^2) : (^7%i^2)\n\"",
 			mapname,
 			(int)ent->client->ps.origin[0],
@@ -859,7 +873,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			(int)ent->client->ps.origin[2],
 			(int)ent->client->ps.viewangles[YAW]));
 	} else {
-		G_Printf("--- ---------------------------- ----- ------------ ---------------\n");
+		G_Printf("--- ---------------------------- ----- ------------ --------------- ----------\n");
 	}
 }
 
@@ -2119,6 +2133,31 @@ void JKMod_ClientCommand(int clientNum)
 			trap_Argv(3, arg3, sizeof(arg3));
 
 			JKMod_G_PlayEffect_ID(G_EffectIndex(arg2), ent->client->ps.origin, ent->client->ps.viewangles, ent->s.number, atoi(arg3));
+			return;
+		}
+
+		// Entity scan
+		if (!Q_stricmp(argcmd, "score"))
+		{
+			char arg2[MAX_TOKEN_CHARS];
+			char arg3[MAX_TOKEN_CHARS];
+			int score1, score2;
+		
+			trap_Argv(2, arg2, sizeof(arg2));
+			trap_Argv(3, arg3, sizeof(arg3));
+
+			score1 = atoi(arg2);
+			score2 = atoi(arg3);
+		
+			if (g_gametype.integer == GT_TOURNAMENT) {
+				ent->client->sess.wins = score1;
+				ent->client->sess.losses = score2;
+				trap_SendServerCommand(ent - g_entities, va("print \"Wins: %i - Losses: %i\n-------\n\"", score1, score2));
+			} else {
+				ent->client->ps.persistant[PERS_SCORE] = score1;
+				ent->client->ps.persistant[PERS_KILLED] = score2;
+				trap_SendServerCommand(ent - g_entities, va("print \"Score: %i - Killed: %i\n-------\n\"", score1, score2));
+			}
 			return;
 		}
 

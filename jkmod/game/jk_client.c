@@ -138,7 +138,6 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	{
 		char	clientVersion[MAX_INFO_VALUE];
 		char	pluginVersion[MAX_INFO_VALUE];
-		char	clientEternal[MAX_INFO_VALUE];
 		int		allowDownload;
 
 		// Force to spectator mode
@@ -151,12 +150,11 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		// Get info
 		Q_strncpyz(clientVersion, Info_ValueForKey(userinfo, "JK2MV"), sizeof(clientVersion));
 		Q_strncpyz(pluginVersion, Info_ValueForKey(userinfo, "jkmod_client"), sizeof(pluginVersion));
-		Q_strncpyz(clientEternal, Info_ValueForKey(userinfo, "cjp_client"), sizeof(clientEternal));
 
 		allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
 
 		// Check for EternalJK2
-		if (!strcmp(clientEternal, "1.4JAPRO")) 
+		if (strstr(clientVersion, "ETJK2"))
 		{
 			trap_SendServerCommand(clientNum, "cp \"You are using ^1EternalJK2\nSome features may be ^3disabled^7\nPlease use JK2MV ^5https://jk2mv.org\"");
 			trap_SendServerCommand(clientNum, "print \"You are running in ^3Server Side^7 mode only due ^1EternalJK2^7 was detected\n\"");
@@ -172,7 +170,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 			}
 			else
 			{
-				trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nThe server version is ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, JK_VERSION));
+				trap_SendServerCommand(clientNum, va("cp \"Your client plugin is\n^3%s\nServer requires at least ^5%s^7\nCheck the console or enable downloads in main menu\"", pluginVersion, JK_VERSION));
 				G_LogPrintf("ClientPlugin: Player is using '%s' instead '%s'\n", pluginVersion, JK_VERSION);
 			}
 

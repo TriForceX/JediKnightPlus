@@ -30,6 +30,46 @@ void QDECL JKMod_Printf(const char *fmt, ...)
 
 /*
 =====================================================================
+Convert double dot number version string into a valid float number
+=====================================================================
+*/
+float JKMod_GetVersion(const char *s)
+{
+	int major, minor, patch;
+	float version = 0.0;
+
+	if (JKMod_CheckVersion(s)) {
+		sscanf(s, "%d.%d.%d", &major, &minor, &patch);
+		version = atof(va("%d.%02d%02d", major, minor, patch));
+	}
+
+	return version;
+}
+
+/*
+=====================================================================
+Check double dot number version string format
+=====================================================================
+*/
+qboolean JKMod_CheckVersion(const char *s) 
+{
+	int	i;
+	int len = strlen(s);
+	int dots = 0;
+
+	for (i = 0; i < len; i++) {
+		if (!VALIDDIGIT(s[i]) && s[i] != '.') return qfalse;
+		if (s[i] == '.') dots++;
+	}
+
+	if (dots != 2) return qfalse;
+	if (!VALIDDIGIT(s[0]) || !VALIDDIGIT(s[len - 1])) return qfalse;
+
+	return qtrue;
+}
+
+/*
+=====================================================================
 Check the given string as number
 =====================================================================
 */

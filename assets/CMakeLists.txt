@@ -3,7 +3,7 @@ if(NOT InMVSDK)
 	message(FATAL_ERROR "Use the top-level cmake script!")
 endif(NOT InMVSDK)
 
-# Get current version
+# Get mod version
 file(READ "${CMAKE_SOURCE_DIR}/jkmod/game/jk_version.h" VER)
 string(REGEX MATCH "JK_MAJOR 			([0-9]*)" _ ${VER})
 set(VER_MAJOR ${CMAKE_MATCH_1})
@@ -12,26 +12,51 @@ set(VER_MINOR ${CMAKE_MATCH_1})
 string(REGEX MATCH "JK_PATCH 			([0-9]*)" _ ${VER})
 set(VER_PATCH ${CMAKE_MATCH_1})
 
-# Generate PK3 file
+# Set main variables
 set(PK3FILE jkmod_plugin_${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}.pk3)
 set(SRVPATH ${CMAKE_SOURCE_DIR}/assets/server)
 set(PK3PATH ${CMAKE_SOURCE_DIR}/assets/client)
+set(QVMPATH ${CMAKE_BINARY_DIR}/code/vm)
+set(TMPPATH ${CMAKE_CURRENT_BINARY_DIR}/client)
 set(TMPFILE ${CMAKE_CURRENT_BINARY_DIR}/${PK3FILE})
-set(OUTFILE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/${PK3FILE})
+set(OUTFILE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MVSDK}/${PK3FILE})
 
-configure_file(${SRVPATH}/ref_forcelist.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/ref_forcelist.txt)
-configure_file(${SRVPATH}/ref_whitelist.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Assets/ref_whitelist.txt)
+# Add custom target
+add_custom_target(assets DEPENDS ${TMPFILE} ${TMPPATH})
+set_property(TARGET assets PROPERTY PROJECT_LABEL "Build Assets")
 
-file(MAKE_DIRECTORY "${SRVPATH}/vm")
-file(MAKE_DIRECTORY "${PK3PATH}/vm")
-file(GLOB PK3ASSETS "${PK3PATH}/*")
+# Check QVM files
+if(EXISTS ${QVMPATH}/jk2mpgame.qvm AND EXISTS ${QVMPATH}/cgame.qvm AND EXISTS ${QVMPATH}/ui.qvm)
+	# Server stuff
+	message(STATUS "Configure server stuff...")
+	file(COPY "${SRVPATH}/" DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MVSDK}/)
+	file(COPY "${QVMPATH}/jk2mpgame.qvm" DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MVSDK}/vm)
+	configure_file(${SRVPATH}/ref_whitelist.txt ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MVSDK}/ref_whitelist.txt)
+	
+	# Client stuff
+	message(STATUS "Configure client stuff...")
+	file(GLOB PK3QVMS ${QVMPATH}/cgame.qvm ${QVMPATH}/ui.qvm)
+	file(COPY "${PK3PATH}/" DESTINATION ${TMPPATH})
+	file(COPY ${PK3QVMS} DESTINATION ${TMPPATH}/vm/)
+	file(GLOB PK3ASSETS "${TMPPATH}/*")
+	
+	# Compressed stuff
+	message(STATUS "Configure PK3 file...")
+	include(InstallZIP)
+	add_zip_command(${TMPFILE} ${OUTFILE} DIR "${TMPPATH}" FILES "${PK3ASSETS}" DEPENDS ${TMPFILE})
+	
+	# Finish and cleanup
+	add_custom_command(TARGET assets POST_BUILD
+		COMMENT "Cleaning temporary files..."
+		COMMAND ${CMAKE_COMMAND} -E remove_directory -f ${TMPPATH}
+		COMMAND ${CMAKE_COMMAND} -E remove -f ${TMPFILE}
+		DEPENDS ${TMPFILE} ${TMPPATH}
+	)
+endif()
 
-include(InstallZIP)
-add_zip_command(${TMPFILE} ${OUTFILE} DIR "${PK3PATH}" FILES "${PK3ASSETS}" )
-
-# Finish and cleanup
-add_custom_target(assets DEPENDS "${TMPFILE}")
-add_custom_command(TARGET assets POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E remove -f "${TMPFILE}"
+# Clean previous cache
+add_custom_command(TARGET assets PRE_BUILD
+	COMMENT "Cleaning any previous cache..."
+	COMMAND ${CMAKE_COMMAND} -E remove_directory -f ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MVSDK}
 	COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/generate.stamp.depend
 )

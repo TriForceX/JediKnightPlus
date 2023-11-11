@@ -143,9 +143,12 @@ void JKMod_CG_RegisterCvars(void)
 	// Launch original register cvars function
 	BaseJK2_CG_RegisterCvars();
 
-	// Set the client plugin version
+	// Register client plugin cvar
 	trap_Cvar_Register(NULL, "jkmod_client", "", CVAR_USERINFO | CVAR_ROM);
 	trap_Cvar_Set("jkmod_client", JK_VERSION);
+
+	// Set the client plugin version
+	cgs.jkmodCGS.clientVersion = VERSION_FLOAT(JK_MAJOR, JK_MINOR, JK_PATCH);
 
 	// Check console notify time
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
@@ -222,6 +225,46 @@ void QDECL JKMod_CG_Printf(const char *msg, ...)
 		cg.jkmodCG.consolePrintTime = cg.time;
 		trap_Print(text);
 	}
+}
+
+/*
+=====================================================================
+Convert double dot number version string into a valid float number
+=====================================================================
+*/
+float JKMod_CG_GetVersion(const char *s)
+{
+	int major, minor, patch;
+	float version = 0.0;
+
+	if (JKMod_CG_CheckVersion(s)) {
+		sscanf(s, "%d.%d.%d", &major, &minor, &patch);
+		version = atof(va("%d.%02d%02d", major, minor, patch));
+	}
+
+	return version;
+}
+
+/*
+=====================================================================
+Check double dot number version string format
+=====================================================================
+*/
+qboolean JKMod_CG_CheckVersion(const char *s)
+{
+	int	i;
+	int len = strlen(s);
+	int dots = 0;
+
+	for (i = 0; i < len; i++) {
+		if (!VALIDDIGIT(s[i]) && s[i] != '.') return qfalse;
+		if (s[i] == '.') dots++;
+	}
+
+	if (dots != 2) return qfalse;
+	if (!VALIDDIGIT(s[0]) || !VALIDDIGIT(s[len - 1])) return qfalse;
+
+	return qtrue;
 }
 
 /*

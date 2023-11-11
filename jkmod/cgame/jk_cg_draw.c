@@ -81,7 +81,7 @@ void JKMod_CG_Draw2D(void)
 	}
 
 	// Server mod check
-	if (!cgs.jkmodCGS.modCheck && (trap_Key_GetCatcher() & KEYCATCH_UI))
+	if (!cgs.jkmodCGS.pluginCheck && (trap_Key_GetCatcher() & KEYCATCH_UI))
 	{
 		float color[4] = { 1, 1, 1, 0.4 };
 		UI_DrawScaledProportionalString(0.5f * cgs.screenWidth, cgs.screenHeight-15, CG_GetStripEdString("JKINGAME", "MOD_MISMATCH"), UI_CENTER, color, 0.6);

@@ -1162,10 +1162,13 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	// Tr!Force: [Plugin] Check plugin
 	s = Info_ValueForKey( userinfo, "jkmod_client" );
-	if ( !strcmp( s, JK_VERSION ) ) {
-		client->pers.jkmodPers.clientPlugin = qtrue;
+	if ( strstr( s, JK_SHORTNAME ) ) {
+		float clientVer = JKMod_GetVersion(s + 9);
+		client->pers.jkmodPers.clientPlugin = clientVer >= level.jkmodLocals.serverVersion;
+		client->pers.jkmodPers.clientVersion = clientVer;
 	} else {
 		client->pers.jkmodPers.clientPlugin = qfalse;
+		client->pers.jkmodPers.clientVersion = qfalse;
 	}
 
 	// Tr!Force: [Duel] Private duel check

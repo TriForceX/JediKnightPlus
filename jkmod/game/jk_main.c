@@ -920,6 +920,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set default timescale
 	trap_Cvar_Set("timescale", "1");
 
+	// Set server version
+	level.jkmodLocals.serverVersion = VERSION_FLOAT(JK_MAJOR, JK_MINOR, JK_PATCH);
+
 	// Set map restarted check
 	level.jkmodLocals.mapRestarted = (qboolean)restart;
 

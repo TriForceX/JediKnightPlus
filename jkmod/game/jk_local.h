@@ -178,6 +178,7 @@ typedef struct
 typedef struct
 {
 	qboolean		clientPlugin;			// Client plugin check
+	float			clientVersion;			// Client plugin version
 	int				customDuel;				// Client is in custom duel
 	int				emoteLastTime;			// Emote last time used
 	int				teleportChat[5];		// Player teleport x y z pitch yaw
@@ -228,6 +229,7 @@ typedef struct
 // Level data
 typedef struct
 {
+	float			serverVersion;								// Server mod version
 	char			randomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];	// Random begin strings
 	int				randomBeginCount;							// Random begin total count
 	char			serverNews[MAX_FILE_VARS][MAX_FILE_CHARS];	// Server news strings
@@ -396,6 +398,7 @@ extern	vmCvar_t					jkcvar_test1;
 extern	vmCvar_t					jkcvar_test2;
 
 extern	vmCvar_t					bot_forgimmick;
+extern	vmCvar_t					g_gamedate;
 extern	vmCvar_t					developer;
 
 /*
@@ -442,6 +445,8 @@ void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
 
 // jk_common.c
 void QDECL	JKMod_Printf(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
+float		JKMod_GetVersion(const char *s);
+qboolean	JKMod_CheckVersion(const char *s);
 qboolean	JKMod_ValidNumber(const char *s);
 void		JKMod_DummyEncode(char *buffer, const char *s);
 char		*JKMod_TrimWhiteSpace(char* s);
