@@ -664,7 +664,7 @@ void CG_PredictPlayerState( void ) {
 	if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
 		// Tr!Force: [PlayerMovement] Spectators can fly through everything
 		if (cg.snap->ps.stats[JK_MOVEMENT] & JK_SPECTATOR_NOCLIP) {
-			cg_pmove.tracemask &= ~MASK_ALL;
+			cg_pmove.tracemask = CONTENTS_NONE;
 		} else {
 			cg_pmove.tracemask &= ~CONTENTS_BODY;	// spectators can fly through bodies
 		}

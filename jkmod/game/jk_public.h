@@ -61,6 +61,7 @@ Global definitions
 #define STR(x) VAL(x)
 #define INFINITE_AMMO			0x7fff
 #define CVAR_NONE				(0x00000000u)
+#define CONTENTS_NONE			(0x00000000u)
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
 #define VALIDCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
 #define VALIDTEXT(a)			((a != NULL) && (a[0] != '\0') && (a[0] != ' '))

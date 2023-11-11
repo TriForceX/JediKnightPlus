@@ -132,7 +132,6 @@ void JKMod_CG_RegisterCvars(void)
 {
 	int						i;
 	jkmod_cg_cvar_table_t	*cv;
-	char					var[MAX_TOKEN_CHARS];
 
 	// Register all the cvars
 	for (i = 0, cv = JKModCGcvarTable; i < JKModCGcvarTableSize; i++, cv++) 

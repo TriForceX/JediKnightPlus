@@ -742,9 +742,9 @@ G_InitGame
 ============
 */
 void BaseJK2_G_InitGame( int levelTime, int randomSeed, int restart ) { // Tr!Force: BaseJk2 Init game function
-	int			i;
-	unsigned	jkmod_dimensionBase;						// Tr!Force: [Dimensions] Global base dimension
-	char		*gamedate = JKMod_TrimWhiteSpace(__DATE__);	// Tr!Force: [General] Remove extra spaces on game date
+	int					i;
+	unsigned			jkmod_dimensionBase;						// Tr!Force: [Dimensions] Global base dimension
+	char				*gamedate = JKMod_TrimWhiteSpace(__DATE__);	// Tr!Force: [General] Remove extra spaces on game date
 
 	B_InitAlloc(); //make sure everything is clean
 

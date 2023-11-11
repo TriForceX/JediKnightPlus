@@ -276,8 +276,6 @@ Teleport player function
 */
 void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound)
 {
-	gentity_t	*tent;
-
 	// Default spit speed
 	if (!spitspeed) spitspeed = 400;
 

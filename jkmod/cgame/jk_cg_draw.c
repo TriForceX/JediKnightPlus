@@ -1504,7 +1504,7 @@ void JKMod_CG_SpeedMeterVerticalSpeed(void)
 // Draw speed meter
 void JKMod_CG_SpeedMeter(void)
 {
-	const char *accelStr, *accelColor;
+	const char *accelStr;
 	char speedStr[32] = { 0 };
 	vec4_t colorSpeed = { 1, 1, 1, 1 };
 	const float currentSpeed = cg.jkmodCG.currentSpeed;

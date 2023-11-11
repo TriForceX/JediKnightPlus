@@ -606,7 +606,7 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		pm.cmd = *ucmd;
 		// Tr!Force: [PlayerMovement] Spectators can fly through everything
 		if (client->ps.stats[JK_MOVEMENT] & JK_SPECTATOR_NOCLIP) {
-			pm.tracemask &= ~MASK_ALL;
+			pm.tracemask = CONTENTS_NONE;
 		} else {
 			pm.tracemask = MASK_PLAYERSOLID & ~CONTENTS_BODY;	// spectators can fly through bodies
 		}

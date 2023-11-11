@@ -11,6 +11,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
 
 // Extern stuff
 extern qboolean CG_InRollAnim(centity_t *cent);
+extern void CG_ForcePushBlur(vec3_t org);
 
 /*
 =====================================================================
@@ -502,13 +503,14 @@ void JKMod_CG_ForcePushBodyBlur(centity_t *cent)
 		cent->currentState.trickedentindex4,
 		cg.snap->ps.clientNum))
 	{
-		return; //this entity is mind-tricking the current client, so don't render it
+		return; // this entity is mind-tricking the current client, so don't render it
 	}
 
 	assert(cent->ghoul2);
 
+	// go through all the bones we want to put a blur effect on
 	for (i = 0; cg_pushBoneNames[i]; i++)
-	{ //go through all the bones we want to put a blur effect on
+	{
 		bolt = trap_G2API_AddBolt(cent->ghoul2, 0, cg_pushBoneNames[i]);
 
 		if (bolt == -1)
@@ -520,7 +522,7 @@ void JKMod_CG_ForcePushBodyBlur(centity_t *cent)
 		trap_G2API_GetBoltMatrix(cent->ghoul2, 0, bolt, &boltMatrix, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
 		JKMod_BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, fxOrg);
 
-		//standard effect, don't be refractive (for now)
-		CG_ForcePushBlur(fxOrg, NULL);
+		// standard effect, don't be refractive (for now)
+		CG_ForcePushBlur(fxOrg);
 	}
 }

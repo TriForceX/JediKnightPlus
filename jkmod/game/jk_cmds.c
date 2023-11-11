@@ -2136,31 +2136,6 @@ void JKMod_ClientCommand(int clientNum)
 			return;
 		}
 
-		// Entity scan
-		if (!Q_stricmp(argcmd, "score"))
-		{
-			char arg2[MAX_TOKEN_CHARS];
-			char arg3[MAX_TOKEN_CHARS];
-			int score1, score2;
-		
-			trap_Argv(2, arg2, sizeof(arg2));
-			trap_Argv(3, arg3, sizeof(arg3));
-
-			score1 = atoi(arg2);
-			score2 = atoi(arg3);
-		
-			if (g_gametype.integer == GT_TOURNAMENT) {
-				ent->client->sess.wins = score1;
-				ent->client->sess.losses = score2;
-				trap_SendServerCommand(ent - g_entities, va("print \"Wins: %i - Losses: %i\n-------\n\"", score1, score2));
-			} else {
-				ent->client->ps.persistant[PERS_SCORE] = score1;
-				ent->client->ps.persistant[PERS_KILLED] = score2;
-				trap_SendServerCommand(ent - g_entities, va("print \"Score: %i - Killed: %i\n-------\n\"", score1, score2));
-			}
-			return;
-		}
-
 		trap_SendServerCommand(ent - g_entities, va("print \"CvarTest1: %s\nCvarTest2: %i\n%s\"", jkcvar_test1.string, jkcvar_test2.integer, arglist));
 		return;
 	}
