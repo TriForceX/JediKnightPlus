@@ -4868,6 +4868,7 @@ void PmoveSingle (pmove_t *pmove) {
 	}
 
 	if (pm->ps->pm_type == PM_FREEZE) {
+		if (pm->ps->stats[JK_PLAYER] & JK_EMOTE_IN) PM_CheckDuck(); // Tr!Force: [Emotes] Check emote height
 		return;		// no movement at all
 	}
 
