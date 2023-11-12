@@ -159,6 +159,7 @@ static void CG_ParseServerinfo( const char *info ) {
 	cgs.jkmodCGS.jetPack = atoi(Info_ValueForKey(info, "jk_jetPack"));					// Tr!Force: [JetPack] Main cvar
 	cgs.jkmodCGS.dualSaber = atoi(Info_ValueForKey(info, "jk_dualSaber"));				// Tr!Force: [DualSaber] Main cvar
 	cgs.jkmodCGS.duelPassThrough = atoi(Info_ValueForKey(info, "jk_duelPassThrough"));	// Tr!Force: [DuelPassThrough] Main cvar
+	cgs.jkmodCGS.duelDistance = atoi(Info_ValueForKey(info, "jk_duelDistance"));		// Tr!Force: [DuelDistance] Main cvar
 
 	Com_sprintf(cgs.jkmodCGS.gameDate, sizeof(cgs.jkmodCGS.gameDate), "%s", Info_ValueForKey(info, "gamedate")); // Tr!Force: [Plugin] Main cvar
 	Com_sprintf(cgs.jkmodCGS.gameName, sizeof(cgs.jkmodCGS.gameName), "%s", Info_ValueForKey(info, "gamename")); // Tr!Force: [Plugin] Main cvar

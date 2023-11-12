@@ -60,6 +60,7 @@ typedef struct
 	int			jetPack;				// Tr!Force: [JetPack] Main cvar
 	int			dualSaber;				// Tr!Force: [DualSaber] Main cvar
 	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
+	int			duelDistance;			// Tr!Force: [DuelDistance] Main cvar
 	int			pauseTime;				// Tr!Force: [Pause] Server pause time
 	char		gameDate[MAX_QPATH];	// Tr!Force: [Plugin] Server game date
 	char		gameName[MAX_OSPATH];	// Tr!Force: [Plugin] Server game name

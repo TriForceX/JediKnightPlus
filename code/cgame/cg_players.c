@@ -7439,48 +7439,73 @@ stillDoSaber:
 				vec3_t vecSub;
 				float subLen = 0;
 
-				VectorSubtract(duelEnt->lerpOrigin, cg.snap->ps.origin, vecSub);
-				subLen = VectorLength(vecSub);
-
-				if (subLen < 1)
+				// Tr!Force: [DuelDistance] Adjust duel glow based on custom distance
+				if (cgs.jkmodCGS.duelDistance > 0)
 				{
-					subLen = 1;
+					float distanceLimit = cgs.jkmodCGS.duelDistance;
+					float normalizedDistance;
+
+					VectorSubtract(duelEnt->lerpOrigin, cg.snap->ps.origin, vecSub);
+					subLen = VectorLength(vecSub);
+
+					if (subLen < 1)
+					{
+						subLen = 1;
+					}
+
+					normalizedDistance = subLen / distanceLimit;
+
+					legs.shaderRGBA[0] = 255 - normalizedDistance * 255;
+					legs.shaderRGBA[1] = 255 - normalizedDistance * 255;
+					legs.shaderRGBA[2] = 255 - normalizedDistance * 255;
+
+					if (legs.shaderRGBA[2] < 1) legs.shaderRGBA[2] = 1;
+
+					legs.renderfx &= ~RF_RGB_TINT;
+					legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
+					legs.customShader = cgs.media.forceShell;
+
+					trap_R_AddRefEntityToScene(&legs);
+
+					legs.customShader = 0;
+
+					legs.shaderRGBA[0] = 255 - normalizedDistance * 255 / 2;
+					legs.shaderRGBA[1] = 255 - normalizedDistance * 255 / 2;
+					legs.shaderRGBA[2] = 255 - normalizedDistance * 255 / 2;
+
+					if (legs.shaderRGBA[2] < 1)
+					{
+						legs.shaderRGBA[2] = 1;
+					}
+					if (legs.shaderRGBA[2] > 255)
+					{
+						legs.shaderRGBA[2] = 255;
+					}
+
+					if (subLen <= distanceLimit)
+					{
+						legs.renderfx |= RF_RGB_TINT;
+					}
 				}
-
-				if (subLen > 1020)
+				// Tr!Force: [DuelDistance] Fix distance glow with unlimited distance
+				else 
 				{
-					subLen = 1020;
-				}
-
-				legs.shaderRGBA[0] = 255 - subLen/4;
-				legs.shaderRGBA[1] = 255 - subLen/4;
-				legs.shaderRGBA[2] = 255 - subLen/4;
-
-				if (legs.shaderRGBA[2] < 1) legs.shaderRGBA[2] = 1;
-
-				legs.renderfx &= ~RF_RGB_TINT;
-				legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
-				legs.customShader = cgs.media.forceShell;
-		
-				trap_R_AddRefEntityToScene( &legs );
-
-				legs.customShader = 0;
-
-				legs.shaderRGBA[0] = 255 - subLen/8;
-				legs.shaderRGBA[1] = 255 - subLen/8;
-				legs.shaderRGBA[2] = 255 - subLen/8;
-
-				if (legs.shaderRGBA[2] < 1)
-				{
-					legs.shaderRGBA[2] = 1;
-				}
-				if (legs.shaderRGBA[2] > 255)
-				{
+					legs.shaderRGBA[0] = 255;
+					legs.shaderRGBA[1] = 255;
 					legs.shaderRGBA[2] = 255;
-				}
 
-				if (subLen <= 1024)
-				{
+					legs.renderfx &= ~RF_RGB_TINT;
+					legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
+					legs.customShader = cgs.media.forceShell;
+
+					trap_R_AddRefEntityToScene(&legs);
+
+					legs.customShader = 0;
+
+					legs.shaderRGBA[0] = 255;
+					legs.shaderRGBA[1] = 255;
+					legs.shaderRGBA[2] = 255;
+
 					legs.renderfx |= RF_RGB_TINT;
 				}
 			}

@@ -152,7 +152,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_duelEndStats,			"jk_duelEndStats",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndSlow,			"jk_duelEndSlow",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_duelEndSlowScale,		"jk_duelEndTimeScale",		"0.5",					NULL,						CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_duelDistance,			"jk_duelDistance",			"1024",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_duelDistance,			"jk_duelDistance",			"1024",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_duelPassThrough,		"jk_duelPassThrough",		"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_duelAutoAccept,		"jk_duelAutoAccept",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
