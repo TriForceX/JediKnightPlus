@@ -1528,8 +1528,8 @@ qboolean G_SaberInBackAttack(int move)
 	case LS_A_BACK:
 	case LS_A_BACK_CR:
 	case LS_A_BACKSTAB:
-	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
-	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerTweaks] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerTweaks] Dual saber moves
 		return qtrue;
 	}
 
@@ -1699,16 +1699,16 @@ qboolean CheckSaberDamage_1_02(gentity_t *self, vec3_t saberStart, vec3_t saberE
 			self->client->ps.saberMove == LS_A_BACK_CR ||
 			self->client->ps.saberMove == LS_A_BACKSTAB ||
 			self->client->ps.saberMove == LS_A_JUMP_T__B_ ||
-			self->client->ps.saberMove == LS_JK_DUAL_SPIN1 || // Tr!Force: [PlayerMovement] Dual saber moves
-			self->client->ps.saberMove == LS_JK_DUAL_SPIN2 || // Tr!Force: [PlayerMovement] Dual saber moves
-			self->client->ps.saberMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerMovement] Dual saber moves
+			self->client->ps.saberMove == LS_JK_DUAL_SPIN1 || // Tr!Force: [PlayerTweaks] Dual saber moves
+			self->client->ps.saberMove == LS_JK_DUAL_SPIN2 || // Tr!Force: [PlayerTweaks] Dual saber moves
+			self->client->ps.saberMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerTweaks] Dual saber moves
 		{
 			unblockable = qtrue;
 			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
 			{ //do extra damage for special unblockables
 				dmg += 40;
 			}
-			else if (self->client->ps.saberMove == LS_JK_DUAL_TORNADO) // Tr!Force: [PlayerMovement] Dual saber moves
+			else if (self->client->ps.saberMove == LS_JK_DUAL_TORNADO) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{
 				dmg += 25;
 			}
@@ -2091,7 +2091,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 	{ //this animation is that of the last attack movement, and so it should do full damage
 		qboolean saberInSpecial = BG_SaberInSpecial(self->client->ps.saberMove);
 		qboolean inBackAttack = G_SaberInBackAttack(self->client->ps.saberMove);
-		qboolean jkmod_dualMoves = (self->client->ps.stats[JK_MOVEMENT] & JK_DUAL_MOVES) && self->client->ps.dualBlade; // Tr!Force: [PlayerMovement] Dual saber moves
+		qboolean jkmod_dualMoves = (self->client->ps.stats[JK_TWEAKS] & JK_DUAL_MOVES) && self->client->ps.dualBlade; // Tr!Force: [PlayerTweaks] Dual saber moves
 
 		dmg = SABER_HITDAMAGE;
 
@@ -2108,11 +2108,11 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 				dmg = G_GetAttackDamage(self, 2, 180, 0.65f);
 			}
 			else if (saberInSpecial &&
-					 (self->client->ps.saberMove == LS_JK_DUAL_TORNADO)) // Tr!Force: [PlayerMovement] Dual saber moves
+					 (self->client->ps.saberMove == LS_JK_DUAL_TORNADO)) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{
 				dmg = G_GetAttackDamage(self, 2, 25, 0.5f);
 			}
-			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerMovement] Dual saber moves
+			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{
 				dmg = G_GetAttackDamage(self, 2, 30, 0.5f); //can hit multiple times (and almost always does), so..
 			}
@@ -2126,12 +2126,12 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			if (saberInSpecial &&
 				(self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH))
 			{ //a well-timed hit with this can do a full 85
-				if ( jk2gameplay == VERSION_1_04 || jkmod_dualMoves) // Tr!Force: [PlayerMovement] Dual saber moves
+				if ( jk2gameplay == VERSION_1_04 || jkmod_dualMoves) // Tr!Force: [PlayerTweaks] Dual saber moves
 					dmg = G_GetAttackDamage(self, 2, 80, 0.5f);
 				else							   
 					dmg = G_GetAttackDamage(self, 2, 100, 0.5f);
 			}
-			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerMovement] Dual saber moves
+			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{
 				dmg = G_GetAttackDamage(self, 2, 25, 0.5f);
 			}
@@ -2147,7 +2147,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			{
 				dmg = G_GetAttackDamage(self, 2, SABER_HITDAMAGE-5, 0.3f);
 			}
-			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerMovement] Dual saber moves
+			else if (inBackAttack && (jk2gameplay == VERSION_1_04 || jkmod_dualMoves)) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{
 				dmg = G_GetAttackDamage(self, 2, 30, 0.5f);
 			}
@@ -2174,7 +2174,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 
 		if (!inBackAttack || jk2gameplay != VERSION_1_04)
 		{
-			if (self->client->ps.saberMove == LS_A_JUMP_T__B_ || self->client->ps.saberMove == LS_JK_DUAL_TORNADO) // Tr!Force: [PlayerMovement] Dual saber moves
+			if (self->client->ps.saberMove == LS_A_JUMP_T__B_ || self->client->ps.saberMove == LS_JK_DUAL_TORNADO) // Tr!Force: [PlayerTweaks] Dual saber moves
 			{ //do extra damage for special unblockables
 				dmg += 5; //This is very tiny, because this move has a huge damage ramp
 			}

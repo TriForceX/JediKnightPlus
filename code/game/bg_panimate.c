@@ -76,9 +76,9 @@ qboolean BG_SaberInAttack( int move )
 	case LS_A_JUMP_T__B_:
 	case LS_A_FLIP_STAB:
 	case LS_A_FLIP_SLASH:
-	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
-	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
-	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerTweaks] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerTweaks] Dual saber moves
+	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerTweaks] Dual saber moves
 		return qtrue;
 		break;
 	}
@@ -96,9 +96,9 @@ qboolean BG_SaberInSpecial( int move )
 	case LS_A_JUMP_T__B_:
 	case LS_A_FLIP_STAB:
 	case LS_A_FLIP_SLASH:
-	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerMovement] Dual saber moves
-	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerMovement] Dual saber moves
-	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerMovement] Dual saber moves
+	case LS_JK_DUAL_SPIN1: // Tr!Force: [PlayerTweaks] Dual saber moves
+	case LS_JK_DUAL_SPIN2: // Tr!Force: [PlayerTweaks] Dual saber moves
+	case LS_JK_DUAL_TORNADO: // Tr!Force: [PlayerTweaks] Dual saber moves
 		return qtrue;
 	}
 	return qfalse;
@@ -222,10 +222,10 @@ qboolean BG_SpinningSaberAnim( int anim )
 	return qfalse;
 }
 
-// Tr!Force: [PlayerMovement] Dual saber moves
+// Tr!Force: [PlayerTweaks] Dual saber moves
 qboolean JKMod_BG_SpinningDualAnim( int anim )
 {
-	if ((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade)
+	if ((pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade)
 	{
 		switch ( (jk2gameplay == VERSION_1_02 ? anim : anim&~ANIM_TOGGLEBIT) )
 		{

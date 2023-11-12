@@ -115,60 +115,35 @@ qboolean JKMod_PlayerMoving(gentity_t *ent, int move, int attack)
 
 /*
 =====================================================================
-Player movements allowed
+Player movements and tweaks check
 =====================================================================
 */
-void JKMod_PlayerMovementCheck(gentity_t *ent)
+void JKMod_PlayerTweaksCheck(gentity_t *ent)
 {
-	// JKA Jetpack Style
-	if (jkcvar_playerMovement.integer & JK_JETPACK_JKA) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_JETPACK_JKA;
-	else
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_JETPACK_JKA;
-	
-	// Weapon Stand Fix
-	if (jkcvar_playerMovement.integer & JK_WEAPON_STAND) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_WEAPON_STAND;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_WEAPON_STAND;
+	int i;
+	jkmod_tweaks_t playerTweaks[] =
+	{
+		// feature					plugin required
+		{ JK_JETPACK_JKA,			qfalse },
+		{ JK_WEAPON_STAND,			qfalse },
+		{ JK_DISRUPTOR_WALK,		qtrue },
+		{ JK_USE_STAND,				qfalse },
+		{ JK_SPECTATOR_NOCLIP,		qfalse },
+		{ JK_RESIST_PUSH,			qfalse },
+		{ JK_DUAL_MOVES,			qfalse },
+		{ JK_GHOST_SABERS,			qfalse },
+	};
 
-	// Disruptor Zoom Always (Requires clientside)
-	if ((jkcvar_playerMovement.integer & JK_DISRUPTOR_WALK) && ent->client->pers.jkmodPers.clientPlugin) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_DISRUPTOR_WALK;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DISRUPTOR_WALK;
+	for (i = 0; i < ARRAY_LEN(playerTweaks); i++)
+	{
+		if ((jkcvar_playerTweaks.integer & playerTweaks[i].feature) && (!playerTweaks[i].plugin ? qtrue : ent->client->pers.jkmodPers.clientPlugin)) {
+			ent->client->ps.stats[JK_TWEAKS] |= playerTweaks[i].feature;
+		} else {
+			ent->client->ps.stats[JK_TWEAKS] &= ~playerTweaks[i].feature;
+		}
+	}
 
-	// Button Use Stand
-	if (jkcvar_playerMovement.integer & JK_USE_STAND) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_USE_STAND;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_USE_STAND;
-
-	// Spectator no-clip
-	if (jkcvar_playerMovement.integer & JK_SPECTATOR_NOCLIP) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_SPECTATOR_NOCLIP;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_SPECTATOR_NOCLIP;
-
-	// Resist Push/Pull animation
-	if (jkcvar_playerMovement.integer & JK_RESIST_PUSH) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_RESIST_PUSH;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_RESIST_PUSH;
-
-	// Dual saber moves
-	if (jkcvar_playerMovement.integer & JK_DUAL_MOVES) 
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_DUAL_MOVES;
-	else 
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_DUAL_MOVES;
-
-	// Ghost Sabers
-	if (jkcvar_playerMovement.integer & JK_GHOST_SABERS)
-		ent->client->ps.stats[JK_MOVEMENT] |= JK_GHOST_SABERS;
-	else
-		ent->client->ps.stats[JK_MOVEMENT] &= ~JK_GHOST_SABERS;
-
-	JKMod_Printf(S_COLOR_YELLOW "Client %i movement checked\n", ent->client->ps.clientNum);
+	JKMod_Printf(S_COLOR_YELLOW "Client %i tweaks checked\n", ent->client->ps.clientNum);
 }
 
 /*

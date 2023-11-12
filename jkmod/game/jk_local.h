@@ -279,6 +279,14 @@ typedef struct
 
 } jkmod_bit_info_t;
 
+// Player tweaks data
+typedef struct
+{
+	int				feature;
+	qboolean		plugin;
+
+} jkmod_tweaks_t;
+
 // Commands data
 typedef struct
 {
@@ -390,7 +398,7 @@ extern	vmCvar_t					jkcvar_mapDefaultMusic;
 extern	vmCvar_t					jkcvar_mapCycleFromFile;
 
 extern	vmCvar_t					jkcvar_jetPack;
-extern	vmCvar_t					jkcvar_playerMovement;
+extern	vmCvar_t					jkcvar_playerTweaks;
 extern	vmCvar_t					jkcvar_botsAI;
 extern	vmCvar_t					jkcvar_dualSaber;
 
@@ -493,7 +501,7 @@ void		JKMod_CVU_teleportChat(void);
 void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_altDimension(void);
 void		JKMod_CVU_jetPack(void);
-void		JKMod_CVU_playerMovement(void);
+void		JKMod_CVU_playerTweaks(void);
 void		JKMod_CVU_pluginRequired(void);
 void		JKMod_CVU_serverClosed(void);
 void		JKMod_CVU_dualSaber(void);
@@ -511,7 +519,7 @@ const char	*JKMod_GetCurrentMap(void);
 const char	*JKMod_GetMapMusic(void);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
-void		JKMod_PlayerMovementCheck(gentity_t *ent);
+void		JKMod_PlayerTweaksCheck(gentity_t *ent);
 void		JKMod_PlayerModelInfo(gentity_t *ent, const char* modelname);
 void		JKMod_SetGamePlay(char *option);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);

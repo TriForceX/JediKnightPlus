@@ -329,7 +329,7 @@ typedef enum {
 	// Tr!Force: [General] Custom stats data
 	JK_PLAYER,
 	JK_DIMENSION,
-	JK_MOVEMENT,
+	JK_TWEAKS,
 	JK_FUEL
 } statIndex_t;
 
@@ -995,7 +995,7 @@ typedef enum {
 	LS_REFLECT_LR,
 	LS_REFLECT_LL,
 
-	// Tr!Force: [PlayerMovement] Dual saber moves
+	// Tr!Force: [PlayerTweaks] Dual saber moves
 	LS_JK_DUAL_SPIN1,
 	LS_JK_DUAL_SPIN2,
 	LS_JK_DUAL_TORNADO,

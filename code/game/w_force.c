@@ -3048,7 +3048,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				int otherPushPower = push_list[x]->client->ps.fd.forcePowerLevel[powerUse];
 				qboolean canPullWeapon = qtrue;
 				float dirLen = 0;
-				qboolean jkmod_resistPush = push_list[x]->client->ps.stats[JK_MOVEMENT] & JK_RESIST_PUSH; // Tr!Force: [PlayerMovement] Resist push/pull anim
+				qboolean jkmod_resistPush = push_list[x]->client->ps.stats[JK_TWEAKS] & JK_RESIST_PUSH; // Tr!Force: [PlayerTweaks] Resist push/pull anim
 
 				pushPowerMod = pushPower;
 
@@ -3068,17 +3068,17 @@ void ForceThrow( gentity_t *self, qboolean pull )
 					if ( pull )
 					{
 						G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/pull.wav" ) );
-						push_list[x]->client->ps.forceHandExtend = jkmod_resistPush ? HANDEXTEND_TAUNT : HANDEXTEND_FORCEPULL; // Tr!Force: [PlayerMovement] Resist push/pull anim
+						push_list[x]->client->ps.forceHandExtend = jkmod_resistPush ? HANDEXTEND_TAUNT : HANDEXTEND_FORCEPULL; // Tr!Force: [PlayerTweaks] Resist push/pull anim
 						push_list[x]->client->ps.forceHandExtendTime = level.time + 400;
 					}
 					else
 					{
 						G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/push.wav" ) );
-						push_list[x]->client->ps.forceHandExtend = jkmod_resistPush ? HANDEXTEND_TAUNT : HANDEXTEND_FORCEPUSH; // Tr!Force: [PlayerMovement] Resist push/pull anim
+						push_list[x]->client->ps.forceHandExtend = jkmod_resistPush ? HANDEXTEND_TAUNT : HANDEXTEND_FORCEPUSH; // Tr!Force: [PlayerTweaks] Resist push/pull anim
 						push_list[x]->client->ps.forceHandExtendTime = level.time + 1000;
 					}
 
-					// Tr!Force: [PlayerMovement] Resist push/pull anim
+					// Tr!Force: [PlayerTweaks] Resist push/pull anim
 					if ( jkmod_resistPush ) push_list[x]->client->ps.forceDodgeAnim = BOTH_RESISTPUSH;
 
 					push_list[x]->client->ps.powerups[PW_DISINT_4] = push_list[x]->client->ps.forceHandExtendTime + 200;

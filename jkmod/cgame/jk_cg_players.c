@@ -129,7 +129,7 @@ void JKMod_CG_Player(centity_t *cent)
 	}
 
 	// Dual saber custom animation
-	if ((cg.snap->ps.stats[JK_MOVEMENT] & JK_DUAL_MOVES) && cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && !cent->currentState.shouldtarget && cent->currentState.bolt2)
+	if ((cg.snap->ps.stats[JK_TWEAKS] & JK_DUAL_MOVES) && cent->currentState.weapon == WP_SABER && !cent->currentState.saberInFlight && !cent->currentState.shouldtarget && cent->currentState.bolt2)
 	{
 		if ((cent->currentState.torsoAnim & ~ANIM_TOGGLEBIT) == BOTH_RUN1) cent->currentState.torsoAnim = BOTH_T1_T__BR;
 	}

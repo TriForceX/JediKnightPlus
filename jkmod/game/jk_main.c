@@ -99,7 +99,7 @@ vmCvar_t	jkcvar_mapDefaultMusic;
 vmCvar_t	jkcvar_mapCycleFromFile;
 
 vmCvar_t	jkcvar_jetPack;
-vmCvar_t	jkcvar_playerMovement;
+vmCvar_t	jkcvar_playerTweaks;
 vmCvar_t	jkcvar_botsAI;
 vmCvar_t	jkcvar_dualSaber;
 
@@ -185,7 +185,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_mapCycleFromFile,		"jk_mapCycleFromFile",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_jetPack,				"jk_jetPack",				"0",					JKMod_CVU_jetPack,			CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
-	{ &jkcvar_playerMovement,		"jk_playerMovement",		"0",					JKMod_CVU_playerMovement,	CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_playerTweaks,			"jk_playerTweaks",			"0",					JKMod_CVU_playerTweaks,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_botsAI,				"jk_botsAI",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dualSaber,			"jk_dualSaber",				"0",					JKMod_CVU_dualSaber,		CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
@@ -402,8 +402,8 @@ void JKMod_CVU_jetPack(void)
 	}
 }
 
-// Update player movement cvar
-void JKMod_CVU_playerMovement(void)
+// Update player tweaks cvar
+void JKMod_CVU_playerTweaks(void)
 {
 	gentity_t *ent;
 	int i;
@@ -412,7 +412,7 @@ void JKMod_CVU_playerMovement(void)
 	{
 		if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 		{
-			JKMod_PlayerMovementCheck(ent);
+			JKMod_PlayerTweaksCheck(ent);
 		}
 	}
 }

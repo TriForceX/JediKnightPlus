@@ -462,6 +462,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 	if (ent->client->ps.duelInProgress) return;
 
+	if (ent->client->jkmodClient.chairModelUsed) return;
+
 	// Check duel challenge
 	if (jkcvar_altDimension.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 	{

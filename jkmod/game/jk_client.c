@@ -124,8 +124,8 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Set default dimension and refresh
 	JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
 
-	// Set player movements
-	if (jkcvar_playerMovement.integer) JKMod_PlayerMovementCheck(ent);
+	// Set player tweaks
+	if (jkcvar_playerTweaks.integer) JKMod_PlayerTweaksCheck(ent);
 
 	// Check dual saber
 	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;

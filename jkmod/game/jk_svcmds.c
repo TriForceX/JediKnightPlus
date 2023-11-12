@@ -168,8 +168,8 @@ Toggle mod cvar options
 =====================================================================
 */
 
-// Options for jk_playerMovement cvar
-static jkmod_bit_info_t togglePlayerMovement[] = 
+// Options for jk_playerTweaks cvar
+static jkmod_bit_info_t togglePlayerTweaks[] = 
 {
 	"JKA JETPACK STYLE",
 	"WEAPON STAND FIX",
@@ -254,7 +254,7 @@ static void JKMod_svCmd_toggleMod(void)
 	{
 		G_Printf("Usage: togglemod <cvar> <option>\n");
 		G_Printf("Cvars:\n"
-			"^3jk_playerMovement\n"
+			"^3jk_playerTweaks\n"
 			"^3jk_voteControl\n"
 			"^3jk_altDimension\n"
 			"^3jk_altDimensionBase\n"
@@ -274,10 +274,10 @@ static void JKMod_svCmd_toggleMod(void)
 		trap_Argv(1, arg1, sizeof(arg1));
 		trap_Argv(2, arg2, sizeof(arg2));
 
-		if (!Q_stricmp(arg1, "jk_playerMovement")) 
+		if (!Q_stricmp(arg1, "jk_playerTweaks")) 
 		{
-			toggleModOptions = togglePlayerMovement;
-			toggleModSize = ARRAY_LEN(togglePlayerMovement);
+			toggleModOptions = togglePlayerTweaks;
+			toggleModSize = ARRAY_LEN(togglePlayerTweaks);
 		}
 		else if (!Q_stricmp(arg1, "jk_voteControl")) 
 		{

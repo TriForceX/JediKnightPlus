@@ -250,7 +250,7 @@ saberMoveData_t	saberMoveData[LS_MOVE_MAX] = {//							NB:randomized
 	{"Reflect LR",	BOTH_P1_S1_BR,		Q_R,	Q_BL,	AFLAG_ACTIVE,	50,		BLK_WIDE,	LS_R_TR2BL,		LS_A_BL2TR,		300	},	// LS_PARRY_LR
 	{"Reflect LL",	BOTH_P1_S1_BL,		Q_R,	Q_BR,	AFLAG_ACTIVE,	50,		BLK_WIDE,	LS_R_TL2BR,		LS_A_BR2TL,		300	},	// LS_PARRY_LL,
 
-	// Tr!Force: [PlayerMovement] Dual saber moves
+	// Tr!Force: [PlayerTweaks] Dual saber moves
 	{"Dual Spin 1",	BOTH_BUTTERFLY_LEFT,	Q_R,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_READY,		200	}, // LS_JK_DUAL_SPIN1
 	{"Dual Spin 2",	BOTH_BUTTERFLY_FL1,		Q_R,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_READY,		200	}, // LS_JK_DUAL_SPIN2
 	{"Dual Tornado",BOTH_FJSS_TL_BR,		Q_L,	Q_R,	AFLAG_ACTIVE,	100,	BLK_TIGHT,	LS_READY,		LS_T1__R_T_,	200	}, // LS_JK_DUAL_TORNADO
@@ -1109,8 +1109,8 @@ saberMoveName_t PM_SaberFlipOverAttackMove(trace_t *tr)
 	VectorCopy( pm->ps->viewangles, fwdAngles );
 	fwdAngles[PITCH] = fwdAngles[ROLL] = 0;
 	AngleVectors( fwdAngles, jumpFwd, NULL, NULL );
-	VectorScale( jumpFwd, (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? 150 : 50, pm->ps->velocity ); // Tr!Force: [PlayerMovement] Dual saber moves
-	pm->ps->velocity[2] = (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? 330 : 400; // Tr!Force: [PlayerMovement] Dual saber moves
+	VectorScale( jumpFwd, (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? 150 : 50, pm->ps->velocity ); // Tr!Force: [PlayerTweaks] Dual saber moves
+	pm->ps->velocity[2] = (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? 330 : 400; // Tr!Force: [PlayerTweaks] Dual saber moves
 
 	psData = pm->bgClients[tr->entityNum];
 
@@ -1145,7 +1145,7 @@ saberMoveName_t PM_SaberFlipOverAttackMove(trace_t *tr)
 	pm->ps->fd.forceJumpSound = 1;
 	pm->cmd.upmove = 0;
 
-	if ( (jk2gameplay == VERSION_1_02 ? Q_irand( 0, 1 ) : PM_irand_timesync( 0, 1 )) || (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ) // Tr!Force: [PlayerMovement] Dual saber moves
+	if ( (jk2gameplay == VERSION_1_02 ? Q_irand( 0, 1 ) : PM_irand_timesync( 0, 1 )) || (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ) // Tr!Force: [PlayerTweaks] Dual saber moves
 	{
 		return LS_A_FLIP_STAB;
 	}
@@ -1212,7 +1212,7 @@ saberMoveName_t PM_SaberJumpAttackMove( void )
 	pm->ps->fd.forceJumpSound = 1;
 	pm->cmd.upmove = 0;
 
-	return (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_TORNADO : LS_A_JUMP_T__B_; // Tr!Force: [PlayerMovement] Dual saber moves
+	return (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_TORNADO : LS_A_JUMP_T__B_; // Tr!Force: [PlayerTweaks] Dual saber moves
 }
 
 float PM_GroundDistance(void)
@@ -1303,16 +1303,16 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				{//medium and higher attacks
 					if ( (pm->ps->pm_flags&PMF_DUCKED) || pm->cmd.upmove < 0 )
 					{
-						newmove = (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN2 : LS_A_BACK_CR; // Tr!Force: [PlayerMovement] Dual saber moves
+						newmove = (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN2 : LS_A_BACK_CR; // Tr!Force: [PlayerTweaks] Dual saber moves
 					}
 					else
 					{
-						newmove = (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN1 : LS_A_BACK; // Tr!Force: [PlayerMovement] Dual saber moves
+						newmove = (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN1 : LS_A_BACK; // Tr!Force: [PlayerTweaks] Dual saber moves
 					}
 				}
 				else
 				{ //weak attack
-					newmove = (pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN1 : LS_A_BACKSTAB; // Tr!Force: [PlayerMovement] Dual saber moves
+					newmove = (pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade ? LS_JK_DUAL_SPIN1 : LS_A_BACKSTAB; // Tr!Force: [PlayerTweaks] Dual saber moves
 				}
 			}
 			else
@@ -1951,7 +1951,7 @@ void PM_SetSaberMove(short newMove)
 	int	anim = saberMoveData[newMove].animToUse;
 	int parts = SETANIM_TORSO;
 	
-	if ( newMove == LS_READY || ((newMove == LS_A_FLIP_STAB || newMove == LS_A_FLIP_SLASH) && jk2gameplay != VERSION_1_02) ) // Tr!Force: [PlayerMovement] Dual saber moves
+	if ( newMove == LS_READY || ((newMove == LS_A_FLIP_STAB || newMove == LS_A_FLIP_SLASH) && jk2gameplay != VERSION_1_02) ) // Tr!Force: [PlayerTweaks] Dual saber moves
 	{//finished with a kata (or in a special move) reset attack counter
 		pm->ps->saberAttackChainCount = 0;
 	}
@@ -2002,9 +2002,9 @@ void PM_SetSaberMove(short newMove)
 		|| newMove == LS_A_BACK_CR
 		|| newMove == LS_A_FLIP_STAB
 		|| newMove == LS_A_FLIP_SLASH
-		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_TORNADO // Tr!Force: [PlayerMovement] Dual saber moves
+		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerTweaks] Dual saber moves
+		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerTweaks] Dual saber moves
+		|| newMove == LS_JK_DUAL_TORNADO // Tr!Force: [PlayerTweaks] Dual saber moves
 		|| jk2gameplay == VERSION_1_02 )
 	{
 		setflags |= SETANIM_FLAG_OVERRIDE;
@@ -2040,13 +2040,13 @@ void PM_SetSaberMove(short newMove)
 		|| newMove == LS_A_BACK_CR
 		|| newMove == LS_A_FLIP_STAB
 		|| newMove == LS_A_FLIP_SLASH
-		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerMovement] Dual saber moves
-		|| newMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerMovement] Dual saber moves
+		|| newMove == LS_JK_DUAL_SPIN1 // Tr!Force: [PlayerTweaks] Dual saber moves
+		|| newMove == LS_JK_DUAL_SPIN2 // Tr!Force: [PlayerTweaks] Dual saber moves
+		|| newMove == LS_JK_DUAL_TORNADO ) // Tr!Force: [PlayerTweaks] Dual saber moves
 	{
 		parts = SETANIM_BOTH;
 	}
-	else if ( BG_SpinningSaberAnim( anim ) && !JKMod_BG_SpinningDualAnim( anim ) ) // Tr!Force: [PlayerMovement] Dual saber moves
+	else if ( BG_SpinningSaberAnim( anim ) && !JKMod_BG_SpinningDualAnim( anim ) ) // Tr!Force: [PlayerTweaks] Dual saber moves
 	{//spins must be played on entire body
 		parts = SETANIM_BOTH;
 	}

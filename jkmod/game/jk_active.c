@@ -299,7 +299,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 
 	// Tr!Force: [ButtonUse] Trigger animation
 	if ((cmd->buttons & BUTTON_USE) 
-		&& (ent->client->ps.stats[JK_MOVEMENT] & JK_USE_STAND) 
+		&& (ent->client->ps.stats[JK_TWEAKS] & JK_USE_STAND) 
 		&& (ent->client->pers.jkmodPers.buttonUseAnimValid)
 		&& !(ent->r.svFlags & SVF_BOT) 
 		&& !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) 

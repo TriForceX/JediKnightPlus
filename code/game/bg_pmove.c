@@ -752,8 +752,8 @@ static qboolean PM_CheckJump( void )
 		return qfalse;
 	}
 
-	// Tr!Force: [PlayerMovement] JKA Jetpack Style
-	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
+	// Tr!Force: [PlayerTweaks] JKA Jetpack Style
+	if ((pm->ps->stats[JK_TWEAKS] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
 	{
 		return qfalse;
 	}
@@ -2352,8 +2352,8 @@ static void PM_GroundTrace( void ) {
 		return;
 	}
 
-	// Tr!Force: [PlayerMovement] JKA Jetpack Style
-	if ((pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
+	// Tr!Force: [PlayerTweaks] JKA Jetpack Style
+	if ((pm->ps->stats[JK_TWEAKS] & JK_JETPACK_JKA) && (pm->ps->eFlags & JK_JETPACK_FLAMING))
 	{
 		PM_GroundTraceMissed();
 		pml.groundPlane = qfalse;
@@ -3812,8 +3812,8 @@ static void PM_Weapon( void )
 		return;
 	}
 
-	// Tr!Force: [PlayerMovements] Weapon stand
-	if (pm->ps->stats[JK_MOVEMENT] & JK_WEAPON_STAND)
+	// Tr!Force: [PlayerTweaks] Weapon stand
+	if (pm->ps->stats[JK_TWEAKS] & JK_WEAPON_STAND)
 	{
 		if (pm->ps->weaponstate == WEAPON_READY && pm->ps->weaponTime <= 0 
 			&& (pm->ps->weapon >= WP_BRYAR_PISTOL || pm->ps->weapon == WP_STUN_BATON) 
@@ -4171,7 +4171,7 @@ void PM_AdjustAttackStates( pmove_t *pm )
 
 		if (pm->cmd.upmove > 0 || pm->cmd.forwardmove || pm->cmd.rightmove)
 		{
-			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_MOVEMENT] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerMovement] Disruptor zoom
+			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_TWEAKS] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerTweaks] Disruptor zoom
 			{ //check for == 1 so we can't turn binoculars off with disruptor alt fire
 				pm->ps->zoomMode = 0;
 				pm->ps->zoomTime = pm->ps->commandTime;
@@ -4200,7 +4200,7 @@ void PM_AdjustAttackStates( pmove_t *pm )
 	{
 		if (pm->cmd.upmove > 0 || pm->cmd.forwardmove || pm->cmd.rightmove)
 		{
-			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_MOVEMENT] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerMovement] Disruptor zoom
+			if (pm->ps->zoomMode == 1 && pm->ps->zoomLockTime < pm->cmd.serverTime && !(pm->ps->stats[JK_TWEAKS] & JK_DISRUPTOR_WALK)) // Tr!Force: [PlayerTweaks] Disruptor zoom
 			{ //check for == 1 so we can't turn binoculars off with disruptor alt fire
 				pm->ps->zoomMode = 0;
 				pm->ps->zoomTime = pm->ps->commandTime;
@@ -4433,7 +4433,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 			ps->speed *= 0.5f;
 		}
 	}
-	else if ( ps->weapon == WP_SABER && BG_SaberInAttack( ps->saberMove ) && !((pm->ps->stats[JK_MOVEMENT] & JK_DUAL_MOVES) && pm->ps->dualBlade && BG_SaberInSpecial(ps->saberMove)) ) // Tr!Force: [PlayerMovement] Dual saber moves
+	else if ( ps->weapon == WP_SABER && BG_SaberInAttack( ps->saberMove ) && !((pm->ps->stats[JK_TWEAKS] & JK_DUAL_MOVES) && pm->ps->dualBlade && BG_SaberInSpecial(ps->saberMove)) ) // Tr!Force: [PlayerTweaks] Dual saber moves
 	{//if attacking with saber while running, drop your speed
 		switch( ps->fd.saberAnimLevel )
 		{
@@ -4503,8 +4503,8 @@ void JKMod_PM_JetPack(void)
 	scale = PM_CmdScale(&pm->cmd);
 	PM_SetMovementDir();
 
-	// Tr!Force: [PlayerMovement] JKA Jetpack Style
-	if (pm->ps->stats[JK_MOVEMENT] & JK_JETPACK_JKA)
+	// Tr!Force: [PlayerTweaks] JKA Jetpack Style
+	if (pm->ps->stats[JK_TWEAKS] & JK_JETPACK_JKA)
 	{
 		float groundDist = 0;
 		int hoverHeight = 64;
@@ -4673,7 +4673,7 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->cmd.rightmove = pm->cmd.upmove = 0;
 	}
 
-	// Tr!Force: [PlayerMovement] Dual saber moves
+	// Tr!Force: [PlayerTweaks] Dual saber moves
 	if ( pm->ps->saberMove == LS_JK_DUAL_SPIN1 || pm->ps->saberMove == LS_JK_DUAL_SPIN2 || pm->ps->saberMove == LS_JK_DUAL_TORNADO )
 	{
 		pm->cmd.upmove = 0;

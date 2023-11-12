@@ -1615,7 +1615,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	char		userinfo[MAX_INFO_VALUE], *modelname;
 	int			jksave_player;		// Tr!Force: [General] Don't remove flags
 	int			jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
-	int			jksave_movement;	// Tr!Force: [General] Don't remove flags
+	int			jksave_tweaks;		// Tr!Force: [General] Don't remove flags
 
 	ent = g_entities + clientNum;
 	
@@ -1712,7 +1712,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [General] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [General] Don't remove flags
+	jksave_tweaks = client->ps.stats[JK_TWEAKS];	// Tr!Force: [General] Don't remove flags
 
 	i = 0;
 
@@ -1742,7 +1742,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
 	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_TWEAKS] = jksave_tweaks;			// Tr!Force: [General] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1840,12 +1840,12 @@ void ClientSpawn(gentity_t *ent) {
 	int		wDisable = 0;
 	int		jksave_player;		// Tr!Force: [General] Don't remove flags
 	int		jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
-	int		jksave_movement;	// Tr!Force: [General] Don't remove flags
+	int		jksave_tweaks;		// Tr!Force: [General] Don't remove flags
 
 	index = ent - g_entities;
 	client = ent->client;
 
-	if ( ent->client->ps.saberInFlight && ent->client->ps.saberEntityNum >= MAX_CLIENTS && ent->client->ps.saberEntityNum < MAX_GENTITIES && !(ent->client->ps.stats[JK_MOVEMENT] & JK_GHOST_SABERS)) // Tr!Force: [PlayerMovement] Ghost Sabers
+	if ( ent->client->ps.saberInFlight && ent->client->ps.saberEntityNum >= MAX_CLIENTS && ent->client->ps.saberEntityNum < MAX_GENTITIES && !(ent->client->ps.stats[JK_TWEAKS] & JK_GHOST_SABERS)) // Tr!Force: [PlayerTweaks] Ghost Sabers
 	{
 		gentity_t *saberent = &g_entities[ent->client->ps.saberEntityNum];
 
@@ -1950,13 +1950,13 @@ void ClientSpawn(gentity_t *ent) {
 
 	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [General] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_movement = client->ps.stats[JK_MOVEMENT];	// Tr!Force: [General] Don't remove flags
+	jksave_tweaks = client->ps.stats[JK_TWEAKS];		// Tr!Force: [General] Don't remove flags
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
 	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
 	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_MOVEMENT] = jksave_movement;			// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_TWEAKS] = jksave_tweaks;			// Tr!Force: [General] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
