@@ -1176,6 +1176,15 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 	else if (JKMod_EmoteCheck(JKModEmotesData[emote].cmd, activator))
 	{
 		vec3_t	startspot, endspot, angles;
+		int		i = 0;
+
+		// Remove force powers
+		while (i < NUM_FORCE_POWERS) {
+			if (activator->client->ps.fd.forcePowersActive & (1 << i)) {
+				WP_ForcePowerStop(activator, i);
+			}
+			i++;
+		}
 
 		// Get top
 		VectorCopy(self->s.origin, startspot);
