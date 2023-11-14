@@ -213,7 +213,7 @@ qdir will hold the path up to the quake directory, including the slash
 gamedir will hold qdir + the game directory (id1, id2, etc)
 
   */
-
+#if 0 // unused, cause compiler warnings
 char		qdir[1024];
 char		gamedir[1024];
 char		writedir[1024];
@@ -349,7 +349,7 @@ char *ExpandPathAndArchive (const char *path)
 	}
 	return expanded;
 }
-
+#endif // 0
 
 char *copystring(const char *s)
 {

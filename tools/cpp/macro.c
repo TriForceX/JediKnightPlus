@@ -337,7 +337,7 @@ substargs(Nlist *np, Tokenrow *rtr, Tokenrow **atr)
 		}
 		if (rtr->tp->type==NAME
 		 && (argno = lookuparg(np, rtr->tp)) >= 0) {
-			if ((rtr->tp+1)->type==DSHARP
+			if ((rtr->tp+1!=rtr->lp && (rtr->tp+1)->type==DSHARP)
 			 || (rtr->tp!=rtr->bp && (rtr->tp-1)->type==DSHARP))
 				insertrow(rtr, 1, atr[argno]);
 			else {

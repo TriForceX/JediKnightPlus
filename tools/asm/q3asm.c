@@ -546,7 +546,11 @@ static void DefineSymbol( char *sym, int value ) {
 
 	// add the file prefix to local symbols to guarantee unique
 	if ( sym[0] == '$' ) {
-		sprintf( expanded, "%s_%i", sym, currentFileIndex );
+		int len = snprintf( expanded, sizeof(expanded), "%s_%i", sym, currentFileIndex );
+		if (len >= sizeof(expanded)) {
+			Error("DefineSymbol: Local symbol name too long");
+		}
+
 		sym = expanded;
 	}
 
@@ -602,7 +606,10 @@ static int LookupSymbol( char *sym ) {
 
 	// add the file prefix to local symbols to guarantee unique
 	if ( sym[0] == '$' ) {
-		sprintf( expanded, "%s_%i", sym, currentFileIndex );
+		int len = snprintf( expanded, sizeof(expanded), "%s_%i", sym, currentFileIndex );
+		if (len >= sizeof(expanded)) {
+			Error("LookupSymbol: Local symbol name too long");
+		}
 		sym = expanded;
 	}
 

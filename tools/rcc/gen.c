@@ -13,10 +13,12 @@ static Symbol   askfixedreg(Symbol);
 static Symbol   askreg(Symbol, unsigned*);
 static void     blkunroll(int, int, int, int, int, int, int[]);
 static void     docall(Node);
+#ifndef NDEBUG
 static void     dumpcover(Node, int, int);
 static void     dumpregs(char *, char *, char *);
 static void     dumprule(int);
 static void     dumptree(Node);
+#endif // NDEBUG
 static unsigned	emitasm(Node, int);
 static void     genreload(Node, Symbol, int);
 static void     genspill(Symbol, Node, Symbol);
@@ -262,6 +264,7 @@ int range(Node p, int lo, int hi) {
 	}
 	return LBURG_MAX;
 }
+#ifndef NDEBUG
 static void dumptree(Node p) {
 	if (p->op == VREG+P && p->syms[0]) {
 		fprint(stderr, "VREGP(%s)", p->syms[0]->name);
@@ -320,7 +323,6 @@ static void dumpcover(Node p, int nt, int in) {
 	for (i = 0; nts[i]; i++)
 		dumpcover(kids[i], nts[i], in+1);
 }
-
 static void dumprule(int rulenum) {
 	assert(rulenum);
 	fprint(stderr, "%s / %s", IR->x._string[rulenum],
@@ -328,6 +330,7 @@ static void dumprule(int rulenum) {
 	if (!IR->x._isinstruction[rulenum])
 		fprint(stderr, "\n");
 }
+#endif // NDEBUG
 static unsigned emitasm(Node p, int nt) {
 	int rulenum;
 	short *nts;
@@ -811,12 +814,13 @@ void spill(unsigned mask, int n, Node here) {
 			}
 	}
 }
+#ifndef NDEBUG
 static void dumpregs(char *msg, char *a, char *b) {
 	fprint(stderr, msg, a, b);
 	fprint(stderr, "(free[0]=%x)\n", freemask[0]);
 	fprint(stderr, "(free[1]=%x)\n", freemask[1]);
 }
-
+#endif // NDEBUG
 int getregnum(Node p) {
 	assert(p && p->syms[RX] && p->syms[RX]->x.regnode);
 	return p->syms[RX]->x.regnode->number;
