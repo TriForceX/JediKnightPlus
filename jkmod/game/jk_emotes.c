@@ -407,6 +407,12 @@ void JKMod_EmoteCmdHug(gentity_t *ent, qboolean showAlert)
 			vec3_t entAngles;
 			vec3_t otherAngles;
 
+			if (JKMod_IgnoreClientCheck(2, other->s.number, ent->s.number))
+			{
+				trap_SendServerCommand(ent - g_entities, "cp \"He doesn't want a hug\"");
+				return;
+			}
+
 			if (other->client->ps.forceRestricted || 
 				other->client->ps.duelInProgress || 
 				other->client->ps.saberInFlight || 
@@ -500,6 +506,12 @@ void JKMod_EmoteCmdKiss(gentity_t *ent, qboolean showAlert)
 			vec3_t otherDir;
 			vec3_t entAngles;
 			vec3_t otherAngles;
+
+			if (JKMod_IgnoreClientCheck(2, other->s.number, ent->s.number))
+			{
+				trap_SendServerCommand(ent - g_entities, "cp \"He doesn't want a kiss\"");
+				return;
+			}
 
 			if (other->client->ps.forceRestricted ||
 				other->client->ps.duelInProgress ||
@@ -599,6 +611,23 @@ void JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert)
 	if (tr.entityNum < MAX_CLIENTS && tr.entityNum != ent->s.number)
 	{
 		gentity_t *other = &g_entities[tr.entityNum];
+
+		if (JKMod_IgnoreClientCheck(2, other->s.number, ent->s.number))
+		{
+			if (jkcvar_emotesPunchDamage.integer) {
+				G_Damage(ent, ent, ent, NULL, NULL, jkcvar_emotesPunchDamage.integer, DAMAGE_NO_ARMOR, MOD_MELEE);
+				if (ent->client->ps.pm_type != PM_DEAD) {
+					ent->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
+					ent->client->ps.forceDodgeAnim = 0;
+					ent->client->ps.forceHandExtendTime = level.time + 700;
+					ent->client->ps.quickerGetup = qtrue;
+				}
+				trap_SendServerCommand(ent - g_entities, "cp \"You got what you deserve\"");
+			} else {
+				trap_SendServerCommand(ent - g_entities, "cp \"He is immune to you\"");
+			}
+			return;
+		}
 
 		if (other->client->ps.forceRestricted || 
 			other->client->ps.duelInProgress || 

@@ -336,6 +336,7 @@ void JKMod_IgnoreClientClear(int ignored)
 	{
 		g_entities[i].client->sess.jkmodSess.ignoredPlayer[0] &= ~(1 << ignored); // Chat
 		g_entities[i].client->sess.jkmodSess.ignoredPlayer[1] &= ~(1 << ignored); // Duel
+		g_entities[i].client->sess.jkmodSess.ignoredPlayer[2] &= ~(1 << ignored); // Emote
 	}
 
 	JKMod_Printf(S_COLOR_MAGENTA "Client %i removed from ingore lists\n", ignored);
@@ -371,20 +372,21 @@ static void JKMod_Cmd_IgnoreClient(gentity_t *ent)
 			"^7Option list:\n"
 			"^3chat\n"
 			"^3duel\n"
+			"^3emote\n"
 			"^5----------\n"
 			"^2Note 1: ^7No need to use full name or color name, you can use just a part of it\n"
 			"^2Note 2: ^7You can use the command ^3/whois ^7to check the player number and ignore status\n"
 			"^7\""));
 		return;
 	}
-	else if (!(!Q_stricmp(arg2, "chat") || !Q_stricmp(arg2, "duel")))
+	else if (!(!Q_stricmp(arg2, "chat") || !Q_stricmp(arg2, "duel") || !Q_stricmp(arg2, "emote")))
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \"The option ^3%s ^7is not valid\n\"", arg2));
 		return;
 	}
 	else 
 	{
-		option = !Q_stricmp(arg2, "chat") ? 0 : 1;
+		option = !Q_stricmp(arg2, "emote") ? 2 : (!Q_stricmp(arg2, "duel") ? 1 : 0);
 
 		if (!Q_stricmp(arg1, "all"))
 		{
@@ -516,12 +518,12 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		// Tr!Force: [Ignore] Apply duel ignore
 		if (JKMod_IgnoreClientCheck(1, challenged->s.number, ent->s.number))
 		{
-			trap_SendServerCommand(ent - g_entities, "cp \"This player doesn't want to be challenged\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"He doesn't want to be challenged\"");
 			return;
 		}
 		if (JKMod_IgnoreClientCheck(1, ent->s.number, challenged->s.number))
 		{
-			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored this player challenges\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"You have ignored his challenges\"");
 			return;
 		}
 
@@ -769,9 +771,9 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			"^7\""));
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5----------------------------------------------------------------------------------------------------\n"
-			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored   ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
-			"^5----------------------------------------------------------------------------------------------------\n"
+			"^5----------------------------------------------------------------------------------------------------------\n"
+			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored         ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
+			"^5----------------------------------------------------------------------------------------------------------\n"
 			"^7\""));
 	}
 	else
@@ -824,13 +826,16 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		// Check ignore
 		if (ent)
 		{
+			if (JKMod_IgnoreClientCheck(2, ent->s.number, user->s.number)) {
+				Q_strcat(ignored, sizeof(ignored), va("Emote/", ignored));
+			}
 			if (JKMod_IgnoreClientCheck(1, ent->s.number, user->s.number)) {
 				Q_strcat(ignored, sizeof(ignored), va("Duel/", ignored));
 			}
 			if (JKMod_IgnoreClientCheck(0, ent->s.number, user->s.number)) {
 				Q_strcat(ignored, sizeof(ignored), va("Chat/", ignored));
 			}
-			if (ignored[0] == '\0') strcpy(ignored, "No/");
+			if (ignored[0] == '\0') strcpy(ignored, "None/");
 			
 			ignored[strlen(ignored) - 1] = '\0';
 		}
@@ -843,7 +848,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 		// Player print
 		if (ent) {
-			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-9s ^5|^7 %-12s ^5|^7 %s%-15s ^5|^7 %-9s\n\"",
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-15s ^5|^7 %-12s ^5|^7 %s%-15s ^5|^7 %-9s\n\"",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
@@ -867,7 +872,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 	}
 
 	if (ent) {
-		trap_SendServerCommand(ent - g_entities, va("print \"^5----------------------------------------------------------------------------------------------------\n\""));
+		trap_SendServerCommand(ent - g_entities, va("print \"^5----------------------------------------------------------------------------------------------------------\n\""));
 		trap_SendServerCommand(ent - g_entities, va("print \"Your position in ^3%s ^7is: ^2(^7%i^2) (^7%i^2) (^7%i^2) : (^7%i^2)\n\"",
 			mapname,
 			(int)ent->client->ps.origin[0],

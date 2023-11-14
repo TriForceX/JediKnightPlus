@@ -169,8 +169,8 @@ typedef struct
 	qboolean		playerStatus;				// Player status tracking
 	qboolean		playerStatusSeen;			// Player status tracking check
 	char			clientIP[MAX_IP_STRING];	// Client IP string
-	int				ignoredPlayer[2];			// Client ignored player chats & duels
-	int				ignoredAll[2];				// Client ignored all chats & duels
+	int				ignoredPlayer[3];			// Client ignored player stuff
+	int				ignoredAll[3];				// Client ignored all stuff
 
 } jkmod_sess_t;
 
