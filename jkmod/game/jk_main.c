@@ -88,6 +88,7 @@ vmCvar_t	jkcvar_altDimensionTime;
 vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
+vmCvar_t	jkcvar_serverNewsExtras;
 
 vmCvar_t	jkcvar_pluginRequired;
 vmCvar_t	jkcvar_macroScan;
@@ -174,6 +175,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverNewsExtras,		"jk_serverNewsExtras",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_pluginRequired,		"jk_pluginRequired",		"0",					JKMod_CVU_pluginRequired,	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_macroScan,			"jk_macroScan",				"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
@@ -825,7 +827,12 @@ void JKMod_ServerNewsCheck(void)
 			{
 				if (ent && ent->client && ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_RACE)
 				{
-					trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", systemTime.tm_hour, systemTime.tm_min, systemTimeType, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
+					if (jkcvar_serverNewsExtras.integer == 1)
+						trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", systemTime.tm_hour, systemTime.tm_min, systemTimeType, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
+					else if (jkcvar_serverNewsExtras.integer == 2)
+						trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02d^5/^7%02d^5/^7%d^5]^7: %s\n\"", systemTime.tm_mon+1, systemTime.tm_mday, systemTime.tm_year+1900, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
+					else
+						trap_SendServerCommand(ent - g_entities, va("print \"Server News: %s\n\"", level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
 				}
 			}
 

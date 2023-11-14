@@ -387,6 +387,7 @@ extern	vmCvar_t					jkcvar_altDimensionTime;
 extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
+extern	vmCvar_t					jkcvar_serverNewsExtras;
 
 extern	vmCvar_t					jkcvar_pluginRequired;
 extern	vmCvar_t					jkcvar_macroScan;
