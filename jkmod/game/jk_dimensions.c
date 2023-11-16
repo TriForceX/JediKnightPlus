@@ -315,7 +315,8 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		}
 
 		// Set random spawn point
-		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && 
+		if (jkcvar_altDimensionSpawn.integer &&
+			ent->client->sess.sessionTeam != TEAM_SPECTATOR &&
 			ent->client->ps.pm_type != PM_DEAD && !ent->client->ps.duelInProgress && 
 			ent->jkmodEnt.dimensionNumberOld && 
 			ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber) 

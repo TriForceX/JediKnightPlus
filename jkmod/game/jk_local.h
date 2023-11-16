@@ -384,6 +384,7 @@ extern	vmCvar_t					jkcvar_gameTypeConfig;
 extern	vmCvar_t					jkcvar_altDimension;
 extern	vmCvar_t					jkcvar_altDimensionBase;
 extern	vmCvar_t					jkcvar_altDimensionTime;
+extern	vmCvar_t					jkcvar_altDimensionSpawn;
 extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;

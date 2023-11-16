@@ -1098,6 +1098,7 @@ void JKMod_ChairModelDisable(gentity_t *ent)
 {
 	// Unset
 	ent->client->ps.pm_type = PM_NORMAL;
+	ent->client->ps.forceRestricted = qfalse;
 	ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 	ent->client->ps.forceDodgeAnim = 0;
 	ent->client->ps.forceHandExtendTime = 0;
@@ -1169,6 +1170,7 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 		// Set anim
 		StandardSetBodyAnim(activator, JKModEmotesData[emote].startAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS);
 		activator->client->ps.pm_type = PM_FREEZE;
+		activator->client->ps.forceRestricted = qtrue;
 		activator->client->jkmodClient.chairModelNum = self->s.number;
 		activator->client->jkmodClient.chairModelUsed = self->watertype;
 		activator->client->jkmodClient.chairModelDelay = level.time + 1000;

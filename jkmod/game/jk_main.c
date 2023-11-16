@@ -85,6 +85,7 @@ vmCvar_t	jkcvar_gameTypeConfig;
 vmCvar_t	jkcvar_altDimension;
 vmCvar_t	jkcvar_altDimensionBase;
 vmCvar_t	jkcvar_altDimensionTime;
+vmCvar_t	jkcvar_altDimensionSpawn;
 vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
@@ -171,7 +172,8 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_gameTypeConfig,		"jk_gameTypeConfig",		"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimension,			"jk_altDimension",			"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionBase,		"jk_altDimensionBase",		"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
-	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_altDimensionSpawn,	"jk_altDimensionSpawn",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
