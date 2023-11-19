@@ -5,7 +5,7 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
-		rect					260 40 360 290
+		rect					260 40 360 350
 		focusColor				1 1 1 1
 		style					1
 		border					1
@@ -20,7 +20,7 @@
 			name				background_pic
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 0 365 280
+			rect				0 0 365 340
 			background			"gfx/menus/menu_box_ingame"
 			forecolor			1 1 1 0.8
 			visible				1
@@ -54,7 +54,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 52 328 22
+			rect				10 52.7 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0.1 0.1 0.3 0.5
@@ -65,7 +65,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 72 328 22
+			rect				10 72.4 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0 0 0.2 0.5
@@ -76,7 +76,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 92 328 22
+			rect				10 92.1 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0.1 0.1 0.3 0.5
@@ -87,7 +87,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 112 328 22
+			rect				10 111.8 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0 0 0.2 0.5
@@ -98,7 +98,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 132 328 22
+			rect				10 131.5 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0.1 0.1 0.3 0.5
@@ -109,7 +109,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 152 328 22
+			rect				10 151.2 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0 0 0.2 0.5
@@ -120,7 +120,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 172 328 22
+			rect				10 170.9 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0.1 0.1 0.3 0.5
@@ -131,7 +131,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 192 328 22
+			rect				10 190.6 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0 0 0.2 0.5
@@ -142,7 +142,7 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 212 328 22
+			rect				10 210.3 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0.1 0.1 0.3 0.5
@@ -153,10 +153,43 @@
 		itemDef 
 		{
 			name				serverRow
-			rect				10 230 328 20
+			rect				10 230 328 19.7
 			style				WINDOW_STYLE_FILLED
 			border				0
 			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				serverRow
+			rect				10 249.7 328 19.7
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				serverRow
+			rect				10 269.4 328 19.7
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0 0 0.2 0.5
+			visible				1
+			decoration
+		}
+		
+		itemDef 
+		{
+			name				serverRow
+			rect				10 289.1 328 19.7
+			style				WINDOW_STYLE_FILLED
+			border				0
+			backcolor			0.1 0.1 0.3 0.5
 			visible				1
 			decoration
 		}
@@ -169,7 +202,7 @@
 		{
 			name				ServerColumn
 			group				groupColumn
-			rect				9 49 188 202
+			rect				9 49 188 262
 			style				WINDOW_STYLE_FILLED
 			border				1
 			backcolor			0 0 0 0
@@ -183,7 +216,7 @@
 		{
 			name				PlayersColumn
 			group				groupColumn
-			rect				195 49 47 202
+			rect				195 49 47 262
 			style				WINDOW_STYLE_FILLED
 			border				1
 			backcolor			0 0 0 0
@@ -197,7 +230,7 @@
 		{
 			name				TypeColumn
 			group				groupColumn
-			rect				240 49 38 202
+			rect				240 49 38 262
 			style				WINDOW_STYLE_FILLED
 			border				1
 			backcolor			0 0 0 0
@@ -211,7 +244,7 @@
 		{
 			name				AttributesColumn
 			group				groupColumn
-			rect				276 49 63 202
+			rect				276 49 63 262
 			style				WINDOW_STYLE_FILLED
 			border				1
 			backcolor			0 0 0 0
@@ -224,7 +257,7 @@
 		itemDef 
 		{
 			name				ServerList
-			rect				9 49 346 202
+			rect				9 49 346 262
 			type				ITEM_TYPE_LISTBOX
 			style				WINDOW_STYLE_FILLED
 			elementwidth		120
@@ -262,7 +295,7 @@
 		{
 			name				refreshHover
 			style				WINDOW_STYLE_SHADER
-			rect				7 250 30 32
+			rect				7 310 30 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 0.8
 			decoration
@@ -274,7 +307,7 @@
 			name				refreshBackground
 			type				1
 			style				WINDOW_STYLE_SHADER
-			rect				12 256 20 20
+			rect				12 316 20 20
 			background			"jkmod_refreshicon_alpha"
 			forecolor			1 1 1 0.8
 			visible				1
@@ -290,7 +323,7 @@
 			name				refreshButton
 			type				1
 			style				WINDOW_STYLE_SHADER
-			rect				12 256 20 20
+			rect				12 316 20 20
 			background			"jkmod_refreshicon_alpha_hover"
 			forecolor			1 1 1 1
 			visible				0
@@ -316,7 +349,7 @@
 			name				joinHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				50 250 50 32
+			rect				50 310 50 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -330,7 +363,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				50 250 50 32
+			rect				50 310 50 32
 			textalign			1
 			textalignx			25 // w/2 center
 			textaligny			4
@@ -358,7 +391,7 @@
 			name				addFavoriteHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				115 250 84 32
+			rect				115 310 84 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -372,7 +405,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				115 250 84 32
+			rect				115 310 84 32
 			textalign			1
 			textalignx			42 // w/2 center
 			textaligny			4
@@ -399,7 +432,7 @@
 			name				serverInfoHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				207 250 50 32
+			rect				207 310 50 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -413,7 +446,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				207 250 50 32
+			rect				207 310 50 32
 			textalign			1
 			textalignx			25 // w/2 center
 			textaligny			4
@@ -440,7 +473,7 @@
 			name				filterHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				264 250 50 32
+			rect				264 310 50 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -454,7 +487,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				264 250 50 32
+			rect				264 310 50 32
 			textalign			1
 			textalignx			25 // w/2 center
 			textaligny			4
@@ -480,7 +513,7 @@
 		{
 			name				searchHover
 			style				WINDOW_STYLE_SHADER
-			rect				329 250 30 32
+			rect				329 310 30 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 0.8
 			decoration
@@ -492,7 +525,7 @@
 			name				searchButton
 			type				1
 			style				WINDOW_STYLE_SHADER
-			rect				338 259 13 13
+			rect				338 319 13 13
 			background			"jkmod_searchicon_alpha"
 			forecolor			1 1 1 1
 			visible				1

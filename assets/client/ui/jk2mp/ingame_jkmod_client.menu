@@ -1381,7 +1381,7 @@
 			text				@JKMENUS_CLIENT_FLAGOPACITY
 			descText			@JKMENUS_CLIENT_FLAGOPACITY_DESC
 			cvarfloat			"jk_cg_flagOpacity" 10 0 255
-			rect				220 241 300 20
+			rect				220 241 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1410,7 +1410,7 @@
 		{
 			name				none
 			group				clientVisualsControls
-			rect				220 241 300 20
+			rect				220 241 280 20 // w - 20 reset
 			type				4
 			style				0	
 			text				""
@@ -1426,6 +1426,33 @@
 			decoration
 		}
 		
+		itemDef
+		{
+			name				none
+			group				clientVisualsControls
+			type				ITEM_TYPE_BUTTON
+			text				@JKMENUS_MOD_OPTIONS_RESET
+			descText			@JKMENUS_CLIENT_FLAGOPACITY_DESC
+			rect				500 241 50 20
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			0
+			textaligny			2  
+			font 				4
+			textscale			.4
+			forecolor			.235 .882 .847 1
+			visible				1
+			action
+			{
+				play			"sound/interface/shieldcon_done.mp3" ;
+				setcvar			jk_cg_flagOpacity "255"
+			}
+			mouseEnter
+			{ 
+				hide			highlight12
+				hide			keybindstatus
+			}
+		}
+		
 		itemDef 
 		{
 			name				none
@@ -1434,7 +1461,7 @@
 			text				@JKMENUS_CLIENT_SABERTRAIL
 			descText			@JKMENUS_CLIENT_SABERTRAIL_DESC
 			cvarfloat			"jk_cg_saberTrailSpeed" 10 0 150
-			rect				220 261 300 20
+			rect				220 261 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1463,7 +1490,7 @@
 		{
 			name				none
 			group				clientVisualsControls
-			rect				220 261 300 20
+			rect				220 261 280 20 // w - 20 reset
 			type				4
 			style				0	
 			text				""
@@ -1477,6 +1504,33 @@
 			forecolor			1 1 1 .5
 			visible				0
 			decoration
+		}
+		
+		itemDef
+		{
+			name				none
+			group				clientVisualsControls
+			type				ITEM_TYPE_BUTTON
+			text				@JKMENUS_MOD_OPTIONS_RESET
+			descText			@JKMENUS_CLIENT_SABERTRAIL_DESC
+			rect				500 261 50 20
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			0
+			textaligny			2  
+			font 				4
+			textscale			.4
+			forecolor			.235 .882 .847 1
+			visible				1
+			action
+			{
+				play			"sound/interface/shieldcon_done.mp3" ;
+				setcvar			jk_cg_saberTrailSpeed "40"
+			}
+			mouseEnter
+			{ 
+				hide			highlight12
+				hide			keybindstatus
+			}
 		}
 
 		//---------------------------------------------
@@ -1623,7 +1677,7 @@
 			text				@JKMENUS_CLIENT_FOV
 			descText			@JKMENUS_CLIENT_FOV_DESC
 			cvarfloat			"cg_fov" 10 50 200
-			rect				220 141 300 20
+			rect				220 141 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1652,7 +1706,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			rect				220 141 300 20
+			rect				220 141 280 20 // w - 20 reset
 			type				4
 			style				0	
 			text				""
@@ -1668,6 +1722,33 @@
 			decoration
 		}
 		
+		itemDef
+		{
+			name				none
+			group				clientCameraControls
+			type				ITEM_TYPE_BUTTON
+			text				@JKMENUS_MOD_OPTIONS_RESET
+			descText			@JKMENUS_CLIENT_FOV_DESC
+			rect				500 141 50 20
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			0
+			textaligny			2  
+			font 				4
+			textscale			.4
+			forecolor			.235 .882 .847 1
+			visible				1
+			action
+			{
+				play			"sound/interface/shieldcon_done.mp3" ;
+				setcvar			cg_fov "80"
+			}
+			mouseEnter
+			{ 
+				hide			highlight6
+				hide			keybindstatus
+			}
+		}
+		
 		itemDef 
 		{
 			name				none
@@ -1676,7 +1757,7 @@
 			text				@JKMENUS_CLIENT_THIRDCAMERA
 			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
 			cvarfloat			"cg_thirdPersonRange" 10 0 150
-			rect				220 161 300 20
+			rect				220 161 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
 			textaligny			-2
@@ -1705,7 +1786,7 @@
 		{
 			name				none
 			group				clientCameraControls
-			rect				220 161 300 20
+			rect				220 161 280 20 // w - 20 reset
 			type				4
 			style				0	
 			text				""
@@ -1719,6 +1800,33 @@
 			forecolor			1 1 1 .5
 			visible				0
 			decoration
+		}
+		
+		itemDef
+		{
+			name				none
+			group				clientCameraControls
+			type				ITEM_TYPE_BUTTON
+			text				@JKMENUS_MOD_OPTIONS_RESET
+			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
+			rect				500 161 50 20
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			0
+			textaligny			2  
+			font 				4
+			textscale			.4
+			forecolor			.235 .882 .847 1
+			visible				1
+			action
+			{
+				play			"sound/interface/shieldcon_done.mp3" ;
+				setcvar			cg_thirdPersonRange "80"
+			}
+			mouseEnter
+			{ 
+				hide			highlight7
+				hide			keybindstatus
+			}
 		}
 
 		//---------------------------------------------
