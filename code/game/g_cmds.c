@@ -774,6 +774,13 @@ void SetTeam( gentity_t *ent, char *s ) {
 		return;
 	}
 
+	// Tr!Force: [General] Check locked teams
+	if (level.jkmodLocals.lockedTeam[team])
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Team %s%s%s is locked.\n\"", TeamColorString(team), JKMod_TeamName(team, CASE_NORMAL), S_COLOR_WHITE));
+		return;
+	}
+
 	//
 	// decide if we will allow the change
 	//
@@ -953,7 +960,7 @@ void Cmd_ForceChanged_f( gentity_t *ent )
 
 	strcpy(fpChStr, buf);
 
-	trap_SendServerCommand( ent-g_entities, va("print \"%s%s\n\n\"", S_COLOR_GREEN, fpChStr) );
+	trap_SendServerCommand( ent-g_entities, va("print \"%s%s\n\"", S_COLOR_GREEN, fpChStr) ); // Workaround
 
 	ent->client->ps.fd.forceDoInit = 1;
 argCheck:

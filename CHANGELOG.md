@@ -9,6 +9,22 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.19.2
+- Fix some emotes bugs due missing checks
+- Fix spectator getting stuck in doors
+- Fix plugin version check behavior
+- Fix some compiling warnings
+- Fix emote player box size when using chairs
+- Fix duel glow with custom duel distance
+- Fix force usage using emote chairs
+- Changed player movements cvar name
+- Merge updates from mvsdk
+- Add current date to server news message
+- Add option to ignore emotes from other players
+- Add option to disable spawn on dimension change
+- Add reset option for some menu items
+- Add lock team and force team all commands
+
 ## 0.19.1
 - Fix jetpack idle effect on die and some tweaks
 - Fix mvapi level bump ahead of jk2mv release

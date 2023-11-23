@@ -364,7 +364,7 @@ Svcmd_ForceTeam_f
 forceteam <player> <team>
 ===================
 */
-void	Svcmd_ForceTeam_f( void ) {
+void	BaseJK2_Svcmd_ForceTeam_f( void ) { // Tr!Force: [BaseJK2] Force team command function
 	gclient_t	*cl;
 	char		str[MAX_TOKEN_CHARS];
 

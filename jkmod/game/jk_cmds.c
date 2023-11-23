@@ -61,7 +61,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	{
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Admin ^5]^7\n"
-			"^7You can perform some console commands if you are logged as admin or by remote console\n"
+			"^7You can perform additional console commands if you are logged as admin or by remote console\n"
 			"^7For ^5rcon ^7commands you have to use the following sintax: ^2/rcon <command>\n"
 			"^5----------\n"
 			"^7Rcon commands:\n"
@@ -73,6 +73,8 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3togglemod\n"
 			"^3teleport\n"
 			"^3forcedimension\n"
+			"^3forceteam\n"
+			"^3lockteam\n"
 			"^3whois\n"
 			"^3listdir\n"
 			"^5----------\n"
@@ -756,6 +758,15 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 {
 	int			num;
 	const char	*mapname = JKMod_GetCurrentMap();
+	team_t		team;
+	char		locked[MAX_STRING_CHARS] = { 0 };
+
+	for (team = 0; team < TEAM_NUM_TEAMS; team++)
+	{
+		if (level.jkmodLocals.lockedTeam[team]) Q_strcat(locked, sizeof(locked), va(" %s,", JKMod_TeamName(team, CASE_NORMAL)));
+	}
+
+	if (locked[0]) locked[strlen(locked) - 1] = '\0';
 
 	if (ent) 
 	{
@@ -769,6 +780,8 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			"^7List of all players connected on the server\n"
 			"^7Client plugin status: ^2Valid^7, ^5Newer, ^3Older^7, ^1Invalid\n"
 			"^7\""));
+
+		if (locked[0]) trap_SendServerCommand(ent - g_entities, va("print \"Currently locked teams:%s\n\"", locked));
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------------------------------------------------------------------------------------------------------\n"
@@ -779,8 +792,9 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 	else
 	{
 		G_Printf("Map: %s\n", mapname);
+		if (locked[0]) G_Printf("Locked Teams:%s\n", locked);
 		G_Printf("Num Name                         Type  Dimension    Plugin          Game\n");
-		G_Printf("--- ---------------------------- ----- ------------ -------------- -----------\n");
+		G_Printf("--- ---------------------------- ----- ------------ --------------- ----------\n");
 	}
 
 	for (num = 0; num < level.maxclients; num++)
@@ -827,13 +841,13 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		if (ent)
 		{
 			if (JKMod_IgnoreClientCheck(2, ent->s.number, user->s.number)) {
-				Q_strcat(ignored, sizeof(ignored), va("Emote/", ignored));
+				Q_strcat(ignored, sizeof(ignored), "Emote/");
 			}
 			if (JKMod_IgnoreClientCheck(1, ent->s.number, user->s.number)) {
-				Q_strcat(ignored, sizeof(ignored), va("Duel/", ignored));
+				Q_strcat(ignored, sizeof(ignored), "Duel/");
 			}
 			if (JKMod_IgnoreClientCheck(0, ent->s.number, user->s.number)) {
-				Q_strcat(ignored, sizeof(ignored), va("Chat/", ignored));
+				Q_strcat(ignored, sizeof(ignored), "Chat/");
 			}
 			if (ignored[0] == '\0') strcpy(ignored, "None/");
 			
@@ -879,7 +893,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			(int)ent->client->ps.origin[1],
 			(int)ent->client->ps.origin[2],
 			(int)ent->client->ps.viewangles[YAW]));
-	} else {
+	} else if (level.numConnectedClients) {
 		G_Printf("--- ---------------------------- ----- ------------ --------------- ----------\n");
 	}
 }

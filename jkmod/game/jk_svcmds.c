@@ -632,6 +632,104 @@ static void JKMod_svCmd_listDir(void)
 
 /*
 =====================================================================
+Lock team function
+=====================================================================
+*/
+static void JKMod_svCmd_lockTeam(void)
+{
+	team_t	team = TEAM_NUM_TEAMS;
+	char	arg1[MAX_STRING_CHARS];
+
+	if (trap_Argc() < 2)
+	{
+		G_Printf("Usage: lockteam <team>\nNotes: Use the command again to unlock\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (!Q_stricmp(arg1, "spectator") || !Q_stricmp(arg1, "s")) {
+			team = TEAM_SPECTATOR;
+		}
+		else if (!Q_stricmp(arg1, "free") || !Q_stricmp(arg1, "f")) {
+			team = TEAM_FREE;
+		}
+		else if (!Q_stricmp(arg1, "red") || !Q_stricmp(arg1, "r")) {
+			team = TEAM_RED;
+		}
+		else if (!Q_stricmp(arg1, "blue") || !Q_stricmp(arg1, "b")) {
+			team = TEAM_BLUE;
+		}
+		
+		if (team != TEAM_NUM_TEAMS) {
+			int i;
+			gentity_t* ent;
+			qboolean check = level.jkmodLocals.lockedTeam[team];
+
+			level.jkmodLocals.lockedTeam[team] = check ? qfalse : qtrue;
+			trap_SendServerCommand(-1, va("print \"Server: %s team %s\n\"", (check ? "Unlocked" : "Locked"), JKMod_TeamName(team, CASE_UPPER)));
+
+			for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+			{
+				if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+				{
+					trap_SendServerCommand(-1, va("cp \"Team %s%s%s has been %s\"", TeamColorString(team), JKMod_TeamName(team, CASE_NORMAL), S_COLOR_WHITE, (check ? "unlocked" : "locked")));
+				}
+			}
+		} else {
+			G_Printf("Invalid team!\n");
+		}
+	}
+}
+
+/*
+=====================================================================
+Force team function
+=====================================================================
+*/
+void JKMod_svCmd_forceTeam(void)
+{
+	int		i;
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+
+	if (trap_Argc() < 3)
+	{
+		G_Printf("Usage: forceteam <player|number|all> <team>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		if (!Q_stricmp(arg1, "all"))
+		{
+			gentity_t* ent;
+
+			for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+			{
+				if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+				{
+					SetTeam(ent, arg2);
+				}
+			}
+		}
+		else
+		{
+			int target = JKMod_CheckValidClient(NULL, arg1);
+
+			if (target != -1)
+			{
+				gentity_t* ent = &g_entities[target];
+
+				SetTeam(ent, arg2);
+			}
+		}
+	}
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */
@@ -689,6 +787,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "listdir"))
 	{
 		JKMod_svCmd_listDir();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "lockteam"))
+	{
+		JKMod_svCmd_lockTeam();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)

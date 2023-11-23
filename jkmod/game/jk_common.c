@@ -322,6 +322,37 @@ void JKMod_DropPlayer(gentity_t *ent, char *reason)
 
 /*
 =====================================================================
+Team name list in different formats
+=====================================================================
+*/
+const char *JKMod_TeamName(team_t team, int letterCase) 
+{
+	const char *teamName[CASE_MAX][TEAM_NUM_TEAMS] = {
+		{	// Normal
+			"Free",
+			"Red",
+			"Blue",
+			"Spectator",
+		},
+		{	// Upper
+			"FREE",
+			"RED",
+			"BLUE",
+			"SPECTATOR",
+		},
+		{	// Lower
+			"free",
+			"red",
+			"blue",
+			"spectator",
+		}
+	};
+	
+	return teamName[letterCase][team];
+}
+
+/*
+=====================================================================
 Convert milliseconds to string
 =====================================================================
 */

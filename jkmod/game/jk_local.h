@@ -251,6 +251,7 @@ typedef struct
 	unsigned		dimensionBase;								// Global base dimension
 	int				jetpackFxActive;							// Server jetpack active effect
 	int				jetpackFxIdle;								// Server jetpack idle effect
+	int				lockedTeam[TEAM_NUM_TEAMS];					// Current locked team
 
 } jkmod_locals_t;
 
@@ -315,6 +316,7 @@ Re-routed functions
 #define G_CallSpawn 				JKMod_G_CallSpawn
 #define trap_Trace					JKMod_DimensionTrace
 #define trap_SetBrushModel			JKMod_SetBrushModel
+#define Svcmd_ForceTeam_f			JKMod_svCmd_forceTeam
 
 /*
 =====================================================================
@@ -433,6 +435,7 @@ void		BaseJK2_G_UpdateCvars(void);
 void		BaseJK2_G_InitGame(int levelTime, int randomSeed, int restart);
 
 // g_svcmds.c
+void		BaseJK2_Svcmd_ForceTeam_f(void);
 qboolean	BaseJK2_ConsoleCommand(void);
 
 // jk_active.c
@@ -466,6 +469,7 @@ void		JKMod_StringEscape(char *in, char *out, int outSize);
 char		*JKMod_SanitizeString(char *dest, char *source, int destSize);
 int			JKMod_DuplicatedNameCheck(gentity_t *ent, char *clientName);
 void		JKMod_DropPlayer(gentity_t *ent, char *reason);
+const char	*JKMod_TeamName(team_t team, int letterCase);
 const char	*JKMod_MsToString(const int ms);
 const char	*JKMod_MsToWord(const int ms, qboolean abbr);
 int			JKMod_GetClientNumber(char* name);
@@ -563,5 +567,8 @@ void		JKMod_AddSpawnField(char *field, char *value);
 void		JKMod_CheckValidMapItems(void);
 void		JKMod_SetBrushModel(gentity_t *ent, const char *name);
 void		JKMod_DoorFix(gentity_t* ent);
+
+// jk_svcmds.c
+void		JKMod_svCmd_forceTeam(void);
 
 #endif // __JK_LOCAL_H__

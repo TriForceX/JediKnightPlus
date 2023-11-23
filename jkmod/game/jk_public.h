@@ -109,6 +109,22 @@ typedef enum
 	GENERIC_CONVERTER	= ( 1 << 2 ),
 	GENERIC_SERVERSIDE	= ( 1 << 3 ),
 
+	/* Total */
+	GENERIC_MAX = 4
+
 } jkmod_objects_t;
+
+// Letter case style
+typedef enum 
+{
+	/* List */
+	CASE_NORMAL,
+	CASE_UPPER,
+	CASE_LOWER,
+
+	/* Total */
+	CASE_MAX
+
+} jkmod_letterCase_t;
 
 #endif //__JK_PUBLIC_H__
