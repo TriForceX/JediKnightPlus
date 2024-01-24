@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 =====================================================================
 [Description]: Custom bots AI
 =====================================================================

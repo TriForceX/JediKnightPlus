@@ -8,12 +8,12 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 <div align="center">
 
-[![version](https://img.shields.io/github/v/release/TriForceX/JediKnightPlus?include_prereleases&label=Current%20Version&color=brightgreen)](https://github.com/TriForceX/JediKnightPlus/releases)
-[![wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg)](https://github.com/TriForceX/JediKnightPlus/wiki)
-[![discord](https://img.shields.io/discord/539434081771847680.svg?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gznetwork.com/jkplus)
-[![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars)](https://github.com/TriForceX/JediKnightPlus/stargazers)
-[![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red)](https://github.com/TriForceX/JediKnightPlus/issues)
-[![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow)](#license)
+[![version](https://img.shields.io/github/v/release/TriForceX/JediKnightPlus?include_prereleases&label=Current%20Version&color=brightgreen&style=flat)](https://github.com/TriForceX/JediKnightPlus/releases)
+[![wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg?style=flat)](https://github.com/TriForceX/JediKnightPlus/wiki)
+[![discord](https://img.shields.io/discord/539434081771847680.svg?logo=discord&logoColor=white&label=Discord&color=5865F2&style=flat)](https://discord.gznetwork.com/jkplus)
+[![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars&style=flat)](https://github.com/TriForceX/JediKnightPlus/stargazers)
+[![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red&style=flat)](https://github.com/TriForceX/JediKnightPlus/issues)
+[![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow&style=flat)](#license)
 
 </div>
 
@@ -227,7 +227,7 @@ The following people supported and helped me directly on this project.
 # Contact
 
 **Jedi Knight Plus Mod developed by Tr!Force**  
-Work copyrighted (C) with holder attribution 2005 - 2023
+Work copyrighted (C) with holder attribution 2005 - 2024
 
 Visit the mod page: https://jkplus.github.io
 

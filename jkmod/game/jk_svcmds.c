@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 =====================================================================
 [Description]: Main server commands functions
 =====================================================================
@@ -663,7 +663,7 @@ static void JKMod_svCmd_lockTeam(void)
 		
 		if (team != TEAM_NUM_TEAMS) {
 			int i;
-			gentity_t* ent;
+			gentity_t *ent;
 			qboolean check = level.jkmodLocals.lockedTeam[team];
 
 			level.jkmodLocals.lockedTeam[team] = check ? qfalse : qtrue;

@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 =====================================================================
 [Description]: Main commands functions
 =====================================================================
@@ -98,10 +98,10 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3ignore         !loadpos\n"
 			"^3dropflag       !savespawn\n"
 			"^3callvote       !resetspawn\n"
-			"^3whois          !where\n"
-			"^3taunt2         !racetime\n"
-			"^3savepos        !teleports\n"
-			"^3loadpos\n"
+			"^3whois          !whois\n"
+			"^3taunt2         !where\n"
+			"^3savepos        !racetime\n"
+			"^3loadpos        !teleports\n"
 			"^3savespawn\n"
 			"^3resetspawn\n"
 			"^7\""));
@@ -125,6 +125,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		{
 			emoteLine = (i % 6 == 5 || i == (JKModEmotesDataSize-1)) ? "\n" : "";
 			emoteStatus = S_COLOR_YELLOW;
+
 			if (!(jkcvar_emotesEnabled.integer & (1 << JKModEmotesData[i].emoteIndex))) emoteStatus = S_COLOR_RED;
 			if (!JKModEmotesData[i].compatible && jk2startversion == VERSION_1_02) emoteStatus = S_COLOR_RED;
 
@@ -1933,7 +1934,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		JKMod_Cmd_ShowMotd(ent);
 	}
 	// Show whois
-	else if (Q_stricmp(p, "!where") == 0)
+	else if (Q_stricmp(p, "!where") == 0 || Q_stricmp(p, "!whois") == 0)
 	{
 		JKMod_Cmd_WhoIs(ent);
 		JKMod_Cmd_ToggleConsole(ent);

@@ -1,6 +1,6 @@
 /*
 ======================= Jedi Knight Plus Mod ========================
-By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2022
+By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 =====================================================================
 [Description]: Local definitions for game module
 =====================================================================
@@ -251,7 +251,7 @@ typedef struct
 	unsigned		dimensionBase;								// Global base dimension
 	int				jetpackFxActive;							// Server jetpack active effect
 	int				jetpackFxIdle;								// Server jetpack idle effect
-	int				lockedTeam[TEAM_NUM_TEAMS];					// Current locked team
+	int				lockedTeam[TEAM_NUM_TEAMS];					// Current locked teams
 
 } jkmod_locals_t;
 
