@@ -319,6 +319,7 @@ qboolean	JKMod_CG_IconHUDActive(void);
 qboolean	JKMod_CG_CenterPrintActive(void);
 int			JKMod_CG_ConsolePrintActive(void);
 const char	*JKMod_CG_MsToString(const int ms);
+const char	*JKMod_CG_MinToString(const int min);
 qboolean	JKMod_CG_HasLeadingColorCode(char *msg);
 void		JKMod_CG_DrawClock(void);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);

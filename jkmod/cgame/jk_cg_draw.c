@@ -173,6 +173,22 @@ const char *JKMod_CG_MsToString(const int ms)
 
 /*
 =====================================================================
+Convert minutes to string
+=====================================================================
+*/
+const char *JKMod_CG_MinToString(const int min)
+{
+	int	timeHour, timeMins;
+
+    timeHour = min / 60;
+    timeMins = min % 60;
+
+	if (timeHour > 999) timeHour = 999;
+	return !min ? "00:00" : va("%02i:%02i", timeHour, timeMins);
+}
+
+/*
+=====================================================================
 Check leading color code
 =====================================================================
 */
@@ -209,7 +225,7 @@ void JKMod_CG_DrawClock(void)
 	systemTimeHour = systemTime.tm_hour > 12 && jkcvar_cg_drawClock.integer == 2 ? systemTime.tm_hour - 12 : systemTime.tm_hour;
 
 	x = cgs.screenWidth - 68;
-	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR ? 36 : 123);
+	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR || cg.showScores ? 36 : 123);
 
 	if (cg.snap->ps.pm_type == PM_SPECTATOR && cgs.gametype == GT_TOURNAMENT) y -= 97;
 
@@ -405,7 +421,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 	int linesToDraw = 0;
 	int i = 0;
 	int x = 30;
-	int y = cg.scoreBoardShowing ? 475 : jkcvar_cg_chatBoxHeight.integer;
+	int y = cg.showScores ? 475 : jkcvar_cg_chatBoxHeight.integer;
 	float fontScale = 0.65f;
 	qboolean drawAnyway = qfalse;
 

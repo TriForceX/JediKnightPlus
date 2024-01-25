@@ -2414,7 +2414,7 @@ static void CG_DrawLagometer( void ) {
 	// Tr!Force: [DrawClock] Adjust for clock
 	x = cgs.screenWidth - (jkcvar_cg_drawClock.integer ? 53 : 48);
 	y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 176 : 144);
-	if (cg.snap->ps.pm_type == PM_SPECTATOR) y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 89 : 48);
+	if (cg.snap->ps.pm_type == PM_SPECTATOR || cg.showScores) y = cgs.screenHeight - (jkcvar_cg_drawClock.integer ? 89 : 48);
 	if (cg.snap->ps.pm_type == PM_SPECTATOR && cgs.gametype == GT_TOURNAMENT) y -= 97;
 
 	if ( !cg_lagometer.integer || cgs.localServer ) {

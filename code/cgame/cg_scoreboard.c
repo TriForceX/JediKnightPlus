@@ -252,7 +252,10 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	} 
 	else 
 	{
-		CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+		if (jkcvar_cg_scoreboardExtras.integer)
+			CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%s", JKMod_CG_MinToString(score->time)),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+		else
+			CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 
 	// add the "ready" marker for intermission exiting
@@ -554,14 +557,12 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n1 = CG_TeamScoreboard( y, TEAM_RED, fade, team1MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n1 * lineHeight + bottomBorderSize, 0.33f, TEAM_RED );
 			CG_TeamScoreboard( y, TEAM_RED, fade, team1MaxCl, lineHeight, qfalse );
-			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_RED ); // Tr!Force: [Scoreboard] Team thin border
 			y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
 			//maxClients -= n1;
 
 			n2 = CG_TeamScoreboard( y, TEAM_BLUE, fade, team2MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n2 * lineHeight + bottomBorderSize, 0.33f, TEAM_BLUE );
 			CG_TeamScoreboard( y, TEAM_BLUE, fade, team2MaxCl, lineHeight, qfalse );
-			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_BLUE); // Tr!Force: [Scoreboard] Team thin border
 			y += (n2 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n2;
