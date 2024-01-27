@@ -2184,10 +2184,10 @@ static void CG_DrawUpperRight( void ) {
 		y = CG_DrawSnapshot( y );
 	}
 	if ( cg_drawFPS.integer ) {
-		y = CG_DrawFPS( y );
+		y = cg_drawFPS.integer == 2 ? JKMod_CG_DrawFPS( y ) : CG_DrawFPS( y ); // Tr!Force: [DrawFPS] Custom fps function
 	}
 	if ( cg_drawTimer.integer ) {
-		y = CG_DrawTimer( y );
+		y = cg_drawTimer.integer == 2 ? JKMod_CG_DrawTimer( y ) : CG_DrawTimer( y ); // Tr!Force: [DrawTimer] Custom timer function
 	}
 	if (jkcvar_cg_drawInventory.integer && !(cgs.gametype == GT_CTF || cgs.gametype == GT_CTY)) { // Tr!Force: [DrawInventory] Adjust powerup position
 		JKMod_CG_DrawPowerupIcons( y );

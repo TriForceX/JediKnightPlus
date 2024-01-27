@@ -811,10 +811,16 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
+			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_DRAWTIMER
 			descText			@JKMENUS_CLIENT_DRAWTIMER_DESC
 			cvar				"cg_drawTimer"
+			cvarFloatList
+			{
+				@MENUS0_NO  						0
+				@JKMENUS_MOD_OPTIONS_STANDARD		1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE		2
+			}
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -844,10 +850,16 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
+			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_DRAWFPS
 			descText			@JKMENUS_CLIENT_DRAWFPS_DESC
 			cvar				"cg_drawFPS"
+			cvarFloatList
+			{
+				@MENUS0_NO  						0
+				@JKMENUS_MOD_OPTIONS_STANDARD		1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE		2
+			}
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1345,7 +1357,7 @@
 			cvar				"jk_cg_flagAlignment"
 			cvarFloatList
 			{
-				"Original"  						0
+				@JKMENUS_MOD_OPTIONS_STANDARD  		0
 				@JKMENUS_CLIENT_FLAGALIGN_ENHANCED	1
 			}
 			rect				220 221 300 20

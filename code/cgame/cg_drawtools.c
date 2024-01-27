@@ -647,6 +647,7 @@ void UI_DrawScaledProportionalString( int x, int y, const char* str, int style, 
 	//	is dumb, but for now...
 	//
 	int iStyle = 0;
+	int iMenuFont = (style & UI_SMALLFONT) ? FONT_SMALL : FONT_MEDIUM; // Tr!Force: [CGameGeneral] Allow font style on scaled string
 
 	switch (style & (UI_LEFT|UI_CENTER|UI_RIGHT))
 	{
@@ -659,13 +660,13 @@ void UI_DrawScaledProportionalString( int x, int y, const char* str, int style, 
 
 		case UI_CENTER:
 		{
-			x -= CG_Text_Width(str, scale, FONT_MEDIUM) / 2;
+			x -= CG_Text_Width(str, scale, iMenuFont) / 2; // Tr!Force: [CGameGeneral] Allow font style on scaled string
 		}
 		break;
 
 		case UI_RIGHT:
 		{
-			x -= CG_Text_Width(str, scale, FONT_MEDIUM);
+			x -= CG_Text_Width(str, scale, iMenuFont); // Tr!Force: [CGameGeneral] Allow font style on scaled string
 		}
 		break;
 	}
@@ -680,7 +681,7 @@ void UI_DrawScaledProportionalString( int x, int y, const char* str, int style, 
 		iStyle = ITEM_TEXTSTYLE_BLINK;
 	}
 
-	CG_Text_Paint(x, y, scale, color, str, 0, 0, iStyle, FONT_MEDIUM);
+	CG_Text_Paint(x, y, scale, color, str, 0, 0, iStyle, iMenuFont); // Tr!Force: [CGameGeneral] Allow font style on scaled string
 }
 
 

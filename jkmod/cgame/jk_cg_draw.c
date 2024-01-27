@@ -189,24 +189,6 @@ const char *JKMod_CG_MinToString(const int min)
 
 /*
 =====================================================================
-Check leading color code
-=====================================================================
-*/
-qboolean JKMod_CG_HasLeadingColorCode(char *msg) 
-{
-	if (msg[0] == '^') {
-#if 0
-	if (msg[1] == '1' || msg[1] == '2' || msg[1] == '3' || msg[1] == '4' || msg[1] == '5' || msg[1] == '6' || msg[1] == '7' || msg[1] == '8' || msg[1] == '9' || msg[1] == '0') {
-#else
-	if (msg[1] >= '0' && msg[1] <= '9') {
-#endif
-		return qtrue;
-	} }
-	return qfalse;
-}
-
-/*
-=====================================================================
 Draw clock function
 =====================================================================
 */
@@ -237,6 +219,103 @@ void JKMod_CG_DrawClock(void)
 
 	if (jkcvar_cg_drawClock.integer == 2) CG_Text_Paint(x + 47, y + 13.5f, 0.4f, colorTable[CT_HUD_GREEN], va("%s", systemTimeType), 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
 	if ((cg.time >> 9) & 1) CG_Text_Paint(x + 24, y + 6, 0.7f, colorTable[CT_HUD_GREEN], ":", 0, 0, UI_SMALLFONT | UI_DROPSHADOW, FONT_SMALL);
+}
+
+/*
+=====================================================================
+Draw clock function
+=====================================================================
+*/
+float JKMod_CG_DrawFPS(float y)
+{
+	vec4_t		tColor = { 1, 1, 1, 1 };
+	vec4_t		cColor = { 0.5, 0.5, 0.5, 0.5 };
+	vec4_t		bColor = { 0, 0, 0, 0.6 };
+	float		bSize = 1;
+	float		tScale = 0.47;
+	float		width = 60;
+	float		height = 11;
+	float		x = cgs.screenWidth - width - 5;
+
+	static int	previousTimes[FPS_FRAMES];
+	static int	index;
+	int			i, total;
+	int			fps = 0;
+	static int	previous;
+	int			t, frameTime;
+	
+	t = trap_Milliseconds();
+	frameTime = t - previous;
+	previous = t;
+	previousTimes[index % FPS_FRAMES] = frameTime;
+	index++;
+
+	if (index > FPS_FRAMES) {
+		total = 0;
+		for (i = 0 ; i < FPS_FRAMES ; i++) {
+			total += previousTimes[i];
+		}
+		if (!total) total = 1;
+		fps = 1000 * FPS_FRAMES / total;
+	}
+	
+	CG_DrawRect(x, y + 5, width, height, bSize, bColor);
+	CG_FillRect(x + bSize, y + 5 + bSize, width - bSize - bSize, height - bSize - bSize, cColor);
+	UI_DrawScaledProportionalString(cgs.screenWidth - (width / 2 + 5), y + 4, va("%i fps", fps), UI_CENTER | UI_SMALLFONT | UI_DROPSHADOW, tColor, tScale);
+
+	return y + height + 5;
+}
+
+/*
+=====================================================================
+Draw clock function
+=====================================================================
+*/
+float JKMod_CG_DrawTimer(float y)
+{
+	vec4_t		tColor = { 1, 1, 1, 1 };
+	vec4_t		cColor = { 0.5, 0.5, 0.5, 0.5 };
+	vec4_t		bColor = { 0, 0, 0, 0.6 };
+	float		bSize = 1;
+	float		tScale = 0.47;
+	float		width = 60;
+	float		height = 11;
+	float		x = cgs.screenWidth - width - 5;
+
+	int			hours, mins, secs;
+	int			msec, seconds;
+
+	msec = cg.time - cgs.levelStartTime;
+	seconds = msec / 1000;
+    hours = seconds / 3600;
+    mins = (seconds % 3600) / 60;
+    secs = (seconds % 3600) % 60;
+
+	if (hours > 99999) hours = 99999;
+
+	CG_DrawRect(x, y + 5, width, height, bSize, bColor);
+	CG_FillRect(x + bSize, y + 5 + bSize, width - bSize - bSize, height - bSize - bSize, cColor);
+	UI_DrawScaledProportionalString(cgs.screenWidth - (width / 2 + 5), y + 4, va("%02i:%02i:%02i", hours, mins, secs), UI_CENTER | UI_SMALLFONT | UI_DROPSHADOW, tColor, tScale);
+
+	return y + height + 5;
+}
+
+/*
+=====================================================================
+Check leading color code
+=====================================================================
+*/
+qboolean JKMod_CG_HasLeadingColorCode(char *msg) 
+{
+	if (msg[0] == '^') {
+#if 0
+	if (msg[1] == '1' || msg[1] == '2' || msg[1] == '3' || msg[1] == '4' || msg[1] == '5' || msg[1] == '6' || msg[1] == '7' || msg[1] == '8' || msg[1] == '9' || msg[1] == '0') {
+#else
+	if (msg[1] >= '0' && msg[1] <= '9') {
+#endif
+		return qtrue;
+	} }
+	return qfalse;
 }
 
 /*

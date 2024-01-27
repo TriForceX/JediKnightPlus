@@ -119,8 +119,8 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_chatBoxHistory",		"1",		"2" },
 	{ "jk_cg_speedMeter",			"256",		"256" },
 	{ "jk_cg_strafeHelper",			"992",		"992" },
-	{ "cg_drawTimer",				"0",		NULL },
-	{ "cg_drawFPS",					"0",		NULL },
+	{ "cg_drawTimer",				"0",		"2" },
+	{ "cg_drawFPS",					"0",		"2" },
 	{ "cg_lagometer",				"0",		NULL },
 	{ "cg_hudFiles",				"0",		"0" },
 
@@ -144,6 +144,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "cg_simpleItems",				"0",		NULL },
 	{ "cg_shadows",					"1",		NULL },
 	{ "cg_scorePlums",				"1",		"2" },
+	{ "r_clear",					"0",		"8" },
 
 	// camera cvars					default		recommended
 	{ "jk_cg_duelEnd",				"0",		"1" },

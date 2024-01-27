@@ -23,6 +23,7 @@ Global definitions
 #define USE_DISTANCE				64.0f
 #define ACCEL_SAMPLES				16
 #define PERCENT_SAMPLES				16
+#define	FPS_FRAMES					4
 
 /*
 =====================================================================
@@ -320,8 +321,10 @@ qboolean	JKMod_CG_CenterPrintActive(void);
 int			JKMod_CG_ConsolePrintActive(void);
 const char	*JKMod_CG_MsToString(const int ms);
 const char	*JKMod_CG_MinToString(const int min);
-qboolean	JKMod_CG_HasLeadingColorCode(char *msg);
 void		JKMod_CG_DrawClock(void);
+float		JKMod_CG_DrawFPS(float y);
+float		JKMod_CG_DrawTimer(float y);
+qboolean	JKMod_CG_HasLeadingColorCode(char *msg);
 void		JKMod_CG_ChatBox_StrInsert(char *buffer, int place, char *str);
 void		JKMod_CG_ChatBox_AddString(char *chatStr);
 void		JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int maxNum, jkmod_chatbox_t *item);
