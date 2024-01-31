@@ -1739,7 +1739,7 @@ static float CG_DrawEnemyInfo ( float y )
 			y += 15;
 			*/
 
-			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, title, 0, 0, 0, FONT_MEDIUM );
+			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, title, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 
 			return y + BIGCHAR_HEIGHT + 2;
 		}
@@ -1827,17 +1827,17 @@ static float CG_DrawEnemyInfo ( float y )
 
 	y += size;
 
-	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( ci->name, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, ci->name, 0, 0, 0, FONT_MEDIUM );
+	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( ci->name, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, ci->name, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 
 	y += 15;
-	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, title, 0, 0, 0, FONT_MEDIUM );
+	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, title, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 
 	if ( cgs.gametype == GT_TOURNAMENT && cgs.clientinfo[cg.snap->ps.clientNum].team != TEAM_SPECTATOR)
 	{//also print their score
 		char text[1024];
 		y += 15;
 		Com_sprintf(text, sizeof(text), "%i/%i", cgs.clientinfo[clientNum].score, cgs.fraglimit );
-		CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( text, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, text, 0, 0, 0, FONT_MEDIUM );
+		CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( text, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, text, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 	}
 
 	return y + BIGCHAR_HEIGHT + 2;
