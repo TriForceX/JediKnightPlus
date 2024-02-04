@@ -258,6 +258,7 @@ static void JKMod_svCmd_toggleMod(void)
 			"^3jk_voteControl\n"
 			"^3jk_altDimension\n"
 			"^3jk_altDimensionBase\n"
+			"^3jk_altDimensionSpawn\n"
 			"^3jk_mapFixes\n"
 			"^3bot_forGimmick\n"
 			);
@@ -297,6 +298,11 @@ static void JKMod_svCmd_toggleMod(void)
 			toggleModNote = "For normal dimension change this cvar manually to 0";
 			toggleModRadio = qtrue;
 			start = 2;
+		}
+		else if (!Q_stricmp(arg1, "jk_altDimensionSpawn")) 
+		{
+			toggleModOptions = toggleAltDimension;
+			toggleModSize = ARRAY_LEN(toggleAltDimension);
 		}
 		else if (!Q_stricmp(arg1, "jk_mapFixes"))
 		{

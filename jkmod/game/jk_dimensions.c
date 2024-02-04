@@ -315,11 +315,13 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		}
 
 		// Set random spawn point
-		if (jkcvar_altDimensionSpawn.integer &&
+		if ((jkcvar_altDimensionSpawn.integer & dimension) &&
 			ent->client->sess.sessionTeam != TEAM_SPECTATOR &&
-			ent->client->ps.pm_type != PM_DEAD && !ent->client->ps.duelInProgress && 
-			ent->jkmodEnt.dimensionNumberOld && 
-			ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber) 
+			ent->client->ps.pm_type != PM_DEAD &&
+			ent->client->ps.stats[JK_DIMENSION] != DIMENSION_DUEL &&
+			ent->jkmodEnt.dimensionNumberOld &&
+			ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber &&
+			((ent->jkmodEnt.dimensionNumberOld == DIMENSION_DUEL && !(jkcvar_altDimensionSpawn.integer & DIMENSION_DUEL)) ? qfalse : qtrue)) 
 		{
 			SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);
 			JKMod_TeleportPlayer(ent, spawnOrigin, spawnAngles, qfalse, 0, NULL, "sound/interface/secret_area");
@@ -332,7 +334,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		}
 
 		// Update previous dimension
-		ent->jkmodEnt.dimensionNumberOld = ent->jkmodEnt.dimensionNumber;
+		ent->jkmodEnt.dimensionNumberOld = ent->client->ps.stats[JK_DIMENSION];
 
 		if (mvapi)
 		{
@@ -378,8 +380,9 @@ qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 {
 	int owner1 = ent1->jkmodEnt.dimensionOwner;
 	int owner2 = ent2->jkmodEnt.dimensionOwner;
-
-	if (ent1->jkmodEnt.dimensionNumber == DIMENSION_RACE && ent2->jkmodEnt.dimensionNumber == DIMENSION_RACE)
+	
+	if (JKModDimensionData[JKMod_DimensionIndex(ent1->jkmodEnt.dimensionNumber)].passthrough && 
+		JKModDimensionData[JKMod_DimensionIndex(ent2->jkmodEnt.dimensionNumber)].passthrough)
 	{
 		return !JKMod_DimensionCheck(owner1, owner2);
 	}
