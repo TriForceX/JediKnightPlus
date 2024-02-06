@@ -14,9 +14,6 @@ extern int trap_RealTime(qtime_t *qtime);
 extern qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
 extern qboolean CG_InRollAnim(centity_t *cent);
 
-int jkmod_pause_count = 0; // Pause announce counter
-int jkmod_popup_count = 0; // Client pop-up timer
-
 /*
 =====================================================================
 Custom draw functions
@@ -795,17 +792,6 @@ void JKMod_CG_DrawPauseString(void)
 
 		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
 		CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
-		
-		if (sec <= 3 && sec != jkmod_pause_count) 
-		{
-			jkmod_pause_count = sec;
-			switch (sec) 
-			{
-				case 1: trap_S_StartLocalSound(cgs.media.count1Sound, CHAN_ANNOUNCER); break;
-				case 2: trap_S_StartLocalSound(cgs.media.count2Sound, CHAN_ANNOUNCER); break;
-				case 3: trap_S_StartLocalSound(cgs.media.count3Sound, CHAN_ANNOUNCER); break;
-			}
-		}
 	}
 	else 
 	{

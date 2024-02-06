@@ -200,6 +200,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
 static int JKModCvarAltDimension = 0;
+static int JKModPauseDelay = 0;
 
 /*
 =====================================================================
@@ -628,6 +629,8 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 {
 	static int	pauseLast = 0;
 	static int	pauseTime = 0;
+	static int	pauseSecs = 0;
+	static int	i = 0;
 
 	if (level.jkmodLocals.pauseTime > levelTime)
 	{
@@ -635,14 +638,24 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		{
 			pauseLast = levelTime;
 			level.jkmodLocals.idleTime = levelTime;
-			
-			if (level.jkmodLocals.pauseTimeCustom) {
-				trap_SendServerCommand(-1, va("print \"Game paused for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
-				trap_SendServerCommand(-1, va("cp \"Pause for %i seconds\"", level.jkmodLocals.pauseTimeCustom));
-			}
-			else {
-				trap_SendServerCommand(-1, "print \"Game paused by the server\n\"");
-				trap_SendServerCommand(-1, "cp \"PAUSE\"");
+
+			for (i = 0; i < level.maxclients; i++) 
+			{
+				if (level.clients[i].pers.connected != CON_DISCONNECTED) 
+				{
+					gentity_t *ent = &g_entities[i];
+
+					if (level.jkmodLocals.pauseTimeCustom) 
+					{
+						trap_SendServerCommand(i, va("print \"Game paused for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
+						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("cp \"Pause for %i seconds\"", level.jkmodLocals.pauseTimeCustom));
+					}
+					else 
+					{
+						trap_SendServerCommand(i, "print \"Game paused by the server\n\"");
+						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, "cp \"PAUSE\"");
+					}
+				}
 			}
 		}
 
@@ -650,6 +663,40 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		{
 			pauseTime = level.jkmodLocals.pauseTime;
 			trap_SetConfigstring(CS_PAUSE, va("%d", pauseTime));
+		}
+
+		if (JKModPauseDelay <= levelTime)
+		{
+			pauseSecs = (level.jkmodLocals.pauseTime - levelTime) / 1000 + 1;
+
+			if (pauseSecs <= 3) 
+			{
+				for (i = 0; i < level.maxclients; i++) 
+				{
+					if (level.clients[i].pers.connected != CON_DISCONNECTED) 
+					{
+						gentity_t *ent = &g_entities[i];
+
+						switch (pauseSecs)
+						{
+							case 3: 
+								G_Sound(ent, CHAN_AUTO, G_SoundIndex("sound/chars/mothma/misc/40MOM035"));
+								if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("print \"Resume in %i seconds\n\"", pauseSecs));
+								break;
+							case 2: 
+								G_Sound(ent, CHAN_AUTO, G_SoundIndex("sound/chars/mothma/misc/40MOM036"));
+								if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("print \"Resume in %i seconds\n\"", pauseSecs));
+								break;
+							case 1: 
+								G_Sound(ent, CHAN_AUTO, G_SoundIndex("sound/chars/mothma/misc/40MOM037")); 
+								if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("print \"Resume in %i seconds\n\"", pauseSecs));
+								break;
+						}
+					}
+				}
+			}
+
+			JKModPauseDelay = levelTime + 1000;
 		}
 
 		return qtrue;
@@ -662,6 +709,8 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		
 		pauseLast = 0;
 		pauseTime = 0;
+		pauseSecs = 0;
+		JKModPauseDelay = 0;
 		
 		trap_SetConfigstring(CS_PAUSE, "");
 	}
