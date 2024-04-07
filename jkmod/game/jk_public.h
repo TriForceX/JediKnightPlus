@@ -30,6 +30,17 @@ Global definitions
 #define JK_DUAL_MOVES			( 1 << 6 )
 #define JK_GHOST_SABERS			( 1 << 7 )
 
+// Bot actions
+#define JK_BOT_STATIC			( 1 << 0 )
+#define JK_BOT_ATTACK			( 1 << 1 )
+#define JK_BOT_ATTACK_ALT		( 1 << 2 )
+#define JK_BOT_CROUCH			( 1 << 3 )
+#define JK_BOT_JUMP				( 1 << 4 )
+#define JK_BOT_TAUNT			( 1 << 5 )
+#define JK_BOT_TALK				( 1 << 6 )
+#define JK_BOT_GOD				( 1 << 7 )
+#define JK_BOT_CONTROL			( 1 << 8 )
+
 // Map fixes stuff
 #define JK_MAP_SPVOTE			( 1 << 0 )
 #define JK_MAP_FXDAMAGE			( 1 << 1 )
@@ -94,9 +105,11 @@ typedef enum
 	DIMENSION_SABER		= ( 1 << 4 ),
 	DIMENSION_INSTA		= ( 1 << 5 ),
 	DIMENSION_CHEAT		= ( 1 << 6 ),
+	DIMENSION_FORCE		= ( 1 << 7 ),
+	DIMENSION_PRIVATE	= ( 1 << 8 ),
 
 	/* Total */
-	DIMENSION_MAX		= 7
+	DIMENSION_MAX		= 9
 
 } jkmod_dimensions_t;
 

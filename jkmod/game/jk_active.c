@@ -46,6 +46,62 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		else client->jkmodClient.teleportChatTime = 0;
 	}
 
+	// Force change time check
+	if (client->jkmodClient.forceChangeDelay && jkcvar_forceChangeTime.integer && jkcvar_forceChangeInstant.integer != 1 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+	{
+		if (client->jkmodClient.forceChangeDelay > 1) {
+			client->jkmodClient.forceChangeDelay--;
+			trap_SendServerCommand(ent - g_entities, va("cp \"Applying force changes in %d\"", ent->client->jkmodClient.forceChangeDelay));
+		} else {
+			trap_SendServerCommand(ent - g_entities, "cp \"Force updated!\"");
+			if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE))) {
+				JKMod_ForcePowerChange(ent, DIMENSION_FORCE);
+			} else {
+				JKMod_ForcePowerChange(ent, DIMENSION_FREE);
+			}
+			client->jkmodClient.forceChangeDelay = 0;
+		}
+	}
+
+	// Private remaining time check
+	if (client->pers.jkmodPers.privateRoom[PRIVATE_TIME])
+	{
+		if (client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] > 0) 
+		{
+			trap_SendServerCommand(ent - g_entities, va("cp \"You have been invited by\n%s" S_COLOR_WHITE "\nto create a private room\nsay ^2!accept^7 in chat to join\nTime: %i\"", g_entities[client->pers.jkmodPers.privateRoom[PRIVATE_INDEX]].client->pers.netname, client->pers.jkmodPers.privateRoom[PRIVATE_INVITE]));
+			client->pers.jkmodPers.privateRoom[PRIVATE_INVITE]--;
+		} 
+		else if (client->pers.jkmodPers.privateRoom[PRIVATE_TIME] < level.time) 
+		{
+			trap_SendServerCommand(ent - g_entities, "print \"Private room invitation expired\n\"");
+
+			client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = 0;
+			client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = 0;
+			client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = 0;
+		}
+	}
+
+	// Private check for bots leave
+	if (client->pers.jkmodPers.privateRoom[PRIVATE_NUM] && (ent->r.svFlags & SVF_BOT))
+	{
+		if (!JKMod_PlayersPrivate(client->pers.jkmodPers.privateRoom[PRIVATE_NUM], qtrue))
+		{
+			int inactivityTime = jkcvar_privateInactiveBots.integer >= MIN_PRIVATE_TIME ? jkcvar_privateInactiveBots.integer : MIN_PRIVATE_TIME;
+			if (client->pers.jkmodBots.inactivityTime == 0) client->pers.jkmodBots.inactivityTime = level.time + (inactivityTime*1000);
+			if (client->pers.jkmodBots.inactivityTime < level.time)
+			{
+				trap_EA_Say(ent->s.number, "!dimension leave");
+				trap_EA_Say(ent->s.number, va("I left private rooms after %i seconds of inactivity", inactivityTime));
+				client->pers.jkmodBots.inactivityTime = 0;
+				client->pers.jkmodBots.actionFlags = 0;
+			}
+		}
+		else if (client->pers.jkmodBots.inactivityTime != 0) 
+		{
+			client->pers.jkmodBots.inactivityTime = 0;
+		}
+	}
+
 	// Chat protect check
 	if (jkcvar_chatProtect.integer && (client->ps.eFlags & EF_TALK) && !(g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY))
 	{
@@ -248,6 +304,16 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 	}
 
+	// Private check for bots control
+	if ((ent->client->pers.jkmodBots.actionFlags & JK_BOT_CONTROL) && (ent->r.svFlags & SVF_BOT))
+	{
+		ent->client->pers.cmd = g_entities[ent->client->pers.jkmodPers.botControl[BOT_INDEX]].client->pers.cmd;
+		ent->client->ps.fd.saberAnimLevel = g_entities[ent->client->pers.jkmodPers.botControl[BOT_INDEX]].client->ps.fd.saberAnimLevel;
+		if (!(g_entities[ent->client->pers.jkmodPers.botControl[BOT_INDEX]].client->ps.stats[JK_PLAYER] & JK_EMOTE_IN)) {
+			ent->client->ps.saberHolstered = g_entities[ent->client->pers.jkmodPers.botControl[BOT_INDEX]].client->ps.saberHolstered;
+		}
+	}
+
 	// Check race dimension saber toogle
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE && !ent->client->ps.saberHolstered)
 	{
@@ -297,11 +363,10 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		if (!ent->takedamage && ent->health > 0) ent->takedamage = qtrue;
 	}
 
-	// Tr!Force: [ButtonUse] Trigger animation
+	// Button use trigger animation
 	if ((cmd->buttons & BUTTON_USE) 
 		&& (ent->client->ps.stats[JK_TWEAKS] & JK_USE_STAND) 
 		&& (ent->client->pers.jkmodPers.buttonUseAnimValid)
-		&& !(ent->r.svFlags & SVF_BOT) 
 		&& !(ent->client->ps.eFlags & JK_JETPACK_FLAMING) 
 		&& !((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->ps.groundEntityNum == ENTITYNUM_NONE) 
 		&& !JKMod_PlayerMoving(ent, qfalse, qtrue))

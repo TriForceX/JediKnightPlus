@@ -92,8 +92,10 @@ jkmod_ui_command_table_t JKModUIdimensionsTable[] =
 	{ "guns",			"Guns Arena" },
 	{ "race",			"Race Defrag" },
 	{ "saber",			"Saber Only" },
+	{ "force",			"Full Force" },
 	{ "insta",			"Insta Kill" },
 	{ "cheats",			"Cheats Mode" },
+	{ "private",		"Private Room" },
 };
 
 int JKModUIdimensionsTableSize = ARRAY_LEN(JKModUIdimensionsTable);
@@ -407,7 +409,13 @@ qboolean JKMod_UI_RunMenuScript(const char **args, const char *name)
 	// Change dimension from menu
 	if (Q_stricmp(name, "JKMod_dimensionToggle") == 0)
 	{
-		trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", UI_Cvar_VariableString("jk_ui_dimensionToggle")));
+		char *dimension = UI_Cvar_VariableString("jk_ui_dimensionToggle");
+
+		if (!Q_stricmp(dimension, "private")) {
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("say !dimension \"%s\"\n", dimension));
+		} else {
+			trap_Cmd_ExecuteText(EXEC_APPEND, va("dimension \"%s\"\n", dimension));
+		}
 		return qtrue;
 	}
 

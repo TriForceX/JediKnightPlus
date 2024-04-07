@@ -48,6 +48,7 @@ static void JKMod_svCmd_reload(void)
 			"^3random_begin\n"
 			"^3server_news\n"
 			"^3teleport_chats\n"
+			"^3dimension_data\n"
 			);
 	}
 	else
@@ -58,6 +59,8 @@ static void JKMod_svCmd_reload(void)
 			JKMod_ServerNewsLoad();
 		else if (!Q_stricmp(arg1, "teleport_chats")) 
 			JKMod_TeleportChatLoad();
+		else if (!Q_stricmp(arg1, "dimension_data")) 
+			JKMod_DimensionLoad();
 		else 
 			G_Printf("Option %s not allowed\n", arg1);
 	}
@@ -208,6 +211,8 @@ static jkmod_bit_info_t toggleAltDimension[] =
 	"SABER ONLY",
 	"INSTA KILL",
 	"CHEATS MODE",
+	"FULL FORCE",
+	"PRIVATE ROOM",
 };
 
 // Options for jk_mapFixes cvar
@@ -266,7 +271,7 @@ static void JKMod_svCmd_toggleMod(void)
 	else
 	{
 		int bits;
-		int i, val, start = 0;
+		int i, val, exclude[MAX_ITEMS] = { 0 };
 		int toggleModSize;
 		char *toggleModNote;
 		qboolean toggleModRadio = qfalse;
@@ -297,7 +302,9 @@ static void JKMod_svCmd_toggleMod(void)
 			toggleModSize = ARRAY_LEN(toggleAltDimension);
 			toggleModNote = "For normal dimension change this cvar manually to 0";
 			toggleModRadio = qtrue;
-			start = 2;
+			exclude[0] = qtrue;
+			exclude[1] = qtrue;
+			exclude[8] = qtrue;
 		}
 		else if (!Q_stricmp(arg1, "jk_altDimensionSpawn")) 
 		{
@@ -326,12 +333,15 @@ static void JKMod_svCmd_toggleMod(void)
 
 		if (trap_Argc() != 3) 
 		{
-			for (i = start; i < toggleModSize; i++) 
+			int first = -1;
+			for (i = 0; i < toggleModSize; i++) 
 			{
+				if (exclude[i]) continue;
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
+				if (first == -1) first = i;
 			}
-			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
 			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 			return;
 		}
@@ -340,7 +350,7 @@ static void JKMod_svCmd_toggleMod(void)
 		{
 			val = atoi(arg2);
 
-			if (val >= start && val < toggleModSize) 
+			if (val >= 0 && val < toggleModSize && !exclude[val]) 
 			{
 				level.jkmodLocals.cvarToggleMod = qtrue;
 				if (toggleModRadio) {
@@ -355,25 +365,31 @@ static void JKMod_svCmd_toggleMod(void)
 			}
 			else 
 			{
+				int first = -1;
 				G_Printf("^1Specified an option that does not exist\n");
-				for (i = start; i < toggleModSize; i++) 
+				for (i = 0; i < toggleModSize; i++) 
 				{
+					if (exclude[i]) continue;
 					if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 					else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
+					if (first == -1) first = i;
 				}
-				G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+				G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
 				if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 			}
 		}
 		else 
 		{
+			int first = -1;
 			G_Printf("^1Specified an option is not valid\n");
-			for(i = start; i < toggleModSize; i++ ) 
+			for (i = 0; i < toggleModSize; i++ ) 
 			{
+				if (exclude[i]) continue;
 				if (bits & (1 << i))	G_Printf("%2d ^2[X]^7 %s\n", i, toggleModOptions[i].string);
 				else					G_Printf("%2d ^1[ ]^7 %s\n", i, toggleModOptions[i].string);
+				if (first == -1) first = i;
 			}
-			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, start, toggleModOptions[start].string);
+			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
 			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 		}
 	}
@@ -532,7 +548,7 @@ static void JKMod_svCmd_teleportPlayer(void)
 				destinyPlayer->client->ps.forceHandExtend = HANDEXTEND_FORCEPULL;
 				destinyPlayer->client->ps.forceHandExtendTime = level.time + 300;
 
-				if (targetPlayer->client->ps.stats[JK_DIMENSION] != destinyPlayer->client->ps.stats[JK_DIMENSION])
+				if (targetPlayer->jkmodEnt.dimensionNumber != destinyPlayer->jkmodEnt.dimensionNumber)
 				{
 					int destinyDimension = destinyPlayer->client->ps.stats[JK_DIMENSION] == DIMENSION_DUEL ? DIMENSION_FREE : destinyPlayer->client->ps.stats[JK_DIMENSION];
 					
@@ -547,13 +563,16 @@ static void JKMod_svCmd_teleportPlayer(void)
 						if (duelAgainst->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE) JKMod_DimensionSet(duelAgainst, DIMENSION_FREE);
 					}
 
-					JKMod_DimensionSet(targetPlayer, destinyDimension);
+					if (destinyPlayer->client->ps.stats[JK_DIMENSION] == DIMENSION_PRIVATE) {
+						JKMod_JoinPrivate(targetPlayer, destinyPlayer->client->pers.jkmodPers.privateRoom[PRIVATE_NUM], destinyPlayer->jkmodEnt.dimensionNumber);
+					} else {
+						JKMod_DimensionSet(targetPlayer, destinyDimension);
+					}
 				}
 			}
 			// To coords
 			else
 			{
-				
 				char	arg3[MAX_STRING_CHARS];
 				char	arg4[MAX_STRING_CHARS];
 				char	arg5[MAX_STRING_CHARS];
@@ -736,6 +755,68 @@ void JKMod_svCmd_forceTeam(void)
 
 /*
 =====================================================================
+Control bots function
+=====================================================================
+*/
+static void JKMod_svCmd_controlBots(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+	int		bot, owner;
+
+	if (trap_Argc() < 3)
+	{
+		G_Printf("Usage: control <bot> <owner>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+
+		bot = JKMod_CheckValidClient(NULL, arg1);
+
+		// Check bot
+		if (bot != -1)
+		{
+			gentity_t *botPlayer = &g_entities[bot];
+			owner = JKMod_CheckValidClient(NULL, arg2);
+
+			// Check owner
+			if (owner != -1)
+			{
+				gentity_t *ownerPlayer = &g_entities[owner];
+
+				if (bot == owner)
+				{
+					G_Printf("You can't let control him to himself\n");
+					return;
+				}
+
+				if (!(botPlayer->r.svFlags & SVF_BOT)) {
+					G_Printf("This player is not a bot\n");
+					return;
+				}
+
+				if ((ownerPlayer->r.svFlags & SVF_BOT)) {
+					G_Printf("This owner is not a player\n");
+					return;
+				}
+
+				if (!(ownerPlayer->client->sess.spectatorState == SPECTATOR_FOLLOW && ownerPlayer->client->sess.spectatorClient == botPlayer->s.number)) {
+					trap_SendServerCommand(ownerPlayer - g_entities, va("print \"Please follow bot %i (%s) on spectator to take control of it\n\"", botPlayer->s.number, botPlayer->client->pers.netname));
+					return;
+				}
+				
+				trap_SendServerCommand(ownerPlayer - g_entities, va("print \"Now controlling bot %i (%s)...\n\"", botPlayer->s.number, botPlayer->client->pers.netname));
+				trap_SendServerCommand(ownerPlayer - g_entities, "cp \"" NEWLINES "Press USE button + JUMP to stop controlling\"");
+				JKMod_botControl(botPlayer->s.number, ownerPlayer->s.number, "toggle");
+			}
+		}
+	}
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */
@@ -798,6 +879,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "lockteam"))
 	{
 		JKMod_svCmd_lockTeam();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "control"))
+	{
+		JKMod_svCmd_controlBots();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)

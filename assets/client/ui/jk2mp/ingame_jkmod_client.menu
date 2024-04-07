@@ -1852,7 +1852,7 @@
 			type				ITEM_TYPE_BIND
 			text				@JKMENUS_CLIENT_FORCEDUEL
 			descText			@JKMENUS_CLIENT_FORCEDUEL_DESC
-			cvar				"engage_duel_force"
+			cvar				"engage_force"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1877,15 +1877,15 @@
 				hide			keybindstatus
 			}
 		}
-
+		
 		itemDef 
 		{
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_DROPFLAG
-			descText			@JKMENUS_CLIENT_DROPFLAG_DESC
-			cvar				"dropflag"
+			text				@JKMENUS_CLIENT_PRIVATEROOM
+			descText			@JKMENUS_CLIENT_PRIVATEROOM_DESC
+			cvar				"engage_private"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1900,7 +1900,7 @@
 			}
 
 			mouseEnter 
-			{ 
+			{
 				show			highlight3
 				show			keybindstatus
 			}
@@ -1910,15 +1910,15 @@
 				hide			keybindstatus
 			}
 		}
-		
+
 		itemDef 
 		{
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_JETPACK
-			descText			@JKMENUS_CLIENT_JETPACK_DESC
-			cvar				"jetpack"
+			text				@JKMENUS_CLIENT_DROPFLAG
+			descText			@JKMENUS_CLIENT_DROPFLAG_DESC
+			cvar				"dropflag"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1949,9 +1949,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_RESPAWN
-			descText			@JKMENUS_CLIENT_RESPAWN_DESC
-			cvar				"kill"
+			text				@JKMENUS_CLIENT_JETPACK
+			descText			@JKMENUS_CLIENT_JETPACK_DESC
+			cvar				"jetpack"
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1982,9 +1982,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_SAVEPOS
-			descText			@JKMENUS_CLIENT_SAVEPOS_DESC
-			cvar				"savepos"
+			text				@JKMENUS_CLIENT_RESPAWN
+			descText			@JKMENUS_CLIENT_RESPAWN_DESC
+			cvar				"kill"
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -2015,9 +2015,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_LOADPOS
-			descText			@JKMENUS_CLIENT_LOADPOS_DESC
-			cvar				"loadpos"
+			text				@JKMENUS_CLIENT_SAVEPOS
+			descText			@JKMENUS_CLIENT_SAVEPOS_DESC
+			cvar				"savepos"
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -2048,9 +2048,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_DUALSABER
-			descText			@JKMENUS_CLIENT_DUALSABER_DESC
-			cvar				"dualsaber"
+			text				@JKMENUS_CLIENT_LOADPOS
+			descText			@JKMENUS_CLIENT_LOADPOS_DESC
+			cvar				"loadpos"
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -2080,9 +2080,42 @@
 		{
 			name				none
 			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_DUALSABER
+			descText			@JKMENUS_CLIENT_DUALSABER_DESC
+			cvar				"dualsaber"
+			rect				220 201 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight9
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight9
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
 			type				ITEM_TYPE_TEXT
 			text				@JKMENUS_CLIENT_DUALSABER_COLOR
-			rect				220 201 300 20
+			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
 			textaligny			-2
@@ -2099,7 +2132,7 @@
 			group				clientBindsControls
 			style				0	
 			ownerdraw			UI_EFFECTS_2
-			rect				375 205 100 13
+			rect				375 225 100 13
 			textalign			ITEM_ALIGN_LEFT		
 			textalignx			0
 			textaligny			0
@@ -2138,7 +2171,7 @@
 			group				clientBindsControls
 			style				0	
 			ownerdraw			UI_EFFECTS_2
-			rect				375 205 100 13
+			rect				375 225 100 13
 			textalign			ITEM_ALIGN_LEFT		
 			textalignx			0
 			textaligny			0

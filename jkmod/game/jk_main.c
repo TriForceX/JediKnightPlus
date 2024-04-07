@@ -86,6 +86,11 @@ vmCvar_t	jkcvar_altDimension;
 vmCvar_t	jkcvar_altDimensionBase;
 vmCvar_t	jkcvar_altDimensionTime;
 vmCvar_t	jkcvar_altDimensionSpawn;
+vmCvar_t	jkcvar_privateInviteTime;
+vmCvar_t	jkcvar_privateInviteBots;
+vmCvar_t	jkcvar_privateInactiveBots;
+vmCvar_t	jkcvar_forceChangeInstant;
+vmCvar_t	jkcvar_forceChangeTime;
 vmCvar_t	jkcvar_randomBegin;
 vmCvar_t	jkcvar_serverNews;
 vmCvar_t	jkcvar_serverNewsTime;
@@ -174,6 +179,11 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_altDimensionBase,		"jk_altDimensionBase",		"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_altDimensionSpawn,	"jk_altDimensionSpawn",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_privateInviteTime,	"jk_privateInviteTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_privateInviteBots,	"jk_privateInviteBots",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_privateInactiveBots,	"jk_privateInactiveBots",	"30",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_forceChangeInstant,	"jk_forceChangeInstant",	"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_forceChangeTime,		"jk_forceChangeTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_randomBegin,			"jk_randomBegin",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNews,			"jk_serverNews",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverNewsTime,		"jk_serverNewsTime",		"60",					NULL,						CVAR_ARCHIVE,						0, qtrue },
@@ -326,30 +336,32 @@ void JKMod_CVU_altDimension(void)
 		int i;
 		int dimension = jkcvar_altDimension.integer;
 		int dimensionBase = jkcvar_altDimensionBase.integer;
+		int dimensionWarning = jkcvar_altDimension.integer || !jkcvar_altDimension.integer && jkcvar_altDimensionBase.integer;
 
 		JKModCvarAltDimension = 3;
 
 		// Check dimensions
-		if (dimensionBase == DIMENSION_DUEL) 
+		if (dimensionBase == DIMENSION_DUEL || dimensionBase == DIMENSION_PRIVATE)
 		{
 			dimensionBase = DIMENSION_FREE;
-			G_Printf(S_COLOR_YELLOW "WARNING: Generic dimensions are not meant to be used as base!\n");
+			if (dimensionWarning) G_Printf(S_COLOR_YELLOW "WARNING: Generic dimensions are not meant to be used as base!\n");
 		}
 		if (dimension != -1 && !dimensionBase && !(dimension & DIMENSION_FREE)) 
 		{
-			for (i = 0; i < DIMENSION_MAX; i++)
+			for (i = 1; i < (1 << DIMENSION_MAX); i <<= 1)
 			{
-				int dim = (1 << i);
-				if (dim == DIMENSION_DUEL) continue;
-				if (dim == DIMENSION_FREE) continue;
-				if (dimension & dim) { dimensionBase = dim; break; }
+				if (i & DIMENSION_FREE) continue;
+				if (i & DIMENSION_DUEL) continue;
+				if (i & DIMENSION_PRIVATE) continue;
+				if (dimension & i) { dimensionBase = i; break; }
 			}
-			G_Printf(S_COLOR_YELLOW "WARNING: Normal dimension not present! Adding a new one...\n");
+			if (dimension & (DIMENSION_DUEL | DIMENSION_PRIVATE) && !(dimension & DIMENSION_FREE)) dimension |= DIMENSION_FREE;
+			if (dimensionWarning) G_Printf(S_COLOR_YELLOW "WARNING: Normal dimension not present! Adding a new one...\n", dimension, dimensionBase);
 		}
 		if (dimension != -1 && dimensionBase && !(dimension & dimensionBase))
 		{
 			dimension |= dimensionBase;
-			G_Printf(S_COLOR_YELLOW "WARNING: Base dimension is not present! Adding it back...\n");
+			if (dimensionWarning) G_Printf(S_COLOR_YELLOW "WARNING: Base dimension is not present! Adding it back...\n");
 		}
 
 		// Update dimensions
@@ -363,6 +375,10 @@ void JKMod_CVU_altDimension(void)
 		{
 			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
 			{
+				if (!(dimension & DIMENSION_PRIVATE)) 
+				{
+					ARRAY_CLEAR(ent->client->pers.jkmodPers.privateRoom);
+				}
 				if (dimension && ent->client->ps.duelInProgress && !(dimension & DIMENSION_FREE)) 
 				{
 					JKMod_DuelRemove(ent);
@@ -996,6 +1012,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Set jetpack idle effect
 	level.jkmodLocals.jetpackFxIdle = G_EffectIndex("env/thruster");
 
+	// Set custom dimension data
+	JKMod_DimensionLoad();
+
 	// Set random begin message
 	JKMod_RandomBeginLoad();
 
@@ -1017,7 +1036,7 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 	// Clear bots settings
 	if (bot_forgimmick.integer) 
 	{
-		trap_Cvar_Set("bot_forGimmick", "1");
+		trap_Cvar_Set("bot_forGimmick", "0");
 	}
 
 	// Check server closed

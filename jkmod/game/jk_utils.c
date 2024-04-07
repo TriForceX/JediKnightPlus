@@ -272,6 +272,7 @@ void JKMod_DuelRemove(gentity_t *ent)
 	ent->client->pers.jkmodPers.customDuel = 0;
 	ent->client->pers.jkmodPers.duelHitCount = 0;
 	G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
+	JKMod_DimensionSettings(ent, DIMENSION_FREE);
 	JKMod_Printf(S_COLOR_MAGENTA "Client %i stopped duel\n", ent - g_entities);
 }
 

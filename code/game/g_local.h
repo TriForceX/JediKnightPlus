@@ -345,7 +345,8 @@ typedef struct {
 	qboolean	teamInfo;			// send team overlay updates?
 	qboolean	botDelayed;			// Is ClientBegin still outstanding for this bot, because it was delayed?
 
-	jkmod_pers_t	jkmodPers;		// Tr!Force: [General] client persistant
+	jkmod_pers_t	jkmodPers;		// Tr!Force: [GameGeneral] Client persistant
+	jkmod_bots_t	jkmodBots;		// Tr!Force: [GameGeneral] Bots persistant
 } clientPersistant_t;
 
 
@@ -438,7 +439,7 @@ struct gclient_s {
 
 	qboolean	fjDidJump;
 
-	jkmod_client_t	jkmodClient;	// Tr!Force: [General] client clear
+	jkmod_client_t	jkmodClient;	// Tr!Force: [GameGeneral] client clear
 };
 
 

@@ -25,6 +25,8 @@ Global definitions
 #define MAX_FILE_LENGTH				131072 // 128kb
 #define MAX_IP_STRING				16
 #define MAX_CHALLENGE				5
+#define MIN_PRIVATE_TIME			3
+#define TEAM_CHANGE_DELAY			5000
 
 #define DEFAULT						Q3_INFINITE // Workaround
 #define NEWLINES					"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -121,6 +123,56 @@ typedef enum
 
 } jkmod_emotes_t;
 
+// Duel options
+typedef enum 
+{
+	DUEL_SABER,
+	DUEL_FORCE,
+	DUEL_GUNS,
+	DUEL_KICK
+
+} jkmod_duel_options_t;
+
+// Private options
+typedef enum 
+{
+	PRIVATE_INDEX,
+	PRIVATE_TIME,
+	PRIVATE_INVITE,
+	PRIVATE_REQUEST,
+	PRIVATE_NUM,
+
+	PRIVATE_MAX
+
+} jkmod_private_options_t;
+
+// Private settings
+typedef enum 
+{
+	PRIVATE_WEAPONDISABLE,
+	PRIVATE_FORCEDISABLE,
+	PRIVATE_FORCELEVEL,
+	PRIVATE_HOLDABLES,
+	PRIVATE_JETPACK,
+	PRIVATE_INVULNERABILITY,
+	PRIVATE_PASSTHROUGH,
+	PRIVATE_SPEED,
+	PRIVATE_GRAVITY,
+
+	PRIVATE_SETTINGS
+
+} jkmod_private_settings_t;
+
+// Bots control options
+typedef enum 
+{
+	BOT_ENABLED,
+	BOT_INDEX,
+
+	BOT_MAX
+
+} jkmod_bots_control_t;
+
 // Cvar table
 typedef struct
 {
@@ -153,6 +205,7 @@ typedef struct
 	vec3_t			itemFirstOrigin;	// First original item position
 	qboolean		itemSpawnedBefore;	// Reset original item position
 	int				dimensionOwner;		// Dimension owner number
+	unsigned		dimensionPrevious;	// Previous dimension id
 	unsigned		dimensionNumber;	// Current dimension number
 	unsigned		dimensionNumberOld;	// Previous dimension number
 	int				time1;				// Entity think time for pause
@@ -177,35 +230,38 @@ typedef struct
 // Client persistant
 typedef struct
 {
-	qboolean		clientPlugin;			// Client plugin check
-	float			clientVersion;			// Client plugin version
-	int				customDuel;				// Client is in custom duel
-	int				emoteLastTime;			// Emote last time used
-	int				teleportChat[5];		// Player teleport x y z pitch yaw
-	int				teleportChatCheck;		// Player teleport check
-	int				jetpackUseDelay;		// Jetpack usage delay
-	int				jetpackFxDelay;			// Jetpack effects delay
-	qboolean		jetpackFxDisplay;		// Jetpack effects display
-	int				playerStatusDelay;		// Player status tracking delay
-	qboolean		buttonUseAnim;			// Button use animation use check
-	qboolean		buttonUseAnimValid;		// Button use animation valid target
-	int				raceStartTime;			// Start time for racers
-	int				raceLastTime;			// Last time for racers
-	int				raceBestTime;			// Best time for racers
-	qboolean		invulnerability;		// Persistant take damage
-	qboolean		passThrough;			// Check for pass-through
-	qboolean		passThroughPerm;		// Check for permanent pass-through
-	int				customSettings;			// Custom settings check
-	int				customSettingsCount;	// Custom settings modification count
-	float			customGravity;			// Custom speed for custom settings
-	float			customSpeed;			// Custom gravity for custom settings
-	int				customSpawn[5];			// Player spawn x y z pitch yaw
-	int				customSpawnCheck;		// Player spawn check
-	int				duelHitCount;			// Number of hits that damage the opponent
-	qboolean		dualSaber;				// Check for permanent dual saber
-	char			modelName[MAX_QPATH];	// Player model name
-	char			modelSounds[MAX_QPATH];	// Player sounds path
-	char			skinName[MAX_QPATH];	// Player skin name
+	qboolean		clientPlugin;				// Client plugin check
+	float			clientVersion;				// Client plugin version
+	int				customDuel;					// Client is in custom duel
+	int				emoteLastTime;				// Emote last time used
+	int				teleportChat[5];			// Player teleport x y z pitch yaw
+	int				teleportChatCheck;			// Player teleport check
+	int				jetpackUseDelay;			// Jetpack usage delay
+	int				jetpackFxDelay;				// Jetpack effects delay
+	qboolean		jetpackFxDisplay;			// Jetpack effects display
+	int				playerStatusDelay;			// Player status tracking delay
+	qboolean		buttonUseAnim;				// Button use animation use check
+	qboolean		buttonUseAnimValid;			// Button use animation valid target
+	int				raceStartTime;				// Start time for racers
+	int				raceLastTime;				// Last time for racers
+	int				raceBestTime;				// Best time for racers
+	qboolean		invulnerability;			// Persistant take damage
+	qboolean		passThrough;				// Check for pass-through
+	qboolean		passThroughPerm;			// Check for permanent pass-through
+	int				customSettings;				// Custom settings check
+	int				customSettingsCount;		// Custom settings modification count
+	float			customGravity;				// Custom speed for custom settings
+	float			customSpeed;				// Custom gravity for custom settings
+	int				customSpawn[5];				// Player spawn x y z pitch yaw
+	int				customSpawnCheck;			// Player spawn check
+	int				duelHitCount;				// Number of hits that damage the opponent
+	qboolean		dualSaber;					// Check for permanent dual saber
+	char			modelName[MAX_QPATH];		// Player model name
+	char			modelSounds[MAX_QPATH];		// Player sounds path
+	char			skinName[MAX_QPATH];		// Player skin name
+	char			forcePowers[MAX_QPATH];		// Player force powers
+	unsigned		privateRoom[PRIVATE_MAX];	// Private room options
+	int				botControl[BOT_MAX];		// Control bot check
 
 } jkmod_pers_t;
 
@@ -223,8 +279,18 @@ typedef struct
 	int				chairModelNum;		// Check chair model number
 	int				chairModelUsed;		// Check chair model usage
 	int				chairModelDelay;	// Check chair model delay
+	int				forceChangeDelay;	// Force powers change delay
+	int				teamChangeDelay;	// Team change delay
 	
 } jkmod_client_t;
+
+// Bots persistant
+typedef struct
+{
+	int				inactivityTime;		// Custom inactivity time
+	int				actionFlags;		// Custom action flags
+
+} jkmod_bots_t;
 
 // Level data
 typedef struct
@@ -252,6 +318,7 @@ typedef struct
 	int				jetpackFxActive;							// Server jetpack active effect
 	int				jetpackFxIdle;								// Server jetpack idle effect
 	int				lockedTeam[TEAM_NUM_TEAMS];					// Current locked teams
+	int				privateRoom[MAX_CLIENTS][PRIVATE_SETTINGS];	// Private room settings
 
 } jkmod_locals_t;
 
@@ -259,8 +326,8 @@ typedef struct
 typedef struct 
 {
 	unsigned		dimension;
-	int				weapons;
-	int				forcepowers;
+	int				weapondisable;
+	int				forcedisable;
 	int				forcelevel;
 	qboolean		holdables;
 	qboolean		jetpack;
@@ -387,6 +454,11 @@ extern	vmCvar_t					jkcvar_altDimension;
 extern	vmCvar_t					jkcvar_altDimensionBase;
 extern	vmCvar_t					jkcvar_altDimensionTime;
 extern	vmCvar_t					jkcvar_altDimensionSpawn;
+extern	vmCvar_t					jkcvar_privateInviteTime;
+extern	vmCvar_t					jkcvar_privateInviteBots;
+extern	vmCvar_t					jkcvar_privateInactiveBots;
+extern	vmCvar_t					jkcvar_forceChangeInstant;
+extern	vmCvar_t					jkcvar_forceChangeTime;
 extern	vmCvar_t					jkcvar_randomBegin;
 extern	vmCvar_t					jkcvar_serverNews;
 extern	vmCvar_t					jkcvar_serverNewsTime;
@@ -449,11 +521,17 @@ void		JKMod_ClientCleanName(const char *in, char *out, int outSize, gentity_t *e
 // jk_cmds.c
 qboolean	JKMod_IgnoreClientCheck(int option, int ignorer, int ignored);
 void		JKMod_IgnoreClientClear(int ignored);
+void		JKMod_EngagePrivate(gentity_t* ent, qboolean say);
+void		JKMod_InvitePrivate(gentity_t *ent, gentity_t *challenged);
+void		JKMod_JoinPrivate(gentity_t* ent, int privateNum, unsigned dimension);
+void		JKMod_SettingsPrivate(gentity_t* ent, int privateNum);
+int			JKMod_PlayersPrivate(int privateRoom, qboolean skipBots);
 void		JKMod_Cmd_ToggleConsole(gentity_t *ent);
 void		JKMod_Cmd_WhoIs(gentity_t *ent);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);
 qboolean	JKMod_playerStatus(gentity_t *ent, qboolean announce);
+void		JKMod_botControl(int botIndex, int ownerIndex, char *action);
 void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);
 
 // jk_common.c
@@ -464,6 +542,9 @@ qboolean	JKMod_ValidNumber(const char *s);
 void		JKMod_DummyEncode(char *buffer, const char *s);
 char		*JKMod_TrimWhiteSpace(char* s);
 void		JKMod_TruncateString(char *buffer, const char *s, int limit);
+char		*JKMod_StrTok(char *str, const char *delim);
+int			JKMod_Str_Argc(char *str);
+void		JKMod_Str_Argv(int n, char *buffer, int bufferLength, char *src);
 void		JKMod_StringClear(char* str, int len);
 void		JKMod_StringEscape(char *in, char *out, int outSize);
 char		*JKMod_SanitizeString(char *dest, char *source, int destSize);
@@ -482,10 +563,12 @@ float		JKMod_RandFloat(float min, float max);
 // jk_dimensions.c
 int			JKMod_DimensionIndex(unsigned dimension);
 void		JKMod_DimensionSettings(gentity_t *ent, unsigned dimension);
-qboolean	JKMod_DimensionChange(gentity_t *ent, char *dimension, qboolean say);
+void		JKMod_DimensionLoad(void);
+qboolean	JKMod_DimensionChange(gentity_t *ent, char *dimension, char *say);
 qboolean	JKMod_DimensionCheck(int ent1, int ent2);
 void		JKMod_DimensionOwnerCheck(int owner, gentity_t *ent);
 unsigned	JKMod_DimensionGetCustom(void);
+unsigned	JKMod_DimensionToPrivate(int number);
 void		JKMod_DimensionSet(gentity_t *ent, unsigned dimension);
 qboolean	JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2);
 void		JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask);
@@ -523,6 +606,7 @@ void		JKMod_GameTypeConfig(void);
 // jk_misc.c
 const char	*JKMod_GetCurrentMap(void);
 const char	*JKMod_GetMapMusic(void);
+void		JKMod_ForcePowerChange(gentity_t *ent, unsigned dimension);
 qboolean	JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps);
 qboolean	JKMod_PlayerMoving(gentity_t *ent, int move, int attack);
 void		JKMod_PlayerTweaksCheck(gentity_t *ent);
@@ -530,7 +614,7 @@ void		JKMod_PlayerModelInfo(gentity_t *ent, const char* modelname);
 void		JKMod_SetGamePlay(char *option);
 void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboolean spitplayer, int spitspeed, char *efxfile, char *efxsound);
 int			JKMod_ItemRespawnTime(gentity_t *ent);
-void		JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
+void		JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisable, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 int			JKMod_SPMapCheck(const char *mapname);
 qboolean	JKMod_ValidPlayerModel(const char* modelname);
 void		JKMod_ChairModelDisable(gentity_t *ent);

@@ -626,21 +626,32 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 
 	client->oldbuttons = client->buttons;
 	client->buttons = ucmd->buttons;
-
-	// attack button cycles through spectators
-	if ( ( client->buttons & BUTTON_ATTACK ) && ! ( client->oldbuttons & BUTTON_ATTACK ) ) {
-		Cmd_FollowCycle_f( ent, 1 );
-	}
-
-	// alt attack button cycles backwards
-	if ( client->sess.spectatorState == SPECTATOR_FOLLOW && (client->buttons & BUTTON_ALT_ATTACK) && !(client->oldbuttons & BUTTON_ALT_ATTACK) )
+	
+	// Tr!Force: [Bots] Apply bot control
+	if (client->pers.jkmodPers.botControl[BOT_ENABLED] && client->sess.spectatorState == SPECTATOR_FOLLOW && client->sess.spectatorClient == client->pers.jkmodPers.botControl[BOT_INDEX])
 	{
-		Cmd_FollowCycle_f( ent, -1 );
+		if ((client->oldbuttons & BUTTON_USE) && (ucmd->upmove > 0))
+		{
+			StopFollowing(ent);
+		}
 	}
+	else
+	{
+		// attack button cycles through spectators
+		if ( ( client->buttons & BUTTON_ATTACK ) && ! ( client->oldbuttons & BUTTON_ATTACK ) ) {
+			Cmd_FollowCycle_f( ent, 1 );
+		}
 
-	if (client->sess.spectatorState == SPECTATOR_FOLLOW && (ucmd->upmove > 0))
-	{ //jump now removes you from follow mode
-		StopFollowing(ent);
+		// alt attack button cycles backwards
+		if ( client->sess.spectatorState == SPECTATOR_FOLLOW && (client->buttons & BUTTON_ALT_ATTACK) && !(client->oldbuttons & BUTTON_ALT_ATTACK) )
+		{
+			Cmd_FollowCycle_f( ent, -1 );
+		}
+
+		if (client->sess.spectatorState == SPECTATOR_FOLLOW && (ucmd->upmove > 0))
+		{ //jump now removes you from follow mode
+			StopFollowing(ent);
+		}
 	}
 }
 
@@ -1241,10 +1252,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			{
 				char *duelmessage;
 
-				if(ent->client->pers.jkmodPers.customDuel == 1) {
-					duelmessage = "won a force duel";
+				if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE) {
+					duelmessage = "won a full force duel";
 				} else {
-					duelmessage = "won a duel";
+					duelmessage = "won a saber only duel";
 				}
 
 				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE "/" S_COLOR_GREEN "%d" S_COLOR_WHITE " health and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits on opponent\n\"",

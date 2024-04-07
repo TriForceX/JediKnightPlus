@@ -527,6 +527,8 @@ static void CG_General( centity_t *cent ) {
 			else								   clEnt = &cg_entities[cent->currentState.modelindex2];
 		}
 
+		if (cg.jkmodCG.modelOpacity) return; // Tr!Force: [CGameGeneral] Check model opacity
+
 		if (!dismember_settings)
 		{ //This client does not wish to see dismemberment.
 			return;
@@ -1040,6 +1042,13 @@ Ghoul2 Insert End
 				trap_G2API_SetBoneAngles(cent->ghoul2, 0, "lower_lumbar", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, cgs.gameModels, 100, cg.time);
 				trap_G2API_SetBoneAngles(cent->ghoul2, 0, "cranium", vec3_origin, BONE_ANGLES_POSTMULT, POSITIVE_Z, NEGATIVE_Y, POSITIVE_X, cgs.gameModels, 100, cg.time);
 			}
+		}
+
+		if (cg.jkmodCG.modelOpacity) // Tr!Force: [CGameGeneral] Check model opacity
+		{
+			ent.renderfx |= RF_FORCE_ENT_ALPHA;
+			ent.shaderRGBA[3] = cg.jkmodCG.modelOpacity;
+			if (ent.shaderRGBA[3] < 1) ent.shaderRGBA[3] = 1;
 		}
 	}
 

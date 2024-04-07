@@ -127,6 +127,9 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Set player tweaks
 	if (jkcvar_playerTweaks.integer) JKMod_PlayerTweaksCheck(ent);
 
+	// Remove bot control
+	if (client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
+
 	// Check dual saber
 	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;
 
@@ -137,6 +140,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin)
 	{
 		char	clientVersion[MAX_INFO_VALUE];
+		char    clientEternal[MAX_INFO_VALUE];
 		char	pluginVersion[MAX_INFO_VALUE];
 		int		allowDownload;
 
@@ -150,11 +154,12 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		// Get info
 		Q_strncpyz(clientVersion, Info_ValueForKey(userinfo, "JK2MV"), sizeof(clientVersion));
 		Q_strncpyz(pluginVersion, Info_ValueForKey(userinfo, "jkmod_client"), sizeof(pluginVersion));
+		Q_strncpyz(clientEternal, Info_ValueForKey(userinfo, "cjp_client"), sizeof(clientEternal));
 
 		allowDownload = clientVersion[0] ? trap_Cvar_VariableIntegerValue("mv_httpdownloads") : trap_Cvar_VariableIntegerValue("sv_allowDownload");
-
+		
 		// Check for EternalJK2
-		if (strstr(clientVersion, "ETJK2"))
+		if (strstr(clientVersion, "ETJK2") || strstr(clientEternal, "JAPRO"))
 		{
 			trap_SendServerCommand(clientNum, "cp \"You are using ^1EternalJK2\nSome features may be ^3disabled^7\nPlease use JK2MV ^5https://jk2mv.org\"");
 			trap_SendServerCommand(clientNum, "print \"You are running in ^3Server Side^7 mode only due ^1EternalJK2^7 was detected\n\"");

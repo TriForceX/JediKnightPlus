@@ -4374,6 +4374,8 @@ Ghoul2 Insert Start
 		return;
 	}
 
+	if (cg.jkmodCG.modelOpacity) return; // Tr!Force: [CGameGeneral] Check model opacity
+
 	futureAngles[YAW] = angles[YAW];
 	futureAngles[PITCH] = angles[PITCH];
 	futureAngles[ROLL] = angles[ROLL];
@@ -5893,6 +5895,12 @@ void CG_G2Animated( centity_t *cent )
 		//rww - since our angles are fixed when we're dead this shouldn't be an issue anyway
 		//we need to render the dying/dead player because we are now spawning the body on respawn instead of death
 		//return;
+		if (cg.jkmodCG.modelOpacity) // Tr!Force: [CGameGeneral] Check model opacity
+		{
+			legs.renderfx |= RF_FORCE_ENT_ALPHA;
+			legs.shaderRGBA[3] = cg.jkmodCG.modelOpacity;
+			if (legs.shaderRGBA[3] < 1) legs.shaderRGBA[3] = 1;
+		}
 	}
 
 	ScaleModelAxis(&legs);
@@ -6093,6 +6101,12 @@ void CG_Player( centity_t *cent ) {
 	// it is possible to see corpses from disconnected players that may
 	// not have valid clientinfo
 	if ( !ci->infoValid ) {
+		return;
+	}
+
+	// Tr!Force: [Duel] Don't render players outside of duel
+	if ((jkcvar_cg_privateDuel.integer && cg.snap->ps.stats[JK_DIMENSION] != (1 << DIMENSION_DUEL) && cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	{
 		return;
 	}
 
@@ -6849,35 +6863,31 @@ doEssentialTwo:
 
 	//NOTE: All effects that should be visible during mindtrick should go above here
 
+	// Tr!Force: [ChatProtect] Chat player transparency
+	if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer && (cent->currentState.number == cg.snap->ps.clientNum ? !JKMod_CG_EmoteUI() : qtrue))
+		doAlpha = cg.jkmodCG.modelOpacity = CHAT_OPACITY;
+	
+	// Tr!Force: [Duel] Fade-out players outside of duel
+	if ((jkcvar_cg_privateDuel.integer && cg.snap->ps.stats[JK_DIMENSION] != (1 << DIMENSION_DUEL) && !cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+		doAlpha = cg.jkmodCG.modelOpacity = DUEL_OPACITY;
+
 	if (iwantout)
 	{
+		if (cg.jkmodCG.modelOpacity) cg.jkmodCG.modelOpacity = qfalse; // Tr!Force: [CGameGeneral] Check model opacity
 		goto stillDoSaber;
 		//return;
 	}
 	else if (doAlpha)
 	{
 		legs.renderfx |= RF_FORCE_ENT_ALPHA;
-		legs.shaderRGBA[3] = cent->trickAlpha;
+		legs.shaderRGBA[3] = doAlpha > 1 ? doAlpha : cent->trickAlpha; // Tr!Force: [CGameGeneral] Check model opacity
 
 		if (legs.shaderRGBA[3] < 1)
 		{ //don't cancel it out even if it's < 1
 			legs.shaderRGBA[3] = 1;
 		}
 	}
-	// Tr!Force: [ChatProtect] Chat player transparency
-	else if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
-	{
-		if (!JKMod_CG_EmoteUI())
-		{
-			legs.renderfx |= RF_FORCE_ENT_ALPHA;
-			legs.shaderRGBA[3] = 100; // Fixed ?
-
-			if (legs.shaderRGBA[3] < 1)
-			{ //don't cancel it out even if it's < 1
-				legs.shaderRGBA[3] = 1;
-			}
-		}
-	}
+	else if (cg.jkmodCG.modelOpacity) cg.jkmodCG.modelOpacity = qfalse; // Tr!Force: [CGameGeneral] Check model opacity
 
 	if (cg_entities[cent->currentState.number].teamPowerEffectTime > cg.time)
 	{
@@ -7423,10 +7433,13 @@ stillDoSaber:
 		if (cent->currentState.number != cg.snap->ps.duelIndex &&
 			cent->currentState.number != cg.snap->ps.clientNum)
 		{ //everyone not involved in the duel is drawn very dark
-			legs.shaderRGBA[0] = 50;
-			legs.shaderRGBA[1] = 50;
-			legs.shaderRGBA[2] = 50;
-			legs.renderfx |= RF_RGB_TINT;
+			if (!cg.jkmodCG.modelOpacity) // Tr!Force: [CGameGeneral] Check model opacity
+			{
+				legs.shaderRGBA[0] = 50;
+				legs.shaderRGBA[1] = 50;
+				legs.shaderRGBA[2] = 50;
+				legs.renderfx |= RF_RGB_TINT;
+			}
 		}
 		else if (jkcvar_cg_duelGlow.integer) // Tr!Force: [DuelGlow] Enable and disable
 		{ //adjust the glow by how far away you are from your dueling partner

@@ -23,7 +23,9 @@ Global definitions
 #define USE_DISTANCE				64.0f
 #define ACCEL_SAMPLES				16
 #define PERCENT_SAMPLES				16
-#define	FPS_FRAMES					4
+#define FPS_FRAMES					4
+#define CHAT_OPACITY				100
+#define DUEL_OPACITY				50
 
 /*
 =====================================================================
@@ -87,6 +89,7 @@ typedef struct
 	int					consolePrint;				// Console print lines
 	int					consolePrintTime;			// Console print timestamp
 	int					consoleNotifyTime;			// Console notify time
+	int					modelOpacity;				// Model opacity check
 	
 	vec4_t				strafeHelperActiveColor;	// Strafe helper active color
 	float				currentSpeed;				// Strafe helper & speed meter current speed

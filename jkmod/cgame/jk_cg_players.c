@@ -361,10 +361,11 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 		// Check chat player transparency
 		if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer)
 		{
-			if (!JKMod_CG_EmoteUI())
+			if (cent->currentState.number == cg.snap->ps.clientNum ? !JKMod_CG_EmoteUI() : qtrue)
 			{
 				re.renderfx |= RF_FORCE_ENT_ALPHA;
-				re.shaderRGBA[3] = 100; // Fixed num ?
+				re.shaderRGBA[3] = CHAT_OPACITY;
+				if (re.shaderRGBA[3] < 1) re.shaderRGBA[3] = 1;
 			}
 		}
 

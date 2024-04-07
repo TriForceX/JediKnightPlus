@@ -59,6 +59,18 @@ const char *JKMod_GetMapMusic(void)
 
 /*
 =====================================================================
+Custom force power change
+=====================================================================
+*/
+void JKMod_ForcePowerChange(gentity_t *ent, unsigned dimension)
+{
+	WP_InitForcePowers(ent);
+	JKMod_DimensionSettings(ent, dimension);
+	trap_SendServerCommand(ent - g_entities, va("print \"" S_COLOR_GREEN "%s\n\"", G_GetStripEdString("SVINGAME", "FORCEAPPLIED")));
+}
+
+/*
+=====================================================================
 Custom force power valid check
 =====================================================================
 */
@@ -71,7 +83,7 @@ qboolean JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps)
 		JKMod_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if (ent->client->pers.jkmodPers.customDuel == 0)
+	if (ent->client->pers.jkmodPers.customDuel == DUEL_SABER)
 	{
 		return qfalse;
 	}
@@ -320,7 +332,6 @@ void JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qbool
 	// Link entity
 	if (player->client->sess.sessionTeam != TEAM_SPECTATOR) trap_LinkEntity(player);
 
-	
 	// Chair emote disable
 	if (player->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(player);
 
@@ -405,31 +416,31 @@ int JKMod_ItemRespawnTime(gentity_t *ent)
 Custom & default game settings function
 =====================================================================
 */
-void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity)
+void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisable, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity)
 {
 	int customSettings = ent->client->pers.jkmodPers.customSettings;
 	int customSettingsCount = ent->client->pers.jkmodPers.customSettingsCount;
 
 	// Reset?
-	if (weapons == DEFAULT && forcepowers == DEFAULT && speed == DEFAULT && gravity == DEFAULT) 
+	if (customSettings == customSettingsCount && customSettings >= MAX_CLIENTS) 
 	{ 
 		ent->client->pers.jkmodPers.customSettings = 0;
 		ent->client->pers.jkmodPers.customSettingsCount = 0;
 	}
 
 	// Default check
-	if (weapons == DEFAULT)		weapons		= g_weaponDisable.integer;
-	if (forcepowers == DEFAULT)	forcepowers	= g_forcePowerDisable.integer;
-	if (speed == DEFAULT)		speed		= g_speed.value;
-	if (gravity == DEFAULT)		gravity		= g_gravity.value;
+	if (weapondisable == DEFAULT)	weapondisable	= g_weaponDisable.integer;
+	if (forcedisable == DEFAULT)	forcedisable	= g_forcePowerDisable.integer;
+	if (speed == DEFAULT)			speed			= g_speed.value;
+	if (gravity == DEFAULT)			gravity			= g_gravity.value;
 
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		// Force
-		if (forcepowers != ent->client->ps.fd.forcePowersKnown && forcepowers != g_forcePowerDisable.integer)
+		if (forcedisable != ent->client->ps.fd.forcePowersKnown && forcedisable != g_forcePowerDisable.integer)
 		{
 			int i;
-			int checkLevel = forcelevel;
+			int checkLevel = forcelevel == DEFAULT ? FORCE_LEVEL_0 : forcelevel;
 			int checkDimension = ent->client->ps.stats[JK_DIMENSION];
 			
 			i = 0;
@@ -437,18 +448,36 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 			{
 				if (ent->client->ps.fd.forcePowersActive & (1 << i)) WP_ForcePowerStop(ent, i);
 
-				if (forcepowers & (1 << i))
+				if ((checkDimension & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || ent->client->pers.jkmodPers.customDuel == DUEL_FORCE)
 				{
-					ent->client->ps.fd.forcePowerLevel[i] = 0;
-					ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
+					ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
+
+					if (!forcePowerDarkLight[i] || ent->client->ps.fd.forceSide == forcePowerDarkLight[i])
+					{
+						if (!(forcedisable & (1 << i)))
+						{
+							if (forcelevel == DEFAULT && !(weapondisable & (1 << WP_SABER)) && i == FP_SABERATTACK) checkLevel = FORCE_LEVEL_1;
+							ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
+							ent->client->ps.fd.forcePowersKnown |= (1 << i);
+						}
+					}
 				}
-				else 
+				else
 				{
-					ent->client->ps.fd.forcePowersKnown |= (1 << i);
-					if (checkDimension == DIMENSION_SABER && (i == FP_SABERATTACK || i == FP_SABERDEFEND)) checkLevel = FORCE_LEVEL_3;
-					if (checkDimension == DIMENSION_SABER && (i == FP_LEVITATION && jk2gameplay == VERSION_1_04)) checkLevel = FORCE_LEVEL_3;
-					if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
+					if (forcedisable & (1 << i))
+					{
+						ent->client->ps.fd.forcePowerLevel[i] = 0;
+						ent->client->ps.fd.forcePowersKnown &= ~(1 << i);
+					}
+					else 
+					{
+						ent->client->ps.fd.forcePowersKnown |= (1 << i);
+						if (checkDimension == DIMENSION_SABER && (i == FP_SABERATTACK || i == FP_SABERDEFEND)) checkLevel = FORCE_LEVEL_3;
+						if (checkDimension == DIMENSION_SABER && (i == FP_LEVITATION && jk2gameplay == VERSION_1_04)) checkLevel = FORCE_LEVEL_3;
+						if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
+					}
 				}
+				
 				i++;
 			}
 		}
@@ -458,7 +487,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 		}
 
 		// Weapons
-		if (weapons != ent->client->ps.stats[STAT_WEAPONS] && weapons != g_weaponDisable.integer)
+		if (weapondisable != ent->client->ps.stats[STAT_WEAPONS] && weapondisable != g_weaponDisable.integer)
 		{
 			int i;
 			int firstWeapon = 0;
@@ -466,7 +495,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapons, int forcepowers, int 
 			i = 0;
 			while (i < WP_NUM_WEAPONS)
 			{
-				if (!(weapons & (1 << i)) && i != WP_NONE && i != WP_EMPLACED_GUN && i != WP_TURRET)
+				if (!(weapondisable & (1 << i)) && i != WP_NONE && i != WP_EMPLACED_GUN && i != WP_TURRET)
 				{
 					ent->client->ps.stats[STAT_WEAPONS] |= (1 << i);
 					if (!firstWeapon) firstWeapon = i;

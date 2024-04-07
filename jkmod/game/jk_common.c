@@ -143,6 +143,95 @@ char *JKMod_TrimWhiteSpace(char *s)
 
 /*
 =====================================================================
+String token with long delimiter
+=====================================================================
+*/
+char *JKMod_StrTok(char *str, const char *delim)
+{
+    static char *tok;
+    static char *next;
+    char *m;
+
+    if (delim == NULL) return NULL;
+    tok = (str) ? str : next;
+    if (tok == NULL) return NULL;
+
+    m = strstr(tok, delim);
+
+    if (m) {
+        next = m + strlen(delim);
+        *m = '\0';
+    } else {
+        next = NULL;
+    }
+    return tok;
+}
+
+/*
+=====================================================================
+Count string words as arguments
+=====================================================================
+*/
+int JKMod_Str_Argc(char *str)
+{
+	if (str[0])
+	{
+		int i, count = 0;
+		int len = strlen(str);
+		int inWord = 0;
+
+		for (i = 0; i < len; i++) {
+			if (str[i] != ' ' && str[i] != '\n' && str[i] != '\t' && !inWord) {
+				count++;
+				inWord = 1;
+			}
+			else if ((str[i] == ' ' || str[i] == '\n' || str[i] == '\t') && inWord) {
+				inWord = 0;
+			}
+		}
+
+		return count;
+	}
+	else
+	{
+		return trap_Argc();
+	}
+}
+
+/*
+=====================================================================
+Split string into arguments
+=====================================================================
+*/
+void JKMod_Str_Argv(int n, char *buffer, int bufferLength, char *src)
+{
+	if (src[0])
+	{
+		int i = 0;
+		char tempBuffer[MAX_TOKEN_CHARS];
+		char *token;
+    
+		Q_strncpyz(tempBuffer, src, MAX_TOKEN_CHARS);
+		token = JKMod_StrTok(tempBuffer, " ");
+    
+		while (token != NULL) {
+			if (i++ == n) {
+				Q_strncpyz(buffer, token, bufferLength);
+				return;
+			}
+			token = JKMod_StrTok(NULL, " ");
+		}
+    
+		Q_strncpyz(buffer, "", bufferLength);
+	}
+	else
+	{
+		trap_Argv(n, buffer, bufferLength);
+	}
+}
+
+/*
+=====================================================================
 Simple string clear
 =====================================================================
 */

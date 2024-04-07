@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 158
+COUNT 160
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -410,11 +410,11 @@ INDEX 44
 INDEX 45
 {
    REFERENCE CLIENT_PRIVATEDUEL_DESC
-   TEXT_LANGUAGE1 "Hide other players when duelling. (Only if the dimension is enabled)"
-   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel. (Uniquement si la dimension est activée)"
-   TEXT_LANGUAGE3 "Verstecke andere spieler beim duell. (Nur wenn die dimension aktiviert ist)"
-   TEXT_LANGUAGE6 "Hide other players when duelling. (Only if the dimension is enabled)"
-   TEXT_LANGUAGE8 "Esconde otros jugadores si estas en duelo. (Solo si la dimensión está habilitada)"
+   TEXT_LANGUAGE1 "Hide other players when duelling."
+   TEXT_LANGUAGE2 "Cachez les autres joueurs en duel."
+   TEXT_LANGUAGE3 "Verstecke andere spieler beim duell."
+   TEXT_LANGUAGE6 "Hide other players when duelling."
+   TEXT_LANGUAGE8 "Esconde otros jugadores si estas en duelo."
 }
 INDEX 46
 {
@@ -1058,11 +1058,11 @@ INDEX 116
 INDEX 117
 {
    REFERENCE CLIENT_RESPAWN_DESC
-   TEXT_LANGUAGE1 "Respawn in a new map place. (This takes away one score point)"
-   TEXT_LANGUAGE2 "Réapparaissez à un nouvel endroit sur la carte. (Cela supprime un point)"
-   TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Dies nimmt einen Punkt weg)"
-   TEXT_LANGUAGE6 "Respawn in a new map place. (This takes away one score point)"
-   TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Esto quita un punto)"
+   TEXT_LANGUAGE1 "Respawn in a new map place. (This may take away one score point)"
+   TEXT_LANGUAGE2 "Réapparaissez à un nouvel endroit sur la carte. (Cela pourrait coûter un point)"
+   TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Dadurch kann ein punkt abgezogen werden)"
+   TEXT_LANGUAGE6 "Respawn in a new map place. (This may take away one score point)"
+   TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Esto podría quitar un punto)"
 }
 INDEX 118
 {
@@ -1423,4 +1423,22 @@ INDEX 157
    TEXT_LANGUAGE3 "Standard"
    TEXT_LANGUAGE6 "Standard"
    TEXT_LANGUAGE8 "Estándar"
+}
+INDEX 158
+{
+   REFERENCE CLIENT_PRIVATEROOM
+   TEXT_LANGUAGE1 "Private room invite:"
+   TEXT_LANGUAGE2 "Invitation salle privée:"
+   TEXT_LANGUAGE3 "Privatzimmer einladen:"
+   TEXT_LANGUAGE6 "Private room invite:"
+   TEXT_LANGUAGE8 "Invitación sala privada:"
+}
+INDEX 159
+{
+   REFERENCE CLIENT_PRIVATEROOM_DESC
+   TEXT_LANGUAGE1 "Invite a player to create a private room."
+   TEXT_LANGUAGE2 "Inviter un joueur à créer un salon privé."
+   TEXT_LANGUAGE3 "Einen spieler einladen einen privaten raum zu erstellen."
+   TEXT_LANGUAGE6 "Invite a player to create a private room."
+   TEXT_LANGUAGE8 "Invita a un jugador a crear una sala privada."
 }

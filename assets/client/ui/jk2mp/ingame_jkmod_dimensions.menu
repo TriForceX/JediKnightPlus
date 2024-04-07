@@ -176,7 +176,7 @@
 		}
 		itemDef 
 		{
-			name				dimensionJoinButton
+			name				dimensionLeaveButton
 			text 				@JKMENUS_MOD_LEAVE
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
@@ -192,7 +192,7 @@
 			{ 
 				play			"sound/interface/button1.wav" ;
 				close			ingame_jkmod_dimensions ;  
-				exec 			"cmd dimension normal" ;
+				exec 			"cmd dimension base" ;
 			}
 			mouseenter 
 			{ 

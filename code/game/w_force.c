@@ -288,6 +288,9 @@ void WP_InitForcePowers( gentity_t *ent )
 		}
 	}
 
+	// Tr!Force: [GameGeneral] Update instant force change
+	if (Q_stricmp(forcePowers, ent->client->pers.jkmodPers.forcePowers)) Q_strncpyz(ent->client->pers.jkmodPers.forcePowers, forcePowers, sizeof(ent->client->pers.jkmodPers.forcePowers));
+
 	//rww - parse through the string manually and eat out all the appropriate data
 	i = 0;
 
@@ -637,14 +640,14 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	{
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.jkmodPers.customDuel == 0) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->pers.jkmodPers.customDuel == DUEL_SABER) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
 		}
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.jkmodPers.customDuel == 0) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->pers.jkmodPers.customDuel == DUEL_SABER) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}

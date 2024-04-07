@@ -718,8 +718,10 @@ void JKMod_CG_DrawDimensionString(void)
 		case DIMENSION_GUNS: dimensionStr = "[Guns Arena]"; break;
 		case DIMENSION_RACE: dimensionStr = "[Race Defrag]"; break;
 		case DIMENSION_SABER: dimensionStr = "[Saber Only]"; break;
+		case DIMENSION_FORCE: dimensionStr = "[Full Force]"; break;
 		case DIMENSION_INSTA: dimensionStr = "[Insta Kill]"; break;
 		case DIMENSION_CHEAT: dimensionStr = "[Cheats Mode]"; break;
+		case DIMENSION_PRIVATE: dimensionStr = "[Private Room]"; break;
 	}
 
 	if (dimensionStr) {

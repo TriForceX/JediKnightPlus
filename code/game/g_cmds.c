@@ -583,7 +583,7 @@ Let everyone know about a team change
 */
 void BroadcastTeamChange( gclient_t *client, int oldTeam )
 {
-	// Tr!Force: [General] Clear map restarted
+	// Tr!Force: [GameGeneral] Clear map restarted
 	if (level.jkmodLocals.mapRestarted) level.jkmodLocals.mapRestarted = qfalse;
 
 	client->ps.fd.forceDoInit = 1; //every time we change teams make sure our force powers are set right
@@ -789,6 +789,9 @@ void SetTeam( gentity_t *ent, char *s ) {
 		return;
 	}
 
+	// Tr!Force: [GameGeneral] Apply team change delay for certain cases
+	client->jkmodClient.teamChangeDelay = level.time + TEAM_CHANGE_DELAY;
+
 	//
 	// execute the team change
 	//
@@ -869,6 +872,9 @@ void StopFollowing( gentity_t *ent ) {
 	ent->client->ps.duelInProgress = qfalse; 
 	ent->client->ps.zoomMode = 0;
 	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
+
+	// Tr!Force: [Bots] Remove bot control
+	if (ent->client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(ent->client->pers.jkmodPers.botControl[BOT_INDEX], ent->s.number, "remove");
 
 	// Tr!Force: [Dimensions] Check dimension
 	JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
@@ -954,6 +960,12 @@ void Cmd_ForceChanged_f( gentity_t *ent )
 		//No longer print it, as the UI calls this a lot.
 		WP_InitForcePowers( ent );
 		goto argCheck;
+	}
+	// Tr!Force: [GameGeneral] Update instant force change
+	else if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) 
+	{
+		// Update done in ClientUserinfoChanged()
+		return;
 	}
 
 	buf = G_GetStripEdString("SVINGAME", "FORCEPOWERCHANGED");

@@ -1289,6 +1289,27 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	team = client->sess.sessionTeam;
 
+	// Tr!Force: [GameGeneral] Update instant force change
+	if (ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR && client->jkmodClient.teamChangeDelay <= level.time)
+	{
+		if ((ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) && Q_stricmp(forcePowers, ent->client->pers.jkmodPers.forcePowers))
+		{
+			if (JKMod_PlayerMoving(ent, qtrue, qtrue)) {
+				trap_SendServerCommand(ent - g_entities, "print \"You can't change force powers while moving\n\"");
+			}
+			else if (!jkcvar_forceChangeTime.integer || jkcvar_forceChangeInstant.integer == 1 && (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FORCE)) {
+				JKMod_ForcePowerChange(ent, DIMENSION_FORCE);
+			}
+			else if (jkcvar_forceChangeInstant.integer == 1) {
+				JKMod_ForcePowerChange(ent, DIMENSION_FREE);
+			}
+			else if (jkcvar_forceChangeTime.integer && jkcvar_forceChangeInstant.integer != 1 && !ent->client->jkmodClient.forceChangeDelay) {
+				trap_SendServerCommand(ent - g_entities, va("print \"Applying force changes in %d seconds...\n\"", jkcvar_forceChangeTime.integer));
+				ent->client->jkmodClient.forceChangeDelay = jkcvar_forceChangeTime.integer + 1;
+			}
+		}
+	}
+
 /*	NOTE: all client side now
 
 	// team
@@ -1703,6 +1724,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	client->pers.enterTime = level.time;
 	client->pers.teamState.state = TEAM_BEGIN;
 
+	// Tr!Force: [GameGeneral] Apply team change delay for certain cases
+	if (!client->jkmodClient.teamChangeDelay) client->jkmodClient.teamChangeDelay = level.time + TEAM_CHANGE_DELAY;
+
 	// save eflags around this, because changing teams will
 	// cause this to happen with a valid entity, and we
 	// want to make sure the teleport bit is set right
@@ -1712,7 +1736,7 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 
 	jksave_player = client->ps.stats[JK_PLAYER];		// Tr!Force: [General] Don't remove flags
 	jksave_dimension = client->ps.stats[JK_DIMENSION];	// Tr!Force: [Dimensions] Don't remove flags
-	jksave_tweaks = client->ps.stats[JK_TWEAKS];	// Tr!Force: [General] Don't remove flags
+	jksave_tweaks = client->ps.stats[JK_TWEAKS];		// Tr!Force: [General] Don't remove flags
 
 	i = 0;
 
@@ -1740,9 +1764,9 @@ void BaseJK2_ClientBegin( int clientNum, qboolean allowTeamReset ) { // Tr!Force
 	memset( &client->ps, 0, sizeof( client->ps ) );
 	client->ps.eFlags = flags;
 
-	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
-	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_TWEAKS] = jksave_tweaks;			// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;		// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_DIMENSION] = jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_TWEAKS] = jksave_tweaks;		// Tr!Force: [General] Don't remove flags
 
 	client->ps.hasDetPackPlanted = qfalse;
 
@@ -1954,9 +1978,9 @@ void ClientSpawn(gentity_t *ent) {
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
 
-	client->ps.stats[JK_PLAYER] = jksave_player;				// Tr!Force: [General] Don't remove flags
-	client->ps.stats[JK_DIMENSION] = jksave_dimension;			// Tr!Force: [Dimensions] Don't remove flags
-	client->ps.stats[JK_TWEAKS] = jksave_tweaks;			// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_PLAYER] = jksave_player;		// Tr!Force: [General] Don't remove flags
+	client->ps.stats[JK_DIMENSION] = jksave_dimension;	// Tr!Force: [Dimensions] Don't remove flags
+	client->ps.stats[JK_TWEAKS] = jksave_tweaks;		// Tr!Force: [General] Don't remove flags
 
 	//rww - Don't wipe the ghoul2 instance or the animation data
 	client->ghoul2 = ghoul2save;
@@ -2351,9 +2375,9 @@ void ClientSpawn(gentity_t *ent) {
 	}
 
 	// Tr!Force: [Dimensions] Set dimension settings
-	if (client->pers.jkmodPers.customSettings && client->sess.sessionTeam != TEAM_SPECTATOR)
+	if (ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE && client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
-		JKMod_DimensionSettings(ent, client->ps.stats[JK_DIMENSION]);
+		JKMod_DimensionSettings(ent, ent->jkmodEnt.dimensionNumber);
 	}
 
 	// Tr!Force: [DualSaber] Check enable

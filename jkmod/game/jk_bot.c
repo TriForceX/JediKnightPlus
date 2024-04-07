@@ -28,16 +28,6 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 // Extern stuff
 extern bot_state_t *botstates[MAX_CLIENTS];
 
-// Bot forgimmick actions
-#define JK_BOT_STATIC		( 1 << 0 )
-#define JK_BOT_ATTACK		( 1 << 1 )
-#define JK_BOT_ATTACK_ALT	( 1 << 2 )
-#define JK_BOT_CROUCH		( 1 << 3 )
-#define JK_BOT_JUMP			( 1 << 4 )
-#define JK_BOT_TAUNT		( 1 << 5 )
-#define JK_BOT_TALK			( 1 << 6 )
-#define JK_BOT_GOD			( 1 << 7 )
-
 /*
 =====================================================================
 Custom bot AI
@@ -62,6 +52,7 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 	int selResult = 0;
 	int mineSelect = 0;
 	int detSelect = 0;
+	int jkmod_botsActions = 0;
 
 	if (gDeactivated)
 	{
@@ -86,16 +77,18 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 	trap_Cvar_Update(&bot_forgimmick);
 	trap_Cvar_Update(&bot_honorableduelacceptance);
 
-	if (bot_forgimmick.integer)
-	{
-		if (bot_forgimmick.integer & JK_BOT_ATTACK) trap_EA_Attack(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_JUMP) trap_EA_Jump(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
-		if (bot_forgimmick.integer & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
+	// Update bots actions
+	jkmod_botsActions = g_entities[bs->client].client->pers.jkmodBots.actionFlags ? g_entities[bs->client].client->pers.jkmodBots.actionFlags : bot_forgimmick.integer;
 
-		if (bot_forgimmick.integer & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK))
+	if (jkmod_botsActions && g_entities[bs->client].health > 0)
+	{
+		if (jkmod_botsActions & JK_BOT_ATTACK) trap_EA_Attack(bs->client);
+		if (jkmod_botsActions & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
+		if (jkmod_botsActions & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
+		if (jkmod_botsActions & JK_BOT_JUMP) trap_EA_Jump(bs->client);
+		if (jkmod_botsActions & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
+		if (jkmod_botsActions & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
+		if (jkmod_botsActions & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK))
 		{
 			bs->wpCurrent = NULL;
 			bs->currentEnemy = NULL;
@@ -106,7 +99,7 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 	}
 
 	// Check god mode
-	if (!(bot_forgimmick.integer & JK_BOT_GOD) && (g_entities[bs->client].flags & FL_GODMODE)) {
+	if (!(jkmod_botsActions & JK_BOT_GOD) && (g_entities[bs->client].flags & FL_GODMODE)) {
 		g_entities[bs->client].flags &= ~FL_GODMODE;
 	}
 
@@ -500,6 +493,50 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 			}
 		}
 	}
+
+	// Private check for bots join
+	if ((jkcvar_altDimension.integer & DIMENSION_PRIVATE) && jkcvar_privateInviteBots.integer)
+	{
+		// Join
+		if (g_entities[bs->client].client->pers.jkmodPers.privateRoom[PRIVATE_TIME])
+		{
+			int privateEnemyIndex = g_entities[bs->client].client->pers.jkmodPers.privateRoom[PRIVATE_INDEX];
+			int privateInviteTime = jkcvar_privateInviteTime.integer >= MIN_PRIVATE_TIME ? jkcvar_privateInviteTime.integer : MIN_PRIVATE_TIME;
+
+			// From challenge
+			if (bs->currentEnemy && bs->currentEnemy->client &&
+				bs->frame_Enemy_Vis &&
+				bs->frame_Enemy_Len < 400 &&
+				bs->client == bs->currentEnemy->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] &&
+				!g_entities[bs->client].client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+			{
+				vec3_t e_ang_vec;
+				VectorSubtract(bs->currentEnemy->client->ps.origin, bs->eye, e_ang_vec);
+
+				if (InFieldOfVision(bs->viewangles, 100, e_ang_vec))
+				{
+					if (g_entities[bs->client].client->pers.jkmodPers.privateRoom[PRIVATE_TIME] < level.time + (privateInviteTime*1000) - 1000)
+					{
+						trap_EA_Say(bs->client, "!accept");
+						trap_EA_Say(bs->client, va("You can configure me by saying !bot %i help", bs->client));
+					}
+
+					bs->doAttack = 0;
+					bs->doAltAttack = 0;
+					bs->botChallengingTime = level.time + 100;
+					bs->beStill = level.time + 100;
+				}
+			}
+			// From invite
+			else if (g_entities[privateEnemyIndex].client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+			{
+				trap_EA_Say(bs->client, "!accept");
+				trap_EA_Say(bs->client, va("You can configure me by saying !bot %i help", bs->client));
+				trap_SendConsoleCommand(EXEC_APPEND, va("teleport %i %i\n", bs->client, privateEnemyIndex));
+			}
+		}
+	}
+
 	//Apparently this "allows you to cheese" when fighting against bots. I'm not sure why you'd want to con bots
 	//into an easy kill, since they're bots and all. But whatever.
 

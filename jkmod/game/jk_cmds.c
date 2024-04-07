@@ -77,6 +77,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3lockteam\n"
 			"^3whois\n"
 			"^3listdir\n"
+			"^3control\n"
 			"^5----------\n"
 			"^2Note: ^7To use ^5rcon ^7commands you must be logged with ^3/rconpassword <password>\n"
 			"^7\""));
@@ -90,20 +91,25 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7You can perform some console commands to perform a special action\n"
 			"^7Chat commands are meant to be used on ^2chat ^7while typing\n"
 			"^5----------\n"
-			"^7Commands:      Chat commands:   Plugin commands:\n"
-			"^3motd           !motd            strafehelper\n"
-			"^3dimension      !dimension       speedometer\n"
-			"^3dualsaber      !status\n"
-			"^3emote          !savepos\n"
-			"^3ignore         !loadpos\n"
-			"^3dropflag       !savespawn\n"
-			"^3callvote       !resetspawn\n"
-			"^3whois          !whois\n"
-			"^3taunt2         !where\n"
-			"^3savepos        !racetime\n"
-			"^3loadpos        !teleports\n"
-			"^3savespawn\n"
+			"^7Console & Binds:   Chat/Say:      Plugin Only:\n"
+			"^3motd               !motd          strafehelper\n"
+			"^3dimension          !dimension     speedometer\n"
+			"^3dualsaber          !status\n"
+			"^3emote              !savepos\n"
+			"^3ignore             !loadpos\n"
+			"^3dropflag           !savespawn\n"
+			"^3callvote           !resetspawn\n"
+			"^3whois              !whois\n"
+			"^3taunt2             !where\n"
+			"^3savepos            !racetime\n"
+			"^3loadpos            !teleports\n"
+			"^3savespawn          !bot\n"
 			"^3resetspawn\n"
+			"^3jetpack\n"
+			"^3engage_force\n"
+			"^3engage_private\n"
+			"^3toggle_auto\n"
+			"^3toggle_private\n"
 			"^7\""));
 		return;
 	}
@@ -117,9 +123,9 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Emotes ^5]^7\n"
 			"^7Emotes are visual animations that allows you to sit down, greet someone, etc...\n"
-			"^7There are over 50 emotes to choose from. (Some may be disabled by the server)\n"
+			"^7There are over %i emotes to choose from. (Some may be disabled by the server)\n"
 			"^7Play an emote animation by using the following command: ^2/emote <animation>\n"
-			"^5----------\n\""));
+			"^5----------\n\"", JKModEmotesDataSize));
 			
 		for (i = 0; i < JKModEmotesDataSize; i++) 
 		{
@@ -145,21 +151,22 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Duels ^5]^7\n"
 			"^7Choose between different dueling challenges actions\n"
-			"^7Your private duels are %s ^7and auto duel accept is %s\n"
+			"^7Your private duels are %s ^7and your auto duels accept is %s\n"
 			"^5----------\n"
 			"^7Command list:\n"
 			"^3engage_duel\n"
-			"^3engage_duel_force\n"
-			"%sengage_private\n"
-			"%sengage_auto\n"
+			"%sengage_force\n"
+			"%stoggle_auto\n"
+			"%stoggle_private\n"
 			"^5----------\n"
-			"^2Note 1: ^7Force duel will be ^1disabled ^7if the server doesn't allow force powers\n"
-			"^2Note 2: ^7Private and auto will be marked in ^1red ^7if the server have them disabled\n"
+			"^2Note 1: ^7Commands marked in ^1red ^7are disabled by the server\n"
+			"^2Note 2: ^7Toggle private command applies to ^5duel ^7and ^5force ^7commands\n"
 			"^7\"", 
 			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
 			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled"),
-			(jkcvar_altDimension.integer & DIMENSION_DUEL ? S_COLOR_YELLOW : S_COLOR_RED),
-			(jkcvar_duelAutoAccept.integer ? S_COLOR_YELLOW : S_COLOR_RED)));
+			(jkcvar_allowCustomDuel.integer ? S_COLOR_YELLOW : S_COLOR_RED),
+			(jkcvar_duelAutoAccept.integer ? S_COLOR_YELLOW : S_COLOR_RED),
+			(jkcvar_altDimension.integer & DIMENSION_PRIVATE ? S_COLOR_YELLOW : S_COLOR_RED)));
 		return;
 	}
 	// Help dimensions
@@ -168,20 +175,24 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		int i;
 
 		trap_SendServerCommand(ent - g_entities, va("print \""
-			"^5[^7 Dimension ^5]^7\n"
-			"^7Change between server dimensions\n"
+			"^5[^7 Dimensions ^5]^7\n"
+			"^7Change between the available dimensions\n"
 			"^7You can use this feature using the following command: ^2/dimension <option>\n"
+			"^7There are also private duel dimensions that you can check by using: ^2/help duels\n"
 			"^5----------\n"
 			"^7Option list:\n\""));
 
 		for (i = 0; i < JKModDimensionDataSize; i++) {
 			trap_SendServerCommand(ent - g_entities, va("print \"%s%s\n\"", (jkcvar_altDimension.integer & JKModDimensionData[i].dimension ? S_COLOR_YELLOW : S_COLOR_RED), JKModDimensionData[i].command));
 		}
-			
+
+		trap_SendServerCommand(ent - g_entities, va("print \"%s%s\n\"", (jkcvar_altDimension.integer & DIMENSION_PRIVATE ? S_COLOR_YELLOW : S_COLOR_RED), "private"));
+
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command on chat saying ^5!dimension <option>\n"
-			"^2Note 2: ^7Dimensions marked in ^1Red ^7are not available to use\n"
+			"^2Note 2: ^7For private dimension you can use the next options ^3/dimension <settings|invite|kick|join|leave>\n"
+			"^2Note 3: ^7Dimensions marked in ^1red ^7are not available to use\n"
 			"^7\""));
 		return;
 	}
@@ -472,7 +483,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	// Check duel challenge
 	if (jkcvar_altDimension.integer && ent->client->ps.stats[JK_DIMENSION] != DIMENSION_FREE)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"Private duels are not allowed in this dimension\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"Private duels are not allowed in this dimension\n\"");
 		return;
 	}
 
@@ -510,6 +521,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			challenged->client->ps.weapon != WP_SABER || challenged->client->ps.duelInProgress ||
 			challenged->client->ps.saberInFlight)
 		{
+			trap_SendServerCommand(ent - g_entities, "cp \"You can't challenge this player yet\"");
 			return;
 		}
 
@@ -532,7 +544,15 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
-			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname));
+			char *duelmessage;
+
+			if (challenged->client->pers.jkmodPers.customDuel == DUEL_FORCE) {
+				duelmessage = "Full force";
+			} else {
+				duelmessage = "Saber only";
+			}
+
+			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (%s%s)\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname, duelmessage,  (challenged->client->sess.jkmodSess.privateDuel ? " private" : "")));
 
 			// Enable duel
 			ent->client->ps.duelInProgress = qtrue;
@@ -541,10 +561,25 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			// Set dimension
 			if ((jkcvar_altDimension.integer & DIMENSION_DUEL) && challenged->client->sess.jkmodSess.privateDuel)
 			{
-				unsigned DIMENSION_CUSTOM_DIM = JKMod_DimensionGetCustom();
+				unsigned dimensionCustom = JKMod_DimensionGetCustom();
 
-				JKMod_DimensionSet(ent, DIMENSION_CUSTOM_DIM);
-				JKMod_DimensionSet(challenged, DIMENSION_CUSTOM_DIM);
+				JKMod_DimensionSet(ent, dimensionCustom);
+				JKMod_DimensionSet(challenged, dimensionCustom);
+			}
+
+			// Set custom settings
+			if (challenged->client->pers.jkmodPers.customDuel == DUEL_FORCE) 
+			{
+				int checkSide = (1 << FP_ABSORB) | (1 << FP_HEAL) | (1 << FP_PROTECT) | (1 << FP_TELEPATHY) | (1 << FP_GRIP) | (1 << FP_DRAIN) | (1 << FP_LIGHTNING) | (1 << FP_RAGE);
+
+				if (g_forcePowerDisable.integer & checkSide)
+				{
+					trap_SendServerCommand(ent - g_entities, "print \"^2Remember to change your force side from player menu.\n\"");
+					trap_SendServerCommand(challenged - g_entities, "print \"^2Remember to change your force side from player menu.\n\"");
+				}
+
+				JKMod_DimensionSettings(ent, DIMENSION_FORCE);
+				JKMod_DimensionSettings(challenged, DIMENSION_FORCE);
 			}
 
 			ent->client->ps.duelTime = level.time + 2000;
@@ -603,24 +638,24 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 		}
 		else
 		{
-			qboolean privateDuel = (jkcvar_altDimension.integer & DIMENSION_DUEL) && ent->client->sess.jkmodSess.privateDuel;
+			qboolean privateDuel = ((jkcvar_altDimension.integer & DIMENSION_DUEL) && ent->client->sess.jkmodSess.privateDuel);
 
 			if (jkcvar_allowCustomDuel.integer) 
 			{
-				if (type == 1) 
+				if (type == DUEL_FORCE) 
 				{
 					// Print full force duel initiation in private
 					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
 					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
 					
-					ent->client->pers.jkmodPers.customDuel = type;
-					challenged->client->pers.jkmodPers.customDuel = type;
+					ent->client->pers.jkmodPers.customDuel = DUEL_FORCE;
+					challenged->client->pers.jkmodPers.customDuel = DUEL_FORCE;
 				}
 				else 
 				{
 					// Print full no-force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (No force%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (No force%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
+					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Saber only%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
+					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Saber only%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
 				}
 			}
 			else 
@@ -671,11 +706,11 @@ Custom engage duel function
 */
 static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 {
-	if (!jkcvar_allowCustomDuel.integer || g_forcePowerDisable.integer >= 163837 || g_forcePowerDisable.integer == -1) {
-		trap_SendServerCommand(ent - g_entities, va("print \"Force powers ^3disabled ^7by the server. Applying normal duel...\n\""));
-		JKMod_EngageDuel(ent, 0);
-	} else {
+	if (jkcvar_allowCustomDuel.integer) {
 		JKMod_EngageDuel(ent, 1);
+	} else {
+		JKMod_EngageDuel(ent, 0);
+		trap_SendServerCommand(ent - g_entities, "print \"Custom duels are ^3disabled ^7by the server. Applying normal duel...\n\"");
 	}
 	return;
 }
@@ -685,7 +720,7 @@ static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 Check private duel challenge
 =====================================================================
 */
-static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
+static void JKMod_Cmd_TogglePrivate(gentity_t* ent)
 {
 	if (jkcvar_altDimension.integer & DIMENSION_DUEL)
 	{
@@ -711,10 +746,265 @@ static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
 
 /*
 =====================================================================
+Check private room challenge
+=====================================================================
+*/
+void JKMod_EngagePrivate(gentity_t* ent, qboolean say)
+{
+	char *print = say ? "cp" : "print";
+
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	{
+		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\"");
+		return;
+	}
+	else if (ent->client->ps.pm_type == PM_DEAD)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension while dead\n\"");
+		return;
+	}
+	else if (ent->client->ps.duelInProgress)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in a private duel\n\"");
+		return;
+	}
+	else if (g_gametype.integer != GT_FFA)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension in this game type\n\"");
+		return;
+	}
+	else if (level.jkmodLocals.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't change dimension during pause mode\n\"");
+		return;
+	}
+	else if (jkcvar_altDimension.integer & DIMENSION_PRIVATE)
+	{
+		if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] >= level.time && !ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE]) return;
+		
+		if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] && !ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE]) 
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"You have left ^3private room (%i)^7\n\"", ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]));
+			ARRAY_CLEAR(ent->client->pers.jkmodPers.privateRoom);
+			JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
+		}
+		else 
+		{
+			int target = -1;
+
+			if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] && ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] >= level.time) 
+			{
+				target = ent->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX];
+			} 
+			else 
+			{
+				trace_t tr;
+				vec3_t forward, fwdOrg;
+			
+				AngleVectors(ent->client->ps.viewangles, forward, NULL, NULL);
+
+				fwdOrg[0] = ent->client->ps.origin[0] + forward[0] * 256;
+				fwdOrg[1] = ent->client->ps.origin[1] + forward[1] * 256;
+				fwdOrg[2] = (ent->client->ps.origin[2] + ent->client->ps.viewheight) + forward[2] * 256;
+
+				trap_Trace(&tr, ent->client->ps.origin, NULL, NULL, fwdOrg, ent->s.number, MASK_PLAYERSOLID);
+
+				if (tr.fraction != 1 && tr.entityNum < MAX_CLIENTS) target = tr.entityNum;
+			}
+
+			if (target != -1)
+			{
+				gentity_t *challenged = &g_entities[target];
+
+				if (!challenged || !challenged->client || !challenged->inuse ||
+					challenged->health < 1 || challenged->client->ps.stats[STAT_HEALTH] < 1 ||
+					challenged->client->ps.duelInProgress || challenged->client->ps.saberInFlight)
+				{
+					trap_SendServerCommand(ent - g_entities, va("%s \"You can't invite this player yet%s\"", print, (say ? "" : "\n")));
+					return;
+				}
+				
+				// Invite from private
+				if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] && challenged->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+				{
+					unsigned privateNum = challenged->client->pers.jkmodPers.privateRoom[PRIVATE_NUM];
+					unsigned dimensionCustom = JKMod_DimensionToPrivate(privateNum);
+
+					JKMod_JoinPrivate(ent, challenged->client->pers.jkmodPers.privateRoom[PRIVATE_NUM], dimensionCustom);
+
+					ent->client->ps.forceHandExtend = HANDEXTEND_DUELCHALLENGE;
+					ent->client->ps.forceHandExtendTime = level.time + 1000;
+
+					challenged->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = 0;
+					challenged->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = 0;
+					challenged->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = 0;
+
+					trap_SendServerCommand(ent - g_entities, va("cp \"Private Room (%i)\nDimension\"", privateNum));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " has been accepted by %s" S_COLOR_WHITE " to join ^3private room (%i)\n\"", ent->client->pers.netname, challenged->client->pers.netname, privateNum));
+				}
+				// Accept new private
+				else if (challenged->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] == ent->s.number && challenged->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] >= level.time)
+				{
+					unsigned dimensionCustom = JKMod_DimensionGetCustom();
+					unsigned privateNum = JKMod_DimensionToPrivate(dimensionCustom);
+
+					JKMod_SettingsPrivate(NULL, privateNum);
+					JKMod_JoinPrivate(ent, privateNum, dimensionCustom);
+					JKMod_JoinPrivate(challenged, privateNum, dimensionCustom);
+
+					ent->client->ps.forceHandExtend = HANDEXTEND_DUELCHALLENGE;
+					ent->client->ps.forceHandExtendTime = level.time + 1000;
+
+					trap_SendServerCommand(ent - g_entities, va("cp \"Private Room (%i)\nDimension\"", privateNum));
+					trap_SendServerCommand(challenged - g_entities, va("cp \"Private Room (%i)\nDimension\"", privateNum));
+					trap_SendServerCommand(-1, va("print \"Private room (%i) was created by %s " S_COLOR_WHITE "and %s\n\"", privateNum, challenged->client->pers.netname, ent->client->pers.netname));
+				}
+				// Check private bots
+				else if (!jkcvar_privateInviteBots.integer && (challenged->r.svFlags & SVF_BOT))
+				{
+					trap_SendServerCommand(ent - g_entities, "cp \"Bots invites are disabled by the server\"");
+					return;
+				}
+				// Engage new private
+				else 
+				{
+					JKMod_InvitePrivate(ent, challenged);
+				}
+			}
+			else
+			{
+				ent->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = 0;
+				ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = 0;
+				ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = 0;
+
+				trap_SendServerCommand(ent - g_entities, va("%s \"You need someone in front of you to invite%s\"", print, (say ? "" : "\n")));
+			}
+		}
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Private dimensions are ^1disabled ^7by the server\n\"");
+	}
+}
+
+/*
+=====================================================================
+Invite private room challenge
+=====================================================================
+*/
+void JKMod_InvitePrivate(gentity_t *ent, gentity_t *challenged)
+{
+	int remainingTime = jkcvar_privateInviteTime.integer >= MIN_PRIVATE_TIME ? jkcvar_privateInviteTime.integer : MIN_PRIVATE_TIME;
+
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = challenged->s.number;
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = level.time + (remainingTime*1000);
+
+	challenged->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = ent->s.number;
+	challenged->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = level.time + (remainingTime*1000);
+	challenged->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = remainingTime;
+
+	if (!ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+	{
+		ent->client->ps.forceHandExtend = HANDEXTEND_DUELCHALLENGE;
+		ent->client->ps.forceHandExtendTime = level.time + 1000;
+	}
+
+	trap_SendServerCommand(ent - g_entities, va("cp \"You have invited\n%s" S_COLOR_WHITE "\nto create a private room\"", challenged->client->pers.netname));
+	trap_SendServerCommand(challenged - g_entities, va("cp \"You have been invited by\n%s" S_COLOR_WHITE "\nto create a private room\nsay ^2!accept^7 in chat to join\"", ent->client->pers.netname));
+}
+
+/*
+=====================================================================
+Join private room challenge
+=====================================================================
+*/
+void JKMod_JoinPrivate(gentity_t* ent, int privateNum, unsigned dimension)
+{
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = 0;
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = 0;
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = 0;
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_REQUEST] = 0;
+	ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] = privateNum;
+
+	JKMod_DimensionSet(ent, dimension);
+}
+
+/*
+=====================================================================
+Settings for private room challenge
+=====================================================================
+*/
+void JKMod_SettingsPrivate(gentity_t* ent, int privateNum)
+{
+	if (ent)
+	{
+		JKMod_CustomGameSettings(ent, 
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_WEAPONDISABLE],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_FORCEDISABLE],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_FORCELEVEL],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_HOLDABLES],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_JETPACK],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_INVULNERABILITY],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_PASSTHROUGH],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_SPEED],
+			level.jkmodLocals.privateRoom[privateNum][PRIVATE_GRAVITY]
+		);
+	}
+	else
+	{
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_WEAPONDISABLE] = DEFAULT;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_FORCEDISABLE] = DEFAULT;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_FORCELEVEL] = DEFAULT;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_HOLDABLES] = qfalse;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_JETPACK] = qfalse;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_INVULNERABILITY] = qfalse;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_PASSTHROUGH] = qfalse;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_SPEED] = DEFAULT;
+		level.jkmodLocals.privateRoom[privateNum][PRIVATE_GRAVITY] = DEFAULT;
+	}
+}
+
+/*
+=====================================================================
+Check private room players
+=====================================================================
+*/
+int JKMod_PlayersPrivate(int privateRoom, qboolean skipBots)
+{
+	int i = 0;
+	int pl = 0;
+
+	while (i < MAX_CLIENTS)
+	{
+		if (g_entities[i].client && 
+			g_entities[i].client->pers.connected == CON_CONNECTED && 
+			g_entities[i].client->pers.jkmodPers.privateRoom[PRIVATE_NUM] == privateRoom && (skipBots ? !(g_entities[i].r.svFlags & SVF_BOT) : qtrue))
+		{
+			pl++;
+		}
+		i++;
+	}
+
+	return pl;
+}
+
+/*
+=====================================================================
+Private challenge command
+=====================================================================
+*/
+static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
+{
+	JKMod_EngagePrivate(ent, qfalse);
+	return;
+}
+
+/*
+=====================================================================
 Check private duel challenge
 =====================================================================
 */
-static void JKMod_Cmd_EngageAuto(gentity_t* ent)
+static void JKMod_Cmd_ToggleAuto(gentity_t* ent)
 {
 	if (jkcvar_duelAutoAccept.integer)
 	{
@@ -774,7 +1064,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("cp \""
 			"You are in the ^3%s ^7dimension\n"
 			"Open console for player list\"",
-			JKModDimensionData[JKMod_DimensionIndex(ent->client->ps.stats[JK_DIMENSION])].name));
+			(ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : JKModDimensionData[JKMod_DimensionIndex(ent->client->ps.stats[JK_DIMENSION])].name)));
 		
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Who is ^5]^7\n"
@@ -804,7 +1094,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		char		userinfo[MAX_INFO_VALUE] = { 0 };
 		char        name[MAX_STRING_CHARS] = { 0 };
 		char		ignored[MAX_STRING_CHARS] = { 0 };
-		char		*value;
+		char		*value, *etjk2;
 		char		*type;
 		char		*dimension;
 		char		*status;
@@ -819,8 +1109,10 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		trap_GetUserinfo(num, userinfo, sizeof(userinfo));
 
 		// Find info
+		etjk2 = Info_ValueForKey(userinfo, "cjp_client");
 		value = Info_ValueForKey(userinfo, "JK2MV");
-		if (strstr(value, "ETJK2")) {
+
+		if (strstr(value, "ETJK2") || strstr(etjk2, "JAPRO")) {
 			gameversion = "EternalJK2";
 ;		} 
 		else if (value[0] || (user->r.svFlags & SVF_BOT && mvapi)) {
@@ -832,6 +1124,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 		// Check plugin
 		value = Info_ValueForKey(userinfo, "jkmod_client");
+
 		if (value[0]) {
 			plugin = value;
 		} else {
@@ -857,7 +1150,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 		// Set info
 		strcpy(name, user->client->pers.netname);
-		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : va("%s", JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name));
+		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : (user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : va("%s", JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name)));
 		type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
 		status = user->client->pers.jkmodPers.clientVersion ? (user->client->pers.jkmodPers.clientVersion == level.jkmodLocals.serverVersion ? S_COLOR_GREEN : (user->client->pers.jkmodPers.clientVersion > level.jkmodLocals.serverVersion ? S_COLOR_CYAN : S_COLOR_YELLOW)) : S_COLOR_RED;
 
@@ -950,7 +1243,7 @@ void JKMod_Cmd_Dimension(gentity_t* ent)
 	char arg1[MAX_TOKEN_CHARS];
 	trap_Argv(1, arg1, sizeof(arg1));
 
-	JKMod_DimensionChange(ent, arg1, qfalse);
+	JKMod_DimensionChange(ent, arg1, NULL);
 	return;
 }
 
@@ -1086,7 +1379,7 @@ static qboolean JKMod_saveSpawn(gentity_t *ent, qboolean say)
 {
 	char *print = say ? "cp" : "print";
 
-	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT)) && !g_cheats.integer)
+	if (jkcvar_teleportChat.integer != 2 && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_RACE | DIMENSION_CHEAT | DIMENSION_PRIVATE)) && !g_cheats.integer)
 	{
 		trap_SendServerCommand(ent - g_entities, va("%s \"Save spawn is not available%s\"", print, (say ? "" : "\n")));
 		return qfalse;
@@ -1916,6 +2209,38 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 
 /*
 =====================================================================
+Bot control function
+=====================================================================
+*/
+void JKMod_botControl(int botIndex, int ownerIndex, char *action)
+{
+	gentity_t *bot = &g_entities[botIndex];
+	gentity_t *owner = &g_entities[ownerIndex];
+
+	if ((bot->client->pers.jkmodBots.actionFlags & JK_BOT_CONTROL) || !Q_stricmp(action, "remove"))
+	{
+		bot->client->pers.jkmodBots.actionFlags &= ~JK_BOT_CONTROL;
+		ARRAY_CLEAR(bot->client->pers.jkmodPers.botControl);
+		ARRAY_CLEAR(owner->client->pers.jkmodPers.botControl);
+
+		JKMod_Printf(S_COLOR_MAGENTA "Removing bot %i control from owner %i\n", botIndex, ownerIndex);
+	}
+	else if (!Q_stricmp(action, "apply") || !Q_stricmp(action, "toggle"))
+	{
+		// Bot
+		bot->client->pers.jkmodBots.actionFlags |= JK_BOT_CONTROL;
+		bot->client->pers.jkmodPers.botControl[BOT_ENABLED] = qfalse;	
+		bot->client->pers.jkmodPers.botControl[BOT_INDEX] = owner->s.number;	
+		// Owner
+		owner->client->pers.jkmodPers.botControl[BOT_ENABLED] = qtrue;
+		owner->client->pers.jkmodPers.botControl[BOT_INDEX] = bot->s.number;	
+		
+		JKMod_Printf(S_COLOR_MAGENTA "Applying bot %i control from owner %i\n", botIndex, ownerIndex);
+	}
+}
+
+/*
+=====================================================================
 Custom say function
 =====================================================================
 */
@@ -1927,7 +2252,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	if (trap_Argc() < 2 && !arg0) return;
 
 	p = arg0 ? ConcatArgs(0) : ConcatArgs(1);
-
+	
 	// Show motd
 	if (Q_stricmp(p, "!motd") == 0)
 	{
@@ -1938,6 +2263,184 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		JKMod_Cmd_WhoIs(ent);
 		JKMod_Cmd_ToggleConsole(ent);
+	}
+	// Private check
+	else if (Q_stricmpn(p, "!accept", 7) == 0)
+	{
+		int argNum = JKMod_Str_Argc(p);
+			
+		if (argNum < 2 && ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] && ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] >= level.time)
+		{
+			JKMod_EngagePrivate(ent, qtrue);
+		} 
+		else if (argNum > 1 && !ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] && ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+		{
+			int target;
+			char arg1[MAX_TOKEN_CHARS];
+			JKMod_Str_Argv(1, arg1, sizeof(arg1), p);
+			target = JKMod_CheckValidClient(ent, arg1);
+
+			if (target != -1)
+			{
+				gentity_t *challenged = &g_entities[target];
+
+				if (challenged->client->pers.jkmodPers.privateRoom[PRIVATE_REQUEST] == ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) 
+				{
+					unsigned privateNum = ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM];
+					unsigned dimensionCustom = JKMod_DimensionToPrivate(privateNum);
+
+					JKMod_JoinPrivate(challenged, privateNum, dimensionCustom);
+
+					challenged->client->ps.forceHandExtend = HANDEXTEND_DUELCHALLENGE;
+					challenged->client->ps.forceHandExtendTime = level.time + 1000;
+					
+					trap_SendServerCommand(challenged - g_entities, va("cp \"Private Room (%i)\nDimension\"", privateNum));
+					trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " has been accepted by %s" S_COLOR_WHITE " to join ^3private room (%i)\n\"", challenged->client->pers.netname, ent->client->pers.netname, privateNum));
+				}
+				else
+				{
+					trap_SendServerCommand(ent - g_entities, va("print \"There are no requests by %s\n\"", challenged->client->pers.netname));
+				}
+			}
+		}
+		else 
+		{
+			ent->client->pers.jkmodPers.privateRoom[PRIVATE_INDEX] = 0;
+			ent->client->pers.jkmodPers.privateRoom[PRIVATE_TIME] = 0;
+			ent->client->pers.jkmodPers.privateRoom[PRIVATE_INVITE] = 0;
+
+			trap_SendServerCommand(ent - g_entities, "cp \"You have nothing to accept\"");
+		}
+		return;
+	}
+	// Bot check
+	else if (Q_stricmpn(p, "!bot", 4) == 0)
+	{
+		if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
+		{
+			int argNum = JKMod_Str_Argc(p);
+			char argHelp[MAX_STRING_CHARS] = ""
+				"Action list:\n"
+				"^3static\n"
+				"^3attack\n"
+				"^3altattack\n"
+				"^3crouch\n"
+				"^3jump\n"
+				"^3taunt\n"
+				"^3talk\n"
+				"^3god\n"
+				"^3control\n"
+				"^3togglesaber\n"
+				"^3teleport\n"
+				"^3reset";
+	
+			if (argNum < 2)
+			{
+				trap_SendServerCommand(ent - g_entities, va("cp \"Usage: !bot ^2<number> <action>\n%s\"", argHelp));
+				trap_SendServerCommand(ent - g_entities, "print \"Note: ^7You can use the command ^3/whois ^7to check the bot number\n\"");
+				return;
+			} 
+			else if (argNum > 1)
+			{
+				int target;
+				char arg1[MAX_TOKEN_CHARS];
+				JKMod_Str_Argv(1, arg1, sizeof(arg1), p);
+				target = JKMod_CheckValidClient(ent, arg1);
+
+				if (target != -1)
+				{
+					gentity_t *challenged = &g_entities[target];
+
+					if (!(challenged->r.svFlags & SVF_BOT)) 
+					{
+						trap_SendServerCommand(ent - g_entities, "cp \"This player is not a bot!\"");
+						return;
+					}
+					if (challenged->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] == ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) 
+					{
+						if (argNum < 3)
+						{
+							trap_SendServerCommand(ent - g_entities, va("cp \"Usage: !bot %i ^2<action>\n%s\"", challenged->s.number, argHelp));
+							return;
+						}
+						else
+						{
+							char arg2[MAX_TOKEN_CHARS];
+							JKMod_Str_Argv(2, arg2, sizeof(arg2), p);
+
+							if (!Q_stricmp(arg2, "static")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_STATIC) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_STATIC;
+							}
+							else if (!Q_stricmp(arg2, "attack")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_ATTACK) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_ATTACK;
+							}
+							else if (!Q_stricmp(arg2, "altattack")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_ATTACK_ALT) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_ATTACK_ALT;
+							}
+							else if (!Q_stricmp(arg2, "crouch")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_CROUCH) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_CROUCH;
+							}
+							else if (!Q_stricmp(arg2, "jump")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_JUMP) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_JUMP;
+							}
+							else if (!Q_stricmp(arg2, "taunt")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_TAUNT) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_TAUNT;
+							}
+							else if (!Q_stricmp(arg2, "talk")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_TALK) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_TALK;
+							}
+							else if (!Q_stricmp(arg2, "god")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_GOD) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags ^= JK_BOT_GOD;
+							}
+							else if (!Q_stricmp(arg2, "control")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"%s %s on bot %i\"", ((challenged->client->pers.jkmodBots.actionFlags & JK_BOT_CONTROL) ? "Removing" : "Applying"), arg2, challenged->s.number));
+								JKMod_botControl(challenged->s.number, ent->s.number, "toggle");
+							}
+							else if (!Q_stricmp(arg2, "togglesaber")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"Turning %s saber on bot %i\"", (!challenged->client->ps.saberHolstered ? "off" : "on"), challenged->s.number));
+								Cmd_ToggleSaber_f(challenged);
+							}
+							else if (!Q_stricmp(arg2, "teleport")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"Teleporting bot %i\"", challenged->s.number));
+								trap_SendConsoleCommand(EXEC_APPEND, va("teleport %i %i\n", challenged->s.number, ent->s.number));
+							}
+							else if (!Q_stricmp(arg2, "reset")) {
+								trap_SendServerCommand(ent - g_entities, va("cp \"Resetting bot %i\"", challenged->s.number));
+								challenged->client->pers.jkmodBots.actionFlags = 0;
+								JKMod_botControl(challenged->s.number, ent->s.number, "remove");
+							}
+							else {
+								trap_SendServerCommand(ent - g_entities, va("cp \"Usage: !bot %i ^2<action>\n%s\"", challenged->s.number, argHelp));
+								return;
+							}
+						}
+					}
+					else if (jkcvar_privateInviteBots.integer)
+					{
+						trap_SendServerCommand(ent - g_entities, va("cp \"This bot is not in your private room\nUse: ^2!dimension invite %i\"", challenged->s.number));
+						return;
+					}
+					else
+					{
+						trap_SendServerCommand(ent - g_entities, "cp \"Bots invites are disabled by the server\"");
+						return;
+					}
+				}
+			}
+		}
+		else
+		{
+			trap_SendServerCommand(ent - g_entities, "cp \"You can't use this outside a private room\"");
+			return;
+		}
 	}
 	// Player stats
 	else if (Q_stricmp(p, "!status") == 0)
@@ -1970,21 +2473,12 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		return;
 	}
 	// Dimension trigger
-	else if (Q_stricmpn(p, "!dim", strlen("!dim")) == 0)
+	else if (Q_stricmpn(p, "!dim", 4) == 0)
 	{
-		char dimension[MAX_STRING_CHARS] = "";
-		int i = 0, pos = 0, part = 0;
+		char arg1[MAX_TOKEN_CHARS];
+		JKMod_Str_Argv(1, arg1, sizeof(arg1), p);
 
-		for (i = 0; i < strlen(p); i++)
-		{
-			if (p[i] == ' ') part = 1;
-			else if (part == 1) {
-				dimension[pos] = p[i];
-				pos++;
-			}
-		}
-
-		if (!JKMod_DimensionChange(ent, dimension, qtrue)) return;
+		if (!JKMod_DimensionChange(ent, arg1, p)) return;
 	}
 	// Teleport chat (Save position)
 	else if (Q_stricmp(p, "!savepos") == 0)
@@ -2036,13 +2530,15 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "dropflag",				JKMod_Cmd_DropFlag },
 	{ "motd",					JKMod_Cmd_ShowMotd },
 	{ "ignore",					JKMod_Cmd_IgnoreClient },
-
-	{ "engage_duel_force",		JKMod_Cmd_EngageDuel },
+	
+	{ "engage_force",			JKMod_Cmd_EngageDuel },
 	{ "engage_forceduel",		JKMod_Cmd_EngageDuel },
 	{ "engage_fullforceduel",	JKMod_Cmd_EngageDuel },
+	{ "engage_duel_force",		JKMod_Cmd_EngageDuel },
 	{ "engage_ff",				JKMod_Cmd_EngageDuel },
 	{ "engage_private",			JKMod_Cmd_EngagePrivate },
-	{ "engage_auto",			JKMod_Cmd_EngageAuto },
+	{ "toggle_auto",			JKMod_Cmd_ToggleAuto },
+	{ "toggle_private",			JKMod_Cmd_TogglePrivate },
 
 	{ "whois",					JKMod_Cmd_WhoIs },
 	{ "macroalert",				JKMod_Cmd_MacroAlert },

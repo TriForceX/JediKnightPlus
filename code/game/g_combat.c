@@ -3090,7 +3090,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				return;
 			}
 			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
-			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.jkmodPers.customDuel == 1))
+			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.jkmodPers.customDuel == DUEL_FORCE))
 			{
 				return;
 			}
@@ -3102,7 +3102,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 				return;
 			}
 			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
-			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.jkmodPers.customDuel == 1))
+			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.jkmodPers.customDuel == DUEL_FORCE))
 			{
 				return;
 			}
