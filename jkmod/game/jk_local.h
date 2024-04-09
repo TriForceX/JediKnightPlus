@@ -24,7 +24,7 @@ Global definitions
 #define MAX_FILE_CHARS				1024
 #define MAX_FILE_LENGTH				131072 // 128kb
 #define MAX_IP_STRING				16
-#define MAX_CHALLENGE				5
+#define MAX_CHALLENGE				10
 #define MIN_PRIVATE_TIME			3
 #define TEAM_CHANGE_DELAY			5000
 

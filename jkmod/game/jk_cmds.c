@@ -46,8 +46,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3Emotes         Commands       Duels\n"
 			"^1Build          ^3About          Credits\n"
 			"^5----------\n"
-			"^2Note 1: ^7Commands marked in ^1red ^7are not available to use\n"
-			"^7\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, g_gamedate.string));
+			"^2Note 1: ^7Commands marked in ^1red ^7are not available to use yet\n\"", JK_LONGNAME, JK_MAJOR, JK_MINOR, JK_PATCH, g_gamedate.string));
 
 		if (!ent->client->pers.jkmodPers.clientPlugin) {
 			trap_SendServerCommand(ent - g_entities, va("print \"^2Note 2: ^7Plugin not detected or invalid, download from ^5%s\n\"", JK_URL));
@@ -59,7 +58,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	// Help admin
 	else if (!Q_stricmp(arg1, "admin"))
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Admin ^5]^7\n"
 			"^7You can perform additional console commands if you are logged as admin or by remote console\n"
 			"^7For ^5rcon ^7commands you have to use the following sintax: ^2/rcon <command>\n"
@@ -79,14 +78,13 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3listdir\n"
 			"^3control\n"
 			"^5----------\n"
-			"^2Note: ^7To use ^5rcon ^7commands you must be logged with ^3/rconpassword <password>\n"
-			"^7\""));
+			"^2Note: ^7To use ^5rcon ^7commands you must be logged with ^3/rconpassword <password>\n\"");
 		return;
 	}
 	// Help commands
 	else if (!Q_stricmp(arg1, "commands"))
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Commands ^5]^7\n"
 			"^7You can perform some console commands to perform a special action\n"
 			"^7Chat commands are meant to be used on ^2chat ^7while typing\n"
@@ -109,8 +107,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3engage_force\n"
 			"^3engage_private\n"
 			"^3toggle_auto\n"
-			"^3toggle_private\n"
-			"^7\""));
+			"^3toggle_private\n\"");
 		return;
 	}
 	// Help emotes
@@ -138,11 +135,10 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			trap_SendServerCommand(ent - g_entities, va("print \"%s%-15s%s\"", emoteStatus, JKModEmotesData[i].cmd, emoteLine));
 		}
 
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command by using ^5/am<animation>\n"
-			"^2Note 2: ^7Emotes marked in ^1red ^7are not available to use\n"
-			"^7\""));
+			"^2Note 2: ^7Emotes marked in ^1red ^7are not available to use\n\"");
 		return;
 	}
 	// Help duels
@@ -160,8 +156,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"%stoggle_private\n"
 			"^5----------\n"
 			"^2Note 1: ^7Commands marked in ^1red ^7are disabled by the server\n"
-			"^2Note 2: ^7Toggle private command applies to ^5duel ^7and ^5force ^7commands\n"
-			"^7\"", 
+			"^2Note 2: ^7Toggle private command applies to ^5duel ^7and ^5force ^7commands\n\"", 
 			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
 			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled"),
 			(jkcvar_allowCustomDuel.integer ? S_COLOR_YELLOW : S_COLOR_RED),
@@ -174,26 +169,24 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	{
 		int i;
 
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Dimensions ^5]^7\n"
-			"^7Change between the available dimensions\n"
+			"^7Change between the available server dimensions\n"
 			"^7You can use this feature using the following command: ^2/dimension <option>\n"
 			"^7There are also private duel dimensions that you can check by using: ^2/help duels\n"
 			"^5----------\n"
-			"^7Option list:\n\""));
+			"^7Option list:\n\"");
 
 		for (i = 0; i < JKModDimensionDataSize; i++) {
 			trap_SendServerCommand(ent - g_entities, va("print \"%s%s\n\"", (jkcvar_altDimension.integer & JKModDimensionData[i].dimension ? S_COLOR_YELLOW : S_COLOR_RED), JKModDimensionData[i].command));
 		}
 
 		trap_SendServerCommand(ent - g_entities, va("print \"%s%s\n\"", (jkcvar_altDimension.integer & DIMENSION_PRIVATE ? S_COLOR_YELLOW : S_COLOR_RED), "private"));
-
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command on chat saying ^5!dimension <option>\n"
 			"^2Note 2: ^7For private dimension you can use the next options ^3/dimension <settings|invite|kick|join|leave>\n"
-			"^2Note 3: ^7Dimensions marked in ^1red ^7are not available to use\n"
-			"^7\""));
+			"^2Note 3: ^7Dimensions marked in ^1red ^7are not available to use\n\"");
 		return;
 	}
 	// Help about and credits
@@ -209,25 +202,21 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7into a public version, just as a legacy.\n"
 			"^5----------\n"
 			"^7Mod Author: ^2Tr!^4For^1ce\n"
-			"^7Mod Website: ^5%s\n"
-			"^7\"", JK_LONGNAME, JK_URL));
+			"^7Mod Website: ^5%s\n\"", JK_LONGNAME, JK_URL));
 
 		if (!Q_stricmp(arg1, "credits"))
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \""
+			trap_SendServerCommand(ent - g_entities, "print \""
 				"^5----------\n"
 				"^7The following people supported and helped me directly on this project:\n"
-				"^3DeathSpike       Lee Oates          Nerevar\n"
-				"^3Kaiser/TVpath    Rich Whitehouse    NTxC/Reality\n"
-				"^3Tox Laximus      McMonkey           JediDog~\n"
-				"^3NewAge           Mr.Wonko           Xycaleth\n"
-				"^3Daggolin         Ouned/Twitch       Kameleon\n"
-				"^3Fau              Bucky              EternalCodes\n"
-				"^3Abrum            BarryHit           Player\n"
-				"^3Flendo           Padaget            VideoP/Loda\n"
-				"^3Noodle           Smoo               QK-Lite/Effect.Ve\n"
-				"^3MVSDK/JK2MV      x[Dsk]x Clan       =AJC= Clan\n"
-				"^7\""));
+				"^3DeathSpike       Lee Oates        Nerevar        Kaiser/TVpath\n"
+				"^3Rich Whitehouse  NTxC/Reality     Tox Laximus    McMonkey\n"
+				"^3JediDog~         NewAge           Mr.Wonko       Xycaleth\n"
+				"^3Daggolin         Ouned/Twitch     Kameleon       Fau\n"
+				"^3Bucky            EternalCodes     Abrum          BarryHit\n"
+				"^3Player           Flendo           Padaget        VideoP/Loda\n"
+				"^3Noodle           Smoo             Tayst          QK-Lite/Effect.Ve\n"
+				"^3MVSDK/JK2MV      x[Dsk]x Clan     =AJC= Clan\n\"");
 		}
 		return;
 	}
@@ -372,12 +361,12 @@ static void JKMod_Cmd_IgnoreClient(gentity_t *ent)
 
 	if (!jkcvar_playerIgnore.integer) 
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"This command is disabled by the server\n\"");
 		return;
 	}
 	else if (trap_Argc() < 3)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Ignore ^5]^7\n"
 			"^7Ignore a player chat or duel challenge\n"
 			"^7You can use this feature using the following command: ^2/ignore <player|number|all> <option>\n"
@@ -389,8 +378,7 @@ static void JKMod_Cmd_IgnoreClient(gentity_t *ent)
 			"^3emote\n"
 			"^5----------\n"
 			"^2Note 1: ^7No need to use full name or color name, you can use just a part of it\n"
-			"^2Note 2: ^7You can use the command ^3/whois ^7to check the player number and ignore status\n"
-			"^7\""));
+			"^2Note 2: ^7You can use the command ^3/whois ^7to check the player number and ignore status\n\"");
 		return;
 	}
 	else if (!(!Q_stricmp(arg2, "chat") || !Q_stricmp(arg2, "duel") || !Q_stricmp(arg2, "emote")))
@@ -706,40 +694,11 @@ Custom engage duel function
 */
 static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 {
-	if (jkcvar_allowCustomDuel.integer) {
-		JKMod_EngageDuel(ent, 1);
-	} else {
-		JKMod_EngageDuel(ent, 0);
+	if (!jkcvar_allowCustomDuel.integer) {
 		trap_SendServerCommand(ent - g_entities, "print \"Custom duels are ^3disabled ^7by the server. Applying normal duel...\n\"");
-	}
-	return;
-}
-
-/*
-=====================================================================
-Check private duel challenge
-=====================================================================
-*/
-static void JKMod_Cmd_TogglePrivate(gentity_t* ent)
-{
-	if (jkcvar_altDimension.integer & DIMENSION_DUEL)
-	{
-		if (ent->client->sess.jkmodSess.privateDuel) {
-			ent->client->sess.jkmodSess.privateDuel = qfalse;
-			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^1disabled\n\""));
-		} else {
-			ent->client->sess.jkmodSess.privateDuel = qtrue;
-			trap_SendServerCommand(ent - g_entities, va("print \"Private duels are now ^2enabled\n\""));
-		}
-
-		// Update clientside
-		if (ent->client->pers.jkmodPers.clientPlugin) {
-			trap_SendServerCommand(ent - g_entities, va("jk_cg_privateDuel %i", (int)ent->client->sess.jkmodSess.privateDuel));
-		}
-	}
-	else
-	{
-		trap_SendServerCommand(ent - g_entities, va("print \"Private duels are ^1disabled ^7by the server\n\""));
+		JKMod_EngageDuel(ent, 0);
+	} else {
+		JKMod_EngageDuel(ent, 1);
 	}
 	return;
 }
@@ -862,7 +821,7 @@ void JKMod_EngagePrivate(gentity_t* ent, qboolean say)
 				// Check private bots
 				else if (!jkcvar_privateInviteBots.integer && (challenged->r.svFlags & SVF_BOT))
 				{
-					trap_SendServerCommand(ent - g_entities, "cp \"Bots invites are disabled by the server\"");
+					trap_SendServerCommand(ent - g_entities, va("%s \"Bots invites are disabled by the server%s\"", print, (say ? "" : "\n")));
 					return;
 				}
 				// Engage new private
@@ -1004,16 +963,45 @@ static void JKMod_Cmd_EngagePrivate(gentity_t* ent)
 Check private duel challenge
 =====================================================================
 */
+static void JKMod_Cmd_TogglePrivate(gentity_t* ent)
+{
+	if (jkcvar_altDimension.integer & DIMENSION_DUEL)
+	{
+		if (ent->client->sess.jkmodSess.privateDuel) {
+			ent->client->sess.jkmodSess.privateDuel = qfalse;
+			trap_SendServerCommand(ent - g_entities, "print \"Private duels are now ^1disabled\n\"");
+		} else {
+			ent->client->sess.jkmodSess.privateDuel = qtrue;
+			trap_SendServerCommand(ent - g_entities, "print \"Private duels are now ^2enabled\n\"");
+		}
+
+		// Update clientside
+		if (ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_privateDuel %i", (int)ent->client->sess.jkmodSess.privateDuel));
+		}
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Private duels are ^1disabled ^7by the server\n\"");
+	}
+	return;
+}
+
+/*
+=====================================================================
+Check private duel challenge
+=====================================================================
+*/
 static void JKMod_Cmd_ToggleAuto(gentity_t* ent)
 {
 	if (jkcvar_duelAutoAccept.integer)
 	{
 		if (ent->client->sess.jkmodSess.autoDuel) {
 			ent->client->sess.jkmodSess.autoDuel = qfalse;
-			trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^1disabled\n\""));
+			trap_SendServerCommand(ent - g_entities, "print \"Auto duel challenges are now ^1disabled\n\"");
 		} else {
 			ent->client->sess.jkmodSess.autoDuel = qtrue;
-			trap_SendServerCommand(ent - g_entities, va("print \"Auto duel challenges are now ^2enabled\n\""));
+			trap_SendServerCommand(ent - g_entities, "print \"Auto duel challenges are now ^2enabled\n\"");
 		}
 
 		// Update clientside
@@ -1066,19 +1054,17 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			"Open console for player list\"",
 			(ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : JKModDimensionData[JKMod_DimensionIndex(ent->client->ps.stats[JK_DIMENSION])].name)));
 		
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Who is ^5]^7\n"
 			"^7List of all players connected on the server\n"
-			"^7Client plugin status: ^2Valid^7, ^5Newer, ^3Older^7, ^1Invalid\n"
-			"^7\""));
+			"^7Client plugin status: ^2Valid^7, ^5Newer, ^3Older^7, ^1Invalid\n\"");
 
 		if (locked[0]) trap_SendServerCommand(ent - g_entities, va("print \"Currently locked teams:%s\n\"", locked));
 		
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5----------------------------------------------------------------------------------------------------------\n"
 			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored         ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
-			"^5----------------------------------------------------------------------------------------------------------\n"
-			"^7\""));
+			"^5----------------------------------------------------------------------------------------------------------\n\"");
 	}
 	else
 	{
@@ -1180,7 +1166,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 	}
 
 	if (ent) {
-		trap_SendServerCommand(ent - g_entities, va("print \"^5----------------------------------------------------------------------------------------------------------\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"^5----------------------------------------------------------------------------------------------------------\n\"");
 		trap_SendServerCommand(ent - g_entities, va("print \"Your position in ^3%s ^7is: ^2(^7%i^2) (^7%i^2) (^7%i^2) : (^7%i^2)\n\"",
 			mapname,
 			(int)ent->client->ps.origin[0],
@@ -1482,27 +1468,27 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 {
 	if (!jkcvar_jetPack.integer && !(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_GUNS | DIMENSION_CHEAT)) && !g_cheats.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"This command is disabled by the server\n\"");
 		return;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in spectator\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack in spectator\n\"");
 		return;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack during pause mode\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack during pause mode\n\"");
 		return;
 	}
 	else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in this dimension\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack in this dimension\n\"");
 		return;
 	}
 	else if (ent->client->ps.duelInProgress)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use jetpack in a private duel\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack in a private duel\n\"");
 		return;
 	}
 	else
@@ -1513,7 +1499,7 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 			ent->client->ps.eFlags &= ~(JK_JETPACK_ACTIVE | JK_JETPACK_FLAMING);
 			ent->client->ps.stats[JK_FUEL] = 0;
 			ent->client->pers.jkmodPers.jetpackFxDisplay = qfalse;
-			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack disabled\n\""));
+			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, "print \"Jetpack disabled\n\"");
 			return;
 		}
 		// Enable
@@ -1522,8 +1508,8 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 			ent->client->ps.eFlags |= JK_JETPACK_ACTIVE;
 			ent->client->ps.stats[JK_FUEL] = 100;
 			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
-			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, va("print \"Jetpack equiped\n\""));
-			trap_SendServerCommand(ent - g_entities, va("cp \"Press USE button on air to enable\""));
+			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, "print \"Jetpack equiped\n\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"Press USE button on air to enable\"");
 			return;
 		}
 	}
@@ -1541,7 +1527,7 @@ static void JKMod_Cmd_Emote(gentity_t* ent)
 
 	if (trap_Argc() < 2)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: emote <animation>\nSee ^3/help emotes ^7for more information\n\"");
 		return;
 	}
 	else if (!Q_stricmp(arg1, "stop")) 
@@ -1570,27 +1556,27 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 {
 	if (!jkcvar_dualSaber.integer)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"This command is disabled by the server\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"This command is disabled by the server\n\"");
 		return;
 	}
 	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber in spectator\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber in spectator\n\"");
 		return;
 	}
 	else if (level.jkmodLocals.pauseTime > level.time)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber during pause mode\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber during pause mode\n\"");
 		return;
 	}
 	else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't use dual saber in this dimension\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber in this dimension\n\"");
 		return;
 	}
 	else if (ent->client->ps.weapon != WP_SABER)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't enable it using this weapon\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't enable it using this weapon\n\"");
 		return;
 	}
 	else
@@ -1697,8 +1683,7 @@ static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int
 		trap_SendServerCommand(ent - g_entities, va("print \"\n"
 			"^7Classname: ^3%-40.40s ^7Target:     ^3%-25.25s ^7Angles: ^3%-20.20s\n"
 			"^7Model:     ^3%-40.40s ^7Targetname: ^3%-25.25s ^7Mins:   ^3%-20.20s\n"
-			"^7Origin:    ^3%-40.40s ^7Spawnflags: ^3%-25.25i ^7Maxs:   ^3%-20.20s\n"
-			"^7\"", 
+			"^7Origin:    ^3%-40.40s ^7Spawnflags: ^3%-25.25i ^7Maxs:   ^3%-20.20s\n\"", 
 			found->classname,
 			found->target,
 			found_angles,
@@ -1778,22 +1763,22 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 			{
 				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport in spectator\""));
+					trap_SendServerCommand(ent - g_entities, "cp \"You can't teleport in spectator\"");
 					return qfalse;
 				}
 				else if (level.jkmodLocals.pauseTime > level.time)
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport during pause mode\""));
+					trap_SendServerCommand(ent - g_entities, "cp \"You can't teleport during pause mode\"");
 					return qfalse;
 				}
 				else if (JKMod_PlayerMoving(ent, qtrue, qtrue))
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You can't teleport while moving\""));
+					trap_SendServerCommand(ent - g_entities, "cp \"You can't teleport while moving\"");
 					return qfalse;
 				}
 				else if (ent->client->ps.pm_type == PM_DEAD)
 				{
-					trap_SendServerCommand(ent - g_entities, va("print \"You can't teleport while dead\n\""));
+					trap_SendServerCommand(ent - g_entities, "print \"You can't teleport while dead\n\"");
 					return qfalse;
 				}
 				else if (ent->client->jkmodClient.teleportChatTime > 0)
@@ -1824,7 +1809,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 				}
 				else
 				{
-					trap_SendServerCommand(ent - g_entities, va("cp \"You need to respawn to teleport again\""));
+					trap_SendServerCommand(ent - g_entities, "cp \"You need to respawn to teleport again\"");
 					return qfalse;
 				}
 			}
@@ -1889,20 +1874,20 @@ void JKMod_CallVote(gentity_t *ent)
 		return;
 	}
 
-	if (Q_stricmp(arg1, "map_restart") 
-		&& Q_stricmp(arg1, "nextmap") 
-		&& Q_stricmp(arg1, "map") 
-		&& Q_stricmp(arg1, "g_gametype") 
-		&& Q_stricmp(arg1, "kick") 
-		&& Q_stricmp(arg1, "clientkick") 
-		&& Q_stricmp(arg1, "g_doWarmup") 
-		&& Q_stricmp(arg1, "timelimit") 
-		&& Q_stricmp(arg1, "fraglimit") 
-		&& Q_stricmp(arg1, "poll") 
-		&& Q_stricmp(arg1, "itemphysics") 
-		&& Q_stricmp(arg1, "pausegame")) 
+	if (Q_stricmp(arg1, "map_restart") &&
+		Q_stricmp(arg1, "nextmap") &&
+		Q_stricmp(arg1, "map") &&
+		Q_stricmp(arg1, "g_gametype") &&
+		Q_stricmp(arg1, "kick") &&
+		Q_stricmp(arg1, "clientkick") &&
+		Q_stricmp(arg1, "g_doWarmup") &&
+		Q_stricmp(arg1, "timelimit") &&
+		Q_stricmp(arg1, "fraglimit") &&
+		Q_stricmp(arg1, "poll") &&
+		Q_stricmp(arg1, "itemphysics") &&
+		Q_stricmp(arg1, "pausegame")) 
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \""
+		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Call Vote ^5]^7\n"
 			"^7You can perform a call vote within the other players to change some server options\n"
 			"^7You can do it using the following command: ^2/callvote <option> <value>\n"
@@ -1921,8 +1906,7 @@ void JKMod_CallVote(gentity_t *ent)
 			"^3itemphysics\n"
 			"^3pausegame\n"
 			"^5----------\n"
-			"^2Note: ^7Some options may be disabled by the server\n"
-			"^7\""));
+			"^2Note: ^7Some options may be disabled by the server\n\"");
 		return;
 	}
 
@@ -2181,7 +2165,7 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 		if (!jkcvar_chatAutoStatus.integer && !ent->client->sess.jkmodSess.playerStatusSeen)
 		{
 			ent->client->sess.jkmodSess.playerStatusSeen = qtrue;
-			trap_SendServerCommand(ent - g_entities, va("print \"Auto status tracking is ^1disabled ^7by the server\n\""));
+			trap_SendServerCommand(ent - g_entities, "print \"Auto status tracking is ^1disabled ^7by the server\n\"");
 		}
 
 		return !announce;
@@ -2190,10 +2174,10 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 	{
 		if (ent->client->sess.jkmodSess.playerStatus) {
 			ent->client->sess.jkmodSess.playerStatus = qfalse;
-			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^1disabled\""));
+			trap_SendServerCommand(ent - g_entities, "cp \"Auto status tracking is now ^1disabled\"");
 		} else {
 			ent->client->sess.jkmodSess.playerStatus = qtrue;
-			trap_SendServerCommand(ent - g_entities, va("cp \"Auto status tracking is now ^2enabled\""));
+			trap_SendServerCommand(ent - g_entities, "cp \"Auto status tracking is now ^2enabled\"");
 		}
 
 		if (ent->client->sess.jkmodSess.playerStatusSeen) ent->client->sess.jkmodSess.playerStatusSeen = qfalse;
@@ -2234,6 +2218,9 @@ void JKMod_botControl(int botIndex, int ownerIndex, char *action)
 		// Owner
 		owner->client->pers.jkmodPers.botControl[BOT_ENABLED] = qtrue;
 		owner->client->pers.jkmodPers.botControl[BOT_INDEX] = bot->s.number;	
+		// Message
+		trap_SendServerCommand(ownerIndex, va("print \"Now controlling bot %i (%s)...\n\"", bot->s.number, bot->client->pers.netname));
+		trap_SendServerCommand(ownerIndex, "cp \"" NEWLINES "Press USE button + JUMP to stop controlling\"");
 		
 		JKMod_Printf(S_COLOR_MAGENTA "Applying bot %i control from owner %i\n", botIndex, ownerIndex);
 	}

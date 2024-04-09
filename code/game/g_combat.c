@@ -3655,7 +3655,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			return;
 
 		if (jkcvar_damagePlums.integer)
-			ScorePlum(attacker, client->ps.origin, take);
+			ScorePlum(attacker, client->ps.origin, (jkcvar_damagePlums.integer == 2 ? damage : take));
 
 		if (jkcvar_teleportChatTime.integer)
 			client->jkmodClient.teleportChatTime = jkcvar_teleportChatTime.integer; // Tr!Force: [TeleportChat] Add delay on enemy hits

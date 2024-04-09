@@ -593,7 +593,7 @@ int JKMod_CheckValidClient(gentity_t *ent, char *name)
 	}
 	else if (ent && target == ent->client->ps.clientNum)
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"You can't do it to yourself\n\""));
+		trap_SendServerCommand(ent - g_entities, "print \"You can't do it to yourself\n\"");
 		return -1;
 	}
 

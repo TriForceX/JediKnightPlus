@@ -85,7 +85,7 @@ void JKMod_TimerStart(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	activator->client->ps.duelTime = level.time - timeStart;
 	activator->client->pers.jkmodPers.raceStartTime = trap_Milliseconds() - timeStart;
 
-	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer started!\""));
+	trap_SendServerCommand(activator - g_entities, "cp \"Race timer started!\"");
 }
 
 // Stop race timer
@@ -126,7 +126,7 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	if (timeLast < timeBest) G_Sound(activator, CHAN_AUTO, G_SoundIndex("sound/movers/sec_panel_pass"));
 
 	// Show info
-	trap_SendServerCommand(activator - g_entities, va("cp \"Race timer finished!\""));
+	trap_SendServerCommand(activator - g_entities, "cp \"Race timer finished!\"");
 
 	// Update timers
 	activator->client->pers.jkmodPers.raceLastTime = timeLast;

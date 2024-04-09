@@ -807,8 +807,6 @@ static void JKMod_svCmd_controlBots(void)
 					return;
 				}
 				
-				trap_SendServerCommand(ownerPlayer - g_entities, va("print \"Now controlling bot %i (%s)...\n\"", botPlayer->s.number, botPlayer->client->pers.netname));
-				trap_SendServerCommand(ownerPlayer - g_entities, "cp \"" NEWLINES "Press USE button + JUMP to stop controlling\"");
 				JKMod_botControl(botPlayer->s.number, ownerPlayer->s.number, "toggle");
 			}
 		}

@@ -52,27 +52,27 @@ void JKMod_SP_MiscIonCannon(gentity_t *ent);
 spawn_t	jkmod_spawns[] = {
 
 	// Custom spawn fields
-	{"jkmod_misc_model",				JKMod_SP_MiscModel},
-	{"jkmod_misc_power_converter",		JKMod_SP_MiscPowerConverter},
-	{"jkmod_drain_model",				JKMod_SP_DrainModel},
-	{"jkmod_chair_model",				JKMod_SP_ChairModel},
-	{"jkmod_door_model",				JKMod_SP_DoorModel},
+	{ "jkmod_misc_model",				JKMod_SP_MiscModel },
+	{ "jkmod_misc_power_converter",		JKMod_SP_MiscPowerConverter },
+	{ "jkmod_drain_model",				JKMod_SP_DrainModel },
+	{ "jkmod_chair_model",				JKMod_SP_ChairModel },
+	{ "jkmod_door_model",				JKMod_SP_DoorModel },
 
-	{"jkmod_timer_start",				JKMod_SP_TimerStart},
-	{"jkmod_timer_stop",				JKMod_SP_TimerStop},
-	{"jkmod_timer_checkpoint",			JKMod_SP_TimerCheckpoint},
+	{ "jkmod_timer_start",				JKMod_SP_TimerStart },
+	{ "jkmod_timer_stop",				JKMod_SP_TimerStop },
+	{ "jkmod_timer_checkpoint",			JKMod_SP_TimerCheckpoint },
 
 	// Single player fields
-	{"misc_model_breakable",			JKMod_SP_MiscModelBreakable},
-	{"misc_ion_cannon",					JKMod_SP_MiscIonCannon},
+	{ "misc_model_breakable",			JKMod_SP_MiscModelBreakable },
+	{ "misc_ion_cannon",				JKMod_SP_MiscIonCannon },
 	
 	// Support for regular JK2 & JKA race maps
-	{"target_startTimer",				JKMod_SP_TimerStart},
-	{"target_stopTimer",				JKMod_SP_TimerStop},
-	{"target_checkpoint",				JKMod_SP_TimerCheckpoint},
-	{"df_trigger_start",				JKMod_SP_TimerStart},
-	{"df_trigger_finish",				JKMod_SP_TimerStop},
-	{"df_trigger_checkpoint",			JKMod_SP_TimerCheckpoint},
+	{ "target_startTimer",				JKMod_SP_TimerStart },
+	{ "target_stopTimer",				JKMod_SP_TimerStop },
+	{ "target_checkpoint",				JKMod_SP_TimerCheckpoint },
+	{ "df_trigger_start",				JKMod_SP_TimerStart },
+	{ "df_trigger_finish",				JKMod_SP_TimerStop },
+	{ "df_trigger_checkpoint",			JKMod_SP_TimerCheckpoint },
 
 };
 

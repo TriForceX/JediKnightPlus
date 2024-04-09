@@ -325,22 +325,22 @@ static void JKMod_DimensionPrivate(gentity_t *ent, char *option, char *args)
 				Com_sprintf(gravity, sizeof(gravity), "^5%i", level.jkmodLocals.privateRoom[privateNum][PRIVATE_GRAVITY]);
 
 				trap_SendServerCommand(ent - g_entities, va("print \""
-						"^5[^7 Private Room %i ^5]^7\n"
-						"^7There are currently ^2%i ^7players in this room\n"
-						"^7Next current room settings values can be numbers, true, false or default\n"
-						"^5----------\n"
-						"^3weapondisable:   %s\n"
-						"^3forcedisable:    %s\n"
-						"^3forcelevel:      %s\n"
-						"^3holdables:       %s\n"
-						"^3jetpack:         %s\n"
-						"^3invulnerability: %s\n"
-						"^3passthrough:     %s\n"
-						"^3speed:           %s\n"
-						"^3gravity:         %s\n"
-						"^5----------\n"
-						"^2Note 1: ^7Force powers and weapons requires to calculate points in bit values\n"
-						"^2Note 2: ^7From holdables to passthrough the values must be ^2true ^7or ^1false\n\"", 
+					"^5[^7 Private Room %i ^5]^7\n"
+					"^7There are currently ^2%i ^7players in this room\n"
+					"^7Next current room settings values can be numbers, true, false or default\n"
+					"^5----------\n"
+					"^3weapondisable:   %s\n"
+					"^3forcedisable:    %s\n"
+					"^3forcelevel:      %s\n"
+					"^3holdables:       %s\n"
+					"^3jetpack:         %s\n"
+					"^3invulnerability: %s\n"
+					"^3passthrough:     %s\n"
+					"^3speed:           %s\n"
+					"^3gravity:         %s\n"
+					"^5----------\n"
+					"^2Note 1: ^7Force powers and weapons requires to calculate points in bit values\n"
+					"^2Note 2: ^7From holdables to passthrough the values must be ^2true ^7or ^1false\n\"", 
 					privateNum,
 					JKMod_PlayersPrivate(privateNum, qfalse),
 					level.jkmodLocals.privateRoom[privateNum][PRIVATE_WEAPONDISABLE] == DEFAULT ? "^6default" : weapondisable,
@@ -607,7 +607,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, char *say)
 		Q_strcat(message, sizeof(message), va("\n%s%s", (jkcvar_altDimension.integer & DIMENSION_PRIVATE ? S_COLOR_YELLOW : S_COLOR_RED), "private"));
 
 		// Not found
-		trap_SendServerCommand(ent - g_entities, va("%s \"%s\"", print, (say[0] ? message : "Usage: dimension <option>\nSee ^3/help dimension ^7for more information\n")));
+		trap_SendServerCommand(ent - g_entities, va("%s \"%s\"", print, (say[0] ? message : "Usage: dimension <option>\nSee ^3/help dimensions ^7for more information\n")));
 		return qfalse;
 	}
 }
