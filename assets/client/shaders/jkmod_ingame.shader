@@ -192,7 +192,7 @@ models/map_objects/mp/flag_post
 {
 	q3map_nolightmap
 	q3map_onlyvertexlighting
-	sort seeThrough
+	sort additive
 	cull	disable
 	{
 		map models/map_objects/mp/flag_post
@@ -204,7 +204,7 @@ models/map_objects/mp/flag
 {
 	q3map_nolightmap
 	q3map_onlyvertexlighting
-	sort seeThrough
+	sort additive
 	cull	disable
     {
         map models/map_objects/mp/flag
@@ -212,15 +212,26 @@ models/map_objects/mp/flag
         rgbGen lightingDiffuse
     }
 }
-
 models/map_objects/mp/flag2
 {
 	q3map_nolightmap
 	q3map_onlyvertexlighting
-	sort seeThrough
+	sort additive
 	cull	disable
     {
         map models/map_objects/mp/flag2
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}
+models/map_objects/mp/ysalimari
+{
+	q3map_nolightmap
+	q3map_onlyvertexlighting
+	sort additive
+	cull	disable
+    {
+        map models/map_objects/mp/ysalimari
         blendFunc GL_ONE GL_ZERO
         rgbGen lightingDiffuse
     }
