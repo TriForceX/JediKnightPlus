@@ -1140,14 +1140,13 @@ void JKMod_ChairModelDisable(gentity_t *ent)
 	ent->client->jkmodClient.chairModelUsed = 0;
 	ent->client->jkmodClient.chairModelDelay = level.time + 1000;
 	VectorClear(ent->client->ps.velocity);
-	level.jkmodLocals.chairModelCheck[ent->client->jkmodClient.chairModelNum] = -1;
+	level.jkmodLocals.chairModelCheck[ent->client->jkmodClient.chairModelNum][ent->jkmodEnt.dimensionNumber] = qfalse;
 }
 
 // Chair model use function
 void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator)
 {
 	int emote = EMOTE_SIT;
-	int checkNum = level.jkmodLocals.chairModelCheck[self->s.number];
 
 	if (!activator || !activator->client) return;
 	if (activator->client->ps.duelInProgress) return;
@@ -1155,13 +1154,8 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 	if (activator->client->jkmodClient.chairModelDelay > level.time) return;
 	
 	// Check user
-	if (checkNum != -1 && checkNum != activator->client->ps.clientNum) {
-		// lol
-		if (g_entities[checkNum].client->ps.stats[JK_DIMENSION] != activator->client->ps.stats[JK_DIMENSION]) {
-			trap_SendServerCommand(activator->client->ps.clientNum, "cp \"There's a ghost sitting here\"");
-		} else {
-			trap_SendServerCommand(activator->client->ps.clientNum, "cp \"Take another seat\"");
-		}
+	if (level.jkmodLocals.chairModelCheck[self->s.number][activator->jkmodEnt.dimensionNumber]) {
+		trap_SendServerCommand(activator->client->ps.clientNum, "cp \"Take another seat\"");
 		return;
 	}
 
@@ -1224,7 +1218,7 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 		if (JKMod_OthersInBox(activator)) JKMod_AntiStuckBox(activator);
 		
 		// Lock user
-		level.jkmodLocals.chairModelCheck[self->s.number] = activator->client->ps.clientNum;
+		level.jkmodLocals.chairModelCheck[self->s.number][activator->jkmodEnt.dimensionNumber] = qtrue;
 	}
 }
 
@@ -1263,8 +1257,6 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 	ent->clipmask = MASK_SOLID;
 	ent->use = JKMod_ChairModelUse;
 	ent->count = 0;
-
-	level.jkmodLocals.chairModelCheck[ent->s.number] = -1;
 
 	G_SetOrigin(ent, ent->s.origin);
 	VectorCopy(ent->s.angles, ent->s.apos.trBase);

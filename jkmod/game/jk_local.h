@@ -25,6 +25,7 @@ Global definitions
 #define MAX_FILE_LENGTH				131072 // 128kb
 #define MAX_IP_STRING				16
 #define MAX_CHALLENGE				10
+#define MAX_DIMENSION				((1 << DIMENSION_MAX) + MAX_CLIENTS)
 #define MIN_PRIVATE_TIME			3
 #define TEAM_CHANGE_DELAY			5000
 
@@ -295,30 +296,30 @@ typedef struct
 // Level data
 typedef struct
 {
-	float			serverVersion;								// Server mod version
-	char			randomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];	// Random begin strings
-	int				randomBeginCount;							// Random begin total count
-	char			serverNews[MAX_FILE_VARS][MAX_FILE_CHARS];	// Server news strings
-	int				serverNewsCount;							// Server news total count
-	int				serverNewsNum;								// Server news current number
-	int				serverNewsTime;								// Server news timer
-	char			*teleportChats[MAX_FILE_CHARS];				// Teleport chat strings
-	int				teleportChatsCount;							// Teleport chat total count
-	int				idleTime;									// Server idle time
-	int				pauseTime;									// Pause time stop
-	unsigned		pauseTimeCustom;							// Pause custom seconds
-	unsigned		cvarTempUnlock;								// Cvar latch unlock status
-	qboolean		cvarToggleMod;								// Check cvar changes from toggleMod
-	qboolean		mapRestarted;								// Map restart check for current players
-	char			reconnectedIP[MAX_IP_STRING];				// Check IP for client reconnect
-	int				closedCheck[MAX_CHALLENGE];					// Closed server check
-	int				messageCheck[MAX_CHALLENGE];				// Connect message check
-	unsigned		chairModelCheck[MAX_CLIENTS];				// Chair model usage check
-	unsigned		dimensionBase;								// Global base dimension
-	int				jetpackFxActive;							// Server jetpack active effect
-	int				jetpackFxIdle;								// Server jetpack idle effect
-	int				lockedTeam[TEAM_NUM_TEAMS];					// Current locked teams
-	int				privateRoom[MAX_CLIENTS][PRIVATE_SETTINGS];	// Private room settings
+	float			serverVersion;									// Server mod version
+	char			randomBegin[MAX_FILE_VARS][MAX_FILE_CHARS];		// Random begin strings
+	int				randomBeginCount;								// Random begin total count
+	char			serverNews[MAX_FILE_VARS][MAX_FILE_CHARS];		// Server news strings
+	int				serverNewsCount;								// Server news total count
+	int				serverNewsNum;									// Server news current number
+	int				serverNewsTime;									// Server news timer
+	char			*teleportChats[MAX_FILE_CHARS];					// Teleport chat strings
+	int				teleportChatsCount;								// Teleport chat total count
+	int				idleTime;										// Server idle time
+	int				pauseTime;										// Pause time stop
+	unsigned		pauseTimeCustom;								// Pause custom seconds
+	unsigned		cvarTempUnlock;									// Cvar latch unlock status
+	qboolean		cvarToggleMod;									// Check cvar changes from toggleMod
+	qboolean		mapRestarted;									// Map restart check for current players
+	char			reconnectedIP[MAX_IP_STRING];					// Check IP for client reconnect
+	int				closedCheck[MAX_CHALLENGE];						// Closed server check
+	int				messageCheck[MAX_CHALLENGE];					// Connect message check
+	int				chairModelCheck[MAX_GENTITIES][MAX_DIMENSION];	// Chair model usage check
+	unsigned		dimensionBase;									// Global base dimension
+	int				jetpackFxActive;								// Server jetpack active effect
+	int				jetpackFxIdle;									// Server jetpack idle effect
+	int				lockedTeam[TEAM_NUM_TEAMS];						// Current locked teams
+	int				privateRoom[MAX_CLIENTS][PRIVATE_SETTINGS];		// Private room settings
 
 } jkmod_locals_t;
 

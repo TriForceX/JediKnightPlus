@@ -729,6 +729,9 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		// Clear private room
 		if (dimension < (1 << DIMENSION_MAX)) ARRAY_CLEAR(ent->client->pers.jkmodPers.privateRoom);
 
+		// Clear chair model
+		if (ent->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(ent);
+
 		// Set new dimension
 		ent->client->ps.stats[JK_DIMENSION] = ent->client->ps.duelInProgress ? DIMENSION_DUEL : (ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? DIMENSION_PRIVATE : dimension);
 		ent->jkmodEnt.dimensionNumber = dimension;
@@ -761,9 +764,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		JKMod_DimensionSettings(ent, dimension);
 
 		// Check emotes
-		if (ent->client->jkmodClient.chairModelUsed) { 
-			JKMod_ChairModelDisable(ent);
-		} else if (!ent->client->ps.duelInProgress) {
+		if (!ent->client->ps.duelInProgress) {
 			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
