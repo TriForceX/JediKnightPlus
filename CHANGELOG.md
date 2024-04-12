@@ -9,6 +9,20 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.20.0
+- Merge updates from mvsdk
+- Updated year in mod source files
+- Updated hud and scoreboard checks
+- Updated display options for fps and timer
+- Updated text shadows on enemy info
+- Updated per dimension respawn
+- Updated pause game info display
+- Updated private dimensions and bots control
+- Updated print messages and damage plums
+- Fix chair model usage on dimensions
+- Fix CTF & CTY flag transparency
+- Fix emote camera and menu bugs
+
 ## 0.19.2
 - Fix some emotes bugs due missing checks
 - Fix spectator getting stuck in doors

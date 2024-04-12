@@ -16,12 +16,10 @@ Check player emote camera
 */
 void JKMod_CG_EmoteCamera(void)
 {
-	int cameraAngle = 180;
-	int cameraRange = 120;
-	int cameraVertOffset = 0;
+	static int cameraAngle = 180;
+	static int cameraRange = 120;
+	static int cameraVertOffset = 0;
 
-	if (!(trap_Key_GetCatcher() & KEYCATCH_UI)) return;
-	if (trap_Key_GetCatcher() & KEYCATCH_CONSOLE) return;
 	if (cg.snap->ps.pm_flags & PMF_FOLLOW) return;
 	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 	

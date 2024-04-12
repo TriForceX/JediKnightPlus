@@ -3194,6 +3194,10 @@ qboolean Item_HandleKey(itemDef_t *item, int key, qboolean down) {
 
 void Item_Action(itemDef_t *item) {
   if (item) {
+	// Tr!Force: [UIGeneral] Items can be enabled and disabled based on cvars
+	if (item->cvarFlags & (CVAR_ENABLE | CVAR_DISABLE) && !Item_EnableShowViaCvar(item, CVAR_ENABLE)) {
+		return;
+	}
     Item_RunScript(item, item->action);
   }
 }

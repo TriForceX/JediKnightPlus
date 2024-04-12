@@ -400,7 +400,7 @@ qboolean JKMod_UI_RunMenuScript(const char **args, const char *name)
 		trap_Cmd_ExecuteText(EXEC_APPEND, "centerview\n");
 		return qtrue;
 	}
-	// Change dimension from menu
+	// Play and stop emotes from menu
 	if (Q_stricmp(name, "JKMod_emoteToggle") == 0)
 	{
 		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote \"%s\"\n", UI_Cvar_VariableString("jk_ui_emoteToggle")));
