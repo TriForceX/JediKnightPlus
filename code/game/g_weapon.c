@@ -625,7 +625,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 			{ //broadcast and stop the shot because it was blocked
 				gentity_t *te = NULL;
 
-				tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+				tent = JKMod_G_TempEntity( tr.endpos, (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ? EV_DISRUPTOR_MAIN_SHOT : EV_DISRUPTOR_SNIPER_SHOT), ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 				VectorCopy( muzzle, tent->s.origin2 );
 				tent->s.shouldtarget = fullCharge;
 				tent->s.eventParm = ent->s.number;
@@ -644,7 +644,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 		}
 
 		// always render a shot beam, doing this the old way because I don't much feel like overriding the effect.
-		tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_SHOT, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+		tent = JKMod_G_TempEntity( tr.endpos, (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ? EV_DISRUPTOR_MAIN_SHOT : EV_DISRUPTOR_SNIPER_SHOT), ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		VectorCopy( muzzle, tent->s.origin2 );
 		tent->s.shouldtarget = fullCharge;
 		tent->s.eventParm = ent->s.number;
@@ -689,7 +689,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 				 else
 				 {
 					 // Hmmm, maybe don't make any marks on things that could break
-					tent = JKMod_G_TempEntity( tr.endpos, EV_DISRUPTOR_SNIPER_MISS, ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
+					tent = JKMod_G_TempEntity( tr.endpos, (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ? EV_DISRUPTOR_HIT : EV_DISRUPTOR_SNIPER_MISS), ent->s.number ); // Tr!Force: [Dimensions] Tag owner info
 					tent->s.eventParm = DirToByte( tr.plane.normal );
 				 }
 				break; // and don't try any more traces
@@ -762,7 +762,7 @@ static void WP_FireDisruptor( gentity_t *ent, qboolean altFire )
 		return;
 	}
 
-	if ( altFire || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) // Tr!Force: [Dimensions] Do instagib
+	if ( altFire || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ) // Tr!Force: [Dimensions] Do instagib
 	{
 		WP_DisruptorAltFire( ent );
 	}
