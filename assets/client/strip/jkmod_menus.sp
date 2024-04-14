@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 160
+COUNT 161
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1441,4 +1441,13 @@ INDEX 159
    TEXT_LANGUAGE3 "Einen spieler einladen einen privaten raum zu erstellen."
    TEXT_LANGUAGE6 "Invite a player to create a private room."
    TEXT_LANGUAGE8 "Invita a un jugador a crear una sala privada."
+}
+INDEX 160
+{
+   REFERENCE LEAVE_OPEN_CONSOLE
+   TEXT_LANGUAGE1 "Open Console"
+   TEXT_LANGUAGE2 "Console Ouverte"
+   TEXT_LANGUAGE3 "Konsole Öffnen"
+   TEXT_LANGUAGE6 "Open Console"
+   TEXT_LANGUAGE8 "Abrir Consola"
 }
