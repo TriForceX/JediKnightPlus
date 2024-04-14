@@ -264,6 +264,7 @@ static void JKMod_svCmd_toggleMod(void)
 			"^3jk_altDimension\n"
 			"^3jk_altDimensionBase\n"
 			"^3jk_altDimensionSpawn\n"
+			"^3jk_altDimensionNoScore\n"
 			"^3jk_mapFixes\n"
 			"^3bot_forGimmick\n"
 			);
@@ -311,6 +312,11 @@ static void JKMod_svCmd_toggleMod(void)
 			toggleModOptions = toggleAltDimension;
 			toggleModSize = ARRAY_LEN(toggleAltDimension);
 		}
+		else if (!Q_stricmp(arg1, "jk_altDimensionNoScore")) 
+		{
+			toggleModOptions = toggleAltDimension;
+			toggleModSize = ARRAY_LEN(toggleAltDimension);
+		}
 		else if (!Q_stricmp(arg1, "jk_mapFixes"))
 		{
 			toggleModOptions = toggleMapFixes;
@@ -343,6 +349,7 @@ static void JKMod_svCmd_toggleMod(void)
 			}
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
 			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
+			G_Printf("Cvar value: %s %i\n", arg1, bits);
 			return;
 		}
 
@@ -392,6 +399,7 @@ static void JKMod_svCmd_toggleMod(void)
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
 			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
 		}
+		G_Printf("Cvar value: %s %i\n", arg1, bits);
 	}
 }
 

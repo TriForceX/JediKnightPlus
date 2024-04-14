@@ -434,7 +434,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 	if (speed == DEFAULT)			speed			= g_speed.value;
 	if (gravity == DEFAULT)			gravity			= g_gravity.value;
 
-	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR && g_gametype.integer != GT_JEDIMASTER && g_gametype.integer != GT_HOLOCRON)
 	{
 		// Force
 		if (forcedisable != ent->client->ps.fd.forcePowersKnown && forcedisable != g_forcePowerDisable.integer)

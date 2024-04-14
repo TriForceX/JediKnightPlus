@@ -455,6 +455,7 @@ extern	vmCvar_t					jkcvar_altDimension;
 extern	vmCvar_t					jkcvar_altDimensionBase;
 extern	vmCvar_t					jkcvar_altDimensionTime;
 extern	vmCvar_t					jkcvar_altDimensionSpawn;
+extern	vmCvar_t					jkcvar_altDimensionNoScore;
 extern	vmCvar_t					jkcvar_privateInviteTime;
 extern	vmCvar_t					jkcvar_privateInviteBots;
 extern	vmCvar_t					jkcvar_privateInactiveBots;

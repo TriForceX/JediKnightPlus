@@ -545,6 +545,10 @@ void AddScore( gentity_t *ent, vec3_t origin, int score ) {
 	if ( level.warmupTime ) {
 		return;
 	}
+	// Tr!Force: [Dimensions] Don't track score
+	if ( jkcvar_altDimensionNoScore.integer & ent->client->ps.stats[JK_DIMENSION] ) {
+		return;
+	}
 	// show score plum
 	//ScorePlum(ent, origin, score);
 	//
@@ -1913,11 +1917,14 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	self->enemy = attacker;
 
-	self->client->ps.persistant[PERS_KILLED]++;
-
-	if (self == attacker)
+	if (!(jkcvar_altDimensionNoScore.integer & self->client->ps.stats[JK_DIMENSION]))
 	{
-		self->client->ps.fd.suicides++;
+		self->client->ps.persistant[PERS_KILLED]++;
+
+		if (self == attacker)
+		{
+			self->client->ps.fd.suicides++;
+		}
 	}
 
 	if (attacker && attacker->client) {

@@ -105,6 +105,7 @@ typedef struct
 	vec3_t				lastGroundPosition;			// Speed meter ground speed position
 	qboolean			firstTimeInAir;				// Speed meter first time in air
 	qboolean			wasOnGround;				// Speed meter was on ground
+	int					lastPersistant[16];			// Previous saved persistant values
 
 } jkmod_cg_t;
 

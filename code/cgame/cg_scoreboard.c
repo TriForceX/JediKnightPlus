@@ -150,7 +150,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 
 		hcolor[3] = fade * 0.7;
 
-		// Tr!Force: [Dimension] Show race time
+		// Tr!Force: [Dimensions] Show race time
 		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 		{
 			float timeWidth = jkcvar_cg_scoreboardExtras.integer ? 19 : 12;
@@ -236,7 +236,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		CG_Text_Paint (SB_PING_X, y, 1.0f * scale, colorWhite, va("%i", score->ping),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 	}
 
-	// Tr!Force: [Dimension] Show race time
+	// Tr!Force: [Dimensions] Show race time
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
 	{
 		float timeScale = 1.0f;
@@ -249,6 +249,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 		
 		CG_Text_Paint (SB_TIME_X, y + timeAlign, timeScale * scale, ci->jkmod_race ? colorWhite : colorMdGrey, va("%s", JKMod_CG_MsToString(ci->jkmod_race)),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
+		trap_R_SetColor(colorTable[CT_WHITE]); // Don't tint hud
 	} 
 	else 
 	{

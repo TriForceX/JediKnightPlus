@@ -75,10 +75,10 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles ) {
 	// use temp events at source and destination to prevent the effect
 	// from getting dropped by a second player event
 	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
-		tent = JKMod_G_TempEntity( player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number ); // Tr!Force: [Dimension] Tag owner info
+		tent = JKMod_G_TempEntity( player->client->ps.origin, EV_PLAYER_TELEPORT_OUT, player->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		tent->s.clientNum = player->s.clientNum;
 
-		tent = JKMod_G_TempEntity( origin, EV_PLAYER_TELEPORT_IN, player->s.number ); // Tr!Force: [Dimension] Tag owner info
+		tent = JKMod_G_TempEntity( origin, EV_PLAYER_TELEPORT_IN, player->s.number ); // Tr!Force: [Dimensions] Tag owner info
 		tent->s.clientNum = player->s.clientNum;
 	}
 

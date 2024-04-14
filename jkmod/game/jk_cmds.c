@@ -2219,8 +2219,11 @@ void JKMod_botControl(int botIndex, int ownerIndex, char *action)
 		owner->client->pers.jkmodPers.botControl[BOT_ENABLED] = qtrue;
 		owner->client->pers.jkmodPers.botControl[BOT_INDEX] = bot->s.number;	
 		// Message
-		trap_SendServerCommand(ownerIndex, va("print \"Now controlling bot %i (%s)...\n\"", bot->s.number, bot->client->pers.netname));
-		trap_SendServerCommand(ownerIndex, "cp \"" NEWLINES "Press USE button + JUMP to stop controlling\"");
+		if (owner->client->sess.sessionTeam == TEAM_SPECTATOR) 
+		{
+			trap_SendServerCommand(ownerIndex, va("print \"Now controlling bot %i (%s)...\n\"", bot->s.number, bot->client->pers.netname));
+			trap_SendServerCommand(ownerIndex, "cp \"" NEWLINES "Press USE button + JUMP to stop controlling\"");
+		}
 		
 		JKMod_Printf(S_COLOR_MAGENTA "Applying bot %i control from owner %i\n", botIndex, ownerIndex);
 	}

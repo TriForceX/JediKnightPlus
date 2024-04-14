@@ -90,6 +90,7 @@ static void CG_Obituary( entityState_t *ent ) {
 	char		attackerName[MAX_QPATH + 2] = { 0 }; // Workaround
 	gender_t	gender;
 	clientInfo_t	*ci;
+	qboolean jkmod_scoreNoChanges = (cg.jkmodCG.lastPersistant[PERS_SCORE] == cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Don't show rank/score msg if there was no changes
 
 	target = ent->otherEntityNum;
 	attacker = ent->otherEntityNum2;
@@ -113,6 +114,9 @@ static void CG_Obituary( entityState_t *ent ) {
 	}
 	Q_strncpyz( targetName, Info_ValueForKey( targetInfo, "n" ), sizeof(targetName) - 2);
 	strcat( targetName, S_COLOR_WHITE );
+
+	// Tr!Force: [CGameGeneral] Save previous score for rank/score msg
+	if ( attacker == cg.snap->ps.clientNum ) cg.jkmodCG.lastPersistant[PERS_SCORE] = cg.snap->ps.persistant[PERS_SCORE];
 
 	// check for single client messages
 
@@ -227,7 +231,7 @@ clientkilled:
 	if ( attacker == cg.snap->ps.clientNum ) {
 		char	*s;
 
-		if ( cgs.gametype < GT_TEAM && cgs.gametype != GT_TOURNAMENT ) {
+		if ( cgs.gametype < GT_TEAM && cgs.gametype != GT_TOURNAMENT && !jkmod_scoreNoChanges ) { // Tr!Force: [CGameGeneral] Don't show rank/score msg if there was no changes
 			if (cgs.gametype == GT_JEDIMASTER &&
 				attacker < MAX_CLIENTS &&
 				!ent->isJediMaster &&

@@ -1186,7 +1186,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	v = Info_ValueForKey( configstring, "jkhat" );
 	newInfo.jkmod_hat = atoi(v);
 
-	// Tr!Force: [Dimension] Get race best time info
+	// Tr!Force: [Dimensions] Get race best time info
 	v = Info_ValueForKey( configstring, "jkrace" );
 	newInfo.jkmod_race = atoi(v);
 
@@ -7399,7 +7399,7 @@ stillDoSaber:
 		cent->saberLength = 0;
 	}
 
-	// Tr!Force: [Dimension] Don't show saber on racers
+	// Tr!Force: [Dimensions] Don't show saber on racers
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE && cent->ghoul2)
 	{
 		trap_G2API_RemoveGhoul2Model(&(cent->ghoul2), 1);

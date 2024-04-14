@@ -1069,7 +1069,7 @@ void CG_DrawHUD(centity_t	*cent)
 				Com_sprintf(ammoString, sizeof(ammoString), "%i", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
 		}
 		
-		// Tr!Force: [Dimension] Show best race time
+		// Tr!Force: [Dimensions] Show best race time
 		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 		{
 			UI_DrawProportionalString( cgs.screenWidth-64, y+40, va( "%s", CG_GetStripEdString("JKINGAME", "RECORD") ),
@@ -1154,7 +1154,7 @@ void CG_DrawHUD(centity_t	*cent)
 		}
 		scoreStr = va("%s: %i%s", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr); // Tr!Force: [CGameGeneral] Use translated text
 	}
-	// Tr!Force: [Dimension] Show best race time
+	// Tr!Force: [Dimensions] Show best race time
 	else if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
 	{
 		scoreStr = va("%s: %s", CG_GetStripEdString("JKINGAME", "RECORD"), JKMod_CG_MsToString(cgs.clientinfo[cg.clientNum].jkmod_race));

@@ -1,6 +1,6 @@
 # Jedi Knight Plus
 
-<img align="left" width="110" height="110" src="https://user-images.githubusercontent.com/16083854/94480608-ed2bb780-01ac-11eb-824c-00ca03f95edc.png">
+<img align="left" width="110" height="110" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/241ea8b0-4caf-4197-aaf3-cd7fd0bb672c">
 
 https://jkplus.github.io
 
@@ -32,14 +32,16 @@ I started to code the first version of this mod in 2005. Back then it was a priv
 
 <p align="center">
 
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/5710fa0c-b97e-4e3b-ac7f-e3995c996b16">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/c5944f99-e29c-4339-bd59-94d8127e1900">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/516af691-3737-4f9b-9489-52976ca4bc86">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/0d7596a6-c718-42c7-b697-a7cd9297b8b1">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/d4bb8cf6-89ef-40fa-808b-400540ca28de">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/e94aa3e0-a9f8-4270-8be7-710e44e0fc7b">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/65a95166-19b8-4613-bc71-8261544df711">
-<img width="200" height="150" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/fdd8da07-c6d4-40b3-8f6f-a5e37443b653">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/5710fa0c-b97e-4e3b-ac7f-e3995c996b16">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/c5944f99-e29c-4339-bd59-94d8127e1900">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/516af691-3737-4f9b-9489-52976ca4bc86">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/0d7596a6-c718-42c7-b697-a7cd9297b8b1">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/d4bb8cf6-89ef-40fa-808b-400540ca28de">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/e94aa3e0-a9f8-4270-8be7-710e44e0fc7b">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/65a95166-19b8-4613-bc71-8261544df711">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/fdd8da07-c6d4-40b3-8f6f-a5e37443b653">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/86a080e7-e043-4620-bff5-00899b8d69f0">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/e8b5e314-c288-42cd-9faa-840d3882e9ee">
 
 </p>
 
@@ -126,7 +128,7 @@ List of general server management features
 
 <details><summary> Server Dimensions</summary><br>
 
-List of server dimensions features <i>(No client plugin required)</i>
+List of server dimensions features
 
 - [x] Alternate dimensions (Private, guns only, race defrag, cheats, and more...)
 - [x] Default base dimension
@@ -134,7 +136,7 @@ List of server dimensions features <i>(No client plugin required)</i>
 - [x] Private rooms with custom settings (Force disable, weapons, and more...)
 - [x] Private duels alternate dimensions
 - [x] Custom dimensions random spawns
-- [ ] Custom dimensions scoring tracking
+- [x] Custom dimensions skip score tracking
 - [x] Custom dimensions settings from config file
 
 ---
@@ -143,7 +145,7 @@ List of server dimensions features <i>(No client plugin required)</i>
 
 <details><summary> Private Duels</summary><br>
 
-List of private duel features <i>(No client plugin required)</i>
+List of private duel features
 
 - [x] Dueling players pass-through feature
 - [x] Auto duel challenge feature
@@ -160,13 +162,14 @@ List of private duel features <i>(No client plugin required)</i>
 
 <details><summary> Bots Settings</summary><br>
 
-List of bots related features <i>(No client plugin required)</i>
+List of bots related features
 
 - [x] Improved bots AI (Artificial intelligence)
 - [ ] Custom bots saber combos (backstabs, dfa, force kicks, and more...)
 - [x] Custom bots actions (Enhanced bot_forGimmick for practicing and testing)
 - [x] Client bots control (Control bots actions through spectator)
 - [x] Private room bots (Ability to invite and control bots on private roms)
+- [ ] Bots squad patrol (A group of bots which punish lamers)
 
 ---
 
@@ -183,7 +186,7 @@ List of maps modification features
 - [ ] Add models (GLM or MD3 format)
 - [ ] Add effects (EFX format)
 - [ ] Add any entity based on classname and parameters
-- [ ] Add pre-made useful utilities (NPC spawner, message consoles, assister, etc...)
+- [ ] Add pre-made useful entities (NPC spawner, emote chairs, drain statue, etc...)
 - [ ] Create and modify entities
 - [ ] Delete entities
 - [ ] Clone entities

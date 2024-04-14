@@ -86,6 +86,7 @@ vmCvar_t	jkcvar_altDimension;
 vmCvar_t	jkcvar_altDimensionBase;
 vmCvar_t	jkcvar_altDimensionTime;
 vmCvar_t	jkcvar_altDimensionSpawn;
+vmCvar_t	jkcvar_altDimensionNoScore;
 vmCvar_t	jkcvar_privateInviteTime;
 vmCvar_t	jkcvar_privateInviteBots;
 vmCvar_t	jkcvar_privateInactiveBots;
@@ -179,6 +180,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_altDimensionBase,		"jk_altDimensionBase",		"0",					JKMod_CVU_altDimension,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_altDimensionTime,		"jk_altDimensionTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_altDimensionSpawn,	"jk_altDimensionSpawn",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_altDimensionNoScore,	"jk_altDimensionNoScore",	"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_privateInviteTime,	"jk_privateInviteTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_privateInviteBots,	"jk_privateInviteBots",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_privateInactiveBots,	"jk_privateInactiveBots",	"30",					NULL,						CVAR_ARCHIVE,						0, qtrue },
