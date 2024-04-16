@@ -10,23 +10,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 
 // External stuff
 extern qboolean SaberAttacking(gentity_t *self);
-extern qboolean WP_HasForcePowers( const playerState_t *ps );
-
-/*
-=====================================================================
-Get current server map
-=====================================================================
-*/
-const char *JKMod_GetCurrentMap(void)
-{
-	vmCvar_t	mapname;
-	static char	*currentmap;
-
-	trap_Cvar_Register(&mapname, "mapname", "", CVAR_SERVERINFO | CVAR_ROM);
-	currentmap = mapname.string;
-
-	return currentmap;
-}
+extern qboolean WP_HasForcePowers(const playerState_t *ps);
 
 /*
 =====================================================================
@@ -41,7 +25,7 @@ const char *JKMod_GetMapMusic(void)
 	static char	filename[MAX_QPATH];
 	char		*fileptr;
 	// int		i;
-	const char	*currentmap = JKMod_GetCurrentMap();
+	const char	*currentmap = jkcvar_mapName.string;
 	static char	*defaultmusic = jkcvar_mapDefaultMusic.string;
 
 	numFiles = trap_FS_GetFileList(va("music/%s", currentmap), ".mp3", filelist, sizeof(filelist));
@@ -1359,7 +1343,7 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 	}
 
 	// Allow door use button
-	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORUSE) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORUSE) && JKMod_SPMapCheck(jkcvar_mapName.string))
 	{
 		 if (ent->spawnflags & 64) ent->boltpoint1 = 1;
 	}
@@ -1388,7 +1372,7 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 			ent->think = Think_MatchTeam;
 		} else {
 			// Fix doors trigger spawn
-			if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(JKMod_GetCurrentMap())) {
+			if ((jkcvar_mapFixes.integer & JK_MAP_SPDOORTRIGGER) && JKMod_SPMapCheck(jkcvar_mapName.string)) {
 				JKMod_DoorFix(ent);
 			}
 			ent->think = Think_SpawnNewDoorTrigger;

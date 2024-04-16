@@ -1,0 +1,8 @@
+{
+	target		"textures/skies/bespin"
+	replace		"textures/skies/space"
+}
+{
+	target		"textures/bespin/u_trim01"
+	replace		"textures/bespin/u_metalgreenrib"
+}

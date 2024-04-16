@@ -1036,7 +1036,7 @@ Who is / status function
 void JKMod_Cmd_WhoIs(gentity_t *ent)
 {
 	int			num;
-	const char	*mapname = JKMod_GetCurrentMap();
+	const char	*mapname = jkcvar_mapName.string;
 	team_t		team;
 	char		locked[MAX_STRING_CHARS] = { 0 };
 
@@ -1719,12 +1719,14 @@ static qboolean JKMod_teleportCheck(gentity_t *ent)
 
 	for (i = 0; i < level.jkmodLocals.teleportChatsCount; i++)
 	{
-		strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
 		strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
 
-		if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
+		if (Q_stricmp(map, jkcvar_mapName.string) == 0)
 		{
+			strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
+
 			Q_strcat(message, sizeof(message), va("\n^3%s", command));
+
 			found = qtrue;
 		}
 	}
@@ -1751,15 +1753,12 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 	for (i = 0; i < level.jkmodLocals.teleportChatsCount; i++)
 	{
 		strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
-		strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
-		strcpy(origin, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "origin"));
-		strcpy(rotation, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "rotation"));
-
-		sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
 
 		if (Q_stricmp(text, command) == 0)
 		{
-			if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
+			strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
+
+			if (Q_stricmp(map, jkcvar_mapName.string) == 0)
 			{
 				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
 				{
@@ -1789,6 +1788,11 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 				else if (!ent->client->jkmodClient.teleportChatUsed || jkcvar_teleportChatTime.integer)
 				{
 					vec3_t		temporigin, tempangles;
+
+					// Parse
+					strcpy(origin, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "origin"));
+					strcpy(rotation, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "rotation"));
+					sscanf(origin, "%f %f %f %i", &realorigin[0], &realorigin[1], &realorigin[2], &realrotation);
 
 					// Delay
 					ent->client->jkmodClient.teleportChatTime = jkcvar_teleportChatTime.integer;
@@ -2606,14 +2610,6 @@ void JKMod_ClientCommand(int clientNum)
 		char	argcmd[MAX_TOKEN_CHARS];
 		char	arglist[MAX_STRING_CHARS] = { 0 };
 
-		for (i = 0; i < args; i++) 
-		{
-			if (i != 0) {
-				trap_Argv(i, argcmd, sizeof(argcmd));
-				Q_strcat(arglist, sizeof(arglist), va("Arg%i: %s\n", i, argcmd));
-			}
-		}
-
 		trap_Argv(1, argcmd, sizeof(argcmd));
 
 		// Entity scan
@@ -2644,7 +2640,16 @@ void JKMod_ClientCommand(int clientNum)
 			return;
 		}
 
-		trap_SendServerCommand(ent - g_entities, va("print \"CvarTest1: %s\nCvarTest2: %i\n%s\"", jkcvar_test1.string, jkcvar_test2.integer, arglist));
+		// Check args
+		for (i = 0; i < args; i++) 
+		{
+			if (i != 0) {
+				trap_Argv(i, argcmd, sizeof(argcmd));
+				Q_strcat(arglist, sizeof(arglist), va("Arg%i: %s\n", i, argcmd));
+			}
+		}
+
+		trap_SendServerCommand(ent - g_entities, va("print \"Developer: %i\nCvarTest1: %s\nCvarTest2: %i\n%s\"", developer.integer, jkcvar_test1.string, jkcvar_test2.integer, arglist));
 		return;
 	}
 

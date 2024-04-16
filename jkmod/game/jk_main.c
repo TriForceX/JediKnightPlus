@@ -105,6 +105,7 @@ vmCvar_t	jkcvar_antiWarpTime;
 vmCvar_t	jkcvar_mapFixes;
 vmCvar_t	jkcvar_mapDefaultMusic;
 vmCvar_t	jkcvar_mapCycleFromFile;
+vmCvar_t	jkcvar_mapName;
 
 vmCvar_t	jkcvar_jetPack;
 vmCvar_t	jkcvar_playerTweaks;
@@ -213,6 +214,8 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
 static int JKModCvarAltDimension = 0;
 static int JKModPauseDelay = 0;
+static int JKModRemapShadersFileCount;
+static char *JKModRemapShadersFile[MAX_TOKEN_CHARS];
 
 /*
 =====================================================================
@@ -226,6 +229,9 @@ void JKMod_G_RegisterCvars(void)
 	int					i;
 	jkmod_cvar_table_t	*cv;
 	qboolean			GTconfigLoaded = jkcvar_gameTypeConfig.integer ? level.jkmodLocals.cvarTempUnlock == 2 : qtrue;
+
+	// Register current map name
+	trap_Cvar_Register(&jkcvar_mapName, "mapname", "", CVAR_NONE);
 
 	// Register all the cvars
 	for (i = 0, cv = JKModCvarTable; i < JKModCvarTableSize; i++, cv++)
@@ -949,7 +955,45 @@ void JKMod_ServerIdleCheck(void)
 
 /*
 =====================================================================
-Custom GameType Config
+Custom shaders remaps
+=====================================================================
+*/
+void JKMod_RemapShaders(void)
+{
+	char		*lineStart;
+
+	lineStart = JKMod_ReadFile(va("maps/%s.remap", jkcvar_mapName.string));
+
+	JKModRemapShadersFileCount = 0;
+
+	if (lineStart[0]) JKModRemapShadersFileCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - JKModRemapShadersFileCount, &JKModRemapShadersFile[JKModRemapShadersFileCount]);
+
+	if (JKModRemapShadersFile[0]) 
+	{
+		int		i = 0;
+		char	target[MAX_TOKEN_CHARS] = { 0 };
+		char	replace[MAX_TOKEN_CHARS] = { 0 };
+
+		for (i = 0; i < JKModRemapShadersFileCount; i++)
+		{
+			float f = level.time * 0.001;
+
+			strcpy(target, Info_ValueForKey(JKModRemapShadersFile[i], "target"));
+			strcpy(replace, Info_ValueForKey(JKModRemapShadersFile[i], "replace"));
+
+			AddRemap(target, replace, f);
+			trap_SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
+		}
+	}
+
+	if (JKModRemapShadersFileCount) {
+		G_Printf("%i shader remaps loaded\n", JKModRemapShadersFileCount);
+	}
+}
+
+/*
+=====================================================================
+Custom gametype config
 =====================================================================
 */
 void JKMod_GameTypeConfig(void)
@@ -1028,6 +1072,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 
 	// Check gametype config
 	JKMod_GameTypeConfig();
+
+	// Check custom shader remaps
+	JKMod_RemapShaders();
 
 	// Check server idle
 	if (jkcvar_serverIdle.integer)

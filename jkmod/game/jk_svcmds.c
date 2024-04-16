@@ -49,6 +49,7 @@ static void JKMod_svCmd_reload(void)
 			"^3server_news\n"
 			"^3teleport_chats\n"
 			"^3dimension_data\n"
+			"^3shader_remaps\n"
 			);
 	}
 	else
@@ -61,6 +62,8 @@ static void JKMod_svCmd_reload(void)
 			JKMod_TeleportChatLoad();
 		else if (!Q_stricmp(arg1, "dimension_data")) 
 			JKMod_DimensionLoad();
+		else if (!Q_stricmp(arg1, "shader_remaps")) 
+			JKMod_RemapShaders();
 		else 
 			G_Printf("Option %s not allowed\n", arg1);
 	}

@@ -800,7 +800,7 @@ void SP_worldspawn( void )
 	trap_SetConfigstring( CS_LEVEL_START_TIME, va("%i", level.startTime ) );
 
 	// Tr!Force: [MapFixes] Find SP map default music
-	if ((jkcvar_mapFixes.integer & JK_MAP_SPMUSIC) && JKMod_SPMapCheck(JKMod_GetCurrentMap()))
+	if ((jkcvar_mapFixes.integer & JK_MAP_SPMUSIC) && JKMod_SPMapCheck(jkcvar_mapName.string))
 	{
 		const char *SPmapDefaultMusic = JKMod_GetMapMusic();
 

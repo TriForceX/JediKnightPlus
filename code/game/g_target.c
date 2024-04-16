@@ -213,7 +213,7 @@ void SP_target_speaker( gentity_t *ent ) {
 	// Tr!Force: [MapFixes] Streamed MP3 files with bad spawnflags
 	if (jkcvar_mapFixes.integer & JK_MAP_SPEAKERFLAGS)
 	{
-		if (level.spawning && JKMod_SPMapCheck(JKMod_GetCurrentMap()) && strstr(s, ".mp3") && ent->spawnflags & (1 | 2)) 
+		if (level.spawning && JKMod_SPMapCheck(jkcvar_mapName.string) && strstr(s, ".mp3") && ent->spawnflags & (1 | 2)) 
 		{
 			JKMod_Printf(S_COLOR_YELLOW "Removing invalid spawnflags for target_speaker at %s\n", vtos(ent->s.origin));
 			ent->spawnflags &= ~1;

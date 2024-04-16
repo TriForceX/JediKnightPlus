@@ -144,7 +144,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 					strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
 					strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
 
-					if (Q_stricmp(map, JKMod_GetCurrentMap()) == 0)
+					if (Q_stricmp(map, jkcvar_mapName.string) == 0)
 					{
 						Q_strcat(message, sizeof(message), va("^3%s%s", command, jkcvar_serverMotdTele.integer == 2 ? "\n" : ", "));
 						found = qtrue;
