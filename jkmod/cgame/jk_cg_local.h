@@ -200,6 +200,7 @@ typedef struct
 	qhandle_t	dotYellow;
 	qhandle_t	clockBg;
 	qhandle_t	jetpackIcon;
+	qhandle_t	missingIcon;
 	qhandle_t	forceSwirl;
 	qhandle_t	useableHint;
 

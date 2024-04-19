@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 161
+COUNT 165
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1450,4 +1450,40 @@ INDEX 160
    TEXT_LANGUAGE3 "Konsole Öffnen"
    TEXT_LANGUAGE6 "Open Console"
    TEXT_LANGUAGE8 "Abrir Consola"
+}
+INDEX 161
+{
+   REFERENCE CLIENT_SCREENCLEAR
+   TEXT_LANGUAGE1 "Screen clear:"
+   TEXT_LANGUAGE2 "Écran clair:"
+   TEXT_LANGUAGE3 "Bildschirm reinigen:"
+   TEXT_LANGUAGE6 "Screen clear:"
+   TEXT_LANGUAGE8 "Limpiar pantalla:"
+}
+INDEX 162
+{
+   REFERENCE CLIENT_SCREENCLEAR_DESC
+   TEXT_LANGUAGE1 "Set a color to clear screen when you are outside a map."
+   TEXT_LANGUAGE2 "Couleur pour effacer l'écran lorsque vous êtes en dehors d'une carte."
+   TEXT_LANGUAGE3 "Farbe zum löschen des bildschirms wenn sie sich außerhalb einer karte befinden."
+   TEXT_LANGUAGE6 "Set a color to clear screen when you are outside a map."
+   TEXT_LANGUAGE8 "Define un color para limpiar la pantalla cuando estas fuera del mapa."
+}
+INDEX 163
+{
+   REFERENCE CLIENT_HIDEMOTD
+   TEXT_LANGUAGE1 "Hide Motd:"
+   TEXT_LANGUAGE2 "Cacher Motd:"
+   TEXT_LANGUAGE3 "Ausblenden Motd:"
+   TEXT_LANGUAGE6 "Hide Motd:"
+   TEXT_LANGUAGE8 "Ocultar Motd:"
+}
+INDEX 164
+{
+   REFERENCE CLIENT_HIDEMOTD_DESC
+   TEXT_LANGUAGE1 "Hide the 'message of day' on menu and connect screen. (Welcome Player #0000)"
+   TEXT_LANGUAGE2 "Masquer le 'message du jour' dans le menu et l'écran de connexion. (Welcome Player #0000)"
+   TEXT_LANGUAGE3 "Ausblenden 'nachricht des tages' im menü und verbindungsbildschirm. (Welcome Player #0000)"
+   TEXT_LANGUAGE6 "Hide the 'message of day' on menu and connect screen. (Welcome Player #0000)"
+   TEXT_LANGUAGE8 "Ocultar el 'mensaje del día' en el menú y pantalla de conexión. (Welcome Player #0000)"
 }

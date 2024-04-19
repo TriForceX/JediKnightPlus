@@ -323,7 +323,7 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.useableHint			= trap_R_RegisterShader("gfx/hud/jkmod_useablehint");
 	cgs.jkmodMedia.clockBg				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg");
 	cgs.jkmodMedia.jetpackIcon			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_jetpack_icon");
-
+	cgs.jkmodMedia.missingIcon			= trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon");
 	
 	cgs.jkmodMedia.jetpackActive		= trap_FX_RegisterEffect("jkmod_jetpack/idle");
 	cgs.jkmodMedia.jetpackIdle			= trap_FX_RegisterEffect("jkmod_jetpack/ground");

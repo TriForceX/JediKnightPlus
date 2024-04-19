@@ -168,8 +168,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	if (jkcvar_cg_scoreboardIcons.integer)
 	{
 		float iconScale = largeFormat ? 25 : 15;
-
-		CG_DrawPic(SB_NAME_X - iconScale - 5, y + 2, iconScale, iconScale, (ci->modelIcon ? ci->modelIcon : trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon")));
+		CG_DrawPic(SB_NAME_X - iconScale - 5, y + 2, iconScale, iconScale, (ci->modelIcon ? ci->modelIcon : cgs.jkmodMedia.missingIcon));
 	}
 
 	CG_Text_Paint (SB_NAME_X, y, 0.9f * scale, colorWhite, ci->name,0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );

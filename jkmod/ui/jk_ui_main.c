@@ -118,7 +118,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_chatBox",				"0",		"1" },
 	{ "jk_cg_chatBoxTime",			"10",		"10" },
 	{ "jk_cg_chatBoxHeight",		"360",		"360" },
-	{ "jk_cg_chatBoxHistory",		"1",		"2" },
+	{ "jk_cg_chatBoxHistory",		"0",		"1" },
 	{ "jk_cg_speedMeter",			"256",		"256" },
 	{ "jk_cg_strafeHelper",			"992",		"992" },
 	{ "cg_drawTimer",				"0",		"2" },
@@ -146,7 +146,6 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "cg_simpleItems",				"0",		NULL },
 	{ "cg_shadows",					"1",		NULL },
 	{ "cg_scorePlums",				"1",		"2" },
-	{ "r_clear",					"0",		"8" },
 
 	// camera cvars					default		recommended
 	{ "jk_cg_duelEnd",				"0",		"1" },
@@ -162,6 +161,8 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_customEffects",		"0",		"1" },
 	{ "jk_cg_jetPackIdle",			"0",		NULL },
 	{ "jk_cg_identifyObjects",		"0",		"1" },
+	{ "jk_ui_motdString",			"0",		"1" },
+	{ "jk_ui_screenClear",			"0",		"8" },
 };
 
 int JKModUIresetClientSize = ARRAY_LEN(JKModUIresetClient);
@@ -176,6 +177,8 @@ vmCvar_t	jkcvar_ui_votePoll;
 vmCvar_t	jkcvar_ui_emoteToggle;
 vmCvar_t	jkcvar_ui_dimensionToggle;
 vmCvar_t	jkcvar_ui_clientPopUp;
+vmCvar_t	jkcvar_ui_motdString;
+vmCvar_t	jkcvar_ui_screenClear;
 
 vmCvar_t	jkcvar_ui_test1;
 vmCvar_t	jkcvar_ui_test2;
@@ -186,6 +189,8 @@ static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
 	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_dimensionToggle,	"jk_ui_dimensionToggle",	"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_clientPopUp,		"jk_ui_clientPopUp",		"0",	CVAR_ARCHIVE },
+	{ &jkcvar_ui_motdString,		"jk_ui_motdString",			"0",	CVAR_ARCHIVE },
+	{ &jkcvar_ui_screenClear,		"jk_ui_screenClear",		"0",	CVAR_ARCHIVE },
 
 	{ &jkcvar_ui_test1,				"jk_ui_test1",				"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_test2,				"jk_ui_test2",				"0",	CVAR_ARCHIVE },
@@ -240,6 +245,12 @@ void JKMod_UI_UpdateCvars(void)
 			trap_Cvar_Set("jk_ui_clientPopUp", va("%i", JKModUIresetClientSize));
 		}
 	}
+
+	// Check motd?
+	if (jkcvar_ui_motdString.integer) trap_Cvar_Set("cl_motdString", "");
+
+	// Check clear
+	trap_Cvar_Set("r_clear", va("%i", jkcvar_ui_screenClear.integer));
 	
 	// Launch original update cvars function
 	BaseJK2_UI_UpdateCvars();

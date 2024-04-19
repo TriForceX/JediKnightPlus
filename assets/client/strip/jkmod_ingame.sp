@@ -1,7 +1,7 @@
 VERSION 1
 ID 137
 REFERENCE JKINGAME
-COUNT 14
+COUNT 20
 INDEX 0
 {
    REFERENCE RECORD
@@ -94,6 +94,24 @@ INDEX 9
 }
 INDEX 10
 {
+   REFERENCE GREEN
+   TEXT_LANGUAGE1 "Green"
+   TEXT_LANGUAGE2 "Vert"
+   TEXT_LANGUAGE3 "Grün"
+   TEXT_LANGUAGE6 "Green"
+   TEXT_LANGUAGE8 "Verde"
+}
+INDEX 11
+{
+   REFERENCE YELLOW
+   TEXT_LANGUAGE1 "Yellow"
+   TEXT_LANGUAGE2 "Jaune"
+   TEXT_LANGUAGE3 "Gelb"
+   TEXT_LANGUAGE6 "Yellow"
+   TEXT_LANGUAGE8 "Amarillo"
+}
+INDEX 12
+{
    REFERENCE BLUE
    TEXT_LANGUAGE1 "Blue"
    TEXT_LANGUAGE2 "Bleu"
@@ -101,7 +119,43 @@ INDEX 10
    TEXT_LANGUAGE6 "Blue"
    TEXT_LANGUAGE8 "Azul"
 }
-INDEX 11
+INDEX 13
+{
+   REFERENCE CYAN
+   TEXT_LANGUAGE1 "Cyan"
+   TEXT_LANGUAGE2 "Cyan"
+   TEXT_LANGUAGE3 "Cyan"
+   TEXT_LANGUAGE6 "Cyan"
+   TEXT_LANGUAGE8 "Celeste"
+}
+INDEX 14
+{
+   REFERENCE MAGENTA
+   TEXT_LANGUAGE1 "Magenta"
+   TEXT_LANGUAGE2 "Magenta"
+   TEXT_LANGUAGE3 "Magenta"
+   TEXT_LANGUAGE6 "Magenta"
+   TEXT_LANGUAGE8 "Púrpura"
+}
+INDEX 15
+{
+   REFERENCE WHITE
+   TEXT_LANGUAGE1 "White"
+   TEXT_LANGUAGE2 "Blanc"
+   TEXT_LANGUAGE3 "Weiß"
+   TEXT_LANGUAGE6 "White"
+   TEXT_LANGUAGE8 "Blanco"
+}
+INDEX 16
+{
+   REFERENCE BLACK
+   TEXT_LANGUAGE1 "Black"
+   TEXT_LANGUAGE2 "Noir"
+   TEXT_LANGUAGE3 "Schwarz"
+   TEXT_LANGUAGE6 "Black"
+   TEXT_LANGUAGE8 "Negro"
+}
+INDEX 17
 {
    REFERENCE MOD_ALERT
    TEXT_LANGUAGE1 "^1ALERT\nIncomplete mod detected\nDownload the full mod at:\n^5https://jkplus.github.io"
@@ -110,7 +164,7 @@ INDEX 11
    TEXT_LANGUAGE6 "^1ALERT\nIncomplete mod detected\nDownload the full mod at:\n^5https://jkplus.github.io"
    TEXT_LANGUAGE8 "^1ALERTA\nMod incompleto detectado\nDescarga el mod completo en:\n^5https://jkplus.github.io"
 }
-INDEX 12
+INDEX 18
 {
    REFERENCE MOD_MISMATCH
    TEXT_LANGUAGE1 "Client and server version do not match!"
@@ -119,7 +173,7 @@ INDEX 12
    TEXT_LANGUAGE6 "Client and server version do not match!"
    TEXT_LANGUAGE8 "Versión de cliente y servidor no conciden!"
 }
-INDEX 13
+INDEX 19
 {
    REFERENCE DEATHS
    TEXT_LANGUAGE1 "Deaths"

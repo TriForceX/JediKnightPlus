@@ -66,6 +66,8 @@ extern vmCvar_t						jkcvar_ui_votePoll;
 extern vmCvar_t						jkcvar_ui_emoteToggle;
 extern vmCvar_t						jkcvar_ui_dimensionToggle;
 extern vmCvar_t						jkcvar_ui_clientPopUp;
+extern vmCvar_t						jkcvar_ui_motdString;
+extern vmCvar_t						jkcvar_ui_screenClear;
 
 extern vmCvar_t						jkcvar_ui_test1;
 extern vmCvar_t						jkcvar_ui_test2;

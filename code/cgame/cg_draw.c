@@ -1821,8 +1821,9 @@ static float CG_DrawEnemyInfo ( float y )
 		CG_DrawPic( cgs.screenWidth - size - 5, y, size, size, ci->modelIcon );
 	}
 	// Tr!Force: [MissingIcon] Add new one
-	else {
-		CG_DrawPic(cgs.screenWidth - size - 5, y, size, size, trap_R_RegisterShaderNoMip("gfx/mp/jkmod_missing_icon"));
+	else 
+	{
+		CG_DrawPic(cgs.screenWidth - size - 5, y, size, size, cgs.jkmodMedia.missingIcon);
 	}
 
 	y += size;

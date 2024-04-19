@@ -2386,8 +2386,8 @@
 			cvar				"jk_cg_chatBoxHistory"
 			cvarFloatList
 			{
-				@MENUS0_YES  		2
-				@MENUS0_NO			1
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
 			}
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -2525,6 +2525,90 @@
 			{ 
 				hide			keybindstatus
 				hide			highlight10
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_SCREENCLEAR
+			descText			@JKMENUS_CLIENT_SCREENCLEAR_DESC
+			cvar				"jk_ui_screenClear"
+			cvarFloatList
+			{
+				@MENUS0_NO  		0
+				@JKINGAME_RED  		1
+				@JKINGAME_GREEN  	2
+				@JKINGAME_YELLOW  	3
+				@JKINGAME_BLUE		4
+				@JKINGAME_CYAN  	5
+				@JKINGAME_MAGENTA  	6
+				@JKINGAME_WHITE  	7
+				@JKINGAME_BLACK  	8
+				"RGB"  				42
+			}
+			rect				220 241 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight11
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			keybindstatus
+				hide			highlight11
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_HIDEMOTD
+			descText			@JKMENUS_CLIENT_HIDEMOTD_DESC
+			cvar				"jk_ui_motdString"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
+			}
+			rect				220 261 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight12
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			keybindstatus
+				hide			highlight12
 			} 
 		}
 
