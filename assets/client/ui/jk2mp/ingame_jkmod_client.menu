@@ -38,6 +38,7 @@
 
 			show				setup_background ;
 			show 				clientInterfaceControls ;	
+			hide				clientInterface2Controls ;
 			hide				clientVisualsControls ;
 			hide				clientCameraControls ;
 			hide 				clientBindsControls ;
@@ -123,9 +124,9 @@
 			rect				20 43 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -143,6 +144,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				show 			clientInterfaceControls ;
+				hide			clientInterface2Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -181,9 +183,9 @@
 			rect				20 73 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -201,6 +203,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
+				hide 			clientInterface2Controls ;
 				show			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -238,9 +241,9 @@
 			rect				20 103 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -258,6 +261,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
+				hide 			clientInterface2Controls ;
 				hide			clientVisualsControls ;
 				show			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -296,9 +300,9 @@
 			rect				20 133 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -316,6 +320,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
+				hide 			clientInterface2Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				show 			clientBindsControls ;
@@ -354,9 +359,9 @@
 			rect				20 163 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -374,6 +379,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
+				hide 			clientInterface2Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -412,9 +418,9 @@
 			rect				20 193 170 30
 			font				3
 			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			170
 			textaligny			5
-			textalign			ITEM_ALIGN_RIGHT
 			textstyle			3
 			forecolor			0.65 0.65 1 1
 			visible				1
@@ -432,6 +438,7 @@
 				play			"sound/interface/button1.wav" ;
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
+				hide 			clientInterface2Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -592,6 +599,47 @@
 			forecolor			1 1 1 1
 			visible				0
 			decoration
+		}
+		
+		itemDef 
+		{
+			name				highlightPrev
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				453 288 33 33
+			background			"gfx/effects/sabers/blue_glow" // Frame around button
+			forecolor			1 1 1 0.8
+			decoration
+			visible				0
+		}
+		
+		itemDef 
+		{
+			name				highlightNext
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				472 288 33 33
+			background			"gfx/effects/sabers/blue_glow" // Frame around button
+			forecolor			1 1 1 0.8
+			decoration
+			visible				0
+		}
+		
+		itemDef
+		{
+			name				highlightSvAllow
+			group				highlights
+			text				@JKMENUS_SERVER_ALLOW_DESC
+			type				ITEM_TYPE_TEXT
+			textalign           ITEM_ALIGN_CENTER
+			textalignx          274
+			textaligny          -4
+			rect				0 314 550 10
+			font				2
+			textscale			0.4
+			backcolor			0 0 0 0
+			forecolor			.235 .882 .847 1
+			visible				0
 		}
 		
 		//---------------------------------------------
@@ -1028,6 +1076,153 @@
 				hide			keybindstatus
 			} 
 		}
+		
+		// PREV & NEXT BUTTONS (INTERFACE OPTIONS)
+		itemDef 
+		{
+			name				prevButton
+			group				clientInterfaceControls
+			type				1
+			descText			@JKMENUS_BUTTON_PREV
+			style				WINDOW_STYLE_SHADER
+			rect				463 298 13 13
+			background			"gfx/menus/scrollbar_arrow_left"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			highlightPrev ;
+			}
+			mouseenter 
+			{ 
+				show			highlightPrev ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightPrev ;
+			}
+		}
+
+		itemDef 
+		{
+			name				nextButton
+			group				clientInterfaceControls
+			descText			@JKMENUS_BUTTON_NEXT
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				484 298 13 13
+			background			"gfx/menus/scrollbar_arrow_right"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				show 			clientInterface2Controls ;	
+				hide			clientInterfaceControls ;
+				hide			highlightNext ;
+			}
+			mouseenter 
+			{ 
+				show			highlightNext ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightNext ;
+			}
+		}
+		
+		//---------------------------------------------
+		//	INTERFACE OPTIONS PAGE 2
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_TELEPORTSMENU
+			descText			@JKMENUS_CLIENT_TELEPORTSMENU_DESC
+			cvar				"jk_ui_teleportMenu"
+			rect				220 41 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight1
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight1
+				hide			keybindstatus
+			} 
+		}
+		
+		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 2)
+		itemDef 
+		{
+			name				prevButton
+			group				clientInterface2Controls
+			type				1
+			descText			@JKMENUS_BUTTON_PREV
+			style				WINDOW_STYLE_SHADER
+			rect				463 298 13 13
+			background			"gfx/menus/scrollbar_arrow_left"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				show 			clientInterfaceControls ;	
+				hide			clientInterface2Controls ;
+				hide			highlightPrev ;
+			}
+			mouseenter 
+			{ 
+				show			highlightPrev ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightPrev ;
+			}
+		}
+
+		itemDef 
+		{
+			name				nextButton
+			group				clientInterface2Controls
+			descText			@JKMENUS_BUTTON_NEXT
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				484 298 13 13
+			background			"gfx/menus/scrollbar_arrow_right"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			highlightNext ;
+			}
+			mouseenter 
+			{ 
+				show			highlightNext ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightNext ;
+			}
+		}
 
 		//---------------------------------------------
 		//	VISUALS OPTIONS
@@ -1458,11 +1653,6 @@
 				play			"sound/interface/shieldcon_done.mp3" ;
 				setcvar			jk_cg_flagOpacity "255"
 			}
-			mouseEnter
-			{ 
-				hide			highlight12
-				hide			keybindstatus
-			}
 		}
 		
 		itemDef 
@@ -1537,11 +1727,6 @@
 			{
 				play			"sound/interface/shieldcon_done.mp3" ;
 				setcvar			jk_cg_saberTrailSpeed "40"
-			}
-			mouseEnter
-			{ 
-				hide			highlight12
-				hide			keybindstatus
 			}
 		}
 
@@ -1754,11 +1939,6 @@
 				play			"sound/interface/shieldcon_done.mp3" ;
 				setcvar			cg_fov "80"
 			}
-			mouseEnter
-			{ 
-				hide			highlight6
-				hide			keybindstatus
-			}
 		}
 		
 		itemDef 
@@ -1834,11 +2014,6 @@
 				play			"sound/interface/shieldcon_done.mp3" ;
 				setcvar			cg_thirdPersonRange "80"
 			}
-			mouseEnter
-			{ 
-				hide			highlight7
-				hide			keybindstatus
-			}
 		}
 
 		//---------------------------------------------
@@ -1869,11 +2044,13 @@
 			mouseEnter 
 			{
 				show			highlight2
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight2
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -1902,11 +2079,13 @@
 			mouseEnter 
 			{
 				show			highlight3
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight3
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -1968,11 +2147,13 @@
 			mouseEnter 
 			{ 
 				show			highlight5
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight5
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -2100,11 +2281,13 @@
 			mouseEnter 
 			{ 
 				show			highlight9
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight9
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -2229,11 +2412,13 @@
 			mouseEnter 
 			{
 				show			highlight2
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight2
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -2371,8 +2556,8 @@
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight6
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2409,8 +2594,8 @@
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight7
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2443,12 +2628,14 @@
 			mouseEnter 
 			{ 
 				show			highlight8
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight8
+				hide			highlightSvAllow
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2481,12 +2668,14 @@
 			mouseEnter 
 			{ 
 				show			highlight9
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight9
+				hide			highlightSvAllow
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2519,12 +2708,14 @@
 			mouseEnter 
 			{ 
 				show			highlight10
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight10
+				hide			highlightSvAllow
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2538,16 +2729,16 @@
 			cvar				"jk_ui_screenClear"
 			cvarFloatList
 			{
-				@MENUS0_NO  		0
-				@JKINGAME_RED  		1
-				@JKINGAME_GREEN  	2
-				@JKINGAME_YELLOW  	3
-				@JKINGAME_BLUE		4
-				@JKINGAME_CYAN  	5
-				@JKINGAME_MAGENTA  	6
-				@JKINGAME_WHITE  	7
-				@JKINGAME_BLACK  	8
-				"RGB"  				42
+				@MENUS0_NO  			0
+				@JKMENUS_COLOR_RED  	1
+				@JKMENUS_COLOR_GREEN  	2
+				@JKMENUS_COLOR_YELLOW  	3
+				@JKMENUS_COLOR_BLUE		4
+				@JKMENUS_COLOR_CYAN  	5
+				@JKMENUS_COLOR_MAGENTA  6
+				@JKMENUS_COLOR_WHITE  	7
+				@JKMENUS_COLOR_BLACK  	8
+				"RGB"  					42
 			}
 			rect				220 241 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -2569,8 +2760,8 @@
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight11
+				hide			keybindstatus
 			} 
 		}
 		
@@ -2607,8 +2798,8 @@
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight12
+				hide			keybindstatus
 			} 
 		}
 
@@ -2664,8 +2855,8 @@
 			rect				357 241 120 32 
 			font				2
 			textscale			1
-			textalign			ITEM_ALIGN_CENTER
 			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			60
 			textaligny			0
 			descText			@MENUS0_USE_DEFAULT_SETTINGS
@@ -2713,8 +2904,8 @@
 			rect				230 241 120 32 
 			font				2
 			textscale			1
-			textalign			ITEM_ALIGN_CENTER
 			textstyle			3
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			60
 			textaligny			0
 			descText			@MENUS0_DO_NOT_RESET_DEFAULT

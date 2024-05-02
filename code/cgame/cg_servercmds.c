@@ -410,7 +410,7 @@ void CG_UpdateConfigString( int num, qboolean init )
 		case CS_MVSDK:
 			MV_LoadSettings( str );
 			break;
-		case CS_PAUSE: // Tr!Force: [Pause] Get server pause time
+		case JK_CS_PAUSE: // Tr!Force: [Pause] Get server pause time
 			cgs.jkmodCGS.pauseTime = atoi(str);
 		default:
 			break;

@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 165
+COUNT 179
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -447,7 +447,7 @@ INDEX 49
 {
    REFERENCE CLIENT_DAMAGEPLUMS_DESC
    TEXT_LANGUAGE1 "Show damage indicators when hit a player."
-   TEXT_LANGUAGE2 "Afficher les indicateurs de dégâts lorsque vous frappez un joueur."
+   TEXT_LANGUAGE2 "Afficher des indicateurs de dégâts lorsque l'on frappe un joueur."
    TEXT_LANGUAGE3 "Schaden ndikatoren anzeigen wenn du einen spieler triffst."
    TEXT_LANGUAGE6 "Show damage indicators when hit a player."
    TEXT_LANGUAGE8 "Mostrar indicadores de daños al golpear a un jugador."
@@ -743,11 +743,11 @@ INDEX 81
 INDEX 82
 {
    REFERENCE CLIENT_CHATOPACITY_DESC
-   TEXT_LANGUAGE1 "Make chatting players transparent if server allows it."
-   TEXT_LANGUAGE2 "Rendre les joueurs de discussion transparents si le serveur le permet."
-   TEXT_LANGUAGE3 "Machen sie das chatten von spielern transparent, wenn der server dies zulässt."
-   TEXT_LANGUAGE6 "Make chatting players transparent if server allows it."
-   TEXT_LANGUAGE8 "Hace que los jugadores chateando sean transparentes si el servidor lo permite."
+   TEXT_LANGUAGE1 "Make chatting players transparent."
+   TEXT_LANGUAGE2 "Rend les joueurs transparents dans le chat."
+   TEXT_LANGUAGE3 "Chattende spieler transparent machen."
+   TEXT_LANGUAGE6 "Make chatting players transparent."
+   TEXT_LANGUAGE8 "Hace que los jugadores en chat sean transparentes."
 }
 INDEX 83
 {
@@ -761,11 +761,11 @@ INDEX 83
 INDEX 84
 {
    REFERENCE CLIENT_DMGBLEND_DESC
-   TEXT_LANGUAGE1 "Shows a damage blend effect when you get a hit."
-   TEXT_LANGUAGE2 "Montre un effet de mélange de dégâts lorsque vous obtenez un coup."
-   TEXT_LANGUAGE3 "Zeigt einen Schadensmischungseffekt, wenn Sie einen Treffer erhalten."
-   TEXT_LANGUAGE6 "Shows a damage blend effect when you get a hit."
-   TEXT_LANGUAGE8 "Muestra un efecto de mezcla de daño cuando recibes un golpe."
+   TEXT_LANGUAGE1 "Damage blend effect when you get damage."
+   TEXT_LANGUAGE2 "Effet de mélange des dégâts lors de l'encaissement de dégâts."
+   TEXT_LANGUAGE3 "Effekt der schadensmischung, wenn sie schaden erleiden."
+   TEXT_LANGUAGE6 "Damage blend effect when you get damage."
+   TEXT_LANGUAGE8 "Efecto de mezcla de daño cuando recibes daño."
 }
 INDEX 85
 {
@@ -797,11 +797,11 @@ INDEX 87
 INDEX 88
 {
    REFERENCE CLIENT_FLAGALIGN_DESC
-   TEXT_LANGUAGE1 "Choose flag alignment for CTF & CTY game types (Experimental)."
-   TEXT_LANGUAGE2 "Choisissez l'alignement des drapeaux pour les types de jeu CTF et CTY (Expérimental)."
-   TEXT_LANGUAGE3 "Wählen sie die flag-ausrichtung für CTF- und CTY-spieltypen (Experimentell)."
-   TEXT_LANGUAGE6 "Choose flag alignment for CTF & CTY game types (Experimental)."
-   TEXT_LANGUAGE8 "Elija la alineación de la bandera para los tipos de juegos CTF y CTY (Experimental)."
+   TEXT_LANGUAGE1 "Flag alignment for CTF & CTY game types."
+   TEXT_LANGUAGE2 "Alignement des drapeaux pour les types de jeu CTF et CTY."
+   TEXT_LANGUAGE3 "Flaggenausrichtung für die Spieltypen CTF und CTY."
+   TEXT_LANGUAGE6 "Flag alignment for CTF & CTY game types."
+   TEXT_LANGUAGE8 "Alineación de la bandera para los tipos de juegos CTF y CTY."
 }
 INDEX 89
 {
@@ -824,11 +824,11 @@ INDEX 90
 INDEX 91
 {
    REFERENCE CLIENT_FLAGOPACITY_DESC
-   TEXT_LANGUAGE1 "Modify the flag transparency on CTF & CTY game types."
-   TEXT_LANGUAGE2 "Modifiez la transparence du drapeau sur les types de jeu CTF et CTY."
-   TEXT_LANGUAGE3 "Ändern Sie die flag-transparenz für CTF- und CTY-spieltypen."
-   TEXT_LANGUAGE6 "Modify the flag transparency on CTF & CTY game types."
-   TEXT_LANGUAGE8 "Modifique la transparencia de la bandera en los tipos de juegos CTF y CTY."
+   TEXT_LANGUAGE1 "Flag transparency on CTF & CTY game types."
+   TEXT_LANGUAGE2 "Transparence des drapeaux dans les types de jeu CTF et CTY."
+   TEXT_LANGUAGE3 "Flaggen-Transparenz bei den Spieltypen CTF und CTY."
+   TEXT_LANGUAGE6 "Flag transparency on CTF & CTY game types."
+   TEXT_LANGUAGE8 "Transparencia de la bandera en los tipos de juegos CTF y CTY."
 }
 INDEX 92
 {
@@ -1058,11 +1058,11 @@ INDEX 116
 INDEX 117
 {
    REFERENCE CLIENT_RESPAWN_DESC
-   TEXT_LANGUAGE1 "Respawn in a new map place. (This may take away one score point)"
-   TEXT_LANGUAGE2 "Réapparaissez à un nouvel endroit sur la carte. (Cela pourrait coûter un point)"
-   TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Dadurch kann ein punkt abgezogen werden)"
-   TEXT_LANGUAGE6 "Respawn in a new map place. (This may take away one score point)"
-   TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Esto podría quitar un punto)"
+   TEXT_LANGUAGE1 "Respawn in a new map place. (This take away one score point)"
+   TEXT_LANGUAGE2 "Réapparaître à un nouvel endroit sur la carte. (Enlever un point)"
+   TEXT_LANGUAGE3 "Respawn in einem neuen Kartenort. (Einen punkt abziehen)"
+   TEXT_LANGUAGE6 "Respawn in a new map place. (This take away one score point)"
+   TEXT_LANGUAGE8 "Reaparecer en un nuevo lugar del mapa. (Quita un punto)"
 }
 INDEX 118
 {
@@ -1113,7 +1113,7 @@ INDEX 123
 {
    REFERENCE CLIENT_FOVADJUST_DESC
    TEXT_LANGUAGE1 "Convert 4:3 field of view values to current aspect."
-   TEXT_LANGUAGE2 "Conversion des valeurs de champ de vision 4: 3 en aspect actuel."
+   TEXT_LANGUAGE2 "Conversion des valeurs de champ de vision 4:3 en aspect actuel."
    TEXT_LANGUAGE3 "Konvertieren Sie 4:3 sichtfeldwerte in den aktuellen aspekt."
    TEXT_LANGUAGE6 "Convert 4:3 field of view values to current aspect."
    TEXT_LANGUAGE8 "Convertir valores de campo de visión 4:3 al aspecto actual."
@@ -1158,7 +1158,7 @@ INDEX 128
 {
    REFERENCE CLIENT_CHATBOXHISTORY_DESC
    TEXT_LANGUAGE1 "Shows the chat history on Jedi Academy chat style."
-   TEXT_LANGUAGE2 "Affiche l'historique des messages dans le chat de type Jedi Academy."
+   TEXT_LANGUAGE2 "Affiche l'historique dans un chat de type Jedi Academy."
    TEXT_LANGUAGE3 "Zeigt den chatverlauf im chatstil der Jedi Academy an."
    TEXT_LANGUAGE6 "Shows the chat history on Jedi Academy chat style."
    TEXT_LANGUAGE8 "Muestra el historial de mensajes en el chat tipo Jedi Academy."
@@ -1185,8 +1185,8 @@ INDEX 131
 {
    REFERENCE CLIENT_SPECIALMOVECAM_DESC
    TEXT_LANGUAGE1 "Camera animation when performing special movements."
-   TEXT_LANGUAGE2 "Animation de caméra lors de l'exécution de mouvements spéciaux."
-   TEXT_LANGUAGE3 "Kamera-animation bei der durchführung von speziellen bewegungen."
+   TEXT_LANGUAGE2 "Animation de la caméra lors de mouvements spéciaux."
+   TEXT_LANGUAGE3 "Kameraanimation bei der ausführung spezieller bewegungen."
    TEXT_LANGUAGE6 "Camera animation when performing special movements."
    TEXT_LANGUAGE8 "Animación de cámara al realizar movimientos especiales."
 }
@@ -1355,11 +1355,11 @@ INDEX 149
 INDEX 150
 {
    REFERENCE CLIENT_AUTODUEL_DESC
-   TEXT_LANGUAGE1 "Automatically accept dueling challenges. (Only if server allows it)"
-   TEXT_LANGUAGE2 "Accepter les défis du duel automatiquement. (Uniquement si le serveur le permet)"
-   TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen. (Nur wenn der server es zulässt)"
-   TEXT_LANGUAGE6 "Automatically accept dueling challenges. (Only if server allows it)"
-   TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente. (Solo si el servidor lo permite)"
+   TEXT_LANGUAGE1 "Automatically accept dueling challenges."
+   TEXT_LANGUAGE2 "Accepter les défis du duel automatiquement."
+   TEXT_LANGUAGE3 "Akzeptiert automatisch duell-herausforderungen."
+   TEXT_LANGUAGE6 "Automatically accept dueling challenges."
+   TEXT_LANGUAGE8 "Acepta desafíos de duelo automáticamente."
 }
 INDEX 151
 {
@@ -1373,11 +1373,11 @@ INDEX 151
 INDEX 152
 {
    REFERENCE CLIENT_AUTOSTATUS_DESC
-   TEXT_LANGUAGE1 "Share your status when you score a point. (Only if server allows it)"
-   TEXT_LANGUAGE2 "Partagez votre statut lorsque vous marquez un point. (Uniquement si le serveur le permet)"
-   TEXT_LANGUAGE3 "Teilen sie ihren status mit wenn sie einen punkt erzielen. (Nur wenn der server es zulässt)"
-   TEXT_LANGUAGE6 "Share your status when you score a point. (Only if server allows it)"
-   TEXT_LANGUAGE8 "Comparte tu estado cuando anotas un punto. (Solo si el servidor lo permite)"
+   TEXT_LANGUAGE1 "Share your status when you score a point."
+   TEXT_LANGUAGE2 "Partagez votre statut lorsque vous marquez un point."
+   TEXT_LANGUAGE3 "Teilen sie ihren status mit wenn sie einen punkt erzielen."
+   TEXT_LANGUAGE6 "Share your status when you score a point."
+   TEXT_LANGUAGE8 "Comparte tu estado cuando anotas un punto."
 }
 INDEX 153
 {
@@ -1463,11 +1463,11 @@ INDEX 161
 INDEX 162
 {
    REFERENCE CLIENT_SCREENCLEAR_DESC
-   TEXT_LANGUAGE1 "Set a color to clear screen when you are outside a map."
-   TEXT_LANGUAGE2 "Couleur pour effacer l'écran lorsque vous êtes en dehors d'une carte."
-   TEXT_LANGUAGE3 "Farbe zum löschen des bildschirms wenn sie sich außerhalb einer karte befinden."
-   TEXT_LANGUAGE6 "Set a color to clear screen when you are outside a map."
-   TEXT_LANGUAGE8 "Define un color para limpiar la pantalla cuando estas fuera del mapa."
+   TEXT_LANGUAGE1 "Color to clear screen when you are outside a map."
+   TEXT_LANGUAGE2 "Couleur pour effacer l'écran lorsque vous êtes hors de la carte."
+   TEXT_LANGUAGE3 "Farbe zum löschen des bildschirms außerhalb einer karte."
+   TEXT_LANGUAGE6 "Color to clear screen when you are outside a map."
+   TEXT_LANGUAGE8 "Color para limpiar la pantalla cuando estas fuera del mapa."
 }
 INDEX 163
 {
@@ -1481,9 +1481,135 @@ INDEX 163
 INDEX 164
 {
    REFERENCE CLIENT_HIDEMOTD_DESC
-   TEXT_LANGUAGE1 "Hide the 'message of day' on menu and connect screen. (Welcome Player #0000)"
-   TEXT_LANGUAGE2 "Masquer le 'message du jour' dans le menu et l'écran de connexion. (Welcome Player #0000)"
-   TEXT_LANGUAGE3 "Ausblenden 'nachricht des tages' im menü und verbindungsbildschirm. (Welcome Player #0000)"
-   TEXT_LANGUAGE6 "Hide the 'message of day' on menu and connect screen. (Welcome Player #0000)"
-   TEXT_LANGUAGE8 "Ocultar el 'mensaje del día' en el menú y pantalla de conexión. (Welcome Player #0000)"
+   TEXT_LANGUAGE1 "Hide the 'message of day' on screen. (Welcome Player #0000)"
+   TEXT_LANGUAGE2 "Masquer le 'message du jour' à l'écran. (Welcome Player #0000)"
+   TEXT_LANGUAGE3 "Versteckt 'meldung des tages' am fenster. (Welcome Player #0000)"
+   TEXT_LANGUAGE6 "Hide the 'message of day' on screen. (Welcome Player #0000)"
+   TEXT_LANGUAGE8 "Ocultar el 'mensaje del día' en pantalla. (Welcome Player #0000)"
+}
+INDEX 165
+{
+   REFERENCE COLOR_RED
+   TEXT_LANGUAGE1 "Red"
+   TEXT_LANGUAGE2 "Rouge"
+   TEXT_LANGUAGE3 "Rot"
+   TEXT_LANGUAGE6 "Red"
+   TEXT_LANGUAGE8 "Rojo"
+}
+INDEX 166
+{
+   REFERENCE COLOR_GREEN
+   TEXT_LANGUAGE1 "Green"
+   TEXT_LANGUAGE2 "Vert"
+   TEXT_LANGUAGE3 "Grün"
+   TEXT_LANGUAGE6 "Green"
+   TEXT_LANGUAGE8 "Verde"
+}
+INDEX 167
+{
+   REFERENCE COLOR_YELLOW
+   TEXT_LANGUAGE1 "Yellow"
+   TEXT_LANGUAGE2 "Jaune"
+   TEXT_LANGUAGE3 "Gelb"
+   TEXT_LANGUAGE6 "Yellow"
+   TEXT_LANGUAGE8 "Amarillo"
+}
+INDEX 168
+{
+   REFERENCE COLOR_BLUE
+   TEXT_LANGUAGE1 "Blue"
+   TEXT_LANGUAGE2 "Bleu"
+   TEXT_LANGUAGE3 "Blau"
+   TEXT_LANGUAGE6 "Blue"
+   TEXT_LANGUAGE8 "Azul"
+}
+INDEX 169
+{
+   REFERENCE COLOR_CYAN
+   TEXT_LANGUAGE1 "Cyan"
+   TEXT_LANGUAGE2 "Cyan"
+   TEXT_LANGUAGE3 "Cyan"
+   TEXT_LANGUAGE6 "Cyan"
+   TEXT_LANGUAGE8 "Celeste"
+}
+INDEX 170
+{
+   REFERENCE COLOR_MAGENTA
+   TEXT_LANGUAGE1 "Magenta"
+   TEXT_LANGUAGE2 "Magenta"
+   TEXT_LANGUAGE3 "Magenta"
+   TEXT_LANGUAGE6 "Magenta"
+   TEXT_LANGUAGE8 "Púrpura"
+}
+INDEX 171
+{
+   REFERENCE COLOR_WHITE
+   TEXT_LANGUAGE1 "White"
+   TEXT_LANGUAGE2 "Blanc"
+   TEXT_LANGUAGE3 "Weiß"
+   TEXT_LANGUAGE6 "White"
+   TEXT_LANGUAGE8 "Blanco"
+}
+INDEX 172
+{
+   REFERENCE COLOR_BLACK
+   TEXT_LANGUAGE1 "Black"
+   TEXT_LANGUAGE2 "Noir"
+   TEXT_LANGUAGE3 "Schwarz"
+   TEXT_LANGUAGE6 "Black"
+   TEXT_LANGUAGE8 "Negro"
+}
+INDEX 173
+{
+   REFERENCE BUTTON_GO
+   TEXT_LANGUAGE1 "Go"
+   TEXT_LANGUAGE2 "Aller"
+   TEXT_LANGUAGE3 "Gehen"
+   TEXT_LANGUAGE6 "Go"
+   TEXT_LANGUAGE8 "Ir"
+}
+INDEX 174
+{
+   REFERENCE BUTTON_PREV
+   TEXT_LANGUAGE1 "Previous page"
+   TEXT_LANGUAGE2 "Page précédente"
+   TEXT_LANGUAGE3 "Vorherige Seite"
+   TEXT_LANGUAGE6 "Previous page"
+   TEXT_LANGUAGE8 "Página anterior"
+}
+INDEX 175
+{
+   REFERENCE BUTTON_NEXT
+   TEXT_LANGUAGE1 "Next page"
+   TEXT_LANGUAGE2 "Page suivante"
+   TEXT_LANGUAGE3 "Nächste seite"
+   TEXT_LANGUAGE6 "Next page"
+   TEXT_LANGUAGE8 "Siguiente página"
+}
+INDEX 176
+{
+   REFERENCE CLIENT_TELEPORTSMENU
+   TEXT_LANGUAGE1 "Show teleport menu:"
+   TEXT_LANGUAGE2 "Menu de téléportation:"
+   TEXT_LANGUAGE3 "Menü teleport anzeigen:"
+   TEXT_LANGUAGE6 "Show teleport menu:"
+   TEXT_LANGUAGE8 "Menú de teletransporte:"
+}
+INDEX 177
+{
+   REFERENCE CLIENT_TELEPORTSMENU_DESC
+   TEXT_LANGUAGE1 "Show available teleports from current map."
+   TEXT_LANGUAGE2 "Affiche les téléports disponibles sur la carte actuelle."
+   TEXT_LANGUAGE3 "Verfügbare teleports von der aktuellen karte anzeigen."
+   TEXT_LANGUAGE6 "Show available teleports from current map."
+   TEXT_LANGUAGE8 "Muestra teletransportes disponibles en el mapa actual."
+}
+INDEX 178
+{
+   REFERENCE SERVER_ALLOW_DESC
+   TEXT_LANGUAGE1 "Only if server allows it"
+   TEXT_LANGUAGE2 "Seulement si le serveur le permet"
+   TEXT_LANGUAGE3 "Nur wenn der server es zulässt"
+   TEXT_LANGUAGE6 "Only if server allows it"
+   TEXT_LANGUAGE8 "Sólo si el servidor lo permite"
 }

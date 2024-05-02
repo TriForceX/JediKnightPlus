@@ -63,6 +63,7 @@ vmCvar_t	jkcvar_cg_customAnims;
 vmCvar_t	jkcvar_cg_customEffects;
 vmCvar_t	jkcvar_cg_jetPackIdle;
 
+vmCvar_t	jkcvar_cg_ui_currentTeam;
 vmCvar_t	jkcvar_cg_test1;
 vmCvar_t	jkcvar_cg_test2;
 
@@ -114,6 +115,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_customEffects,			"jk_cg_customEffects",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_jetPackIdle,			"jk_cg_jetPackIdle",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 
+	{ &jkcvar_cg_ui_currentTeam,		"jk_ui_currentTeam",			"0",			NULL,						CVAR_ROM | CVAR_INTERNAL, 0 },
 	{ &jkcvar_cg_test1,					"jk_cg_test1",					"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_test2,					"jk_cg_test2",					"0",			NULL,						CVAR_ARCHIVE, 0 },
 

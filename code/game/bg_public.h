@@ -92,8 +92,6 @@
 #define CS_CLIENT_DUELWINNER	29		// current duel round winner - needed for printing at top of scoreboard
 #define CS_CLIENT_DUELISTS		30		// client numbers for both current duelists. Needed for a number of client-side things.
 
-#define CS_PAUSE				31		// Tr!Force: [Pause] Set config string
-
 // these are also in be_aas_def.h - argh (rjr)
 #define	CS_MODELS				32
 #define	CS_SOUNDS				(CS_MODELS+MAX_MODELS)
@@ -111,7 +109,8 @@ Ghoul2 Insert End
 #define	CS_LIGHT_STYLES			(CS_EFFECTS + MAX_FX)
 #define CS_STRING_PACKAGES		(CS_LIGHT_STYLES + (MAX_LIGHT_STYLES*3))
 
-#define CS_MAX					(CS_STRING_PACKAGES+MAX_STRING_PACKAGES)
+#define CS_MAX_BASE				(CS_STRING_PACKAGES+MAX_STRING_PACKAGES)
+#define CS_MAX					(CS_MAX_BASE+1) // Tr!Force: [GameGeneral] Add custom mod config strings
 
 #if (CS_MAX) > MAX_CONFIGSTRINGS
 #error overflow: (CS_MAX) > MAX_CONFIGSTRINGS

@@ -59,13 +59,15 @@ Global definitions
 #define JK_MAP_SPDOORTRIGGER	( 1 << 14 )
 #define JK_MAP_SPECDOORSTUCK	( 1 << 15 )
 
-// Jetpack stuff
+// Entity flags
+#define JK_BODY_PUSH			( 1 << 18 )
 #define JK_JETPACK_ACTIVE		( 1 << 27 )
 #define JK_JETPACK_FLAMING		( 1 << 28 )
-
-// Other stuff
-#define JK_BODY_PUSH			( 1 << 18 )
 #define JK_PASS_THROUGH			( 1 << 29 )
+
+// Config strings
+#define JK_CS_PAUSE				( 31 )
+#define JK_CS_TELEPORTS			( CS_MAX_BASE + 1 )
 
 // Utilities
 #define VAL(x) #x

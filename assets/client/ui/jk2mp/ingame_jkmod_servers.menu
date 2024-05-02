@@ -364,10 +364,9 @@
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
 			rect				50 310 50 32
-			textalign			1
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4
-			textalign			ITEM_ALIGN_CENTER
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
@@ -406,10 +405,9 @@
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
 			rect				115 310 84 32
-			textalign			1
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			42 // w/2 center
 			textaligny			4
-			textalign			ITEM_ALIGN_CENTER
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
@@ -447,10 +445,9 @@
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
 			rect				207 310 50 32
-			textalign			1
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4
-			textalign			ITEM_ALIGN_CENTER
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
@@ -488,10 +485,9 @@
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
 			rect				264 310 50 32
-			textalign			1
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4
-			textalign			ITEM_ALIGN_CENTER
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 

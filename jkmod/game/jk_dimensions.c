@@ -94,7 +94,7 @@ void JKMod_DimensionLoad(void)
 {
 	if (g_gametype.integer == GT_FFA)
 	{
-		char *lineStart = JKMod_ReadFile("config/dimension_data.cfg");
+		char *lineStart = JKMod_ReadFile("configs/dimension_data.cfg");
 
 		JKModDimensionFileCount = 0;
 

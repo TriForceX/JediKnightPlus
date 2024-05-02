@@ -686,7 +686,7 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		if (pauseTime != level.jkmodLocals.pauseTime)
 		{
 			pauseTime = level.jkmodLocals.pauseTime;
-			trap_SetConfigstring(CS_PAUSE, va("%d", pauseTime));
+			trap_SetConfigstring(JK_CS_PAUSE, va("%d", pauseTime));
 		}
 
 		if (JKModPauseDelay <= levelTime)
@@ -736,7 +736,7 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 		pauseSecs = 0;
 		JKModPauseDelay = 0;
 		
-		trap_SetConfigstring(CS_PAUSE, "");
+		trap_SetConfigstring(JK_CS_PAUSE, "");
 	}
 
 	return qfalse;
@@ -785,16 +785,41 @@ void JKMod_TeleportChatLoad(void)
 	if (g_gametype.integer != GT_TOURNAMENT)
 	{
 		char	*lineStart;
+		int		found = 0;
 
 		level.jkmodLocals.teleportChatsCount = 0;
-		lineStart = JKMod_ReadFile("config/teleport_chats.cfg");
+		lineStart = JKMod_ReadFile("configs/teleport_chats.cfg");
 
-		if (lineStart[0]) {
-			level.jkmodLocals.teleportChatsCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
+		if (lineStart[0]) level.jkmodLocals.teleportChatsCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
+
+		if (level.jkmodLocals.teleportChats[0]) 
+		{
+			int			i = 0;
+			char		command[MAX_TOKEN_CHARS];
+			char		map[MAX_TOKEN_CHARS];
+			char		message[MAX_STRING_CHARS] = { 0 };
+
+			for (i = 0; i < level.jkmodLocals.teleportChatsCount; i++)
+			{
+				strcpy(command, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "command"));
+				strcpy(map, Info_ValueForKey(level.jkmodLocals.teleportChats[i], "map"));
+
+				if (Q_stricmp(map, jkcvar_mapName.string) == 0)
+				{
+					Q_strcat(message, sizeof(message), va("%s,", command));
+					found++;
+				}
+			}
+
+			if (found) 
+			{
+				message[strlen(message) - 1] = '\0';
+				trap_SetConfigstring(JK_CS_TELEPORTS, va("%s", message));
+			}
 		}
 
 		if (level.jkmodLocals.teleportChatsCount) {
-			G_Printf("%i teleport chats loaded\n", level.jkmodLocals.teleportChatsCount);
+			G_Printf("%i teleport chats loaded%s\n", level.jkmodLocals.teleportChatsCount, (found ? va(" (%i for this map)", found) : ""));
 		}
 	}
 }
@@ -814,7 +839,7 @@ void JKMod_RandomBeginLoad(void)
 		int		itemCount = 0;
 
 		level.jkmodLocals.randomBeginCount = 0;
-		lineStart = JKMod_ReadFile("config/random_begin.cfg");
+		lineStart = JKMod_ReadFile("configs/random_begin.cfg");
 		lineEnd = strchr(lineStart, '\n');
 
 		while (lineEnd || lineStart[0])
@@ -853,7 +878,7 @@ void JKMod_ServerNewsLoad(void)
 		int		itemCount = 0;
 
 		level.jkmodLocals.serverNewsCount = 0;
-		lineStart = JKMod_ReadFile("config/server_news.cfg");
+		lineStart = JKMod_ReadFile("configs/server_news.cfg");
 		lineEnd = strchr(lineStart, '\n');
 
 		while (lineEnd || lineStart[0])
@@ -1005,16 +1030,16 @@ void JKMod_GameTypeConfig(void)
 
 		if (level.newSession)
 		{
-			if (trap_FS_FOpenFile(va("config/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
+			if (trap_FS_FOpenFile(va("configs/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
 			{
 				G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
-				trap_SendConsoleCommand(EXEC_APPEND, va("exec config/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
+				trap_SendConsoleCommand(EXEC_APPEND, va("exec configs/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
 				trap_FS_FCloseFile(f);
 			}
 			else
 			{
 				G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
-				trap_SendConsoleCommand(EXEC_APPEND, "exec config/game_type/default.cfg\n");
+				trap_SendConsoleCommand(EXEC_APPEND, "exec configs/game_type/default.cfg\n");
 			}
 		}
 

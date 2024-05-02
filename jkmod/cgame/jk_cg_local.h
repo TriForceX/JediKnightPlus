@@ -291,6 +291,7 @@ extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_customEffects;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
+extern vmCvar_t						jkcvar_cg_ui_currentTeam;
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
 

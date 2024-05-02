@@ -1617,6 +1617,7 @@ static qboolean jkmod_macro_scan = qfalse;	//Tr!Force: [MacroScan] Macro scan en
 
 void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demoPlayback ) {
 	int		inwater;
+	int		jkmod_current_team = (cg.snap->ps.pm_flags & PMF_FOLLOW) ? TEAM_SPECTATOR : cg.snap->ps.persistant[PERS_TEAM]; // Tr!Force: [CGameGeneral] Alternative to ui_myTeam cvar
 
 	cg.time = serverTime;
 	cg.demoPlayback = demoPlayback;
@@ -1624,6 +1625,12 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	if (cg.snap && cg_ui_myteam.integer != cg.snap->ps.persistant[PERS_TEAM])
 	{
 		trap_Cvar_Set ( "ui_myteam", va("%i", cg.snap->ps.persistant[PERS_TEAM]) );
+	}
+
+	// Tr!Force: [CGameGeneral] Alternative to ui_myTeam cvar
+	if (cg.snap && jkcvar_cg_ui_currentTeam.integer != jkmod_current_team)
+	{
+		trap_Cvar_Set ( "jk_ui_currentTeam", va("%i", jkmod_current_team) );
 	}
 
 	// update cvars

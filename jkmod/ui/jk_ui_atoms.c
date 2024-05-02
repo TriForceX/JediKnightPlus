@@ -484,6 +484,32 @@ void JKMod_UI_MacroEnable(void)
 
 /*
 =====================================================================
+String token with long delimiter
+=====================================================================
+*/
+char *JKMod_UI_StrTok(char *str, const char *delim)
+{
+    static char *tok;
+    static char *next;
+    char *m;
+
+    if (delim == NULL) return NULL;
+    tok = (str) ? str : next;
+    if (tok == NULL) return NULL;
+
+    m = strstr(tok, delim);
+
+    if (m) {
+        next = m + strlen(delim);
+        *m = '\0';
+    } else {
+        next = NULL;
+    }
+    return tok;
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */

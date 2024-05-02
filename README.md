@@ -41,7 +41,7 @@ I started to code the first version of this mod in 2005. Back then it was a priv
 <img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/65a95166-19b8-4613-bc71-8261544df711">
 <img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/fdd8da07-c6d4-40b3-8f6f-a5e37443b653">
 <img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/86a080e7-e043-4620-bff5-00899b8d69f0">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/e8b5e314-c288-42cd-9faa-840d3882e9ee">
+<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/503efbcc-db80-4e35-9fba-8313a1ee02f0">
 
 </p>
 
@@ -236,6 +236,7 @@ List of additional client-side plugin features
 - [x] Custom flag alignment (Experimental)
 - [x] Custom player hats and cosmetics
 - [x] Show player icons on scoreboard
+- [x] Show server teleports chat menu
 - [x] Server emotes menu for usage and binding
 - [x] Custom private duel end animation
 - [x] Toggle private duel glow

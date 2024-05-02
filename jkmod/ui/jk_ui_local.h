@@ -17,6 +17,15 @@ Global definitions
 =====================================================================
 */
 
+#define MAX_TELEPORTS				256
+#define MAX_TELEPORTLENGTH			11
+
+/*
+=====================================================================
+Re-routed functions
+=====================================================================
+*/
+
 #define UI_RegisterCvars 			JKMod_UI_RegisterCvars
 #define UI_UpdateCvars				JKMod_UI_UpdateCvars
 #define UI_FeederCount				JKMod_UI_FeederCount
@@ -56,15 +65,29 @@ typedef struct
 
 } jkmod_ui_reset_client_t;
 
+// UI info
+typedef struct
+{
+	char		teleportChats[MAX_TELEPORTS][MAX_INFO_STRING];		// Teleport chat strings
+	char		teleportTitle[MAX_TELEPORTS][MAX_TELEPORTLENGTH];	// Teleport chat strings
+	int			teleportCount;										// Teleport chat count
+	qboolean	teleportCheck;										// Teleport chat check
+
+} jkmod_ui_info_t;
+
 /*
 =====================================================================
 Cvar registration
 =====================================================================
 */
 
+extern vmCvar_t						jkcvar_ui_currentTeam;
 extern vmCvar_t						jkcvar_ui_votePoll;
 extern vmCvar_t						jkcvar_ui_emoteToggle;
 extern vmCvar_t						jkcvar_ui_dimensionToggle;
+extern vmCvar_t						jkcvar_ui_teleportToggle;
+extern vmCvar_t						jkcvar_ui_teleportCount;
+extern vmCvar_t						jkcvar_ui_teleportMenu;
 extern vmCvar_t						jkcvar_ui_clientPopUp;
 extern vmCvar_t						jkcvar_ui_motdString;
 extern vmCvar_t						jkcvar_ui_screenClear;
@@ -88,9 +111,11 @@ qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 // jk_atoms.c
 void		JKMod_UI_MacroScan(void);
 void		JKMod_UI_MacroEnable(void);
+char		*JKMod_UI_StrTok(char *str, const char *delim);
 qboolean	JKMod_UI_ConsoleCommand(char *cmd);
 
 // jk_main.c
+void		JKMod_UI_BuildTeleportList(void);
 const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKMod_UI_FeederCount(float feederID);
 qboolean	JKMod_UI_FeederSelection(float feederID, int index);

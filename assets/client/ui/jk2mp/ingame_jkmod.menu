@@ -195,7 +195,7 @@
 			border				1
 			bordercolor			.265 .824 .886 .55
 			visible				1
-			cvarTest			"ui_myteam"
+			cvarTest			"jk_ui_currentTeam"
 			disableCvar 
 			{ 
 				"3" ; 
@@ -406,8 +406,7 @@
 			//maxPaintChars		40
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			135
-			textaligny			2
-			textalign			1    
+			textaligny			2  
 			font				2
 			textscale			.5
 			forecolor			1 1 1 1

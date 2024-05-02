@@ -1658,7 +1658,7 @@ static float CG_DrawMiniScoreboard ( float y )
 			int	scores1 = cgs.scores1 == SCORE_NOT_PRESENT ? 0 : cgs.scores1;
 			int	scores2 = cgs.scores2 == SCORE_NOT_PRESENT ? 0 : cgs.scores2;
 
-			text = va("%s: %i %s: %i", CG_GetStripEdString("JKINGAME", "RED"), scores1, CG_GetStripEdString("JKINGAME", "BLUE"), scores2);
+			text = va("%s: %i %s: %i", CG_GetStripEdString("JKMENUS", "COLOR_RED"), scores1, CG_GetStripEdString("JKMENUS", "COLOR_BLUE"), scores2);
 
 			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( text, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, text, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
 		}

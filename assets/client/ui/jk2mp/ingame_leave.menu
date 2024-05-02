@@ -227,7 +227,7 @@
 				hide			buttons ;
 				close			ingame_leave ;
 				close			ingame ;
-				exec 			"toggleConsole" ;
+				exec 			"toggleConsole; echo ^2Press ESC to close the console" ;
 			}
 			mouseEnter 
 			{ 

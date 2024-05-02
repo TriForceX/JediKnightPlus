@@ -890,6 +890,8 @@ typedef struct {
 	float		cursorXScale;			// scale cursor X sensitivity
 	float		cursorYScale;			// scale cursor Y sensitivity
 
+	jkmod_ui_info_t	jkmodInfo;			// [UIGeneral] Custom ui info
+
 }	uiInfo_t;
 
 extern uiInfo_t uiInfo;

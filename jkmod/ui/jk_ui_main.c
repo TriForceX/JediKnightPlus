@@ -121,6 +121,7 @@ jkmod_ui_reset_client_t JKModUIresetClient[] =
 	{ "jk_cg_chatBoxHistory",		"0",		"1" },
 	{ "jk_cg_speedMeter",			"256",		"256" },
 	{ "jk_cg_strafeHelper",			"992",		"992" },
+	{ "jk_ui_teleportMenu",			"0",		"1" },
 	{ "cg_drawTimer",				"0",		"2" },
 	{ "cg_drawFPS",					"0",		"2" },
 	{ "cg_lagometer",				"0",		NULL },
@@ -169,13 +170,54 @@ int JKModUIresetClientSize = ARRAY_LEN(JKModUIresetClient);
 
 /*
 =====================================================================
+Teleports table list
+=====================================================================
+*/
+void JKMod_UI_BuildTeleportList(void)
+{
+	static char teleportsInfo[MAX_INFO_STRING];
+	static char *token = "";
+
+	// Clear
+	uiInfo.jkmodInfo.teleportCount = 0;
+	ARRAY_CLEAR(uiInfo.jkmodInfo.teleportChats);
+	ARRAY_CLEAR(uiInfo.jkmodInfo.teleportTitle);
+
+	// Get
+	trap_GetConfigString(JK_CS_TELEPORTS, teleportsInfo, MAX_INFO_STRING);
+	token = JKMod_UI_StrTok(teleportsInfo, ",");
+    
+	// Parse
+	while (VALIDTEXT(token)) 
+	{
+		Q_strncpyz(uiInfo.jkmodInfo.teleportChats[uiInfo.jkmodInfo.teleportCount], token, MAX_INFO_STRING);
+		Q_strncpyz(uiInfo.jkmodInfo.teleportTitle[uiInfo.jkmodInfo.teleportCount], va("%c%s", toupper(token[1]), token+2), MAX_TELEPORTLENGTH);
+		if (!uiInfo.jkmodInfo.teleportCount) trap_Cvar_Set("jk_ui_teleportToggle", token);
+		uiInfo.jkmodInfo.teleportCount++;
+		token = JKMod_UI_StrTok(NULL, ",");
+	}
+
+	// Update cvars
+	if (!uiInfo.jkmodInfo.teleportCount) trap_Cvar_Set("jk_ui_teleportToggle", "");
+	trap_Cvar_Set("jk_ui_teleportCount", va("%i", uiInfo.jkmodInfo.teleportCount));
+
+	// Done
+	uiInfo.jkmodInfo.teleportCheck = qtrue;
+}
+
+/*
+=====================================================================
 Cvar table list
 =====================================================================
 */
 
+vmCvar_t	jkcvar_ui_currentTeam;
 vmCvar_t	jkcvar_ui_votePoll;
 vmCvar_t	jkcvar_ui_emoteToggle;
 vmCvar_t	jkcvar_ui_dimensionToggle;
+vmCvar_t	jkcvar_ui_teleportToggle;
+vmCvar_t	jkcvar_ui_teleportCount;
+vmCvar_t	jkcvar_ui_teleportMenu;
 vmCvar_t	jkcvar_ui_clientPopUp;
 vmCvar_t	jkcvar_ui_motdString;
 vmCvar_t	jkcvar_ui_screenClear;
@@ -185,9 +227,13 @@ vmCvar_t	jkcvar_ui_test2;
 
 static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
 
+	{ &jkcvar_ui_currentTeam,		"jk_ui_currentTeam",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_votePoll,			"jk_ui_votePoll",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_dimensionToggle,	"jk_ui_dimensionToggle",	"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_teleportToggle,	"jk_ui_teleportToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_teleportCount,		"jk_ui_teleportCount",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_teleportMenu,		"jk_ui_teleportMenu",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_clientPopUp,		"jk_ui_clientPopUp",		"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_motdString,		"jk_ui_motdString",			"0",	CVAR_ARCHIVE },
 	{ &jkcvar_ui_screenClear,		"jk_ui_screenClear",		"0",	CVAR_ARCHIVE },
@@ -221,6 +267,9 @@ void JKMod_UI_RegisterCvars(void)
 	trap_Cvar_Set("jk_ui_emoteToggle", va("%s", JKModUIemotesTable[0].cmd));
 	trap_Cvar_Set("jk_ui_dimensionToggle", va("%s", JKModUIdimensionsTable[0].cmd));
 
+	// Build teleport list
+	if (jkcvar_ui_teleportMenu.integer || jkcvar_ui_currentTeam.integer != TEAM_SPECTATOR) JKMod_UI_BuildTeleportList();
+
 	// Launch original register cvars function
 	BaseJK2_UI_RegisterCvars();
 }
@@ -244,6 +293,18 @@ void JKMod_UI_UpdateCvars(void)
 			Menus_ActivateByName("ingame_jkmod_popup");
 			trap_Cvar_Set("jk_ui_clientPopUp", va("%i", JKModUIresetClientSize));
 		}
+	}
+
+	// Check teleports
+	if (!jkcvar_ui_teleportMenu.integer || jkcvar_ui_currentTeam.integer == TEAM_SPECTATOR)
+	{
+		trap_Cvar_Set("jk_ui_teleportCount", "0");
+		trap_Cvar_Set("jk_ui_teleportToggle", "");
+		uiInfo.jkmodInfo.teleportCheck = qfalse;
+	}
+	else if (!uiInfo.jkmodInfo.teleportCheck)
+	{
+		JKMod_UI_BuildTeleportList();
 	}
 
 	// Check motd?
@@ -302,6 +363,29 @@ static char *JKMod_UI_DimensionsList(int index, int *actual)
 
 /*
 =====================================================================
+Teleports list functions
+=====================================================================
+*/
+static char *JKMod_UI_TeleportsList(int index, int *actual)
+{
+	int i, c = 0;
+	char *title;
+	*actual = 0;
+
+	for (i = 0; i < uiInfo.jkmodInfo.teleportCount; i++)
+	{
+		if (c == index) {
+			*actual = i;
+			return va("%s", uiInfo.jkmodInfo.teleportTitle[i]);
+		} else {
+			c++;
+		}
+	}
+	return "";
+}
+
+/*
+=====================================================================
 Feeder item text function
 =====================================================================
 */
@@ -325,6 +409,11 @@ const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhand
 		int actual;
 		return JKMod_UI_DimensionsList(index, &actual);
 	}
+	else if (feederID == FEEDER_JK_TELEPORTS)
+	{
+		int actual;
+		return JKMod_UI_TeleportsList(index, &actual);
+	}
 
 	// Final return, probably NULL
 	return BaseJK2_UI_FeederItemText(feederID, index, column, handle1, handle2, handle3, handle4, handle5, handle6);
@@ -343,6 +432,8 @@ int JKMod_UI_FeederCount(float feederID)
 			return JKModUIemotesTableSize;
 		case FEEDER_JK_DIMENSIONS: 
 			return JKModUIdimensionsTableSize;
+		case FEEDER_JK_TELEPORTS: 
+			return uiInfo.jkmodInfo.teleportCount;
 	}
 
 	// Launch original feeder count function
@@ -365,6 +456,10 @@ qboolean JKMod_UI_FeederSelection(float feederID, int index)
 	else if (feederID == FEEDER_JK_DIMENSIONS)
 	{
 		trap_Cvar_Set("jk_ui_dimensionToggle", va("%s", JKModUIdimensionsTable[index].cmd));
+	}
+	else if (feederID == FEEDER_JK_TELEPORTS)
+	{
+		trap_Cvar_Set("jk_ui_teleportToggle", va("%s", uiInfo.jkmodInfo.teleportChats[index]));
 	}
 
 	// Final return, probably NULL
@@ -415,6 +510,12 @@ qboolean JKMod_UI_RunMenuScript(const char **args, const char *name)
 	if (Q_stricmp(name, "JKMod_emoteToggle") == 0)
 	{
 		trap_Cmd_ExecuteText(EXEC_APPEND, va("emote \"%s\"\n", UI_Cvar_VariableString("jk_ui_emoteToggle")));
+		return qtrue;
+	}
+	// Trigger teleport chats
+	if (Q_stricmp(name, "JKMod_teleportToggle") == 0)
+	{
+		trap_Cmd_ExecuteText(EXEC_APPEND, va("say %s\n", UI_Cvar_VariableString("jk_ui_teleportToggle")));
 		return qtrue;
 	}
 	// Change dimension from menu
