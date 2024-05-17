@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 179
+COUNT 225
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1612,4 +1612,418 @@ INDEX 178
    TEXT_LANGUAGE3 "Nur wenn der server es zulässt"
    TEXT_LANGUAGE6 "Only if server allows it"
    TEXT_LANGUAGE8 "Sólo si el servidor lo permite"
+}
+INDEX 179
+{
+   REFERENCE CLIENT_SMETERENABLE
+   TEXT_LANGUAGE1 "Speedometer enable:"
+   TEXT_LANGUAGE2 "Activer Compteur Vitesse:"
+   TEXT_LANGUAGE3 "Tachometer Aktivieren:"
+   TEXT_LANGUAGE6 "Speedometer enable:"
+   TEXT_LANGUAGE8 "Habilitar Velocímetro:"
+}
+INDEX 180
+{
+   REFERENCE CLIENT_SMETERENABLE_DESC
+   TEXT_LANGUAGE1 "Enable speedometer to show player speeds."
+   TEXT_LANGUAGE2 "Activer le compteur de vitesse pour afficher la vitesse des joueurs."
+   TEXT_LANGUAGE3 "Anzeige geschwindigkeiten des spielers."
+   TEXT_LANGUAGE6 "Enable speedometer to show player speeds."
+   TEXT_LANGUAGE8 "Habilita el velocímetro para mostrar las velocidades del jugador."
+}
+INDEX 181
+{
+   REFERENCE CLIENT_SMETERGROUND
+   TEXT_LANGUAGE1 "Speedo. Pre-Speed:"
+   TEXT_LANGUAGE2 "Compt. Vit. Pré-Vitesse:"
+   TEXT_LANGUAGE3 "Tach. Vorgeschwindigkeit:"
+   TEXT_LANGUAGE6 "Speedo. Pre-Speed:"
+   TEXT_LANGUAGE8 "Velocím. Vel. Previa:"
+}
+INDEX 182
+{
+   REFERENCE CLIENT_SMETERGROUND_DESC
+   TEXT_LANGUAGE1 "Shows previous speed from last jump."
+   TEXT_LANGUAGE2 "Affiche la vitesse précédente lors d'un saut."
+   TEXT_LANGUAGE3 "Zeigt die vorherige geschwindigkeit vom letzten sprung an."
+   TEXT_LANGUAGE6 "Shows previous speed from last jump."
+   TEXT_LANGUAGE8 "Muestra la velociadad previa al haber saltado."
+}
+INDEX 183
+{
+   REFERENCE CLIENT_SMETERJUMPH
+   TEXT_LANGUAGE1 "Speedo. Jump Height:"
+   TEXT_LANGUAGE2 "Compt. Vit. Saut hauteur:"
+   TEXT_LANGUAGE3 "Tach. Sprunghöhe:"
+   TEXT_LANGUAGE6 "Speedo. Jump Height:"
+   TEXT_LANGUAGE8 "Velocím. Altura Salto:"
+}
+INDEX 184
+{
+   REFERENCE CLIENT_SMETERJUMPH_DESC
+   TEXT_LANGUAGE1 "Shows jump height."
+   TEXT_LANGUAGE2 "Affiche la hauteur du saut."
+   TEXT_LANGUAGE3 "Zeigt die sprunghöhe an."
+   TEXT_LANGUAGE6 "Shows jump height."
+   TEXT_LANGUAGE8 "Muestra la altura del salto."
+}
+INDEX 185
+{
+   REFERENCE CLIENT_SMETERJUMPD
+   TEXT_LANGUAGE1 "Speedo. Jump Distance:"
+   TEXT_LANGUAGE2 "Compt. Vit. Distance saut:"
+   TEXT_LANGUAGE3 "Tach. Sprungweite:"
+   TEXT_LANGUAGE6 "Speedo. Jump Distance:"
+   TEXT_LANGUAGE8 "Velocím. Distancia Salto:"
+}
+INDEX 186
+{
+   REFERENCE CLIENT_SMETERJUMPD_DESC
+   TEXT_LANGUAGE1 "Shows jump distance."
+   TEXT_LANGUAGE2 "Affiche la distance du saut."
+   TEXT_LANGUAGE3 "Zeigt die sprungweite an."
+   TEXT_LANGUAGE6 "Shows jump distance."
+   TEXT_LANGUAGE8 "Muestra la distancia del salto."
+}
+INDEX 187
+{
+   REFERENCE CLIENT_SMETERVERTICAL
+   TEXT_LANGUAGE1 "Speedo. Vertical Speed:"
+   TEXT_LANGUAGE2 "Compt. Vit. Verticale:"
+   TEXT_LANGUAGE3 "Tach. Vertikale Geschw:"
+   TEXT_LANGUAGE6 "Speedo. Vertical Speed:"
+   TEXT_LANGUAGE8 "Velocím. Vel. Vertical:"
+}
+INDEX 188
+{
+   REFERENCE CLIENT_SMETERVERTICAL_DESC
+   TEXT_LANGUAGE1 "Shows vertical speed."
+   TEXT_LANGUAGE2 "Affiche la vitesse verticale."
+   TEXT_LANGUAGE3 "Zeigt die vertikale geschwindigkeit."
+   TEXT_LANGUAGE6 "Shows vertical speed."
+   TEXT_LANGUAGE8 "Muestra la velocidad vertical."
+}
+INDEX 189
+{
+   REFERENCE CLIENT_SMETERACCELM
+   TEXT_LANGUAGE1 "Speedo. Accelerometer:"
+   TEXT_LANGUAGE2 "Compt. Vit. Accéléromètre:"
+   TEXT_LANGUAGE3 "Tach. Beschleunigungsmes:"
+   TEXT_LANGUAGE6 "Speedo. Accelerometer:"
+   TEXT_LANGUAGE8 "Velocím. Acelerómetro:"
+}
+INDEX 190
+{
+   REFERENCE CLIENT_SMETERACCELM_DESC
+   TEXT_LANGUAGE1 "Shows accelerometer status bar."
+   TEXT_LANGUAGE2 "Affiche la barre de l'accéléromètre."
+   TEXT_LANGUAGE3 "Zeigt die statusleiste des beschleunigungsmessers an."
+   TEXT_LANGUAGE6 "Shows accelerometer status bar."
+   TEXT_LANGUAGE8 "Muestra la barra de acelerómetro."
+}
+INDEX 191
+{
+   REFERENCE CLIENT_SMETERKPH
+   TEXT_LANGUAGE1 "Speedo. Units to KPH:"
+   TEXT_LANGUAGE2 "Compt. Vit. Unité au KMH:"
+   TEXT_LANGUAGE3 "Tach. Einheit bei KMH:"
+   TEXT_LANGUAGE6 "Speedo. Units to KPH:"
+   TEXT_LANGUAGE8 "Velocím. Unidad a KMH:"
+}
+INDEX 192
+{
+   REFERENCE CLIENT_SMETERKPH_DESC
+   TEXT_LANGUAGE1 "Shows speed in kilometers instead of units."
+   TEXT_LANGUAGE2 "Affichage de la vitesse en kilomètres au lieu des unités."
+   TEXT_LANGUAGE3 "Zeigt geschwindigkeit in kilometern anstelle von einheiten an."
+   TEXT_LANGUAGE6 "Shows speed in kilometers instead of units."
+   TEXT_LANGUAGE8 "Muestra la velocidad en kilómetros en vez de unidades."
+}
+INDEX 193
+{
+   REFERENCE CLIENT_SMETERMPH
+   TEXT_LANGUAGE1 "Speedo. Units to MPH:"
+   TEXT_LANGUAGE2 "Compt. Vit. Unité au MPH:"
+   TEXT_LANGUAGE3 "Tach. Einheit bei MPH:"
+   TEXT_LANGUAGE6 "Speedo. Units to MPH:"
+   TEXT_LANGUAGE8 "Velocím. Unidad a MPH:"
+}
+INDEX 194
+{
+   REFERENCE CLIENT_SMETERMPH_DESC
+   TEXT_LANGUAGE1 "Shows speed in imperial miles instead of units."
+   TEXT_LANGUAGE2 "Affichage de la vitesse en miles impériaux au lieu des unités."
+   TEXT_LANGUAGE3 "Zeigt geschwindigkeit in britischen meilen anstelle voneinheiten."
+   TEXT_LANGUAGE6 "Shows speed in imperial miles instead of units."
+   TEXT_LANGUAGE8 "Muestra la velocidad en millas imperiales en vez de unidades."
+}
+INDEX 195
+{
+   REFERENCE CLIENT_SHELPERORIG
+   TEXT_LANGUAGE1 "Strafe Helper Original:"
+   TEXT_LANGUAGE2 "Strafe Aide Originale:"
+   TEXT_LANGUAGE3 "Strafe Helfer Original:"
+   TEXT_LANGUAGE6 "Strafe Helper Original:"
+   TEXT_LANGUAGE8 "Asist. Strafe Original:"
+}
+INDEX 196
+{
+   REFERENCE CLIENT_SHELPERORIG_DESC
+   TEXT_LANGUAGE1 "Original strafe helper style."
+   TEXT_LANGUAGE2 "Style original de l'assistant strafe."
+   TEXT_LANGUAGE3 "Original strafe-helfer Stil."
+   TEXT_LANGUAGE6 "Original strafe helper style."
+   TEXT_LANGUAGE8 "Estilo original del asistente de strafe."
+}
+INDEX 197
+{
+   REFERENCE CLIENT_SHELPERUPD
+   TEXT_LANGUAGE1 "Strafe Helper Updated:"
+   TEXT_LANGUAGE2 "Strafe Aide Actualisé:"
+   TEXT_LANGUAGE3 "Strafe Helfer Aktualisiert:"
+   TEXT_LANGUAGE6 "Strafe Helper Updated:"
+   TEXT_LANGUAGE8 "Asist. Strafe Actualizado:"
+}
+INDEX 198
+{
+   REFERENCE CLIENT_SHELPERUPD_DESC
+   TEXT_LANGUAGE1 "Updated strafe helper style."
+   TEXT_LANGUAGE2 "Style actualisé de l'assistant strafe."
+   TEXT_LANGUAGE3 "Aktualisiert strafe-helfer stil."
+   TEXT_LANGUAGE6 "Updated strafe helper style."
+   TEXT_LANGUAGE8 "Estilo actualizado del asistente de strafe."
+}
+INDEX 199
+{
+   REFERENCE CLIENT_SHELPERCGAZ
+   TEXT_LANGUAGE1 "Strafe Helper CGaz:"
+   TEXT_LANGUAGE2 "Strafe Aide CGaz:"
+   TEXT_LANGUAGE3 "Strafe Helfer CGaz:"
+   TEXT_LANGUAGE6 "Strafe Helper CGaz:"
+   TEXT_LANGUAGE8 "Asist. Strafe CGaz:"
+}
+INDEX 200
+{
+   REFERENCE CLIENT_SHELPERCGAZ_DESC
+   TEXT_LANGUAGE1 "Strafe helper 'Camping Gaz' style."
+   TEXT_LANGUAGE2 "Style 'Camping Gaz' de l'assistant strafe."
+   TEXT_LANGUAGE3 "Strafe-helfer 'Camping Gaz' stil."
+   TEXT_LANGUAGE6 "Strafe helper 'Camping Gaz' style."
+   TEXT_LANGUAGE8 "Estilo 'Camping Gaz' del asistente de strafe."
+}
+INDEX 201
+{
+   REFERENCE CLIENT_SHELPERWARSOW
+   TEXT_LANGUAGE1 "Strafe Helper Warsow:"
+   TEXT_LANGUAGE2 "Strafe Aide Warsow:"
+   TEXT_LANGUAGE3 "Strafe Helfer Warsow:"
+   TEXT_LANGUAGE6 "Strafe Helper Warsow:"
+   TEXT_LANGUAGE8 "Asist. Strafe Warsow:"
+}
+INDEX 202
+{
+   REFERENCE CLIENT_SHELPERWARSOW_DESC
+   TEXT_LANGUAGE1 "Strafe helper 'Warsow' style."
+   TEXT_LANGUAGE2 "Style 'Warsow' de l'assistant strafe."
+   TEXT_LANGUAGE3 "Strafe-helfer 'Warsow' stil."
+   TEXT_LANGUAGE6 "Strafe helper 'Warsow' style."
+   TEXT_LANGUAGE8 "Estilo 'Warsow' del asistente de strafe."
+}
+INDEX 203
+{
+   REFERENCE CLIENT_SHELPERWEZE
+   TEXT_LANGUAGE1 "Strafe Helper Weze:"
+   TEXT_LANGUAGE2 "Strafe Aide Weze:"
+   TEXT_LANGUAGE3 "Strafe Helfer Weze:"
+   TEXT_LANGUAGE6 "Strafe Helper Weze:"
+   TEXT_LANGUAGE8 "Asist. Strafe Weze:"
+}
+INDEX 204
+{
+   REFERENCE CLIENT_SHELPERWEZE_DESC
+   TEXT_LANGUAGE1 "Strafe helper 'Weze' style."
+   TEXT_LANGUAGE2 "Style 'Weze' de l'assistant strafe."
+   TEXT_LANGUAGE3 "Strafe-helfer 'Weze' stil."
+   TEXT_LANGUAGE6 "Strafe helper 'Weze' style."
+   TEXT_LANGUAGE8 "Estilo 'Weze' del asistente de strafe."
+}
+INDEX 205
+{
+   REFERENCE CLIENT_SHELPERSOUND
+   TEXT_LANGUAGE1 "Strafe Helper Sound:"
+   TEXT_LANGUAGE2 "Strafe Aide Son:"
+   TEXT_LANGUAGE3 "Strafe Helfer Ton:"
+   TEXT_LANGUAGE6 "Strafe Helper Sound:"
+   TEXT_LANGUAGE8 "Asist. Strafe Sonido:"
+}
+INDEX 206
+{
+   REFERENCE CLIENT_SHELPERSOUND_DESC
+   TEXT_LANGUAGE1 "Activates a sound when reaching a line."
+   TEXT_LANGUAGE2 "Activation d'un son lorsqu'une ligne est atteinte."
+   TEXT_LANGUAGE3 "Aktiviert einen ton beim erreichen einer Linie."
+   TEXT_LANGUAGE6 "Activates a sound when reaching a line."
+   TEXT_LANGUAGE8 "Activa un sonido al alcanzar una línea."
+}
+INDEX 207
+{
+   REFERENCE CLIENT_SHELPERREAR
+   TEXT_LANGUAGE1 "Strafe Helper Rear:"
+   TEXT_LANGUAGE2 "Strafe Aide Retour:"
+   TEXT_LANGUAGE3 "Strafe Helfer Rückseite:"
+   TEXT_LANGUAGE6 "Strafe Helper Rear:"
+   TEXT_LANGUAGE8 "Asist. Strafe Reversa:"
+}
+INDEX 208
+{
+   REFERENCE CLIENT_SHELPERREAR_DESC
+   TEXT_LANGUAGE1 "Enable Strafe Helper while going backwards."
+   TEXT_LANGUAGE2 "Activer le Strafe Aide en reculant."
+   TEXT_LANGUAGE3 "Strafe Helfer beim rückwärtsgehen aktivieren."
+   TEXT_LANGUAGE6 "Enable Strafe Helper while going backwards."
+   TEXT_LANGUAGE8 "Habilita el Asist. Strafe al ir retrocediendo."
+}
+INDEX 209
+{
+   REFERENCE CLIENT_SHELPERCENTER
+   TEXT_LANGUAGE1 "Strafe Helper Center:"
+   TEXT_LANGUAGE2 "Strafe Aide Centre:"
+   TEXT_LANGUAGE3 "Strafe Helfer Zentrum:"
+   TEXT_LANGUAGE6 "Strafe Helper Center:"
+   TEXT_LANGUAGE8 "Asist. Strafe Centro:"
+}
+INDEX 210
+{
+   REFERENCE CLIENT_SHELPERCENTER_DESC
+   TEXT_LANGUAGE1 "Shows an extra center lines on certain modes."
+   TEXT_LANGUAGE2 "Affiche une ligne supplémentaire dans certains modes."
+   TEXT_LANGUAGE3 "Zeigt bei bestimmten modi eine zusätzliche mittellinie an."
+   TEXT_LANGUAGE6 "Shows an extra center lines on certain modes."
+   TEXT_LANGUAGE8 "Muestra una línea extra en ciertos modos."
+}
+INDEX 211
+{
+   REFERENCE CLIENT_SHELPERLINE
+   TEXT_LANGUAGE1 "Strafe Helper Crosshair:"
+   TEXT_LANGUAGE2 "Strafe Aide Réticule:"
+   TEXT_LANGUAGE3 "Strafe Helfer Fadenkreuz:"
+   TEXT_LANGUAGE6 "Strafe Helper Crosshair:"
+   TEXT_LANGUAGE8 "Asist. Strafe Retícula:"
+}
+INDEX 212
+{
+   REFERENCE CLIENT_SHELPERLINE_DESC
+   TEXT_LANGUAGE1 "Shows an extra crosshair line in center of screen."
+   TEXT_LANGUAGE2 "Affiche un réticule supplémentaire au centre de l'écran."
+   TEXT_LANGUAGE3 "Zeigt eine zusätzliche fadenkreuzlinie in der mitte des bildschirms."
+   TEXT_LANGUAGE6 "Shows an extra crosshair line in center of screen."
+   TEXT_LANGUAGE8 "Muestra una retícula adicional en el centro de la pantalla."
+}
+INDEX 213
+{
+   REFERENCE CLIENT_SHELPERACCELM
+   TEXT_LANGUAGE1 "Strafe Helper Accelermeter:"
+   TEXT_LANGUAGE2 "Strafe Aide Accéléromètre:"
+   TEXT_LANGUAGE3 "S. Helfer Beschleunigung:"
+   TEXT_LANGUAGE6 "Strafe Helper Accelermeter:"
+   TEXT_LANGUAGE8 "Asist. Strafe Acelerómetro:"
+}
+INDEX 214
+{
+   REFERENCE CLIENT_SHELPERACCELM_DESC
+   TEXT_LANGUAGE1 "Shows accelerometer status bar. (Requires Speedometer)"
+   TEXT_LANGUAGE2 "Affiche la barre de l'accéléromètre. (Exige Compteur Vitesse)"
+   TEXT_LANGUAGE3 "Zeigt statusleiste beschleunigungsmessers. (Erfordert Tachometer)"
+   TEXT_LANGUAGE6 "Shows accelerometer status bar. (Requires Speedometer)"
+   TEXT_LANGUAGE8 "Muestra la barra de acelerómetro. (Requiere Velocímetro)"
+}
+INDEX 215
+{
+   REFERENCE CLIENT_SHELPERW
+   TEXT_LANGUAGE1 "Strafe Helper W:"
+   TEXT_LANGUAGE2 "Strafe Aide W:"
+   TEXT_LANGUAGE3 "Strafe Helfer W:"
+   TEXT_LANGUAGE6 "Strafe Helper W:"
+   TEXT_LANGUAGE8 "Asist. Strafe W:"
+}
+INDEX 216
+{
+   REFERENCE CLIENT_SHELPERW_DESC
+   TEXT_LANGUAGE1 "Tracks 'to forward' movement."
+   TEXT_LANGUAGE2 "Trace le mouvement 'vers avant'."
+   TEXT_LANGUAGE3 "Verfolgt 'die vorwärts' bewegung."
+   TEXT_LANGUAGE6 "Tracks 'to forward' movement."
+   TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante'."
+}
+INDEX 217
+{
+   REFERENCE CLIENT_SHELPERWA
+   TEXT_LANGUAGE1 "Strafe Helper WA:"
+   TEXT_LANGUAGE2 "Strafe Aide WA:"
+   TEXT_LANGUAGE3 "Strafe Helfer WA:"
+   TEXT_LANGUAGE6 "Strafe Helper WA:"
+   TEXT_LANGUAGE8 "Asist. Strafe WA:"
+}
+INDEX 218
+{
+   REFERENCE CLIENT_SHELPERWA_DESC
+   TEXT_LANGUAGE1 "Tracks 'to forward/left' movement."
+   TEXT_LANGUAGE2 "Trace le mouvement 'vers avant/gauche'."
+   TEXT_LANGUAGE3 "Verfolgt 'die vorwärts/links' bewegung."
+   TEXT_LANGUAGE6 "Tracks 'to forward/left' movement."
+   TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante/izquierda'."
+}
+INDEX 219
+{
+   REFERENCE CLIENT_SHELPERWD
+   TEXT_LANGUAGE1 "Strafe Helper WD:"
+   TEXT_LANGUAGE2 "Strafe Aide WD:"
+   TEXT_LANGUAGE3 "Strafe Helfer WD:"
+   TEXT_LANGUAGE6 "Strafe Helper WD:"
+   TEXT_LANGUAGE8 "Asist. Strafe WD:"
+}
+INDEX 220
+{
+   REFERENCE CLIENT_SHELPERWD_DESC
+   TEXT_LANGUAGE1 "Tracks 'to forward/right' movement."
+   TEXT_LANGUAGE2 "Trace le mouvement 'vers avant/droite'."
+   TEXT_LANGUAGE3 "Verfolgt 'die vorwärts/rechts' bewegung."
+   TEXT_LANGUAGE6 "Tracks 'to forward/right' movement."
+   TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante/derecha'."
+}
+INDEX 221
+{
+   REFERENCE CLIENT_SHELPERA
+   TEXT_LANGUAGE1 "Strafe Helper A:"
+   TEXT_LANGUAGE2 "Strafe Aide A:"
+   TEXT_LANGUAGE3 "Strafe Helfer A:"
+   TEXT_LANGUAGE6 "Strafe Helper A:"
+   TEXT_LANGUAGE8 "Asist. Strafe A:"
+}
+INDEX 222
+{
+   REFERENCE CLIENT_SHELPERA_DESC
+   TEXT_LANGUAGE1 "Tracks 'to the left' movement."
+   TEXT_LANGUAGE2 "Trace le mouvement 'vers la gauche'."
+   TEXT_LANGUAGE3 "Verfolgt 'zur links' bewegung."
+   TEXT_LANGUAGE6 "Tracks 'to the left' movement."
+   TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia la izquierda'."
+}
+INDEX 223
+{
+   REFERENCE CLIENT_SHELPERD
+   TEXT_LANGUAGE1 "Strafe Helper D:"
+   TEXT_LANGUAGE2 "Strafe Aide D:"
+   TEXT_LANGUAGE3 "Strafe Helfer D:"
+   TEXT_LANGUAGE6 "Strafe Helper D:"
+   TEXT_LANGUAGE8 "Asist. Strafe D:"
+}
+INDEX 224
+{
+   REFERENCE CLIENT_SHELPERD_DESC
+   TEXT_LANGUAGE1 "Tracks 'to the right' movement."
+   TEXT_LANGUAGE2 "Trace le mouvement 'vers la droite'."
+   TEXT_LANGUAGE3 "Verfolgt 'zur rechts' bewegung."
+   TEXT_LANGUAGE6 "Tracks 'to the right' movement."
+   TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia la derecha'."
 }

@@ -92,19 +92,19 @@ typedef struct
 	int					modelOpacity;				// Model opacity check
 	
 	vec4_t				strafeHelperActiveColor;	// Strafe helper active color
-	float				currentSpeed;				// Strafe helper & speed meter current speed
-	float				maxSpeed;					// Speed meter max speed
-	float				previousSpeed;				// Speed meter prev speed
-	float				lastZSpeed;					// Speed meter lastZspeed
-	float				lastJumpHeight;				// Speed meter last jump height
-	int					lastJumpHeightTime;			// Speed meter last jump height tie
-	float				lastJumpDistance;			// Speed meter jump distance
-	int					lastJumpDistanceTime;		// Speed meter jump distance time
-	float				lastGroundSpeed;			// Speed meter ground speed
-	int					lastGroundTime;				// Speed meter ground speed time
-	vec3_t				lastGroundPosition;			// Speed meter ground speed position
-	qboolean			firstTimeInAir;				// Speed meter first time in air
-	qboolean			wasOnGround;				// Speed meter was on ground
+	float				currentSpeed;				// Strafe helper & speedometer current speed
+	float				maxSpeed;					// Speedometer max speed
+	float				previousSpeed;				// Speedometer prev speed
+	float				lastZSpeed;					// Speedometer lastZspeed
+	float				lastJumpHeight;				// Speedometer last jump height
+	int					lastJumpHeightTime;			// Speedometer last jump height tie
+	float				lastJumpDistance;			// Speedometer jump distance
+	int					lastJumpDistanceTime;		// Speedometer jump distance time
+	float				lastGroundSpeed;			// Speedometer ground speed
+	int					lastGroundTime;				// Speedometer ground speed time
+	vec3_t				lastGroundPosition;			// Speedometer ground speed position
+	qboolean			firstTimeInAir;				// Speedometer first time in air
+	qboolean			wasOnGround;				// Speedometer was on ground
 	int					lastPersistant[16];			// Previous saved persistant values
 
 } jkmod_cg_t;
@@ -130,7 +130,7 @@ typedef enum
 
 } jkmod_shelper_option_t;
 
-// Speed meter options
+// Speedometer options
 typedef enum
 {
 	SMETER_ENABLE			= ( 1 << 0 ),
@@ -276,7 +276,7 @@ extern vmCvar_t						jkcvar_cg_chatBoxHeight;
 extern vmCvar_t						jkcvar_cg_chatBoxHistory;
 
 
-extern vmCvar_t						jkcvar_cg_speedMeter;
+extern vmCvar_t						jkcvar_cg_speedoMeter;
 extern vmCvar_t						jkcvar_cg_strafeHelper;
 extern vmCvar_t						jkcvar_cg_sHelperCutoff;
 extern vmCvar_t						jkcvar_cg_sHelperPrecision;
@@ -308,6 +308,8 @@ void		BaseJK2_CG_UpdateCvars(void);
 // jk_cg_main.c
 void		JKMod_CG_RegisterCvars(void);
 void		JKMod_CG_UpdateCvars(void);
+void		JKMod_CG_CVU_sMeterCheck(void);
+void		JKMod_CG_CVU_sHelperCheck(void);
 void		JKMod_CG_CVU_sHelperColor(void);
 void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
@@ -318,7 +320,7 @@ char		*JKMod_CG_StrTok(char *str, const char *delim);
 // jk_cg_consolecmds.c
 void		JKMod_CG_EmoteCamera(void);
 void		JKMod_CG_StrafeHelperToggle(void);
-void		JKMod_CG_SpeedMeterToggle(void);
+void		JKMod_CG_SpeedoMeterToggle(void);
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);
@@ -348,11 +350,11 @@ void		JKMod_CG_StrafeHelperDrawLine(float x1, float y1, float x2, float y2, floa
 void		JKMod_CG_StrafeHelperDrawSpeed(int moveDir);
 void		JKMod_CG_StrafeHelperLine(vec3_t velocity, float diff, qboolean active, int moveDir);
 void		JKMod_CG_StrafeHelper(centity_t* cent);
-void		JKMod_CG_SpeedMeterAccel(void);
-void		JKMod_CG_SpeedMeterJumpHeight(centity_t* cent);
-void		JKMod_CG_SpeedMeterJumpDistance(void);
-void		JKMod_CG_SpeedMeterVerticalSpeed(void);
-void		JKMod_CG_SpeedMeter(void);
+void		JKMod_CG_SpeedoMeterAccel(void);
+void		JKMod_CG_SpeedoMeterJumpHeight(centity_t* cent);
+void		JKMod_CG_SpeedoMeterJumpDistance(void);
+void		JKMod_CG_SpeedoMeterVerticalSpeed(void);
+void		JKMod_CG_SpeedoMeter(void);
 
 // jk_cg_players.c
 void		JKMod_CG_Player(centity_t *cent);

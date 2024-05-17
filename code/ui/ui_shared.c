@@ -2605,6 +2605,25 @@ const char *Item_Multi_Setting(itemDef_t *item) {
 	return "";
 }
 
+// Tr!Force: [UIGeneral] Experimental checkbox behaviour
+const char *Item_Checkbox_Setting(itemDef_t *item) {
+	char buff[2048];
+	float value = 0;
+	int i;
+	multiDef_t *multiPtr = (multiDef_t*)item->typeData;
+	if (multiPtr) {
+		value = DC->getCVarValue(item->cvar);
+		for (i = 0; i < multiPtr->count; i++) {
+			if (!Q_stricmp("enable", multiPtr->cvarList[i])) continue;
+			if (!Q_stricmp("disable", multiPtr->cvarList[i])) continue;
+			if ((1 << (int)multiPtr->cvarValue[i]) & (int)value) {
+				return multiPtr->cvarList[i];
+ 			}
+ 		}
+	}
+	return "";
+}
+
 qboolean Item_Multi_HandleKey(itemDef_t *item, int key) {
 	multiDef_t *multiPtr = (multiDef_t*)item->typeData;
 	if (multiPtr) {
@@ -3118,6 +3137,50 @@ qboolean Item_Slider_HandleKey(itemDef_t *item, int key, qboolean down) {
 	return qfalse;
 }
 
+// Tr!Force: [UIGeneral] Experimental checkbox behaviour
+qboolean Item_Checkbox_HandleKey(itemDef_t *item, int key) {
+	multiDef_t *multiPtr = (multiDef_t*)item->typeData;
+	if (multiPtr) {
+		if (Rect_ContainsPoint(&item->window.rect, DC->cursorx, DC->cursory) && item->window.flags & WINDOW_HASFOCUS && item->cvar) {
+			if (key == A_MOUSE1 || key == A_ENTER || key == A_MOUSE2 || key == A_MOUSE3) {
+				int current = Item_Multi_FindCvarByValue(item);
+				int max = Item_Multi_CountSettings(item) - 1;
+				int cvarValue = DC->getCVarValue(item->cvar);
+				int i;
+
+				if ( max < 0 ) max = 0;
+
+				if (key == A_MOUSE2) {
+					current--;
+				} else {
+					current++;
+				}
+
+				if ( current < 0 ) {
+					current = max;
+				} else if ( current > max ) {
+					current = 0;
+				}
+				
+				for (i = 0; i < multiPtr->count; i++) 
+				{
+					if (!Q_stricmp("enable", multiPtr->cvarList[i])) {
+						cvarValue |= (1 << (int)multiPtr->cvarValue[i]);
+					} else if (!Q_stricmp("disable", multiPtr->cvarList[i])) {
+						cvarValue &= ~(1 << (int)multiPtr->cvarValue[i]);
+					} else /*if (!Q_stricmp("toggle", multiPtr->cvarList[i]))*/ {
+						cvarValue ^= (1 << (int)multiPtr->cvarValue[i]);
+					}
+					DC->setCVar(item->cvar, va("%i", (int)cvarValue));
+				}
+
+				return qtrue;
+			}
+		}
+	}
+	return qfalse;
+}
+
 
 qboolean Item_HandleKey(itemDef_t *item, int key, qboolean down) {
 
@@ -3145,7 +3208,7 @@ qboolean Item_HandleKey(itemDef_t *item, int key, qboolean down) {
       return qfalse;
       break;
     case ITEM_TYPE_CHECKBOX:
-      return qfalse;
+      return Item_Checkbox_HandleKey(item, key); // Tr!Force: [UIGeneral] Experimental checkbox behaviour
       break;
     case ITEM_TYPE_EDITFIELD:
     case ITEM_TYPE_NUMERICFIELD:
@@ -3909,6 +3972,37 @@ void Item_Multi_Paint(itemDef_t *item) {
 	} else {
 //		DC->drawText(item->textRect.x, item->textRect.y, item->textscale, newColor, text, 0, 0, item->textStyle);
 		DC->drawText(item->textRect.x, item->textRect.y, item->textscale, newColor, text, 0, 0, item->textStyle,item->iMenuFont);
+	}
+}
+
+// Tr!Force: [UIGeneral] Experimental checkbox behaviour
+void Item_Checkbox_Paint(itemDef_t *item) {
+	char	sYES[20];
+	char	sNO[20];
+	vec4_t newColor, lowLight;
+	const char *text = "";
+	menuDef_t *parent = (menuDef_t*)item->parent;
+
+	if (item->window.flags & WINDOW_HASFOCUS) {
+		lowLight[0] = 0.8 * parent->focusColor[0]; 
+		lowLight[1] = 0.8 * parent->focusColor[1]; 
+		lowLight[2] = 0.8 * parent->focusColor[2]; 
+		lowLight[3] = 0.8 * parent->focusColor[3]; 
+		LerpColor(parent->focusColor,lowLight,newColor,0.5+0.5*sin(DC->realTime / PULSE_DIVISOR));
+	} else {
+		memcpy(&newColor, &item->window.foreColor, sizeof(vec4_t));
+	}
+
+	text = Item_Checkbox_Setting(item);
+
+	trap_SP_GetStringTextString("MENUS0_YES",sYES, sizeof(sYES));
+	trap_SP_GetStringTextString("MENUS0_NO", sNO,  sizeof(sNO));
+
+	if (item->text) {
+		Item_Text_Paint(item);
+		DC->drawText(item->textRect.x + item->textRect.w + 8, item->textRect.y, item->textscale, newColor, (text[0] ? sYES : sNO), 0, 0, item->textStyle,item->iMenuFont);
+	} else {
+		DC->drawText(item->textRect.x, item->textRect.y, item->textscale, newColor, (text[0] ? sYES : sNO), 0, 0, item->textStyle,item->iMenuFont);
 	}
 }
 
@@ -5085,6 +5179,7 @@ void Item_Paint(itemDef_t *item)
     case ITEM_TYPE_RADIOBUTTON:
       break;
     case ITEM_TYPE_CHECKBOX:
+		Item_Checkbox_Paint(item); // Tr!Force: [UIGeneral] Experimental checkbox behaviour
       break;
     case ITEM_TYPE_EDITFIELD:
     case ITEM_TYPE_NUMERICFIELD:
@@ -5397,7 +5492,7 @@ void Item_ValidateTypeData(itemDef_t *item)
 		editPtr->maxChars = MAX_EDITFIELD - 1;
 		editPtr->maxPaintChars = MAX_EDITFIELD - 1;
 	} 
-	else if (item->type == ITEM_TYPE_MULTI) 
+	else if (item->type == ITEM_TYPE_MULTI || item->type == ITEM_TYPE_CHECKBOX) // Tr!Force: [UIGeneral] Experimental checkbox behaviour 
 	{
 		item->typeData = UI_Alloc(sizeof(multiDef_t));
 	} 
@@ -6101,6 +6196,7 @@ qboolean ItemParse_cvar( itemDef_t *item, int handle )
 		switch ( item->type )
 		{
 			case ITEM_TYPE_EDITFIELD:
+			case ITEM_TYPE_CHECKBOX: // Tr!Force: [UIGeneral] Experimental checkbox behaviour
 			case ITEM_TYPE_NUMERICFIELD:
 			case ITEM_TYPE_YESNO:
 			case ITEM_TYPE_BIND:

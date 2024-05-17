@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.20.1
+- Add optimizations for insta kill mode
+- Add dimension skip score tracking
+- Add toggle console button to menus
+- Add maps shader replacements from file
+- Add screen clear to menus and minor tweaks
+- Add server teleport chats to client menus
+- Add strafehelper and speedometer to menus
+
 ## 0.20.0
 - Merge updates from mvsdk
 - Updated year in mod source files

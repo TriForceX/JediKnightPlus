@@ -45,7 +45,7 @@ void JKMod_CG_StrafeHelperToggle(void)
 	{
 		"Original style",
 		"Updated style",
-		"Cgaz style",
+		"CGaz style",
 		"Warsow style",
 		"Sound",
 		"W",
@@ -72,7 +72,7 @@ void JKMod_CG_StrafeHelperToggle(void)
 				CG_Printf("%2d ^1[ ]^7 %s\n", i, sHelperSettings[i].string);
 			}
 		}
-		CG_Printf("Example: ^3/strafehelper 13^7 (Toggles: ^5%s^7)\n", sHelperSettings[13].string);
+		CG_Printf("Example: ^3/strafehelper 13^7 (Toggles: ^5%s^7)\n", sHelperSettings[14].string);
 		return;
 	}
 	else 
@@ -90,10 +90,10 @@ void JKMod_CG_StrafeHelperToggle(void)
 			return;
 		}
 
-		// Check speed meter
-		if (index == 12 && !(jkcvar_cg_speedMeter.integer & SMETER_ENABLE)) 
+		// Check speedometer
+		if (index == 12 && !(jkcvar_cg_speedoMeter.integer & SMETER_ENABLE)) 
 		{
-			CG_Printf("^3Option %i requires speed meter enabled\n", index);
+			CG_Printf("^3Option %i requires speedometer enabled\n", index);
 			return;
 		}
 
@@ -115,20 +115,20 @@ void JKMod_CG_StrafeHelperToggle(void)
 		}
 
 		trap_Cvar_Update(&jkcvar_cg_strafeHelper);
-		CG_Printf("Strafe Helper: %s %s^7\n", sHelperSettings[index].string, ((jkcvar_cg_strafeHelper.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+		CG_Printf("StrafeHelper: %s %s^7\n", sHelperSettings[index].string, ((jkcvar_cg_strafeHelper.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 	}
 }
 
 /*
 =====================================================================
-Speed meter toggle
+Speedometer toggle
 =====================================================================
 */
-void JKMod_CG_SpeedMeterToggle(void)
+void JKMod_CG_SpeedoMeterToggle(void)
 {
 	jkmod_cg_bit_info_t sMeterSettings[] = 
 	{
-		"Enable speed meter",
+		"Show speedometer",
 		"Pre-speed display",
 		"Jump height display",
 		"Jump distance display",
@@ -146,7 +146,7 @@ void JKMod_CG_SpeedMeterToggle(void)
 		int i = 0;
 		for (i = 0; i < sMeterSettingsSize; i++) 
 		{
-			if ((jkcvar_cg_speedMeter.integer & (1 << i))) {
+			if ((jkcvar_cg_speedoMeter.integer & (1 << i))) {
 				CG_Printf("%2d ^2[X]^7 %s\n", i, sMeterSettings[i].string);
 			}
 			else {
@@ -182,20 +182,20 @@ void JKMod_CG_SpeedMeterToggle(void)
 		if (index == 8 || index == 9) 
 		{ 
 			int groupMask = (1 << 8) + (1 << 9);
-			int value = jkcvar_cg_speedMeter.integer;
+			int value = jkcvar_cg_speedoMeter.integer;
 
 			groupMask &= ~(1 << index);	// Remove index from groupmask
 			value &= ~(groupMask);		// Turn groupmask off
 			value ^= (1 << index);		// Toggle index item
 
-			trap_Cvar_Set("jk_cg_speedMeter", va("%i", value));
+			trap_Cvar_Set("jk_cg_speedoMeter", va("%i", value));
 		}
 		else 
 		{
-			trap_Cvar_Set("jk_cg_speedMeter", va("%i", (1 << index) ^ (jkcvar_cg_speedMeter.integer & mask)));
+			trap_Cvar_Set("jk_cg_speedoMeter", va("%i", (1 << index) ^ (jkcvar_cg_speedoMeter.integer & mask)));
 		}
 
-		trap_Cvar_Update(&jkcvar_cg_speedMeter);
-		CG_Printf("Speed Meter: %s %s^7\n", sMeterSettings[index].string, ((jkcvar_cg_speedMeter.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+		trap_Cvar_Update(&jkcvar_cg_speedoMeter);
+		CG_Printf("Speedometer: %s %s^7\n", sMeterSettings[index].string, ((jkcvar_cg_speedoMeter.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 	}
 }

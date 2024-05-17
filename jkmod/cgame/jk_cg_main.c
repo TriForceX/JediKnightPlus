@@ -48,7 +48,7 @@ vmCvar_t	jkcvar_cg_chatBoxTime;
 vmCvar_t	jkcvar_cg_chatBoxHeight;
 vmCvar_t	jkcvar_cg_chatBoxHistory;
 
-vmCvar_t	jkcvar_cg_speedMeter;
+vmCvar_t	jkcvar_cg_speedoMeter;
 vmCvar_t	jkcvar_cg_strafeHelper;
 vmCvar_t	jkcvar_cg_sHelperCutoff;
 vmCvar_t	jkcvar_cg_sHelperPrecision;
@@ -100,8 +100,8 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_chatBoxHeight,			"jk_cg_chatBoxHeight",			"360",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatBoxHistory,		"jk_cg_chatBoxHistory",			"1",			NULL,						CVAR_ARCHIVE, 0 },
 	
-	{ &jkcvar_cg_speedMeter,			"jk_cg_speedMeter",				"256",			NULL,						CVAR_ARCHIVE, 0 },
-	{ &jkcvar_cg_strafeHelper,			"jk_cg_strafeHelper",			"992",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_speedoMeter,			"jk_cg_speedoMeter",			"320",			JKMod_CG_CVU_sMeterCheck,	CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_strafeHelper,			"jk_cg_strafeHelper",			"992",			JKMod_CG_CVU_sHelperCheck,	CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_sHelperCutoff,			"jk_cg_sHelperCutoff",			"240",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_sHelperPrecision,		"jk_cg_sHelperPrecision",		"256",			NULL,						CVAR_NONE, 0 },
 	{ &jkcvar_cg_sHelperLineWidth,		"jk_cg_sHelperLineWidth",		"1",			NULL,						CVAR_ARCHIVE, 0 },
@@ -179,6 +179,30 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Check console notify time
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
+}
+
+// Check speedometer cvar
+void JKMod_CG_CVU_sMeterCheck(void)
+{
+	if (!(jkcvar_cg_speedoMeter.integer & SMETER_ENABLE) && (jkcvar_cg_strafeHelper.integer & SHELPER_ACCELMETER)) 
+	{
+		int cvarValue = jkcvar_cg_strafeHelper.integer;
+		cvarValue &= ~SHELPER_ACCELMETER;
+		trap_Cvar_Set("jk_cg_strafeHelper", va("%i", cvarValue));
+		CG_Printf(S_COLOR_YELLOW "StrafeHelper: Accelerometer has been disabled! (Requires speedometer)\n");
+	}
+}
+
+// Check strafe helper cvar
+void JKMod_CG_CVU_sHelperCheck(void)
+{
+	if ((jkcvar_cg_strafeHelper.integer & SHELPER_ACCELMETER) && !(jkcvar_cg_speedoMeter.integer & SMETER_ENABLE)) 
+	{
+		int cvarValue = jkcvar_cg_strafeHelper.integer;
+		cvarValue &= ~SHELPER_ACCELMETER;
+		trap_Cvar_Set("jk_cg_strafeHelper", va("%i", cvarValue));
+		CG_Printf(S_COLOR_YELLOW "StrafeHelper: Accelerometer requires speedometer enabled!\n");
+	}
 }
 
 // Update strafe helper active color

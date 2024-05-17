@@ -39,6 +39,7 @@
 			show				setup_background ;
 			show 				clientInterfaceControls ;	
 			hide				clientInterface2Controls ;
+			hide				clientInterface3Controls ;
 			hide				clientVisualsControls ;
 			hide				clientCameraControls ;
 			hide 				clientBindsControls ;
@@ -145,6 +146,7 @@
 				show			setup_background ;
 				show 			clientInterfaceControls ;
 				hide			clientInterface2Controls ;
+				hide			clientInterface3Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -204,6 +206,7 @@
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
 				hide 			clientInterface2Controls ;
+				hide 			clientInterface3Controls ;
 				show			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -262,6 +265,7 @@
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
 				hide 			clientInterface2Controls ;
+				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
 				show			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -321,6 +325,7 @@
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
 				hide 			clientInterface2Controls ;
+				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				show 			clientBindsControls ;
@@ -380,6 +385,7 @@
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
 				hide 			clientInterface2Controls ;
+				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -439,6 +445,7 @@
 				show			setup_background ;
 				hide 			clientInterfaceControls ;
 				hide 			clientInterface2Controls ;
+				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
@@ -1118,9 +1125,9 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				show 			clientInterface2Controls ;	
 				hide			clientInterfaceControls ;
-				hide			highlightNext ;
+				show 			clientInterface2Controls ;	
+				setfocus		nextButton2 ;
 			}
 			mouseenter 
 			{ 
@@ -1169,10 +1176,431 @@
 			} 
 		}
 		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERENABLE
+			descText			@JKMENUS_CLIENT_SMETERENABLE_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			0
+			}
+			rect				220 61 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight2
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight2
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERGROUND
+			descText			@JKMENUS_CLIENT_SMETERGROUND_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			1
+			}
+			rect				220 81 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight3
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight3
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERJUMPH
+			descText			@JKMENUS_CLIENT_SMETERJUMPH_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			2
+			}
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight4
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERJUMPD
+			descText			@JKMENUS_CLIENT_SMETERJUMPD_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			3
+			}
+			rect				220 121 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight5
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight5
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERVERTICAL
+			descText			@JKMENUS_CLIENT_SMETERVERTICAL_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			4
+			}
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight6
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight6
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERACCELM
+			descText			@JKMENUS_CLIENT_SMETERACCELM_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList
+			{
+				toggle			6
+			}
+			rect				220 161 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight7
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight7
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERKPH
+			descText			@JKMENUS_CLIENT_SMETERKPH_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList		
+			{
+				toggle			8
+				disable			9
+			}
+			rect				220 181 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight8
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight8
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SMETERMPH
+			descText			@JKMENUS_CLIENT_SMETERMPH_DESC
+			cvar				"jk_cg_speedoMeter"
+			cvarFloatList		
+			{
+				toggle			9
+				disable			8
+			}
+			rect				220 201 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight9
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight9
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERORIG
+			descText			@JKMENUS_CLIENT_SHELPERORIG_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			0
+				disable			1
+				disable			2
+				disable			3
+				disable			13
+			}
+			rect				220 221 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight10
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight10
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERUPD
+			descText			@JKMENUS_CLIENT_SHELPERUPD_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				disable			0
+				toggle			1
+				disable			2
+				disable			3
+				disable			13
+			}
+			rect				220 241 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight11
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight11
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface2Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERCGAZ
+			descText			@JKMENUS_CLIENT_SHELPERCGAZ_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				disable			0
+				disable			1
+				toggle			2
+				disable			3
+				disable			13
+			}
+			rect				220 261 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight12
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight12
+				hide			keybindstatus
+			}
+		}
+		
 		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 2)
 		itemDef 
 		{
-			name				prevButton
+			name				prevButton2
 			group				clientInterface2Controls
 			type				1
 			descText			@JKMENUS_BUTTON_PREV
@@ -1184,9 +1612,9 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				show 			clientInterfaceControls ;	
 				hide			clientInterface2Controls ;
-				hide			highlightPrev ;
+				show 			clientInterfaceControls ;	
+				setfocus		prevButton ;
 			}
 			mouseenter 
 			{ 
@@ -1200,8 +1628,521 @@
 
 		itemDef 
 		{
-			name				nextButton
+			name				nextButton2
 			group				clientInterface2Controls
+			descText			@JKMENUS_BUTTON_NEXT
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				484 298 13 13
+			background			"gfx/menus/scrollbar_arrow_right"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			clientInterface2Controls ;
+				show 			clientInterface3Controls ;	
+				setfocus		nextButton3 ;
+			}
+			mouseenter 
+			{ 
+				show			highlightNext ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightNext ;
+			}
+		}
+		
+		//---------------------------------------------
+		//	INTERFACE OPTIONS PAGE 3
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERWARSOW
+			descText			@JKMENUS_CLIENT_SHELPERWARSOW_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				disable			0
+				disable			1
+				disable			2
+				toggle			3
+				disable			13
+			}
+			rect				220 41 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight1
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight1
+				hide			keybindstatus
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERWEZE
+			descText			@JKMENUS_CLIENT_SHELPERWEZE_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				disable			0
+				disable			1
+				disable			2
+				disable			3
+				toggle			13
+			}
+			rect				220 61 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight2
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight2
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERSOUND
+			descText			@JKMENUS_CLIENT_SHELPERSOUND_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			4
+			}
+			rect				220 81 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight3
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight3
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERREAR
+			descText			@JKMENUS_CLIENT_SHELPERREAR_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			10
+			}
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight4
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERCENTER
+			descText			@JKMENUS_CLIENT_SHELPERCENTER_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			11
+			}
+			rect				220 121 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight5
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight5
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERLINE
+			descText			@JKMENUS_CLIENT_SHELPERLINE_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			14
+			}
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight6
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight6
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERACCELM
+			descText			@JKMENUS_CLIENT_SHELPERACCELM_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			12
+			}
+			rect				220 161 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight7
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight7
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERW
+			descText			@JKMENUS_CLIENT_SHELPERW_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			5
+			}
+			rect				220 181 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight8
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight8
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERWA
+			descText			@JKMENUS_CLIENT_SHELPERWA_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			6
+			}
+			rect				220 201 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight9
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight9
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERWD
+			descText			@JKMENUS_CLIENT_SHELPERWD_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			7
+			}
+			rect				220 221 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight10
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight10
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERA
+			descText			@JKMENUS_CLIENT_SHELPERA_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			8
+			}
+			rect				220 241 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight11
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight11
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientInterface3Controls
+			type				ITEM_TYPE_CHECKBOX
+			text				@JKMENUS_CLIENT_SHELPERD
+			descText			@JKMENUS_CLIENT_SHELPERD_DESC
+			cvar				"jk_cg_strafeHelper"
+			cvarFloatList		
+			{
+				toggle			9
+			}
+			rect				220 261 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight12
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight12
+				hide			keybindstatus
+			}
+		}
+		
+		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 2)
+		itemDef 
+		{
+			name				prevButton3
+			group				clientInterface3Controls
+			type				1
+			descText			@JKMENUS_BUTTON_PREV
+			style				WINDOW_STYLE_SHADER
+			rect				463 298 13 13
+			background			"gfx/menus/scrollbar_arrow_left"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			clientInterface3Controls ;
+				show 			clientInterface2Controls ;	
+				setfocus		prevButton2 ;
+			}
+			mouseenter 
+			{ 
+				show			highlightPrev ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightPrev ;
+			}
+		}
+
+		itemDef 
+		{
+			name				nextButton3
+			group				clientInterface3Controls
 			descText			@JKMENUS_BUTTON_NEXT
 			type				1
 			style				WINDOW_STYLE_SHADER

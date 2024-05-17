@@ -85,7 +85,7 @@ void JKMod_CG_Draw2D(void)
 	}
 
 	// Calculate speed
-	if (jkcvar_cg_strafeHelper.integer || jkcvar_cg_speedMeter.integer & SMETER_ENABLE)
+	if (jkcvar_cg_strafeHelper.integer || jkcvar_cg_speedoMeter.integer & SMETER_ENABLE)
 	{
 		JKMod_CG_CalculateSpeed(cent);
 	}
@@ -109,15 +109,15 @@ void JKMod_CG_Draw2D(void)
 		}
 	}
 
-	// Speed meter
-	if (jkcvar_cg_speedMeter.integer & SMETER_ENABLE)
+	// Speedometer
+	if (jkcvar_cg_speedoMeter.integer & SMETER_ENABLE)
 	{
-		if ((jkcvar_cg_speedMeter.integer & SMETER_ACCELMETER) || (jkcvar_cg_strafeHelper.integer & SHELPER_ACCELMETER)) JKMod_CG_SpeedMeterAccel();
-		if (jkcvar_cg_speedMeter.integer & SMETER_JUMPHEIGHT) JKMod_CG_SpeedMeterJumpHeight(cent);
-		if (jkcvar_cg_speedMeter.integer & SMETER_JUMPDISTANCE) JKMod_CG_SpeedMeterJumpDistance();
-		if (jkcvar_cg_speedMeter.integer & SMETER_VERTICALSPEED) JKMod_CG_SpeedMeterVerticalSpeed();
+		if ((jkcvar_cg_speedoMeter.integer & SMETER_ACCELMETER) || (jkcvar_cg_strafeHelper.integer & SHELPER_ACCELMETER)) JKMod_CG_SpeedoMeterAccel();
+		if (jkcvar_cg_speedoMeter.integer & SMETER_JUMPHEIGHT) JKMod_CG_SpeedoMeterJumpHeight(cent);
+		if (jkcvar_cg_speedoMeter.integer & SMETER_JUMPDISTANCE) JKMod_CG_SpeedoMeterJumpDistance();
+		if (jkcvar_cg_speedoMeter.integer & SMETER_VERTICALSPEED) JKMod_CG_SpeedoMeterVerticalSpeed();
 
-		JKMod_CG_SpeedMeter();
+		JKMod_CG_SpeedoMeter();
 	}
 		
 
@@ -1404,12 +1404,12 @@ void JKMod_CG_StrafeHelper(centity_t* cent)
 
 /*
 =====================================================================
-Draw speed meter
+Draw speedometer
 =====================================================================
 */
 
 // Draw accel meter
-void JKMod_CG_SpeedMeterAccel(void)
+void JKMod_CG_SpeedoMeterAccel(void)
 {
 	const float optimalAccel = cg.predictedPlayerState.speed * ((float)cg.frametime / 1000.0f);
 	const float potentialSpeed = (float)sqrt(cg.jkmodCG.previousSpeed * cg.jkmodCG.previousSpeed - optimalAccel * optimalAccel + 2 * (250 * optimalAccel));
@@ -1464,7 +1464,7 @@ void JKMod_CG_SpeedMeterAccel(void)
 }
 
 // Draw jump height
-void JKMod_CG_SpeedMeterJumpHeight(centity_t *cent)
+void JKMod_CG_SpeedoMeterJumpHeight(centity_t *cent)
 {
 	const vec_t* const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
 	char jumpHeightStr[32] = { 0 };
@@ -1490,11 +1490,11 @@ void JKMod_CG_SpeedMeterJumpHeight(centity_t *cent)
 
 	if ((cg.jkmodCG.lastJumpHeightTime > cg.time - 1500) && (cg.jkmodCG.lastJumpHeight > 0.0f)) 
 	{
-		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+		if (!(jkcvar_cg_speedoMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedoMeter.integer & SMETER_MPH))
 			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.0f", cg.jkmodCG.lastJumpHeight);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_KPH)
 			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.jkmodCG.lastJumpHeight * 0.05f);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_MPH)
 			Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.jkmodCG.lastJumpHeight * 0.03106855f);
 
 		UI_DrawScaledProportionalString(x + 60, y - 10, "Height:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
@@ -1504,7 +1504,7 @@ void JKMod_CG_SpeedMeterJumpHeight(centity_t *cent)
 }
 
 // Draw jump distance
-void JKMod_CG_SpeedMeterJumpDistance(void)
+void JKMod_CG_SpeedoMeterJumpDistance(void)
 {
 	char jumpDistanceStr[64] = { 0 };
 	float x, y;
@@ -1540,11 +1540,11 @@ void JKMod_CG_SpeedMeterJumpDistance(void)
 
 	if ((cg.jkmodCG.lastJumpDistanceTime > cg.time - 1500) && (cg.jkmodCG.lastJumpDistance > 0.0f)) 
 	{
-		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+		if (!(jkcvar_cg_speedoMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedoMeter.integer & SMETER_MPH))
 			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.0f", cg.jkmodCG.lastJumpDistance);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_KPH)
 			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.jkmodCG.lastJumpDistance * 0.05f);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_MPH)
 			Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.jkmodCG.lastJumpDistance * 0.03106855f);
 
 		UI_DrawScaledProportionalString(x - 60, y - 10, "Distance:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
@@ -1553,7 +1553,7 @@ void JKMod_CG_SpeedMeterJumpDistance(void)
 }
 
 // Draw vertical speed
-void JKMod_CG_SpeedMeterVerticalSpeed(void) 
+void JKMod_CG_SpeedoMeterVerticalSpeed(void) 
 {
 	char speedStr5[64] = { 0 };
 	float vertspeed = cg.predictedPlayerState.velocity[2];
@@ -1572,11 +1572,11 @@ void JKMod_CG_SpeedMeterVerticalSpeed(void)
 	{
 		qboolean lastGroundShown = (cg.jkmodCG.lastGroundTime > cg.time - 1500) && cg.jkmodCG.lastGroundSpeed;
 
-		if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+		if (!(jkcvar_cg_speedoMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedoMeter.integer & SMETER_MPH))
 			Com_sprintf(speedStr5, sizeof(speedStr5), "%.0f", vertspeed);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_KPH)
 			Com_sprintf(speedStr5, sizeof(speedStr5), "%.1f", vertspeed * 0.05f);
-		else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+		else if (jkcvar_cg_speedoMeter.integer & SMETER_MPH)
 			Com_sprintf(speedStr5, sizeof(speedStr5), "%.1f", vertspeed * 0.03106855f);
 
 		UI_DrawScaledProportionalString(x, y - (lastGroundShown ? 60 : 30)  - 10, "Vertical:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
@@ -1584,8 +1584,8 @@ void JKMod_CG_SpeedMeterVerticalSpeed(void)
 	}
 }
 
-// Draw speed meter
-void JKMod_CG_SpeedMeter(void)
+// Draw speedometer
+void JKMod_CG_SpeedoMeter(void)
 {
 	const char *accelStr;
 	char speedStr[32] = { 0 };
@@ -1635,17 +1635,17 @@ void JKMod_CG_SpeedMeter(void)
 
 	avgAccel = total / (float)ACCEL_SAMPLES - 0.0625f;
 
-	if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+	if (!(jkcvar_cg_speedoMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedoMeter.integer & SMETER_MPH))
 	{
 		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "µps:" : avgAccel < 0.0f ? S_COLOR_RED "µps:" : S_COLOR_WHITE "µps:";
 		Com_sprintf(speedStr, sizeof(speedStr), "%.0f", currentSpeed);
 	}
-	else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+	else if (jkcvar_cg_speedoMeter.integer & SMETER_KPH)
 	{
 		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "kph:" : avgAccel < 0.0f ? S_COLOR_RED "kph:" : S_COLOR_WHITE "kph:";
 		Com_sprintf(speedStr, sizeof(speedStr), "%.1f", currentSpeed * 0.05f);
 	}
-	else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+	else if (jkcvar_cg_speedoMeter.integer & SMETER_MPH)
 	{
 		accelStr = avgAccel > 0.0f ? S_COLOR_GREEN "mph:" : avgAccel < 0.0f ? S_COLOR_RED "mph:" : S_COLOR_WHITE "mph:";
 		Com_sprintf(speedStr, sizeof(speedStr), "%.1f", currentSpeed * 0.03106855f);
@@ -1654,7 +1654,7 @@ void JKMod_CG_SpeedMeter(void)
 	UI_DrawScaledProportionalString(x, y - 10, accelStr, UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
 	UI_DrawScaledProportionalString(x, y, speedStr, UI_CENTER | UI_DROPSHADOW, colorSpeed, 0.7);
 
-	if (jkcvar_cg_speedMeter.integer & SMETER_GROUNDSPEED) 
+	if (jkcvar_cg_speedoMeter.integer & SMETER_GROUNDSPEED) 
 	{
 		char speedStr4[32] = { 0 };
 		vec4_t colorGroundSpeed = { 1, 1, 1, 1 };
@@ -1681,11 +1681,11 @@ void JKMod_CG_SpeedMeter(void)
 		{
 			if (cg.jkmodCG.lastGroundSpeed) 
 			{
-				if (!(jkcvar_cg_speedMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedMeter.integer & SMETER_MPH))
+				if (!(jkcvar_cg_speedoMeter.integer & SMETER_KPH) && !(jkcvar_cg_speedoMeter.integer & SMETER_MPH))
 					Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.jkmodCG.lastGroundSpeed);
-				else if (jkcvar_cg_speedMeter.integer & SMETER_KPH)
+				else if (jkcvar_cg_speedoMeter.integer & SMETER_KPH)
 					Com_sprintf(speedStr4, sizeof(speedStr4), "%.1f", cg.jkmodCG.lastGroundSpeed * 0.05f);
-				else if (jkcvar_cg_speedMeter.integer & SMETER_MPH)
+				else if (jkcvar_cg_speedoMeter.integer & SMETER_MPH)
 					Com_sprintf(speedStr4, sizeof(speedStr4), "%.1f", cg.jkmodCG.lastGroundSpeed * 0.03106855f);
 
 				UI_DrawScaledProportionalString(x, y - 30 - 10, "Ground:", UI_CENTER | UI_DROPSHADOW, colorWhite, 0.5);
