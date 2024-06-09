@@ -616,17 +616,17 @@ char *JKMod_ReadFile(char *filename)
 
 	if (!f) {
 		BG_TempFree(MAX_FILE_LENGTH);
-		return 0;
+		return NULL;
 	}
 	if (len == 0) {
 		BG_TempFree(MAX_FILE_LENGTH);
-		return 0;
+		return NULL;
 	}
 	if (len >= MAX_FILE_LENGTH) {
 		G_Printf("File too large: %s is %i, max allowed is %i", filename, len, MAX_FILE_LENGTH);
 		BG_TempFree(MAX_FILE_LENGTH);
 		trap_FS_FCloseFile(f);
-		return 0;
+		return NULL;
 	}
 	
 	trap_FS_Read(buf, len, f);

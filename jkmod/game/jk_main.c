@@ -790,7 +790,7 @@ void JKMod_TeleportChatLoad(void)
 		level.jkmodLocals.teleportChatsCount = 0;
 		lineStart = JKMod_ReadFile("configs/teleport_chats.cfg");
 
-		if (lineStart[0]) level.jkmodLocals.teleportChatsCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
+		if (VALIDSTRING(lineStart)) level.jkmodLocals.teleportChatsCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - level.jkmodLocals.teleportChatsCount, &level.jkmodLocals.teleportChats[level.jkmodLocals.teleportChatsCount]);
 
 		if (level.jkmodLocals.teleportChats[0]) 
 		{
@@ -833,8 +833,8 @@ void JKMod_RandomBeginLoad(void)
 {
 	if (g_gametype.integer != GT_TOURNAMENT)
 	{
-		char	*lineStart;
-		char	*lineEnd;
+		char	*lineStart = NULL;
+		char	*lineEnd = NULL;
 		int		lineNum = 0;
 		int		itemCount = 0;
 
@@ -842,7 +842,7 @@ void JKMod_RandomBeginLoad(void)
 		lineStart = JKMod_ReadFile("configs/random_begin.cfg");
 		lineEnd = strchr(lineStart, '\n');
 
-		while (lineEnd || lineStart[0])
+		while (VALIDSTRING(lineEnd) || VALIDSTRING(lineStart))
 		{
 			*lineEnd = 0;
 			if (VALIDTEXT(lineStart))
@@ -872,8 +872,8 @@ void JKMod_ServerNewsLoad(void)
 {
 	if (g_gametype.integer != GT_TOURNAMENT)
 	{
-		char	*lineStart;
-		char	*lineEnd;
+		char	*lineStart = NULL;
+		char	*lineEnd = NULL;
 		int		lineNum = 0;
 		int		itemCount = 0;
 
@@ -881,7 +881,7 @@ void JKMod_ServerNewsLoad(void)
 		lineStart = JKMod_ReadFile("configs/server_news.cfg");
 		lineEnd = strchr(lineStart, '\n');
 
-		while (lineEnd || lineStart[0])
+		while (VALIDSTRING(lineEnd) || VALIDSTRING(lineStart))
 		{
 			*lineEnd = 0;
 			if (VALIDTEXT(lineStart))
@@ -991,7 +991,7 @@ void JKMod_RemapShaders(void)
 
 	JKModRemapShadersFileCount = 0;
 
-	if (lineStart[0]) JKModRemapShadersFileCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - JKModRemapShadersFileCount, &JKModRemapShadersFile[JKModRemapShadersFileCount]);
+	if (VALIDSTRING(lineStart)) JKModRemapShadersFileCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - JKModRemapShadersFileCount, &JKModRemapShadersFile[JKModRemapShadersFileCount]);
 
 	if (JKModRemapShadersFile[0]) 
 	{

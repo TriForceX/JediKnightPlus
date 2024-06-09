@@ -3071,7 +3071,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	if (!targ->takedamage) {
 		// Tr!Force: [Dimensions] Allow world hurt
-		if (targ->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
+		if (targ && targ->client && targ->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE) 
 		{ 
 			if(!(
 				mod == MOD_WATER ||
@@ -3284,7 +3284,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	// check for completely getting out of the damage
 	if ( !(dflags & DAMAGE_NO_PROTECTION) ) {
 
-		if ( targ->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ) { // Tr!Force: [Dimensions] 1 hit 1 kill
+		if ( targ && targ->client && targ->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA ) { // Tr!Force: [Dimensions] 1 hit 1 kill
 
 			switch (mod) {
 			case MOD_FORCE_DARK:
@@ -3625,7 +3625,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			}
 
 			// Tr!Force: [Dimensions] Don't die, respawn
-			if (targ->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+			if (targ && targ->client && targ->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 			{
 				if (targ->health < 50) 
 				{

@@ -98,7 +98,7 @@ void JKMod_DimensionLoad(void)
 
 		JKModDimensionFileCount = 0;
 
-		if (lineStart[0]) JKModDimensionFileCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - JKModDimensionFileCount, &JKModDimensionFile[JKModDimensionFileCount]);
+		if (VALIDSTRING(lineStart)) JKModDimensionFileCount += G_ParseInfos(lineStart, MAX_TOKEN_CHARS - JKModDimensionFileCount, &JKModDimensionFile[JKModDimensionFileCount]);
 
 		if (JKModDimensionFile[0]) 
 		{
@@ -845,8 +845,8 @@ qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 	
 	if ((JKModDimensionData[JKMod_DimensionIndex(ent1->jkmodEnt.dimensionNumber)].passthrough && 
 		JKModDimensionData[JKMod_DimensionIndex(ent2->jkmodEnt.dimensionNumber)].passthrough) || 
-		(level.jkmodLocals.privateRoom[ent1->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH] && 
-		level.jkmodLocals.privateRoom[ent2->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH]))
+		((ent1 && ent1->client && level.jkmodLocals.privateRoom[ent1->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH]) && 
+		(ent2 && ent2->client && level.jkmodLocals.privateRoom[ent2->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH])))
 	{
 		return !JKMod_DimensionCheck(owner1, owner2);
 	}

@@ -28,7 +28,7 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 	if (baseMessage == NULL && firstTime && !isBot)
 	{
 		int		i = 0;
-		int		clientTempID;
+		int		clientTempID = 0;
 		char	clientIP[MAX_INFO_VALUE];
 		char	clientPass[MAX_INFO_VALUE];
 		char	clientChallenge[MAX_CHALLENGE];
