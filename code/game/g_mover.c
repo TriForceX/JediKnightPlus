@@ -824,6 +824,9 @@ static void Touch_DoorTriggerSpectator( gentity_t *ent, gentity_t *other, trace_
 	int i, axis;
 	vec3_t origin, dir, angles;
 
+	// Tr!Force: [PlayerTweaks] Spectators skip door teleport
+	if (other->client->ps.stats[JK_TWEAKS] & JK_SPECTATOR_NOCLIP) return;
+
 	axis = ent->count;
 	VectorClear(dir);
 	if (fabs(other->s.origin[axis] - ent->r.absmax[axis]) <
