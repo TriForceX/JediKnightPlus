@@ -10,7 +10,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 
 [![version](https://img.shields.io/github/v/release/TriForceX/JediKnightPlus?include_prereleases&label=Current%20Version&color=brightgreen&style=flat)](https://github.com/TriForceX/JediKnightPlus/releases)
 [![wiki](https://img.shields.io/badge/Setup%20%26%20Guides-Wiki-blueviolet.svg?style=flat)](https://github.com/TriForceX/JediKnightPlus/wiki)
-[![discord](https://img.shields.io/discord/539434081771847680.svg?logo=discord&logoColor=white&label=Discord&color=5865F2&style=flat)](https://discord.gznetwork.com/jkplus)
+[![discord](https://discord.gznetwork.com/badge/?id=539434081771847680)](https://discord.gznetwork.com/jkplus)
 [![stars](https://img.shields.io/github/stars/TriForceX/JediKnightPlus.svg?label=Project%20Stars&style=flat)](https://github.com/TriForceX/JediKnightPlus/stargazers)
 [![issues](https://img.shields.io/github/issues/TriForceX/JediKnightPlus.svg?label=Issues%20%26%20Requests&color=red&style=flat)](https://github.com/TriForceX/JediKnightPlus/issues)
 [![license](https://img.shields.io/github/license/TriForceX/JediKnightPlus.svg?label=License&color=yellow&style=flat)](#license)
@@ -168,7 +168,7 @@ List of bots related features
 - [ ] Custom bots saber combos (backstabs, dfa, force kicks, and more...)
 - [x] Custom bots actions (Enhanced bot_forGimmick for practicing and testing)
 - [x] Client bots control (Control bots actions through spectator)
-- [x] Private room bots (Ability to invite and control bots on private roms)
+- [x] Private room bots (Ability to invite and control bots on private rooms)
 - [ ] Bots squad patrol (A group of bots which punish lamers)
 
 ---
@@ -271,7 +271,7 @@ List of cheats enabled features
 
 The following people supported and helped me directly on this project.
 
-Name | Mod & Game | Notes
+Name | Mod / Game | Notes
 :------------: | :------------: | :------------
 [DeathSpike](https://github.com/Deathspike) | DS-Online | Client plugin and emotes base
 Lee Oates | Duelers Mod | Anti-script & macro scan base

@@ -24,6 +24,7 @@ Cvar table list and variables
 
 vmCvar_t	jkcvar_serverMotd;
 vmCvar_t	jkcvar_serverMotdTime;
+vmCvar_t	jkcvar_serverMotdTimePrint;
 vmCvar_t	jkcvar_serverMotdTele;
 vmCvar_t	jkcvar_serverMotdOnce;
 vmCvar_t	jkcvar_serverIdle;
@@ -120,6 +121,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 {
 	{ &jkcvar_serverMotd,			"jk_serverMotd",			"0",					NULL,						CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_serverMotdTime,		"jk_serverMotdTime",		"5",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_serverMotdTimePrint,	"jk_serverMotdTimePrint",	"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverMotdTele,		"jk_serverMotdTele",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverMotdOnce,		"jk_serverMotdOnce",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverIdle,			"jk_serverIdle",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },

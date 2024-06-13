@@ -158,7 +158,11 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 				}
 			}
 
-			G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.motdTime));
+			if (jkcvar_serverMotdTimePrint.integer) {
+				G_CenterPrint(client->ps.clientNum, 3, va("%s\nTime: %d\n", serverMotd, client->jkmodClient.motdTime));
+			} else {
+				G_CenterPrint(client->ps.clientNum, 3, va("%s\n", serverMotd));
+			}
 		}
 
 		client->jkmodClient.motdTime--;

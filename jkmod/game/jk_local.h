@@ -394,6 +394,7 @@ Cvar registration
 
 extern	vmCvar_t					jkcvar_serverMotd;
 extern	vmCvar_t					jkcvar_serverMotdTime;
+extern	vmCvar_t					jkcvar_serverMotdTimePrint;
 extern	vmCvar_t					jkcvar_serverMotdTele;
 extern	vmCvar_t					jkcvar_serverMotdOnce;
 extern	vmCvar_t					jkcvar_serverIdle;
