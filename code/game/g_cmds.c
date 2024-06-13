@@ -2257,10 +2257,21 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 			ent->client->ps.saberHolstered = qfalse;
 			G_Sound(ent, CHAN_AUTO, saberOnSound);
 		}
+		// Tr!Force: [DualSaber] Enable by second toggle
+		else if (jkcvar_dualSaber.integer == 2 && !ent->client->ps.dualBlade && !ent->client->pers.jkmodPers.dualSaber)
+		{
+			ent->client->ps.dualBlade = qtrue;
+			ent->client->pers.jkmodPers.dualSaber = qtrue;
+			G_Sound(ent, CHAN_AUTO, saberOnSound);
+		}
 		else
 		{
 			ent->client->ps.saberHolstered = qtrue;
 			G_Sound(ent, CHAN_AUTO, saberOffSound);
+
+			// Tr!Force: [DualSaber] Disable after toggle
+			ent->client->ps.dualBlade = qfalse;
+			ent->client->pers.jkmodPers.dualSaber = qfalse;
 
 			//prevent anything from being done for 400ms after holster
 			ent->client->ps.weaponTime = 400;

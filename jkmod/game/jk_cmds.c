@@ -1581,21 +1581,49 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 	}
 	else
 	{
-		if (ent->client->ps.saberHolstered) Cmd_ToggleSaber_f(ent);
-
-		// Disable
-		if (ent->client->ps.dualBlade)
+		// Checks
+		if (!saberOffSound || !saberOnSound)
 		{
-			ent->client->ps.dualBlade = qfalse;
-			ent->client->pers.jkmodPers.dualSaber = qfalse;
+			saberOffSound = G_SoundIndex("sound/weapons/saber/saberoffquick.wav");
+			saberOnSound = G_SoundIndex("sound/weapons/saber/saberon.wav");
+		}
+		if (ent->client->ps.saberInFlight)
+		{
 			return;
 		}
-		// Enable
-		else
+		if (ent->client->ps.forceHandExtend != HANDEXTEND_NONE)
 		{
-			ent->client->ps.dualBlade = qtrue;
-			ent->client->pers.jkmodPers.dualSaber = qtrue;
 			return;
+		}
+		if (ent->client->ps.duelTime >= level.time)
+		{
+			return;
+		}
+		if (ent->client->ps.saberLockTime >= level.time)
+		{
+			return;
+		}
+		if (ent->client && ent->client->ps.weaponTime < 1)
+		{
+			// Disable
+			if (ent->client->ps.dualBlade)
+			{
+				ent->client->ps.dualBlade = qfalse;
+				ent->client->pers.jkmodPers.dualSaber = qfalse;
+				ent->client->ps.saberHolstered = qtrue;
+				ent->client->ps.weaponTime = 400;
+				G_Sound(ent, CHAN_AUTO, saberOffSound);
+				return;
+			}
+			// Enable
+			else
+			{
+				ent->client->ps.dualBlade = qtrue;
+				ent->client->pers.jkmodPers.dualSaber = qtrue;
+				ent->client->ps.saberHolstered = qfalse;
+				G_Sound(ent, CHAN_AUTO, saberOnSound);
+				return;
+			}
 		}
 	}
 }
