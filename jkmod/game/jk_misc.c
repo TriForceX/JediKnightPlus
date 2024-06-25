@@ -836,12 +836,14 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 		}
 
 		// Show data
-		if (typeAmmo)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Ammo: ^3%i\"", (getAmount > 999 ? 999 : getAmount)));
-		else if (typeHealth)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health: ^1%i\"", getAmount));
-		else if (typeShield)
-			trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield: ^2%i\"", getAmount));
+		if (!activator->client->pers.jkmodPers.clientPlugin) {
+			if (typeAmmo)
+				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Ammo: ^3%i\"", (getAmount > 999 ? 999 : getAmount)));
+			else if (typeHealth)
+				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health: ^1%i\"", getAmount));
+			else if (typeShield)
+				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield: ^2%i\"", getAmount));
+		}
 	}
 }
 
@@ -900,6 +902,7 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 	if (!ent->boltpoint4) ent->boltpoint4 = 5;
 
 	ent->s.eFlags = 0;
+	ent->s.bolt2 = ent->watertype;
 	ent->r.svFlags |= SVF_PLAYER_USABLE;
 	ent->s.generic1 |= GENERIC_USABLE | GENERIC_CONVERTER; // Tr!Force: [IdentifyObjects] Check usable hint
 	ent->r.contents = CONTENTS_SOLID;

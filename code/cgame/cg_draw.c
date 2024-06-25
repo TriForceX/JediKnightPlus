@@ -2636,6 +2636,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	qboolean	jkmod_checkobject = jkcvar_cg_identifyObjects.integer && !(trap_Key_GetCatcher() & KEYCATCH_UI) && cg.snap->ps.stats[STAT_HEALTH] > 0;
 	qboolean	jkmod_forceswirl = qfalse;
 	qboolean	jkmod_useablehint = qfalse;
+	int			jkmod_healthbar = qfalse;
 
 	if ( !cg_drawCrosshair.integer ) 
 	{
@@ -2699,6 +2700,8 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 				ecolor[1] = 0.8f;
 				ecolor[2] = 0.3f;
 				ecolor[3] = 1.0;
+
+				jkmod_healthbar = cg_entities[cg.crosshairClientNum].currentState.bolt2;
 
 				trap_R_SetColor( ecolor );
 			} else {
@@ -2837,6 +2840,18 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		{
 			trap_R_SetColor(NULL);
 			CG_DrawPic(22, (cgs.screenHeight / 2) - 32, 64, 64, cgs.jkmodMedia.useableHint);
+		}
+	}
+
+	// Tr!Force: [HealthBar] Show target health bar
+	if (jkmod_healthbar)
+	{
+		vec3_t	diff;
+		VectorSubtract(worldPoint, cg.predictedPlayerState.origin, diff);
+		
+		if (VectorLength(diff) <= USE_DISTANCE)
+		{
+			JKMod_CG_DrawHealthBar(x + cg.refdef.x - 0.5f * w, y + cg.refdef.y - 0.5f * w, w, h, jkmod_healthbar);
 		}
 	}
 

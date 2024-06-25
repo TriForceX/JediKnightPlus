@@ -20,7 +20,7 @@ Global definitions
 #define CHATBOX_ITEMS				5
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
-#define USE_DISTANCE				64.0f
+#define USE_DISTANCE				54.0f // 64.0f
 #define ACCEL_SAMPLES				16
 #define PERCENT_SAMPLES				16
 #define FPS_FRAMES					4
@@ -340,6 +340,7 @@ void		JKMod_CG_ChatBox_DrawStrings(void);
 void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);
+void		JKMod_CG_DrawHealthBar(float chX, float chY, float chW, float chH, int type);
 void		JKMod_CG_DrawDimensionString(void);
 void		JKMod_CG_DrawRaceTimer(void);
 void		JKMod_CG_DrawPauseString(void);

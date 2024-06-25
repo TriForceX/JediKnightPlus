@@ -700,6 +700,87 @@ void JKMod_CG_DrawJetPackFuel(void)
 
 /*
 =====================================================================
+Draw the health bar based on current "health" and maxhealth
+=====================================================================
+*/
+void JKMod_CG_DrawHealthBar(float chX, float chY, float chW, float chH, int type)
+{
+	centity_t *cent = &cg_entities[cg.snap->ps.clientNum];
+	vec4_t aColor;
+	vec4_t cColor;
+	float width = 50.0f;
+	float height = 5.0f;
+	float x = chX+((chW/2)-(width/2));
+	float y = (chY+chH) + 8.0f;
+	float percent;
+
+	// Check
+	if (!type) return;
+	if (type == 3 && (cent->currentState.weapon == WP_SABER || cent->currentState.weapon == WP_STUN_BATON)) return;
+
+	// Ammo
+	if (type == 3) {
+		int ammo = cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex];
+		int ammoMax = (float)ammoData[weaponData[cent->currentState.weapon].ammoIndex].max;
+		percent = ((float)ammo/(float)ammoMax)*width;
+	}
+	// Health
+	else if (type == 2) {
+		percent = ((float)cg.snap->ps.stats[STAT_HEALTH]/(float)cg.snap->ps.stats[STAT_MAX_HEALTH])*width;
+	}
+	// Shield
+	else {
+		percent = ((float)cg.snap->ps.stats[STAT_ARMOR]/(float)cg.snap->ps.stats[STAT_MAX_HEALTH])*width;
+	}
+
+	// Limits
+	if (percent < 0) percent = 0;
+	if (percent > width) percent = width;
+	
+	// Color of the bar
+	if (type == 3)
+	{
+		// Yellow
+		aColor[0] = 1.0f;
+		aColor[1] = 1.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+	else if (type == 2)
+	{
+		// Red
+		aColor[0] = 1.0f;
+		aColor[1] = 0.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+	else
+	{
+		// Green
+		aColor[0] = 0.0f;
+		aColor[1] = 1.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+
+	// Color of greyed out "missing health"
+	cColor[0] = 0.5f;
+	cColor[1] = 0.5f;
+	cColor[2] = 0.5f;
+	cColor[3] = 0.4f;
+
+	// Draw the background (black)
+	CG_DrawRect(x, y, width, height, 1.0f, colorTable[CT_BLACK]);
+
+	// Now draw the part to show how much health there is in the color specified
+	if (percent > 0) CG_FillRect(x+1.0f, y+1.0f, percent-1.0f, height-1.0f, aColor);
+
+	// Then draw the other part greyed out
+	CG_FillRect(x+percent, y+1.0f, width-percent-1.0f, height-1.0f, cColor);
+}
+
+/*
+=====================================================================
 Draw dimension indicator
 =====================================================================
 */
