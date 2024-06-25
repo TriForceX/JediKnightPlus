@@ -369,7 +369,6 @@ Teleports list functions
 static char *JKMod_UI_TeleportsList(int index, int *actual)
 {
 	int i, c = 0;
-	char *title;
 	*actual = 0;
 
 	for (i = 0; i < uiInfo.jkmodInfo.teleportCount; i++)

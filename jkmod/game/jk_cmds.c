@@ -21,7 +21,6 @@ extern int JKModEmotesDataSize;
 extern int G_ClientNumberFromName(const char* name);
 extern int G_ClientNumberFromStrippedName(const char* name);
 extern qboolean G_OtherPlayersDueling(void);
-extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 
 /*
 =====================================================================
@@ -1699,7 +1698,7 @@ static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int
 		char		 found_angles[20];
 		char		 found_origin[40];
 
-		G_TestLine(orig, dest, 255, linedelay);
+		JKMod_G_TestLine(orig, dest, 255, linedelay, ent->s.number);
 
 		if (!found->inuse) return;
 				
@@ -1722,11 +1721,11 @@ static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int
 			found->spawnflags,
 			found_maxs));
 
-		JKMod_DrawBoxLines(found->s.origin, found->r.mins,  found->r.maxs, 255, boxdelay);
+		JKMod_DrawBoxLines(found->s.origin, found->r.mins,  found->r.maxs, 255, boxdelay, ent->s.number);
 		return;
 	}
 
-	G_TestLine(orig, dest, 0, linedelay);
+	JKMod_G_TestLine(orig, dest, 0, linedelay, ent->s.number);
 	return;
 }
 

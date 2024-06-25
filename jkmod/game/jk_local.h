@@ -624,7 +624,7 @@ qboolean	JKMod_ValidPlayerModel(const char* modelname);
 void		JKMod_ChairModelDisable(gentity_t *ent);
 
 // jk_utils.c
-void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration);
+void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration, int dimensionOwner);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_AntiStuckBox(gentity_t *ent);
 qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs, qboolean elevation);
@@ -642,6 +642,7 @@ gentity_t	*JKMod_G_TempEntity(const vec3_t origin, entity_event_t event, int dim
 gentity_t	*JKMod_G_SoundTempEntity(const vec3_t origin, int event, int channel, int dimensionOwner);
 gentity_t	*JKMod_G_PreDefSound(vec3_t org, pdSounds_t pdSound, int dimensionOwner);
 void		JKMod_G_SoundAtLoc(vec3_t loc, soundChannel_t channel, int soundIndex, int dimensionOwner);
+void		JKMod_G_TestLine(vec3_t start, vec3_t end, int color, int time, int dimensionOwner);
 gentity_t	*JKMod_LaunchItem(gitem_t *item, vec3_t origin, vec3_t velocity, int dimensionOwner);
 
 // jk_session.c

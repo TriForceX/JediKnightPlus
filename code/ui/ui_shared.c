@@ -2607,7 +2607,6 @@ const char *Item_Multi_Setting(itemDef_t *item) {
 
 // Tr!Force: [UIGeneral] Experimental checkbox behaviour
 const char *Item_Checkbox_Setting(itemDef_t *item) {
-	char buff[2048];
 	float value = 0;
 	int i;
 	multiDef_t *multiPtr = (multiDef_t*)item->typeData;

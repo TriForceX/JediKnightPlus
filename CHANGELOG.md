@@ -9,6 +9,15 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.20.2
+- Merge updates from UncannyFish
+- Add option to hide time display on motd
+- Add alternate toggle option for dual saber
+- Add extra check for spectator noclip
+- Add visual bars on power converters
+- Fix special emotes usage while moving
+- Fix entity scan lines per dimension owner
+
 ## 0.20.1
 - Add optimizations for insta kill mode
 - Add dimension skip score tracking

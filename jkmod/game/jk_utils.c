@@ -8,15 +8,12 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 
 #include "../../code/game/g_local.h" // Original header
 
-// Extern stuff
-extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
-
 /*
 =====================================================================
 Draw box lines (Due clientside: 255 = red, 1 = black, 0 = white)
 =====================================================================
 */
-void JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration)
+void JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration, int dimensionOwner)
 {
 	vec3_t	point1, point2, point3, point4;
 	vec3_t	bmins, bmaxs;
@@ -51,18 +48,18 @@ void JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int du
 		//- face
 		point1[vec[0]] = point2[vec[0]] = point3[vec[0]] = point4[vec[0]] = bmins[vec[0]];
 
-		G_TestLine(point1, point2, color, duration);
-		G_TestLine(point2, point3, color, duration);
-		G_TestLine(point1, point4, color, duration);
-		G_TestLine(point4, point3, color, duration);
+		JKMod_G_TestLine(point1, point2, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point2, point3, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point1, point4, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point4, point3, color, duration, dimensionOwner);
 
 		//+ face
 		point1[vec[0]] = point2[vec[0]] = point3[vec[0]] = point4[vec[0]] = bmaxs[vec[0]];
 
-		G_TestLine(point1, point2, color, duration);
-		G_TestLine(point2, point3, color, duration);
-		G_TestLine(point1, point4, color, duration);
-		G_TestLine(point4, point1, color, duration);
+		JKMod_G_TestLine(point1, point2, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point2, point3, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point1, point4, color, duration, dimensionOwner);
+		JKMod_G_TestLine(point4, point1, color, duration, dimensionOwner);
 	}
 }
 
@@ -145,12 +142,12 @@ qboolean JKMod_CheckSolid(gentity_t *ent, int distance, vec3_t mins, vec3_t maxs
 
 	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
 	{
-		if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 255, 500);
+		if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 255, 500, ent->s.number);
 		JKMod_Printf(S_COLOR_YELLOW "Can't spawn here, we are in solid\n");
 		return qfalse;
 	}
 
-	if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 0, 500);
+	if (developer.integer) JKMod_DrawBoxLines(dest, mins, maxs, 0, 500, ent->s.number);
 	return qtrue;
 }
 
@@ -505,6 +502,23 @@ void JKMod_G_SoundAtLoc(vec3_t loc, soundChannel_t channel, int soundIndex, int 
 
 	te = JKMod_G_TempEntity( loc, EV_GENERAL_SOUND, dimensionOwner );
 	te->s.eventParm = soundIndex;
+}
+
+/*
+=====================================================================
+Test line event with owner info
+=====================================================================
+*/
+void JKMod_G_TestLine(vec3_t start, vec3_t end, int color, int time, int dimensionOwner)
+{
+	gentity_t *te;
+
+	te = JKMod_G_TempEntity( start, EV_TESTLINE, dimensionOwner );
+	VectorCopy(start, te->s.origin);
+	VectorCopy(end, te->s.origin2);
+	te->s.time2 = time;
+	te->s.weapon = color;
+	te->r.svFlags |= SVF_BROADCAST;
 }
 
 /*

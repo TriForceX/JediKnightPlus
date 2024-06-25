@@ -207,7 +207,7 @@ void G_TestLine(vec3_t start, vec3_t end, int color, int time)
 {
 	gentity_t *te;
 
-	te = JKMod_G_TempEntity( start, EV_TESTLINE, ENTITYNUM_WORLD); // Tr!Force: [Dimensions] Tag owner info
+	te = JKMod_G_TempEntity( start, EV_TESTLINE, ENTITYNUM_WORLD ); // Tr!Force: [Dimensions] Tag owner info
 	VectorCopy(start, te->s.origin);
 	VectorCopy(end, te->s.origin2);
 	te->s.time2 = time;
