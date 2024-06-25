@@ -222,9 +222,9 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 	}
 
 	// Don't allow when you are moving
-	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !JKModEmotesData[emoteIndex].special && !(ent->client->ps.duelTime >= level.time))
+	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !(ent->client->ps.duelTime >= level.time))
 	{
-		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You can't use this emote while moving\"");
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You can't toggle this emote while moving\"");
 		return 0;
 	}
 
@@ -232,6 +232,14 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 	if (ent->client->ps.weapon != WP_SABER && !JKModEmotesData[emoteIndex].special && JKModEmotesData[emoteIndex].endAnim == -1)
 	{
 		return 0;
+	}
+
+	// Disable emote if another non-special emote is being used
+	if (JKMod_EmoteIn(ent, 2))
+	{
+		ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+		ent->client->ps.forceDodgeAnim = 0;
+		ent->client->ps.forceHandExtendTime = 0;
 	}
 
 	// Now that everything goes through here, we have to check if its a hug or a kiss to use their special commands
