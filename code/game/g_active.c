@@ -1169,14 +1169,18 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			if (ent->client->ps.weapon == WP_SABER && ent->client->ps.saberHolstered &&
 				ent->client->ps.duelTime)
 			{
-				if (!saberOffSound || !saberOnSound)
+				// Tr!Force: [GameGeneral] Activate saber on private duels
+				if ((jkcvar_spawnActivateSaber.integer & (1 << GT_MAX_GAME_TYPE)) && client->ps.weapon == WP_SABER)
 				{
-					saberOffSound = G_SoundIndex("sound/weapons/saber/saberoffquick.wav");
-					saberOnSound = G_SoundIndex("sound/weapons/saber/saberon.wav");
-				}
+					if (!saberOffSound || !saberOnSound)
+					{
+						saberOffSound = G_SoundIndex("sound/weapons/saber/saberoffquick.wav");
+						saberOnSound = G_SoundIndex("sound/weapons/saber/saberon.wav");
+					}
 
-				ent->client->ps.saberHolstered = qfalse;
-				G_Sound(ent, CHAN_AUTO, saberOnSound);
+					ent->client->ps.saberHolstered = qfalse;
+					G_Sound(ent, CHAN_AUTO, saberOnSound);
+				}
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 2);
 
@@ -1195,14 +1199,18 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 				duelAgainst->client->ps.weapon == WP_SABER && duelAgainst->client->ps.saberHolstered &&
 				duelAgainst->client->ps.duelTime)
 			{
-				if (!saberOffSound || !saberOnSound)
+				// Tr!Force: [GameGeneral] Activate saber on private duels
+				if ((jkcvar_spawnActivateSaber.integer & (1 << GT_MAX_GAME_TYPE)) && client->ps.weapon == WP_SABER)
 				{
-					saberOffSound = G_SoundIndex("sound/weapons/saber/saberoffquick.wav");
-					saberOnSound = G_SoundIndex("sound/weapons/saber/saberon.wav");
-				}
+					if (!saberOffSound || !saberOnSound)
+					{
+						saberOffSound = G_SoundIndex("sound/weapons/saber/saberoffquick.wav");
+						saberOnSound = G_SoundIndex("sound/weapons/saber/saberon.wav");
+					}
 
-				duelAgainst->client->ps.saberHolstered = qfalse;
-				G_Sound(duelAgainst, CHAN_AUTO, saberOnSound);
+					duelAgainst->client->ps.saberHolstered = qfalse;
+					G_Sound(duelAgainst, CHAN_AUTO, saberOnSound);
+				}
 
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 2);
 

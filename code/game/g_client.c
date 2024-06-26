@@ -2353,7 +2353,7 @@ void ClientSpawn(gentity_t *ent) {
 	}
 
 	// Tr!Force: [GameGeneral] Activate saber on spawn
-	if (!jkcvar_spawnActivateSaber.integer && client->ps.weapon == WP_SABER) ent->client->ps.saberHolstered = qtrue;
+	if (!(jkcvar_spawnActivateSaber.integer & (1 << g_gametype.integer)) && client->ps.weapon == WP_SABER) ent->client->ps.saberHolstered = qtrue;
 
 	// run a client frame to drop exactly to the floor,
 	// initialize animations and other things

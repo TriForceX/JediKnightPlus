@@ -143,7 +143,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_chatAutoStatus,		"jk_chatAutoStatus",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatAutoStatusTime,	"jk_chatAutoStatusTime",	"3",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"-1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatFx,		"jk_teleportChatFx",		"default",				NULL,						CVAR_ARCHIVE,						0, qtrue },

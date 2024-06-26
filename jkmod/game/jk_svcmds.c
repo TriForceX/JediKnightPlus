@@ -218,6 +218,21 @@ static jkmod_bit_info_t toggleAltDimension[] =
 	"PRIVATE ROOM",
 };
 
+// Options for jk_spawnActivateSaber cvar
+static jkmod_bit_info_t toggleSpawnActivateSaber[] = 
+{
+	"FFA",
+	"HOLOCRON",
+	"JEDI MASTER",
+	"DUEL TOURNAMENT",
+	"SINGLE PLAYER",
+	"TEAM FFA",
+	"SAGA",
+	"CTF",
+	"CTY",
+	"PRIVATE DUEL",
+};
+
 // Options for jk_mapFixes cvar
 static jkmod_bit_info_t toggleMapFixes[] =
 {
@@ -268,6 +283,7 @@ static void JKMod_svCmd_toggleMod(void)
 			"^3jk_altDimensionBase\n"
 			"^3jk_altDimensionSpawn\n"
 			"^3jk_altDimensionNoScore\n"
+			"^3jk_spawnActivateSaber\n"
 			"^3jk_mapFixes\n"
 			"^3bot_forGimmick\n"
 			);
@@ -319,6 +335,11 @@ static void JKMod_svCmd_toggleMod(void)
 		{
 			toggleModOptions = toggleAltDimension;
 			toggleModSize = ARRAY_LEN(toggleAltDimension);
+		}
+		else if (!Q_stricmp(arg1, "jk_spawnActivateSaber")) 
+		{
+			toggleModOptions = toggleSpawnActivateSaber;
+			toggleModSize = ARRAY_LEN(toggleSpawnActivateSaber);
 		}
 		else if (!Q_stricmp(arg1, "jk_mapFixes"))
 		{
