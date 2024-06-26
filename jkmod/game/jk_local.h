@@ -24,7 +24,8 @@ Global definitions
 #define MAX_FILE_CHARS				1024
 #define MAX_FILE_LENGTH				131072 // 128kb
 #define MAX_IP_STRING				16
-#define MAX_CHALLENGE				10
+#define MAX_CHALLENGE				5 // 10
+#define MAX_MSG_CHECK				99999
 #define MAX_DIMENSION				((1 << DIMENSION_MAX) + MAX_CLIENTS)
 #define MIN_PRIVATE_TIME			3
 #define TEAM_CHANGE_DELAY			5000
@@ -312,8 +313,8 @@ typedef struct
 	qboolean		cvarToggleMod;									// Check cvar changes from toggleMod
 	qboolean		mapRestarted;									// Map restart check for current players
 	char			reconnectedIP[MAX_IP_STRING];					// Check IP for client reconnect
-	int				closedCheck[MAX_CHALLENGE];						// Closed server check
-	int				messageCheck[MAX_CHALLENGE];					// Connect message check
+	int				closedCheck[MAX_MSG_CHECK];						// Closed server check
+	int				messageCheck[MAX_MSG_CHECK];					// Connect message check
 	int				chairModelCheck[MAX_GENTITIES][MAX_DIMENSION];	// Chair model usage check
 	unsigned		dimensionBase;									// Global base dimension
 	int				jetpackFxActive;								// Server jetpack active effect

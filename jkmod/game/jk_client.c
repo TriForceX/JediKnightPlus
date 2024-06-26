@@ -31,12 +31,13 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		int		clientTempID = 0;
 		char	clientIP[MAX_INFO_VALUE];
 		char	clientPass[MAX_INFO_VALUE];
-		char	clientChallenge[MAX_CHALLENGE];
+		char	clientChallenge[MAX_CHALLENGE+1];
 
 		Q_strncpyz(clientIP, Info_ValueForKey(userinfo, "ip"), sizeof(clientIP));
 		Q_strncpyz(clientPass, Info_ValueForKey(userinfo, "password"), sizeof(clientPass));
 		Q_strncpyz(clientChallenge, Info_ValueForKey(userinfo, "challenge"), sizeof(clientChallenge));
 
+		clientChallenge[MAX_CHALLENGE] = '\0';
 		clientTempID = atoi(clientChallenge);
 		
 		while (++i < strlen(clientIP)) if (clientIP[i] == ':') clientIP[i] = 0;
