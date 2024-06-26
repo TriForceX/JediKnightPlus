@@ -777,7 +777,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 			!(ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_DUEL | DIMENSION_PRIVATE)) &&
 			ent->jkmodEnt.dimensionNumberOld &&
 			ent->jkmodEnt.dimensionNumberOld != ent->jkmodEnt.dimensionNumber &&
-			(((ent->jkmodEnt.dimensionPrevious & DIMENSION_DUEL | DIMENSION_PRIVATE) && !(jkcvar_altDimensionSpawn.integer & (DIMENSION_DUEL | DIMENSION_PRIVATE))) ? qfalse : qtrue)) 
+			(((ent->jkmodEnt.dimensionPrevious & (DIMENSION_DUEL | DIMENSION_PRIVATE)) && !(jkcvar_altDimensionSpawn.integer & (DIMENSION_DUEL | DIMENSION_PRIVATE))) ? qfalse : qtrue)) 
 		{
 			spawnActivated = qtrue;
 			SelectSpawnPoint(ent->client->ps.origin, spawnOrigin, spawnAngles);

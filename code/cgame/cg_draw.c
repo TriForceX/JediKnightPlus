@@ -2636,7 +2636,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	qboolean	jkmod_checkobject = jkcvar_cg_identifyObjects.integer && !(trap_Key_GetCatcher() & KEYCATCH_UI) && cg.snap->ps.stats[STAT_HEALTH] > 0;
 	qboolean	jkmod_forceswirl = qfalse;
 	qboolean	jkmod_useablehint = qfalse;
-	int			jkmod_healthbar = qfalse;
+	int			jkmod_healthbar = 0;
 
 	if ( !cg_drawCrosshair.integer ) 
 	{
@@ -2957,6 +2957,8 @@ void CG_SaberClashFlare( void )
 			v * 600, v * 600,
 			trap_R_RegisterShader( "gfx/effects/saberFlare" ));
 	}
+
+	trap_R_SetColor( NULL ); // Tr!Force: [BaseJK] Workaround
 }
 
 //--------------------------------------------------------------

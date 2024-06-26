@@ -88,7 +88,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7You can perform some console commands to perform a special action\n"
 			"^7Chat commands are meant to be used on ^2chat ^7while typing\n"
 			"^5----------\n"
-			"^7Console & Binds:   Chat/Say:      Plugin Only:\n"
+			"^7Console & Binds:   Chat / Say:    Plugin Only:\n"
 			"^3motd               !motd          strafehelper\n"
 			"^3dimension          !dimension     speedometer\n"
 			"^3dualsaber          !status\n"

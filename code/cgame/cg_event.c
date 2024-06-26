@@ -86,8 +86,8 @@ static void CG_Obituary( entityState_t *ent ) {
 	char		*message;
 	const char	*targetInfo;
 	const char	*attackerInfo;
-	char		targetName[MAX_QPATH + 2] = { 0 }; // Workaround
-	char		attackerName[MAX_QPATH + 2] = { 0 }; // Workaround
+	char		targetName[MAX_QPATH + 2] = { 0 }; // Tr!Force: [BaseJK] Workaround
+	char		attackerName[MAX_QPATH + 2] = { 0 }; // Tr!Force: [BaseJK] Workaround
 	gender_t	gender;
 	clientInfo_t	*ci;
 	qboolean jkmod_scoreNoChanges = (cg.jkmodCG.lastPersistant[PERS_SCORE] == cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Don't show rank/score msg if there was no changes
