@@ -842,21 +842,31 @@ void JKMod_RandomBeginLoad(void)
 
 		level.jkmodLocals.randomBeginCount = 0;
 		lineStart = JKMod_ReadFile("configs/random_begin.cfg");
-		lineEnd = strchr(lineStart, '\n');
 
-		while (VALIDSTRING(lineEnd) || VALIDSTRING(lineStart))
+		if (VALIDSTRING(lineStart))
 		{
-			*lineEnd = 0;
+			lineEnd = strchr(lineStart, '\n');
+			while (VALIDSTRING(lineEnd))
+			{
+				*lineEnd = '\0';
+				if (VALIDTEXT(lineStart))
+				{
+					Q_strncpyz(level.jkmodLocals.randomBegin[itemCount], lineStart, sizeof(level.jkmodLocals.randomBegin[0]));
+					level.jkmodLocals.randomBeginCount++;
+					itemCount++;
+				}
+				lineStart = lineEnd + 1;
+				lineEnd = strchr(lineStart, '\n');
+				lineNum++;
+				if (lineNum >= MAX_FILE_VARS) break;
+			}
+        
 			if (VALIDTEXT(lineStart))
 			{
 				Q_strncpyz(level.jkmodLocals.randomBegin[itemCount], lineStart, sizeof(level.jkmodLocals.randomBegin[0]));
 				level.jkmodLocals.randomBeginCount++;
 				itemCount++;
 			}
-			lineStart = lineEnd + 1;
-			lineEnd = strchr(lineStart, '\n');
-			lineNum++;
-			if (lineNum >= MAX_FILE_VARS) break;
 		}
 		
 		if (itemCount) {
@@ -881,21 +891,31 @@ void JKMod_ServerNewsLoad(void)
 
 		level.jkmodLocals.serverNewsCount = 0;
 		lineStart = JKMod_ReadFile("configs/server_news.cfg");
-		lineEnd = strchr(lineStart, '\n');
 
-		while (VALIDSTRING(lineEnd) || VALIDSTRING(lineStart))
+		if (VALIDSTRING(lineStart))
 		{
-			*lineEnd = 0;
+			lineEnd = strchr(lineStart, '\n');
+			while (VALIDSTRING(lineEnd))
+			{
+				*lineEnd = '\0';
+				if (VALIDTEXT(lineStart))
+				{
+					Q_strncpyz(level.jkmodLocals.serverNews[itemCount], lineStart, sizeof(level.jkmodLocals.serverNews[0]));
+					level.jkmodLocals.serverNewsCount++;
+					itemCount++;
+				}
+				lineStart = lineEnd + 1;
+				lineEnd = strchr(lineStart, '\n');
+				lineNum++;
+				if (lineNum >= MAX_FILE_VARS) break;
+			}
+        
 			if (VALIDTEXT(lineStart))
 			{
 				Q_strncpyz(level.jkmodLocals.serverNews[itemCount], lineStart, sizeof(level.jkmodLocals.serverNews[0]));
 				level.jkmodLocals.serverNewsCount++;
 				itemCount++;
 			}
-			lineStart = lineEnd + 1;
-			lineEnd = strchr(lineStart, '\n');
-			lineNum++;
-			if (lineNum >= MAX_FILE_VARS) break;
 		}
 		
 		if (itemCount) {
