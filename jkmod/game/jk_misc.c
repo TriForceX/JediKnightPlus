@@ -884,8 +884,8 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 	ent->s.modelindex = G_ModelIndex(ent->model);
 	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
-	mins = ent->watertype == STATION_HEALTH_TYPE ? "-8, -8, -50" : "-16 -16 -40";
-	maxs = ent->watertype == STATION_HEALTH_TYPE ? "8, 8, 50" : "16 16 40";
+	mins = ent->watertype == STATION_HEALTH_TYPE ? "-8 -8 -50" : "-16 -16 -40";
+	maxs = ent->watertype == STATION_HEALTH_TYPE ? "8 8 50" : "16 16 40";
 
 	G_SpawnVector("mins", mins, ent->r.mins);
 	G_SpawnVector("maxs", maxs, ent->r.maxs);

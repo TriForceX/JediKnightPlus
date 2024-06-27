@@ -1831,9 +1831,9 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 	self->client->ps.eFlags &= ~EF_INVULNERABLE;
 	self->client->invulnerableTimer = 0;
 
-	if ( traceEnt && traceEnt->takedamage || jkmod_drainmodel ) // Tr!Force: [GameGeneral] Drain model check
+	if ( jkmod_drainmodel || (traceEnt && traceEnt->takedamage) ) // Tr!Force: [GameGeneral] Drain model check
 	{
-		if ( traceEnt->client || jkmod_drainmodel && (!OnSameTeam(self, traceEnt) || g_friendlyFire.integer) && self->client->ps.fd.forceDrainTime < level.time && traceEnt->client->ps.fd.forcePower || jkmod_drainmodel ) // Tr!Force: [GameGeneral] Drain model check
+		if ( jkmod_drainmodel || (traceEnt->client && (!OnSameTeam(self, traceEnt) || g_friendlyFire.integer) && self->client->ps.fd.forceDrainTime < level.time && traceEnt->client->ps.fd.forcePower) ) // Tr!Force: [GameGeneral] Drain model check
 		{//an enemy or object
 			if (!traceEnt->client && traceEnt->s.eType == ET_GRAPPLE)
 			{ //g2animent
@@ -1859,7 +1859,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 					dmg = 4;
 				}
 
-				modPowerLevel = WP_AbsorbConversion(traceEnt, traceEnt->client->ps.fd.forcePowerLevel[FP_ABSORB], self, FP_DRAIN, self->client->ps.fd.forcePowerLevel[FP_DRAIN], 0);
+				if (!jkmod_drainmodel) modPowerLevel = WP_AbsorbConversion(traceEnt, traceEnt->client->ps.fd.forcePowerLevel[FP_ABSORB], self, FP_DRAIN, self->client->ps.fd.forcePowerLevel[FP_DRAIN], 0); // Tr!Force: [GameGeneral] Drain model check
 				//Since this is drain, don't absorb any power, but nullify the affect it has
 
 				if (modPowerLevel != -1)
@@ -1879,13 +1879,16 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				}
 				//G_Damage( traceEnt, self, self, dir, impactPoint, dmg, 0, MOD_FORCE_DARK );
 
-				if (dmg)
+				if (!jkmod_drainmodel) // Tr!Force: [GameGeneral] Drain model check
 				{
-					traceEnt->client->ps.fd.forcePower -= (dmg);
-				}
-				if (traceEnt->client->ps.fd.forcePower < 0)
-				{
-					traceEnt->client->ps.fd.forcePower = 0;
+					if (dmg)
+					{
+						traceEnt->client->ps.fd.forcePower -= (dmg);
+					}
+					if (traceEnt->client->ps.fd.forcePower < 0)
+					{
+						traceEnt->client->ps.fd.forcePower = 0;
+					}
 				}
 
 				if (self->client->ps.stats[STAT_HEALTH] < self->client->ps.stats[STAT_MAX_HEALTH] &&
@@ -1931,13 +1934,13 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 
 				//	traceEnt->client->ps.powerups[PW_DISINT_1] = level.time + 500;
 
-				if (traceEnt->client->forcePowerSoundDebounce < level.time || jk2gameplay == VERSION_1_02)
+				if ( (!jkmod_drainmodel && traceEnt->client->forcePowerSoundDebounce < level.time) || jk2gameplay == VERSION_1_02) // Tr!Force: [GameGeneral] Drain model check
 				{
 					tent = JKMod_G_TempEntity( impactPoint, EV_FORCE_DRAINED, traceEnt->s.number); // Tr!Force: [Dimensions] Tag owner info
 					tent->s.eventParm = DirToByte(dir);
 					tent->s.owner = traceEnt->s.number;
 
-					if ( jk2gameplay != VERSION_1_02 ) traceEnt->client->forcePowerSoundDebounce = level.time + 400;
+					if ( jk2gameplay != VERSION_1_02 && !jkmod_drainmodel ) traceEnt->client->forcePowerSoundDebounce = level.time + 400; // Tr!Force: [GameGeneral] Drain model check
 				}
 			}
 		}
@@ -1995,15 +1998,15 @@ int ForceShootDrain( gentity_t *self )
 				continue;
 			if ( !traceEnt->inuse )
 				continue;
-			if ( !traceEnt->takedamage && !jkmod_drainmodel )
+			if ( !jkmod_drainmodel && !traceEnt->takedamage )
 				continue;
-			if ( traceEnt->health <= 0 && !jkmod_drainmodel )//no torturing corpses
+			if ( !jkmod_drainmodel && traceEnt->health <= 0 )//no torturing corpses
 				continue;
-			if ( !traceEnt->client && !jkmod_drainmodel )
+			if ( !jkmod_drainmodel && !traceEnt->client )
 				continue;
-			if ( !traceEnt->client->ps.fd.forcePower && !jkmod_drainmodel )
+			if ( !jkmod_drainmodel && !traceEnt->client->ps.fd.forcePower )
 				continue;
-			if ( OnSameTeam(self, traceEnt) && !jkmod_drainmodel )
+			if ( !jkmod_drainmodel && OnSameTeam(self, traceEnt) )
 				continue;
 			//this is all to see if we need to start a saber attack, if it's in flight, this doesn't matter
 			// find the distance from the edge of the bounding box
