@@ -9,6 +9,14 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.20.3
+- Fix client connect check messages
+- Fix saber clash flare bug and more refactor
+- Add private duel to spawn activate sabers cvar
+- Add secure checks for config file reading
+- Add more patches for proper debugging
+- Add map on launch cmd to keep the map cycle
+
 ## 0.20.2
 - Merge updates from UncannyFish
 - Add option to hide time display on motd
