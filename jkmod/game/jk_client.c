@@ -38,7 +38,7 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		Q_strncpyz(clientChallenge, Info_ValueForKey(userinfo, "challenge"), sizeof(clientChallenge));
 
 		clientChallenge[MAX_CHALLENGE] = '\0';
-		clientTempID = atoi(clientChallenge);
+		clientTempID = abs(atoi(clientChallenge));
 		
 		while (++i < strlen(clientIP)) if (clientIP[i] == ':') clientIP[i] = 0;
 
