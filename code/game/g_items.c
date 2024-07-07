@@ -2045,9 +2045,10 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 		wDisable = g_weaponDisable.integer;
 	}
 
-	if (item->giType == IT_WEAPON &&
+	if (GTconfigLoaded && // Tr!Force: [GameTypeConfig] Check until loaded
+		item->giType == IT_WEAPON &&
 		wDisable &&
-		(wDisable & (1 << item->giTag)) && GTconfigLoaded) // Tr!Force: [GameTypeConfig] Check until loaded
+		(wDisable & (1 << item->giTag)))
 	{
 		if (g_gametype.integer != GT_JEDIMASTER)
 		{
@@ -2056,7 +2057,7 @@ void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 		}
 	}
 
-	if ( G_ItemDisabled(item) && GTconfigLoaded ) // Tr!Force: [GameTypeConfig] Check until loaded
+	if ( GTconfigLoaded && G_ItemDisabled(item) ) // Tr!Force: [GameTypeConfig] Check until loaded
 		return;
 
 	// Tr!Force: [Items] Reset original item position

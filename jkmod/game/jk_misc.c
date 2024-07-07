@@ -128,6 +128,7 @@ void JKMod_PlayerTweaksCheck(gentity_t *ent)
 		{ JK_RESIST_PUSH,			qfalse },
 		{ JK_DUAL_MOVES,			qfalse },
 		{ JK_GHOST_SABERS,			qfalse },
+		{ JK_CHAIR_FORCE,			qfalse },
 	};
 
 	for (i = 0; i < ARRAY_LEN(playerTweaks); i++)

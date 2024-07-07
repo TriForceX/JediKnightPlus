@@ -169,7 +169,7 @@ void JKMod_CheckValidMapItems(void)
 	{
 		if (!check->inuse) continue;
 
-		if (check->item->giType == IT_WEAPON && wDisable && (wDisable & (1 << check->item->giTag)))
+		if (check->item && check->item->giType == IT_WEAPON && wDisable && (wDisable & (1 << check->item->giTag)))
 		{
 			if (g_gametype.integer != GT_JEDIMASTER)
 			{
@@ -177,14 +177,14 @@ void JKMod_CheckValidMapItems(void)
 			}
 		}
 
-		if (G_ItemDisabled(check->item))
+		if (check->item && G_ItemDisabled(check->item))
 		{
 			G_FreeEntity(check);
 		}
 
 		if (g_gametype.integer != GT_JEDIMASTER)
 		{
-			if (HasSetSaberOnly())
+			if (check->item && HasSetSaberOnly())
 			{
 				if (check->item->giType == IT_AMMO)
 				{
@@ -205,7 +205,7 @@ void JKMod_CheckValidMapItems(void)
 		else
 		{ 
 			// No powerups in jedi master
-			if (check->item->giType == IT_POWERUP)
+			if (check->item && check->item->giType == IT_POWERUP)
 			{
 				G_FreeEntity(check);
 			}
@@ -213,7 +213,7 @@ void JKMod_CheckValidMapItems(void)
 
 		if (g_gametype.integer == GT_HOLOCRON)
 		{
-			if (check->item->giType == IT_POWERUP)
+			if (check->item && check->item->giType == IT_POWERUP)
 			{
 				if (check->item->giTag == PW_FORCE_ENLIGHTENED_LIGHT ||
 					check->item->giTag == PW_FORCE_ENLIGHTENED_DARK)
@@ -226,7 +226,7 @@ void JKMod_CheckValidMapItems(void)
 		if (g_forcePowerDisable.integer)
 		{ 
 			// If force powers disabled, don't add force powerups
-			if (check->item->giType == IT_POWERUP)
+			if (check->item && check->item->giType == IT_POWERUP)
 			{
 				if (check->item->giTag == PW_FORCE_ENLIGHTENED_LIGHT ||
 					check->item->giTag == PW_FORCE_ENLIGHTENED_DARK ||
@@ -237,7 +237,7 @@ void JKMod_CheckValidMapItems(void)
 			}
 		}
 
-		if (g_gametype.integer == GT_TOURNAMENT)
+		if (g_gametype.integer == GT_TOURNAMENT && check->item)
 		{
 			if (check->item->giType == IT_ARMOR ||
 				check->item->giType == IT_HEALTH ||
@@ -247,7 +247,7 @@ void JKMod_CheckValidMapItems(void)
 			}
 		}
 
-		if (g_gametype.integer != GT_CTF && g_gametype.integer != GT_CTY && check->item->giType == IT_TEAM)
+		if (g_gametype.integer != GT_CTF && g_gametype.integer != GT_CTY && check->item && check->item->giType == IT_TEAM)
 		{
 			int killMe = 0;
 

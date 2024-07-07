@@ -672,6 +672,12 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 		return 0;
 	}
 
+	// Tr!Force: [PlayerTweaks] Prevent force usage
+	if (!(other->client->ps.stats[JK_TWEAKS] & JK_CHAIR_FORCE) && other->client->jkmodClient.chairModelUsed)
+	{
+		return 0;
+	}
+
 	return 1;
 }
 

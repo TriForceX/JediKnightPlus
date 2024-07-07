@@ -972,7 +972,7 @@ void Cmd_ForceChanged_f( gentity_t *ent )
 
 	strcpy(fpChStr, buf);
 
-	trap_SendServerCommand( ent-g_entities, va("print \"%s%s\n\"", S_COLOR_GREEN, fpChStr) ); // Workaround
+	trap_SendServerCommand( ent-g_entities, va("print \"%s%s\n\"", S_COLOR_GREEN, fpChStr) ); // Tr!Force: [BaseJK] Workaround
 
 	ent->client->ps.fd.forceDoInit = 1;
 argCheck:

@@ -223,7 +223,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 		if ((jkcvar_serverMotdOnce.integer ? !client->sess.jkmodSess.motdSeen : qtrue) && VALIDCVAR(jkcvar_serverMotd.string))
 		{
 			// Delay motd for non-plugin clients
-			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin ? jkcvar_serverMotdTime.integer + 2 : 0;
+			int motdDelayed = jkcvar_pluginRequired.integer && !client->pers.jkmodPers.clientPlugin ? jkcvar_serverMotdTime.integer + 3 : 0;
 			
 			client->jkmodClient.motdTime = motdDelayed ? motdDelayed : jkcvar_serverMotdTime.integer;
 			client->sess.jkmodSess.motdSeen = qtrue;

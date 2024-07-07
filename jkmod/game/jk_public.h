@@ -29,6 +29,7 @@ Global definitions
 #define JK_RESIST_PUSH			( 1 << 5 )
 #define JK_DUAL_MOVES			( 1 << 6 )
 #define JK_GHOST_SABERS			( 1 << 7 )
+#define JK_CHAIR_FORCE			( 1 << 8 )
 
 // Bot actions
 #define JK_BOT_STATIC			( 1 << 0 )

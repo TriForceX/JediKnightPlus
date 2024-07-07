@@ -185,6 +185,7 @@ static jkmod_bit_info_t togglePlayerTweaks[] =
 	"RESIST PUSH ANIM",
 	"DUAL SABER MOVES",
 	"GHOST SABERS",
+	"CHAIR FORCE USABLE",
 };
 
 // Options for jk_voteControl cvar
@@ -292,8 +293,8 @@ static void JKMod_svCmd_toggleMod(void)
 	{
 		int bits;
 		int i, val, exclude[MAX_ITEMS] = { 0 };
-		int toggleModSize;
-		char *toggleModNote;
+		int toggleModSize = 0;
+		char *toggleModNote = { 0 };
 		qboolean toggleModRadio = qfalse;
 		jkmod_bit_info_t *toggleModOptions;
 
@@ -372,7 +373,7 @@ static void JKMod_svCmd_toggleMod(void)
 				if (first == -1) first = i;
 			}
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
-			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
+			if (toggleModNote) G_Printf("Note: %s\n", toggleModNote);
 			G_Printf("Cvar value: %s %i\n", arg1, bits);
 			return;
 		}
@@ -406,7 +407,7 @@ static void JKMod_svCmd_toggleMod(void)
 					if (first == -1) first = i;
 				}
 				G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
-				if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
+				if (toggleModNote) G_Printf("Note: %s\n", toggleModNote);
 			}
 		}
 		else 
@@ -421,7 +422,7 @@ static void JKMod_svCmd_toggleMod(void)
 				if (first == -1) first = i;
 			}
 			G_Printf("Example: ^3/togglemod %s %i^7 (Toggles: ^5%s^7)\n", arg1, 0, toggleModOptions[first].string);
-			if (toggleModNote[0] != '\0') G_Printf("Note: %s\n", toggleModNote);
+			if (toggleModNote) G_Printf("Note: %s\n", toggleModNote);
 		}
 		G_Printf("Cvar value: %s %i\n", arg1, bits);
 	}
