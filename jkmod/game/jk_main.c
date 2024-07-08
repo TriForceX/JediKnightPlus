@@ -31,6 +31,7 @@ vmCvar_t	jkcvar_serverIdle;
 vmCvar_t	jkcvar_serverIdleFile;
 vmCvar_t	jkcvar_serverClosed;
 vmCvar_t	jkcvar_serverClosedText;
+vmCvar_t	jkcvar_serverConnectMsg;
 vmCvar_t	jkcvar_serverJoinSound;
 
 vmCvar_t	jkcvar_allowBlackNames;
@@ -128,6 +129,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_serverIdleFile,		"jk_serverIdleFile",		"jkmod_server.cfg",		NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverClosed,			"jk_serverClosed",			"0",					JKMod_CVU_serverClosed,		CVAR_ARCHIVE,						0, qfalse },
 	{ &jkcvar_serverClosedText,		"jk_serverClosedText",		"Closed.",				NULL,						CVAR_ARCHIVE,						0, qfalse },
+	{ &jkcvar_serverConnectMsg,		"jk_serverConnectMsg",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_serverJoinSound,		"jk_serverJoinSound",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
 	{ &jkcvar_allowBlackNames,		"jk_allowBlackNames",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },

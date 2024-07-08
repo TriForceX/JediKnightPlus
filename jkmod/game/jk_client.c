@@ -69,10 +69,10 @@ char *JKMod_ClientConnect(int clientNum, qboolean firstTime, qboolean isBot)
 		}
 
 		// Connect message
-		if (level.jkmodLocals.messageCheck[clientTempID] != clientTempID)
+		if (VALIDCVAR(jkcvar_serverConnectMsg.string) && level.jkmodLocals.messageCheck[clientTempID] != clientTempID)
 		{
 			level.jkmodLocals.messageCheck[clientTempID] = clientTempID;
-			return "Server running " GAMEVERSION;
+			return *jkcvar_serverConnectMsg.string == '1' ? "Server running " GAMEVERSION : jkcvar_serverConnectMsg.string;
 		}
 		G_LogPrintf("ClientMessage: %i connected with challenge response %i\n", clientNum, clientTempID);
 			

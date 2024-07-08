@@ -402,6 +402,7 @@ extern	vmCvar_t					jkcvar_serverIdle;
 extern	vmCvar_t					jkcvar_serverIdleFile;
 extern	vmCvar_t					jkcvar_serverClosed;
 extern	vmCvar_t					jkcvar_serverClosedText;
+extern	vmCvar_t					jkcvar_serverConnectMsg;
 extern	vmCvar_t					jkcvar_serverJoinSound;
 
 extern	vmCvar_t					jkcvar_allowBlackNames;
