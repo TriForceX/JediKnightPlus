@@ -1180,7 +1180,7 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 	if (activator->client->jkmodClient.chairModelDelay > level.time) return;
 	
 	// Check user
-	if (level.jkmodLocals.chairModelCheck[self->s.number][activator->jkmodEnt.dimensionNumber]) {
+	if (level.jkmodLocals.chairModelCheck[self->s.number][activator->jkmodEnt.dimensionNumber] && !activator->client->jkmodClient.chairModelUsed) {
 		trap_SendServerCommand(activator->client->ps.clientNum, "cp \"Take another seat\"");
 		return;
 	}
@@ -1201,6 +1201,7 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 	else if (JKMod_EmoteCheck(JKModEmotesData[emote].cmd, activator))
 	{
 		vec3_t	startspot, endspot, angles;
+		int		crouch = (activator->client->ps.pm_flags & PMF_DUCKED) ? abs(DEFAULT_MINS_2) : 0;
 		int		i = 0;
 
 		// Remove force powers
@@ -1227,12 +1228,13 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 		// Move
 		VectorCopy(endspot, activator->client->ps.origin);
 
-		if (self->watertype == 1) activator->client->ps.origin[2] += activator->r.maxs[2] / 2;
+		if (self->watertype == 1) activator->client->ps.origin[2] += (activator->r.maxs[2] + crouch) / 2;
 		if (self->watertype != 1) activator->client->ps.origin[2] += 5;
 
 		// Custom pos
 		if (self->bolt_Head) activator->client->ps.origin[0] += self->bolt_Head;
 		if (self->bolt_Waist) activator->client->ps.origin[1] += self->bolt_Waist;
+		if (self->boltpoint4) activator->client->ps.origin[2] += self->boltpoint4;
 
 		// View
 		VectorCopy(self->s.angles, angles);
@@ -1254,6 +1256,7 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 	G_SpawnInt("type", "", &ent->watertype);
 	G_SpawnInt("offsetX", "0", &ent->bolt_Head);
 	G_SpawnInt("offsetY", "0", &ent->bolt_Waist);
+	G_SpawnInt("offsetZ", "0", &ent->boltpoint4);
 	G_SpawnInt("viewAngles", "0", &ent->bolt_Motion);
 	G_SpawnString("model", "", &ent->model);
 
