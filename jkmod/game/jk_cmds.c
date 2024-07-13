@@ -103,6 +103,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3savespawn          !bot\n"
 			"^3resetspawn\n"
 			"^3jetpack\n"
+			"^3maplist\n"
 			"^3engage_force\n"
 			"^3engage_private\n"
 			"^3toggle_auto\n"
@@ -112,9 +113,9 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 	// Help emotes
 	else if(!Q_stricmp(arg1, "emotes"))
 	{
-		int i;
-		char *emoteStatus;
-		char *emoteLine;
+		int			i;
+		char		*emoteStatus;
+		qboolean	emoteLine = qfalse;
 
 		trap_SendServerCommand(ent - g_entities, va("print \""
 			"^5[^7 Emotes ^5]^7\n"
@@ -125,19 +126,19 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			
 		for (i = 0; i < JKModEmotesDataSize; i++) 
 		{
-			emoteLine = (i % 6 == 5 || i == (JKModEmotesDataSize-1)) ? "\n" : "";
+			emoteLine = (i % 6 == 5 || i == (JKModEmotesDataSize-1));
 			emoteStatus = S_COLOR_YELLOW;
 
 			if (!(jkcvar_emotesEnabled.integer & (1 << JKModEmotesData[i].emoteIndex))) emoteStatus = S_COLOR_RED;
 			if (!JKModEmotesData[i].compatible && jk2startversion == VERSION_1_02) emoteStatus = S_COLOR_RED;
 
-			trap_SendServerCommand(ent - g_entities, va("print \"%s%-15s%s\"", emoteStatus, JKModEmotesData[i].cmd, emoteLine));
+			trap_SendServerCommand(ent - g_entities, va("print \"%s%-15s%s\"", emoteStatus, JKModEmotesData[i].cmd, (emoteLine ? "\n" : "")));
 		}
 
-		trap_SendServerCommand(ent - g_entities, "print \""
-			"^5----------\n"
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"%s^5----------\n"
 			"^2Note 1: ^7You can also use this command by using ^5/am<animation>\n"
-			"^2Note 2: ^7Emotes marked in ^1red ^7are not available to use\n\"");
+			"^2Note 2: ^7Emotes marked in ^1red ^7are not available to use\n\"", (emoteLine ? "" : "\n")));
 		return;
 	}
 	// Help duels
@@ -1859,6 +1860,7 @@ void JKMod_CallVote(gentity_t *ent)
 	int			i;
 	char		arg1[MAX_STRING_TOKENS];
 	char		arg2[MAX_STRING_TOKENS];
+	qboolean	argValid = qfalse;
 	const char	*gameNames[] = {
 		"Free For All",
 		"Holocron FFA",
@@ -1869,6 +1871,23 @@ void JKMod_CallVote(gentity_t *ent)
 		"N/A",
 		"Capture the Flag",
 		"Capture the Ysalamiri"
+	};
+	jkmod_callvote_t callVote[] =
+	{
+		// bitmask				option				hint
+		{ VOTE_MAP_RESTART,		"map_restart",		NULL },				
+		{ VOTE_NEXTMAP,			"nextmap",			"<map name>" },		
+		{ VOTE_MAP,				"map",				"<map name>" },		
+		{ VOTE_G_GAMETYPE,		"g_gametype",		"<number>" },			
+		{ VOTE_KICK,			"kick",				"<player name>" },		
+		{ VOTE_CLIENTKICK,		"clientkick",		"<client number>" },	
+		{ VOTE_G_DOWARMUP,		"g_doWarmup",		NULL },				
+		{ VOTE_TIMELIMIT,		"timelimit",		"<seconds>" },		
+		{ VOTE_FRAGLIMIT,		"fraglimit",		"<kills>" },			
+		{ VOTE_POLL,			"poll",				"<poll question>" },			
+		{ VOTE_SCORE_RESTART,	"score_restart",	NULL },				
+		{ VOTE_PAUSE,			"pause",			"<seconds>" },
+		{ VOTE_MAP_NUMBER,		"mapnum",			"<map number>" },		
 	};
 
 	if (!g_allowVote.integer) {
@@ -1887,16 +1906,37 @@ void JKMod_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "MAXVOTES")));
 		return;
 	}
-	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) {
-		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOSPECVOTE")));
+
+	if (trap_Argc() < 2)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \""
+			"^5[^7 Call Vote ^5]^7\n"
+			"^7You can perform a call vote within the other players to change some server options\n"
+			"^7You can do it using the following command: ^2/callvote <option> <value>\n"
+			"^5----------\n"
+			"^7Option:        Value:\n\"");
+
+		for (i = 0; i < ARRAY_LEN(callVote); i++)
+		{
+			trap_SendServerCommand(ent - g_entities, va("print \"%s%-15s%s\n\"", ((jkcvar_voteControl.integer & (1 << callVote[i].bitmask)) ? S_COLOR_YELLOW : S_COLOR_RED), callVote[i].option, (callVote[i].hint ? callVote[i].hint : "")));
+		}
+
+		trap_SendServerCommand(ent - g_entities, "print \""
+			"^5----------\n"
+			"^2Note: ^7Options marked in ^1red ^7are not available to use\n\"");
 		return;
 	}
+	
 	if (level.numVotingClients < jkcvar_voteMinPlayers.integer) {
 		trap_SendServerCommand(ent - g_entities, va("print \"You need atleast %i players to call a vote\n\"", jkcvar_voteMinPlayers.integer));
 		return;
 	}
 
-	// make sure it is a valid command to vote on
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) {
+		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOSPECVOTE")));
+		return;
+	}
+
 	trap_Argv(1, arg1, sizeof(arg1));
 	trap_Argv(2, arg2, sizeof(arg2));
 
@@ -1905,39 +1945,17 @@ void JKMod_CallVote(gentity_t *ent)
 		return;
 	}
 
-	if (Q_stricmp(arg1, "map_restart") &&
-		Q_stricmp(arg1, "nextmap") &&
-		Q_stricmp(arg1, "map") &&
-		Q_stricmp(arg1, "g_gametype") &&
-		Q_stricmp(arg1, "kick") &&
-		Q_stricmp(arg1, "clientkick") &&
-		Q_stricmp(arg1, "g_doWarmup") &&
-		Q_stricmp(arg1, "timelimit") &&
-		Q_stricmp(arg1, "fraglimit") &&
-		Q_stricmp(arg1, "poll") &&
-		Q_stricmp(arg1, "itemphysics") &&
-		Q_stricmp(arg1, "pausegame")) 
+	for (i = 0; i < ARRAY_LEN(callVote); i++)
 	{
-		trap_SendServerCommand(ent - g_entities, "print \""
-			"^5[^7 Call Vote ^5]^7\n"
-			"^7You can perform a call vote within the other players to change some server options\n"
-			"^7You can do it using the following command: ^2/callvote <option> <value>\n"
-			"^5----------\n"
-			"^7Option list:\n"
-			"^3map_restart\n"
-			"^3nextmap\n"
-			"^3map <mapname>\n"
-			"^3g_gametype <number>\n"
-			"^3kick <player name>\n"
-			"^3clientkick <client number>\n"
-			"^3g_doWarmup\n"
-			"^3timelimit <time>\n"
-			"^3fraglimit <frags>\n"
-			"^3poll <question>\n"
-			"^3itemphysics\n"
-			"^3pausegame\n"
-			"^5----------\n"
-			"^2Note: ^7Some options may be disabled by the server\n\"");
+		if (!Q_stricmp(arg1, callVote[i].option)) {
+			argValid = qtrue;
+			break;
+		} 
+	}
+
+	// check valid option
+	if (!argValid) {
+		trap_SendServerCommand(ent - g_entities, va("print \"Voting not allowed for %s\n\"", arg1));
 		return;
 	}
 
@@ -1981,7 +1999,7 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		if (!G_DoesMapSupportGametype(arg2, trap_Cvar_VariableIntegerValue("g_gametype"))) {
-			trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOVOTE_MAPNOTSUPPORTEDBYGAME")));
+			trap_SendServerCommand(ent - g_entities, va("print \"%s\"", G_GetStripEdString("SVINGAME", "NOVOTE_MAPNOTSUPPORTEDBYGAME")));
 			return;
 		}
 
@@ -2083,33 +2101,111 @@ void JKMod_CallVote(gentity_t *ent)
 		Com_sprintf(level.voteString, sizeof(level.voteString), "");
 		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Poll: %s", Q_CleanStr(ConcatArgs(2), qfalse));
 	}
-	// Item physics
-	else if (!Q_stricmp(arg1, "itemphysics"))
+	// Score restart
+	else if (!Q_stricmp(arg1, "score_restart"))
 	{
 		int		val;
 		char	*action;
 
-		if (!(jkcvar_voteControl.integer & (1 << VOTE_ITEMPHYSICS))) {
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_SCORE_RESTART))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
 			return;
 		}
 
-		val = trap_Cvar_VariableIntegerValue("jk_itemForcePhysics") == 0 ? 1 : 0;
-		action = val ? "Enable" : "Disable";
-
-		Com_sprintf(level.voteString, sizeof(level.voteString), "jk_itemForcePhysics %i", val);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "%s map item force physics", action);
+		Com_sprintf(level.voteString, sizeof(level.voteString), "resetscores");
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Restart all players scores");
 	}
-	// Item physics
-	else if (!Q_stricmp(arg1, "pausegame"))
+	// Pause game
+	else if (!Q_stricmp(arg1, "pause"))
 	{
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_PAUSE))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
 			return;
 		}
 
-		Com_sprintf(level.voteString, sizeof(level.voteString), "pause 60");
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for 60 seconds");
+		if (arg2[0] == '\0') {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "pause 300");
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for 5 minutes");
+		} else {
+			if (JKMod_ValidNumber(arg2)) {
+				Com_sprintf(level.voteString, sizeof(level.voteString), "pause %s", arg2);
+				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for %s seconds", arg2);
+			} else {
+				trap_SendServerCommand(ent - g_entities, "print \"The specified value is not a number\n");
+				return;
+			}
+		}
+	}
+	// Map number
+	else if (!Q_stricmp(arg1, "mapnum"))
+	{
+		int					i, len, numMaps;
+		char				unsortedMaps[4096];
+		char				*sortedMaps[512];
+		char				*mapName;
+		unsigned int		mapCount = 0;
+		unsigned int		mapSinglePlayer = 0;
+		const unsigned int	maxMaps = 512;
+		qboolean			mapValid = qfalse;
+
+		if (!(jkcvar_voteControl.integer & (1 << VOTE_MAP_NUMBER))) {
+			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
+			return;
+		}
+
+		if (!JKMod_ValidNumber(arg2)) {
+			trap_SendServerCommand(ent - g_entities, "print \"Invalid map number\n\"");
+			return;
+		}
+
+		numMaps = trap_FS_GetFileList("maps", ".bsp", unsortedMaps, sizeof(unsortedMaps));
+
+		if (numMaps) 
+		{
+			if (numMaps > maxMaps) numMaps = maxMaps;
+
+			mapName = unsortedMaps;
+
+			for (i = 0; i < numMaps; i++) 
+			{
+				len = strlen(mapName);
+				if (!Q_stricmp(mapName+len-4, ".bsp")) mapName[len-4] = '\0';
+				sortedMaps[i] = mapName;
+				mapName += len+1;
+			}
+	
+			qsort(sortedMaps, numMaps, sizeof(sortedMaps[0]), JKMod_CompcStr);
+		
+			for (i = 0; i < numMaps; i++) 
+			{
+				mapSinglePlayer = JKMod_SPMapCheck(sortedMaps[i]);
+			
+				if (mapSinglePlayer && !(jkcvar_mapFixes.integer & JK_MAP_SPVOTE)) {
+					mapCount = mapCount > 0 ? mapCount-- : 0;
+					continue;
+				}
+
+				mapCount++;
+				
+				if (atoi(arg2) == mapCount) {
+					mapValid = qtrue;
+					break;
+				}
+			}
+
+			if (mapValid) {
+				if (!G_DoesMapSupportGametype(sortedMaps[i], trap_Cvar_VariableIntegerValue("g_gametype"))) {
+					trap_SendServerCommand(ent - g_entities, va("print \"%s\"", G_GetStripEdString("SVINGAME", "NOVOTE_MAPNOTSUPPORTEDBYGAME")));
+					return;
+				} else {
+					Com_sprintf(level.voteString, sizeof(level.voteString), "map %s", sortedMaps[i]);
+					Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Change map to %s", sortedMaps[i]);
+				}
+			} else {
+				trap_SendServerCommand(ent - g_entities, "print \"Map number not found\n\"");
+				return;
+			}
+		}
 	}
 	// Others
 	else
@@ -2119,7 +2215,7 @@ void JKMod_CallVote(gentity_t *ent)
 			(!Q_stricmp(arg1, "map_restart") && !(jkcvar_voteControl.integer & (1 << VOTE_MAP_RESTART))) ||
 			(!Q_stricmp(arg1, "fraglimit") && !(jkcvar_voteControl.integer & (1 << VOTE_FRAGLIMIT))))
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Voting not allowed for %s\n\"", arg1));
+			trap_SendServerCommand(ent - g_entities, va("print \"Voting for ^3%s ^7is disabled by the server\n\"", arg1));
 			return;
 		}
 
@@ -2219,6 +2315,79 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 		}
 
 		return !announce && ent->client->sess.jkmodSess.playerStatus;
+	}
+}
+
+/*
+=====================================================================
+Show current server maps
+=====================================================================
+*/
+static void JKMod_Cmd_MapList(gentity_t *ent)
+{
+	int					i, len, numMaps;
+	char				unsortedMaps[4096];
+	char				*sortedMaps[512];
+	char				*mapName, *mapNameClean;
+	char				*mapType;
+	unsigned int		mapCount = 0;
+	unsigned int		mapSinglePlayer = 0;
+	const unsigned int	mapNameLimit = 24, maxMaps = 512;
+	qboolean			mapLine = qfalse;
+
+	numMaps = trap_FS_GetFileList("maps", ".bsp", unsortedMaps, sizeof(unsortedMaps));
+
+	if (numMaps) 
+	{
+		trap_SendServerCommand(ent - g_entities, "print \""
+			"^5[^7 Map List ^5]^7\n"
+			"^7List of all existing maps on the server\n"
+			"^7Map type: ^2Custom^7, ^3Multiplayer, ^6Single Player^7, ^1Single Player (Special)\n"
+			"^5----------\n\"");
+
+		if (numMaps > maxMaps) numMaps = maxMaps;
+
+		mapName = unsortedMaps;
+
+		for (i = 0; i < numMaps; i++) 
+		{
+			len = strlen(mapName);
+			if (!Q_stricmp(mapName+len-4, ".bsp")) mapName[len-4] = '\0';
+			sortedMaps[i] = mapName;
+			mapName += len+1;
+		}
+	
+		qsort(sortedMaps, numMaps, sizeof(sortedMaps[0]), JKMod_CompcStr);
+		
+		for (i = 0; i < numMaps; i++) 
+		{
+			mapType = S_COLOR_GREEN;
+			mapSinglePlayer = JKMod_SPMapCheck(sortedMaps[i]);
+			
+			if (mapSinglePlayer) {
+				if (jkcvar_mapFixes.integer & JK_MAP_SPVOTE) {
+					mapType = mapSinglePlayer == 2 ? S_COLOR_RED : S_COLOR_MAGENTA;
+				} else {
+					mapCount = mapCount > 0 ? mapCount-- : 0;
+					continue;
+				}
+			}
+			else if (JKMod_MPMapCheck(sortedMaps[i])) {
+				mapType = S_COLOR_YELLOW;
+			}
+
+			mapNameClean = Q_CleanStr(sortedMaps[i], qfalse);
+			if (strlen(mapNameClean) > mapNameLimit) mapNameClean[mapNameLimit] = '\0';
+			mapLine = (mapCount % 4 == 3 || mapCount == (numMaps-1));
+			mapCount++;
+			trap_SendServerCommand(ent - g_entities, va("print \"^7[%s%03d^7] %-25s%s\"", mapType, mapCount, mapNameClean, (mapLine ? "\n" : "")));
+		}
+
+		trap_SendServerCommand(ent - g_entities, va("print \""
+			"%s^5----------\n"
+			"^7%i available maps listed (Out of a total of %i)\n"
+			"^2Note 1: ^7Use ^3/callvote mapnum <number> ^7for voting by number\n"
+			"^2Note 2: ^7Availability of ^1Single Player ^7maps depends of server settings\n\"", (mapLine ? "" : "\n"), mapCount, numMaps));
 	}
 }
 
@@ -2574,6 +2743,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "emote",					JKMod_Cmd_Emote },
 	{ "dualsaber",				JKMod_Cmd_DualSaber },
 	{ "taunt2",					JKMod_Cmd_Taunt2 },
+	{ "maplist",				JKMod_Cmd_MapList },
 };
 
 static const size_t JKModCommandsTableSize = ARRAY_LEN(JKModCommandsTable);

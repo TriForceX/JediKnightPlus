@@ -201,8 +201,9 @@ static jkmod_bit_info_t toggleVoteControl[] =
 	"TIME LIMIT",
 	"FRAG LIMIT",
 	"POLL",
-	"ITEM PHYSICS",
+	"SCORE RESTART",
 	"PAUSE GAME",
+	"MAP NUMBER",
 };
 
 // Options for jk_altDimension cvar
@@ -848,6 +849,40 @@ static void JKMod_svCmd_controlBots(void)
 
 /*
 =====================================================================
+Reset players scores function
+=====================================================================
+*/
+void JKMod_svCmd_resetScores_f(void)
+{
+	int i;
+	gentity_t *ent;
+	
+	for (i=0 ; i < level.numConnectedClients ; i++) 
+	{
+		ent = &g_entities[level.sortedClients[i]];
+
+		if (ent->inuse && ent->client) 
+		{
+			ent->client->ps.persistant[PERS_SCORE] = 0;
+			ent->client->ps.persistant[PERS_IMPRESSIVE_COUNT] = 0;
+			ent->client->ps.persistant[PERS_EXCELLENT_COUNT] = 0;
+			ent->client->ps.persistant[PERS_GAUNTLET_FRAG_COUNT] = 0;
+			ent->client->ps.persistant[PERS_DEFEND_COUNT] = 0;
+			ent->client->ps.persistant[PERS_ASSIST_COUNT] = 0;
+			ent->client->ps.persistant[PERS_CAPTURES] = 0;
+			ent->client->ps.persistant[PERS_KILLED] = 0;
+			ent->client->ps.persistant[PERS_HITS] = 0;
+		}
+	}
+
+	level.teamScores[TEAM_RED] = 0;
+	level.teamScores[TEAM_BLUE] = 0;
+	CalculateRanks();
+	trap_SendServerCommand(-1, "print \"Scores have been reset\n\"");
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */
@@ -915,6 +950,11 @@ qboolean JKMod_ConsoleCommand(void)
 	if (!Q_stricmp(cmd, "control"))
 	{
 		JKMod_svCmd_controlBots();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "resetscores"))
+	{
+		JKMod_svCmd_resetScores_f();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)

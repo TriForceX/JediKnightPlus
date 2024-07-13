@@ -221,6 +221,13 @@ int JKMod_EmotePlay(gentity_t *ent, int emoteIndex)
 		return 0;
 	}
 
+	// Don't allow during pause
+	if (level.jkmodLocals.pauseTime > level.time)
+	{
+		if (showAlert) trap_SendServerCommand(ent - g_entities, "cp \"You can't toggle this emote during pause\"");
+		return 0;
+	}
+
 	// Don't allow when you are moving
 	if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !(ent->client->ps.duelTime >= level.time))
 	{

@@ -380,8 +380,8 @@
 		{
 			name				misc
 			group				grpCallVote
-			text				@JKMENUS_VOTE_ITEMPHYSICS
-			descText			@JKMENUS_VOTE_ITEMPHYSICS_DESC
+			text				@JKMENUS_VOTE_SCORERESET
+			descText			@JKMENUS_VOTE_SCORERESET_DESC
 			rect				120 140 230 25
 			type				1
 			textalign			ITEM_ALIGN_CENTER
@@ -394,7 +394,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				exec 			"cmd callvote itemphysics" ; 
+				exec 			"cmd callvote score_restart" ; 
 				uiScript 		closeingame 
 			}
 		}
@@ -417,7 +417,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				exec 			"cmd callvote pausegame" ; 
+				exec 			"cmd callvote pause" ; 
 				uiScript 		closeingame 
 			}
 		}

@@ -3490,8 +3490,8 @@ static void CG_DrawVote(void) {
 
 	// Tr!Force: [CGameGeneral] Vote vertical alignment
 	if (jkmod_consoleLines == 1) jkmod_valign += 7;
-	else if (jkmod_consoleLines == 2) jkmod_valign += 7*2.3;
-	else if (jkmod_consoleLines == 3) jkmod_valign += 7*3.3;
+	else if (jkmod_consoleLines == 2) jkmod_valign += 7*2.6;
+	else if (jkmod_consoleLines == 3) jkmod_valign += 7*4.2;
 
 	// play a talk beep whenever it is modified
 	if ( cgs.voteModified ) {

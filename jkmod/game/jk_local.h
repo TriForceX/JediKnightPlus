@@ -52,8 +52,9 @@ typedef enum
 	VOTE_TIMELIMIT,
 	VOTE_FRAGLIMIT,
 	VOTE_POLL,
-	VOTE_ITEMPHYSICS,
+	VOTE_SCORE_RESTART,
 	VOTE_PAUSE,
+	VOTE_MAP_NUMBER,
 
 } jkmod_vote_t;
 
@@ -357,6 +358,15 @@ typedef struct
 
 } jkmod_tweaks_t;
 
+// Callvote data
+typedef struct
+{
+	int				bitmask;
+	const char		*option;
+	const char		*hint;
+
+} jkmod_callvote_t;
+
 // Commands data
 typedef struct
 {
@@ -562,6 +572,7 @@ const char	*JKMod_MsToWord(const int ms, qboolean abbr);
 int			JKMod_GetClientNumber(char* name);
 int			JKMod_CheckValidClient(gentity_t *ent, char *name);
 char		*JKMod_ReadFile(char *filename);
+int			JKMod_CompcStr(const void * a, const void * b);
 void		JKMod_RandSeed(unsigned seed);
 int			JKMod_Rand(void);
 float		JKMod_RandFloat(float min, float max);
@@ -622,6 +633,7 @@ void		JKMod_TeleportPlayer(gentity_t *player, vec3_t origin, vec3_t angles, qboo
 int			JKMod_ItemRespawnTime(gentity_t *ent);
 void		JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisable, int forcelevel, qboolean holdables, qboolean jetpack, qboolean invulnerability, qboolean passthrough, float speed, float gravity);
 int			JKMod_SPMapCheck(const char *mapname);
+int			JKMod_MPMapCheck(const char *mapname);
 qboolean	JKMod_ValidPlayerModel(const char* modelname);
 void		JKMod_ChairModelDisable(gentity_t *ent);
 
@@ -661,5 +673,6 @@ void		JKMod_DoorFix(gentity_t* ent);
 
 // jk_svcmds.c
 void		JKMod_svCmd_forceTeam(void);
+void		JKMod_svCmd_resetScores_f(void);
 
 #endif // __JK_LOCAL_H__

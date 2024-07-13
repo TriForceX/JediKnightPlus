@@ -137,7 +137,7 @@ void UI_LoadArenas( void ) {
 		strcat(filename, dirptr);
 		UI_LoadArenasFromFile(filename);
 	}
-	trap_Print( va( "%i arenas parsed\n", ui_numArenas ) );
+	if (trap_Cvar_VariableValue("developer")) trap_Print( va( "%i arenas parsed\n", ui_numArenas ) ); // Tr!Force: [UIGeneral] Show arenas parsed in dev mode only
 	if (UI_OutOfMemory()) {
 		trap_Print(S_COLOR_YELLOW"WARNING: not anough memory in pool to load all arenas\n");
 	}

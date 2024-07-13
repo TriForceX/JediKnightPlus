@@ -157,21 +157,21 @@ INDEX 16
 }
 INDEX 17
 {
-   REFERENCE VOTE_ITEMPHYSICS
-   TEXT_LANGUAGE1 "Item Force Physics"
-   TEXT_LANGUAGE2 "Objet Force Physique"
-   TEXT_LANGUAGE3 "Kraftphysik an Objekten"
-   TEXT_LANGUAGE6 "Item Force Physics"
-   TEXT_LANGUAGE8 "Físicas items con fuerza"
+   REFERENCE VOTE_SCORERESET
+   TEXT_LANGUAGE1 "Reset Player Scores"
+   TEXT_LANGUAGE2 "Réinitialiser Scores Joueurs"
+   TEXT_LANGUAGE3 "Spielergebnisse Zurücksetzen"
+   TEXT_LANGUAGE6 "Reset Player Scores"
+   TEXT_LANGUAGE8 "Reinicia Puntaje Jugadores"
 }
 INDEX 18
 {
-   REFERENCE VOTE_ITEMPHYSICS_DESC
-   TEXT_LANGUAGE1 "Map items react to force powers."
-   TEXT_LANGUAGE2 "Les éléments de la carte réagissent à la force ."
-   TEXT_LANGUAGE3 "Kartenelemente reagieren auf Machtkräfte."
-   TEXT_LANGUAGE6 "Map items react to force powers."
-   TEXT_LANGUAGE8 "Los items del mapa reaccionan con la fuerza."
+   REFERENCE VOTE_SCORERESET_DESC
+   TEXT_LANGUAGE1 "Restart all player scores."
+   TEXT_LANGUAGE2 "Remise à zéro des scores des joueurs."
+   TEXT_LANGUAGE3 "Alle spielergebnisse neu starten."
+   TEXT_LANGUAGE6 "Restart all player scores."
+   TEXT_LANGUAGE8 "Reinicia el puntaje de los jugadores."
 }
 INDEX 19
 {
@@ -185,11 +185,11 @@ INDEX 19
 INDEX 20
 {
    REFERENCE VOTE_PAUSEGAME_DESC
-   TEXT_LANGUAGE1 "Pause game for 60 seconds."
-   TEXT_LANGUAGE2 "Pause du jeu pendant 60 secondes."
-   TEXT_LANGUAGE3 "Spiel 60 sekunden pausieren."
-   TEXT_LANGUAGE6 "Pause game for 60 seconds."
-   TEXT_LANGUAGE8 "Pausa el juego durante 60 segundos."
+   TEXT_LANGUAGE1 "Pause game for 5 minutes."
+   TEXT_LANGUAGE2 "Pause du jeu pendant 5 minutes."
+   TEXT_LANGUAGE3 "Spiel für 5 minuten unterbrechen."
+   TEXT_LANGUAGE6 "Pause game for 5 minutes."
+   TEXT_LANGUAGE8 "Pausa el juego durante 5 minutos."
 }
 INDEX 21
 {

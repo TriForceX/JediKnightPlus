@@ -854,7 +854,7 @@ Draw pause texts
 void JKMod_CG_DrawPauseString(void)
 {
 	int			w1, w2;
-	int			sec;
+	int			timeSec, timeMin, timeMsec;
 	const char	*t1, *t2;
 	float		color[4];
 
@@ -865,12 +865,19 @@ void JKMod_CG_DrawPauseString(void)
 
 	if (cgs.jkmodCGS.pauseTime != INT_MAX) 
 	{
-		sec = (cgs.jkmodCGS.pauseTime - cg.snap->serverTime) / 1000 + 1;
+		timeMsec = (cgs.jkmodCGS.pauseTime - cg.snap->serverTime) + 1000;
+		timeSec = timeMsec / 1000;
+		timeMin = timeSec / 60;
+		timeSec -= timeMin * 60;
 
 		t1 = CG_GetStripEdString("JKINGAME", "PAUSE_GAME");
 		w1 = CG_DrawStrlen(t1) * SMALLCHAR_WIDTH;
 
-		t2 = va(CG_GetStripEdString("JKINGAME", "PAUSE_GAME_SEC"), sec);
+		if (timeMin == 0) {
+			t2 = va(CG_GetStripEdString("JKINGAME", "PAUSE_GAME_SEC"), timeSec);
+		} else {
+			t2 = va(CG_GetStripEdString("JKINGAME", "PAUSE_GAME_MIN"), timeMin, timeSec);
+		}
 		w2 = CG_DrawStrlen(t2) * BIGCHAR_WIDTH;
 
 		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);

@@ -675,8 +675,9 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 
 					if (level.jkmodLocals.pauseTimeCustom) 
 					{
-						trap_SendServerCommand(i, va("print \"Game paused for %i seconds\n\"", level.jkmodLocals.pauseTimeCustom));
-						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("cp \"Pause for %i seconds\"", level.jkmodLocals.pauseTimeCustom));
+						const char *timeCustom = JKMod_MsToWord((level.jkmodLocals.pauseTimeCustom * 1000), qfalse);
+						trap_SendServerCommand(i, va("print \"Game paused for %s\n\"", timeCustom));
+						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("cp \"Pause for %s\"", timeCustom));
 					}
 					else 
 					{

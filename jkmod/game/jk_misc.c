@@ -685,6 +685,44 @@ int JKMod_SPMapCheck(const char *mapname)
 
 /*
 =====================================================================
+Check if is multiplayer player map
+=====================================================================
+*/
+int JKMod_MPMapCheck(const char *mapname)
+{
+	int i;
+	char *maps[] = {
+		"duel_bespin",
+		"duel_hangar",
+		"duel_temple",
+		"duel_training",
+		"duel_bay",
+		"duel_carbon",
+		"duel_jedi",
+		"duel_pit",
+		"ctf_bespin",
+		"ctf_imperial",
+		"ctf_ns_streets",
+		"ctf_yavin",
+		"ffa_bespin",
+		"ffa_deathstar",
+		"ffa_imperial",
+		"ffa_ns_hideout",
+		"ffa_ns_streets",
+		"ffa_raven",
+		"ffa_yavin",
+	};
+
+	for (i = 0; i < ARRAY_LEN(maps); i++)
+	{
+		if (!Q_stricmp(mapname, maps[i])) return 1;
+	}
+	
+	return 0;
+}
+
+/*
+=====================================================================
 Check for valid player models
 =====================================================================
 */

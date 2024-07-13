@@ -470,7 +470,7 @@ const char *JKMod_MsToWord(const int ms, qboolean abbr)
 	float		fremainsecs;
 	char		*strseconds = abbr ? "sec" : "seconds";
 	char		*strminutes = abbr ? "min" : "minutes";
-	char		*strhours = abbr ? "hrs" : "minutes";
+	char		*strhours = abbr ? "hrs" : "hours";
 
 	if (wholemins < 1)
 	{
@@ -492,7 +492,13 @@ const char *JKMod_MsToWord(const int ms, qboolean abbr)
 
 	fremainsecs = (ms - wholemins * 60000) * 0.001f;
 
-	return va("%d %s %d %s", wholemins, strminutes, (int)fremainsecs, strseconds);
+	if (wholemins == 1 && !abbr) strminutes = "minute";
+
+	if (fremainsecs == 0) {
+		return va("%d %s", wholemins, strminutes);
+	} else {
+		return va("%d %s %d %s", wholemins, strminutes, (int)fremainsecs, strseconds);
+	}
 }
 
 /*
@@ -643,6 +649,17 @@ char *JKMod_ReadFile(char *filename)
 	BG_TempFree(MAX_FILE_LENGTH);
 	trap_FS_FCloseFile(f);
 	return buf;
+}
+
+/*
+=====================================================================
+Comparator function used to sort an array of strings
+=====================================================================
+*/
+int JKMod_CompcStr(const void * a, const void * b) {
+	const char * aa = * (const char * *) a;
+	const char * bb = * (const char * *) b;
+	return strcmp(aa, bb);
 }
 
 /*

@@ -486,7 +486,7 @@ Set dimension change function
 qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, char *say)
 {
 	int			i;
-	char		*print = say[0] ? "cp" : "print";
+	char		*print = say ? "cp" : "print";
 	char		message[MAX_STRING_CHARS] = { 0 };
 	qboolean	baseCmd = qfalse;
 
