@@ -74,6 +74,9 @@ spawn_t	jkmod_spawns[] = {
 	{ "df_trigger_finish",				JKMod_SP_TimerStop },
 	{ "df_trigger_checkpoint",			JKMod_SP_TimerCheckpoint },
 
+	// Sentinel value
+	{ 0, 0 }
+
 };
 
 /*

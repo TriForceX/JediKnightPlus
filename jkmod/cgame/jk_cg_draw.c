@@ -497,7 +497,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 	int linesToDraw = 0;
 	int i = 0;
 	int x = 30;
-	int y = cg.showScores ? 475 : jkcvar_cg_chatBoxHeight.integer;
+	int y = cg.showScores || (cg.snap->ps.stats[STAT_HEALTH] <= 0) ? 475 : jkcvar_cg_chatBoxHeight.integer;
 	float fontScale = 0.65f;
 	qboolean drawAnyway = qfalse;
 
@@ -903,13 +903,14 @@ void JKMod_CG_DrawPlayerLabels(void)
 
 	for (i = 0; i < MAX_CLIENTS; i++) {
 		vec3_t		pos;
+		float		VectorLengthDiff;
 		float		x, y;
 		trace_t		trace;
 		centity_t	*cent = &cg_entities[i];
 		vec3_t		diff;
 		float		scale = 0.5;
 		float		max = 0.62;
-		float		distance = jkcvar_cg_drawPlayerNames.integer == 1 ? 520 : 800;
+		float		distance = jkcvar_cg_drawPlayerNames.integer == 1 ? LABEL_DYN_DISTANCE : LABEL_FIX_DISTANCE;
 
 		// Skip
 		if (!cent || !cent->currentValid)
@@ -920,11 +921,11 @@ void JKMod_CG_DrawPlayerLabels(void)
 			continue;
 		if (cent->currentState.eFlags & EF_DEAD)
 			continue;
-		if (cent->currentState.eType != ET_PLAYER)	
+		if (cent->currentState.eType != ET_PLAYER)
 			continue;
 		if (!cgs.clientinfo[i].infoValid)
 			continue;
-		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)	
+		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)
 			continue;
 		if (CG_IsMindTricked(cent->currentState.trickedentindex,
 			cent->currentState.trickedentindex2,
@@ -932,14 +933,19 @@ void JKMod_CG_DrawPlayerLabels(void)
 			cent->currentState.trickedentindex4,
 			cg.snap->ps.clientNum))
 			continue;
-
-		// Max distance
-		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) >= distance)
+		if (cg.snap->ps.duelInProgress && i != cg.snap->ps.clientNum && i != cg.snap->ps.duelIndex)
 			continue;
 
-		// Do trace
-		CG_Trace( &trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID|CONTENTS_BODY );
+		// Get diff
+		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
+		VectorLengthDiff = VectorLength(diff);
+
+		// Check max distance
+		if (VectorLengthDiff >= distance)
+			continue;
+
+		// Trace world
+		CG_Trace(&trace, cg.refdef.vieworg, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID | CONTENTS_BODY);
 		if (trace.entityNum == ENTITYNUM_WORLD)
 			continue;
 
@@ -947,12 +953,17 @@ void JKMod_CG_DrawPlayerLabels(void)
 		VectorCopy(cent->lerpOrigin, pos);
 		pos[2] += 60;
 
+		// Check height
+		if (jkcvar_cg_drawPlayerNames.integer == 2 && VectorLengthDiff >= (distance * 0.5))
+			pos[2] += 15;
+
 		// Check coords
 		if (!CG_WorldCoordToScreenCoord(pos, &x, &y))
 			continue;
 
 		// Set dynamic scale
-		if (jkcvar_cg_drawPlayerNames.integer == 1) scale = 120 / VectorLength(diff);
+		if (jkcvar_cg_drawPlayerNames.integer == 1) 
+			scale = 120 / VectorLengthDiff;
 
 		// Show name
 		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > max ? max : scale));

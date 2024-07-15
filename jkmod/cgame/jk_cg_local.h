@@ -21,6 +21,8 @@ Global definitions
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
 #define USE_DISTANCE				54.0f // 64.0f
+#define LABEL_DYN_DISTANCE			520
+#define LABEL_FIX_DISTANCE			720
 #define ACCEL_SAMPLES				16
 #define PERCENT_SAMPLES				16
 #define FPS_FRAMES					4

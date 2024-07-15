@@ -2363,11 +2363,11 @@ static void CG_DrawDisconnect( float x, float y ) { // Tr!Force: [CGameGeneral] 
 	{			
 		s = CG_GetStripEdString("INGAMETEXT", "SERVER_CHANGING_MAPS");	// s = "Server Changing Maps";			
 		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString(0.5f * (cgs.screenWidth - w), 100, s, 1.0f);
+		CG_DrawBigString(0.5f * (cgs.screenWidth - w), (cgs.screenHeight / 2) - 40, s, 1.0f); // Tr!Force: [CGameGeneral] Center align disconnect messages
 
 		s = CG_GetStripEdString("INGAMETEXT", "PLEASE_WAIT");	// s = "Please wait...";
 		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString(0.5f * (cgs.screenWidth - w), 200, s, 1.0f);
+		CG_DrawBigString(0.5f * (cgs.screenWidth - w), (cgs.screenHeight / 2), s, 1.0f); // Tr!Force: [CGameGeneral] Center align disconnect messages
 		return;
 	}
 
@@ -2382,7 +2382,7 @@ static void CG_DrawDisconnect( float x, float y ) { // Tr!Force: [CGameGeneral] 
 	// also add text in center of screen
 	s = CG_GetStripEdString("INGAMETEXT", "CONNECTION_INTERRUPTED"); // s = "Connection Interrupted"; // bk 010215 - FIXME
 	w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-	CG_DrawBigString(0.5f * (cgs.screenWidth - w), 100, s, 1.0f);
+	CG_DrawBigString(0.5f * (cgs.screenWidth - w), (cgs.screenHeight / 2) - 20, s, 1.0f); // Tr!Force: [CGameGeneral] Center align disconnect messages
 
 	// blink the icon
 	if ( ( cg.time >> 9 ) & 1 ) {
@@ -3348,7 +3348,7 @@ static void CG_DrawCrosshairNames( void ) {
 	// Tr!Force: [PlayerLabels] Prevent crosshair names override
 	if (jkcvar_cg_drawPlayerNames.integer)
 	{
-		float distance = jkcvar_cg_drawPlayerNames.integer == 1 ? 520 : 800;
+		float distance = jkcvar_cg_drawPlayerNames.integer == 1 ? LABEL_DYN_DISTANCE : LABEL_FIX_DISTANCE;
 		VectorSubtract(cg_entities[cg.crosshairClientNum].lerpOrigin, cg.predictedPlayerState.origin, diff);
 		if (VectorLength(diff) < distance) return;
 	}

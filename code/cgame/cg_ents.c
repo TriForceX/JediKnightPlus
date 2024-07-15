@@ -1023,6 +1023,14 @@ Ghoul2 Insert End
 
 	if (s1->eType == ET_BODY)
 	{ //bodies should have a radius as well
+
+		// Tr!Force: [DuelPassThrough] Check private duels
+		int jkmod_entNumber = cent->currentState.number;
+		if ((jkcvar_cg_privateDuel.integer && cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && jkmod_entNumber != cg.snap->ps.clientNum && jkmod_entNumber != cg.snap->ps.duelIndex)
+		{
+			return;
+		}
+
 		ent.radius = cent->currentState.g2radius;
 
 		if (cent->ghoul2)
@@ -1044,11 +1052,25 @@ Ghoul2 Insert End
 			}
 		}
 
-		if (cg.jkmodCG.modelOpacity) // Tr!Force: [CGameGeneral] Check model opacity
+		// Tr!Force: [CGameGeneral] Check model opacity
+		if (cg.jkmodCG.modelOpacity == DUEL_OPACITY)
 		{
 			ent.renderfx |= RF_FORCE_ENT_ALPHA;
 			ent.shaderRGBA[3] = cg.jkmodCG.modelOpacity;
 			if (ent.shaderRGBA[3] < 1) ent.shaderRGBA[3] = 1;
+		}
+
+		// Tr!Force: [CGameGeneral] Darken corpses not involved in duels
+		if (!cg.jkmodCG.modelOpacity &&
+			cg.snap->ps.duelInProgress &&
+			cg.snap->ps.stats[JK_DIMENSION] != DIMENSION_DUEL &&
+			jkmod_entNumber != cg.snap->ps.duelIndex && 
+			jkmod_entNumber != cg.snap->ps.clientNum)
+		{
+			ent.shaderRGBA[0] = 50;
+			ent.shaderRGBA[1] = 50;
+			ent.shaderRGBA[2] = 50;
+			ent.renderfx |= RF_RGB_TINT;
 		}
 	}
 

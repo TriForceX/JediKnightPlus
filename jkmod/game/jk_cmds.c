@@ -161,7 +161,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled"),
 			(jkcvar_allowCustomDuel.integer ? S_COLOR_YELLOW : S_COLOR_RED),
 			(jkcvar_duelAutoAccept.integer ? S_COLOR_YELLOW : S_COLOR_RED),
-			(jkcvar_altDimension.integer & DIMENSION_PRIVATE ? S_COLOR_YELLOW : S_COLOR_RED)));
+			(jkcvar_altDimension.integer & DIMENSION_DUEL ? S_COLOR_YELLOW : S_COLOR_RED)));
 		return;
 	}
 	// Help dimensions

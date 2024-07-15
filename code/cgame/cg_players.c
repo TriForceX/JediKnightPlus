@@ -6105,7 +6105,7 @@ void CG_Player( centity_t *cent ) {
 	}
 
 	// Tr!Force: [Duel] Don't render players outside of duel
-	if ((jkcvar_cg_privateDuel.integer && cg.snap->ps.stats[JK_DIMENSION] != (1 << DIMENSION_DUEL) && cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	if ((jkcvar_cg_privateDuel.integer && cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
 	{
 		return;
 	}
@@ -6864,11 +6864,11 @@ doEssentialTwo:
 	//NOTE: All effects that should be visible during mindtrick should go above here
 
 	// Tr!Force: [ChatProtect] Chat player transparency
-	if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && jkcvar_cg_chatPlayerOpacity.integer && (cent->currentState.number == cg.snap->ps.clientNum ? !JKMod_CG_EmoteUI() : qtrue))
+	if ((cent->currentState.eFlags & EF_TALK) && (cent->currentState.eFlags & JK_PASS_THROUGH) && !(cent->currentState.eFlags & EF_DEAD) && jkcvar_cg_chatPlayerOpacity.integer && (cent->currentState.number == cg.snap->ps.clientNum ? !JKMod_CG_EmoteUI() : qtrue))
 		doAlpha = cg.jkmodCG.modelOpacity = CHAT_OPACITY;
 	
 	// Tr!Force: [Duel] Fade-out players outside of duel
-	if ((jkcvar_cg_privateDuel.integer && cg.snap->ps.stats[JK_DIMENSION] != (1 << DIMENSION_DUEL) && !cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
+	if ((jkcvar_cg_privateDuel.integer || cgs.jkmodCGS.duelPassThrough) && cg.snap->ps.duelInProgress && clientNum != cg.snap->ps.clientNum && clientNum != cg.snap->ps.duelIndex)
 		doAlpha = cg.jkmodCG.modelOpacity = DUEL_OPACITY;
 
 	if (iwantout)
