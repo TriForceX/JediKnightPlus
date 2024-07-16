@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 225
+COUNT 227
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1149,7 +1149,7 @@ INDEX 127
 {
    REFERENCE CLIENT_CHATBOXHISTORY
    TEXT_LANGUAGE1 "Chat history:"
-   TEXT_LANGUAGE2 "historique du chat:"
+   TEXT_LANGUAGE2 "Historique du chat:"
    TEXT_LANGUAGE3 "Chatverlauf:"
    TEXT_LANGUAGE6 "Chat history:"
    TEXT_LANGUAGE8 "Historial del chat:"
@@ -2026,4 +2026,22 @@ INDEX 224
    TEXT_LANGUAGE3 "Verfolgt 'zur rechts' bewegung."
    TEXT_LANGUAGE6 "Tracks 'to the right' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia la derecha'."
+}
+INDEX 225
+{
+   REFERENCE CLIENT_CHATCOLOR
+   TEXT_LANGUAGE1 "Chat color:"
+   TEXT_LANGUAGE2 "Couleur du chat:"
+   TEXT_LANGUAGE3 "Chat farbe:"
+   TEXT_LANGUAGE6 "Chat color:"
+   TEXT_LANGUAGE8 "Color del chat:"
+}
+INDEX 226
+{
+   REFERENCE CLIENT_CHATCOLOR_DESC
+   TEXT_LANGUAGE1 "Set a custom color for chat messages."
+   TEXT_LANGUAGE2 "Définir une couleur personnalisée pour les messages de chat."
+   TEXT_LANGUAGE3 "Festlegen einer benutzerdefinierten farbe für chat nachrichten."
+   TEXT_LANGUAGE6 "Set a custom color for chat messages."
+   TEXT_LANGUAGE8 "Define un color personalizado para los mensajes del chat."
 }

@@ -1392,6 +1392,13 @@ static void CG_ServerCommand( void ) {
 		return;
 	}
 
+	// Tr!Force: [ChatColor] Update chat color cvar from server cmd
+	if ( !strcmp( cmd, "jk_cg_chatColor" ) )
+	{
+		trap_Cvar_Set("jk_cg_chatColor", CG_Argv(1));
+		return;
+	}
+
 	// Tr!Force: [General] Toggle console from server
 	if ( !strcmp(cmd, "jk_cg_toggleConsole") )
 	{

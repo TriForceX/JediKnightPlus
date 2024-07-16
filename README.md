@@ -22,6 +22,7 @@ Game modification for **Jedi Knight II: Jedi Outcast Multiplayer**. The main goa
 # Information
 
 - Mod configuration and **download** [here](https://github.com/TriForceX/JediKnightPlus/releases)
+- Mod console variables _(cvar)_ **calculator** [here](https://jkplus.github.io/calculator)
 - Read more information and guides at **wiki** [here](https://github.com/TriForceX/JediKnightPlus/wiki)
 - See version changes history in the **changelog** [here](https://github.com/TriForceX/JediKnightPlus/blob/master/CHANGELOG.md)
 - Join the mod **Discord** chat server for more support [here](https://discord.gznetwork.com/jkplus)
@@ -70,21 +71,25 @@ List of general server features <i>(No client plugin required)</i>
 - [x] Misc chat commands (Status, toggle options, etc...)
 - [x] Custom server closed feature (With password required)
 - [x] Custom server idle feature (Load custom config after reset)
+- [x] Custom server connect message (Shows mod version by default)
 - [x] Welcome message on client begin (MOTD with custom timer)
 - [x] Custom global sound on client begin
 - [x] Server news messages displayed constantly (With server time or date)
 - [ ] Custom game modes (Instant kill, survival, last man standing, and more...)
+- [ ] Custom team ffa scoring method (Based on full team kill)
 - [x] Custom player private rooms (With configurable settings)
 - [x] Alternate taunt2 command (Play custom sounds)
 - [x] Show damage & score plums on player hits
 - [ ] Clan system (Tag protection, member roles, etc...)
 - [x] Over 60 player emotes (Sit, kiss, surrender, hug, etc...)
 - [x] Dual blade lightsaber gameplay (Fixed damages, custom combos, and more...)
+- [x] Spawn activate sabers per game type
 - [x] Custom items force physics (Reacts to push, pull, and others...)
 - [x] Custom configuration files (Per gametype, teleports, map cycle, and more...)
 - [x] Player ignore feature (Chat, duel challenge and emotes)
 - [x] Enable multiple chat in duel game type
 - [x] Custom call vote system (Custom control, results display, and more...)
+- [x] Call vote map by number and map list command (Shows current server maps)
 - [x] Alternate slow-mo duel end feature (Custom time scale)
 - [x] Auto player status tracking feature
 - [x] Drop flag command for CTF & CTY game types
@@ -192,7 +197,7 @@ List of maps modification features
 - [ ] Clone entities
 - [x] Scan entities
 - [ ] Save feature to get all changes automatically stored in a loadable file
-- [x] Custom shader remapping
+- [x] Custom shader remapping per map
 
 ---
 

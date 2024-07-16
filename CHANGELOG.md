@@ -9,6 +9,17 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.20.4
+- Add default cfg values and extra check on connect msg
+- Add missing check for weapons on game type changes
+- Add optional check for force usage in chair model
+- Merge updates from mvsdk
+- Add cvar to customize connect message
+- Add map list command and updated call votes
+- Add more checks for chair model usage
+- Add checks for player opacity and other tweaks
+- Add chat color command and its menu option
+
 ## 0.20.3
 - Fix client connect check messages
 - Fix saber clash flare bug and more refactor

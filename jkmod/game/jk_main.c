@@ -47,6 +47,7 @@ vmCvar_t	jkcvar_chatProtect;
 vmCvar_t	jkcvar_chatProtectTime;
 vmCvar_t	jkcvar_chatAutoStatus;
 vmCvar_t	jkcvar_chatAutoStatusTime;
+vmCvar_t	jkcvar_chatColors;
 vmCvar_t	jkcvar_playerIgnore;
 vmCvar_t	jkcvar_spawnActivateSaber;
 vmCvar_t	jkcvar_teleportChat;
@@ -144,6 +145,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_chatProtectTime,		"jk_chatProtectTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatAutoStatus,		"jk_chatAutoStatus",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_chatAutoStatusTime,	"jk_chatAutoStatusTime",	"3",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_chatColors,			"jk_chatColors",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"-1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },

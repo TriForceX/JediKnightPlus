@@ -3337,6 +3337,41 @@
 				@MENUS0_NO  	0
 				@MENUS0_YES		2
 			}
+			rect				220 41 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{
+				show			highlight1
+				show			highlightSvAllow
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight1
+				hide			highlightSvAllow
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_CUSTOMANIMS
+			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
+			cvar				"jk_cg_customAnims"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3353,13 +3388,11 @@
 			mouseEnter 
 			{
 				show			highlight2
-				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight2
-				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -3369,9 +3402,9 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_CUSTOMANIMS
-			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
-			cvar				"jk_cg_customAnims"
+			text				@JKMENUS_CLIENT_CUSTOMEFFECTS
+			descText			@JKMENUS_CLIENT_CUSTOMEFFECTS_DESC
+			cvar				"jk_cg_customEffects"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3402,9 +3435,9 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_CUSTOMEFFECTS
-			descText			@JKMENUS_CLIENT_CUSTOMEFFECTS_DESC
-			cvar				"jk_cg_customEffects"
+			text				@JKMENUS_CLIENT_JETPACKIDLE
+			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
+			cvar				"jk_cg_jetPackIdle"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3434,13 +3467,19 @@
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_JETPACKIDLE
-			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
-			cvar				"jk_cg_jetPackIdle"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_SHADOWS
+			descText			@JKMENUS_CLIENT_SHADOWS_DESC
+			cvar				"cg_shadows"
+			cvarFloatList
+			{
+				"2D"  			1
+				"3D"  			3
+				@MENUS0_OFF		0
+			}
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151 
+			textalignx			151
 			textaligny			-2
 			font				2
 			textscale			0.8
@@ -3452,7 +3491,7 @@
 			}
 
 			mouseEnter 
-			{
+			{ 
 				show			highlight5
 				show			keybindstatus
 			}
@@ -3460,7 +3499,7 @@
 			{ 
 				hide			highlight5
 				hide			keybindstatus
-			}
+			} 
 		}
 		
 		itemDef 
@@ -3468,14 +3507,13 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_SHADOWS
-			descText			@JKMENUS_CLIENT_SHADOWS_DESC
-			cvar				"cg_shadows"
+			text				@JKMENUS_CLIENT_CHATBOXHISTORY
+			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
+			cvar				"jk_cg_chatBoxHistory"
 			cvarFloatList
 			{
-				"2D"  			1
-				"3D"  			3
-				@MENUS0_OFF		0
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
 			}
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -3507,13 +3545,19 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_CHATBOXHISTORY
-			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
-			cvar				"jk_cg_chatBoxHistory"
+			text				@JKMENUS_CLIENT_CHATCOLOR
+			descText			@JKMENUS_CLIENT_CHATCOLOR_DESC
+			cvar				"jk_cg_chatColor"
 			cvarFloatList
 			{
-				@MENUS0_YES  		1
-				@MENUS0_NO			0
+				@MENUS0_NO  			0
+				@JKMENUS_COLOR_RED  	1
+				@JKMENUS_COLOR_GREEN  	2
+				@JKMENUS_COLOR_YELLOW  	3
+				@JKMENUS_COLOR_BLUE		4
+				@JKMENUS_COLOR_CYAN  	5
+				@JKMENUS_COLOR_MAGENTA  6
+				@JKMENUS_COLOR_WHITE  	7
 			}
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -3531,11 +3575,13 @@
 			mouseEnter 
 			{ 
 				show			highlight7
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight7
+				hide			highlightSvAllow
 				hide			keybindstatus
 			} 
 		}

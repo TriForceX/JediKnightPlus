@@ -1204,6 +1204,17 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
+	// Tr!Force: [ChatColor] Custom color check
+	if (client->pers.jkmodPers.clientPlugin)
+	{
+		s = Info_ValueForKey( userinfo, "jk_cg_chatColor" );
+		if ( !atoi( s ) ) {
+			client->sess.jkmodSess.chatColor = 0;
+		} else {
+			client->sess.jkmodSess.chatColor = atoi( s );
+		}
+	}
+
 	// check the item prediction
 	s = Info_ValueForKey( userinfo, "cg_predictItems" );
 	if ( !atoi( s ) ) {

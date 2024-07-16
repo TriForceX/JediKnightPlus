@@ -104,6 +104,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3resetspawn\n"
 			"^3jetpack\n"
 			"^3maplist\n"
+			"^3chatcolor\n"
 			"^3engage_force\n"
 			"^3engage_private\n"
 			"^3toggle_auto\n"
@@ -2393,6 +2394,91 @@ static void JKMod_Cmd_MapList(gentity_t *ent)
 
 /*
 =====================================================================
+Custom chat color
+=====================================================================
+*/
+static void JKMod_Cmd_ChatColor(gentity_t* ent)
+{
+	if (jkcvar_chatColors.integer)
+	{
+		int i, num;
+		int selectedColor = 0;
+		const char *chatColor[] = {
+			"Red",
+			"Green",
+			"Yellow",
+			"Blue",
+			"Cyan",
+			"Magenta",
+			"White",
+		};
+		char arg1[MAX_TOKEN_CHARS];
+		trap_Argv(1, arg1, sizeof(arg1));
+
+		if (trap_Argc() < 2)
+		{
+			trap_SendServerCommand(ent - g_entities, "print \""
+				"^5[^7 Chat Color ^5]^7\n"
+				"^7Change the color of your chat messages\n"
+				"^7Use it with the following command: ^2/changecolor <color>\n"
+				"^7List of available colors:\n"
+				"^5----------\n"
+				"^11 - Red\n"
+				"^22 - Green\n"
+				"^33 - Yellow\n"
+				"^44 - Blue\n"
+				"^55 - Cyan\n"
+				"^66 - Magenta\n"
+				"^77 - White\n"
+				"^5----------\n"
+				"^2Note 1: ^5Cyan ^7color is disabled in team game types (CTF & CTY)\n"
+				"^2Note 2: ^7To disable this use ^3/chatcolor disable ^7to reset to default\n\"");
+			return;
+		}
+
+		if (!Q_stricmp(arg1, "disable")) 
+		{
+			ent->client->sess.jkmodSess.chatColor = 0;
+			trap_SendServerCommand(ent - g_entities, "print \"Your chat color has reset to default\n\"");
+			
+			// Update clientside
+			if (ent->client->pers.jkmodPers.clientPlugin) {
+				trap_SendServerCommand(ent - g_entities, "jk_cg_chatColor 0");
+			}
+			return;
+		}
+
+		for (i = 0; i < ARRAY_LEN(chatColor); i++) 
+		{
+			num = i+1;
+			if (atoi(arg1) == num || !Q_stricmp(arg1, chatColor[i])) {
+				selectedColor = num;
+				break;
+			}
+		}
+
+		if (!selectedColor) {
+			trap_SendServerCommand(ent - g_entities, "print \"This option is not valid\n");
+			return;
+		}
+
+		ent->client->sess.jkmodSess.chatColor = selectedColor;
+		trap_SendServerCommand(ent - g_entities, va("print \"Your chat color has changed to ^%i%s\n\"", selectedColor, chatColor[selectedColor-1]));
+
+		// Update clientside
+		if (ent->client->pers.jkmodPers.clientPlugin) {
+			trap_SendServerCommand(ent - g_entities, va("jk_cg_chatColor %i", selectedColor));
+		}
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Chat colors are ^1disabled ^7by the server\n\""));
+	}
+	return;
+}
+
+/*
+=====================================================================
 Bot control function
 =====================================================================
 */
@@ -2744,6 +2830,7 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "dualsaber",				JKMod_Cmd_DualSaber },
 	{ "taunt2",					JKMod_Cmd_Taunt2 },
 	{ "maplist",				JKMod_Cmd_MapList },
+	{ "chatcolor",				JKMod_Cmd_ChatColor },
 };
 
 static const size_t JKModCommandsTableSize = ARRAY_LEN(JKModCommandsTable);

@@ -88,7 +88,7 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 		if (jkmod_botsActions & JK_BOT_JUMP) trap_EA_Jump(bs->client);
 		if (jkmod_botsActions & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
 		if (jkmod_botsActions & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
-		if (jkmod_botsActions & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK))
+		if (jkmod_botsActions & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK | JK_BOT_CONTROL))
 		{
 			bs->wpCurrent = NULL;
 			bs->currentEnemy = NULL;

@@ -227,6 +227,7 @@ typedef struct
 	char			clientIP[MAX_IP_STRING];	// Client IP string
 	int				ignoredPlayer[3];			// Client ignored player stuff
 	int				ignoredAll[3];				// Client ignored all stuff
+	int				chatColor;					// Custom chat color
 
 } jkmod_sess_t;
 
@@ -427,6 +428,7 @@ extern	vmCvar_t					jkcvar_chatProtect;
 extern	vmCvar_t					jkcvar_chatProtectTime;
 extern	vmCvar_t					jkcvar_chatAutoStatus;
 extern	vmCvar_t					jkcvar_chatAutoStatusTime;
+extern	vmCvar_t					jkcvar_chatColors;
 extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_spawnActivateSaber;
 extern	vmCvar_t					jkcvar_teleportChat;

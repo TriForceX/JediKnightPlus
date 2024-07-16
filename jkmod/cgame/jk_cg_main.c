@@ -40,6 +40,7 @@ vmCvar_t	jkcvar_cg_flagOpacity;
 vmCvar_t	jkcvar_cg_flagAlignment;
 vmCvar_t	jkcvar_cg_chatPlayerOpacity;
 vmCvar_t	jkcvar_cg_chatAutoStatus;
+vmCvar_t	jkcvar_cg_chatColor;
 vmCvar_t	jkcvar_cg_specialMoveCamera;
 vmCvar_t	jkcvar_cg_identifyObjects;
 
@@ -92,6 +93,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_flagAlignment,			"jk_cg_flagAlignment",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatPlayerOpacity,		"jk_cg_chatPlayerOpacity",		"1",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatAutoStatus,		"jk_cg_chatAutoStatus",			"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
+	{ &jkcvar_cg_chatColor,				"jk_cg_chatColor",				"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
 	{ &jkcvar_cg_specialMoveCamera,		"jk_cg_specialMoveCamera",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_identifyObjects,		"jk_cg_identifyObjects",		"1",			NULL,						CVAR_ARCHIVE, 0 },
 

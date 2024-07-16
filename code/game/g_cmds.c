@@ -1172,6 +1172,7 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 	// don't let text be too long for malicious reasons
 	char		text[MAX_SAY_TEXT];
 	char		location[64];
+	int			jkmod_color = ent->client->sess.jkmodSess.chatColor;
 
 	if ( g_gametype.integer < GT_TEAM && mode == SAY_TEAM ) {
 		mode = SAY_ALL;
@@ -1185,7 +1186,12 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 			G_LogPrintf( "say: %s: %s\n", ent->client->pers.netname, chatText );
 
 		Com_sprintf (name, sizeof(name), "%s%c%c"EC": ", ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
-		color = COLOR_GREEN;
+		// Tr!Force: [ChatColor] Check custom color
+		if (jkcvar_chatColors.integer && jkmod_color && jkmod_color <= 7 && !(g_gametype.integer >= GT_TEAM && jkmod_color == 5)) {
+			color = jkmod_color;
+		} else {
+			color = COLOR_GREEN;
+		}
 		break;
 	case SAY_TEAM:
 		// Tr!Force: [PlayerStatus] Don't add to log

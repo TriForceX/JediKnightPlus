@@ -269,6 +269,8 @@ extern vmCvar_t						jkcvar_cg_damageBlend;
 extern vmCvar_t						jkcvar_cg_flagOpacity;
 extern vmCvar_t						jkcvar_cg_flagAlignment;
 extern vmCvar_t						jkcvar_cg_chatPlayerOpacity;
+extern vmCvar_t						jkcvar_cg_chatAutoStatus;
+extern vmCvar_t						jkcvar_cg_chatColor;
 extern vmCvar_t						jkcvar_cg_specialMoveCamera;
 extern vmCvar_t						jkcvar_cg_identifyObjects;
 
@@ -276,7 +278,6 @@ extern vmCvar_t						jkcvar_cg_chatBox;
 extern vmCvar_t						jkcvar_cg_chatBoxTime;
 extern vmCvar_t						jkcvar_cg_chatBoxHeight;
 extern vmCvar_t						jkcvar_cg_chatBoxHistory;
-
 
 extern vmCvar_t						jkcvar_cg_speedoMeter;
 extern vmCvar_t						jkcvar_cg_strafeHelper;

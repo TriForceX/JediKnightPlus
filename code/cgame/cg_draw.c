@@ -2653,8 +2653,14 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	// Tr!Force: [General] Don't show with movement keys at center
+	// Tr!Force: [CGameGeneral] Don't show with movement keys at center
 	if( jkcvar_cg_drawMovementKeys.integer == 2 && cg.snap->ps.pm_type != PM_SPECTATOR )
+	{
+		return;
+	}
+
+	// Tr!Force: [CGameGeneral] Don't show while changing map
+	if (cg.mMapChange)
 	{
 		return;
 	}
