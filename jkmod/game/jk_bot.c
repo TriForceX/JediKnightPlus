@@ -52,7 +52,8 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 	int selResult = 0;
 	int mineSelect = 0;
 	int detSelect = 0;
-	int jkmod_botsActions = 0;
+	int jkmod_botActions = 0;
+	int jkmod_botStopped = 0;
 
 	if (gDeactivated)
 	{
@@ -78,34 +79,40 @@ void JKMod_CustomBotAI(bot_state_t *bs, float thinktime)
 	trap_Cvar_Update(&bot_honorableduelacceptance);
 
 	// Update bots actions
-	jkmod_botsActions = g_entities[bs->client].client->pers.jkmodBots.actionFlags ? g_entities[bs->client].client->pers.jkmodBots.actionFlags : bot_forgimmick.integer;
+	jkmod_botActions = g_entities[bs->client].client->pers.jkmodBots.actionFlags ? g_entities[bs->client].client->pers.jkmodBots.actionFlags : bot_forgimmick.integer;
 
-	if (jkmod_botsActions && g_entities[bs->client].health > 0)
+	if (jkmod_botActions && g_entities[bs->client].health > 0)
 	{
-		if (jkmod_botsActions & JK_BOT_ATTACK) trap_EA_Attack(bs->client);
-		if (jkmod_botsActions & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
-		if (jkmod_botsActions & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
-		if (jkmod_botsActions & JK_BOT_JUMP) trap_EA_Jump(bs->client);
-		if (jkmod_botsActions & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
-		if (jkmod_botsActions & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
-		if (jkmod_botsActions & (JK_BOT_STATIC | JK_BOT_ATTACK | JK_BOT_ATTACK_ALT | JK_BOT_CROUCH | JK_BOT_JUMP | JK_BOT_TAUNT | JK_BOT_TALK | JK_BOT_CONTROL))
+		if (jkmod_botActions & JK_BOT_ATTACK) trap_EA_Attack(bs->client);
+		if (jkmod_botActions & JK_BOT_ATTACK_ALT) trap_EA_Alt_Attack(bs->client);
+		if (jkmod_botActions & JK_BOT_CROUCH) trap_EA_Crouch(bs->client);
+		if (jkmod_botActions & JK_BOT_JUMP) trap_EA_Jump(bs->client);
+		if (jkmod_botActions & JK_BOT_TAUNT) trap_EA_Gesture(bs->client);
+		if (jkmod_botActions & JK_BOT_TALK) trap_EA_Talk(bs->client);
+		if (jkmod_botActions & JK_BOT_GOD) g_entities[bs->client].flags |= FL_GODMODE;
+		if (jkmod_botActions & (JK_BOT_STATIC | JK_BOT_TALK | JK_BOT_CONTROL))
 		{
 			bs->wpCurrent = NULL;
 			bs->currentEnemy = NULL;
 			bs->wpDestination = NULL;
 			bs->wpDirection = 0;
-			return;
+			jkmod_botStopped = 1;
 		}
 	}
 
 	// Check god mode
-	if (!(jkmod_botsActions & JK_BOT_GOD) && (g_entities[bs->client].flags & FL_GODMODE)) {
+	if (!(jkmod_botActions & JK_BOT_GOD) && (g_entities[bs->client].flags & FL_GODMODE)) {
 		g_entities[bs->client].flags &= ~FL_GODMODE;
 	}
 
 	// Add talk balloon
 	if (bs->doChat && bs->chatTime > level.time) {
 		trap_EA_Talk(bs->client);
+	}
+
+	// Check stopped bot
+	if (jkmod_botStopped) {
+		return;
 	}
 
 	if (!bs->lastDeadTime)

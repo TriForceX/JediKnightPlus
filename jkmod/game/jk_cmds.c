@@ -2602,7 +2602,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		return;
 	}
 	// Bot check
-	else if (Q_stricmpn(p, "!bot", 4) == 0)
+	else if (Q_stricmp(p, "!bot") == 0 || Q_stricmpn(p, "!bot ", 5) == 0)
 	{
 		if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
 		{
