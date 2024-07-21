@@ -329,7 +329,7 @@ void		JKMod_CG_SpeedoMeterToggle(void);
 void		JKMod_CG_Draw2D(void);
 qboolean	JKMod_CG_IconHUDActive(void);
 qboolean	JKMod_CG_CenterPrintActive(void);
-int			JKMod_CG_ConsolePrintActive(void);
+qboolean	JKMod_CG_ShowScores(void);
 const char	*JKMod_CG_MsToString(const int ms);
 const char	*JKMod_CG_MinToString(const int min);
 void		JKMod_CG_DrawClock(void);

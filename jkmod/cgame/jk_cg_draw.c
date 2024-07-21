@@ -152,6 +152,16 @@ qboolean JKMod_CG_CenterPrintActive(void)
 
 /*
 =====================================================================
+Check when scoreboard is showing
+=====================================================================
+*/
+qboolean JKMod_CG_ShowScores(void)
+{
+	return (cg.showScores || cg.predictedPlayerState.pm_type == PM_DEAD || cg.predictedPlayerState.pm_type == PM_INTERMISSION);
+}
+
+/*
+=====================================================================
 Convert milliseconds to string
 =====================================================================
 */
@@ -204,7 +214,7 @@ void JKMod_CG_DrawClock(void)
 	systemTimeHour = systemTime.tm_hour > 12 && jkcvar_cg_drawClock.integer == 2 ? systemTime.tm_hour - 12 : systemTime.tm_hour;
 
 	x = cgs.screenWidth - 68;
-	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR || cg.showScores ? 36 : 123);
+	y = cgs.screenHeight - (cg.snap->ps.pm_type == PM_SPECTATOR || JKMod_CG_ShowScores() ? 36 : 123);
 
 	if (cg.snap->ps.pm_type == PM_SPECTATOR && cgs.gametype == GT_TOURNAMENT) y -= 97;
 
@@ -497,7 +507,7 @@ void JKMod_CG_ChatBox_DrawStrings(void)
 	int linesToDraw = 0;
 	int i = 0;
 	int x = 30;
-	int y = cg.showScores || (cg.snap->ps.stats[STAT_HEALTH] <= 0) ? 475 : jkcvar_cg_chatBoxHeight.integer;
+	int y = JKMod_CG_ShowScores() ? 475 : jkcvar_cg_chatBoxHeight.integer;
 	float fontScale = 0.65f;
 	qboolean drawAnyway = qfalse;
 
