@@ -1381,21 +1381,21 @@ INDEX 152
 }
 INDEX 153
 {
-   REFERENCE CLIENT_PLAYERLABEL_DYN
-   TEXT_LANGUAGE1 "Dynamic size"
-   TEXT_LANGUAGE2 "Taille dynamique"
-   TEXT_LANGUAGE3 "Dynamische größe"
-   TEXT_LANGUAGE6 "Dynamic size"
-   TEXT_LANGUAGE8 "Tamaño dinámico"
+   REFERENCE CLIENT_PLAYERLABEL_NORMAL
+   TEXT_LANGUAGE1 "Normal Text"
+   TEXT_LANGUAGE2 "Texte Normal"
+   TEXT_LANGUAGE3 "Normaler Text"
+   TEXT_LANGUAGE6 "Normal Text"
+   TEXT_LANGUAGE8 "Texto Normal"
 }
 INDEX 154
 {
-   REFERENCE CLIENT_PLAYERLABEL_FIX
-   TEXT_LANGUAGE1 "Fixed size"
-   TEXT_LANGUAGE2 "Taille fixe"
-   TEXT_LANGUAGE3 "Feste größe"
-   TEXT_LANGUAGE6 "Fixed size"
-   TEXT_LANGUAGE8 "Tamaño fijo"
+   REFERENCE CLIENT_PLAYERLABEL_SHADOW
+   TEXT_LANGUAGE1 "Shadowed Text"
+   TEXT_LANGUAGE2 "Texte Ombré"
+   TEXT_LANGUAGE3 "Schattierter Text"
+   TEXT_LANGUAGE6 "Shadowed Text"
+   TEXT_LANGUAGE8 "Texto Sombreado"
 }
 INDEX 155
 {

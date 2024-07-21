@@ -217,7 +217,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 				"^3Bucky            EternalCodes     Abrum          BarryHit\n"
 				"^3Player           Flendo           Padaget        VideoP/Loda\n"
 				"^3Noodle           Smoo             Tayst          QK-Lite/Effect.Ve\n"
-				"^3MVSDK/JK2MV      x[Dsk]x Clan     =AJC= Clan\n\"");
+				"^3Tom Arrow        MVSDK/JK2MV      x[Dsk]x Clan   =AJC= Clan\n\"");
 		}
 		return;
 	}

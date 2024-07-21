@@ -21,8 +21,7 @@ Global definitions
 #define CHATBOX_CUTOFF_LEN			550
 #define CHATBOX_FONT_HEIGHT			20
 #define USE_DISTANCE				54.0f // 64.0f
-#define LABEL_DYN_DISTANCE			520
-#define LABEL_FIX_DISTANCE			720
+#define LABEL_DISTANCE				2000
 #define ACCEL_SAMPLES				16
 #define PERCENT_SAMPLES				16
 #define FPS_FRAMES					4
@@ -92,6 +91,7 @@ typedef struct
 	int					consolePrintTime;			// Console print timestamp
 	int					consoleNotifyTime;			// Console notify time
 	int					modelOpacity;				// Model opacity check
+	int					playerLabel[MAX_CLIENTS];	// Player label check
 	
 	vec4_t				strafeHelperActiveColor;	// Strafe helper active color
 	float				currentSpeed;				// Strafe helper & speedometer current speed

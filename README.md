@@ -305,6 +305,7 @@ Padaget | vVv Mod | Misc ideas and references
 Noodle | -- | UI and modeling support
 Smoo | -- | Support and testing
 [Tayst](https://github.com/taysta) | TaystJK | Some cosmetics models
+[Tom Arrow](https://github.com/TomArrow) | JOmme RSE | Retarded (working) ideas just for fun
 QK-Lite / Effect.ve | -- | General coding support
 [MVSDK Devs](https://github.com/mvdevs) | JK2MV | Gameplay changer and MVSDK API
 x[Dsk]x Clan | JK2 1.03 | Support and testing

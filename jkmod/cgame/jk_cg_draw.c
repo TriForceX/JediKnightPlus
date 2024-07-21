@@ -910,17 +910,17 @@ Draw player labels
 void JKMod_CG_DrawPlayerLabels(void)
 {
 	int i;
+	int style = jkcvar_cg_drawPlayerNames.integer == 2 ? ITEM_TEXTSTYLE_SHADOWED : ITEM_TEXTSTYLE_NORMAL;
 
-	for (i = 0; i < MAX_CLIENTS; i++) {
-		vec3_t		pos;
-		float		VectorLengthDiff;
-		float		x, y;
-		trace_t		trace;
-		centity_t	*cent = &cg_entities[i];
-		vec3_t		diff;
-		float		scale = 0.5;
-		float		max = 0.62;
-		float		distance = jkcvar_cg_drawPlayerNames.integer == 1 ? LABEL_DYN_DISTANCE : LABEL_FIX_DISTANCE;
+	for (i = 0; i < MAX_CLIENTS; i++) 
+	{
+		float			x, y;
+		float			size;
+		float			dist;
+		vec3_t			org;
+		trace_t			trace;
+		centity_t		*cent = &cg_entities[i];
+		clientInfo_t	*ci = cgs.clientinfo + i;
 
 		// Skip
 		if (!cent || !cent->currentValid)
@@ -946,37 +946,50 @@ void JKMod_CG_DrawPlayerLabels(void)
 		if (cg.snap->ps.duelInProgress && i != cg.snap->ps.clientNum && i != cg.snap->ps.duelIndex)
 			continue;
 
+		// Set label check
+		cg.jkmodCG.playerLabel[i] = 0;
+
 		// Get diff
-		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		VectorLengthDiff = VectorLength(diff);
-
-		// Check max distance
-		if (VectorLengthDiff >= distance)
-			continue;
-
-		// Trace world
+		VectorCopy(cent->lerpOrigin, org);
 		CG_Trace(&trace, cg.refdef.vieworg, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID | CONTENTS_BODY);
-		if (trace.entityNum == ENTITYNUM_WORLD)
-			continue;
 
-		// Set height
-		VectorCopy(cent->lerpOrigin, pos);
-		pos[2] += 60;
+		// Check world
+		if (trace.entityNum == ENTITYNUM_WORLD) continue;
 
-		// Check height
-		if (jkcvar_cg_drawPlayerNames.integer == 2 && VectorLengthDiff >= (distance * 0.5))
-			pos[2] += 15;
+		// Check distance
+		dist = Distance(cg.refdef.vieworg, org);
+		if (!dist || dist >= LABEL_DISTANCE) continue;
 
-		// Check coords
-		if (!CG_WorldCoordToScreenCoord(pos, &x, &y))
-			continue;
+		// Get head org
+		if (ci->bolt_head) {
+			mdxaBone_t boneMatrix;
+			if (trap_G2API_GetBoltMatrix(cent->ghoul2, 0, ci->bolt_head, &boneMatrix, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale)) {
+				vec3_t betterOrigin;
+				trap_G2API_GiveMeVectorFromMatrix(&boneMatrix, ORIGIN, betterOrigin);
+				VectorCopy(betterOrigin, org);
+			}
+		}
 
-		// Set dynamic scale
-		if (jkcvar_cg_drawPlayerNames.integer == 1) 
-			scale = 120 / VectorLengthDiff;
+		// Check size
+		size = 200.0f / dist;
+		if (size > 0.8f) size = 0.8f;
+		if (size < 0.3f) size = 0.3f;
 
-		// Show name
-		UI_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], (scale > max ? max : scale));
+		// Check org
+		org[2] += 45;
+
+		// Check screen coords
+		if (CG_WorldCoordToScreenCoord(org, &x, &y))
+		{
+			char *text = cgs.clientinfo[i].name;
+			float adjustedXFactor = (cgs.screenXFactor - 1.0f) * 0.5f + 1.0f;
+
+			x = (x - cgs.screenWidth / 2) * adjustedXFactor + cgs.screenWidth / 2;
+			x -= CG_Text_Width(text, size, FONT_MEDIUM) / 2;
+			
+			CG_Text_Paint(x, y, size, colorWhite, text, 0, 0, style, FONT_MEDIUM);
+			cg.jkmodCG.playerLabel[i] = 1;
+		}
 	}
 }
 
