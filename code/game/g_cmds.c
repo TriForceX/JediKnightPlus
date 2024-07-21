@@ -1187,7 +1187,7 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 
 		Com_sprintf (name, sizeof(name), "%s%c%c"EC": ", ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		// Tr!Force: [ChatColor] Check custom color
-		if (jkcvar_chatColors.integer && jkmod_color && jkmod_color <= 7 && !(g_gametype.integer >= GT_TEAM && jkmod_color == 5)) {
+		if (jkcvar_chatColors.integer && (jkmod_color && jkmod_color <= 7) && !(g_gametype.integer >= GT_TEAM && jkmod_color == 5)) {
 			color = jkmod_color;
 		} else {
 			color = COLOR_GREEN;

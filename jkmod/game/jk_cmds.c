@@ -2268,10 +2268,16 @@ Show current player status
 */
 qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 {
+	int chatColor = ent->client->sess.jkmodSess.chatColor;
+	int scoreColor = 5, lostColor = 3, healthColor = 1, shieldColor = 2;
 	qboolean isCTF = g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY;
 	qboolean isDuel = g_gametype.integer == GT_TOURNAMENT;
 
 	if (ent->client->ps.pm_type == PM_DEAD) return qfalse;
+	if (!(jkcvar_chatColors.integer && (chatColor && chatColor <= 7) && !(g_gametype.integer >= GT_TEAM && chatColor == 5))) chatColor = 2;
+	if (chatColor == 1) healthColor = 5;
+	if (chatColor == 3) lostColor = 1;
+	if (chatColor == 5) scoreColor = 2;
 
 	if (announce)
 	{
@@ -2279,13 +2285,19 @@ qboolean JKMod_playerStatus(gentity_t *ent, qboolean announce)
 		{
 			ent->client->pers.jkmodPers.playerStatusDelay = level.time + (jkcvar_chatAutoStatusTime.integer*1000);
 
-			G_Say(ent, NULL, SAY_ALL, va("I %s ^5%i ^2and %s ^3%i ^2times! My health %s ^1%i^7/^2%i",
+			G_Say(ent, NULL, SAY_ALL, va("I %s ^%i%i ^%iand %s ^%i%i ^%itimes! My health %s ^%i%i^7/^%i%i",
 				(isCTF || isDuel ? "scored" : "killed"), 
+				scoreColor,
 				(isDuel ? ent->client->sess.wins : ent->client->ps.persistant[PERS_SCORE]),
+				chatColor,
 				(isCTF ? "captured" : (isDuel ? "lost" : "died")), 
+				lostColor,
 				(isCTF ? ent->client->ps.persistant[PERS_CAPTURES] : ent->client->ps.persistant[PERS_KILLED]),
+				chatColor,
 				(jkcvar_chatAutoStatus.integer || isDuel ? "was" : "is"),
+				healthColor,
 				ent->client->ps.stats[STAT_HEALTH],
+				shieldColor,
 				ent->client->ps.stats[STAT_ARMOR])
 			);
 		}
