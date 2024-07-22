@@ -1354,7 +1354,7 @@ int G_KnockawayForParry( int move )
 	}
 }
 
-#define SABER_NONATTACK_DAMAGE 1
+#define SABER_NONATTACK_DAMAGE jkcvar_saberIdleDamage.integer
 
 //For strong attacks, we ramp damage based on the point in the attack animation
 int G_GetAttackDamage(gentity_t *self, int minDmg, int maxDmg, float multPoint)

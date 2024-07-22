@@ -431,6 +431,7 @@ extern	vmCvar_t					jkcvar_chatAutoStatusTime;
 extern	vmCvar_t					jkcvar_chatColors;
 extern	vmCvar_t					jkcvar_playerIgnore;
 extern	vmCvar_t					jkcvar_spawnActivateSaber;
+extern	vmCvar_t					jkcvar_saberIdleDamage;
 extern	vmCvar_t					jkcvar_teleportChat;
 extern	vmCvar_t					jkcvar_teleportChatTime;
 extern	vmCvar_t					jkcvar_teleportChatFx;

@@ -2264,11 +2264,11 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 			G_Sound(ent, CHAN_AUTO, saberOnSound);
 		}
 		// Tr!Force: [DualSaber] Enable by second toggle
-		else if (jkcvar_dualSaber.integer == 2 && !ent->client->ps.dualBlade && !ent->client->pers.jkmodPers.dualSaber)
+		else if (jkcvar_dualSaber.integer >= 2 && !ent->client->ps.dualBlade && !ent->client->pers.jkmodPers.dualSaber)
 		{
 			ent->client->ps.dualBlade = qtrue;
 			ent->client->pers.jkmodPers.dualSaber = qtrue;
-			G_Sound(ent, CHAN_AUTO, saberOnSound);
+			if (jkcvar_dualSaber.integer < 3) G_Sound(ent, CHAN_AUTO, saberOnSound);
 		}
 		else
 		{
