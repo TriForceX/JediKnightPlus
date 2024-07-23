@@ -225,7 +225,7 @@ void WP_InitForcePowers( gentity_t *ent )
 
 	Q_strncpyz( forcePowers, Info_ValueForKey (userinfo, "forcepowers"), sizeof( forcePowers ) );
 
-	if ( ent->r.svFlags & SVF_BOT && botstates[ent->s.number] )
+	if ( ent->r.svFlags & SVF_BOT && botstates[ent->s.number] && !forcePowers[0] ) // Tr!Force: [Bots] Allow custom forcepowers
 	{ //if it's a bot just copy the info directly from its personality
 		Q_strncpyz(forcePowers, botstates[ent->s.number]->forceinfo, sizeof(forcePowers));
 	}

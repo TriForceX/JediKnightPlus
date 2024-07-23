@@ -959,7 +959,7 @@ void JKMod_ServerNewsCheck(void)
 					if (jkcvar_serverNewsExtras.integer == 1)
 						trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02i^5:^7%02i%s^5]^7: %s\n\"", systemTime.tm_hour, systemTime.tm_min, systemTimeType, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
 					else if (jkcvar_serverNewsExtras.integer == 2)
-						trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%02d^5/^7%02d^5/^7%d^5]^7: %s\n\"", systemTime.tm_mon+1, systemTime.tm_mday, systemTime.tm_year+1900, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
+						trap_SendServerCommand(ent - g_entities, va("print \"Server News ^5[^7%04d^5-^7%02d^5-^7%02d^5]^7: %s\n\"", systemTime.tm_year+1900, systemTime.tm_mon+1, systemTime.tm_mday, level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
 					else
 						trap_SendServerCommand(ent - g_entities, va("print \"Server News: %s\n\"", level.jkmodLocals.serverNews[level.jkmodLocals.serverNewsNum]));
 				}

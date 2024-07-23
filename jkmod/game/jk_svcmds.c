@@ -11,6 +11,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 // Extern stuff
 extern jkmod_dimension_data_t JKModDimensionData[];
 extern int JKModDimensionDataSize;
+extern char *ConcatArgs(int start);
 
 /*
 =====================================================================
@@ -80,7 +81,7 @@ static void JKMod_svCmd_pauseGame(void)
 
 	if (trap_Argc() < 2)
 	{
-		G_Printf("Usage: pause <on|seconds|off>\n");
+		G_Printf("Usage: pause <on/seconds/off>\n");
 	}
 	else 
 	{
@@ -186,6 +187,8 @@ static jkmod_bit_info_t togglePlayerTweaks[] =
 	"DUAL SABER MOVES",
 	"GHOST SABERS",
 	"CHAIR FORCE USABLE",
+	"TELEPORT CHAT MOVING",
+	"FORCE CHANGE MOVING",
 };
 
 // Options for jk_voteControl cvar
@@ -441,7 +444,7 @@ static void JKMod_svCmd_forceDimension(void)
 
 	if (trap_Argc() < 3)
 	{
-		G_Printf("Usage: forcedimension <player|number|all> <dimension>\n");
+		G_Printf("Usage: forcedimension <player/number/all> <dimension>\n");
 	}
 	else
 	{
@@ -535,7 +538,7 @@ static void JKMod_svCmd_teleportPlayer(void)
 
 	if (trap_Argc() < 3)
 	{
-		G_Printf("Usage: teleport <targetplayer> <destinyplayer|coordinates>\n");
+		G_Printf("Usage: teleport <targetplayer> <destinyplayer/coordinates>\n");
 	}
 	else
 	{
@@ -754,7 +757,7 @@ void JKMod_svCmd_forceTeam(void)
 
 	if (trap_Argc() < 3)
 	{
-		G_Printf("Usage: forceteam <player|number|all> <team>\n");
+		G_Printf("Usage: forceteam <player/number/all> <team>\n");
 	}
 	else
 	{
@@ -796,16 +799,18 @@ static void JKMod_svCmd_controlBots(void)
 {
 	char	arg1[MAX_STRING_CHARS];
 	char	arg2[MAX_STRING_CHARS];
+	char	arg3[MAX_STRING_CHARS];
 	int		bot, owner;
 
-	if (trap_Argc() < 3)
+	if (trap_Argc() < 4)
 	{
-		G_Printf("Usage: control <bot> <owner>\n");
+		G_Printf("Usage: control <bot> <remote/chat/health/armor> <owner/text/value>\n");
 	}
 	else
 	{
 		trap_Argv(1, arg1, sizeof(arg1));
 		trap_Argv(2, arg2, sizeof(arg2));
+		trap_Argv(3, arg3, sizeof(arg3));
 
 		bot = JKMod_CheckValidClient(NULL, arg1);
 
@@ -813,36 +818,61 @@ static void JKMod_svCmd_controlBots(void)
 		if (bot != -1)
 		{
 			gentity_t *botPlayer = &g_entities[bot];
-			owner = JKMod_CheckValidClient(NULL, arg2);
 
-			// Check owner
-			if (owner != -1)
+			if (!Q_stricmp(arg2, "remote"))
 			{
-				gentity_t *ownerPlayer = &g_entities[owner];
+				owner = JKMod_CheckValidClient(NULL, arg3);
 
-				if (bot == owner)
+				// Check owner
+				if (owner != -1)
 				{
-					G_Printf("You can't let control him to himself\n");
-					return;
-				}
+					gentity_t *ownerPlayer = &g_entities[owner];
 
-				if (!(botPlayer->r.svFlags & SVF_BOT)) {
-					G_Printf("This player is not a bot\n");
-					return;
-				}
+					if (bot == owner)
+					{
+						G_Printf("You can't let control him to himself\n");
+						return;
+					}
 
-				if ((ownerPlayer->r.svFlags & SVF_BOT)) {
-					G_Printf("This owner is not a player\n");
-					return;
-				}
+					if (!(botPlayer->r.svFlags & SVF_BOT)) {
+						G_Printf("This player is not a bot\n");
+						return;
+					}
 
-				if (!(ownerPlayer->client->sess.spectatorState == SPECTATOR_FOLLOW && ownerPlayer->client->sess.spectatorClient == botPlayer->s.number)) {
-					trap_SendServerCommand(ownerPlayer - g_entities, va("print \"Please follow bot %i (%s) on spectator to take control of it\n\"", botPlayer->s.number, botPlayer->client->pers.netname));
-					return;
-				}
+					if ((ownerPlayer->r.svFlags & SVF_BOT)) {
+						G_Printf("This owner is not a player\n");
+						return;
+					}
+
+					if (!(ownerPlayer->client->sess.spectatorState == SPECTATOR_FOLLOW && ownerPlayer->client->sess.spectatorClient == botPlayer->s.number)) {
+						trap_SendServerCommand(ownerPlayer - g_entities, va("print \"Please follow bot %i (%s) on spectator to take control of it\n\"", botPlayer->s.number, botPlayer->client->pers.netname));
+						return;
+					}
 				
-				JKMod_botControl(botPlayer->s.number, ownerPlayer->s.number, "toggle");
+					JKMod_botControl(botPlayer->s.number, ownerPlayer->s.number, "toggle");
+					return;
+				}
 			}
+			else if (!Q_stricmp(arg2, "chat"))
+			{
+				trap_EA_Say(botPlayer->s.number, ConcatArgs(3));
+				return;
+			}
+			else if (!Q_stricmp(arg2, "health"))
+			{
+				int amount = VALIDAMOUNT(atoi(arg3));
+				botPlayer->health = botPlayer->client->ps.stats[STAT_HEALTH] = botPlayer->client->pers.jkmodPers.customHealth = amount;
+				G_Printf("Bot %i (%s) health was changed to %i\n", botPlayer->s.number, botPlayer->client->pers.netname, amount);
+				return;
+			}
+			else if (!Q_stricmp(arg2, "armor"))
+			{
+				int amount = VALIDAMOUNT(atoi(arg3));
+				botPlayer->client->ps.stats[STAT_ARMOR] = botPlayer->client->pers.jkmodPers.customArmor = amount;
+				G_Printf("Bot %i (%s) armor was changed to %i\n", botPlayer->s.number, botPlayer->client->pers.netname, amount);
+				return;
+			}
+			G_Printf("Invalid option\n");
 		}
 	}
 }

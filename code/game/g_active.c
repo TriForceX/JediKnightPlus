@@ -707,12 +707,12 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 		client->timeResidual -= 1000;
 
 		// count down health when over max
-		if ( ent->health > client->ps.stats[STAT_MAX_HEALTH] ) {
+		if ( ent->health > client->ps.stats[STAT_MAX_HEALTH] && !client->pers.jkmodPers.customHealth ) { // Tr!Force: [GameGeneral] Custom health
 			ent->health--;
 		}
 
 		// count down armor when over max
-		if ( client->ps.stats[STAT_ARMOR] > client->ps.stats[STAT_MAX_HEALTH] ) {
+		if ( client->ps.stats[STAT_ARMOR] > client->ps.stats[STAT_MAX_HEALTH] && !client->pers.jkmodPers.customArmor ) { // Tr!Force: [GameGeneral] Custom armor
 			client->ps.stats[STAT_ARMOR]--;
 		}
 
@@ -1291,10 +1291,10 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
 			{
 				// Tr!Force: [Duel] Default start health and shield
-				if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0)
+				if (jkcvar_duelStartHealth.integer && jkcvar_duelStartArmor.integer)
 				{
-					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
-					ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_MAX_HEALTH] * 0.25;
+					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->pers.jkmodPers.customHealth ? ent->client->pers.jkmodPers.customHealth : ent->client->ps.stats[STAT_MAX_HEALTH];
+					ent->client->ps.stats[STAT_ARMOR] = ent->client->pers.jkmodPers.customArmor ? ent->client->pers.jkmodPers.customArmor : ent->client->ps.stats[STAT_MAX_HEALTH] * 0.25;
 				}
 				else if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
 				{

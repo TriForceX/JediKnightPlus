@@ -744,7 +744,7 @@ qboolean G_BotConnect( int clientNum, qboolean restart ) {
 G_AddBot
 ===============
 */
-static void G_AddBot( const char *name, float skill, const char *team, int delay, char *altname, int jkmod_hat ) { // Tr!Force: [Bots] Add custom hats
+static void G_AddBot( const char *name, float skill, const char *team, int delay, char *altname, int jkmod_hat, char *jkmod_fp ) { // Tr!Force: [Bots] Add custom stuff
 	int				clientNum;
 	char			*botinfo;
 	gentity_t		*bot;
@@ -838,8 +838,11 @@ static void G_AddBot( const char *name, float skill, const char *team, int delay
 		Info_SetValueForKey( userinfo, "personality", s );
 	}
 
+	// Tr!Force: [Bots] Add custom forcepowers
+	if (jkmod_fp[0]) Info_SetValueForKey( userinfo, "forcepowers", jkmod_fp );
+
 	// Tr!Force: [Bots] Add custom hats
-	Info_SetValueForKey( userinfo, "jk_cg_customHats", va("%i", jkmod_hat) ); 
+	if (jkmod_hat) Info_SetValueForKey( userinfo, "jk_cg_customHats", va("%i", jkmod_hat) ); 
 
 	// Tr!Force: [Plugin] Validate bots
 	Info_SetValueForKey( userinfo, "jkmod_client", JK_VERSION ); 
@@ -950,7 +953,8 @@ void Svcmd_AddBot_f( void ) {
 	char			altname[MAX_TOKEN_CHARS];
 	char			string[MAX_TOKEN_CHARS];
 	char			team[MAX_TOKEN_CHARS];
-	int				jkmod_hat;		// Tr!Force: [Bots] Add custom hats
+	char			jkmod_fp[MAX_TOKEN_CHARS];	// Tr!Force: [Bots] Add custom forcepowers
+	int				jkmod_hat;					// Tr!Force: [Bots] Add custom hats
 
 	// are bots enabled?
 	if ( !trap_Cvar_VariableIntegerValue( "bot_enable" ) ) {
@@ -960,7 +964,7 @@ void Svcmd_AddBot_f( void ) {
 	// name
 	trap_Argv( 1, name, sizeof( name ) );
 	if ( !name[0] ) {
-		trap_Printf( "Usage: Addbot <botname> [skill 1-5] [team] [msec delay] [altname] [hat 1-8]\n" ); // Tr!Force: [Bots] Add custom hats
+		trap_Printf( "Usage: Addbot <botname> [skill 1-5] [team] [msec delay] [altname] [hat number] [forcepowers]\n" ); // Tr!Force: [Bots] Add custom stuff
 		return;
 	}
 
@@ -996,8 +1000,11 @@ void Svcmd_AddBot_f( void ) {
 	else {
 		jkmod_hat = atoi( string );
 	}
+
+	// Tr!Force: [Bots] Add custom forcepowers
+	trap_Argv( 7, jkmod_fp, sizeof( jkmod_fp ) );
 	
-	G_AddBot( name, skill, team, delay, altname, jkmod_hat ); // Tr!Force: [Bots] Add custom hats
+	G_AddBot( name, skill, team, delay, altname, jkmod_hat, jkmod_fp ); // Tr!Force: [Bots] Add custom stuff
 
 	// if this was issued during gameplay and we are playing locally,
 	// go ahead and load the bot's media immediately

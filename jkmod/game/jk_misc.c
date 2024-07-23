@@ -129,6 +129,8 @@ void JKMod_PlayerTweaksCheck(gentity_t *ent)
 		{ JK_DUAL_MOVES,			qfalse },
 		{ JK_GHOST_SABERS,			qfalse },
 		{ JK_CHAIR_FORCE,			qfalse },
+		{ JK_TELEPORT_MOVING,		qfalse },
+		{ JK_FORCECHANGE_MOVING,	qfalse },
 	};
 
 	for (i = 0; i < ARRAY_LEN(playerTweaks); i++)
@@ -881,7 +883,7 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 			else if (typeHealth)
 				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Health: ^1%i\"", getAmount));
 			else if (typeShield)
-				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Shield: ^2%i\"", getAmount));
+				trap_SendServerCommand(activator->client->ps.clientNum, va("cp \"Armor: ^2%i\"", getAmount));
 		}
 	}
 }

@@ -30,6 +30,8 @@ Global definitions
 #define JK_DUAL_MOVES			( 1 << 6 )
 #define JK_GHOST_SABERS			( 1 << 7 )
 #define JK_CHAIR_FORCE			( 1 << 8 )
+#define JK_TELEPORT_MOVING		( 1 << 9 )
+#define JK_FORCECHANGE_MOVING	( 1 << 10 )
 
 // Bot actions
 #define JK_BOT_STATIC			( 1 << 0 )
@@ -80,6 +82,7 @@ Global definitions
 #define VALIDCVAR(a)			((a != NULL) && (a[0] != '\0') && (*a != '0'))
 #define VALIDTEXT(a)			((a != NULL) && (a[0] != '\0') && (a[0] != ' '))
 #define VALIDDIGIT(a)			((a >= '0' && a <= '9'))
+#define VALIDAMOUNT(a)			((abs(a) > 999 ? 999 : abs(a)))
 #define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))
 #define VERSION_FLOAT(x,y,z)	atof(va("%d.%02d%02d", x, y, z))
 

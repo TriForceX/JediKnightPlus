@@ -1305,7 +1305,7 @@ void ClientUserinfoChanged( int clientNum ) {
 	{
 		if ((ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) && Q_stricmp(forcePowers, ent->client->pers.jkmodPers.forcePowers))
 		{
-			if (JKMod_PlayerMoving(ent, qtrue, qtrue)) {
+			if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !(ent->client->ps.stats[JK_TWEAKS] & JK_FORCECHANGE_MOVING)) {
 				trap_SendServerCommand(ent - g_entities, "print \"You can't change force powers while moving\n\"");
 			}
 			else if (!jkcvar_forceChangeTime.integer || jkcvar_forceChangeInstant.integer == 1 && (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FORCE)) {
@@ -2288,10 +2288,10 @@ void ClientSpawn(gentity_t *ent) {
 	WP_SpawnInitForcePowers( ent );
 
 	// health will count down towards max_health
-	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] * 1.25;
+	ent->health = client->ps.stats[STAT_HEALTH] = client->pers.jkmodPers.customHealth ? client->pers.jkmodPers.customHealth : client->ps.stats[STAT_MAX_HEALTH] * 1.25; // Tr!Force: [GameGeneral] Custom health
 
 	// Start with a small amount of armor as well.
-	client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;
+	client->ps.stats[STAT_ARMOR] = client->pers.jkmodPers.customArmor ? client->pers.jkmodPers.customArmor : client->ps.stats[STAT_MAX_HEALTH] * 0.25; // Tr!Force: [GameGeneral] Custom armor
 
 	// Tr!Force: [GameGeneral] Custom spawn point
 	if (ent->client->pers.jkmodPers.customSpawnCheck) 

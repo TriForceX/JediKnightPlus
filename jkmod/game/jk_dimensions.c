@@ -228,7 +228,7 @@ static void JKMod_DimensionPrivate(gentity_t *ent, char *option, char *args)
 		}
 		else if (JKMod_Str_Argc(args) < 3)
 		{
-			trap_SendServerCommand(ent - g_entities, "print \"Usage: /dimension settings <modify|view>\n\"");
+			trap_SendServerCommand(ent - g_entities, "print \"Usage: /dimension settings <modify/view>\n\"");
 		}
 		else
 		{
@@ -365,7 +365,7 @@ static void JKMod_DimensionPrivate(gentity_t *ent, char *option, char *args)
 		
 		if (JKMod_Str_Argc(args) < 3)
 		{
-			trap_SendServerCommand(ent - g_entities, va("print \"Usage: /dimension %s <number|name>\nNote: ^7You can use the command ^3/whois ^7to check the dimension number\n\"", option));
+			trap_SendServerCommand(ent - g_entities, va("print \"Usage: /dimension %s <number/name>\nNote: ^7You can use the command ^3/whois ^7to check the dimension number\n\"", option));
 		}
 		else if (ent->client->pers.jkmodPers.privateRoom[PRIVATE_NUM])
 		{

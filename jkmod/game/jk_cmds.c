@@ -186,7 +186,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5----------\n"
 			"^2Note 1: ^7You can also use this command on chat saying ^5!dimension <option>\n"
-			"^2Note 2: ^7For private dimension you can use the next options ^3/dimension <settings|invite|kick|join|leave>\n"
+			"^2Note 2: ^7For private dimension you can use the next options ^3/dimension <settings/invite/kick/join/leave>\n"
 			"^2Note 3: ^7Dimensions marked in ^1red ^7are not available to use\n\"");
 		return;
 	}
@@ -370,7 +370,7 @@ static void JKMod_Cmd_IgnoreClient(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, "print \""
 			"^5[^7 Ignore ^5]^7\n"
 			"^7Ignore a player chat or duel challenge\n"
-			"^7You can use this feature using the following command: ^2/ignore <player|number|all> <option>\n"
+			"^7You can use this feature using the following command: ^2/ignore <player/number/all> <option>\n"
 			"^7To undo the changes use the same command again\n"
 			"^5----------\n"
 			"^7Option list:\n"
@@ -602,13 +602,16 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			}
 
 			// Default start health and shield
-			if (jkcvar_duelStartHealth.integer != 0 && jkcvar_duelStartArmor.integer != 0)
+			if (jkcvar_duelStartHealth.integer && jkcvar_duelStartArmor.integer)
 			{
-				ent->client->ps.stats[STAT_HEALTH] = ent->health = jkcvar_duelStartHealth.integer;
-				ent->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
+				int amountHealth =  VALIDAMOUNT(jkcvar_duelStartHealth.integer);
+				int amountArmor =  VALIDAMOUNT(jkcvar_duelStartArmor.integer);
 
-				challenged->client->ps.stats[STAT_HEALTH] = challenged->health = jkcvar_duelStartHealth.integer;
-				challenged->client->ps.stats[STAT_ARMOR] = jkcvar_duelStartArmor.integer;
+				ent->client->ps.stats[STAT_HEALTH] = ent->health = amountHealth;
+				ent->client->ps.stats[STAT_ARMOR] = amountArmor;
+
+				challenged->client->ps.stats[STAT_HEALTH] = challenged->health = amountHealth;
+				challenged->client->ps.stats[STAT_ARMOR] = amountArmor;
 			}
 
 			// Holster their sabers now, until the duel starts (then they'll get auto-turned on to look cool)
@@ -1063,16 +1066,16 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		if (locked[0]) trap_SendServerCommand(ent - g_entities, va("print \"Currently locked teams:%s\n\"", locked));
 		
 		trap_SendServerCommand(ent - g_entities, "print \""
-			"^5----------------------------------------------------------------------------------------------------------\n"
-			"^7Num ^5|^7 Name                         ^5|^7 Type  ^5|^7 Ignored         ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
-			"^5----------------------------------------------------------------------------------------------------------\n\"");
+			"^5------------------------------------------------------------------------------------------------------------\n"
+			"^7Num ^5|^7 Name                         ^5|^7 Type    ^5|^7 Ignored         ^5|^7 Dimension    ^5|^7 Plugin          ^5|^7 Game\n"
+			"^5------------------------------------------------------------------------------------------------------------\n\"");
 	}
 	else
 	{
 		G_Printf("Map: %s\n", mapname);
 		if (locked[0]) G_Printf("Locked Teams:%s\n", locked);
-		G_Printf("Num Name                         Type  Dimension    Plugin          Game\n");
-		G_Printf("--- ---------------------------- ----- ------------ --------------- ----------\n");
+		G_Printf("Num Name                         Type    Dimension    Plugin          Game\n");
+		G_Printf("--- ---------------------------- ------- ------------ --------------- ----------\n");
 	}
 
 	for (num = 0; num < level.maxclients; num++)
@@ -1101,12 +1104,20 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 
 		if (strstr(value, "ETJK2") || strstr(etjk2, "JAPRO")) {
 			gameversion = "EternalJK2";
-;		} 
-		else if (value[0] || (user->r.svFlags & SVF_BOT && mvapi)) {
+;		} else if (value[0] || (user->r.svFlags & SVF_BOT && mvapi)) {
 			gameversion = "JK2MV";
-		} 
-		else {
+		} else {
 			gameversion = "BaseJK2";
+		}
+
+		// Client type
+		value = Info_ValueForKey(userinfo, "engine");
+		if (strstr(value, "demoRec")) {
+			type = "DemoBot";
+;		} else if (strstr(value, "jkclient")) {
+			type = "JKChat";
+		} else {
+			type = (user->r.svFlags & SVF_BOT ? "Bot" : "Human");
 		}
 
 		// Check plugin
@@ -1135,15 +1146,14 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			ignored[strlen(ignored) - 1] = '\0';
 		}
 
-		// Set info
+		// Other info
 		strcpy(name, user->client->pers.netname);
 		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : (user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : va("%s", JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name)));
-		type = user->r.svFlags & SVF_BOT ? "Bot" : "Human";
 		status = user->client->pers.jkmodPers.clientVersion ? (user->client->pers.jkmodPers.clientVersion == level.jkmodLocals.serverVersion ? S_COLOR_GREEN : (user->client->pers.jkmodPers.clientVersion > level.jkmodLocals.serverVersion ? S_COLOR_CYAN : S_COLOR_YELLOW)) : S_COLOR_RED;
 
 		// Player print
 		if (ent) {
-			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-5s ^5|^7 %-15s ^5|^7 %-12s ^5|^7 %s%-15s ^5|^7 %-9s\n\"",
+			trap_SendServerCommand(ent - g_entities, va("print \"^7%-3i ^5|^7 %-28s ^5|^7 %-7s ^5|^7 %-15s ^5|^7 %-12s ^5|^7 %s%-15s ^5|^7 %-9s\n\"",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
@@ -1155,7 +1165,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			));
 		// Server print
 		} else {
-			G_Printf("%-3i %-28s %-5s %-12s %-15s %-9s\n",
+			G_Printf("%-3i %-28s %-7s %-12s %-15s %-9s\n",
 				num,
 				Q_CleanStr(name, (qboolean)(jk2startversion == VERSION_1_02)),
 				type,
@@ -1167,7 +1177,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 	}
 
 	if (ent) {
-		trap_SendServerCommand(ent - g_entities, "print \"^5----------------------------------------------------------------------------------------------------------\n\"");
+		trap_SendServerCommand(ent - g_entities, "print \"^5------------------------------------------------------------------------------------------------------------\n\"");
 		trap_SendServerCommand(ent - g_entities, va("print \"Your position in ^3%s ^7is: ^2(^7%i^2) (^7%i^2) (^7%i^2) : (^7%i^2)\n\"",
 			mapname,
 			(int)ent->client->ps.origin[0],
@@ -1175,7 +1185,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			(int)ent->client->ps.origin[2],
 			(int)ent->client->ps.viewangles[YAW]));
 	} else if (level.numConnectedClients) {
-		G_Printf("--- ---------------------------- ----- ------------ --------------- ----------\n");
+		G_Printf("--- ---------------------------- ------- ------------ --------------- ----------\n");
 	}
 }
 
@@ -1799,7 +1809,7 @@ static qboolean JKMod_teleportChat(gentity_t *ent, char *text)
 					trap_SendServerCommand(ent - g_entities, "cp \"You can't teleport during pause mode\"");
 					return qfalse;
 				}
-				else if (JKMod_PlayerMoving(ent, qtrue, qtrue))
+				else if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !(ent->client->ps.stats[JK_TWEAKS] & JK_TELEPORT_MOVING))
 				{
 					trap_SendServerCommand(ent - g_entities, "cp \"You can't teleport while moving\"");
 					return qfalse;
@@ -2620,6 +2630,8 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 				"^3control\n"
 				"^3togglesaber\n"
 				"^3teleport\n"
+				"^3health\n"
+				"^3armor\n"
 				"^3reset";
 	
 			if (argNum < 2)
@@ -2700,9 +2712,27 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 								trap_SendServerCommand(ent - g_entities, va("cp \"Teleporting bot %i\"", challenged->s.number));
 								trap_SendConsoleCommand(EXEC_APPEND, va("teleport %i %i\n", challenged->s.number, ent->s.number));
 							}
+							else if (!Q_stricmp(arg2, "health") || !Q_stricmp(arg2, "armor")) {
+								char arg3[MAX_TOKEN_CHARS];
+								int amount;
+								JKMod_Str_Argv(3, arg3, sizeof(arg3), p);
+								if (argNum < 4) {
+									trap_SendServerCommand(ent - g_entities, va("cp \"Usage: !bot %i %s ^2<value>\"", challenged->s.number, arg2));
+									return;
+								}
+								amount = VALIDAMOUNT(atoi(arg3));
+								trap_SendServerCommand(ent - g_entities, va("cp \"Bot %i %s changed to %i\"", challenged->s.number, arg2, amount));
+								if (!Q_stricmp(arg2, "health")) {
+									challenged->health = challenged->client->ps.stats[STAT_HEALTH] = challenged->client->pers.jkmodPers.customHealth = amount;
+								} else {
+									challenged->client->ps.stats[STAT_ARMOR] = challenged->client->pers.jkmodPers.customArmor = amount;
+								}
+							}
 							else if (!Q_stricmp(arg2, "reset")) {
 								trap_SendServerCommand(ent - g_entities, va("cp \"Resetting bot %i\"", challenged->s.number));
 								challenged->client->pers.jkmodBots.actionFlags = 0;
+								challenged->health = challenged->client->ps.stats[STAT_HEALTH] = challenged->client->ps.stats[STAT_MAX_HEALTH] * 1.25;
+								challenged->client->ps.stats[STAT_ARMOR] = challenged->client->ps.stats[STAT_MAX_HEALTH] * 0.25;
 								JKMod_botControl(challenged->s.number, ent->s.number, "remove");
 							}
 							else {

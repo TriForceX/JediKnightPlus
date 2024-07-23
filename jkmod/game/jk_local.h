@@ -254,6 +254,8 @@ typedef struct
 	qboolean		passThroughPerm;			// Check for permanent pass-through
 	int				customSettings;				// Custom settings check
 	int				customSettingsCount;		// Custom settings modification count
+	int				customHealth;				// Custom player health
+	int				customArmor;				// Custom player armor
 	float			customGravity;				// Custom speed for custom settings
 	float			customSpeed;				// Custom gravity for custom settings
 	int				customSpawn[5];				// Player spawn x y z pitch yaw
