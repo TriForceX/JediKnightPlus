@@ -268,6 +268,9 @@ typedef struct
 	char			forcePowers[MAX_QPATH];		// Player force powers
 	unsigned		privateRoom[PRIVATE_MAX];	// Private room options
 	int				botControl[BOT_MAX];		// Control bot check
+	int				tempModelNum;				// Temp model entity number
+	int				tempModelSettings[4];		// Temp model settings
+	qboolean		ghostPlayer;				// Check player ghost invisibility
 
 } jkmod_pers_t;
 
@@ -644,6 +647,13 @@ void		JKMod_ChairModelDisable(gentity_t *ent);
 
 // jk_utils.c
 void		JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int duration, int dimensionOwner);
+void		JKMod_EntityScan(gentity_t *ent, int distance, int boxdelay, int linedelay);
+void		JKMod_TempEffect(gentity_t *ent, int alignment, int rotation, char *efxfile, int angle, qboolean serverside);
+void		JKMod_TempModelAdd(gentity_t *ent, int alignment, int rotation, char *modelname, int angle, qboolean playersolid);
+void		JKMod_TempModelRemove(gentity_t *ent, int number);
+void		JKMod_GhostAdd(gentity_t *ent, qboolean solid);
+void		JKMod_GhostRemove(gentity_t *ent);
+qboolean	JKMod_GhostCollide(gentity_t* ent1, gentity_t* ent2);
 qboolean	JKMod_OthersInBox(gentity_t *ent);
 void		JKMod_AntiStuckBox(gentity_t *ent);
 qboolean	JKMod_CheckSolid(gentity_t* ent, int distance, vec3_t mins, vec3_t maxs, qboolean elevation);
@@ -678,6 +688,5 @@ void		JKMod_DoorFix(gentity_t* ent);
 
 // jk_svcmds.c
 void		JKMod_svCmd_forceTeam(void);
-void		JKMod_svCmd_resetScores_f(void);
 
 #endif // __JK_LOCAL_H__

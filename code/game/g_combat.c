@@ -2114,6 +2114,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	// Tr!Force: [Emotes] Chair emote disable
 	if (self->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(self);
 
+	// Tr!Force: [GameGeneral] Remove temp model
+	if (self->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(self, self->client->pers.jkmodPers.tempModelNum);
+
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,
 	// or they would get stale scoreboards

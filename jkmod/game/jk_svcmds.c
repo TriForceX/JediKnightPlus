@@ -882,7 +882,7 @@ static void JKMod_svCmd_controlBots(void)
 Reset players scores function
 =====================================================================
 */
-void JKMod_svCmd_resetScores_f(void)
+static void JKMod_svCmd_resetScores(void)
 {
 	int i;
 	gentity_t *ent;
@@ -909,6 +909,45 @@ void JKMod_svCmd_resetScores_f(void)
 	level.teamScores[TEAM_BLUE] = 0;
 	CalculateRanks();
 	trap_SendServerCommand(-1, "print \"Scores have been reset\n\"");
+}
+
+/*
+=====================================================================
+Screen shake function
+=====================================================================
+*/
+static void JKMod_svCmd_screenShake(void)
+{
+	char	arg1[MAX_STRING_CHARS];
+	char	arg2[MAX_STRING_CHARS];
+	char	arg3[MAX_STRING_CHARS];
+
+	if (trap_Argc() < 4)
+	{
+		G_Printf("Usage: shake <targetplayer/all> <intensity> <seconds>\n");
+	}
+	else
+	{
+		trap_Argv(1, arg1, sizeof(arg1));
+		trap_Argv(2, arg2, sizeof(arg2));
+		trap_Argv(3, arg3, sizeof(arg3));
+
+		if (!Q_stricmp(arg1, "all"))
+		{
+			vec3_t org = {0, 0, 0};
+			G_ScreenShake(org, NULL, atof(arg2), (atoi(arg3) * 1000), qtrue);
+		}
+		else
+		{
+			int target = JKMod_CheckValidClient(NULL, arg1);
+
+			if (target != -1)
+			{
+				gentity_t* ent = &g_entities[target];
+				G_ScreenShake(ent->client->ps.origin, ent, atof(arg2), (atoi(arg3) * 1000), qfalse);
+			}
+		}
+	}
 }
 
 /*
@@ -984,7 +1023,12 @@ qboolean JKMod_ConsoleCommand(void)
 	}
 	if (!Q_stricmp(cmd, "resetscores"))
 	{
-		JKMod_svCmd_resetScores_f();
+		JKMod_svCmd_resetScores();
+		return qtrue;
+	}
+	if (!Q_stricmp(cmd, "shake"))
+	{
+		JKMod_svCmd_screenShake();
 		return qtrue;
 	}
 	if (!Q_stricmp(cmd, "checkcvars") && jkcvar_gameTypeConfig.integer && !level.jkmodLocals.cvarTempUnlock)

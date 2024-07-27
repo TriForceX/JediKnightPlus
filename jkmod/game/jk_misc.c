@@ -900,13 +900,11 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 	vec3_t		angles;
 	gentity_t	*effect;
 	char		*fxFile;
-	char		*mins, *maxs;
 
 	G_SpawnInt("type", "1", &ent->watertype);
 	G_SpawnInt("chargemax", "0", &ent->count);
 	G_SpawnInt("chargerate", "0", &ent->bolt_Head);
 	G_SpawnInt("chargeamount", "0", &ent->boltpoint4);
-	G_SpawnString("model", "", &ent->model);
 
 	if (ent->watertype != STATION_SHIELD_TYPE && ent->watertype != STATION_HEALTH_TYPE && ent->watertype != STATION_AMMO_TYPE)
 	{
@@ -923,15 +921,22 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 	}
 
 	ent->s.modelindex = G_ModelIndex(ent->model);
-	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
-	mins = ent->watertype == STATION_HEALTH_TYPE ? "-8 -8 -50" : "-16 -16 -40";
-	maxs = ent->watertype == STATION_HEALTH_TYPE ? "8 8 50" : "16 16 40";
-
-	G_SpawnVector("mins", mins, ent->r.mins);
-	G_SpawnVector("maxs", maxs, ent->r.maxs);
-
-	if (!Q_stricmp(ent->model,".glm"))
+	if (!ent->r.mins[0] && !ent->r.mins[1] && !ent->r.mins[2]) {
+		if (ent->watertype == STATION_HEALTH_TYPE) {
+			VectorSet (ent->r.mins, -8, -8, -50);
+		} else {
+			VectorSet (ent->r.mins, -16, -16, -40);
+		}
+	}
+	if (!ent->r.maxs[0] && !ent->r.maxs[1] && !ent->r.maxs[2]) {
+		if (ent->watertype == STATION_HEALTH_TYPE) {
+			VectorSet (ent->r.maxs, 8, 8, 50);
+		} else {
+			VectorSet (ent->r.maxs, 16, 16, 40);
+		}
+	}
+	if (strstr(ent->model, ".glm"))
 	{	
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -981,16 +986,16 @@ void JKMod_SP_MiscPowerConverter(gentity_t *ent)
 // Misc model
 void JKMod_SP_MiscModel(gentity_t *ent)
 {
-	G_SpawnString( "model", "", &ent->model );
-
 	ent->s.eType = ET_GENERAL;
 	ent->s.modelindex = G_ModelIndex(ent->model);
-	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
-	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
-	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
-
-	if (!Q_stricmp(ent->model,".glm"))
+	if (!ent->r.mins[0] && !ent->r.mins[1] && !ent->r.mins[2]) {
+		VectorSet (ent->r.mins, -16, -16, -16);
+	}
+	if (!ent->r.maxs[0] && !ent->r.maxs[1] && !ent->r.maxs[2]) {
+		VectorSet (ent->r.maxs, 16, 16, 16);
+	}
+	if (strstr(ent->model, ".glm"))
 	{	
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -1011,7 +1016,6 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 	char *model, *sound, *debrissound;
 	
 	ent->s.modelindex = G_ModelIndex(ent->model);
-	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
 	if (ent->spawnflags & 1)
 	{
@@ -1021,11 +1025,14 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 	{
 		ent->r.contents = CONTENTS_SHOTCLIP;
 	}
-		
-	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
-	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
-
-	if (!Q_stricmp(ent->model,".glm"))
+	
+	if (!ent->r.mins[0] && !ent->r.mins[1] && !ent->r.mins[2]) {
+		VectorSet (ent->r.mins, -16, -16, -16);
+	}
+	if (!ent->r.maxs[0] && !ent->r.maxs[1] && !ent->r.maxs[2]) {
+		VectorSet (ent->r.maxs, 16, 16, 16);
+	}
+	if (strstr(ent->model, ".glm"))
 	{	
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -1126,16 +1133,16 @@ void JKMod_SP_MiscModelBreakable(gentity_t *ent)
 // Drain model
 void JKMod_SP_DrainModel(gentity_t* ent)
 {
-	G_SpawnString("model", "", &ent->model);
-
 	ent->s.eType = ET_GENERAL;
 	ent->s.modelindex = G_ModelIndex(ent->model);
-	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
-	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
-	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
-
-	if (!Q_stricmp(ent->model, ".glm"))
+	if (!ent->r.mins[0] && !ent->r.mins[1] && !ent->r.mins[2]) {
+		VectorSet (ent->r.mins, -16, -16, -16);
+	}
+	if (!ent->r.maxs[0] && !ent->r.maxs[1] && !ent->r.maxs[2]) {
+		VectorSet (ent->r.maxs, 16, 16, 16);
+	}
+	if (strstr(ent->model, ".glm"))
 	{
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -1260,7 +1267,6 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 	G_SpawnInt("offsetY", "0", &ent->bolt_Waist);
 	G_SpawnInt("offsetZ", "0", &ent->boltpoint4);
 	G_SpawnInt("viewAngles", "0", &ent->bolt_Motion);
-	G_SpawnString("model", "", &ent->model);
 
 	if (ent->watertype != 1 && ent->watertype != 2 && ent->watertype != 3)
 	{
@@ -1271,12 +1277,14 @@ void JKMod_SP_ChairModel(gentity_t* ent)
 
 	ent->s.eType = ET_GENERAL;
 	ent->s.modelindex = G_ModelIndex(ent->model);
-	ent->s.modelindex2 = G_ModelIndex(ent->model);
 
-	G_SpawnVector("mins", "-16 -16 -16", ent->r.mins);
-	G_SpawnVector("maxs", "16 16 16", ent->r.maxs);
-
-	if (!Q_stricmp(ent->model, ".glm"))
+	if (!ent->r.mins[0] && !ent->r.mins[1] && !ent->r.mins[2]) {
+		VectorSet (ent->r.mins, -16, -16, -16);
+	}
+	if (!ent->r.maxs[0] && !ent->r.maxs[1] && !ent->r.maxs[2]) {
+		VectorSet (ent->r.maxs, 16, 16, 16);
+	}
+	if (strstr(ent->model, ".glm"))
 	{
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -1304,7 +1312,6 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 	float	lip;
 	char	*sound;
 	int		soundon = 0;
-	char	*model;
 	float	modelAngle;
 	float	modelPitch;
 	float	modelRoll;
@@ -1346,12 +1353,9 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 	VectorCopy(ent->s.origin, ent->pos1);
 
 	// calculate second position
-	G_SpawnString( "model", "", &model );
-	
-	ent->s.modelindex = G_ModelIndex( model );
-	ent->s.modelindex2 = G_ModelIndex( model );
+	ent->s.modelindex = G_ModelIndex(ent->model);
 
-	if (!Q_stricmp(ent->model,".glm"))
+	if (strstr(ent->model, ".glm"))
 	{	
 		ent->s.g2radius = 100;
 		ent->s.modelGhoul2 = 1;
@@ -1360,7 +1364,7 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 	ent->r.contents = CONTENTS_SOLID;
 	ent->clipmask = MASK_SOLID;
 
-	if (ent->r.maxs[2] == 0 && ent->r.mins[2] == 0)
+	if (!ent->r.maxs[2] && !ent->r.mins[2])
 	{
 		JKMod_Printf(S_COLOR_YELLOW "Door spawned without collision box.\n");
 		VectorSet(ent->r.maxs, 25, 25, 21);
@@ -1396,11 +1400,6 @@ void JKMod_SP_DoorModel(gentity_t* ent)
 	}
 
 	InitMover(ent);
-
-	ent->s.modelindex = G_ModelIndex(model);
-	ent->s.modelindex2 = G_ModelIndex(model);
-	ent->r.contents = CONTENTS_SOLID;
-	ent->clipmask = MASK_SOLID;
 
 	trap_LinkEntity(ent);
 

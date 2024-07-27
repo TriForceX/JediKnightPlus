@@ -149,7 +149,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_chatColors,			"jk_chatColors",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_playerIgnore,			"jk_playerIgnore",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_spawnActivateSaber,	"jk_spawnActivateSaber",	"-1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
-	{ &jkcvar_saberIdleDamage,		"jk_spawnActivateSaber",	"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_saberIdleDamage,		"jk_saberIdleDamage",		"1",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChat,			"jk_teleportChat",			"0",					JKMod_CVU_teleportChat,		CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatTime,		"jk_teleportChatTime",		"10",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_teleportChatFx,		"jk_teleportChatFx",		"default",				NULL,						CVAR_ARCHIVE,						0, qtrue },
@@ -679,9 +679,10 @@ qboolean JKMod_PauseFrameCheck(int levelTime)
 
 					if (level.jkmodLocals.pauseTimeCustom) 
 					{
-						const char *timeCustom = JKMod_MsToWord((level.jkmodLocals.pauseTimeCustom * 1000), qfalse);
+						char timeCustom[MAX_STRING_CHARS];
+						Q_strncpyz(timeCustom, JKMod_MsToWord((level.jkmodLocals.pauseTimeCustom * 1000), qfalse), sizeof(timeCustom));
 						trap_SendServerCommand(i, va("print \"Game paused for %s\n\"", timeCustom));
-						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("cp \"Pause for %s\"", timeCustom));
+						if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(i, va("cp \"Pause for %s\nSay ^2!pausetime ^7to check remaining time\"", timeCustom));
 					}
 					else 
 					{

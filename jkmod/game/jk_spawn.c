@@ -49,8 +49,8 @@ void JKMod_SP_TimerCheckpoint(gentity_t *self);
 void JKMod_SP_MiscModelBreakable(gentity_t *ent);
 void JKMod_SP_MiscIonCannon(gentity_t *ent);
 
-spawn_t	jkmod_spawns[] = {
-
+spawn_t	jkmod_spawns[] = 
+{
 	// Custom spawn fields
 	{ "jkmod_misc_model",				JKMod_SP_MiscModel },
 	{ "jkmod_misc_power_converter",		JKMod_SP_MiscPowerConverter },
@@ -76,7 +76,6 @@ spawn_t	jkmod_spawns[] = {
 
 	// Sentinel value
 	{ 0, 0 }
-
 };
 
 /*
@@ -279,7 +278,7 @@ void JKMod_SetBrushModel(gentity_t *ent, const char *name)
 {
 	if (jkcvar_mapFixes.integer & JK_MAP_BRUSHMODEL)
 	{
-		if (strlen(name) < 2 || name[0] != '*' || !name) {
+		if (!name || strlen(name) < 2 || name[0] != '*') {
 			JKMod_Printf(S_COLOR_MAGENTA "Entitity stopped (invalid)\n");
 			return;
 		}

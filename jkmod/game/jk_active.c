@@ -318,6 +318,41 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		}
 	}
 
+	// Temp model check
+	if (ent->client->pers.jkmodPers.tempModelNum)
+	{
+		static gentity_t *model;
+		static vec3_t angles;
+		static vec3_t origin;
+		static int alignment, rotation, angle, glm;
+ 
+		alignment = ent->client->pers.jkmodPers.tempModelSettings[0];
+		rotation = ent->client->pers.jkmodPers.tempModelSettings[1];
+		angle = ent->client->pers.jkmodPers.tempModelSettings[2];
+		glm = ent->client->pers.jkmodPers.tempModelSettings[3];
+		model = &g_entities[ent->client->pers.jkmodPers.tempModelNum];
+
+		VectorCopy(ent->client->ps.origin, origin);
+		if (alignment == 2) { 
+			origin[2] += (glm ? ent->r.maxs[2] + abs(DEFAULT_MINS_2) : ent->r.maxs[2]);
+		} else if (alignment == 1) { 
+			origin[2] += (glm ? ent->r.maxs[2]/2 : ent->r.maxs[2]/2 - DEFAULT_MAXS_2/2);
+		} else if (!alignment && !glm) { 
+			origin[2] += DEFAULT_MINS_2;
+		}
+		G_SetOrigin(model, origin);
+		
+		VectorCopy(ent->client->ps.viewangles, angles);
+		if (!glm) angles[YAW] -= 90;
+		if (angle) angles[YAW] += angle;
+		if (angle) angles[ROLL] = 0.0f;
+		if (rotation) angles[PITCH] = 0.0f;
+		if (!rotation) angles[PITCH] = (angle && !glm) || (!angle && glm) ? ent->client->ps.viewangles[PITCH] : 0.0f;
+		if (!rotation && !angle && !glm) angles[ROLL] -= ent->client->ps.viewangles[PITCH];
+		if (!rotation && angle && glm) angles[ROLL] = ent->client->ps.viewangles[PITCH];
+		G_SetAngles(model, angles);
+	}
+
 	// Check race dimension saber toogle
 	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE && !ent->client->ps.saberHolstered)
 	{
@@ -334,13 +369,11 @@ void JKMod_ClientThink_real(gentity_t *ent)
 	}
 
 	// Check jetpack effect
-	if ((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->pers.jkmodPers.jetpackFxDelay <= level.time)
+	if ((ent->client->ps.eFlags & JK_JETPACK_ACTIVE) && ent->client->pers.jkmodPers.jetpackFxDelay <= level.time && !ent->client->pers.jkmodPers.ghostPlayer)
 	{
 		static vec3_t temporigin, tempangles;
 
-		temporigin[0] = ent->client->ps.origin[0];
-		temporigin[1] = ent->client->ps.origin[1];
-		temporigin[2] = ent->client->ps.origin[2];
+		VectorCopy(ent->client->ps.origin, temporigin);
 		tempangles[PITCH] = -90;
 
 		if (ent->client->ps.eFlags & JK_JETPACK_FLAMING) 

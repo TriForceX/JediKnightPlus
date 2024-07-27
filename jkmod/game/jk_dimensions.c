@@ -745,6 +745,9 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		// Remove controlled bot
 		if (ent->client->pers.jkmodBots.actionFlags & JK_BOT_CONTROL) JKMod_botControl(clientNum, ent->client->pers.jkmodPers.botControl[BOT_INDEX], "remove");
 
+		// Remove temp model
+		if (ent->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
+
 		// Clear bots stuff
 		ARRAY_CLEAR(ent->client->pers.jkmodPers.botControl);
 		ent->client->pers.jkmodBots.actionFlags = 0;
@@ -868,7 +871,7 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 		gentity_t	*passEnt = g_entities + passEntityNum;
 		gentity_t	*ent = g_entities + results->entityNum;
 
-		if (!JKMod_DimensionCollide(ent, passEnt) || !JKMod_DuelIsolationCheck(ent, passEnt)) 
+		if (!JKMod_DimensionCollide(ent, passEnt) || !JKMod_DuelIsolationCheck(ent, passEnt) || !JKMod_GhostCollide(ent, passEnt)) 
 		{
 			int contents;
 

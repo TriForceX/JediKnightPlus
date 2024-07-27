@@ -8,6 +8,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 
 #include "../../code/game/g_local.h" // Original header
 
+// Extern stuff
+extern void WP_AddAsMindtricked(forcedata_t *fd, int entNum);
+
 /*
 =====================================================================
 Draw box lines (Due clientside: 255 = red, 1 = black, 0 = white)
@@ -63,6 +66,259 @@ void JKMod_DrawBoxLines(vec3_t orig, vec3_t mins, vec3_t maxs, int color, int du
 	}
 }
 
+/*
+=====================================================================
+Entity scan function
+=====================================================================
+*/
+void JKMod_EntityScan(gentity_t *ent, int distance, int boxdelay, int linedelay)
+{
+	trace_t		tr;
+	vec3_t		fwd, dest, orig;
+	vec3_t		mins = { -5, -5, -5 }, maxs = { 5, 5, 5 };
+
+	if (!distance) distance = 200;
+	if (!boxdelay) boxdelay = 500;
+	if (!linedelay) linedelay = 500;
+
+	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
+
+	VectorCopy(ent->client->ps.origin, orig);
+	orig[2] += (ent->client->ps.weapon == WP_SABER ? ent->r.maxs[2] : ent->r.maxs[2] / 2);
+	VectorMA(orig, distance, fwd, dest);
+
+	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_ALL);
+
+	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
+	{
+		gentity_t	*found = &g_entities[tr.entityNum];
+		char		 found_classname[40];
+		char		 found_model[44];
+		char		 found_origin[43];
+		char		 found_target[29];
+		char		 found_targetname[25];
+		char		 found_spawnflags[25];
+		char		 found_angles[16];
+		char		 found_mins[18];
+		char		 found_maxs[18];
+
+		JKMod_G_TestLine(orig, dest, 255, linedelay, ent->s.number);
+
+		if (!found->inuse) return;
+		
+		Q_strncpyz(found_classname, va("%s", found->classname), sizeof(found_classname));
+		Q_strncpyz(found_model, va("%s", found->model), sizeof(found_model));
+		Q_strncpyz(found_origin, va("%.0f %.0f %.0f", found->s.origin[0], found->s.origin[1], found->s.origin[2]), sizeof(found_origin));
+		Q_strncpyz(found_target, va("%s", found->target), sizeof(found_target));
+		Q_strncpyz(found_targetname, va("%s", found->targetname), sizeof(found_targetname));
+		Q_strncpyz(found_spawnflags, va("%i", found->spawnflags), sizeof(found_spawnflags));
+		Q_strncpyz(found_mins, va("%.0f %.0f %.0f", found->r.mins[0], found->r.mins[1], found->r.mins[2]), sizeof(found_mins));
+		Q_strncpyz(found_maxs, va("%.0f %.0f %.0f", found->r.maxs[0], found->r.maxs[1], found->r.maxs[2]), sizeof(found_maxs));
+		Q_strncpyz(found_angles, va("%.0f %.0f %.0f", found->s.angles[0], found->s.angles[1], found->s.angles[2]), sizeof(found_angles));
+
+		trap_SendServerCommand(ent - g_entities, va("print \"\n"
+			"^7Classname: ^3%-40s ^7Target: ^3%-29s ^7Angles: ^3%-16s\n"
+			"^7Model: ^3%-44s ^7Targetname: ^3%-25s ^7Mins: ^3%-18s\n"
+			"^7Origin: ^3%-43s ^7Spawnflags: ^3%-25s ^7Maxs: ^3%-18s\n\"", 
+			found_classname,
+			found_target,
+			found_angles,
+			found_model,
+			found_targetname,
+			found_mins,
+			found_origin,
+			found_spawnflags,
+			found_maxs));
+
+		JKMod_DrawBoxLines(found->s.origin, found->r.mins,  found->r.maxs, 255, boxdelay, ent->s.number);
+		return;
+	}
+
+	JKMod_G_TestLine(orig, dest, 0, linedelay, ent->s.number);
+	return;
+}
+
+/*
+=====================================================================
+Temp effect function
+=====================================================================
+*/
+void JKMod_TempEffect(gentity_t *ent, int alignment, int rotation, char *efxfile, int angle, qboolean serverside)
+{
+	vec3_t origin;
+	vec3_t angles;
+
+	if (!VALIDSTRING(efxfile)) return;
+
+	VectorCopy(ent->client->ps.origin, origin);
+	if (alignment == 2) { 
+		origin[2] += ent->r.maxs[2];
+	} else if (alignment == 1) { 
+		origin[2] += ent->r.maxs[2]/2;
+	} else if (!alignment) { 
+		origin[2] += DEFAULT_MINS_2;
+	}
+
+	VectorCopy(ent->client->ps.viewangles, angles);
+	if (rotation) angles[PITCH] = -90;
+	if (angle) angles[YAW] += angle;
+
+	JKMod_G_PlayEffect_ID(G_EffectIndex(efxfile), origin, angles, ent->s.number, serverside);
+}
+
+/*
+=====================================================================
+Temp model add function
+=====================================================================
+*/
+void JKMod_TempModelAdd(gentity_t *ent, int alignment, int rotation, char *modelname, int angle, qboolean playersolid)
+{
+	gentity_t *model;
+
+	if (!ent->client->pers.jkmodPers.tempModelNum && VALIDSTRING(modelname))
+	{
+		vec3_t origin;
+		vec3_t angles;
+		int glm = 0;
+
+		model = JKMod_G_Spawn(ent->s.number); // Tag owner info 
+		model->s.modelindex = G_ModelIndex(modelname);
+		model->model = modelname;
+ 
+		VectorSet(model->r.mins, 0, 0, 0);
+		VectorSet(model->r.maxs, 0, 0, 0);
+ 
+		if (strstr(modelname, ".glm"))
+		{	
+			model->s.g2radius = 100;
+			model->s.modelGhoul2 = 1;
+			glm = 1;
+		}
+
+		VectorCopy(ent->client->ps.origin, origin);
+		if (alignment == 2) { 
+			origin[2] += (glm ? ent->r.maxs[2] + abs(DEFAULT_MINS_2) : ent->r.maxs[2]);
+		} else if (alignment == 1) { 
+			origin[2] += (glm ? ent->r.maxs[2]/2 : ent->r.maxs[2]/2 - DEFAULT_MAXS_2/2);
+		} else if (!alignment && !glm) { 
+			origin[2] += DEFAULT_MINS_2;
+		}
+		G_SetOrigin(model, origin);
+		
+		VectorCopy(ent->client->ps.viewangles, angles);
+		if (!glm) angles[YAW] -= 90;
+		if (angle) angles[YAW] += angle;
+		if (angle) angles[ROLL] = 0.0f;
+		if (rotation) angles[PITCH] = 0.0f;
+		if (!rotation) angles[PITCH] = (angle && !glm) || (!angle && glm) ? ent->client->ps.viewangles[PITCH] : 0.0f;
+		if (!rotation && !angle && !glm) angles[ROLL] -= ent->client->ps.viewangles[PITCH];
+		if (!rotation && angle && glm) angles[ROLL] = ent->client->ps.viewangles[PITCH];
+		G_SetAngles(model, angles);
+
+		trap_LinkEntity(model);
+
+		ent->client->pers.jkmodPers.tempModelNum = model->s.number;
+		ent->client->pers.jkmodPers.tempModelSettings[0] = alignment;
+		ent->client->pers.jkmodPers.tempModelSettings[1] = rotation;
+		ent->client->pers.jkmodPers.tempModelSettings[2] = angle;
+		ent->client->pers.jkmodPers.tempModelSettings[3] = glm;
+		trap_SendServerCommand(ent - g_entities, va("print \"Temporary model %i created (%s)\n\"", model->s.number, modelname));
+		JKMod_GhostAdd(ent, playersolid);
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"Temporary model %i deleted\n\"", ent->client->pers.jkmodPers.tempModelNum));
+		JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
+	}
+}
+
+/*
+=====================================================================
+Temp model remove function
+=====================================================================
+*/
+void JKMod_TempModelRemove(gentity_t *ent, int number)
+{
+	if (number > MAX_CLIENTS) {
+		gentity_t *model = &g_entities[number];
+		if (model->inuse) {
+			JKMod_Printf(S_COLOR_MAGENTA "Removing temp model %i\n", model->s.number);
+			trap_UnlinkEntity(model);
+			G_FreeEntity(model);
+		}
+	}
+	if (ent && ent->client) {
+		ent->client->pers.jkmodPers.tempModelNum = 0;
+		ent->client->pers.jkmodPers.tempModelSettings[0] = 0;
+		ent->client->pers.jkmodPers.tempModelSettings[1] = 0;
+		JKMod_GhostRemove(ent);
+	}
+}
+
+/*
+=====================================================================
+Player ghost add function
+=====================================================================
+*/
+void JKMod_GhostAdd(gentity_t* ent, qboolean solid)
+{
+	if (!(ent->client->ps.fd.forcePowersActive & (1 << FP_TELEPATHY)))
+	{
+		ent->client->ps.fd.forcePowersActive |= ( 1 << FP_TELEPATHY );
+		ent->client->ps.fd.forcePowerDuration[FP_TELEPATHY] = level.time + INFINITE;
+	}
+
+	WP_AddAsMindtricked(&ent->client->ps.fd, ent->s.number);
+	ent->r.svFlags |= SVF_SINGLECLIENT;
+	ent->r.singleClient = ent->s.number;
+	if (!solid) {
+		ent->client->ps.eFlags |= JK_PASS_THROUGH;
+		ent->client->pers.jkmodPers.passThroughPerm = qtrue;
+	}
+	ent->client->pers.jkmodPers.ghostPlayer = qtrue;
+}
+
+/*
+=====================================================================
+Player ghost remove function
+=====================================================================
+*/
+void JKMod_GhostRemove(gentity_t* ent)
+{
+	if (ent->client->ps.fd.forcePowersActive & (1 << FP_TELEPATHY))
+	{
+		ent->client->ps.fd.forcePowersActive &= ~(1 << FP_TELEPATHY);
+		ent->client->ps.fd.forceMindtrickTargetIndex = 0;
+		ent->client->ps.fd.forceMindtrickTargetIndex2 = 0;
+		ent->client->ps.fd.forceMindtrickTargetIndex3 = 0;
+		ent->client->ps.fd.forceMindtrickTargetIndex4 = 0;
+	}
+
+	ent->r.svFlags &= ~SVF_SINGLECLIENT;
+	ent->r.singleClient = 0;
+	if (ent->client->pers.jkmodPers.passThroughPerm)
+	{
+		ent->client->ps.eFlags &= ~JK_PASS_THROUGH;
+		ent->client->pers.jkmodPers.passThroughPerm = qfalse;
+		if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
+	}
+	ent->client->pers.jkmodPers.ghostPlayer = qfalse;
+}
+
+/*
+=====================================================================
+Player ghost collide check
+=====================================================================
+*/
+qboolean JKMod_GhostCollide(gentity_t* ent1, gentity_t* ent2)
+{
+	if (ent1 && ent1->client && ent2 && ent2->client) {
+		if (ent2->client->pers.jkmodPers.ghostPlayer && ent2->client->pers.jkmodPers.passThroughPerm) {
+			return qfalse;
+		}
+	}
+	return qtrue;
+}
 /*
 =====================================================================
 Check other clients in box

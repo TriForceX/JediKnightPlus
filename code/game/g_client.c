@@ -2394,6 +2394,9 @@ void ClientSpawn(gentity_t *ent) {
 	// Tr!Force: [DualSaber] Check enable
 	if (client->ps.weapon == WP_SABER) client->ps.dualBlade = client->pers.jkmodPers.dualSaber;
 
+	// Tr!Force: [GameGeneral] Remove temp model
+	if (client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, client->pers.jkmodPers.tempModelNum);
+
 	// run the presend to set anything else
 	if ( ent->client->sess.spectatorState != SPECTATOR_FOLLOW )
 	{ // Only do this if we're not dealing with follow spectators to prevent two bugs:
@@ -2507,6 +2510,9 @@ void ClientDisconnect( int clientNum ) {
 
 	// Tr!Force: [Emotes] Chair emote disable
 	if (ent->client->jkmodClient.chairModelUsed) JKMod_ChairModelDisable(ent);
+
+	// Tr!Force: [GameGeneral] Remove temp model
+	if (ent->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
 	
 	// Tr!Force: [General] Check for reconnect
 	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));

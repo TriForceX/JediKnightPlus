@@ -76,6 +76,8 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3whois\n"
 			"^3listdir\n"
 			"^3control\n"
+			"^3resetscores\n"
+			"^3shake\n"
 			"^5----------\n"
 			"^2Note: ^7To use ^5rcon ^7commands you must be logged with ^3/rconpassword <password>\n\"");
 		return;
@@ -88,20 +90,20 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7You can perform some console commands to perform a special action\n"
 			"^7Chat commands are meant to be used on ^2chat ^7while typing\n"
 			"^5----------\n"
-			"^7Console & Binds:   Chat / Say:    Plugin Only:\n"
-			"^3motd               !motd          strafehelper\n"
-			"^3dimension          !dimension     speedometer\n"
-			"^3dualsaber          !status\n"
-			"^3emote              !savepos\n"
+			"^7Console & Binds:   Chat / Say:    Plugin Only:    Testing:\n"
+			"^3motd               !motd          strafehelper    scan\n"
+			"^3dimension          !dimension     speedometer     effect\n"
+			"^3dualsaber          !status                        model\n"
+			"^3emote              !savepos                       shake\n"
 			"^3ignore             !loadpos\n"
 			"^3dropflag           !savespawn\n"
 			"^3callvote           !resetspawn\n"
 			"^3whois              !whois\n"
 			"^3taunt2             !where\n"
 			"^3savepos            !racetime\n"
-			"^3loadpos            !teleports\n"
-			"^3savespawn          !bot\n"
-			"^3resetspawn\n"
+			"^3loadpos            !pausetime\n"
+			"^3savespawn          !teleports\n"
+			"^3resetspawn         !bot\n"
 			"^3jetpack\n"
 			"^3maplist\n"
 			"^3chatcolor\n"
@@ -1681,68 +1683,6 @@ static void JKMod_Cmd_Taunt2(gentity_t* ent)
 
 /*
 =====================================================================
-Entity scan function
-=====================================================================
-*/
-static void JKMod_Cmd_EntityScan(gentity_t *ent, int distance, int boxdelay, int linedelay)
-{
-	trace_t		tr;
-	vec3_t		fwd, dest, orig;
-	vec3_t		mins = { -5, -5, -5 }, maxs = { 5, 5, 5 };
-
-	if (!distance) distance = 200;
-	if (!boxdelay) boxdelay = 500;
-	if (!linedelay) linedelay = 500;
-
-	AngleVectors(ent->client->ps.viewangles, fwd, NULL, NULL);
-
-	VectorCopy(ent->client->ps.origin, orig);
-	orig[2] += ent->r.maxs[2] / 2;
-	VectorMA(orig, distance, fwd, dest);
-
-	trap_Trace(&tr, orig, mins, maxs, dest, ent->s.number, MASK_ALL);
-
-	if (tr.allsolid || tr.startsolid || tr.fraction != 1.0f)
-	{
-		gentity_t	*found = &g_entities[tr.entityNum];
-		char		 found_mins[20];
-		char		 found_maxs[20];
-		char		 found_angles[20];
-		char		 found_origin[40];
-
-		JKMod_G_TestLine(orig, dest, 255, linedelay, ent->s.number);
-
-		if (!found->inuse) return;
-				
-		Q_strncpyz(found_mins, va("%.0f %.0f %.0f", found->r.mins[0], found->r.mins[1], found->r.mins[2]), sizeof(found_mins));
-		Q_strncpyz(found_maxs, va("%.0f %.0f %.0f", found->r.maxs[0], found->r.maxs[1], found->r.maxs[2]), sizeof(found_maxs));
-		Q_strncpyz(found_angles, va("%.0f %.0f %.0f", found->s.angles[0], found->s.angles[1], found->s.angles[2]), sizeof(found_angles));
-		Q_strncpyz(found_origin, va("%.0f %.0f %.0f", found->s.origin[0], found->s.origin[1], found->s.origin[2]), sizeof(found_origin));
-
-		trap_SendServerCommand(ent - g_entities, va("print \"\n"
-			"^7Classname: ^3%-40.40s ^7Target:     ^3%-25.25s ^7Angles: ^3%-20.20s\n"
-			"^7Model:     ^3%-40.40s ^7Targetname: ^3%-25.25s ^7Mins:   ^3%-20.20s\n"
-			"^7Origin:    ^3%-40.40s ^7Spawnflags: ^3%-25.25i ^7Maxs:   ^3%-20.20s\n\"", 
-			found->classname,
-			found->target,
-			found_angles,
-			found->model,
-			found->targetname,
-			found_mins,
-			found_origin,
-			found->spawnflags,
-			found_maxs));
-
-		JKMod_DrawBoxLines(found->s.origin, found->r.mins,  found->r.maxs, 255, boxdelay, ent->s.number);
-		return;
-	}
-
-	JKMod_G_TestLine(orig, dest, 0, linedelay, ent->s.number);
-	return;
-}
-
-/*
-=====================================================================
 Check teleport say commands
 =====================================================================
 */
@@ -2115,9 +2055,6 @@ void JKMod_CallVote(gentity_t *ent)
 	// Score restart
 	else if (!Q_stricmp(arg1, "score_restart"))
 	{
-		int		val;
-		char	*action;
-
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_SCORE_RESTART))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
 			return;
@@ -2140,7 +2077,7 @@ void JKMod_CallVote(gentity_t *ent)
 		} else {
 			if (JKMod_ValidNumber(arg2)) {
 				Com_sprintf(level.voteString, sizeof(level.voteString), "pause %s", arg2);
-				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for %s seconds", arg2);
+				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for %s", JKMod_MsToWord((atoi(arg2) * 1000), qfalse));
 			} else {
 				trap_SendServerCommand(ent - g_entities, "print \"The specified value is not a number\n");
 				return;
@@ -2562,6 +2499,16 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		JKMod_Cmd_WhoIs(ent);
 		JKMod_Cmd_ToggleConsole(ent);
 	}
+	// Show pause time
+	else if (Q_stricmp(p, "!pausetime") == 0)
+	{
+		if (level.jkmodLocals.pauseTime > level.time) {
+			trap_SendServerCommand(ent - g_entities, va("cp \"Remaining time:\n%s\"", JKMod_MsToWord(((level.jkmodLocals.pauseTime - level.time) + 1), qfalse)));
+		} else {
+			trap_SendServerCommand(ent - g_entities, "cp \"Game is not in pause mode\"");
+		}
+		return;
+	}
 	// Private check
 	else if (Q_stricmpn(p, "!accept", 7) == 0)
 	{
@@ -2834,6 +2781,138 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 
 /*
 =====================================================================
+Entity scan cmd
+=====================================================================
+*/
+static void JKMod_Cmd_EntityScan(gentity_t* ent)
+{
+	char arg2[MAX_TOKEN_CHARS];
+	char arg3[MAX_TOKEN_CHARS];
+	char arg4[MAX_TOKEN_CHARS];
+
+	if (trap_Argc() < 5)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: test scan <distance> <boxdelay> <linedelay>\n\"");
+		return;
+	}
+
+	trap_Argv(2, arg2, sizeof(arg2));
+	trap_Argv(3, arg3, sizeof(arg3));
+	trap_Argv(4, arg4, sizeof(arg4));
+
+	JKMod_EntityScan(ent, atoi(arg2), atoi(arg3), atoi(arg4));
+}
+
+/*
+=====================================================================
+Play effect cmd
+=====================================================================
+*/
+static void JKMod_Cmd_PlayEffect(gentity_t* ent)
+{
+	char arg2[MAX_TOKEN_CHARS];
+	char arg3[MAX_TOKEN_CHARS];
+	char arg4[MAX_TOKEN_CHARS];
+	char arg5[MAX_TOKEN_CHARS];
+	char arg6[MAX_TOKEN_CHARS];
+	int alignment, rotation;
+
+	if (trap_Argc() < 7)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: test effect <bottom/center/top> <viewangles/rotating> <efxfile> [angles 0-360] [serverside 0-1]\n\"");
+		return;
+	}
+
+	trap_Argv(2, arg2, sizeof(arg2));
+	trap_Argv(3, arg3, sizeof(arg3));
+	trap_Argv(4, arg4, sizeof(arg4));
+	trap_Argv(5, arg5, sizeof(arg5));
+	trap_Argv(6, arg6, sizeof(arg6));
+
+	if (!Q_stricmp(arg2, "top")) {
+		alignment = 2;
+	} else if (!Q_stricmp(arg2, "center")) {
+		alignment = 1;
+	} else { // bottom
+		alignment = 0;
+	}
+
+	if (!Q_stricmp(arg3, "rotating")) {
+		rotation = 1;
+	} else { // rotating
+		rotation = 0;
+	}
+
+	JKMod_TempEffect(ent, alignment, rotation, arg4, atoi(arg5), atoi(arg6));
+}
+
+/*
+=====================================================================
+Temp model cmd
+=====================================================================
+*/
+static void JKMod_Cmd_TempModel(gentity_t* ent)
+{
+	char arg2[MAX_TOKEN_CHARS];
+	char arg3[MAX_TOKEN_CHARS];
+	char arg4[MAX_TOKEN_CHARS];
+	char arg5[MAX_TOKEN_CHARS];
+	char arg6[MAX_TOKEN_CHARS];
+	int alignment, rotation;
+
+	if (trap_Argc() < 7)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: test model <bottom/center/top> <viewangles/rotating> <model> [angles 0-360] [playersolid 0-1]\n\"");
+		return;
+	}
+
+	trap_Argv(2, arg2, sizeof(arg2));
+	trap_Argv(3, arg3, sizeof(arg3));
+	trap_Argv(4, arg4, sizeof(arg4));
+	trap_Argv(5, arg5, sizeof(arg5));
+	trap_Argv(6, arg6, sizeof(arg6));
+
+	if (!Q_stricmp(arg2, "top")) {
+		alignment = 2;
+	} else if (!Q_stricmp(arg2, "center")) {
+		alignment = 1;
+	} else { // bottom
+		alignment = 0;
+	}
+
+	if (!Q_stricmp(arg3, "rotating")) {
+		rotation = 1;
+	} else { // rotating
+		rotation = 0;
+	}
+
+	JKMod_TempModelAdd(ent, alignment, rotation, arg4, atoi(arg5), atoi(arg6));
+}
+
+/*
+=====================================================================
+Screen shake cmd
+=====================================================================
+*/
+static void JKMod_Cmd_ScreenShake(gentity_t* ent)
+{
+	char arg2[MAX_TOKEN_CHARS];
+	char arg3[MAX_TOKEN_CHARS];
+
+	if (trap_Argc() < 4)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: test shake <intensity> <seconds>\n\"");
+		return;
+	}
+
+	trap_Argv(2, arg2, sizeof(arg2));
+	trap_Argv(3, arg3, sizeof(arg3));
+
+	G_ScreenShake(ent->client->ps.origin, ent, atof(arg2), (atoi(arg3) * 1000), qfalse);
+}
+
+/*
+=====================================================================
 Custom client commands
 =====================================================================
 */
@@ -2876,6 +2955,18 @@ jkmod_commands_t JKModCommandsTable[] =
 };
 
 static const size_t JKModCommandsTableSize = ARRAY_LEN(JKModCommandsTable);
+
+// Test commands list
+jkmod_commands_t JKModCommandsTest[] = 
+{
+	// cmd						// function
+	{ "scan",					JKMod_Cmd_EntityScan },
+	{ "effect",					JKMod_Cmd_PlayEffect },
+	{ "model",					JKMod_Cmd_TempModel },
+	{ "shake",					JKMod_Cmd_ScreenShake },
+};
+
+static const size_t JKModCommandsTestSize = ARRAY_LEN(JKModCommandsTest);
 
 // Client command function
 void JKMod_ClientCommand(int clientNum)
@@ -2928,42 +3019,33 @@ void JKMod_ClientCommand(int clientNum)
 		}
 	}
 
-	// Test command
-	if (!Q_stricmp(cmd, "test") && developer.integer)
+	// Test commands
+	if (!Q_stricmp(cmd, "test"))
 	{
-		int		i;
 		int		args = trap_Argc();
 		char	argcmd[MAX_TOKEN_CHARS];
 		char	arglist[MAX_STRING_CHARS] = { 0 };
 
-		trap_Argv(1, argcmd, sizeof(argcmd));
-
-		// Entity scan
-		if (!Q_stricmp(argcmd, "scan")) 
+		if (!(developer.integer || g_cheats.integer || (ent->client->ps.stats[JK_DIMENSION] & DIMENSION_CHEAT)))
 		{
-			char arg2[MAX_TOKEN_CHARS];
-			char arg3[MAX_TOKEN_CHARS];
-			char arg4[MAX_TOKEN_CHARS];
-
-			trap_Argv(2, arg2, sizeof(arg2));
-			trap_Argv(3, arg3, sizeof(arg3));
-			trap_Argv(4, arg4, sizeof(arg4));
-
-			JKMod_Cmd_EntityScan(ent, atoi(arg2), atoi(arg3), atoi(arg4));
+			if ((jkcvar_altDimension.integer & DIMENSION_CHEAT) && !(ent->client->ps.stats[JK_DIMENSION] & DIMENSION_CHEAT)) {
+				trap_SendServerCommand(clientNum, "print \"You only can use this command in cheats dimension.\n\"");
+			} else {
+				trap_SendServerCommand(clientNum, "print \"Server must be in development or cheats mode.\n\"");
+			}
 			return;
 		}
 
-		// Effect play
-		if (!Q_stricmp(argcmd, "effect")) 
+		trap_Argv(1, argcmd, sizeof(argcmd));
+
+		// Check commands list
+		for (i = 0, command = JKModCommandsTest; i < JKModCommandsTestSize; i++, command++)
 		{
-			char arg2[MAX_TOKEN_CHARS];
-			char arg3[MAX_TOKEN_CHARS];
-
-			trap_Argv(2, arg2, sizeof(arg2));
-			trap_Argv(3, arg3, sizeof(arg3));
-
-			JKMod_G_PlayEffect_ID(G_EffectIndex(arg2), ent->client->ps.origin, ent->client->ps.viewangles, ent->s.number, atoi(arg3));
-			return;
+			if (!Q_stricmp(argcmd, command->name))
+			{
+				command->func(ent);
+				return;
+			}
 		}
 
 		// Check args

@@ -948,7 +948,7 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 		duration = overrideAmt;
 		overrideAmt = 0;
 		self->client->ps.fd.forcePowersActive |= ( 1 << forcePower );
-		self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_LIGHTNING];
+		if (!self->client->pers.jkmodPers.ghostPlayer) self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_LIGHTNING]; // Tr!Force: [Ghost] Don't render power client side
 		break;
 	case FP_RAGE:
 		hearable = qtrue;
@@ -1050,6 +1050,8 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 	}
 	
 	self->client->ps.fd.forcePowerDebounce[forcePower] = 0;
+
+	if ((int)forcePower == FP_TELEPATHY && self->client->pers.jkmodPers.ghostPlayer) return; // Tr!Force: [Ghost] Don't stop force power
 
 	if ((int)forcePower == FP_SPEED && overrideAmt)
 	{
@@ -1790,6 +1792,11 @@ void ForceShootLightning( gentity_t *self )
 		traceEnt = &g_entities[tr.entityNum];
 		ForceLightningDamage( self, traceEnt, forward, tr.endpos );
 	}
+
+	// Tr!Force: [Ghost] Don't render power client side
+	if (self->client->pers.jkmodPers.ghostPlayer) {
+		JKMod_TempEffect(self, 1, 0, (self->client->ps.fd.forcePowerLevel[FP_LIGHTNING] > FORCE_LEVEL_2 ? "effects/force/lightningwide.efx" : "effects/force/lightning.efx"), 0, 0);
+	}
 }
 
 void ForceDrain( gentity_t *self )
@@ -2092,7 +2099,12 @@ int ForceShootDrain( gentity_t *self )
 		gotOneOrMore = 1;
 	}
 
-	self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
+	// Tr!Force: [Ghost] Don't render power client side
+	if (self->client->pers.jkmodPers.ghostPlayer) {
+		JKMod_TempEffect(self, 1, 0, (self->client->ps.fd.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2 ? "effects/mp/drainwide.efx" : "effects/mp/drain.efx"), 0, 0);
+	} else {
+		self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
+	}
 
 	BG_ForcePowerDrain( &self->client->ps, FP_DRAIN, (jk2gameplay == VERSION_1_02 ? 1 : 5) ); //used to be 1, but this did, too, anger the God of Balance.
 
@@ -2343,6 +2355,8 @@ void ForceTelepathy(gentity_t *self)
 	{
 		return;
 	}
+
+	if (self->client->pers.jkmodPers.ghostPlayer) return; // Tr!Force: [Ghost] Don't stop force power
 
 	if (self->client->ps.forceHandExtend != HANDEXTEND_NONE)
 	{
@@ -3365,6 +3379,8 @@ void ForceThrow( gentity_t *self, qboolean pull )
 void WP_ForcePowerStop( gentity_t *self, forcePowers_t forcePower )
 {
 	int wasActive = self->client->ps.fd.forcePowersActive;
+	
+	if ((int)forcePower == FP_TELEPATHY && self->client->pers.jkmodPers.ghostPlayer) return; // Tr!Force: [Ghost] Don't stop force power
 
 	self->client->ps.fd.forcePowersActive &= ~( 1 << forcePower );
 
@@ -3771,6 +3787,8 @@ extern int g_TimeSinceLastFrame;
 static void WP_UpdateMindtrickEnts(gentity_t *self)
 {
 	int i = 0;
+
+	if (self->client->pers.jkmodPers.ghostPlayer) return; // Tr!Force: [Ghost] Don't stop force power
 
 	while (i < MAX_CLIENTS)
 	{
@@ -4812,7 +4830,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 
 	i = 0;
 
-	if (!(self->client->ps.fd.forcePowersActive & (1 << FP_TELEPATHY)))
+	if (!(self->client->ps.fd.forcePowersActive & (1 << FP_TELEPATHY)) && !self->client->pers.jkmodPers.ghostPlayer) // Tr!Force: [Ghost] Don't stop force power
 	{ //clear the mindtrick index values
 		self->client->ps.fd.forceMindtrickTargetIndex = 0;
 		self->client->ps.fd.forceMindtrickTargetIndex2 = 0;
@@ -5026,7 +5044,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 			}
 		}
 	}
-	if ( !self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN) )
+	if ( !self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN) || (self->client->ps.fd.forcePowersActive == (1 << FP_TELEPATHY) && self->client->pers.jkmodPers.ghostPlayer)) // Tr!Force: [Ghost] Don't stop force power
 	{//when not using the force, regenerate at 1 point per half second
 		if ( !self->client->ps.saberInFlight && self->client->ps.fd.forcePowerRegenDebounceTime < level.time )
 		{
