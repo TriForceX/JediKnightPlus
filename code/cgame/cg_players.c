@@ -3913,7 +3913,7 @@ int CG_LightVerts( vec3_t normal, int numVerts, polyVert_t *verts )
 	return qtrue;
 }
 
-void CG_DoSaber( vec3_t origin, vec3_t dir, float length, saber_colors_t color, int rfx )
+void CG_DoSaber( vec3_t origin, vec3_t dir, float length, saber_colors_t color, int rfx, centity_t *cent )
 {
 	vec3_t		mid, rgb={1,1,1};
 	qhandle_t	blade = 0, glow = 0;
@@ -4015,6 +4015,8 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, saber_colors_t color, 
 	saber.shaderRGBA[0] = saber.shaderRGBA[1] = saber.shaderRGBA[2] = saber.shaderRGBA[3] = 0xff;
 
 	trap_R_AddRefEntityToScene( &saber );
+	
+	if (jkcvar_cg_drawSaberBox.integer) JKMod_CG_AddSaberBox(cent, saber, rgb); // Tr!Force: Draw saber box
 }
 
 //--------------------------------------------------------------
@@ -4814,15 +4816,15 @@ JustDoIt:
 			sideOneLen = 1;
 		}
 		
-		CG_DoSaber( org_, axis_[0], sideOneLen, scolor, renderfx );
+		CG_DoSaber( org_, axis_[0], sideOneLen, scolor, renderfx, cent );
 
-		CG_DoSaber( otherPos, otherDir, sideTwoLen, (cgs.jkmodCGS.dualSaber ? jkmod_color2 : scolor), renderfx ); // Tr!Force: [DualSaber] Added 2nd color
+		CG_DoSaber( otherPos, otherDir, sideTwoLen, (cgs.jkmodCGS.dualSaber ? jkmod_color2 : scolor), renderfx, cent ); // Tr!Force: [DualSaber] Added 2nd color
 	}
 	else
 	{
 		// Pass in the renderfx flags attached to the saber weapon model...this is done so that saber glows
 		//	will get rendered properly in a mirror...not sure if this is necessary??
-		CG_DoSaber( org_, axis_[0], saberLen, scolor, renderfx );
+		CG_DoSaber( org_, axis_[0], saberLen, scolor, renderfx, cent );
 	}
 }
 

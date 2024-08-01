@@ -25,13 +25,13 @@ vmCvar_t	jkcvar_cg_duelEndOrbit;
 vmCvar_t	jkcvar_cg_duelEndDelay;
 vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
+vmCvar_t	jkcvar_cg_drawSaberBox;
 vmCvar_t	jkcvar_cg_drawForcePoints;
 vmCvar_t	jkcvar_cg_drawInventory;
 vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
 vmCvar_t	jkcvar_cg_drawPlayerNames;
 vmCvar_t	jkcvar_cg_drawMovementKeys;
-vmCvar_t	jkcvar_cg_scoreboardIcons;
 vmCvar_t	jkcvar_cg_scoreboardExtras;
 vmCvar_t	jkcvar_cg_chatIcon;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
@@ -78,13 +78,13 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_duelEndDelay,			"jk_cg_duelEndDelay",			"1",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawClock,				"jk_cg_drawClock",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawHitBox,			"jk_cg_drawHitBox",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_drawSaberBox,			"jk_cg_drawSaberBox",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawForcePoints,		"jk_cg_drawForcePoints",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawInventory,			"jk_cg_drawInventory",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawRaceTimer,			"jk_cg_drawRaceTimer",			"1",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawBactaModel,		"jk_cg_drawBactaModel",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawPlayerNames,		"jk_cg_drawPlayerNames",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawMovementKeys,		"jk_cg_drawMovementKeys",		"0",			NULL,						CVAR_ARCHIVE, 0 },
-	{ &jkcvar_cg_scoreboardIcons,		"jk_cg_scoreboardIcons",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_scoreboardExtras,		"jk_cg_scoreboardExtras",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatIcon,				"jk_cg_chatIcon",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_saberTrailSpeed,		"jk_cg_saberTrailSpeed",		"40",			NULL,						CVAR_ARCHIVE, 0 },
@@ -347,6 +347,7 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.dotRed				= trap_R_RegisterShader("gfx/misc/borgeyeflare");
 	cgs.jkmodMedia.dotGreen				= trap_R_RegisterShader("gfx/mp/dmgshader_shields");
 	cgs.jkmodMedia.dotYellow			= trap_R_RegisterShader("gfx/mp/dmgshader_shieldsandhealth");
+	cgs.jkmodMedia.arrowLeft			= trap_R_RegisterShader("gfx/hud/jkmod_arrow_left");
 	cgs.jkmodMedia.forceSwirl			= trap_R_RegisterShader("gfx/hud/force_swirl");
 	cgs.jkmodMedia.useableHint			= trap_R_RegisterShader("gfx/hud/jkmod_useablehint");
 	cgs.jkmodMedia.clockBg				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_clock_bg");

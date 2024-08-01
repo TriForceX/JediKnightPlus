@@ -164,8 +164,8 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 	}
 
-	// Tr!Force: [ScoreboardIcons] Show players icons
-	if (jkcvar_cg_scoreboardIcons.integer)
+	// Tr!Force: [Scoreboard] Extra info
+	if (jkcvar_cg_scoreboardExtras.integer)
 	{
 		float iconScale = largeFormat ? 25 : 15;
 		CG_DrawPic(SB_NAME_X - iconScale - 5, y + 2, iconScale, iconScale, (ci->modelIcon ? ci->modelIcon : cgs.jkmodMedia.missingIcon));
@@ -261,7 +261,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	// add the "ready" marker for intermission exiting
 	if ( cg.snap->ps.stats[ STAT_CLIENTS_READY ] & ( 1 << score->client ) ) 
 	{
-		float readyAlign = jkcvar_cg_scoreboardIcons.integer && largeFormat ? 74 : 64; // Tr!Force: [ScoreboardIcons] Adjust ready label
+		float readyAlign = jkcvar_cg_scoreboardExtras.integer && largeFormat ? 74 : 64; // Tr!Force: [Scoreboard] Extra info
 
 		CG_Text_Paint (SB_NAME_X - readyAlign, y + 2, 0.7f * scale, colorWhite, CG_GetStripEdString("INGAMETEXT", "READY"),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 	}
@@ -508,12 +508,6 @@ qboolean CG_DrawOldScoreboard( void ) {
 		bottomBorderSize = 8;
 	}
 
-	// Tr!Force: [ScoreboardIcons] Adjust team background
-	if (jkcvar_cg_scoreboardIcons.integer) {
-		topBorderSize = 6;
-		if (cg.numScores > SB_MAXCLIENTS_NORMAL) bottomBorderSize = 8;
-	}
-
 	// Tr!Force: [Scoreboard] Team thin border
 	if (jkcvar_cg_scoreboardExtras.integer) {
 		topBorderSize = -2;
@@ -605,7 +599,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			maxClients -= (team1MaxCl+team2MaxCl);
 		}
 		n1 = CG_TeamScoreboard( y, TEAM_SPECTATOR, fade, maxClients, lineHeight, qfalse );
-		y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
+		if (!jkcvar_cg_scoreboardExtras.integer) y += (n1 * lineHeight) + BIGCHAR_HEIGHT; // Tr!Force: [Scoreboard] Trim extra space
 
 	} else {
 		//

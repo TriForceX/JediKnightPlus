@@ -41,6 +41,7 @@
 			hide				clientInterface2Controls ;
 			hide				clientInterface3Controls ;
 			hide				clientVisualsControls ;
+			hide				clientVisuals2Controls ;
 			hide				clientCameraControls ;
 			hide 				clientBindsControls ;
 			hide				clientOtherControls ;
@@ -148,6 +149,7 @@
 				hide			clientInterface2Controls ;
 				hide			clientInterface3Controls ;
 				hide			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
 				hide			clientOtherControls ;
@@ -208,6 +210,7 @@
 				hide 			clientInterface2Controls ;
 				hide 			clientInterface3Controls ;
 				show			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
 				hide			clientOtherControls ;
@@ -267,6 +270,7 @@
 				hide 			clientInterface2Controls ;
 				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				show			clientCameraControls ;
 				hide 			clientBindsControls ;
 				hide			clientOtherControls ;
@@ -327,6 +331,7 @@
 				hide 			clientInterface2Controls ;
 				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				hide			clientCameraControls ;
 				show 			clientBindsControls ;
 				hide			clientOtherControls ;
@@ -387,6 +392,7 @@
 				hide 			clientInterface2Controls ;
 				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
 				show			clientOtherControls ;
@@ -447,6 +453,7 @@
 				hide 			clientInterface2Controls ;
 				hide 			clientInterface3Controls ;
 				hide			clientVisualsControls ;
+				hide			clientVisuals2Controls ;
 				hide			clientCameraControls ;
 				hide 			clientBindsControls ;
 				hide			clientOtherControls ;
@@ -762,10 +769,16 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_SCOREICONS
-			descText			@JKMENUS_CLIENT_SCOREICONS_DESC
-			cvar				"jk_cg_scoreboardIcons"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_TEAMOVERLAY
+			descText			@JKMENUS_CLIENT_TEAMOVERLAY_DESC
+			cvar				"cg_drawTeamOverlay"
+			cvarFloatList
+			{
+				@MENUS0_NO						0
+				@JKMENUS_MOD_OPTIONS_STANDARD	1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
+			}
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -872,9 +885,9 @@
 			cvar				"cg_drawTimer"
 			cvarFloatList
 			{
-				@MENUS0_NO  						0
-				@JKMENUS_MOD_OPTIONS_STANDARD		1
-				@JKMENUS_MOD_OPTIONS_ALTERNATE		2
+				@MENUS0_NO						0
+				@JKMENUS_MOD_OPTIONS_STANDARD	1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
 			}
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -911,9 +924,9 @@
 			cvar				"cg_drawFPS"
 			cvarFloatList
 			{
-				@MENUS0_NO  						0
-				@JKMENUS_MOD_OPTIONS_STANDARD		1
-				@JKMENUS_MOD_OPTIONS_ALTERNATE		2
+				@MENUS0_NO						0
+				@JKMENUS_MOD_OPTIONS_STANDARD	1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
 			}
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1087,7 +1100,7 @@
 		// PREV & NEXT BUTTONS (INTERFACE OPTIONS)
 		itemDef 
 		{
-			name				prevButton
+			name				prevButtonInterface
 			group				clientInterfaceControls
 			type				1
 			descText			@JKMENUS_BUTTON_PREV
@@ -1113,7 +1126,7 @@
 
 		itemDef 
 		{
-			name				nextButton
+			name				nextButtonInterface
 			group				clientInterfaceControls
 			descText			@JKMENUS_BUTTON_NEXT
 			type				1
@@ -1127,7 +1140,7 @@
 				play			"sound/interface/button1.wav" ;
 				hide			clientInterfaceControls ;
 				show 			clientInterface2Controls ;	
-				setfocus		nextButton2 ;
+				setfocus		nextButtonInterface2 ;
 			}
 			mouseenter 
 			{ 
@@ -1600,7 +1613,7 @@
 		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 2)
 		itemDef 
 		{
-			name				prevButton2
+			name				prevButtonInterface2
 			group				clientInterface2Controls
 			type				1
 			descText			@JKMENUS_BUTTON_PREV
@@ -1614,7 +1627,7 @@
 				play			"sound/interface/button1.wav" ;
 				hide			clientInterface2Controls ;
 				show 			clientInterfaceControls ;	
-				setfocus		prevButton ;
+				setfocus		prevButtonInterface ;
 			}
 			mouseenter 
 			{ 
@@ -1628,7 +1641,7 @@
 
 		itemDef 
 		{
-			name				nextButton2
+			name				nextButtonInterface2
 			group				clientInterface2Controls
 			descText			@JKMENUS_BUTTON_NEXT
 			type				1
@@ -1642,7 +1655,7 @@
 				play			"sound/interface/button1.wav" ;
 				hide			clientInterface2Controls ;
 				show 			clientInterface3Controls ;	
-				setfocus		nextButton3 ;
+				setfocus		nextButtonInterface3 ;
 			}
 			mouseenter 
 			{ 
@@ -2110,10 +2123,10 @@
 			}
 		}
 		
-		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 2)
+		// PREV & NEXT BUTTONS (INTERFACE OPTIONS PAGE 3)
 		itemDef 
 		{
-			name				prevButton3
+			name				prevButtonInterface3
 			group				clientInterface3Controls
 			type				1
 			descText			@JKMENUS_BUTTON_PREV
@@ -2127,7 +2140,7 @@
 				play			"sound/interface/button1.wav" ;
 				hide			clientInterface3Controls ;
 				show 			clientInterface2Controls ;	
-				setfocus		prevButton2 ;
+				setfocus		prevButtonInterface2 ;
 			}
 			mouseenter 
 			{ 
@@ -2141,7 +2154,7 @@
 
 		itemDef 
 		{
-			name				nextButton3
+			name				nextButtonInterface3
 			group				clientInterface3Controls
 			descText			@JKMENUS_BUTTON_NEXT
 			type				1
@@ -2278,10 +2291,16 @@
 		{
 			name				none
 			group				clientVisualsControls
-			type				ITEM_TYPE_YESNO
+			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_HITBOX
 			descText			@JKMENUS_CLIENT_HITBOX_DESC
 			cvar				"jk_cg_drawHitBox"
+			cvarFloatList
+			{
+				@MENUS0_NO						0
+				@JKMENUS_CLIENT_HITBOX_GLOW		1
+				@JKMENUS_CLIENT_HITBOX_LINES	2
+			}
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -2670,6 +2689,164 @@
 				setcvar			jk_cg_saberTrailSpeed "40"
 			}
 		}
+		
+		// PREV & NEXT BUTTONS (VISUALS OPTIONS)
+		itemDef 
+		{
+			name				prevButtonVisuals
+			group				clientVisualsControls
+			type				1
+			descText			@JKMENUS_BUTTON_PREV
+			style				WINDOW_STYLE_SHADER
+			rect				463 298 13 13
+			background			"gfx/menus/scrollbar_arrow_left"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			highlightPrev ;
+			}
+			mouseenter 
+			{ 
+				show			highlightPrev ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightPrev ;
+			}
+		}
+
+		itemDef 
+		{
+			name				nextButtonVisuals
+			group				clientVisualsControls
+			descText			@JKMENUS_BUTTON_NEXT
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				484 298 13 13
+			background			"gfx/menus/scrollbar_arrow_right"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			clientVisualsControls ;
+				show 			clientVisuals2Controls ;	
+				setfocus		nextButtonVisuals2 ;
+			}
+			mouseenter 
+			{ 
+				show			highlightNext ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightNext ;
+			}
+		}
+		
+		//---------------------------------------------
+		//	VISUALS OPTIONS PAGE 2
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				none
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_SABERBOX
+			descText			@JKMENUS_CLIENT_SABERBOX_DESC
+			cvar				"jk_cg_drawSaberBox"
+			cvarFloatList
+			{
+				@MENUS0_NO  				0
+				@MENUS2_LIGHTSABER_COLOR	1
+				@JKMENUS_COLOR_RED  		2
+				@JKMENUS_COLOR_ORANGE  		3
+				@JKMENUS_COLOR_YELLOW  		4
+				@JKMENUS_COLOR_GREEN		5
+				@JKMENUS_COLOR_BLUE  		6
+				@JKMENUS_COLOR_MAGENTA  	7
+			}
+			rect				220 41 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+			
+			mouseEnter 
+			{ 
+				show			highlight1
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight1
+				hide			keybindstatus
+			} 
+		}
+		
+		// PREV & NEXT BUTTONS (VISUALS OPTIONS PAGE 2)
+		itemDef 
+		{
+			name				prevButtonVisuals2
+			group				clientVisuals2Controls
+			type				1
+			descText			@JKMENUS_BUTTON_PREV
+			style				WINDOW_STYLE_SHADER
+			rect				463 298 13 13
+			background			"gfx/menus/scrollbar_arrow_left"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			clientVisuals2Controls ;
+				show 			clientVisualsControls ;	
+				setfocus		prevButtonVisuals ;
+			}
+			mouseenter 
+			{ 
+				show			highlightPrev ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightPrev ;
+			}
+		}
+
+		itemDef 
+		{
+			name				nextButtonVisuals2
+			group				clientVisuals2Controls
+			descText			@JKMENUS_BUTTON_NEXT
+			type				1
+			style				WINDOW_STYLE_SHADER
+			rect				484 298 13 13
+			background			"gfx/menus/scrollbar_arrow_right"
+			forecolor			1 1 1 1
+			visible				1
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				hide			highlightNext ;
+			}
+			mouseenter 
+			{ 
+				show			highlightNext ;
+			}
+			mouseexit 
+			{ 
+				hide			highlightNext ;
+			}
+		}
 
 		//---------------------------------------------
 		//	CAMERA OPTIONS
@@ -2889,7 +3066,7 @@
 			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_THIRDCAMERA
 			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
-			cvarfloat			"cg_thirdPersonRange" 10 0 150
+			cvarfloat			"cg_thirdPersonRange" 10 0 300
 			rect				220 161 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151

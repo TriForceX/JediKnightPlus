@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 227
+COUNT 234
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -689,10 +689,10 @@ INDEX 75
 INDEX 76
 {
    REFERENCE CLIENT_HITBOX_DESC
-   TEXT_LANGUAGE1 "Shows the players hit box."
+   TEXT_LANGUAGE1 "Shows players hit box."
    TEXT_LANGUAGE2 "Affiche la boîte de dégâts des joueurs."
-   TEXT_LANGUAGE3 "Zeigt die schadensbox des spielers an."
-   TEXT_LANGUAGE6 "Shows the players hit box."
+   TEXT_LANGUAGE3 "Zeigt die schadensbox des spielers."
+   TEXT_LANGUAGE6 "Shows players hit box."
    TEXT_LANGUAGE8 "Mostrar la caja de daños de los jugadores."
 }
 INDEX 77
@@ -1561,6 +1561,15 @@ INDEX 172
 }
 INDEX 173
 {
+   REFERENCE COLOR_ORANGE
+   TEXT_LANGUAGE1 "Orange"
+   TEXT_LANGUAGE2 "Orange"
+   TEXT_LANGUAGE3 "Orange"
+   TEXT_LANGUAGE6 "Orange"
+   TEXT_LANGUAGE8 "Naranjo"
+}
+INDEX 174
+{
    REFERENCE BUTTON_GO
    TEXT_LANGUAGE1 "Go"
    TEXT_LANGUAGE2 "Aller"
@@ -1568,7 +1577,7 @@ INDEX 173
    TEXT_LANGUAGE6 "Go"
    TEXT_LANGUAGE8 "Ir"
 }
-INDEX 174
+INDEX 175
 {
    REFERENCE BUTTON_PREV
    TEXT_LANGUAGE1 "Previous page"
@@ -1577,7 +1586,7 @@ INDEX 174
    TEXT_LANGUAGE6 "Previous page"
    TEXT_LANGUAGE8 "Página anterior"
 }
-INDEX 175
+INDEX 176
 {
    REFERENCE BUTTON_NEXT
    TEXT_LANGUAGE1 "Next page"
@@ -1586,7 +1595,7 @@ INDEX 175
    TEXT_LANGUAGE6 "Next page"
    TEXT_LANGUAGE8 "Siguiente página"
 }
-INDEX 176
+INDEX 177
 {
    REFERENCE CLIENT_TELEPORTSMENU
    TEXT_LANGUAGE1 "Show teleport menu:"
@@ -1595,7 +1604,7 @@ INDEX 176
    TEXT_LANGUAGE6 "Show teleport menu:"
    TEXT_LANGUAGE8 "Menú de teletransporte:"
 }
-INDEX 177
+INDEX 178
 {
    REFERENCE CLIENT_TELEPORTSMENU_DESC
    TEXT_LANGUAGE1 "Show available teleports from current map."
@@ -1604,7 +1613,7 @@ INDEX 177
    TEXT_LANGUAGE6 "Show available teleports from current map."
    TEXT_LANGUAGE8 "Muestra teletransportes disponibles en el mapa actual."
 }
-INDEX 178
+INDEX 179
 {
    REFERENCE SERVER_ALLOW_DESC
    TEXT_LANGUAGE1 "Only if server allows it"
@@ -1613,7 +1622,7 @@ INDEX 178
    TEXT_LANGUAGE6 "Only if server allows it"
    TEXT_LANGUAGE8 "Sólo si el servidor lo permite"
 }
-INDEX 179
+INDEX 180
 {
    REFERENCE CLIENT_SMETERENABLE
    TEXT_LANGUAGE1 "Speedometer enable:"
@@ -1622,7 +1631,7 @@ INDEX 179
    TEXT_LANGUAGE6 "Speedometer enable:"
    TEXT_LANGUAGE8 "Habilitar Velocímetro:"
 }
-INDEX 180
+INDEX 181
 {
    REFERENCE CLIENT_SMETERENABLE_DESC
    TEXT_LANGUAGE1 "Enable speedometer to show player speeds."
@@ -1631,7 +1640,7 @@ INDEX 180
    TEXT_LANGUAGE6 "Enable speedometer to show player speeds."
    TEXT_LANGUAGE8 "Habilita el velocímetro para mostrar las velocidades del jugador."
 }
-INDEX 181
+INDEX 182
 {
    REFERENCE CLIENT_SMETERGROUND
    TEXT_LANGUAGE1 "Speedo. Pre-Speed:"
@@ -1640,7 +1649,7 @@ INDEX 181
    TEXT_LANGUAGE6 "Speedo. Pre-Speed:"
    TEXT_LANGUAGE8 "Velocím. Vel. Previa:"
 }
-INDEX 182
+INDEX 183
 {
    REFERENCE CLIENT_SMETERGROUND_DESC
    TEXT_LANGUAGE1 "Shows previous speed from last jump."
@@ -1649,7 +1658,7 @@ INDEX 182
    TEXT_LANGUAGE6 "Shows previous speed from last jump."
    TEXT_LANGUAGE8 "Muestra la velociadad previa al haber saltado."
 }
-INDEX 183
+INDEX 184
 {
    REFERENCE CLIENT_SMETERJUMPH
    TEXT_LANGUAGE1 "Speedo. Jump Height:"
@@ -1658,7 +1667,7 @@ INDEX 183
    TEXT_LANGUAGE6 "Speedo. Jump Height:"
    TEXT_LANGUAGE8 "Velocím. Altura Salto:"
 }
-INDEX 184
+INDEX 185
 {
    REFERENCE CLIENT_SMETERJUMPH_DESC
    TEXT_LANGUAGE1 "Shows jump height."
@@ -1667,7 +1676,7 @@ INDEX 184
    TEXT_LANGUAGE6 "Shows jump height."
    TEXT_LANGUAGE8 "Muestra la altura del salto."
 }
-INDEX 185
+INDEX 186
 {
    REFERENCE CLIENT_SMETERJUMPD
    TEXT_LANGUAGE1 "Speedo. Jump Distance:"
@@ -1676,7 +1685,7 @@ INDEX 185
    TEXT_LANGUAGE6 "Speedo. Jump Distance:"
    TEXT_LANGUAGE8 "Velocím. Distancia Salto:"
 }
-INDEX 186
+INDEX 187
 {
    REFERENCE CLIENT_SMETERJUMPD_DESC
    TEXT_LANGUAGE1 "Shows jump distance."
@@ -1685,7 +1694,7 @@ INDEX 186
    TEXT_LANGUAGE6 "Shows jump distance."
    TEXT_LANGUAGE8 "Muestra la distancia del salto."
 }
-INDEX 187
+INDEX 188
 {
    REFERENCE CLIENT_SMETERVERTICAL
    TEXT_LANGUAGE1 "Speedo. Vertical Speed:"
@@ -1694,7 +1703,7 @@ INDEX 187
    TEXT_LANGUAGE6 "Speedo. Vertical Speed:"
    TEXT_LANGUAGE8 "Velocím. Vel. Vertical:"
 }
-INDEX 188
+INDEX 189
 {
    REFERENCE CLIENT_SMETERVERTICAL_DESC
    TEXT_LANGUAGE1 "Shows vertical speed."
@@ -1703,7 +1712,7 @@ INDEX 188
    TEXT_LANGUAGE6 "Shows vertical speed."
    TEXT_LANGUAGE8 "Muestra la velocidad vertical."
 }
-INDEX 189
+INDEX 190
 {
    REFERENCE CLIENT_SMETERACCELM
    TEXT_LANGUAGE1 "Speedo. Accelerometer:"
@@ -1712,7 +1721,7 @@ INDEX 189
    TEXT_LANGUAGE6 "Speedo. Accelerometer:"
    TEXT_LANGUAGE8 "Velocím. Acelerómetro:"
 }
-INDEX 190
+INDEX 191
 {
    REFERENCE CLIENT_SMETERACCELM_DESC
    TEXT_LANGUAGE1 "Shows accelerometer status bar."
@@ -1721,7 +1730,7 @@ INDEX 190
    TEXT_LANGUAGE6 "Shows accelerometer status bar."
    TEXT_LANGUAGE8 "Muestra la barra de acelerómetro."
 }
-INDEX 191
+INDEX 192
 {
    REFERENCE CLIENT_SMETERKPH
    TEXT_LANGUAGE1 "Speedo. Units to KPH:"
@@ -1730,7 +1739,7 @@ INDEX 191
    TEXT_LANGUAGE6 "Speedo. Units to KPH:"
    TEXT_LANGUAGE8 "Velocím. Unidad a KMH:"
 }
-INDEX 192
+INDEX 193
 {
    REFERENCE CLIENT_SMETERKPH_DESC
    TEXT_LANGUAGE1 "Shows speed in kilometers instead of units."
@@ -1739,7 +1748,7 @@ INDEX 192
    TEXT_LANGUAGE6 "Shows speed in kilometers instead of units."
    TEXT_LANGUAGE8 "Muestra la velocidad en kilómetros en vez de unidades."
 }
-INDEX 193
+INDEX 194
 {
    REFERENCE CLIENT_SMETERMPH
    TEXT_LANGUAGE1 "Speedo. Units to MPH:"
@@ -1748,7 +1757,7 @@ INDEX 193
    TEXT_LANGUAGE6 "Speedo. Units to MPH:"
    TEXT_LANGUAGE8 "Velocím. Unidad a MPH:"
 }
-INDEX 194
+INDEX 195
 {
    REFERENCE CLIENT_SMETERMPH_DESC
    TEXT_LANGUAGE1 "Shows speed in imperial miles instead of units."
@@ -1757,7 +1766,7 @@ INDEX 194
    TEXT_LANGUAGE6 "Shows speed in imperial miles instead of units."
    TEXT_LANGUAGE8 "Muestra la velocidad en millas imperiales en vez de unidades."
 }
-INDEX 195
+INDEX 196
 {
    REFERENCE CLIENT_SHELPERORIG
    TEXT_LANGUAGE1 "Strafe Helper Original:"
@@ -1766,7 +1775,7 @@ INDEX 195
    TEXT_LANGUAGE6 "Strafe Helper Original:"
    TEXT_LANGUAGE8 "Asist. Strafe Original:"
 }
-INDEX 196
+INDEX 197
 {
    REFERENCE CLIENT_SHELPERORIG_DESC
    TEXT_LANGUAGE1 "Original strafe helper style."
@@ -1775,7 +1784,7 @@ INDEX 196
    TEXT_LANGUAGE6 "Original strafe helper style."
    TEXT_LANGUAGE8 "Estilo original del asistente de strafe."
 }
-INDEX 197
+INDEX 198
 {
    REFERENCE CLIENT_SHELPERUPD
    TEXT_LANGUAGE1 "Strafe Helper Updated:"
@@ -1784,7 +1793,7 @@ INDEX 197
    TEXT_LANGUAGE6 "Strafe Helper Updated:"
    TEXT_LANGUAGE8 "Asist. Strafe Actualizado:"
 }
-INDEX 198
+INDEX 199
 {
    REFERENCE CLIENT_SHELPERUPD_DESC
    TEXT_LANGUAGE1 "Updated strafe helper style."
@@ -1793,7 +1802,7 @@ INDEX 198
    TEXT_LANGUAGE6 "Updated strafe helper style."
    TEXT_LANGUAGE8 "Estilo actualizado del asistente de strafe."
 }
-INDEX 199
+INDEX 200
 {
    REFERENCE CLIENT_SHELPERCGAZ
    TEXT_LANGUAGE1 "Strafe Helper CGaz:"
@@ -1802,7 +1811,7 @@ INDEX 199
    TEXT_LANGUAGE6 "Strafe Helper CGaz:"
    TEXT_LANGUAGE8 "Asist. Strafe CGaz:"
 }
-INDEX 200
+INDEX 201
 {
    REFERENCE CLIENT_SHELPERCGAZ_DESC
    TEXT_LANGUAGE1 "Strafe helper 'Camping Gaz' style."
@@ -1811,7 +1820,7 @@ INDEX 200
    TEXT_LANGUAGE6 "Strafe helper 'Camping Gaz' style."
    TEXT_LANGUAGE8 "Estilo 'Camping Gaz' del asistente de strafe."
 }
-INDEX 201
+INDEX 202
 {
    REFERENCE CLIENT_SHELPERWARSOW
    TEXT_LANGUAGE1 "Strafe Helper Warsow:"
@@ -1820,7 +1829,7 @@ INDEX 201
    TEXT_LANGUAGE6 "Strafe Helper Warsow:"
    TEXT_LANGUAGE8 "Asist. Strafe Warsow:"
 }
-INDEX 202
+INDEX 203
 {
    REFERENCE CLIENT_SHELPERWARSOW_DESC
    TEXT_LANGUAGE1 "Strafe helper 'Warsow' style."
@@ -1829,7 +1838,7 @@ INDEX 202
    TEXT_LANGUAGE6 "Strafe helper 'Warsow' style."
    TEXT_LANGUAGE8 "Estilo 'Warsow' del asistente de strafe."
 }
-INDEX 203
+INDEX 204
 {
    REFERENCE CLIENT_SHELPERWEZE
    TEXT_LANGUAGE1 "Strafe Helper Weze:"
@@ -1838,7 +1847,7 @@ INDEX 203
    TEXT_LANGUAGE6 "Strafe Helper Weze:"
    TEXT_LANGUAGE8 "Asist. Strafe Weze:"
 }
-INDEX 204
+INDEX 205
 {
    REFERENCE CLIENT_SHELPERWEZE_DESC
    TEXT_LANGUAGE1 "Strafe helper 'Weze' style."
@@ -1847,7 +1856,7 @@ INDEX 204
    TEXT_LANGUAGE6 "Strafe helper 'Weze' style."
    TEXT_LANGUAGE8 "Estilo 'Weze' del asistente de strafe."
 }
-INDEX 205
+INDEX 206
 {
    REFERENCE CLIENT_SHELPERSOUND
    TEXT_LANGUAGE1 "Strafe Helper Sound:"
@@ -1856,7 +1865,7 @@ INDEX 205
    TEXT_LANGUAGE6 "Strafe Helper Sound:"
    TEXT_LANGUAGE8 "Asist. Strafe Sonido:"
 }
-INDEX 206
+INDEX 207
 {
    REFERENCE CLIENT_SHELPERSOUND_DESC
    TEXT_LANGUAGE1 "Activates a sound when reaching a line."
@@ -1865,7 +1874,7 @@ INDEX 206
    TEXT_LANGUAGE6 "Activates a sound when reaching a line."
    TEXT_LANGUAGE8 "Activa un sonido al alcanzar una línea."
 }
-INDEX 207
+INDEX 208
 {
    REFERENCE CLIENT_SHELPERREAR
    TEXT_LANGUAGE1 "Strafe Helper Rear:"
@@ -1874,7 +1883,7 @@ INDEX 207
    TEXT_LANGUAGE6 "Strafe Helper Rear:"
    TEXT_LANGUAGE8 "Asist. Strafe Reversa:"
 }
-INDEX 208
+INDEX 209
 {
    REFERENCE CLIENT_SHELPERREAR_DESC
    TEXT_LANGUAGE1 "Enable Strafe Helper while going backwards."
@@ -1883,7 +1892,7 @@ INDEX 208
    TEXT_LANGUAGE6 "Enable Strafe Helper while going backwards."
    TEXT_LANGUAGE8 "Habilita el Asist. Strafe al ir retrocediendo."
 }
-INDEX 209
+INDEX 210
 {
    REFERENCE CLIENT_SHELPERCENTER
    TEXT_LANGUAGE1 "Strafe Helper Center:"
@@ -1892,7 +1901,7 @@ INDEX 209
    TEXT_LANGUAGE6 "Strafe Helper Center:"
    TEXT_LANGUAGE8 "Asist. Strafe Centro:"
 }
-INDEX 210
+INDEX 211
 {
    REFERENCE CLIENT_SHELPERCENTER_DESC
    TEXT_LANGUAGE1 "Shows an extra center lines on certain modes."
@@ -1901,7 +1910,7 @@ INDEX 210
    TEXT_LANGUAGE6 "Shows an extra center lines on certain modes."
    TEXT_LANGUAGE8 "Muestra una línea extra en ciertos modos."
 }
-INDEX 211
+INDEX 212
 {
    REFERENCE CLIENT_SHELPERLINE
    TEXT_LANGUAGE1 "Strafe Helper Crosshair:"
@@ -1910,7 +1919,7 @@ INDEX 211
    TEXT_LANGUAGE6 "Strafe Helper Crosshair:"
    TEXT_LANGUAGE8 "Asist. Strafe Retícula:"
 }
-INDEX 212
+INDEX 213
 {
    REFERENCE CLIENT_SHELPERLINE_DESC
    TEXT_LANGUAGE1 "Shows an extra crosshair line in center of screen."
@@ -1919,7 +1928,7 @@ INDEX 212
    TEXT_LANGUAGE6 "Shows an extra crosshair line in center of screen."
    TEXT_LANGUAGE8 "Muestra una retícula adicional en el centro de la pantalla."
 }
-INDEX 213
+INDEX 214
 {
    REFERENCE CLIENT_SHELPERACCELM
    TEXT_LANGUAGE1 "Strafe Helper Accelermeter:"
@@ -1928,7 +1937,7 @@ INDEX 213
    TEXT_LANGUAGE6 "Strafe Helper Accelermeter:"
    TEXT_LANGUAGE8 "Asist. Strafe Acelerómetro:"
 }
-INDEX 214
+INDEX 215
 {
    REFERENCE CLIENT_SHELPERACCELM_DESC
    TEXT_LANGUAGE1 "Shows accelerometer status bar. (Requires Speedometer)"
@@ -1937,7 +1946,7 @@ INDEX 214
    TEXT_LANGUAGE6 "Shows accelerometer status bar. (Requires Speedometer)"
    TEXT_LANGUAGE8 "Muestra la barra de acelerómetro. (Requiere Velocímetro)"
 }
-INDEX 215
+INDEX 216
 {
    REFERENCE CLIENT_SHELPERW
    TEXT_LANGUAGE1 "Strafe Helper W:"
@@ -1946,7 +1955,7 @@ INDEX 215
    TEXT_LANGUAGE6 "Strafe Helper W:"
    TEXT_LANGUAGE8 "Asist. Strafe W:"
 }
-INDEX 216
+INDEX 217
 {
    REFERENCE CLIENT_SHELPERW_DESC
    TEXT_LANGUAGE1 "Tracks 'to forward' movement."
@@ -1955,7 +1964,7 @@ INDEX 216
    TEXT_LANGUAGE6 "Tracks 'to forward' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante'."
 }
-INDEX 217
+INDEX 218
 {
    REFERENCE CLIENT_SHELPERWA
    TEXT_LANGUAGE1 "Strafe Helper WA:"
@@ -1964,7 +1973,7 @@ INDEX 217
    TEXT_LANGUAGE6 "Strafe Helper WA:"
    TEXT_LANGUAGE8 "Asist. Strafe WA:"
 }
-INDEX 218
+INDEX 219
 {
    REFERENCE CLIENT_SHELPERWA_DESC
    TEXT_LANGUAGE1 "Tracks 'to forward/left' movement."
@@ -1973,7 +1982,7 @@ INDEX 218
    TEXT_LANGUAGE6 "Tracks 'to forward/left' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante/izquierda'."
 }
-INDEX 219
+INDEX 220
 {
    REFERENCE CLIENT_SHELPERWD
    TEXT_LANGUAGE1 "Strafe Helper WD:"
@@ -1982,7 +1991,7 @@ INDEX 219
    TEXT_LANGUAGE6 "Strafe Helper WD:"
    TEXT_LANGUAGE8 "Asist. Strafe WD:"
 }
-INDEX 220
+INDEX 221
 {
    REFERENCE CLIENT_SHELPERWD_DESC
    TEXT_LANGUAGE1 "Tracks 'to forward/right' movement."
@@ -1991,7 +2000,7 @@ INDEX 220
    TEXT_LANGUAGE6 "Tracks 'to forward/right' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia adelante/derecha'."
 }
-INDEX 221
+INDEX 222
 {
    REFERENCE CLIENT_SHELPERA
    TEXT_LANGUAGE1 "Strafe Helper A:"
@@ -2000,7 +2009,7 @@ INDEX 221
    TEXT_LANGUAGE6 "Strafe Helper A:"
    TEXT_LANGUAGE8 "Asist. Strafe A:"
 }
-INDEX 222
+INDEX 223
 {
    REFERENCE CLIENT_SHELPERA_DESC
    TEXT_LANGUAGE1 "Tracks 'to the left' movement."
@@ -2009,7 +2018,7 @@ INDEX 222
    TEXT_LANGUAGE6 "Tracks 'to the left' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia la izquierda'."
 }
-INDEX 223
+INDEX 224
 {
    REFERENCE CLIENT_SHELPERD
    TEXT_LANGUAGE1 "Strafe Helper D:"
@@ -2018,7 +2027,7 @@ INDEX 223
    TEXT_LANGUAGE6 "Strafe Helper D:"
    TEXT_LANGUAGE8 "Asist. Strafe D:"
 }
-INDEX 224
+INDEX 225
 {
    REFERENCE CLIENT_SHELPERD_DESC
    TEXT_LANGUAGE1 "Tracks 'to the right' movement."
@@ -2027,7 +2036,7 @@ INDEX 224
    TEXT_LANGUAGE6 "Tracks 'to the right' movement."
    TEXT_LANGUAGE8 "Rastrea el movimiento 'hacia la derecha'."
 }
-INDEX 225
+INDEX 226
 {
    REFERENCE CLIENT_CHATCOLOR
    TEXT_LANGUAGE1 "Chat color:"
@@ -2036,7 +2045,7 @@ INDEX 225
    TEXT_LANGUAGE6 "Chat color:"
    TEXT_LANGUAGE8 "Color del chat:"
 }
-INDEX 226
+INDEX 227
 {
    REFERENCE CLIENT_CHATCOLOR_DESC
    TEXT_LANGUAGE1 "Set a custom color for chat messages."
@@ -2044,4 +2053,58 @@ INDEX 226
    TEXT_LANGUAGE3 "Festlegen einer benutzerdefinierten farbe für chat nachrichten."
    TEXT_LANGUAGE6 "Set a custom color for chat messages."
    TEXT_LANGUAGE8 "Define un color personalizado para los mensajes del chat."
+}
+INDEX 228
+{
+   REFERENCE CLIENT_HITBOX_GLOW
+   TEXT_LANGUAGE1 "Glow Style"
+   TEXT_LANGUAGE2 "Style Glow"
+   TEXT_LANGUAGE3 "Glow Stil"
+   TEXT_LANGUAGE6 "Glow Style"
+   TEXT_LANGUAGE8 "Estilo Glow"
+}
+INDEX 229
+{
+   REFERENCE CLIENT_HITBOX_LINES
+   TEXT_LANGUAGE1 "Flat Lines"
+   TEXT_LANGUAGE2 "Lignes Plates"
+   TEXT_LANGUAGE3 "Flache Linien"
+   TEXT_LANGUAGE6 "Flat Lines"
+   TEXT_LANGUAGE8 "Líneas Planas"
+}
+INDEX 230
+{
+   REFERENCE CLIENT_SABERBOX
+   TEXT_LANGUAGE1 "Draw saber box:"
+   TEXT_LANGUAGE2 "Afficher boîte à sabre:"
+   TEXT_LANGUAGE3 "Säbelkasten ziehen:"
+   TEXT_LANGUAGE6 "Draw saber box:"
+   TEXT_LANGUAGE8 "Mostrar caja de sable:"
+}
+INDEX 231
+{
+   REFERENCE CLIENT_SABERBOX_DESC
+   TEXT_LANGUAGE1 "Shows players lightsaber box."
+   TEXT_LANGUAGE2 "Affiche la boîte de sabre laser des joueurs."
+   TEXT_LANGUAGE3 "Zeigt die lichtschwertbox des spielers."
+   TEXT_LANGUAGE6 "Shows players lightsaber box."
+   TEXT_LANGUAGE8 "Mostrar la caja de sable láser."
+}
+INDEX 232
+{
+   REFERENCE CLIENT_TEAMOVERLAY
+   TEXT_LANGUAGE1 "Team overlay:"
+   TEXT_LANGUAGE2 "Infos sur l'équipe:"
+   TEXT_LANGUAGE3 "Team-Infos:"
+   TEXT_LANGUAGE6 "Team overlay:"
+   TEXT_LANGUAGE8 "Información equipo:"
+}
+INDEX 233
+{
+   REFERENCE CLIENT_TEAMOVERLAY_DESC
+   TEXT_LANGUAGE1 "Draw overlay showing teammate status."
+   TEXT_LANGUAGE2 "Afficher les informations et le statut de vos collègues."
+   TEXT_LANGUAGE3 "Informationen über den status von mitspielern einzeichnen."
+   TEXT_LANGUAGE6 "Draw overlay showing teammate status."
+   TEXT_LANGUAGE8 "Muestra información y estado de tus compañeros."
 }

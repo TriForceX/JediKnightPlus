@@ -1086,6 +1086,7 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 		char		userinfo[MAX_INFO_VALUE] = { 0 };
 		char        name[MAX_STRING_CHARS] = { 0 };
 		char		ignored[MAX_STRING_CHARS] = { 0 };
+		char		team[MAX_STRING_CHARS] = { 0 };
 		char		*value, *etjk2;
 		char		*type;
 		char		*dimension;
@@ -1148,9 +1149,15 @@ void JKMod_Cmd_WhoIs(gentity_t *ent)
 			ignored[strlen(ignored) - 1] = '\0';
 		}
 
+		// Check team
+		if (g_gametype.integer >= GT_TEAM && (user->client->ps.stats[JK_DIMENSION] & DIMENSION_FREE) && user->client->sess.sessionTeam != TEAM_SPECTATOR) 
+		{
+			Q_strncpyz(team, va("Team %s", JKMod_TeamName(user->client->sess.sessionTeam, CASE_NORMAL)), sizeof(team));
+		}
+
 		// Other info
 		strcpy(name, user->client->pers.netname);
-		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : (user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : va("%s", JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name)));
+		dimension = user->client->sess.sessionTeam == TEAM_SPECTATOR ? "Spectator" : (user->client->ps.duelInProgress ? "Private Duel" : (user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM] ? va("Private (%i)", user->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]) : va("%s", (team[0] ? team : JKModDimensionData[JKMod_DimensionIndex(user->client->ps.stats[JK_DIMENSION])].name))));
 		status = user->client->pers.jkmodPers.clientVersion ? (user->client->pers.jkmodPers.clientVersion == level.jkmodLocals.serverVersion ? S_COLOR_GREEN : (user->client->pers.jkmodPers.clientVersion > level.jkmodLocals.serverVersion ? S_COLOR_CYAN : S_COLOR_YELLOW)) : S_COLOR_RED;
 
 		// Player print

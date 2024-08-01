@@ -1651,8 +1651,33 @@ static float CG_DrawMiniScoreboard ( float y )
 
 	if ( cgs.gametype >= GT_TEAM )
 	{
-		// Tr!Force: [Scoreboard] Translated team scores
+		// Tr!Force: [Scoreboard] Updated team scores
 		if (jkcvar_cg_scoreboardExtras.integer)
+		{
+			char text1[MAX_QPATH];
+			char text2[MAX_QPATH];
+			int	scores1 = cgs.scores1 == SCORE_NOT_PRESENT ? 0 : cgs.scores1;
+			int	scores2 = cgs.scores2 == SCORE_NOT_PRESENT ? 0 : cgs.scores2;
+			int width1, width2;
+			int x1, x2;
+			int iconSize = 12;
+
+			Com_sprintf(text1, sizeof(text1), "%s: %i", CG_GetStripEdString("JKMENUS", "COLOR_RED"), scores1);
+			Com_sprintf(text2, sizeof(text2), "%s: %i", CG_GetStripEdString("JKMENUS", "COLOR_BLUE"), scores2);
+
+			width1 = CG_Text_Width(text1, 0.7f, FONT_MEDIUM);
+			width2 = CG_Text_Width(text2, 0.7f, FONT_MEDIUM);
+
+			x1 = cgs.screenWidth - 9 - (width1 + width2 + 5 + iconSize);
+			x2 = cgs.screenWidth - 9 - width2;
+
+			CG_DrawPic(x1 - 15, y + 4, iconSize, iconSize, cgs.media.teamRedShader);
+			CG_DrawPic(x2 - 15, y + 4, iconSize, iconSize, cgs.media.teamBlueShader);
+			CG_Text_Paint(x1, y, 0.7f, colorWhite, text1, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+			CG_Text_Paint(x2, y, 0.7f, colorWhite, text2, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+		}
+		// Tr!Force: [CGameGeneral] Use translated text
+		else
 		{
 			char *text;
 			int	scores1 = cgs.scores1 == SCORE_NOT_PRESENT ? 0 : cgs.scores1;
@@ -1661,15 +1686,6 @@ static float CG_DrawMiniScoreboard ( float y )
 			text = va("%s: %i %s: %i", CG_GetStripEdString("JKMENUS", "COLOR_RED"), scores1, CG_GetStripEdString("JKMENUS", "COLOR_BLUE"), scores2);
 
 			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( text, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, text, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
-		}
-		else
-		{
-			strcpy ( temp, "Red: " );
-			Q_strcat ( temp, MAX_QPATH, cgs.scores1==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores1)) );
-			Q_strcat ( temp, MAX_QPATH, " Blue: " );
-			Q_strcat ( temp, MAX_QPATH, cgs.scores2==SCORE_NOT_PRESENT?"-":(va("%i",cgs.scores2)) );
-
-			CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( temp, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, temp, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM );
 		}
 		y += 15;
 	}
@@ -1965,7 +1981,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 
 	// max player name width
 	pwidth = 0;
-	count = (numSortedTeamPlayers > 8) ? 8 : numSortedTeamPlayers;
+	count = numSortedTeamPlayers; // Tr!Force: [CGameGeneral] ALlow more players to be shown
 	for (i = 0; i < count; i++) {
 		ci = cgs.clientinfo + sortedTeamPlayers[i];
 		if ( ci->infoValid && ci->team == (team_t)cg.snap->ps.persistant[PERS_TEAM]) {
@@ -2178,8 +2194,8 @@ static void CG_DrawUpperRight( void ) {
 
 	y = 0;
 
-	if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer == 1 ) {
-		y = CG_DrawTeamOverlay( y, qtrue, qtrue );
+	if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer ) {
+		y = cg_drawTeamOverlay.integer == 2 ? JKMod_CG_DrawTeamOverlay( y ) : CG_DrawTeamOverlay( y, qtrue, qtrue ); // Tr!Force: [DrawTeamOverlay] Custom team overlay function
 	} 
 	if ( cg_drawSnapshot.integer ) {
 		y = CG_DrawSnapshot( y );
@@ -3428,6 +3444,7 @@ CG_DrawSpectator
 static void CG_DrawSpectator(void) 
 {	
 	const char* s;
+	qboolean jkmod_chatbox = (JKMod_CG_ShowScores() && jkcvar_cg_chatBox.integer);
 	s = CG_GetStripEdString("INGAMETEXT", "SPECTATOR");
 	if (cgs.gametype == GT_TOURNAMENT &&
 		cgs.duelist1 != -1 &&
@@ -3436,9 +3453,11 @@ static void CG_DrawSpectator(void)
 		char text[1024];
 		int size = 64;
 
-		Com_sprintf(text, sizeof(text), "%s" S_COLOR_WHITE " %s %s", cgs.clientinfo[cgs.duelist1].name, CG_GetStripEdString("INGAMETEXT", "SPECHUD_VERSUS"), cgs.clientinfo[cgs.duelist2].name);
-		CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( text, 1.0f, 3 ) / 2, cgs.screenHeight-60, 1.0f, colorWhite, text, 0, 0, 0, 3 );
-
+		if ( !jkmod_chatbox ) // Tr!Force: [ChatBox] Don't show text
+		{
+			Com_sprintf(text, sizeof(text), "%s" S_COLOR_WHITE " %s %s", cgs.clientinfo[cgs.duelist1].name, CG_GetStripEdString("INGAMETEXT", "SPECHUD_VERSUS"), cgs.clientinfo[cgs.duelist2].name);
+			CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( text, 1.0f, 3 ) / 2, cgs.screenHeight-60, 1.0f, colorWhite, text, 0, 0, 0, 3 );
+		}
 
 		trap_R_SetColor( colorTable[CT_WHITE] );
 		if ( cgs.clientinfo[cgs.duelist1].modelIcon )
@@ -3455,22 +3474,25 @@ static void CG_DrawSpectator(void)
 		Com_sprintf(text, sizeof(text), "%i/%i", cgs.clientinfo[cgs.duelist2].score, cgs.fraglimit );
 		CG_Text_Paint( cgs.screenWidth-size+22 - CG_Text_Width( text, 1.0f, 2 ) / 2, cgs.screenHeight-(size*1.5) + 64, 1.0f, colorWhite, text, 0, 0, 0, 2 );
 	}
-	else
+	else if ( !jkmod_chatbox ) // Tr!Force: [ChatBox] Don't show text
 	{
 		CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-60, 1.0f, colorWhite, s, 0, 0, 0, 3 );
 	}
 
-	if ( cgs.gametype == GT_TOURNAMENT ) 
+	if ( !jkmod_chatbox ) // Tr!Force: [ChatBox] Don't show text
 	{
-		s = CG_GetStripEdString("INGAMETEXT", "WAITING_TO_PLAY");	// "waiting to play";
-		CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-40, 1.0f, colorWhite, s, 0, 0, 0, 3 );
+		if ( cgs.gametype == GT_TOURNAMENT ) 
+		{
+			s = CG_GetStripEdString("INGAMETEXT", "WAITING_TO_PLAY");	// "waiting to play";
+			CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-40, 1.0f, colorWhite, s, 0, 0, 0, 3 );
+		}
+		else //if ( cgs.gametype >= GT_TEAM ) 
+		{
+			//s = "press ESC and use the JOIN menu to play";
+			s = CG_GetStripEdString("INGAMETEXT", "SPEC_CHOOSEJOIN");
+		}
+			CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-40, 1.0f, colorWhite, s, 0, 0, 0, 3 );
 	}
-	else //if ( cgs.gametype >= GT_TEAM ) 
-	{
-		//s = "press ESC and use the JOIN menu to play";
-		s = CG_GetStripEdString("INGAMETEXT", "SPEC_CHOOSEJOIN");
-	}
-		CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-40, 1.0f, colorWhite, s, 0, 0, 0, 3 );
 }
 
 /*

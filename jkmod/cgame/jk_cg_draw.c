@@ -162,6 +162,16 @@ qboolean JKMod_CG_ShowScores(void)
 
 /*
 =====================================================================
+Check non dueler spectator
+=====================================================================
+*/
+qboolean JKMod_CG_NonDuelerSpec(void)
+{
+	return (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR && cgs.gametype == GT_TOURNAMENT && cgs.duelist1 != -1 && cgs.duelist2 != -1 && cg.predictedPlayerState.pm_type != PM_INTERMISSION);
+}
+
+/*
+=====================================================================
 Convert milliseconds to string
 =====================================================================
 */
@@ -305,6 +315,118 @@ float JKMod_CG_DrawTimer(float y)
 	UI_DrawScaledProportionalString(cgs.screenWidth - (width / 2 + 5), y + 4, va("%02i:%02i:%02i", hours, mins, secs), UI_CENTER | UI_SMALLFONT | UI_DROPSHADOW, tColor, tScale);
 
 	return y + height + 5;
+}
+
+/*
+=====================================================================
+Draw team overlay function
+=====================================================================
+*/
+float JKMod_CG_DrawTeamOverlay(float y)
+{
+    vec4_t borderColor = {0, 0, 0, 0.6};
+    float borderSize = 1;
+    float boxMinWidth = 60;
+	float boxWidth;
+    vec4_t boxColor;
+	float boxHeight;
+	float paddingRight = 52;
+    float textScale = 0.47;
+    float charWidth = 8.0f;
+	float nameWidth;
+    int i, nameLen;
+	float x, currentY;
+    float playerHeight = 11;
+    int playerWidth = 0;
+    int playerTeam = 0;
+    int playerCount = numSortedTeamPlayers;
+    clientInfo_t *ci;
+    vec4_t statusColor;
+	vec4_t statusColorZero = {0.75, 0.75, 0.75, 0.5};
+	const char *locationName;
+	vec4_t locationColor = {1, 1, 1, 0.5};
+
+	if (JKMod_CG_ShowScores()) {
+		return y;
+	}
+
+    if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_RED && cg.snap->ps.persistant[PERS_TEAM] != TEAM_BLUE) {
+        return y;
+    }
+
+    // Calculate name width
+    for (i = 0; i < playerCount; i++) {
+        ci = cgs.clientinfo + sortedTeamPlayers[i];
+        if (ci->infoValid && ci->team == (team_t)cg.snap->ps.persistant[PERS_TEAM]) {
+            playerTeam++;
+            nameLen = CG_DrawStrlen(ci->name);
+            nameWidth = nameLen * charWidth * (textScale + 0.12);
+            if (nameWidth > playerWidth)  playerWidth = nameWidth;
+        }
+    }
+
+    if (!playerTeam) return y;
+
+    // Total box width
+    boxWidth = boxMinWidth;
+    if (playerWidth + 10 > boxMinWidth) boxWidth = playerWidth + 10;
+	boxWidth += paddingRight;
+
+    // Total box height
+    boxHeight = ((playerHeight * playerTeam) + borderSize * 2) + 3;
+    x = cgs.screenWidth - boxWidth - 5;
+
+    // Team color
+    if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
+        boxColor[0] = 1.0f;
+        boxColor[1] = 0.0f;
+        boxColor[2] = 0.0f;
+        boxColor[3] = 0.33f;
+    } else {
+        boxColor[0] = 0.0f;
+        boxColor[1] = 0.0f;
+        boxColor[2] = 1.0f;
+        boxColor[3] = 0.33f;
+    }
+
+    // Draw the box border
+    CG_DrawRect(x, y + 5, boxWidth, boxHeight, borderSize, borderColor);
+    // Draw the box background
+    CG_FillRect(x + borderSize, y + 5 + borderSize, boxWidth - borderSize * 2, boxHeight - borderSize * 2, boxColor);
+    // Display player names
+    currentY = y + 5 + borderSize;
+    for (i = 0; i < playerCount; i++) {
+        ci = cgs.clientinfo + sortedTeamPlayers[i];
+        if (ci->infoValid && ci->team == (team_t)cg.snap->ps.persistant[PERS_TEAM]) {
+			// Name
+            UI_DrawScaledProportionalString(x + 5, currentY, ci->name, UI_LEFT | UI_SMALLFONT | UI_DROPSHADOW, colorWhite, textScale);
+			// Info
+			if (ci->health > 0) {
+				// location
+				locationName = CG_ConfigString(CS_LOCATIONS + ci->location);
+				if (locationName[0] && strcmp(locationName, "unknown")) {
+					UI_DrawScaledProportionalString(x - 15, currentY, locationName, UI_RIGHT | UI_SMALLFONT | UI_DROPSHADOW, locationColor, textScale);
+					trap_R_SetColor(cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED ? colorRed : colorBlue);
+					CG_DrawPic(x - 10, currentY + 5, 6, 6, cgs.jkmodMedia.arrowLeft);
+					trap_R_SetColor(NULL);
+				}
+				// Health
+				CG_GetColorForHealth(ci->health, ci->armor, statusColor);
+				UI_DrawScaledProportionalString(cgs.screenWidth - 10, currentY, va("%3i   %3i", ci->health,	ci->armor), UI_RIGHT | UI_SMALLFONT | UI_DROPSHADOW, statusColor, textScale);
+				UI_DrawScaledProportionalString(cgs.screenWidth - 29, currentY, "/", UI_RIGHT | UI_SMALLFONT | UI_DROPSHADOW, colorWhite, textScale);
+				if (ci->health < 100) UI_DrawScaledProportionalString(cgs.screenWidth - 53, currentY, va("%-3s", (ci->health < 10 ? "00" : "0")), UI_LEFT | UI_SMALLFONT | UI_DROPSHADOW, statusColorZero, textScale);
+				if (ci->armor < 100) UI_DrawScaledProportionalString(cgs.screenWidth - 25, currentY, va("%-3s", (ci->armor < 10 ? "00" : "0")), UI_LEFT | UI_SMALLFONT | UI_DROPSHADOW, statusColorZero, textScale);
+			} else {
+				// Dead
+				CG_DrawPic(x - 11, currentY + 3, 8, 8, cgs.media.deferShader);
+				UI_DrawScaledProportionalString(cgs.screenWidth - 10, currentY, "--- / ---", UI_RIGHT | UI_SMALLFONT | UI_DROPSHADOW, statusColorZero, textScale);
+			}
+			// Height
+            currentY += playerHeight;
+        }
+    }
+
+    return y + boxHeight + 5;
 }
 
 /*
@@ -503,11 +625,13 @@ void JKMod_CG_ChatBox_ArrayInsert(jkmod_chatbox_t **array, int insPoint, int max
 void JKMod_CG_ChatBox_DrawStrings(void)
 {
 	jkmod_chatbox_t *drawThese[CHATBOX_ITEMS];
+	qboolean showScores = JKMod_CG_ShowScores();
+	qboolean nonDuelerSpec = JKMod_CG_NonDuelerSpec();
 	int numToDraw = 0;
 	int linesToDraw = 0;
 	int i = 0;
-	int x = 30;
-	int y = JKMod_CG_ShowScores() ? 475 : jkcvar_cg_chatBoxHeight.integer;
+	int x = showScores && !nonDuelerSpec ? 5 : (showScores && nonDuelerSpec ? 82 : 30);
+	int y = showScores ? (nonDuelerSpec ? 447 : 475) : jkcvar_cg_chatBoxHeight.integer;
 	float fontScale = 0.65f;
 	qboolean drawAnyway = qfalse;
 
