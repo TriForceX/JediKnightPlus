@@ -1026,7 +1026,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// bot skill
 	v = Info_ValueForKey( configstring, "skill" );
-	newInfo.botSkill = atoi( v );
+	newInfo.botSkill = VALIDSTRING( v ) ? abs(atoi( v )) : -1; // Tr!Force: [CGameGeneral] Check bots
 
 	// handicap
 	v = Info_ValueForKey( configstring, "hc" );
@@ -1184,11 +1184,11 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// Tr!Force: [General] Custom client info
 	v = Info_ValueForKey( configstring, "jkhat" );
-	newInfo.jkmod_hat = atoi(v);
+	newInfo.jkmod_hat = atoi( v );
 
 	// Tr!Force: [Dimensions] Get race best time info
 	v = Info_ValueForKey( configstring, "jkrace" );
-	newInfo.jkmod_race = atoi(v);
+	newInfo.jkmod_race = atoi( v );
 
 	newInfo.ATST = wasATST;
 

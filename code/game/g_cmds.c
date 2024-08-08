@@ -58,7 +58,7 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 		}
 		perfect = ( cl->ps.persistant[PERS_RANK] == 0 && cl->ps.persistant[PERS_KILLED] == 0 ) ? 1 : 0;
 
-		// Tr!Force: [Scoreboard] Extra info
+		// Tr!Force: [EnhancedInterface] Extra info
 		if (ent->client->pers.jkmodPers.clientPlugin) 
 		{
 			Com_sprintf (entry, sizeof(entry),

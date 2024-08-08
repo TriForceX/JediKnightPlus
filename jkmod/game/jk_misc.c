@@ -776,9 +776,6 @@ Misc map entities resources
 =====================================================================
 */
 #define STATION_RECHARGE_TIME			3000
-#define STATION_SHIELD_TYPE				1
-#define STATION_HEALTH_TYPE				2
-#define STATION_AMMO_TYPE				3
 #define DEBRIS_SPECIALCASE_ROCK			-1
 #define DEBRIS_SPECIALCASE_CHUNKS		-2
 #define DEBRIS_SPECIALCASE_WOOD			-3
@@ -820,7 +817,7 @@ void JKMod_EnergyStationUse(gentity_t *self, gentity_t *other, gentity_t *activa
 	typeShield = self->watertype == STATION_SHIELD_TYPE;
 
 	// Check weapon
-	if (typeAmmo && activator->client->ps.weapon < WP_BRYAR_PISTOL) 
+	if (!activator->client->pers.jkmodPers.clientPlugin && typeAmmo && activator->client->ps.weapon < WP_BRYAR_PISTOL) 
 	{
 		trap_SendServerCommand(activator->client->ps.clientNum, "cp \"This weapon does not use ammo\"");
 		return;

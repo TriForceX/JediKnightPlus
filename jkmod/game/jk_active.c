@@ -381,7 +381,7 @@ void JKMod_ClientThink_real(gentity_t *ent)
 			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
 			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxActive, temporigin, tempangles, ent->s.number, qtrue);
 		} 
-		else if (ent->client->pers.jkmodPers.jetpackFxDisplay)
+		else if (ent->client->pers.jkmodPers.jetpackFxDisplay && ent->client->ps.groundEntityNum != ENTITYNUM_NONE)
 		{
 			temporigin[2] -= 20;
 			JKMod_G_PlayEffect_ID(level.jkmodLocals.jetpackFxIdle, temporigin, tempangles, ent->s.number, qtrue);

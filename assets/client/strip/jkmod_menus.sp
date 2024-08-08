@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 234
+COUNT 238
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -1192,21 +1192,21 @@ INDEX 131
 }
 INDEX 132
 {
-   REFERENCE CLIENT_SCOREEXTRAS
-   TEXT_LANGUAGE1 "Scoreboard extras:"
-   TEXT_LANGUAGE2 "Extras tableau de bord:"
-   TEXT_LANGUAGE3 "Score marker extras:"
-   TEXT_LANGUAGE6 "Scoreboard extras:"
-   TEXT_LANGUAGE8 "Extras tabla puntajes:"
+   REFERENCE CLIENT_ENHANCEDINTERFACE
+   TEXT_LANGUAGE1 "Enhanced interface:"
+   TEXT_LANGUAGE2 "Interface améliorée:"
+   TEXT_LANGUAGE3 "Verbessertes interface:"
+   TEXT_LANGUAGE6 "Enhanced interface:"
+   TEXT_LANGUAGE8 "Interfaz mejorada:"
 }
 INDEX 133
 {
-   REFERENCE CLIENT_SCOREEXTRAS_DESC
-   TEXT_LANGUAGE1 "Shows extra information on scoreboard."
-   TEXT_LANGUAGE2 "Affiche les informations supplémentaires sur le tableau de bord."
-   TEXT_LANGUAGE3 "Zeigt zusätzliche informationen auf der anzeigetafel an."
-   TEXT_LANGUAGE6 "Shows extra information on scoreboard."
-   TEXT_LANGUAGE8 "Muestra información extra en la tabla de puntajes."
+   REFERENCE CLIENT_ENHANCEDINTERFACE_DESC
+   TEXT_LANGUAGE1 "Shows icons on scoreboard, more info on HUD and other tweaks."
+   TEXT_LANGUAGE2 "Icônes à tableau d'affichage, plus info à HUD et autres modifs."
+   TEXT_LANGUAGE3 "Icons auf anzeigetafel, mehr info im HUD und andere änderungen."
+   TEXT_LANGUAGE6 "Shows icons on scoreboard, more info on HUD and other tweaks."
+   TEXT_LANGUAGE8 "Muestra iconos en el marcador, más info en HUD y otros ajustes."
 }
 INDEX 134
 {
@@ -2107,4 +2107,40 @@ INDEX 233
    TEXT_LANGUAGE3 "Informationen über den status von mitspielern einzeichnen."
    TEXT_LANGUAGE6 "Draw overlay showing teammate status."
    TEXT_LANGUAGE8 "Muestra información y estado de tus compañeros."
+}
+INDEX 234
+{
+   REFERENCE PURE_SERVER
+   TEXT_LANGUAGE1 "Pure Server"
+   TEXT_LANGUAGE2 "Serveur verrouill"
+   TEXT_LANGUAGE3 "Unmod. Server"
+   TEXT_LANGUAGE6 "Pure Server"
+   TEXT_LANGUAGE8 "Servidor Puro"
+}
+INDEX 235
+{
+   REFERENCE CHEATSAREENABLED
+   TEXT_LANGUAGE1 "Cheats Enabled"
+   TEXT_LANGUAGE2 "Cheats Actives"
+   TEXT_LANGUAGE3 "Cheats Eingeschaltet"
+   TEXT_LANGUAGE6 "Cheats Enabled"
+   TEXT_LANGUAGE8 "Trampas Activadas"
+}
+INDEX 236
+{
+   REFERENCE CLIENT_LOADINGICONS
+   TEXT_LANGUAGE1 "Loading icons:"
+   TEXT_LANGUAGE2 "Icônes de charge:"
+   TEXT_LANGUAGE3 "Laden von ikonen:"
+   TEXT_LANGUAGE6 "Loading icons:"
+   TEXT_LANGUAGE8 "Iconos de carga:"
+}
+INDEX 237
+{
+   REFERENCE CLIENT_LOADINGICONS_DESC
+   TEXT_LANGUAGE1 "Shows map supported items and players icons on loading screen."
+   TEXT_LANGUAGE2 "Affiche icônes des objets de la carte et joueurs sur au chargement."
+   TEXT_LANGUAGE3 "Zeigt karte gegenstände und spieler symbole auf ladebildschirm."
+   TEXT_LANGUAGE6 "Shows map supported items and players icons on loading screen."
+   TEXT_LANGUAGE8 "Muestra iconos de los items del mapa y de los jugadores al cargar."
 }

@@ -71,6 +71,7 @@ Global definitions
 // Config strings
 #define JK_CS_PAUSE				( 31 )
 #define JK_CS_TELEPORTS			( CS_MAX_BASE + 1 )
+#define JK_CS_GAME_TYPE			( CS_MAX_BASE + 2 )
 
 // Utilities
 #define VAL(x) #x

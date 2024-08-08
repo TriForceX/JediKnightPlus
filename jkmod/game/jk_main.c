@@ -221,6 +221,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 
 static int JKModCvarTableSize = ARRAY_LEN(JKModCvarTable);
 static int JKModCvarAltDimension = 0;
+static int JKModCvarGameType = 0;
 static int JKModPauseDelay = 0;
 static int JKModRemapShadersFileCount;
 static char *JKModRemapShadersFile[MAX_TOKEN_CHARS];
@@ -309,6 +310,42 @@ void JKMod_G_UpdateCvars(void)
 	if (level.jkmodLocals.cvarToggleMod) level.jkmodLocals.cvarToggleMod = qfalse;
 }
 
+// Get latched cvar value
+const char *JKMod_GetLatchedCvarValue(const char *cvarName, const char *resetString)
+{
+    vmCvar_t tempCvar;
+    char oldValue[MAX_CVAR_VALUE_STRING];
+    static char newValue[MAX_CVAR_VALUE_STRING];
+
+    trap_Cvar_VariableStringBuffer(cvarName, oldValue, sizeof(oldValue));
+    trap_Cvar_Register(&tempCvar, cvarName, resetString, 0);
+    trap_Cvar_VariableStringBuffer(cvarName, newValue, sizeof(newValue));
+
+    if (strcmp(oldValue, newValue))
+    {
+        trap_Cvar_Set(cvarName, oldValue);
+        trap_SendConsoleCommand(EXEC_NOW, va("%s \"%s\"", cvarName, newValue));
+    }
+    return newValue;
+}
+
+// Update gameplay cvar
+void JKMod_CVU_gameType(void)
+{
+	if (!JKModCvarGameType)
+	{
+		char gameTypeLatched[MAX_CVAR_VALUE_STRING];
+		Q_strncpyz(gameTypeLatched, JKMod_GetLatchedCvarValue("g_gametype", g_gametype.string), sizeof(gameTypeLatched));
+		JKMod_Printf(S_COLOR_CYAN "Game Type Latched: %s\n", gameTypeLatched);
+		trap_SetConfigstring(JK_CS_GAME_TYPE, gameTypeLatched);
+		if (!strcmp(g_gametype.string, gameTypeLatched)) JKModCvarGameType = 1;
+		if (!JKMod_ValidNumber(gameTypeLatched)) { 
+			JKModCvarGameType = 1;
+			return;
+		}
+	}
+	JKModCvarGameType = !JKModCvarGameType ? 1 : 0;
+}
 
 // Update gameplay cvar
 void JKMod_CVU_gamePlay(void)
@@ -1055,20 +1092,28 @@ void JKMod_GameTypeConfig(void)
 {
 	if (jkcvar_gameTypeConfig.integer)
 	{
-		char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
-		fileHandle_t	f;
-
 		if (level.newSession)
 		{
-			if (trap_FS_FOpenFile(va("configs/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
+			if (g_gametype.integer >= GT_FFA && g_gametype.integer < GT_MAX_GAME_TYPE) 
 			{
-				G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
-				trap_SendConsoleCommand(EXEC_APPEND, va("exec configs/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
-				trap_FS_FCloseFile(f);
+				char *gametypeNames[] = {"ffa", "holocron", "jedimaster", "duel", "single", "team", "saga", "ctf", "cty"};
+				fileHandle_t f;
+
+				if (trap_FS_FOpenFile(va("configs/game_type/%s.cfg", gametypeNames[g_gametype.integer]), &f, FS_READ) >= 0) 
+				{
+					G_Printf("Loading custom gametype config for %s\n", gametypeNames[g_gametype.integer]);
+					trap_SendConsoleCommand(EXEC_APPEND, va("exec configs/game_type/%s.cfg\n", gametypeNames[g_gametype.integer]));
+					trap_FS_FCloseFile(f);
+				}
+				else
+				{
+					G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
+					trap_SendConsoleCommand(EXEC_APPEND, "exec configs/game_type/default.cfg\n");
+				}
 			}
-			else
+			else 
 			{
-				G_Printf("No custom gametype config for %s, loading default config\n", gametypeNames[g_gametype.integer]);
+				G_Printf("No custom gametype config for %s, loading default config\n", g_gametype.string);
 				trap_SendConsoleCommand(EXEC_APPEND, "exec configs/game_type/default.cfg\n");
 			}
 		}
@@ -1094,6 +1139,9 @@ void JKMod_G_InitGame(int levelTime, int randomSeed, int restart)
 
 	// Set default timescale
 	trap_Cvar_Set("timescale", "1");
+
+	// Update current game type
+	trap_SetConfigstring(JK_CS_GAME_TYPE, g_gametype.string);
 
 	// Set server version
 	level.jkmodLocals.serverVersion = VERSION_FLOAT(JK_MAJOR, JK_MINOR, JK_PATCH);

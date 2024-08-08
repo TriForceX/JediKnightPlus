@@ -506,7 +506,7 @@ void JKMod_CG_AddModelOnPlayer(centity_t *cent, int time, qhandle_t *gameModels,
 
 				trap_S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.jkmodMedia.jetpackActiveSound);
 			}
-			else if (jkcvar_cg_jetPackIdle.integer)
+			else if (jkcvar_cg_jetPackIdle.integer && cent->currentState.groundEntityNum != ENTITYNUM_NONE)
 			{
 				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackIdle, flamePos, flameDir);
 				trap_FX_PlayEffectID(cgs.jkmodMedia.jetpackIdle, flamePos2, flameDir2);

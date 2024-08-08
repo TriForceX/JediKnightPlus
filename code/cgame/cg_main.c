@@ -1763,11 +1763,20 @@ static void CG_RegisterClients( void ) {
 	CG_LoadingClient(cg.clientNum);
 	CG_UpdateConfigString( CS_PLAYERS + cg.clientNum, qtrue );
 
-	for (i=0 ; i<MAX_CLIENTS ; i++) {
-		if (i != cg.clientNum) {
-			CG_LoadingClient( i );
-			CG_UpdateConfigString( CS_PLAYERS + i, qtrue );
+	for (i=0 ; i<MAX_CLIENTS ; i++) { // Tr!Force: [CGameGeneral] Restored loading icons
+		const char		*clientInfo;
+
+		if (cg.clientNum == i) {
+			continue;
 		}
+
+		clientInfo = CG_ConfigString( CS_PLAYERS+i );
+		if ( !clientInfo[0]) {
+			continue;
+		}
+
+		CG_LoadingClient( i );
+		CG_UpdateConfigString( CS_PLAYERS + i, qtrue );
 	}
 }
 

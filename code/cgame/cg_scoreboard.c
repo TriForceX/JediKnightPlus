@@ -36,8 +36,8 @@
 #define SB_RATING_WIDTH	    0 // (6 * BIGCHAR_WIDTH)
 #define SB_NAME_X			(SB_SCORELINE_X)
 #define SB_SCORE_X			(SB_SCORELINE_X + .55 * SB_SCORELINE_WIDTH)
-#define SB_PING_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .72 : .70) * SB_SCORELINE_WIDTH) // Tr!Force: [Scoreboard] Extra info
-#define SB_TIME_X			(SB_SCORELINE_X + (jkcvar_cg_scoreboardExtras.integer ? .87 : .85) * SB_SCORELINE_WIDTH) // Tr!Force: [Scoreboard] Extra info
+#define SB_PING_X			(SB_SCORELINE_X + (jkcvar_cg_enhancedInterface.integer ? .72 : .70) * SB_SCORELINE_WIDTH) // Tr!Force: [EnhancedInterface] Extra info
+#define SB_TIME_X			(SB_SCORELINE_X + (jkcvar_cg_enhancedInterface.integer ? .87 : .85) * SB_SCORELINE_WIDTH) // Tr!Force: [EnhancedInterface] Extra info
 
 // The new and improved score board
 //
@@ -153,7 +153,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		// Tr!Force: [Dimensions] Show race time
 		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 		{
-			float timeWidth = jkcvar_cg_scoreboardExtras.integer ? 19 : 12;
+			float timeWidth = jkcvar_cg_enhancedInterface.integer ? 19 : 12;
 			if (largeFormat) timeWidth += 8;
 
 			CG_FillRect( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + timeWidth, largeFormat?SB_NORMAL_HEIGHT:SB_INTER_HEIGHT, hcolor );
@@ -164,8 +164,8 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 	}
 
-	// Tr!Force: [Scoreboard] Extra info
-	if (jkcvar_cg_scoreboardExtras.integer)
+	// Tr!Force: [EnhancedInterface] Extra info
+	if (jkcvar_cg_enhancedInterface.integer)
 	{
 		float iconScale = largeFormat ? 25 : 15;
 		CG_DrawPic(SB_NAME_X - iconScale - 5, y + 2, iconScale, iconScale, (ci->modelIcon ? ci->modelIcon : cgs.jkmodMedia.missingIcon));
@@ -181,8 +181,8 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 		else
 		{
-			// Tr!Force: [Scoreboard] Extra info
-			if (jkcvar_cg_scoreboardExtras.integer)
+			// Tr!Force: [EnhancedInterface] Extra info
+			if (jkcvar_cg_enhancedInterface.integer)
 			{
 				float scoreScale = 1.0f;
 				float scoreAlign = 0;
@@ -216,13 +216,13 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 		}
 	}
 
-	// Tr!Force: [Scoreboard] Extra info
-	if (jkcvar_cg_scoreboardExtras.integer)
+	// Tr!Force: [EnhancedInterface] Extra info
+	if (jkcvar_cg_enhancedInterface.integer)
 	{
 		char *clientPing;
 		
 		if (score->ping != -1 && score->ping != 999)
-			clientPing = ci->botSkill != 0 ? "Bot" : va("%i", score->ping);
+			clientPing = ci->botSkill != -1 ? "Bot" : va("%i", score->ping);
 		else
 			clientPing = "-";
 
@@ -252,7 +252,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	} 
 	else 
 	{
-		if (jkcvar_cg_scoreboardExtras.integer)
+		if (jkcvar_cg_enhancedInterface.integer)
 			CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%s", JKMod_CG_MinToString(score->time)),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
 		else
 			CG_Text_Paint (SB_TIME_X, y, 1.0f * scale, colorWhite, va("%i", score->time),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL );
@@ -261,7 +261,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 	// add the "ready" marker for intermission exiting
 	if ( cg.snap->ps.stats[ STAT_CLIENTS_READY ] & ( 1 << score->client ) ) 
 	{
-		float readyAlign = jkcvar_cg_scoreboardExtras.integer && largeFormat ? 74 : 64; // Tr!Force: [Scoreboard] Extra info
+		float readyAlign = jkcvar_cg_enhancedInterface.integer && largeFormat ? 74 : 64; // Tr!Force: [EnhancedInterface] Extra info
 
 		CG_Text_Paint (SB_NAME_X - readyAlign, y + 2, 0.7f * scale, colorWhite, CG_GetStripEdString("INGAMETEXT", "READY"),0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 	}
@@ -470,7 +470,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 
 		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, sWL, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 	}
-	else if (jkcvar_cg_scoreboardExtras.integer) // Tr!Force: [Scoreboard] Extra info
+	else if (jkcvar_cg_enhancedInterface.integer) // Tr!Force: [EnhancedInterface] Extra info
 	{
 		CG_Text_Paint ( SB_SCORE_X, y, 1.0f, colorWhite, CG_GetStripEdString("JKINGAME", "SCORE"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 
@@ -488,7 +488,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 	CG_Text_Paint ( SB_PING_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS0", "PING"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 	CG_Text_Paint ( SB_TIME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "TIME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 
-	// Tr!Force: [Scoreboard] Extra info
+	// Tr!Force: [EnhancedInterface] Extra info
 	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) {
 		CG_Text_Paint ( SB_TIME_X, y + 19, 0.5f, colorWhite, CG_GetStripEdString("JKINGAME", "RECORD"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
 	}
@@ -508,8 +508,8 @@ qboolean CG_DrawOldScoreboard( void ) {
 		bottomBorderSize = 8;
 	}
 
-	// Tr!Force: [Scoreboard] Team thin border
-	if (jkcvar_cg_scoreboardExtras.integer) {
+	// Tr!Force: [EnhancedInterface] Team thin border
+	if (jkcvar_cg_enhancedInterface.integer) {
 		topBorderSize = -2;
 		bottomBorderSize = 0;
 	}
@@ -583,7 +583,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n1 = CG_TeamScoreboard( y, TEAM_BLUE, fade, team1MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n1 * lineHeight + bottomBorderSize, 0.33f, TEAM_BLUE );
 			CG_TeamScoreboard( y, TEAM_BLUE, fade, team1MaxCl, lineHeight, qfalse );
-			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_BLUE ); // Tr!Force: [Scoreboard] Team thin border
+			if (jkcvar_cg_enhancedInterface.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_BLUE ); // Tr!Force: [EnhancedInterface] Team thin border
 			y += (n1 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n1;
@@ -591,7 +591,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			n2 = CG_TeamScoreboard( y, TEAM_RED, fade, team2MaxCl, lineHeight, qtrue );
 			CG_DrawTeamBackground( SB_SCORELINE_X - 5, y - topBorderSize, SB_SCORELINE_WIDTH + 10, n2 * lineHeight + bottomBorderSize, 0.33f, TEAM_RED );
 			CG_TeamScoreboard( y, TEAM_RED, fade, team2MaxCl, lineHeight, qfalse );
-			if (jkcvar_cg_scoreboardExtras.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_RED ); // Tr!Force: [Scoreboard] Team thin border
+			if (jkcvar_cg_enhancedInterface.integer)  CG_DrawTeamBackground( SB_SCORELINE_X - 5, y + 2, SB_SCORELINE_WIDTH + 10, 1, 0.5f, TEAM_RED ); // Tr!Force: [EnhancedInterface] Team thin border
 			y += (n2 * lineHeight) + BIGCHAR_HEIGHT;
 
 			//maxClients -= n2;
@@ -599,7 +599,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 			maxClients -= (team1MaxCl+team2MaxCl);
 		}
 		n1 = CG_TeamScoreboard( y, TEAM_SPECTATOR, fade, maxClients, lineHeight, qfalse );
-		if (!jkcvar_cg_scoreboardExtras.integer) y += (n1 * lineHeight) + BIGCHAR_HEIGHT; // Tr!Force: [Scoreboard] Trim extra space
+		if (!jkcvar_cg_enhancedInterface.integer) y += (n1 * lineHeight) + BIGCHAR_HEIGHT; // Tr!Force: [EnhancedInterface] Trim extra space
 
 	} else {
 		//

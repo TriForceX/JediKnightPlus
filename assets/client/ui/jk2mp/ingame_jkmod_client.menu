@@ -809,9 +809,9 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_SCOREEXTRAS
-			descText			@JKMENUS_CLIENT_SCOREEXTRAS_DESC
-			cvar				"jk_cg_scoreboardExtras"
+			text				@JKMENUS_CLIENT_ENHANCEDINTERFACE
+			descText			@JKMENUS_CLIENT_ENHANCEDINTERFACE_DESC
+			cvar				"jk_cg_enhancedInterface"
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -2793,6 +2793,105 @@
 			} 
 		}
 		
+		itemDef 
+		{
+			name				none
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_CUSTOMANIMS
+			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
+			cvar				"jk_cg_customAnims"
+			rect				220 61 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{
+				show			highlight2
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight2
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_CUSTOMEFFECTS
+			descText			@JKMENUS_CLIENT_CUSTOMEFFECTS_DESC
+			cvar				"jk_cg_customEffects"
+			rect				220 81 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{
+				show			highlight3
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight3
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_JETPACKIDLE
+			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
+			cvar				"jk_cg_jetPackIdle"
+			rect				220 101 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{
+				show			highlight4
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight4
+				hide			keybindstatus
+			}
+		}
+		
 		// PREV & NEXT BUTTONS (VISUALS OPTIONS PAGE 2)
 		itemDef 
 		{
@@ -3514,41 +3613,6 @@
 				@MENUS0_NO  	0
 				@MENUS0_YES		2
 			}
-			rect				220 41 300 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151 
-			textaligny			-2
-			font				2
-			textscale			0.8
-			forecolor			1 1 1 1
-			visible				0
-			action
-			{
-				play			"sound/interface/button1.wav" ; 
-			}
-
-			mouseEnter 
-			{
-				show			highlight1
-				show			highlightSvAllow
-				show			keybindstatus
-			}
-			mouseExit 
-			{ 
-				hide			highlight1
-				hide			highlightSvAllow
-				hide			keybindstatus
-			}
-		}
-		
-		itemDef 
-		{
-			name				none
-			group				clientOtherControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_CUSTOMANIMS
-			descText			@JKMENUS_CLIENT_CUSTOMANIMS_DESC
-			cvar				"jk_cg_customAnims"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3565,11 +3629,13 @@
 			mouseEnter 
 			{
 				show			highlight2
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight2
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -3578,10 +3644,15 @@
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_CUSTOMEFFECTS
-			descText			@JKMENUS_CLIENT_CUSTOMEFFECTS_DESC
-			cvar				"jk_cg_customEffects"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_IDENTIFYOBJ
+			descText			@JKMENUS_CLIENT_IDENTIFYOBJ_DESC
+			cvar				"jk_cg_identifyObjects"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
+			}
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3598,11 +3669,13 @@
 			mouseEnter 
 			{
 				show			highlight3
+				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight3
+				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -3611,10 +3684,15 @@
 		{
 			name				none
 			group				clientOtherControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_JETPACKIDLE
-			descText			@JKMENUS_CLIENT_JETPACKIDLE_DESC
-			cvar				"jk_cg_jetPackIdle"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_LOADINGICONS
+			descText			@JKMENUS_CLIENT_LOADINGICONS_DESC
+			cvar				"jk_cg_loadingIcons"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
+			}
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151 
@@ -3645,45 +3723,6 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_SHADOWS
-			descText			@JKMENUS_CLIENT_SHADOWS_DESC
-			cvar				"cg_shadows"
-			cvarFloatList
-			{
-				"2D"  			1
-				"3D"  			3
-				@MENUS0_OFF		0
-			}
-			rect				220 121 300 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
-			textaligny			-2
-			font				2
-			textscale			0.8
-			forecolor			1 1 1 1
-			visible				0
-			action
-			{
-				play			"sound/interface/button1.wav" ; 
-			}
-
-			mouseEnter 
-			{ 
-				show			highlight5
-				show			keybindstatus
-			}
-			mouseExit 
-			{ 
-				hide			highlight5
-				hide			keybindstatus
-			} 
-		}
-		
-		itemDef 
-		{
-			name				none
-			group				clientOtherControls
-			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_CHATBOXHISTORY
 			descText			@JKMENUS_CLIENT_CHATBOXHISTORY_DESC
 			cvar				"jk_cg_chatBoxHistory"
@@ -3692,9 +3731,9 @@
 				@MENUS0_YES  		1
 				@MENUS0_NO			0
 			}
-			rect				220 141 300 20
+			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
+			textalignx			151 
 			textaligny			-2
 			font				2
 			textscale			0.8
@@ -3706,15 +3745,15 @@
 			}
 
 			mouseEnter 
-			{ 
-				show			highlight6
+			{
+				show			highlight5
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
-				hide			highlight6
+				hide			highlight5
 				hide			keybindstatus
-			} 
+			}
 		}
 		
 		itemDef 
@@ -3735,6 +3774,46 @@
 				@JKMENUS_COLOR_CYAN  	5
 				@JKMENUS_COLOR_MAGENTA  6
 				@JKMENUS_COLOR_WHITE  	7
+			}
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight6
+				show			highlightSvAllow
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight6
+				hide			highlightSvAllow
+				hide			keybindstatus
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_AUTOSTATUS
+			descText			@JKMENUS_CLIENT_AUTOSTATUS_DESC
+			cvar				"jk_cg_chatAutoStatus"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
 			}
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -3758,7 +3837,7 @@
 			mouseExit 
 			{ 
 				hide			highlight7
-				hide			highlightSvAllow
+				show			highlightSvAllow
 				hide			keybindstatus
 			} 
 		}
@@ -3768,9 +3847,9 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_IDENTIFYOBJ
-			descText			@JKMENUS_CLIENT_IDENTIFYOBJ_DESC
-			cvar				"jk_cg_identifyObjects"
+			text				@JKMENUS_CLIENT_AUTODUEL
+			descText			@JKMENUS_CLIENT_AUTODUEL_DESC
+			cvar				"jk_cg_autoDuel"
 			cvarFloatList
 			{
 				@MENUS0_YES  		1
@@ -3808,13 +3887,14 @@
 			name				none
 			group				clientOtherControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_AUTODUEL
-			descText			@JKMENUS_CLIENT_AUTODUEL_DESC
-			cvar				"jk_cg_autoDuel"
+			text				@JKMENUS_CLIENT_SHADOWS
+			descText			@JKMENUS_CLIENT_SHADOWS_DESC
+			cvar				"cg_shadows"
 			cvarFloatList
 			{
-				@MENUS0_YES  		1
-				@MENUS0_NO			0
+				"2D"  			1
+				"3D"  			3
+				@MENUS0_OFF		0
 			}
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -3832,53 +3912,11 @@
 			mouseEnter 
 			{ 
 				show			highlight9
-				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight9
-				hide			highlightSvAllow
-				hide			keybindstatus
-			} 
-		}
-		
-		itemDef 
-		{
-			name				none
-			group				clientOtherControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_AUTOSTATUS
-			descText			@JKMENUS_CLIENT_AUTOSTATUS_DESC
-			cvar				"jk_cg_chatAutoStatus"
-			cvarFloatList
-			{
-				@MENUS0_YES  		1
-				@MENUS0_NO			0
-			}
-			rect				220 221 300 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
-			textaligny			-2
-			font				2
-			textscale			0.8
-			forecolor			1 1 1 1
-			visible				0
-			action
-			{
-				play			"sound/interface/button1.wav" ; 
-			}
-
-			mouseEnter 
-			{ 
-				show			highlight10
-				show			highlightSvAllow
-				show			keybindstatus
-			}
-			mouseExit 
-			{ 
-				hide			highlight10
-				hide			highlightSvAllow
 				hide			keybindstatus
 			} 
 		}
@@ -3904,6 +3942,44 @@
 				@JKMENUS_COLOR_BLACK  	8
 				"RGB"  					42
 			}
+			rect				220 221 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight10
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight10
+				hide			keybindstatus
+			} 
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientOtherControls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_HIDEMOTD
+			descText			@JKMENUS_CLIENT_HIDEMOTD_DESC
+			cvar				"jk_ui_motdString"
+			cvarFloatList
+			{
+				@MENUS0_YES  		1
+				@MENUS0_NO			0
+			}
 			rect				220 241 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3925,44 +4001,6 @@
 			mouseExit 
 			{ 
 				hide			highlight11
-				hide			keybindstatus
-			} 
-		}
-		
-		itemDef 
-		{
-			name				none
-			group				clientOtherControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_HIDEMOTD
-			descText			@JKMENUS_CLIENT_HIDEMOTD_DESC
-			cvar				"jk_ui_motdString"
-			cvarFloatList
-			{
-				@MENUS0_YES  		1
-				@MENUS0_NO			0
-			}
-			rect				220 261 300 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
-			textaligny			-2
-			font				2
-			textscale			0.8
-			forecolor			1 1 1 1
-			visible				0
-			action
-			{
-				play			"sound/interface/button1.wav" ; 
-			}
-
-			mouseEnter 
-			{ 
-				show			highlight12
-				show			keybindstatus
-			}
-			mouseExit 
-			{ 
-				hide			highlight12
 				hide			keybindstatus
 			} 
 		}

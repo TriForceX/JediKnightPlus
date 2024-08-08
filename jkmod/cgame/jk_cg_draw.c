@@ -350,7 +350,7 @@ float JKMod_CG_DrawTeamOverlay(float y)
 		return y;
 	}
 
-    if (cg.snap->ps.persistant[PERS_TEAM] != TEAM_RED && cg.snap->ps.persistant[PERS_TEAM] != TEAM_BLUE) {
+    if (cgs.clientinfo[cg.clientNum].team != TEAM_RED && cgs.clientinfo[cg.clientNum].team != TEAM_BLUE) {
         return y;
     }
 
@@ -850,7 +850,10 @@ void JKMod_CG_DrawHealthBar(float chX, float chY, float chW, float chH, int type
 
 	// Check
 	if (!type) return;
-	if (type == 3 && (cent->currentState.weapon == WP_SABER || cent->currentState.weapon == WP_STUN_BATON)) return;
+	if (type == 3 && (cent->currentState.weapon < WP_BRYAR_PISTOL)) {
+		CG_DrawPic(chX+5, chY+5, 15, 15, cgs.media.deferShader);
+		return;
+	}
 
 	// Ammo
 	if (type == 3) {
@@ -976,7 +979,7 @@ void JKMod_CG_DrawRaceTimer(void)
 	color[0] = color[1] = color[2] = 1.0;
 	color[3] = 1.0f;
 
-	CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
+	CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 30, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
 	CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
 }
 
@@ -1014,7 +1017,7 @@ void JKMod_CG_DrawPauseString(void)
 		}
 		w2 = CG_DrawStrlen(t2) * BIGCHAR_WIDTH;
 
-		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
+		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 30, t1, color, qfalse, qtrue, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT, 0);
 		CG_DrawStringExt(0.5f * (cgs.screenWidth - w2), 50, t2, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
 	}
 	else 
@@ -1022,7 +1025,7 @@ void JKMod_CG_DrawPauseString(void)
 		t1 = CG_GetStripEdString("JKINGAME", "PAUSE_GAME");
 		w1 = CG_DrawStrlen(t1) * BIGCHAR_WIDTH;
 
-		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 35, t1, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
+		CG_DrawStringExt(0.5f * (cgs.screenWidth - w1), 30, t1, color, qfalse, qtrue, BIGCHAR_WIDTH, BIGCHAR_HEIGHT, 0);
 	}
 }
 
@@ -1680,7 +1683,7 @@ void JKMod_CG_SpeedoMeterAccel(void)
 	y = cgs.screenHeight - 19;
 
 	CG_FillRect(x, y, width, height, bgColor);
-	CG_DrawRect(x - 1, y - 1, width + 1, height + 2, 0.5f, colorTable[CT_BLACK]);
+	CG_DrawRect(x - 1, y - 1, width + 2, height + 2, 0.5f, colorTable[CT_BLACK]);
 
 	actualAccel = accel;
 

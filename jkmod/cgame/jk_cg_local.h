@@ -66,6 +66,7 @@ typedef struct
 	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
 	int			duelDistance;			// Tr!Force: [DuelDistance] Main cvar
 	int			pauseTime;				// Tr!Force: [Pause] Server pause time
+	int			gameType;				// Tr!Force: [GameType] Current or next game type
 	char		gameDate[MAX_QPATH];	// Tr!Force: [Plugin] Server game date
 	char		gameName[MAX_OSPATH];	// Tr!Force: [Plugin] Server game name
 	qboolean	pluginCheck;			// Tr!Force: [Plugin] Client plugin check
@@ -263,7 +264,7 @@ extern vmCvar_t						jkcvar_cg_drawRaceTimer;
 extern vmCvar_t						jkcvar_cg_drawBactaModel;
 extern vmCvar_t						jkcvar_cg_drawPlayerNames;
 extern vmCvar_t						jkcvar_cg_drawMovementKeys;
-extern vmCvar_t						jkcvar_cg_scoreboardExtras;
+extern vmCvar_t						jkcvar_cg_enhancedInterface;
 extern vmCvar_t						jkcvar_cg_chatIcon;
 extern vmCvar_t						jkcvar_cg_saberTrailSpeed;
 extern vmCvar_t						jkcvar_cg_damageBlend;
@@ -293,6 +294,7 @@ extern vmCvar_t						jkcvar_cg_sHelperFPS;
 extern vmCvar_t						jkcvar_cg_customHats;
 extern vmCvar_t						jkcvar_cg_customAnims;
 extern vmCvar_t						jkcvar_cg_customEffects;
+extern vmCvar_t						jkcvar_cg_loadingIcons;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
 extern vmCvar_t						jkcvar_cg_ui_currentTeam;
@@ -319,6 +321,7 @@ void		JKMod_CG_RegisterMedia(void);
 void QDECL	JKMod_CG_Printf(const char *msg, ...) __attribute__ ((format (printf, 1, 2)));
 float		JKMod_CG_GetVersion(const char *s);
 qboolean	JKMod_CG_CheckVersion(const char *s);
+qboolean	JKMod_CG_ValidNumber(const char *s);
 char		*JKMod_CG_StrTok(char *str, const char *delim);
 
 // jk_cg_consolecmds.c

@@ -452,7 +452,7 @@ typedef struct {
 	int				defendCount;
 	int				assistCount;
 	int				captures;
-	int				deaths; // Tr!Force: [Scoreboard] Extra info
+	int				deaths; // Tr!Force: [EnhancedInterface] Extra info
 	qboolean	perfect;
 	int				team;
 } score_t;

@@ -638,7 +638,7 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 	}
 
 	// check some things
-	if ( g_gametype.integer < 0 || g_gametype.integer >= GT_MAX_GAME_TYPE ) {
+	if ( !JKMod_ValidNumber(g_gametype.string) || g_gametype.integer < 0 || g_gametype.integer >= GT_MAX_GAME_TYPE ) { // Tr!Force: [GameGeneral] Verify valid game type number
 		G_Printf( "g_gametype %i is out of range, defaulting to 0\n", g_gametype.integer );
 		trap_Cvar_Set( "g_gametype", "0" );
 	}
@@ -677,6 +677,10 @@ void BaseJK2_G_UpdateCvars( void ) { // Tr!Force: [BaseJK2] Update cvars functio
 				// mvsdk_svFlags
 				if ( cv->vmCvar == &g_submodelWorkaround )
 					MV_UpdateSvFlags();
+
+				// Tr!Force: [General] Update clients next game type
+				if ( cv->vmCvar == &g_gametype )
+					JKMod_CVU_gameType();
 			}
 		}
 	}

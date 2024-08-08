@@ -7,10 +7,62 @@
 #define MAX_LOADING_PLAYER_ICONS	16
 #define MAX_LOADING_ITEM_ICONS		26
 
-//static int			loadingPlayerIconCount;
-//static qhandle_t	loadingPlayerIcons[MAX_LOADING_PLAYER_ICONS];
+// Tr!Force: [CGameGeneral] Restored loading icons
+static int			loadingPlayerIconCount;
+static int			loadingItemIconCount;
+static qhandle_t	loadingPlayerIcons[MAX_LOADING_PLAYER_ICONS];
+static qhandle_t	loadingItemIcons[MAX_LOADING_ITEM_ICONS];
 
 void CG_LoadBar(void);
+
+
+/*
+===================
+CG_DrawLoadingIcons
+===================
+*/
+static void CG_DrawLoadingIcons(int currentY) { // Tr!Force: [CGameGeneral] Restored loading icons
+	int n, n2;
+    int x, y, x2, y2;
+
+	// Player icons horizontal align
+    int playerIconWidth = 32;
+    int playerIconSpacing = 16;
+    int totalPlayerIconWidth = (loadingPlayerIconCount > 0) ? loadingPlayerIconCount * (playerIconWidth + playerIconSpacing) - playerIconSpacing : 0;
+    int playerIconsStartX = (cgs.screenWidth - totalPlayerIconWidth) / 2;
+
+    // Item icons horizontal align
+    int itemIconWidth = 32;
+    int itemIconSpacing = 16;
+    int iconsPerRow = (loadingItemIconCount > 13) ? 13 : loadingItemIconCount;
+    int totalItemIconWidth = (iconsPerRow > 0) ? iconsPerRow * (itemIconWidth + itemIconSpacing) - itemIconSpacing : 0;
+    int itemIconsStartX = (cgs.screenWidth - totalItemIconWidth) / 2;
+
+    // Item icons vertical align
+    int paddingBottom = 15;
+    int rows = (loadingItemIconCount > 0) ? (loadingItemIconCount + iconsPerRow - 1) / iconsPerRow : 0;
+    int totalItemIconHeight = (rows > 0) ? rows * (itemIconWidth + itemIconSpacing) - itemIconSpacing : 0;
+    int availableHeight = cgs.screenHeight - currentY - paddingBottom;
+    int itemIconsStartY = currentY + (availableHeight - totalItemIconHeight) / 2;
+
+	// Draw player icons
+	if (loadingPlayerIconCount > 0) {
+		for (n = 0; n < loadingPlayerIconCount; n++) {
+			x = playerIconsStartX + n * (playerIconWidth + playerIconSpacing);
+			y = (mvapi ? 90 : 80) - 40;
+			CG_DrawPic(x, y, playerIconWidth, playerIconWidth, loadingPlayerIcons[n]);
+		}
+	}
+
+	// Draw item icons
+	if (loadingItemIconCount > 0) {
+		for (n2 = 0; n2 < loadingItemIconCount; n2++) {
+			y2 = itemIconsStartY + (n2 / 13) * (itemIconWidth + itemIconSpacing);
+			x2 = itemIconsStartX + (n2 % 13) * (itemIconWidth + itemIconSpacing);
+			CG_DrawPic(x2, y2, itemIconWidth, itemIconWidth, loadingItemIcons[n2]);
+		}
+	}
+}
 
 /*
 ======================
@@ -34,6 +86,11 @@ void CG_LoadingItem( int itemNum ) {
 
 	item = &bg_itemlist[itemNum];
 
+	// Tr!Force: [CGameGeneral] Restored loading icons
+	if ( jkcvar_cg_loadingIcons.integer && item->icon && loadingItemIconCount < MAX_LOADING_ITEM_ICONS ) {
+		loadingItemIcons[loadingItemIconCount++] = item->giTag == WP_BRYAR_PISTOL ? cgs.media.weaponIcons[WP_BRYAR_PISTOL] : trap_R_RegisterShaderNoMip( item->icon );
+	}
+
 	CG_LoadingString( CG_GetStripEdString("INGAME",item->classname) );
 }
 
@@ -48,7 +105,8 @@ void CG_LoadingClient( int clientNum ) {
 
 	info = CG_ConfigString( CS_PLAYERS + clientNum );
 
-/*
+if (jkcvar_cg_loadingIcons.integer) // Tr!Force: [CGameGeneral] Restored loading icons
+{
 	char			model[MAX_QPATH];
 	char			iconName[MAX_QPATH];
 	char			*skin;
@@ -76,15 +134,13 @@ void CG_LoadingClient( int clientNum ) {
 			loadingPlayerIconCount++;
 		}
 	}
-*/
+}
 	Q_strncpyz( personality, Info_ValueForKey( info, "n" ), sizeof(personality) );
 	Q_CleanStr( personality, (qboolean)(jk2startversion == VERSION_1_02) );
 
-	/*
 	if( cgs.gametype == GT_SINGLE_PLAYER ) {
 		trap_S_RegisterSound( va( "sound/player/announce/%s.wav", personality ));
 	}
-	*/
 
 	CG_LoadingString( personality );
 }
@@ -108,22 +164,26 @@ void CG_DrawInformation( void ) {
 	qhandle_t	levelshot;
 	char		buf[1024];
 	int			iPropHeight = 18;	// I know, this is total crap, but as a post release asian-hack....  -Ste
+	const char *temp;	// Tr!Force: [CGameGeneral] Save space for loading icons
 
 	info = CG_ConfigString( CS_SERVERINFO );
 	sysInfo = CG_ConfigString( CS_SYSTEMINFO );
 
 	s = Info_ValueForKey( info, "mapname" );
+
+	// Tr!Force: [CGameGeneral] Custom levelshots check
 	levelshot = trap_R_RegisterShaderNoMip( va( "levelshots/%s", s ) );
-	if ( !levelshot ) {
-		levelshot = trap_R_RegisterShaderNoMip( "menu/art/unknownmap" );
+	if ( levelshot ) {
+		trap_R_SetColor( NULL );
+		CG_DrawPic(0, 0, cgs.screenWidth, cgs.screenHeight, levelshot);
+	} else {
+		levelshot = trap_R_RegisterShaderNoMip("menu/art/unknownmap");
+		trap_R_SetColor( NULL );
+		CG_FillRect(0, 0, cgs.screenWidth, cgs.screenHeight, colorBlack);
+		CG_DrawPic((cgs.screenWidth - (cgs.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT))) / 2, 0, cgs.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT), cgs.screenHeight, levelshot);
 	}
-	trap_R_SetColor( NULL );
-	CG_DrawPic(0, 0, cgs.screenWidth, cgs.screenHeight, levelshot);
 
 	CG_LoadBar();
-				   
-	// draw the icons of things as they are loaded
-//	CG_DrawLoadingIcons();
 
 	// the first 150 rows are reserved for the client connection
 	// screen to write into
@@ -147,17 +207,25 @@ void CG_DrawInformation( void ) {
 		// server hostname
 		Q_strncpyz(buf, Info_ValueForKey( info, "sv_hostname" ), 1024);
 		Q_CleanStr(buf, (qboolean)(jk2startversion == VERSION_1_02));
+		if ( jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+			temp = Info_ValueForKey(sysInfo, "sv_pure");
+			if ( temp[0] == '1' ) {
+				Q_strcat( buf, MAX_INFO_VALUE, va(" (%s)", CG_GetStripEdString("JKMENUS", "PURE_SERVER")) );
+			}
+		}
 		UI_DrawProportionalString( x, y, buf,
 			UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
 		y += iPropHeight;
 
 		// pure server
-		s = Info_ValueForKey( sysInfo, "sv_pure" );
-		if ( s[0] == '1' ) {
-			const char *psPure = CG_GetStripEdString("INGAMETEXT", "PURE_SERVER");
-			UI_DrawProportionalString( x, y, psPure,
-				UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
-			y += iPropHeight;
+		if ( !jkcvar_cg_loadingIcons.integer ) {  // Tr!Force: [CGameGeneral] Save space for loading icons
+			s = Info_ValueForKey( sysInfo, "sv_pure" );
+			if ( s[0] == '1' ) {
+				const char *psPure = CG_GetStripEdString("INGAMETEXT", "PURE_SERVER");
+				UI_DrawProportionalString( x, y, psPure,
+					UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
+				y += iPropHeight;
+			}
 		}
 
 		// server-specific message of the day
@@ -192,11 +260,13 @@ void CG_DrawInformation( void ) {
 	}
 
 	// cheats warning
-	s = Info_ValueForKey( sysInfo, "sv_cheats" );
-	if ( s[0] == '1' ) {
-		UI_DrawProportionalString( x, y, CG_GetStripEdString("INGAMETEXT", "CHEATSAREENABLED"),
-			UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
-		y += iPropHeight;
+	if ( !jkcvar_cg_loadingIcons.integer ) {  // Tr!Force: [CGameGeneral] Save space for loading icons
+		s = Info_ValueForKey( sysInfo, "sv_cheats" );
+		if ( s[0] == '1' ) {
+			UI_DrawProportionalString( x, y, CG_GetStripEdString("INGAMETEXT", "CHEATSAREENABLED"),
+				UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
+			y += iPropHeight;
+		}
 	}
 
 	// game type
@@ -231,6 +301,12 @@ void CG_DrawInformation( void ) {
 	default:
 		s = "Unknown Gametype";
 		break;
+	}
+	if ( jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+		temp = Info_ValueForKey(sysInfo, "sv_cheats");
+		if ( temp[0] == '1' ) {
+			s = va("%s (%s)", s, CG_GetStripEdString("JKMENUS", "CHEATSAREENABLED"));
+		}
 	}
 	UI_DrawProportionalString( x, y, s,
 		UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
@@ -299,35 +375,60 @@ void CG_DrawInformation( void ) {
 			text = va( "%s %i", fmStr, value );
 		}
 
-		UI_DrawProportionalString( x, y, text, UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
+		Q_strncpyz( buf, text, MAX_INFO_VALUE );
+		if ( jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+			value = cgs.gametype == GT_TOURNAMENT ? atoi( Info_ValueForKey( info, "g_duelWeaponDisable" ) ) : atoi( Info_ValueForKey( info, "g_weaponDisable" ) );
+			if ( cgs.gametype != GT_JEDIMASTER && value ) {
+				Q_strcat( buf, MAX_INFO_VALUE, va(" (%s)", CG_GetStripEdString("INGAMETEXT", "SABERONLYSET")) );
+			}
+		}
+		UI_DrawProportionalString( x, y, buf, UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
 		y += iPropHeight;
 	}
 	else if (!valueNOFP)
 	{
 		char fmStr[1024];
+		char text[1024];
 		trap_SP_GetStringTextString("INGAMETEXT_MAXFORCERANK",fmStr, sizeof(fmStr));
 
-		UI_DrawProportionalString( x, y, va( "%s %s", fmStr, (char *)CG_GetStripEdString("INGAMETEXT", forceMasteryLevels[7]) ),
+		Q_strncpyz( text, CG_GetStripEdString("INGAMETEXT", forceMasteryLevels[7]), sizeof(text) );
+		if ( jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+			value = cgs.gametype == GT_TOURNAMENT ? atoi( Info_ValueForKey( info, "g_duelWeaponDisable" ) ) : atoi( Info_ValueForKey( info, "g_weaponDisable" ) );
+			if ( cgs.gametype != GT_JEDIMASTER && value ) {
+				Q_strcat( text, MAX_INFO_VALUE, va(" (%s)", CG_GetStripEdString("INGAMETEXT", "SABERONLYSET")) );
+			}
+		}
+		UI_DrawProportionalString( x, y, va( "%s %s", fmStr, text ),
 			UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
 		y += iPropHeight;
 	}
 
-	if (cgs.gametype == GT_TOURNAMENT)
-	{
-		value = atoi( Info_ValueForKey( info, "g_duelWeaponDisable" ) );
-	}
-	else
-	{
-		value = atoi( Info_ValueForKey( info, "g_weaponDisable" ) );
-	}
-	if ( cgs.gametype != GT_JEDIMASTER && value ) {
-		UI_DrawProportionalString( x, y, va( "%s", (char *)CG_GetStripEdString("INGAMETEXT", "SABERONLYSET") ),
-			UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
-		y += iPropHeight;
+	if ( !jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+		if (cgs.gametype == GT_TOURNAMENT)
+		{
+			value = atoi( Info_ValueForKey( info, "g_duelWeaponDisable" ) );
+		}
+		else
+		{
+			value = atoi( Info_ValueForKey( info, "g_weaponDisable" ) );
+		}
+		if ( cgs.gametype != GT_JEDIMASTER && value ) {
+			UI_DrawProportionalString( x, y, va( "%s", (char *)CG_GetStripEdString("INGAMETEXT", "SABERONLYSET") ),
+				UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
+			y += iPropHeight;
+		}
 	}
 
 	if ( valueNOFP ) {
-		UI_DrawProportionalString( x, y, va( "%s", (char *)CG_GetStripEdString("INGAMETEXT", "NOFPSET") ),
+		char text[1024];
+		Q_strncpyz( text, CG_GetStripEdString("INGAMETEXT", "NOFPSET"), sizeof(text) );
+		if ( jkcvar_cg_loadingIcons.integer ) { // Tr!Force: [CGameGeneral] Save space for loading icons
+			value = cgs.gametype == GT_TOURNAMENT ? atoi( Info_ValueForKey( info, "g_duelWeaponDisable" ) ) : atoi( Info_ValueForKey( info, "g_weaponDisable" ) );
+			if ( cgs.gametype != GT_JEDIMASTER && value ) {
+				Q_strcat( text, MAX_INFO_VALUE, va(" (%s)", CG_GetStripEdString("INGAMETEXT", "SABERONLYSET")) );
+			}
+		}
+		UI_DrawProportionalString( x, y, va( "%s", text),
 			UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite );
 		y += iPropHeight;
 	}
@@ -396,6 +497,9 @@ void CG_DrawInformation( void ) {
 	default:
 		break;
 	}
+				   
+	// draw the icons of things as they are loaded
+	if (jkcvar_cg_loadingIcons.integer) CG_DrawLoadingIcons(y); // Tr!Force: [CGameGeneral] Restored loading icons
 }
 
 /*

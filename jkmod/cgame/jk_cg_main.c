@@ -32,7 +32,7 @@ vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
 vmCvar_t	jkcvar_cg_drawPlayerNames;
 vmCvar_t	jkcvar_cg_drawMovementKeys;
-vmCvar_t	jkcvar_cg_scoreboardExtras;
+vmCvar_t	jkcvar_cg_enhancedInterface;
 vmCvar_t	jkcvar_cg_chatIcon;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
 vmCvar_t	jkcvar_cg_damageBlend;
@@ -62,6 +62,7 @@ vmCvar_t	jkcvar_cg_sHelperFPS;
 vmCvar_t	jkcvar_cg_customHats;
 vmCvar_t	jkcvar_cg_customAnims;
 vmCvar_t	jkcvar_cg_customEffects;
+vmCvar_t	jkcvar_cg_loadingIcons;
 vmCvar_t	jkcvar_cg_jetPackIdle;
 
 vmCvar_t	jkcvar_cg_ui_currentTeam;
@@ -85,7 +86,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_drawBactaModel,		"jk_cg_drawBactaModel",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawPlayerNames,		"jk_cg_drawPlayerNames",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawMovementKeys,		"jk_cg_drawMovementKeys",		"0",			NULL,						CVAR_ARCHIVE, 0 },
-	{ &jkcvar_cg_scoreboardExtras,		"jk_cg_scoreboardExtras",		"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_enhancedInterface,		"jk_cg_enhancedInterface",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatIcon,				"jk_cg_chatIcon",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_saberTrailSpeed,		"jk_cg_saberTrailSpeed",		"40",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_damageBlend,			"jk_cg_damageBlend",			"0",			NULL,						CVAR_ARCHIVE, 0 },
@@ -115,6 +116,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_customHats,			"jk_cg_customHats",				"0",			NULL,						CVAR_ARCHIVE | CVAR_USERINFO, 0 },
 	{ &jkcvar_cg_customAnims,			"jk_cg_customAnims",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_customEffects,			"jk_cg_customEffects",			"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_loadingIcons,			"jk_cg_loadingIcons",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_jetPackIdle,			"jk_cg_jetPackIdle",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 
 	{ &jkcvar_cg_ui_currentTeam,		"jk_ui_currentTeam",			"0",			NULL,						CVAR_ROM | CVAR_INTERNAL, 0 },
@@ -296,6 +298,23 @@ qboolean JKMod_CG_CheckVersion(const char *s)
 
 /*
 =====================================================================
+Check the given string as number
+=====================================================================
+*/
+qboolean JKMod_CG_ValidNumber(const char *s)
+{
+	int i;
+
+	if (s == NULL || *s == '\0') return qfalse;
+    for (i = 0; s[i] != '\0'; i++) {
+        if (s[i] < '0' || s[i] > '9') return qfalse;
+    }
+
+    return qtrue;
+}
+
+/*
+=====================================================================
 String token with long delimiter
 =====================================================================
 */
@@ -379,6 +398,7 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.keyAltOn				= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_on");
 	cgs.jkmodMedia.keyAltOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_off");
 
+	CG_UpdateConfigString(JK_CS_GAME_TYPE, qtrue);
 	
 	Com_Printf( S_COLOR_CYAN "------------ JK+ Client Complete ------------\n" );
 }

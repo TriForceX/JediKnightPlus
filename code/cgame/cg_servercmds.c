@@ -46,7 +46,7 @@ CG_ParseScores
 =================
 */
 static void CG_ParseScores( void ) {
-	int		i, powerups, readScores, scoreOffset; // Tr!Force: [Scoreboard] Extra info
+	int		i, powerups, readScores, scoreOffset; // Tr!Force: [EnhancedInterface] Extra info
 
 	cg.numScores = atoi( CG_Argv( 1 ) );
 
@@ -68,7 +68,7 @@ static void CG_ParseScores( void ) {
 
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i = 0 ; i < readScores ; i++ ) {
-		// Tr!Force: [Scoreboard] Extra info
+		// Tr!Force: [EnhancedInterface] Extra info
 		if (cgs.jkmodCGS.pluginCheck) {
 			scoreOffset = 15;
 			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
@@ -412,6 +412,13 @@ void CG_UpdateConfigString( int num, qboolean init )
 			break;
 		case JK_CS_PAUSE: // Tr!Force: [Pause] Get server pause time
 			cgs.jkmodCGS.pauseTime = atoi(str);
+			break;
+		case JK_CS_GAME_TYPE: // Tr!Force: [GameType] Get current or next game type
+		{
+			int gameTypeLatched = atoi(str);
+			cgs.jkmodCGS.gameType = JKMod_CG_ValidNumber(str) && gameTypeLatched >= GT_FFA && gameTypeLatched < GT_MAX_GAME_TYPE ? gameTypeLatched : 0;
+			break;
+		}
 		default:
 			break;
 		}

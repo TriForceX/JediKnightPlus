@@ -75,16 +75,14 @@ Check the given string as number
 */
 qboolean JKMod_ValidNumber(const char *s)
 {
-	int i = strlen(s);
-	int isNum = (i > 0);
+	int i;
 
-	while (i-- && isNum) {
-		if (!(s[i] >= '0' && s[i] <= '9')) {
-			isNum = 0;
-		}
-	}
+	if (s == NULL || *s == '\0') return qfalse;
+    for (i = 0; s[i] != '\0'; i++) {
+        if (s[i] < '0' || s[i] > '9') return qfalse;
+    }
 
-	return isNum;
+    return qtrue;
 }
 
 /*

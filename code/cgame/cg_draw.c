@@ -1161,7 +1161,7 @@ void CG_DrawHUD(centity_t	*cent)
 	}
 	else
 	{	// Don't draw a bias.
-		if (jkcvar_cg_scoreboardExtras.integer) { // Tr!Force: [Scoreboard] Extra info
+		if (jkcvar_cg_enhancedInterface.integer) { // Tr!Force: [EnhancedInterface] Extra info
 			scoreStr = va("%s: %i/%i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY ? cg.snap->ps.persistant[PERS_CAPTURES] : cg.snap->ps.persistant[PERS_KILLED]));
 		} else {
 			scoreStr = va("%s: %i", CG_GetStripEdString("JKINGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]); // Tr!Force: [CGameGeneral] Use translated text
@@ -1642,7 +1642,7 @@ CG_DrawMiniScoreboard
 */
 static float CG_DrawMiniScoreboard ( float y ) 
 {
-	char temp[MAX_QPATH];
+	// char temp[MAX_QPATH];
 
 	if ( !cg_drawScores.integer )
 	{
@@ -1651,8 +1651,8 @@ static float CG_DrawMiniScoreboard ( float y )
 
 	if ( cgs.gametype >= GT_TEAM )
 	{
-		// Tr!Force: [Scoreboard] Updated team scores
-		if (jkcvar_cg_scoreboardExtras.integer)
+		// Tr!Force: [EnhancedInterface] Updated team scores
+		if (jkcvar_cg_enhancedInterface.integer)
 		{
 			char text1[MAX_QPATH];
 			char text2[MAX_QPATH];
@@ -1668,7 +1668,7 @@ static float CG_DrawMiniScoreboard ( float y )
 			width1 = CG_Text_Width(text1, 0.7f, FONT_MEDIUM);
 			width2 = CG_Text_Width(text2, 0.7f, FONT_MEDIUM);
 
-			x1 = cgs.screenWidth - 9 - (width1 + width2 + 5 + iconSize);
+			x1 = cgs.screenWidth - 9 - (width1 + width2 + 9 + iconSize);
 			x2 = cgs.screenWidth - 9 - width2;
 
 			CG_DrawPic(x1 - 15, y + 4, iconSize, iconSize, cgs.media.teamRedShader);
@@ -1847,6 +1847,18 @@ static float CG_DrawEnemyInfo ( float y )
 	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( ci->name, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, ci->name, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 
 	y += 15;
+
+	// Tr!Force: [EnhancedInterface] Extra info
+	if (jkcvar_cg_enhancedInterface.integer) {
+		int curWeapon = cg_entities[clientNum].currentState.weapon;
+		if (curWeapon >= WP_STUN_BATON && curWeapon <= WP_DET_PACK) {
+			int curWeaponX = curWeapon == WP_STUN_BATON || curWeapon == WP_SABER || curWeapon == WP_THERMAL || curWeapon == WP_TRIP_MINE || curWeapon == WP_DET_PACK ? 29 : 32;
+			int curWeaponY = 2;
+			int curWeaponSize = 17;
+			trap_R_SetColor(NULL);
+			CG_DrawPic(cgs.screenWidth - curWeaponX - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y + curWeaponY, curWeaponSize, curWeaponSize, (curWeapon == WP_BRYAR_PISTOL ? cgs.media.weaponIcons[WP_BRYAR_PISTOL] : cg_weapons[curWeapon].weaponIcon));
+		}
+	}
 	CG_Text_Paint( cgs.screenWidth - 10 - CG_Text_Width ( title, 0.7f, FONT_MEDIUM ), y, 0.7f, colorWhite, title, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Add missing shadows
 
 	if ( cgs.gametype == GT_TOURNAMENT && cgs.clientinfo[cg.snap->ps.clientNum].team != TEAM_SPECTATOR)
@@ -1973,7 +1985,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		return y;
 	}
 
-	if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_RED && cg.snap->ps.persistant[PERS_TEAM] != TEAM_BLUE ) {
+	if ( cgs.clientinfo[cg.clientNum].team != TEAM_RED && cgs.clientinfo[cg.clientNum].team != TEAM_BLUE ) { // Tr!Force: [BaseJK] Workaround
 		return y; // Not on any team
 	}
 
@@ -2394,6 +2406,9 @@ static void CG_DrawDisconnect( float x, float y ) { // Tr!Force: [CGameGeneral] 
 		|| cmd.serverTime > cg.time ) {	// special check for map_restart // bk 0102165 - FIXME
 		return;
 	}
+
+	// Tr!Force: [Pause] Don't show conn interrupted on bots
+	if ((cg.snap->ps.pm_flags & PMF_FOLLOW) && cgs.clientinfo[cg.snap->ps.clientNum].botSkill != -1 && cgs.jkmodCGS.pauseTime > cg.snap->serverTime) return;
 
 	// also add text in center of screen
 	s = CG_GetStripEdString("INGAMETEXT", "CONNECTION_INTERRUPTED"); // s = "Connection Interrupted"; // bk 010215 - FIXME
@@ -3713,7 +3728,7 @@ static qboolean CG_DrawFollow( void )
 //	s = "following";
 	s = CG_GetStripEdString("INGAMETEXT", "FOLLOWING");
 	x = 0.5f * (cgs.screenWidth - CG_Text_Width(s, 1.0f, FONT_MEDIUM));
-	CG_Text_Paint(x , 60, 1.0f, colorWhite, s, 0, 0, 0, FONT_MEDIUM);
+	CG_Text_Paint(x , 65, 1.0f, colorWhite, s, 0, 0, 0, FONT_MEDIUM); // Tr!Force: [CGameGeneral] Minimal adjust for pause and race timer
 
 	s = cgs.clientinfo[ cg.snap->ps.clientNum ].name;
 	x = 0.5f * (cgs.screenWidth - CG_Text_Width(s, 2.0f, FONT_MEDIUM));
@@ -3815,7 +3830,7 @@ static void CG_DrawWarmup( void ) {
 		return;
 	}
 
-	if (cgs.gametype == GT_TOURNAMENT) {
+	if (cgs.gametype == GT_TOURNAMENT && cgs.jkmodCGS.gameType == GT_TOURNAMENT) { // Tr!Force: [CGameGeneral] Show proper game type if changed
 		// find the two active players
 		ci1 = NULL;
 		ci2 = NULL;
@@ -3830,24 +3845,45 @@ static void CG_DrawWarmup( void ) {
 		}
 
 		if ( ci1 && ci2 ) {
-			s = va( "%s" S_COLOR_WHITE " vs %s", ci1->name, ci2->name );
-			w = CG_Text_Width(s, 0.6f, FONT_MEDIUM);
-			CG_Text_Paint(0.5f * (cgs.screenWidth - w), 60, 0.6f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+			if (jkcvar_cg_enhancedInterface.integer) { // Tr!Force: [EnhancedInterface] Extra info
+				const char *s2;
+				float w2, w3;
+				s2 = va( "%s", CG_GetStripEdString("INGAMETEXT", "SPECHUD_VERSUS"));
+				w = CG_Text_Width(ci1->name, 1.25f, FONT_MEDIUM);
+				CG_Text_Paint(0.5f * (cgs.screenWidth - w), 45, 1.25f, colorWhite, ci1->name, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+				w2 = CG_Text_Width(s2, 0.9f, FONT_MEDIUM);
+				CG_Text_Paint(0.5f * (cgs.screenWidth - w2), 72, 0.9f, colorWhite, s2, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+				w3 = CG_Text_Width(ci2->name, 1.25f, FONT_MEDIUM);
+				CG_Text_Paint(0.5f * (cgs.screenWidth - w3), 90, 1.25f, colorWhite, ci2->name, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+			} else {
+				s = va( "%s" S_COLOR_WHITE " vs %s", ci1->name, ci2->name );
+				w = CG_Text_Width(s, 0.6f, FONT_MEDIUM);
+				CG_Text_Paint(0.5f * (cgs.screenWidth - w), 60, 0.6f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_MEDIUM);
+			}
+		} else if (jkcvar_cg_enhancedInterface.integer) { // Tr!Force: [EnhancedInterface] Extra info
+			s = "Duel";
+			w = CG_Text_Width(s, 1.5f, FONT_MEDIUM);
+			CG_Text_Paint(0.5f * (cgs.screenWidth - w), 90, 1.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE,FONT_MEDIUM);
 		}
 	} else {
-		if ( cgs.gametype == GT_FFA ) {
+		// Tr!Force: [CGameGeneral] Show proper game type if changed
+		if ( cgs.jkmodCGS.gameType == GT_FFA ) {
 			s = "Free For All";
-		} else if ( cgs.gametype == GT_HOLOCRON ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_HOLOCRON ) {
 			s = "Holocron FFA";
-		} else if ( cgs.gametype == GT_JEDIMASTER ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_JEDIMASTER ) {
 			s = "Jedi Master";
-		} else if ( cgs.gametype == GT_TEAM ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_TOURNAMENT ) {
+			s = "Duel";
+		} else if ( cgs.jkmodCGS.gameType == GT_SINGLE_PLAYER ) {
+			s = "Single Player";
+		} else if ( cgs.jkmodCGS.gameType == GT_TEAM ) {
 			s = "Team FFA";
-		} else if ( cgs.gametype == GT_SAGA ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_SAGA ) {
 			s = "N/A";
-		} else if ( cgs.gametype == GT_CTF ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_CTF ) {
 			s = "Capture the Flag";
-		} else if ( cgs.gametype == GT_CTY ) {
+		} else if ( cgs.jkmodCGS.gameType == GT_CTY ) {
 			s = "Capture the Ysalamiri";
 		} else {
 			s = "";

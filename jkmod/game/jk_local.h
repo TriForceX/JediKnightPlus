@@ -29,6 +29,9 @@ Global definitions
 #define MAX_DIMENSION				((1 << DIMENSION_MAX) + MAX_CLIENTS)
 #define MIN_PRIVATE_TIME			3
 #define TEAM_CHANGE_DELAY			5000
+#define STATION_SHIELD_TYPE			1
+#define STATION_HEALTH_TYPE			2
+#define STATION_AMMO_TYPE			3
 
 #define DEFAULT						Q3_INFINITE // Workaround
 #define NEWLINES					"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
@@ -611,6 +614,8 @@ void		JKMod_EmoteCmdPunch(gentity_t *ent, qboolean showAlert);
 // jk_main.c
 void		JKMod_G_RegisterCvars(void);
 void		JKMod_G_UpdateCvars(void);
+const char	*JKMod_GetLatchedCvarValue(const char *cvarName, const char *resetString);
+void		JKMod_CVU_gameType(void);
 void		JKMod_CVU_teleportChat(void);
 void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_altDimension(void);
