@@ -119,8 +119,7 @@ void JKMod_CG_Draw2D(void)
 
 		JKMod_CG_SpeedoMeter();
 	}
-		
-
+	
 	// Update console print lines
 	if (cg.jkmodCG.consolePrint > 3) cg.jkmodCG.consolePrint = 3;
 	if (cg.jkmodCG.consolePrint && (cg.jkmodCG.consolePrintTime + (cg.jkmodCG.consoleNotifyTime * 1000)) < cg.time) cg.jkmodCG.consolePrint = 0;

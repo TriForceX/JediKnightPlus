@@ -7901,6 +7901,12 @@ void UI_DrawConnectScreen( qboolean overlay ) {
 		return;
 	}
 
+	// Tr!Force: [UIGeneral] Aspect ratio fix for unknown map image
+	UI_FillRect(0, 0, uiInfo.screenWidth, uiInfo.screenHeight, colorBlack);
+	UI_WideScreenMode(qtrue);
+	UI_DrawNamedPic((uiInfo.screenWidth - (uiInfo.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT))) / 2, 0, uiInfo.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT), uiInfo.screenHeight, "menu/art/unknownmap");
+	UI_WideScreenMode(qfalse);
+
 	// see what information we should display
 	trap_GetClientState( &cstate );
 

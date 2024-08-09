@@ -1977,6 +1977,7 @@ void JKMod_CallVote(gentity_t *ent)
 	else if (!Q_stricmp(arg1, "clientkick"))
 	{
 		int n = atoi(arg2);
+		char clientname[MAX_STRING_CHARS];
 
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_CLIENTKICK))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
@@ -1993,13 +1994,15 @@ void JKMod_CallVote(gentity_t *ent)
 			return;
 		}
 
+		Q_strncpyz(clientname, g_entities[n].client->pers.netname, sizeof(clientname));
 		Com_sprintf(level.voteString, sizeof(level.voteString), "%s %s", arg1, arg2);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[n].client->pers.netname, (qboolean)(jk2startversion == VERSION_1_02)));
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(clientname, (qboolean)(jk2startversion == VERSION_1_02)));
 	}
 	// Kick vote
 	else if (!Q_stricmp(arg1, "kick"))
 	{
 		int clientid = G_ClientNumberFromName(arg2);
+		char clientname[MAX_STRING_CHARS];
 
 		if (!(jkcvar_voteControl.integer & (1 << VOTE_KICK))) {
 			trap_SendServerCommand(ent - g_entities, "print \"This vote option is not allowed on this server\n\"");
@@ -2017,8 +2020,9 @@ void JKMod_CallVote(gentity_t *ent)
 			}
 		}
 
+		Q_strncpyz(clientname, g_entities[clientid].client->pers.netname, sizeof(clientname));
 		Com_sprintf(level.voteString, sizeof(level.voteString), "clientkick %d", clientid);
-		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(g_entities[clientid].client->pers.netname, (qboolean)(jk2startversion == VERSION_1_02)));
+		Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Kick %s from server", Q_CleanStr(clientname, (qboolean)(jk2startversion == VERSION_1_02)));
 	}
 	// Next map vote
 	else if (!Q_stricmp(arg1, "nextmap"))

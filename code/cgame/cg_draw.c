@@ -3521,7 +3521,9 @@ static void CG_DrawVote(void) {
 	char sYes[20];
 	char sNo[20];
 	// Tr!Force: [CGameGeneral] Vote vertical alignment
-	int jkmod_valign = jkcvar_cg_drawMovementKeys.integer == 3 || (trap_Key_GetCatcher() & KEYCATCH_MESSAGE) ? 67 : 5; // 58
+	qboolean jkmod_inchat = (trap_Key_GetCatcher() & KEYCATCH_MESSAGE);
+	qboolean jkmod_inmenu = (trap_Key_GetCatcher() & KEYCATCH_UI);
+	int jkmod_valign = jkcvar_cg_drawMovementKeys.integer == 3 ? 67 : 5; // 58
 	int jkmod_consoleLines = cg.jkmodCG.consolePrint;
 
 	if ( !cgs.voteTime ) {
@@ -3529,9 +3531,14 @@ static void CG_DrawVote(void) {
 	}
 
 	// Tr!Force: [CGameGeneral] Vote vertical alignment
-	if (jkmod_consoleLines == 1) jkmod_valign += 7;
-	else if (jkmod_consoleLines == 2) jkmod_valign += 7*2.6;
-	else if (jkmod_consoleLines == 3) jkmod_valign += 7*4.2;
+	if (jkmod_inmenu) { 
+		jkmod_valign = 40;
+	} else {
+		if (jkmod_inchat) jkmod_valign = 25;
+		if (jkmod_consoleLines == 1) jkmod_valign += 7 + (jkmod_inchat ? 25 : 0);
+		else if (jkmod_consoleLines == 2) jkmod_valign += 7*2.6 + (jkmod_inchat ? 30 : 0);
+		else if (jkmod_consoleLines == 3) jkmod_valign += 7*4.2 + (jkmod_inchat ? 35 : 0);
+	}
 
 	// play a talk beep whenever it is modified
 	if ( cgs.voteModified ) {
@@ -4612,14 +4619,14 @@ static void CG_Draw2D( void ) {
 		CG_DrawWarmup();
 	}
 
+	// Tr!Force: [Draw2D] Load custom draw 2d functions
+	JKMod_CG_Draw2D();
+
 	// don't draw center string if scoreboard is up
 	cg.scoreBoardShowing = CG_DrawScoreboard();
 	if ( !cg.scoreBoardShowing) {
 		CG_DrawCenterString();
 	}
-
-	// Tr!Force: [Draw2D] Load custom draw 2d functions
-	JKMod_CG_Draw2D();
 }
 
 

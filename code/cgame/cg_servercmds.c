@@ -1304,7 +1304,6 @@ static void CG_ServerCommand( void ) {
 			{
 				JKMod_CG_ChatBox_AddString( text );
 				if (mvapi >= 4) trap_MVAPI_Print(MVPRINT_SKIPNOTIFY, va("%s\n", text));
-
 			}
 			else {
 				CG_Printf("%s\n", text);
