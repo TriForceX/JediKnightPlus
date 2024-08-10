@@ -128,11 +128,11 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	// Set player tweaks
 	if (jkcvar_playerTweaks.integer) JKMod_PlayerTweaksCheck(ent);
 
-	// Remove bot control
-	if (client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
-
 	// Remove temp model
 	if (client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, client->pers.jkmodPers.tempModelNum);
+
+	// Remove bot control
+	if (client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
 
 	// Check dual saber
 	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;

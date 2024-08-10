@@ -463,6 +463,7 @@ extern	vmCvar_t					jkcvar_duelDistance;
 extern	vmCvar_t					jkcvar_duelPassThrough;
 extern	vmCvar_t					jkcvar_duelAutoAccept;
 
+extern	vmCvar_t					jkcvar_dropBacta;
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_damagePlums;

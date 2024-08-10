@@ -2513,6 +2513,9 @@ void ClientDisconnect( int clientNum ) {
 
 	// Tr!Force: [GameGeneral] Remove temp model
 	if (ent->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
+
+	// Tr!Force: [Bots] Remove bot control
+	if (ent->client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(ent->client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
 	
 	// Tr!Force: [General] Check for reconnect
 	Q_strncpyz(level.jkmodLocals.reconnectedIP, ent->client->sess.jkmodSess.clientIP, sizeof(level.jkmodLocals.reconnectedIP));

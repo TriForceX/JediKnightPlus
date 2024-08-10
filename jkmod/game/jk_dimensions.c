@@ -739,14 +739,14 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		// Check saber
 		if (ent->client->ps.saberEntityNum != ENTITYNUM_NONE) g_entities[ent->client->ps.saberEntityNum].jkmodEnt.dimensionNumber = dimension;
 
+		// Remove temp model
+		if (ent->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
+
 		// Remove bot control
 		if (ent->client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(ent->client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
 
 		// Remove controlled bot
 		if (ent->client->pers.jkmodBots.actionFlags & JK_BOT_CONTROL) JKMod_botControl(clientNum, ent->client->pers.jkmodPers.botControl[BOT_INDEX], "remove");
-
-		// Remove temp model
-		if (ent->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(ent, ent->client->pers.jkmodPers.tempModelNum);
 
 		// Clear bots stuff
 		ARRAY_CLEAR(ent->client->pers.jkmodPers.botControl);

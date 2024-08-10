@@ -702,6 +702,14 @@ void TossClientItems( gentity_t *self ) {
 			}
 		}
 	}
+
+	// Tr!Force: [DropBacta] Drop if carrying when killed
+	if ( jkcvar_dropBacta.integer ) {
+		if ( (self->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)) ) {
+			item = BG_FindItem( "item_medpac" );
+			Drop_Item( self, item, 45 );
+		}
+	}
 }
 
 
@@ -2116,6 +2124,9 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	// Tr!Force: [GameGeneral] Remove temp model
 	if (self->client->pers.jkmodPers.tempModelNum) JKMod_TempModelRemove(self, self->client->pers.jkmodPers.tempModelNum);
+
+	// Tr!Force: [Bots] Remove bot control
+	if (self->client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(self->client->pers.jkmodPers.botControl[BOT_INDEX], self->s.number, "remove");
 
 	Cmd_Score_f( self );		// show scores
 	// send updated scores to any clients that are following this one,

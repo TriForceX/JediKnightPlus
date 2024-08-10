@@ -74,6 +74,7 @@ vmCvar_t	jkcvar_duelDistance;
 vmCvar_t	jkcvar_duelPassThrough;
 vmCvar_t	jkcvar_duelAutoAccept;
 
+vmCvar_t	jkcvar_dropBacta;
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_damagePlums;
@@ -173,6 +174,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_duelPassThrough,		"jk_duelPassThrough",		"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_duelAutoAccept,		"jk_duelAutoAccept",		"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 
+	{ &jkcvar_dropBacta,			"jk_dropBacta",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
