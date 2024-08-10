@@ -76,7 +76,6 @@ Global definitions
 // Utilities
 #define VAL(x) #x
 #define STR(x) VAL(x)
-#define INFINITE_AMMO			0x7fff
 #define CVAR_NONE				(0x00000000u)
 #define CONTENTS_NONE			(0x00000000u)
 #define VALIDSTRING(a)			((a != NULL) && (a[0] != '\0'))
@@ -84,6 +83,7 @@ Global definitions
 #define VALIDTEXT(a)			((a != NULL) && (a[0] != '\0') && (a[0] != ' '))
 #define VALIDDIGIT(a)			((a >= '0' && a <= '9'))
 #define VALIDAMOUNT(a)			((abs(a) > 999 ? 999 : abs(a)))
+#define INFINITE_VALUE			0x7fff
 #define ARRAY_CLEAR(a)			memset(a, 0, sizeof(a))
 #define VERSION_FLOAT(x,y,z)	atof(va("%d.%02d%02d", x, y, z))
 

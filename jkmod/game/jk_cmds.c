@@ -2673,17 +2673,23 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 							else if (!Q_stricmp(arg2, "health") || !Q_stricmp(arg2, "armor")) {
 								char arg3[MAX_TOKEN_CHARS];
 								int amount;
+								qboolean infinite;
 								JKMod_Str_Argv(3, arg3, sizeof(arg3), p);
 								if (argNum < 4) {
 									trap_SendServerCommand(ent - g_entities, va("cp \"Usage: !bot %i %s ^2<value>\"", challenged->s.number, arg2));
 									return;
 								}
+								if (!JKMod_ValidNumber(arg3) || atoi(arg3) == 0) {
+									trap_SendServerCommand(ent - g_entities, va("cp \"Invalid value\"", challenged->s.number, arg2));
+									return;
+								}
+								infinite = atoi(arg3) > 999 ? qtrue : qfalse;
 								amount = VALIDAMOUNT(atoi(arg3));
-								trap_SendServerCommand(ent - g_entities, va("cp \"Bot %i %s changed to %i\"", challenged->s.number, arg2, amount));
+								trap_SendServerCommand(ent - g_entities, va("cp \"Bot %i %s changed to %s\"", challenged->s.number, arg2, (infinite ? "infinite" : arg3)));
 								if (!Q_stricmp(arg2, "health")) {
-									challenged->health = challenged->client->ps.stats[STAT_HEALTH] = challenged->client->pers.jkmodPers.customHealth = amount;
+									challenged->health = challenged->client->ps.stats[STAT_HEALTH] = challenged->client->pers.jkmodPers.customHealth = (infinite ? INFINITE_VALUE : amount);
 								} else {
-									challenged->client->ps.stats[STAT_ARMOR] = challenged->client->pers.jkmodPers.customArmor = amount;
+									challenged->client->ps.stats[STAT_ARMOR] = challenged->client->pers.jkmodPers.customArmor = (infinite ? INFINITE_VALUE : amount);
 								}
 							}
 							else if (!Q_stricmp(arg2, "reset")) {

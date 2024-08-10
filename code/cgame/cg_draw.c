@@ -930,7 +930,7 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 	trap_R_SetColor( colorTable[numColor_i] );	
 	
 	// Tr!Force: [InfiniteAmmo] Show on hud
-	if (value == INFINITE_AMMO)
+	if (value == INFINITE_VALUE)
 		CG_DrawRotatePic2(x + 41, y + 33, 8, 16, -90, cgs.media.smallnumberShaders[8]);
 	else
 		CG_DrawNumField(x + 30, y + 26, 3, value, 6, 12, NUM_FONT_SMALL, qfalse);
@@ -1063,7 +1063,7 @@ void CG_DrawHUD(centity_t	*cent)
 		else
 		{
 			// Tr!Force: [InfiniteAmmo] Show on hud
-			if (cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex] == INFINITE_AMMO)
+			if (cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex] == INFINITE_VALUE)
 				Com_sprintf(ammoString, sizeof(ammoString), "--", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);
 			else
 				Com_sprintf(ammoString, sizeof(ammoString), "%i", cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex]);

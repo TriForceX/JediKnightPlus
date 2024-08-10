@@ -858,18 +858,23 @@ static void JKMod_svCmd_controlBots(void)
 				trap_EA_Say(botPlayer->s.number, ConcatArgs(3));
 				return;
 			}
-			else if (!Q_stricmp(arg2, "health"))
+			else if (!Q_stricmp(arg2, "health") || !Q_stricmp(arg2, "armor"))
 			{
-				int amount = VALIDAMOUNT(atoi(arg3));
-				botPlayer->health = botPlayer->client->ps.stats[STAT_HEALTH] = botPlayer->client->pers.jkmodPers.customHealth = amount;
-				G_Printf("Bot %i (%s) health was changed to %i\n", botPlayer->s.number, botPlayer->client->pers.netname, amount);
-				return;
-			}
-			else if (!Q_stricmp(arg2, "armor"))
-			{
-				int amount = VALIDAMOUNT(atoi(arg3));
-				botPlayer->client->ps.stats[STAT_ARMOR] = botPlayer->client->pers.jkmodPers.customArmor = amount;
-				G_Printf("Bot %i (%s) armor was changed to %i\n", botPlayer->s.number, botPlayer->client->pers.netname, amount);
+				int amount;
+				qboolean infinite;
+
+				if (!JKMod_ValidNumber(arg3) || atoi(arg3) == 0) {
+					G_Printf("Invalid value\n");
+					return;
+				}
+				infinite = atoi(arg3) > 999 ? qtrue : qfalse;
+				amount = VALIDAMOUNT(atoi(arg3));
+				G_Printf("Bot %i (%s) %s was changed to %s\n", botPlayer->s.number, botPlayer->client->pers.netname, arg2, (infinite ? "infinite" : arg3));
+				if (!Q_stricmp(arg2, "health")) {
+					botPlayer->health = botPlayer->client->ps.stats[STAT_HEALTH] = botPlayer->client->pers.jkmodPers.customHealth = (infinite ? INFINITE_VALUE : amount);
+				} else {
+					botPlayer->client->ps.stats[STAT_ARMOR] = botPlayer->client->pers.jkmodPers.customArmor = (infinite ? INFINITE_VALUE : amount);
+				}
 				return;
 			}
 			G_Printf("Invalid option\n");

@@ -1181,8 +1181,8 @@ int Pickup_Holdable( gentity_t *ent, gentity_t *other ) {
 void Add_Ammo (gentity_t *ent, int weapon, int count)
 {
 	// Tr!Force: [InfiniteAmmo] Add ammo on item
-	if (count == INFINITE_AMMO) ent->client->ps.ammo[weapon] = INFINITE_AMMO;
-	if (ent->client->ps.ammo[weapon] == INFINITE_AMMO) return;
+	if (count == INFINITE_VALUE) ent->client->ps.ammo[weapon] = INFINITE_VALUE;
+	if (ent->client->ps.ammo[weapon] == INFINITE_VALUE) return;
 
 	ent->client->ps.ammo[weapon] += count;
 	if ( ent->client->ps.ammo[weapon] > ammoData[weapon].max ) {

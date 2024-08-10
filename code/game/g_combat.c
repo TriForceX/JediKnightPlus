@@ -612,7 +612,7 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 	launched->count = bg_itemlist[BG_GetItemIndexByTag(weapon, IT_WEAPON)].quantity;
 
 	// Tr!Force: [InfiniteAmmo] Check ammo
-	if (self->client->ps.ammo[weaponData[weapon].ammoIndex] != INFINITE_AMMO) self->client->ps.ammo[weaponData[weapon].ammoIndex] -= bg_itemlist[BG_GetItemIndexByTag(weapon, IT_WEAPON)].quantity;
+	if (self->client->ps.ammo[weaponData[weapon].ammoIndex] != INFINITE_VALUE) self->client->ps.ammo[weaponData[weapon].ammoIndex] -= bg_itemlist[BG_GetItemIndexByTag(weapon, IT_WEAPON)].quantity;
 
 	if (self->client->ps.ammo[weaponData[weapon].ammoIndex] < 0)
 	{

@@ -495,7 +495,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 			}
 
 			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) 
-				for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = INFINITE_AMMO;
+				for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = INFINITE_VALUE;
 			else
 				for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
 
