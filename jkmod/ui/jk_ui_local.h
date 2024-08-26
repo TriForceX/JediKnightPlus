@@ -81,16 +81,20 @@ Cvar registration
 =====================================================================
 */
 
+extern vmCvar_t						jkcvar_ui_motdString;
 extern vmCvar_t						jkcvar_ui_currentTeam;
 extern vmCvar_t						jkcvar_ui_votePoll;
+extern vmCvar_t						jkcvar_ui_votePause;
 extern vmCvar_t						jkcvar_ui_emoteToggle;
 extern vmCvar_t						jkcvar_ui_dimensionToggle;
 extern vmCvar_t						jkcvar_ui_teleportToggle;
 extern vmCvar_t						jkcvar_ui_teleportCount;
 extern vmCvar_t						jkcvar_ui_teleportMenu;
 extern vmCvar_t						jkcvar_ui_clientPopUp;
-extern vmCvar_t						jkcvar_ui_motdString;
+extern vmCvar_t						jkcvar_ui_clientVersion;
+extern vmCvar_t						jkcvar_ui_hideMotd;
 extern vmCvar_t						jkcvar_ui_screenClear;
+extern vmCvar_t						jkcvar_ui_highestVideo;
 
 extern vmCvar_t						jkcvar_ui_test1;
 extern vmCvar_t						jkcvar_ui_test2;
@@ -112,6 +116,7 @@ qboolean	BaseJK2_UI_FeederSelection(float feederID, int index);
 void		JKMod_UI_MacroScan(void);
 void		JKMod_UI_MacroEnable(void);
 char		*JKMod_UI_StrTok(char *str, const char *delim);
+qboolean	JKMod_UI_ValidNumber(const char *s);
 qboolean	JKMod_UI_ConsoleCommand(char *cmd);
 
 // jk_main.c

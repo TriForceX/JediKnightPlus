@@ -9,6 +9,21 @@ The version control structure on this project is `<mayor>.<minor>.<patch>` where
 
 ---
 
+## 0.21.0
+- Fix some messages in chat color mode
+- Fix chatbox alignment during intermission
+- Fix player label alignment and menu options
+- Fix bots god mode enabled with other options
+- Add dual saber and idle damage new options
+- Add new player tweaks and bots options
+- Add more test cmds and entities checks
+- Add saber box and updated team overlay
+- Add restored loading icons and other tweaks
+- Add proper alignment and fixes for vote display
+- Add drop bacta option for players who die with it
+- Add proper checks for bots health & armor control
+- Add changelog pop-up and misc menus tweaks
+
 ## 0.20.4
 - Add default cfg values and extra check on connect msg
 - Add missing check for weapons on game type changes

@@ -466,6 +466,52 @@
 				setitemcolor	clientDefaultsControlButton 		forecolor 1 1 1 1 ;
 			}
 		}
+		
+		// Apply changes button
+		itemDef 
+		{
+			name				clientApplyControlButton_glow
+			group				mods
+			style				WINDOW_STYLE_SHADER
+			rect				20 223 170 30
+			background			"gfx/menus/menu_blendbox2"	// Frame around button
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+
+		itemDef 
+		{
+			name				clientApplyControlButton
+			group				none
+			text				@MENUS0_APPLY_CHANGES
+			descText			@MENUS0_APPLY_CHANGES_AND_THEN
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				20 223 170 30
+			font				3
+			textscale			0.9
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			170
+			textaligny			5
+			textstyle			3
+			forecolor			1 0 0 1
+			visible				0
+
+			mouseEnter 
+			{ 
+				show			clientApplyControlButton_glow
+			}
+			mouseExit 
+			{ 
+				hide			clientApplyControlButton_glow
+			}	  	  
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				exec 			"vid_restart" ;
+			}
+		}
 
 		//---------------------------------------------
 		//	HIGHLIGHT BARS
@@ -656,6 +702,23 @@
 			visible				0
 		}
 		
+		itemDef
+		{
+			name				highlightVidRestart
+			group				highlights
+			text				@JKMENUS_VID_RESTART_DESC
+			type				ITEM_TYPE_TEXT
+			textalign           ITEM_ALIGN_CENTER
+			textalignx          274
+			textaligny          -4
+			rect				0 314 550 10
+			font				2
+			textscale			0.4
+			backcolor			0 0 0 0
+			forecolor			.235 .882 .847 1
+			visible				0
+		}
+		
 		//---------------------------------------------
 		//	INTERFACE OPTIONS
 		//---------------------------------------------
@@ -704,9 +767,9 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DRAWFORCEPOINTS
-			descText			@JKMENUS_CLIENT_DRAWFORCEPOINTS_DESC
-			cvar				"jk_cg_drawForcePoints"
+			text				@JKMENUS_CLIENT_DRAWINVENTORY
+			descText			@JKMENUS_CLIENT_DRAWINVENTORY_DESC
+			cvar				"jk_cg_drawInventory"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -719,7 +782,7 @@
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-			
+
 			mouseEnter 
 			{ 
 				show			highlight2
@@ -736,10 +799,16 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DRAWINVENTORY
-			descText			@JKMENUS_CLIENT_DRAWINVENTORY_DESC
-			cvar				"jk_cg_drawInventory"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_TEAMOVERLAY
+			descText			@JKMENUS_CLIENT_TEAMOVERLAY_DESC
+			cvar				"cg_drawTeamOverlay"
+			cvarFloatList
+			{
+				@MENUS0_NO						0
+				@JKMENUS_MOD_OPTIONS_STANDARD	1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
+			}
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -764,21 +833,15 @@
 				hide			keybindstatus
 			}
 		}
-
+		
 		itemDef 
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_TEAMOVERLAY
-			descText			@JKMENUS_CLIENT_TEAMOVERLAY_DESC
-			cvar				"cg_drawTeamOverlay"
-			cvarFloatList
-			{
-				@MENUS0_NO						0
-				@JKMENUS_MOD_OPTIONS_STANDARD	1
-				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_ENHANCEDINTERFACE
+			descText			@JKMENUS_CLIENT_ENHANCEDINTERFACE_DESC
+			cvar				"jk_cg_enhancedInterface"
 			rect				220 101 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -803,15 +866,20 @@
 				hide			keybindstatus
 			}
 		}
-		
+
 		itemDef 
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_ENHANCEDINTERFACE
-			descText			@JKMENUS_CLIENT_ENHANCEDINTERFACE_DESC
-			cvar				"jk_cg_enhancedInterface"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_CHATBOX
+			descText			@JKMENUS_CLIENT_CHATBOX_DESC
+			cvar				"jk_cg_chatBox"
+			cvarFloatList
+			{
+				"Jedi Outcast"  0
+				"Jedi Academy"  1
+			}
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -836,19 +904,20 @@
 				hide			keybindstatus
 			}
 		}
-
+		
 		itemDef 
 		{
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_CHATBOX
-			descText			@JKMENUS_CLIENT_CHATBOX_DESC
-			cvar				"jk_cg_chatBox"
+			text				@JKMENUS_CLIENT_DRAWTIMER
+			descText			@JKMENUS_CLIENT_DRAWTIMER_DESC
+			cvar				"cg_drawTimer"
 			cvarFloatList
 			{
-				"Jedi Outcast"  0
-				"Jedi Academy"  1
+				@MENUS0_NO						0
+				@JKMENUS_MOD_OPTIONS_STANDARD	1
+				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
 			}
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -880,9 +949,9 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_DRAWTIMER
-			descText			@JKMENUS_CLIENT_DRAWTIMER_DESC
-			cvar				"cg_drawTimer"
+			text				@JKMENUS_CLIENT_DRAWFPS
+			descText			@JKMENUS_CLIENT_DRAWFPS_DESC
+			cvar				"cg_drawFPS"
 			cvarFloatList
 			{
 				@MENUS0_NO						0
@@ -909,25 +978,19 @@
 			}
 			mouseExit 
 			{ 
-				hide			highlight7
 				hide			keybindstatus
-			}
+				hide			highlight7
+			} 
 		}
 		
 		itemDef 
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_DRAWFPS
-			descText			@JKMENUS_CLIENT_DRAWFPS_DESC
-			cvar				"cg_drawFPS"
-			cvarFloatList
-			{
-				@MENUS0_NO						0
-				@JKMENUS_MOD_OPTIONS_STANDARD	1
-				@JKMENUS_MOD_OPTIONS_ALTERNATE	2
-			}
+			type				ITEM_TYPE_YESNO
+			text				@JKMENUS_CLIENT_DRAWLAG
+			descText			@JKMENUS_CLIENT_DRAWLAG_DESC
+			cvar				"cg_lagometer"
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -948,8 +1011,8 @@
 			}
 			mouseExit 
 			{ 
-				hide			keybindstatus
 				hide			highlight8
+				hide			keybindstatus
 			} 
 		}
 		
@@ -958,9 +1021,9 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_DRAWLAG
-			descText			@JKMENUS_CLIENT_DRAWLAG_DESC
-			cvar				"cg_lagometer"
+			text				@JKMENUS_CLIENT_RACETIMER
+			descText			@JKMENUS_CLIENT_RACETIMER_DESC
+			cvar				"jk_cg_drawRaceTimer"
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -990,10 +1053,17 @@
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_YESNO
-			text				@JKMENUS_CLIENT_RACETIMER
-			descText			@JKMENUS_CLIENT_RACETIMER_DESC
-			cvar				"jk_cg_drawRaceTimer"
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_MOVEMENTKEYS
+			descText			@JKMENUS_CLIENT_MOVEMENTKEYS_DESC
+			cvar				"jk_cg_drawMovementKeys"
+			cvarFloatList
+			{
+				@MENUS0_NO  			0
+				@JKMENUS_SIZE_SMALL		1
+				@MENUS0_MEDIUM  		2
+				@JKMENUS_SIZE_BIG		3
+			}
 			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -1016,7 +1086,7 @@
 			{ 
 				hide			highlight10
 				hide			keybindstatus
-			} 
+			}
 		}
 		
 		itemDef 
@@ -1024,15 +1094,13 @@
 			name				none
 			group				clientInterfaceControls
 			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_MOVEMENTKEYS
-			descText			@JKMENUS_CLIENT_MOVEMENTKEYS_DESC
-			cvar				"jk_cg_drawMovementKeys"
+			text				@JKMENUS_CLIENT_HUDSTYLE
+			descText			@JKMENUS_CLIENT_HUDSTYLE_DESC
+			cvar				"cg_hudFiles"
 			cvarFloatList
 			{
-				@MENUS0_NO  			0
-				@JKMENUS_SIZE_SMALL		1
-				@MENUS0_MEDIUM  		2
-				@JKMENUS_SIZE_BIG		3
+				"Normal"  							0
+				@JKMENUS_CLIENT_HUDSTYLE_SIMPLE		1
 			}
 			rect				220 241 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -1056,45 +1124,82 @@
 			{ 
 				hide			highlight11
 				hide			keybindstatus
-			}
+			} 
 		}
 		
 		itemDef 
 		{
 			name				none
 			group				clientInterfaceControls
-			type				ITEM_TYPE_MULTI
-			text				@JKMENUS_CLIENT_HUDSTYLE
-			descText			@JKMENUS_CLIENT_HUDSTYLE_DESC
-			cvar				"cg_hudFiles"
-			cvarFloatList
-			{
-				"Normal"  							0
-				@JKMENUS_CLIENT_HUDSTYLE_SIMPLE		1
-			}
-			rect				220 261 300 20
+			type				ITEM_TYPE_SLIDER_INT
+			text				@JKMENUS_CLIENT_SCOREBOARDOPACITY
+			descText			@JKMENUS_CLIENT_SCOREBOARDOPACITY_DESC
+			cvarfloat			"jk_cg_scoreboardOpacity" 0 0 255
+			rect				220 261 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
-			textalignx			151
+			textalignx          151
 			textaligny			-2
 			font				2
-			textscale			0.8
+			textscale			0.8 
 			forecolor			1 1 1 1
 			visible				0
 			action
 			{
 				play			"sound/interface/button1.wav" ; 
 			}
-
-			mouseEnter 
+			
+			mouseEnter
 			{ 
 				show			highlight12
 				show			keybindstatus
 			}
-			mouseExit 
+			mouseExit
 			{ 
 				hide			highlight12
 				hide			keybindstatus
-			} 
+			}
+		}
+		
+		itemDef
+		{
+			name				none
+			group				clientInterfaceControls
+			rect				220 261 280 20 // w - 20 reset
+			type				4
+			style				0	
+			text				""
+			cvar				jk_cg_scoreboardOpacity
+			maxPaintChars		5
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			260
+			textaligny			2  
+			font				2
+			textscale			.4
+			forecolor			1 1 1 .5
+			visible				0
+			decoration
+		}
+		
+		itemDef
+		{
+			name				none
+			group				clientInterfaceControls
+			type				ITEM_TYPE_BUTTON
+			text				@JKMENUS_MOD_OPTIONS_RESET
+			descText			@JKMENUS_CLIENT_SCOREBOARDOPACITY_DESC
+			rect				500 261 50 20
+			textalign			ITEM_ALIGN_LEFT	
+			textalignx			0
+			textaligny			2  
+			font 				4
+			textscale			.4
+			forecolor			.235 .882 .847 1
+			visible				1
+			action
+			{
+				play			"sound/interface/shieldcon_done.mp3" ;
+				setcvar			jk_cg_scoreboardOpacity "0"
+			}
 		}
 		
 		// PREV & NEXT BUTTONS (INTERFACE OPTIONS)
@@ -2547,7 +2652,7 @@
 			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_FLAGOPACITY
 			descText			@JKMENUS_CLIENT_FLAGOPACITY_DESC
-			cvarfloat			"jk_cg_flagOpacity" 10 0 255
+			cvarfloat			"jk_cg_flagOpacity" 255 0 255
 			rect				220 241 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
@@ -2622,7 +2727,7 @@
 			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_SABERTRAIL
 			descText			@JKMENUS_CLIENT_SABERTRAIL_DESC
-			cvarfloat			"jk_cg_saberTrailSpeed" 10 0 150
+			cvarfloat			"jk_cg_saberTrailSpeed" 40 0 150
 			rect				220 261 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
@@ -2892,6 +2997,91 @@
 			}
 		}
 		
+		itemDef 
+		{
+			name				clientVisuals2Controls_r_overBrightBits
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_OVERBRIGHTBITS
+			descText			@JKMENUS_CLIENT_OVERBRIGHTBITS_DESC
+			cvar				"r_overBrightBits"
+			cvarFloatList
+			{
+				@MENUS0_NO  	0
+				@MENUS0_YES		1
+			}
+			rect				220 121 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+				setitemcolor	clientVisuals2Controls_r_overBrightBits forecolor .96 .933 .40 1 ;
+				show			clientApplyControlButton
+			}
+
+			mouseEnter 
+			{
+				show			highlight5
+				show			highlightVidRestart
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight5
+				hide			highlightVidRestart
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				clientVisuals2Controls_jk_ui_highestVideo
+			group				clientVisuals2Controls
+			type				ITEM_TYPE_MULTI
+			text				@JKMENUS_CLIENT_HIGHESTVIDEO
+			descText			@JKMENUS_CLIENT_HIGHESTVIDEO_DESC
+			cvar				"jk_ui_highestVideo"
+			cvarFloatList
+			{
+				@JKMENUS_MOD_OPTIONS_DEFAULTS	0
+				@MENUS0_YES  					1
+			}
+			rect				220 141 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151 
+			textaligny			-2
+			font				2
+			textscale			0.8
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+				uiScript		update "jk_ui_highestVideo"
+				setitemcolor	clientVisuals2Controls_jk_ui_highestVideo forecolor .96 .933 .40 1 ;
+				show			clientApplyControlButton
+			}
+
+			mouseEnter 
+			{
+				show			highlight6
+				show			highlightVidRestart
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight6
+				hide			highlightVidRestart
+				hide			keybindstatus
+			}
+		}
+		
 		// PREV & NEXT BUTTONS (VISUALS OPTIONS PAGE 2)
 		itemDef 
 		{
@@ -3090,7 +3280,7 @@
 			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_FOV
 			descText			@JKMENUS_CLIENT_FOV_DESC
-			cvarfloat			"cg_fov" 10 50 200
+			cvarfloat			"cg_fov" 80 50 200
 			rect				220 141 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
@@ -3165,7 +3355,7 @@
 			type				ITEM_TYPE_SLIDER_INT
 			text				@JKMENUS_CLIENT_THIRDCAMERA
 			descText			@JKMENUS_CLIENT_THIRDCAMERA_DESC
-			cvarfloat			"cg_thirdPersonRange" 10 0 300
+			cvarfloat			"cg_thirdPersonRange" 80 0 300
 			rect				220 161 280 20 // w - 20 reset
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx          151
@@ -3974,7 +4164,7 @@
 			type				ITEM_TYPE_MULTI
 			text				@JKMENUS_CLIENT_HIDEMOTD
 			descText			@JKMENUS_CLIENT_HIDEMOTD_DESC
-			cvar				"jk_ui_motdString"
+			cvar				"jk_ui_hideMotd"
 			cvarFloatList
 			{
 				@MENUS0_YES  		1
@@ -4069,8 +4259,8 @@
 				play			"sound/interface/button1.wav" ;
 				close			all ; 
 				hide			default_glow ;
-				setcvar			JKMod_resetClient 0 ;
-				uiScript		update "JKMod_resetClient"
+				setcvar			jk_ui_clientPopUp 0 ;
+				uiScript		update "jk_ui_clientPopUp"
 			}
 			
 			mouseEnter 

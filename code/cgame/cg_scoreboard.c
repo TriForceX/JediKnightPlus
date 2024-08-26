@@ -370,6 +370,22 @@ qboolean CG_DrawOldScoreboard( void ) {
 		fade = *fadeColor;
 	}
 
+	// Tr!Force: [Scoreboard] Background transparency
+	if (jkcvar_cg_scoreboardOpacity.integer && cg.predictedPlayerState.pm_type != PM_INTERMISSION) {
+		vec4_t colorBackground = {0, 0, 0, 0};
+		colorBackground[3] = jkcvar_cg_scoreboardOpacity.integer / 255.0f;
+		CG_FillRect(0, 0, cgs.screenWidth, cgs.screenHeight, colorBackground);
+		// Show transparent logo after 50%
+		if (jkcvar_cg_scoreboardOpacity.integer > 127) {
+			qhandle_t levelshot = trap_R_RegisterShaderNoMip("menu/art/unknownmap_transparent");
+			vec4_t colorImage = {1, 1, 1, 1};
+			colorImage[3] = (jkcvar_cg_scoreboardOpacity.integer - 128) / 255.0f;
+			trap_R_SetColor(colorImage);
+			CG_DrawPic((cgs.screenWidth - (cgs.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT))) / 2, 0, cgs.screenHeight * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT), cgs.screenHeight, levelshot);
+			trap_R_SetColor(NULL);
+		}
+	}
+
 	// fragged by ... line
 	// or if in intermission and duel, prints the winner of the duel round
 	if (cgs.gametype == GT_TOURNAMENT && cgs.duelWinner != -1 &&
@@ -489,8 +505,13 @@ qboolean CG_DrawOldScoreboard( void ) {
 	CG_Text_Paint ( SB_TIME_X, y, 1.0f, colorWhite, CG_GetStripEdString("MENUS3", "TIME"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM ); // Tr!Force: [CGameGeneral] Use translated text
 
 	// Tr!Force: [EnhancedInterface] Extra info
-	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) {
-		CG_Text_Paint ( SB_TIME_X, y + 19, 0.5f, colorWhite, CG_GetStripEdString("JKINGAME", "RECORD"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+	if (jkcvar_cg_enhancedInterface.integer)
+	{
+		if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE) {
+			CG_Text_Paint ( SB_TIME_X, y + 19, 0.5f, colorWhite, CG_GetStripEdString("JKINGAME", "RECORD"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		} else {
+			CG_Text_Paint ( SB_TIME_X, y + 19, 0.5f, colorWhite, CG_GetStripEdString("JKINGAME", "PLAYING"), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_MEDIUM );
+		}
 	}
 
 	y = SB_TOP;

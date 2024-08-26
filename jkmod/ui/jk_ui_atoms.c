@@ -510,6 +510,23 @@ char *JKMod_UI_StrTok(char *str, const char *delim)
 
 /*
 =====================================================================
+Check the given string as number
+=====================================================================
+*/
+qboolean JKMod_UI_ValidNumber(const char *s)
+{
+	int i;
+
+	if (s == NULL || *s == '\0') return qfalse;
+    for (i = 0; s[i] != '\0'; i++) {
+        if (s[i] < '0' || s[i] > '9') return qfalse;
+    }
+
+    return qtrue;
+}
+
+/*
+=====================================================================
 Console command function
 =====================================================================
 */

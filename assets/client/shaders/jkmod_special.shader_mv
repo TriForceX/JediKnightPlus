@@ -1,0 +1,201 @@
+jkmod_refreshicon_alpha
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/menus/jkmod_refresh
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}
+jkmod_refreshicon_alpha_hover
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/menus/jkmod_refresh
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		tcmod rotate 100
+        rgbGen vertex
+    }
+}
+jkmod_searchicon_alpha
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/menus/jkmod_search
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/crouch_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/crouch_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/crouch_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/crouch_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/jump_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/jump_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/jump_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/jump_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/back_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/back_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/back_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/back_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/forward_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/forward_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/forward_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/forward_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/left_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/left_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/left_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/left_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/right_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/right_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/right_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/right_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/right_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/right_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/attack_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/attack_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/attack_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/attack_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/alt_on
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/alt_on
+		blendFunc blend
+        rgbGen vertex
+    }
+}
+gfx/hud/jkmod_keys/alt_off
+{
+	nopicmip
+	uiElementHD
+    {
+        map gfx/hud/jkmod_keys/alt_off
+		blendFunc blend
+        rgbGen vertex
+    }
+}

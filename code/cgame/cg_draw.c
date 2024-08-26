@@ -846,8 +846,8 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 		return;
 	}
 
-	// Tr!Force: [ForcePoints] Draw it
-	if (jkcvar_cg_drawForcePoints.integer)
+	// Tr!Force: [EnhancedInterface] Draw force points on hud
+	if (jkcvar_cg_enhancedInterface.integer)
 	{
 		int value = cg.snap->ps.fd.forcePower;
 		int align = value < 10 ? 23 : value < 100 ? 26 : 28;

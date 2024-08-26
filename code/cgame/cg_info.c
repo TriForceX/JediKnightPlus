@@ -13,6 +13,7 @@ static int			loadingItemIconCount;
 static qhandle_t	loadingPlayerIcons[MAX_LOADING_PLAYER_ICONS];
 static qhandle_t	loadingItemIcons[MAX_LOADING_ITEM_ICONS];
 
+extern float CG_Cvar_Get(const char *cvar);
 void CG_LoadBar(void);
 
 
@@ -236,6 +237,8 @@ void CG_DrawInformation( void ) {
 			y += iPropHeight;
 		}
 
+		// Tr!Force: [UIGeneral] Check motd
+		if (!CG_Cvar_Get("jk_ui_hideMotd"))
 		{	// display global MOTD at bottom (mirrors ui_main UI_DrawConnectScreen
 			char motdString[1024];
 			trap_Cvar_VariableStringBuffer( "cl_motdString", motdString, sizeof( motdString ) );

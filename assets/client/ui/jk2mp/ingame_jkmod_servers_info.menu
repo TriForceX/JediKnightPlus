@@ -5,15 +5,10 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
-		rect					140 60 360 360
+		rect					260 40 365 340
 		focusColor				1 1 1 1				// Focus color for text and items
 		style					1
-		border					1
-		descX					320
-		descY					398
-		descScale				0.7
-		descColor				.235 .882 .847 1	// Focus color for text and items
-		descAlignment			ITEM_ALIGN_CENTER		
+		border					1	
 		popup
 
 		onOpen 
@@ -34,7 +29,7 @@
 			name				frame_pic
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 0 360 360
+			rect				0 0 365 340
 			background			"gfx/menus/menu_box_ingame"
 			forecolor			1 1 1 1
 			decoration
@@ -52,7 +47,7 @@
 			text				@MENUS1_SERVER_INFORMATION 
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
-			rect				10 5 340 20
+			rect				10 5 345 20
 			font				3
 			textscale			0.7
 			textalign			ITEM_ALIGN_CENTER		
@@ -70,7 +65,7 @@
 		itemDef 
 		{
 			name				serverinfoList
-			rect				10 27 340 280
+			rect				10 27 345 280
 			type				ITEM_TYPE_LISTBOX
 			style				WINDOW_STYLE_FILLED
 			elementwidth		120
@@ -100,7 +95,7 @@
 			name				refreshButton
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				10 310 170 30
+			rect				12 308 170 30
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -116,7 +111,7 @@
 			font				3
 			textscale			.8
 			style				WINDOW_STYLE_FILLED
-			rect				10 310 170 30
+			rect				12 308 170 30
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			85
 			textaligny			5
@@ -141,7 +136,7 @@
 			name				doneButton
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				180 310 170 30
+			rect				185 308 170 30
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -157,7 +152,7 @@
 			font				3
 			textscale			.8
 			style				WINDOW_STYLE_FILLED
-			rect				180 310 170 30
+			rect				185 308 170 30
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			85
 			textaligny			5

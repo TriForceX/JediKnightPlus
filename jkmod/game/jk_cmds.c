@@ -1529,7 +1529,7 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 			ent->client->ps.stats[JK_FUEL] = 100;
 			ent->client->pers.jkmodPers.jetpackFxDisplay = qtrue;
 			if (!ent->client->pers.jkmodPers.clientPlugin) trap_SendServerCommand(ent - g_entities, "print \"Jetpack equiped\n\"");
-			trap_SendServerCommand(ent - g_entities, "cp \"Press USE button on air to enable\"");
+			trap_SendServerCommand(ent - g_entities, "cp \"" NEWLINES "Press USE button in air to enable\"");
 			return;
 		}
 	}
@@ -1852,12 +1852,17 @@ void JKMod_CallVote(gentity_t *ent)
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "NOVOTE")));
 		return;
 	}
-	if (level.voteTime) {
+	if (level.voteTime || level.voteExecuteTime) {
 		trap_SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStripEdString("SVINGAME", "VOTEINPROGRESS")));
 		return;
 	}
 	if (ent->client->jkmodClient.voteWaitTime > 0) {
 		trap_SendServerCommand(ent - g_entities, va("print \"You have to wait %d seconds to call a new vote again\n\"", ent->client->jkmodClient.voteWaitTime));
+		return;
+	}
+	if (level.jkmodLocals.pauseTime > level.time)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't call vote during pause mode\n\"");
 		return;
 	}
 	if (ent->client->pers.voteCount >= MAX_VOTE_COUNT) {
@@ -2083,16 +2088,16 @@ void JKMod_CallVote(gentity_t *ent)
 		}
 
 		if (arg2[0] == '\0') {
-			Com_sprintf(level.voteString, sizeof(level.voteString), "pause 300");
-			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for 5 minutes");
+			trap_SendServerCommand(ent - g_entities, "print \"Usage: callvote pause <seconds>\n\"");
+			return;
+		}
+
+		if (JKMod_ValidNumber(arg2) && atoi(arg2) > 0) {
+			Com_sprintf(level.voteString, sizeof(level.voteString), "pause %s", arg2);
+			Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for %s", JKMod_MsToWord((atoi(arg2) * 1000), qfalse));
 		} else {
-			if (JKMod_ValidNumber(arg2)) {
-				Com_sprintf(level.voteString, sizeof(level.voteString), "pause %s", arg2);
-				Com_sprintf(level.voteDisplayString, sizeof(level.voteDisplayString), "Pause game for %s", JKMod_MsToWord((atoi(arg2) * 1000), qfalse));
-			} else {
-				trap_SendServerCommand(ent - g_entities, "print \"The specified value is not a number\n");
-				return;
-			}
+			trap_SendServerCommand(ent - g_entities, "print \"The specified value is not a valid number\n");
+			return;
 		}
 	}
 	// Map number

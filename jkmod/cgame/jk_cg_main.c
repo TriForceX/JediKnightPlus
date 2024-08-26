@@ -26,7 +26,6 @@ vmCvar_t	jkcvar_cg_duelEndDelay;
 vmCvar_t	jkcvar_cg_drawClock;
 vmCvar_t	jkcvar_cg_drawHitBox;
 vmCvar_t	jkcvar_cg_drawSaberBox;
-vmCvar_t	jkcvar_cg_drawForcePoints;
 vmCvar_t	jkcvar_cg_drawInventory;
 vmCvar_t	jkcvar_cg_drawRaceTimer;
 vmCvar_t	jkcvar_cg_drawBactaModel;
@@ -34,6 +33,7 @@ vmCvar_t	jkcvar_cg_drawPlayerNames;
 vmCvar_t	jkcvar_cg_drawMovementKeys;
 vmCvar_t	jkcvar_cg_enhancedInterface;
 vmCvar_t	jkcvar_cg_chatIcon;
+vmCvar_t	jkcvar_cg_scoreboardOpacity;
 vmCvar_t	jkcvar_cg_saberTrailSpeed;
 vmCvar_t	jkcvar_cg_damageBlend;
 vmCvar_t	jkcvar_cg_flagOpacity;
@@ -80,7 +80,6 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_drawClock,				"jk_cg_drawClock",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawHitBox,			"jk_cg_drawHitBox",				"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawSaberBox,			"jk_cg_drawSaberBox",			"0",			NULL,						CVAR_ARCHIVE, 0 },
-	{ &jkcvar_cg_drawForcePoints,		"jk_cg_drawForcePoints",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawInventory,			"jk_cg_drawInventory",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawRaceTimer,			"jk_cg_drawRaceTimer",			"1",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_drawBactaModel,		"jk_cg_drawBactaModel",			"0",			NULL,						CVAR_ARCHIVE, 0 },
@@ -88,6 +87,7 @@ static jkmod_cg_cvar_table_t JKModCGcvarTable[] =
 	{ &jkcvar_cg_drawMovementKeys,		"jk_cg_drawMovementKeys",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_enhancedInterface,		"jk_cg_enhancedInterface",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_chatIcon,				"jk_cg_chatIcon",				"0",			NULL,						CVAR_ARCHIVE, 0 },
+	{ &jkcvar_cg_scoreboardOpacity,		"jk_cg_scoreboardOpacity",		"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_saberTrailSpeed,		"jk_cg_saberTrailSpeed",		"40",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_damageBlend,			"jk_cg_damageBlend",			"0",			NULL,						CVAR_ARCHIVE, 0 },
 	{ &jkcvar_cg_flagOpacity,			"jk_cg_flagOpacity",			"255",			NULL,						CVAR_ARCHIVE, 0 },
@@ -183,6 +183,25 @@ void JKMod_CG_UpdateCvars(void)
 
 	// Check console notify time
 	cg.jkmodCG.consoleNotifyTime = CG_Cvar_Get("con_notifytime");
+
+	// Check HD fonts
+	JKMod_CG_UpdateHDFonts();
+}
+
+// Update HD fonts
+void JKMod_CG_UpdateHDFonts(void)
+{
+	if (!CG_Cvar_Get("r_consoleFont"))
+	{
+		trap_R_RemapShader("gfx/2d/charsgrid_med", "fonts/jkmod_charsgrid_med", va("%f", (cg.time * 0.001)));
+	}
+
+	if (!mvapi)
+	{
+		trap_R_RemapShader("fonts/anewhope", "fonts/jkmod_anewhope", va("%f", va("%f", (cg.time * 0.001))));
+		trap_R_RemapShader("fonts/ergoec", "fonts/jkmod_ergoec", va("%f", va("%f", (cg.time * 0.001))));
+		trap_R_RemapShader("fonts/ocr_a", "fonts/jkmod_ocr_a", va("%f", va("%f", (cg.time * 0.001))));
+	}
 }
 
 // Check speedometer cvar
@@ -399,6 +418,8 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.keyAltOff			= trap_R_RegisterShaderNoMip("gfx/hud/jkmod_keys/alt_off");
 
 	CG_UpdateConfigString(JK_CS_GAME_TYPE, qtrue);
+
+	JKMod_CG_UpdateHDFonts();
 	
 	Com_Printf( S_COLOR_CYAN "------------ JK+ Client Complete ------------\n" );
 }

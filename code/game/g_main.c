@@ -2451,7 +2451,7 @@ void CheckVote( void ) {
 	// Tr!Force: [Vote] Show vote results
 	if (strstr(level.voteDisplayString, "Poll:"))
 	{
-		trap_SendServerCommand(-1, va("cp \"%s\n^7Yes: ^2%d ^7No: ^1%d\"", level.voteDisplayString, level.voteYes, level.voteNo));
+		trap_SendServerCommand(-1, va("cp \"%s\n^7Yes: ^2%d ^7No: ^1%d\"", Q_CleanStr(level.voteDisplayString, qfalse), level.voteYes, level.voteNo));
 	}
 	if (jkcvar_voteResults.integer)
 	{

@@ -5,7 +5,7 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
-		rect					260 40 360 350
+		rect					260 40 365 340
 		focusColor				1 1 1 1
 		style					1
 		border					1
@@ -349,7 +349,7 @@
 			name				joinHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				50 310 50 32
+			rect				41 310 50 32
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -363,7 +363,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				50 310 50 32
+			rect				41 310 50 32
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4
@@ -387,10 +387,10 @@
 		
 		itemDef 
 		{
-			name				addFavoriteHover
+			name				serverSourceHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				115 310 84 32
+			rect				108 310 104 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -399,29 +399,29 @@
 
 		itemDef 
 		{
-			name				addFavoriteButton
-			text 				@JKMENUS_SERVERS_FAVORITE
-			type				ITEM_TYPE_BUTTON
+			name				serverSourceButton
+			// text				@MENUS3_SOURCE
+			// descText			@MENUS0_CHOOSE_SOURCE_OF_SERVERS
+			ownerdraw			UI_NETSOURCE
 			textscale			.80
-			style				WINDOW_STYLE_FILLED
-			rect				115 310 84 32
-			textalign			ITEM_ALIGN_CENTER
-			textalignx			42 // w/2 center
+			style				0
+			rect				108 310 104 32
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			0
 			textaligny			4
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				uiScript		addFavorite ;
 			}
 			mouseenter 
 			{ 
-				show			addFavoriteHover
+				show			serverSourceHover
 			}
 			mouseexit 
 			{ 
-				hide			addFavoriteHover
+				hide			serverSourceHover
 			}
 		}
 		
@@ -430,7 +430,7 @@
 			name				serverInfoHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				207 310 50 32
+			rect				223 310 50 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -444,7 +444,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				207 310 50 32
+			rect				223 310 50 32
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4
@@ -470,7 +470,7 @@
 			name				filterHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				264 310 50 32
+			rect				273 310 50 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -484,7 +484,7 @@
 			type				ITEM_TYPE_BUTTON
 			textscale			.80
 			style				WINDOW_STYLE_FILLED
-			rect				264 310 50 32
+			rect				273 310 50 32
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			25 // w/2 center
 			textaligny			4

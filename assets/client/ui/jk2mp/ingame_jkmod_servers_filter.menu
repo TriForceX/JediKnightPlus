@@ -5,22 +5,16 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick		// this closes the window if it gets a click out of the rectangle
-		rect					220 60 200 195
+		rect					50 40 200 182
 		focusColor				1 1 1 1				// Focus color for text and items
 		style					1
-		border					1
-		descX					320
-		descY					235
-		descScale				0.7
-		descColor				.235 .882 .847 1	// Focus color for text and items
-		descAlignment			ITEM_ALIGN_CENTER		
+		border					1	
 		popup
 		
 		onESC 
 		{ 
 			close				ingame_jkmod_servers_filter ;
 		}
-
 
 		//---------------------------------------------
 		//	LITTLE FRAME
@@ -31,7 +25,7 @@
 			name				frame_pic
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				0 0 200 195
+			rect				0 0 200 182
 			background			"gfx/menus/menu_box_ingame"
 			forecolor			1 1 1 1
 			decoration
@@ -79,9 +73,9 @@
 		{
 			name				netSourceButton
 			style				0	
-			// text				@MENUS3_SOURCE
-			descText			@MENUS0_CHOOSE_SOURCE_OF_SERVERS
-			ownerdraw			UI_NETSOURCE
+			// text				@MENUS3_GAME
+			descText			@MENUS0_SET_FILTER_FOR_SPECIFIC
+			ownerdraw			UI_NETFILTER
 			rect				20 35 160 24
 			font				2
 			textscale			0.8

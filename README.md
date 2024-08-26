@@ -1,6 +1,6 @@
 # Jedi Knight Plus
 
-<img align="left" width="110" height="110" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/241ea8b0-4caf-4197-aaf3-cd7fd0bb672c">
+<img align="left" width="110" height="110" src="docs/images/logo.png">
 
 https://jkplus.github.io
 
@@ -33,16 +33,16 @@ I started to code the first version of this mod in 2005. Back then it was a priv
 
 <p align="center">
 
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/5710fa0c-b97e-4e3b-ac7f-e3995c996b16">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/c5944f99-e29c-4339-bd59-94d8127e1900">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/516af691-3737-4f9b-9489-52976ca4bc86">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/0d7596a6-c718-42c7-b697-a7cd9297b8b1">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/d4bb8cf6-89ef-40fa-808b-400540ca28de">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/e94aa3e0-a9f8-4270-8be7-710e44e0fc7b">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/65a95166-19b8-4613-bc71-8261544df711">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/fdd8da07-c6d4-40b3-8f6f-a5e37443b653">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/86a080e7-e043-4620-bff5-00899b8d69f0">
-<img width="156" height="117" src="https://github.com/TriForceX/JediKnightPlus/assets/16083854/503efbcc-db80-4e35-9fba-8313a1ee02f0">
+<img width="156" height="117" src="docs/images/screenshot-1.jpg">
+<img width="156" height="117" src="docs/images/screenshot-2.jpg">
+<img width="156" height="117" src="docs/images/screenshot-3.jpg">
+<img width="156" height="117" src="docs/images/screenshot-4.jpg">
+<img width="156" height="117" src="docs/images/screenshot-5.jpg">
+<img width="156" height="117" src="docs/images/screenshot-6.jpg">
+<img width="156" height="117" src="docs/images/screenshot-7.jpg">
+<img width="156" height="117" src="docs/images/screenshot-8.jpg">
+<img width="156" height="117" src="docs/images/screenshot-9.jpg">
+<img width="156" height="117" src="docs/images/screenshot-10.jpg">
 
 </p>
 
@@ -255,6 +255,9 @@ List of additional client-side plugin features
 - [x] Allow walk and run while using zoom on Disruptor weapon
 - [x] Many BaseJK language text updates and fixes
 - [ ] Show server maps on callvote menus
+- [x] Restored map loading icons feature
+- [x] Custom scoreboard background transparency
+- [x] Upscaled HD fonts
 
 ---
 
@@ -267,6 +270,7 @@ List of cheats enabled features
 - [ ] Free backstabs & DFA combos usage
 - [ ] Use force grip on items
 - [x] NPC spawn like in single player game
+- [x] Various test commands (Models, effects, shake, etc...)
 
 </details>
 

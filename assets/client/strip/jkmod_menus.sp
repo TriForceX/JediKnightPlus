@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 238
+COUNT 246
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -78,7 +78,7 @@ INDEX 8
 {
    REFERENCE MOD_OPTIONS_SERVER
    TEXT_LANGUAGE1 "Server"
-   TEXT_LANGUAGE2 "serveur"
+   TEXT_LANGUAGE2 "Serveur"
    TEXT_LANGUAGE3 "Server"
    TEXT_LANGUAGE6 "Server"
    TEXT_LANGUAGE8 "Servidor"
@@ -114,8 +114,8 @@ INDEX 12
 {
    REFERENCE MOD_OPTIONS_BUILD
    TEXT_LANGUAGE1 "Build"
-   TEXT_LANGUAGE2 "Bâtir"
-   TEXT_LANGUAGE3 "bauen"
+   TEXT_LANGUAGE2 "Construire"
+   TEXT_LANGUAGE3 "Bauen"
    TEXT_LANGUAGE6 "Build"
    TEXT_LANGUAGE8 "Construir"
 }
@@ -130,21 +130,21 @@ INDEX 13
 }
 INDEX 14
 {
-   REFERENCE MOD_OPTIONS_OTHERS
-   TEXT_LANGUAGE1 "Others"
-   TEXT_LANGUAGE2 "Autres"
-   TEXT_LANGUAGE3 "Andere"
-   TEXT_LANGUAGE6 "Others"
-   TEXT_LANGUAGE8 "Otros"
+   REFERENCE MOD_OPTIONS_MOREINFO
+   TEXT_LANGUAGE1 "More Info"
+   TEXT_LANGUAGE2 "Plus d'info"
+   TEXT_LANGUAGE3 "Mehr Info"
+   TEXT_LANGUAGE6 "More Info"
+   TEXT_LANGUAGE8 "Más Info"
 }
 INDEX 15
 {
-   REFERENCE MOD_OPTIONS_OTHERS_DESC
-   TEXT_LANGUAGE1 "Other custom mod settings."
-   TEXT_LANGUAGE2 "Autres paramètres de mod personnalisés."
-   TEXT_LANGUAGE3 "Andere benutzerdefinierte mod-einstellungen."
-   TEXT_LANGUAGE6 "Other custom mod settings."
-   TEXT_LANGUAGE8 "Otras configuraciones personalizadas del mod."
+   REFERENCE MOD_OPTIONS_MOREINFO_DESC
+   TEXT_LANGUAGE1 "Information about mod latest updates."
+   TEXT_LANGUAGE2 "Informations sur les dernières mises à jour du mod."
+   TEXT_LANGUAGE3 "Informationen über die neuesten mod updates."
+   TEXT_LANGUAGE6 "Information about mod latest updates."
+   TEXT_LANGUAGE8 "Información de las últimas actualizaciones del mod."
 }
 INDEX 16
 {
@@ -176,20 +176,20 @@ INDEX 18
 INDEX 19
 {
    REFERENCE VOTE_PAUSEGAME
-   TEXT_LANGUAGE1 "Pause Game"
-   TEXT_LANGUAGE2 "Suspendre le jeu"
-   TEXT_LANGUAGE3 "Spiel pausieren"
-   TEXT_LANGUAGE6 "Pause Game"
-   TEXT_LANGUAGE8 "Pausar el juego"
+   TEXT_LANGUAGE1 "Pause Game:"
+   TEXT_LANGUAGE2 "Suspendre le jeu:"
+   TEXT_LANGUAGE3 "Spiel pausieren:"
+   TEXT_LANGUAGE6 "Pause Game:"
+   TEXT_LANGUAGE8 "Pausar el juego:"
 }
 INDEX 20
 {
    REFERENCE VOTE_PAUSEGAME_DESC
-   TEXT_LANGUAGE1 "Pause game for 5 minutes."
-   TEXT_LANGUAGE2 "Pause du jeu pendant 5 minutes."
+   TEXT_LANGUAGE1 "Pause game for the specified minutes."
+   TEXT_LANGUAGE2 "Pause du jeu pendant minutes."
    TEXT_LANGUAGE3 "Spiel für 5 minuten unterbrechen."
-   TEXT_LANGUAGE6 "Pause game for 5 minutes."
-   TEXT_LANGUAGE8 "Pausa el juego durante 5 minutos."
+   TEXT_LANGUAGE6 "Pause game for the specified minutes."
+   TEXT_LANGUAGE8 "Pausa el juego durante los minutos especificados."
 }
 INDEX 21
 {
@@ -275,11 +275,11 @@ INDEX 29
 INDEX 30
 {
    REFERENCE SERVERS_DESC
-   TEXT_LANGUAGE1 "Info."
-   TEXT_LANGUAGE2 "Infos."
-   TEXT_LANGUAGE3 "Info."
-   TEXT_LANGUAGE6 "Info."
-   TEXT_LANGUAGE8 "Info."
+   TEXT_LANGUAGE1 "Info"
+   TEXT_LANGUAGE2 "Infos"
+   TEXT_LANGUAGE3 "Info"
+   TEXT_LANGUAGE6 "Info"
+   TEXT_LANGUAGE8 "Info"
 }
 INDEX 31
 {
@@ -383,11 +383,11 @@ INDEX 41
 INDEX 42
 {
    REFERENCE CLIENT_SIDE_DEFAULTS
-   TEXT_LANGUAGE1 "Defaults"
-   TEXT_LANGUAGE2 "Par defaut"
-   TEXT_LANGUAGE3 "Standard"
-   TEXT_LANGUAGE6 "Defaults"
-   TEXT_LANGUAGE8 "Predeter"
+   TEXT_LANGUAGE1 "Reset"
+   TEXT_LANGUAGE2 "Réinit."
+   TEXT_LANGUAGE3 "Andere"
+   TEXT_LANGUAGE6 "Reset"
+   TEXT_LANGUAGE8 "Resetear"
 }
 INDEX 43
 {
@@ -396,7 +396,7 @@ INDEX 43
    TEXT_LANGUAGE2 "Réinitialisez toutes les options client à leurs valeurs par défaut."
    TEXT_LANGUAGE3 "Setzen sie alle clientoptionen auf die standardeinstellungen zurück."
    TEXT_LANGUAGE6 "Reset all client options to its defaults."
-   TEXT_LANGUAGE8 "Restablece todas las opciones del cliente a sus valores predeterminados."
+   TEXT_LANGUAGE8 "Restablece todas las opciones del cliente a sus valores iniciales."
 }
 INDEX 44
 {
@@ -508,21 +508,21 @@ INDEX 55
 }
 INDEX 56
 {
-   REFERENCE CLIENT_DRAWFORCEPOINTS
-   TEXT_LANGUAGE1 "Draw force points:"
-   TEXT_LANGUAGE2 "Afficher points de force:"
-   TEXT_LANGUAGE3 "Macht-punkte anzeigen:"
-   TEXT_LANGUAGE6 "Draw force points:"
-   TEXT_LANGUAGE8 "Mostrar puntos de fuerza:"
+   REFERENCE CLIENT_SCOREBOARDOPACITY
+   TEXT_LANGUAGE1 "Scoreboard transparency:"
+   TEXT_LANGUAGE2 "Transparence du scoreboard:"
+   TEXT_LANGUAGE3 "Transparenz des anzeigers:"
+   TEXT_LANGUAGE6 "Scoreboard transparency:"
+   TEXT_LANGUAGE8 "Transparencia puntajes:"
 }
 INDEX 57
 {
-   REFERENCE CLIENT_DRAWFORCEPOINTS_DESC
-   TEXT_LANGUAGE1 "Shows force points on HUD."
-   TEXT_LANGUAGE2 "Afficher les points de force sur HUD."
-   TEXT_LANGUAGE3 "Zeigen sie macht-punkte auf HUD."
-   TEXT_LANGUAGE6 "Shows force points on HUD."
-   TEXT_LANGUAGE8 "Mostrar puntos de fuerza en el HUD."
+   REFERENCE CLIENT_SCOREBOARDOPACITY_DESC
+   TEXT_LANGUAGE1 "Modify the scoreboard background transparency."
+   TEXT_LANGUAGE2 "Modifie la transparence de l'arrière-plan du tableau d'affichage."
+   TEXT_LANGUAGE3 "Ändern sie die anzeigers transparenz der anzeigetafel."
+   TEXT_LANGUAGE6 "Modify the scoreboard background transparency."
+   TEXT_LANGUAGE8 "Modifica la transparencia del fondo en la tabla de puntajes."
 }
 INDEX 58
 {
@@ -1122,7 +1122,7 @@ INDEX 124
 {
    REFERENCE CLIENT_POPUP
    TEXT_LANGUAGE1 "Do you want to load the recommended mod options?"
-   TEXT_LANGUAGE2 "Voulez-vous charger les options recommandées de mod?"
+   TEXT_LANGUAGE2 "Appliquer les options recommandées du mod?"
    TEXT_LANGUAGE3 "Willst du die empfohlenen mod-optionen laden?"
    TEXT_LANGUAGE6 "Do you want to load the recommended mod options?"
    TEXT_LANGUAGE8 "¿Quieres cargar las opciones recomendadas del mod?"
@@ -2143,4 +2143,72 @@ INDEX 237
    TEXT_LANGUAGE3 "Zeigt karte gegenstände und spieler symbole auf ladebildschirm."
    TEXT_LANGUAGE6 "Shows map supported items and players icons on loading screen."
    TEXT_LANGUAGE8 "Muestra iconos de los items del mapa y de los jugadores al cargar."
+}
+INDEX 238
+{
+   REFERENCE CLIENT_OVERBRIGHTBITS
+   TEXT_LANGUAGE1 "Overbright lighting:"
+   TEXT_LANGUAGE2 "Éclairage surbrillant:"
+   TEXT_LANGUAGE3 "Überhelles beleuchtung:"
+   TEXT_LANGUAGE6 "Overbright lighting:"
+   TEXT_LANGUAGE8 "Iluminación brillante:"
+}
+INDEX 239
+{
+   REFERENCE CLIENT_OVERBRIGHTBITS_DESC
+   TEXT_LANGUAGE1 "Adjusts the brightness of map lighting."
+   TEXT_LANGUAGE2 "Règle la luminosité de l'éclairage de la carte."
+   TEXT_LANGUAGE3 "Passt die helligkeit der kartenbeleuchtung an."
+   TEXT_LANGUAGE6 "Adjusts the brightness of map lighting."
+   TEXT_LANGUAGE8 "Ajusta el brillo de la iluminación del mapa."
+}
+INDEX 240
+{
+   REFERENCE CLIENT_HIGHESTVIDEO
+   TEXT_LANGUAGE1 "Highest video settings:"
+   TEXT_LANGUAGE2 "Param. vidéo maximums:"
+   TEXT_LANGUAGE3 "Höchste Videoeinstellung:"
+   TEXT_LANGUAGE6 "Highest video settings:"
+   TEXT_LANGUAGE8 "Calidad de video más alta:"
+}
+INDEX 241
+{
+   REFERENCE CLIENT_HIGHESTVIDEO_DESC
+   TEXT_LANGUAGE1 "Loads specific options to set the highest video settings."
+   TEXT_LANGUAGE2 "Charger des options spécifiques pour une qualité vidéo optimale."
+   TEXT_LANGUAGE3 "Lädt spezifische optionen für höchste videoeinstellungen."
+   TEXT_LANGUAGE6 "Loads specific options to set the highest video settings."
+   TEXT_LANGUAGE8 "Carga opciones especificas para la calidad de video más alta."
+}
+INDEX 242
+{
+   REFERENCE VID_RESTART_DESC
+   TEXT_LANGUAGE1 "Requires applying changes to restart video"
+   TEXT_LANGUAGE2 "Nécessité d'appliquer modifications pour redémarrer vidéo"
+   TEXT_LANGUAGE3 "Erfordert anwendung änderungen zum neustart video"
+   TEXT_LANGUAGE6 "Requires applying changes to restart video"
+   TEXT_LANGUAGE8 "Requiere aplicar cambios para reiniciar video"
+}
+INDEX 243
+{
+   REFERENCE MOD_OPTIONS_DEFAULTS
+   TEXT_LANGUAGE1 "Defaults"
+   TEXT_LANGUAGE2 "Par defaut"
+   TEXT_LANGUAGE3 "Standard"
+   TEXT_LANGUAGE6 "Defaults"
+   TEXT_LANGUAGE8 "Por defecto"
+}
+INDEX 244
+{
+   REFERENCE MOD_WHATSNEW
+   TEXT_LANGUAGE1 "What's New?"
+   TEXT_LANGUAGE2 "Quoi de neuf?"
+   TEXT_LANGUAGE3 "Was gibt's Neues?"
+   TEXT_LANGUAGE6 "What's New?"
+   TEXT_LANGUAGE8 "¿Qué hay de nuevo?"
+}
+INDEX 245
+{
+   REFERENCE MOD_CHANGELOG
+   TEXT_LANGUAGE1 "# 0.21.0\n- Fix some messages in chat color mode\n- Fix chatbox alignment during intermission\n- Fix player label alignment and menu options\n- Fix bots god mode enabled with other options\n- Add dual saber and idle damage new options\n- Add new player tweaks and bots options\n- Add more test cmds and entities checks\n- Add saber box and updated team overlay\n- Add restored loading icons and other tweaks\n- Add proper alignment and fixes for vote display\n- Add drop bacta option for players who die with it\n- Add proper checks for bots health & armor control\n- Add changelog pop-up and misc menus tweaks\n\n# 0.20.4\n- Add default cfg values and extra check on connect msg\n- Add missing check for weapons on game type changes\n- Add optional check for force usage in chair model\n- Merge updates from mvsdk\n- Add cvar to customize connect message\n- Add map list command and updated call votes\n- Add more checks for chair model usage\n- Add checks for player opacity and other tweaks\n- Add chat color command and its menu option\n\n# 0.20.3\n- Fix client connect check messages\n- Fix saber clash flare bug and more refactor\n- Add private duel to spawn activate sabers cvar\n- Add secure checks for config file reading\n- Add more patches for proper debugging\n- Add map on launch cmd to keep the map cycle\n\nMore info at https://jkplus.github.io"
 }

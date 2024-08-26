@@ -254,3 +254,48 @@ gfx/2d/jkmod_jsense
         tcMod rotate 2
     }
 }
+menu/art/unknownmap_transparent
+{
+	nomipmaps
+    {
+        map menu/art/unknownmap
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}
+fonts/jkmod_anewhope
+{
+	nomipmaps
+    {
+        map fonts/jkmod_anewhope
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}
+fonts/jkmod_ergoec
+{
+	nomipmaps
+    {
+        map fonts/jkmod_ergoec
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}
+fonts/jkmod_ocr_a
+{
+	nomipmaps
+    {
+        map fonts/jkmod_ocr_a
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}
+fonts/jkmod_charsgrid_med
+{
+	nomipmaps
+    {
+        map fonts/jkmod_charsgrid_med
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen vertex
+    }
+}

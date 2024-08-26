@@ -405,8 +405,9 @@
 			group				grpCallVote
 			text				@JKMENUS_VOTE_PAUSEGAME
 			descText			@JKMENUS_VOTE_PAUSEGAME_DESC
-			rect				120 170 230 25
-			type				1
+			cvar				"jk_ui_votePause"
+			rect				110 170 230 25
+			type				ITEM_TYPE_NUMERICFIELD
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			115
 			textaligny			-4
@@ -414,10 +415,11 @@
 			textscale			.9
 			forecolor			0.65 0.65 1 1
 			visible				0
+			maxchars			2
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				exec 			"cmd callvote pause" ; 
+				uiScript 		update "jk_ui_votePause" ; 
 				uiScript 		closeingame 
 			}
 		}
@@ -763,7 +765,7 @@
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
-				uiScript 		update "JKMod_votePoll" ; 
+				uiScript 		update "jk_ui_votePoll" ; 
 				uiScript 		closeingame ;
 				hide			doneButton
 			}

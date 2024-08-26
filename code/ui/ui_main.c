@@ -344,7 +344,7 @@ int	uiSkinColor = SKINCOLOR_DEFAULT;
 
 static serverFilter_t serverGameFilters[] = {
 	{"All", "" },
-	{"Jedi Knight 2", "" },
+	{"Jedi Knight Plus", "JediKnightPlus" }, // Tr!Force: [ServerList] Show mod servers
 };
 static const int numServerGameFilters = sizeof(serverGameFilters) / sizeof(serverFilter_t);
 
@@ -361,7 +361,7 @@ static int numServerFilters;
 
 static void UI_SetServerFilter( void )
 {
-	if (!uiInfo.inGameLoad)
+	if ((mvapi && (Menus_FindByName("ingame_jkmod_servers")->window.flags & WINDOW_VISIBLE)) || !uiInfo.inGameLoad) // Tr!Force: [ServerList] Allow filter ingame
 	{
 		serverFilters = serverVersionFilters;
 		numServerFilters = numServerVersionFilters;
@@ -2173,7 +2173,7 @@ static void UI_DrawNetFilter(rectDef_t *rect, float scale, vec4_t color, int tex
 		ui_serverFilterType.integer = 0;
 	}
 
-	if (!uiInfo.inGameLoad)
+	if ((mvapi && (Menus_FindByName("ingame_jkmod_servers")->window.flags & WINDOW_VISIBLE)) || !uiInfo.inGameLoad) // Tr!Force: [ServerList] Allow filter ingame
 		trap_SP_GetStringTextString("MV_GAME_VERSION", holdSPString, sizeof(holdSPString));
 	else
 		trap_SP_GetStringTextString("MENUS3_GAME", holdSPString, sizeof(holdSPString));
@@ -2601,7 +2601,7 @@ static int UI_OwnerDrawWidth(int ownerDraw, float scale) {
 			if (ui_serverFilterType.integer < 0 || ui_serverFilterType.integer > numServerFilters) {
 				ui_serverFilterType.integer = 0;
 			}
-			if (!uiInfo.inGameLoad)
+			if ((mvapi && (Menus_FindByName("ingame_jkmod_servers")->window.flags & WINDOW_VISIBLE)) || !uiInfo.inGameLoad) // Tr!Force: [ServerList] Allow filter ingame
 				trap_SP_GetStringTextString("MV_GAME_VERSION", holdSPString, sizeof(holdSPString));
 			else
 				trap_SP_GetStringTextString("MENUS3_GAME", holdSPString, sizeof(holdSPString));
@@ -2787,7 +2787,7 @@ static void UI_DrawServerRefreshDate(rectDef_t *rect, float scale, vec4_t color,
 }
 
 static void UI_DrawServerMOTD(rectDef_t *rect, float scale, vec4_t color, int iMenuFont) {
-	if (uiInfo.serverStatus.motdLen) {
+	if (uiInfo.serverStatus.motdLen && !jkcvar_ui_hideMotd.integer) {  // Tr!Force: [UIGeneral] Check motd)
 		float maxX;
 	 
 		if (uiInfo.serverStatus.motdWidth == -1) {
@@ -4781,6 +4781,7 @@ static void UI_RunMenuScript(const char **args)
 		} else if (Q_stricmp(name, "resetScores") == 0) {
 			UI_ClearScores();
 		} else if (Q_stricmp(name, "RefreshServers") == 0) {
+			UI_SetServerFilter(); // Tr!Force: [ServerList] Allow filter ingame
 			UI_StartServerRefresh(qtrue);
 			UI_BuildServerDisplayList(1);
 		} else if (Q_stricmp(name, "RefreshFilter") == 0) {
@@ -5531,16 +5532,19 @@ static void UI_BuildServerDisplayList(int force) {
 	}
 
 	// do motd updates here too
-	trap_Cvar_VariableStringBuffer( "cl_motdString", uiInfo.serverStatus.motd, sizeof(uiInfo.serverStatus.motd) );
-	len = (int)strlen(uiInfo.serverStatus.motd);
-	if (len == 0) {
-		strcpy(uiInfo.serverStatus.motd, "Welcome to JK2MP!");
+	if (!jkcvar_ui_hideMotd.integer) // Tr!Force: [UIGeneral] Check motd
+	{
+		trap_Cvar_VariableStringBuffer( "cl_motdString", uiInfo.serverStatus.motd, sizeof(uiInfo.serverStatus.motd) );
 		len = (int)strlen(uiInfo.serverStatus.motd);
-	} 
-	if (len != uiInfo.serverStatus.motdLen) {
-		uiInfo.serverStatus.motdLen = len;
-		uiInfo.serverStatus.motdWidth = -1;
-	} 
+		if (len == 0) {
+			strcpy(uiInfo.serverStatus.motd, "Welcome to JK2MP!");
+			len = (int)strlen(uiInfo.serverStatus.motd);
+		} 
+		if (len != uiInfo.serverStatus.motdLen) {
+			uiInfo.serverStatus.motdLen = len;
+			uiInfo.serverStatus.motdWidth = -1;
+		} 
+	}
 
 	if (force) {
 		numinvisible = 0;
@@ -5613,7 +5617,7 @@ static void UI_BuildServerDisplayList(int force) {
 			}
 				
 			if (ui_serverFilterType.integer > 0) {
-				if ( !uiInfo.inGameLoad ) {
+				if ( (mvapi && (Menus_FindByName("ingame_jkmod_servers")->window.flags & WINDOW_VISIBLE)) || !uiInfo.inGameLoad ) { // Tr!Force: [ServerList] Allow filter ingame
 					mvversion_t gameVersion; // Using the "gameVersion" now to support seperate lists for 1.02, 1.03 and 1.04
 
 					if (ui_serverFilterType.integer == 1)
@@ -7496,7 +7500,7 @@ void _UI_Init( qboolean inGameLoad ) {
 
 	trap_Cvar_Set("ui_actualNetGameType", va("%d", ui_netGameType.integer));
 
-	trap_Cvar_Register(&ui_serverFilterType, "ui_serverFilterType", "0", CVAR_ARCHIVE | CVAR_GLOBAL);
+	// trap_Cvar_Register(&ui_serverFilterType, "ui_serverFilterType", "0", CVAR_ARCHIVE | CVAR_GLOBAL); // Tr!Force: [ServerList] Allow filter ingame
 
 	// botfilter
 	trap_Cvar_Register(&ui_botfilter, "ui_botfilter", "0", CVAR_ARCHIVE | CVAR_GLOBAL);
@@ -7681,6 +7685,7 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			UI_BuildPlayerList();
 			Menus_CloseAll();
 			Menus_ActivateByName("ingame");
+			Menus_ActivateByName("ingame_jkmod_teleports"); // Tr!Force: [TeleportsMenu] Open on ESC
 			UI_UpdateForce(qfalse);
 		  return;
 	  case UIMENU_PLAYERCONFIG:
@@ -7929,7 +7934,7 @@ void UI_DrawConnectScreen( qboolean overlay ) {
 	//UI_DrawProportionalString( 320, 96, "Press Esc to abort", UI_CENTER|UI_SMALLFONT|UI_DROPSHADOW, menu_text_color );
 
 	// display global MOTD at bottom
-	Text_PaintCenter(centerPoint, uiInfo.screenHeight-55, scale, colorWhite, Info_ValueForKey( cstate.updateInfoString, "motd" ), 0, FONT_MEDIUM);
+	if ( !jkcvar_ui_hideMotd.integer ) Text_PaintCenter(centerPoint, uiInfo.screenHeight-55, scale, colorWhite, Info_ValueForKey( cstate.updateInfoString, "motd" ), 0, FONT_MEDIUM); // Tr!Force: [UIGeneral] Check motd
 	// print any server info (server full, bad version, etc)
 	if ( cstate.connState < CA_CONNECTED ) {
 		Text_PaintCenter(centerPoint, yStart + 176, scale, colorWhite, cstate.messageString, 0, FONT_MEDIUM);
@@ -8269,6 +8274,7 @@ static const cvarTable_t cvarTable[] = {
 
 	{ &ui_model, "model", "", CVAR_USERINFO | CVAR_ARCHIVE },
 	{ &ui_team_model, "team_model", "", CVAR_USERINFO | CVAR_ARCHIVE },
+	{ &ui_serverFilterType, "ui_serverFilterType", "0", CVAR_ARCHIVE | CVAR_GLOBAL }, // Tr!Force: [ServerList] Allow filter ingame
 };
 
 // bk001129 - made static to avoid aliasing
@@ -8277,6 +8283,7 @@ static int		cvarTableSize = sizeof(cvarTable) / sizeof(cvarTable[0]);
 int widescreenModificationCount = - 1;
 int modelModificationCount = -1;
 int teamModelModificationCount = -1;
+int serverFilterTypeModificationCount = -1;
 /*
 =================
 UI_RegisterCvars
@@ -8293,6 +8300,7 @@ void BaseJK2_UI_RegisterCvars( void ) {  // Tr!Force: [BaseJK2] Register UI cvar
 	widescreenModificationCount = ui_widescreen.modificationCount;
 	modelModificationCount = ui_model.modificationCount;
 	teamModelModificationCount = ui_team_model.modificationCount;
+	serverFilterTypeModificationCount = ui_serverFilterType.modificationCount; // Tr!Force: [ServerList] Allow filter ingame
 }
 
 /*
@@ -8306,6 +8314,12 @@ void BaseJK2_UI_UpdateCvars( void ) {  // Tr!Force: [BaseJK2] Update UI cvars fu
 
 	for ( i = 0, cv = cvarTable ; i < cvarTableSize ; i++, cv++ ) {
 		trap_Cvar_Update( cv->vmCvar );
+	}
+
+	// Tr!Force: [ServerList] Allow filter ingame
+	if (serverFilterTypeModificationCount != ui_serverFilterType.modificationCount) {
+		serverFilterTypeModificationCount = ui_serverFilterType.modificationCount;
+		UI_SetServerFilter();
 	}
 
 	if (widescreenModificationCount != ui_widescreen.modificationCount) {

@@ -216,6 +216,7 @@ typedef struct textScrollDef_s
 #define ITEM_ALIGN_LEFT		0		// left alignment
 #define ITEM_ALIGN_CENTER	1		// center alignment
 #define ITEM_ALIGN_RIGHT	2		// right alignment
+#define ITEM_ALIGN_RIGHT_CVAR	3	// Tr!Force: [UIGeneral] Cvar right alignment
 
 #define CVAR_ENABLE		0x00000001
 #define CVAR_DISABLE	0x00000002

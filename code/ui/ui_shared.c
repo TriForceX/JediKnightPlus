@@ -1766,7 +1766,7 @@ int Item_TextScroll_MaxScroll ( itemDef_t *item )
 	textScrollDef_t *scrollPtr = (textScrollDef_t*)item->typeData;
 	
 	int count = scrollPtr->iLineCount;
-	int max   = count - (int)(item->window.rect.h / scrollPtr->lineHeight) + 1;
+	int max   = count - (int)(item->window.rect.h / scrollPtr->lineHeight); // Tr!Force: [UIGeneral] Proper max scroll text without extra line
 
 	if (max < 0) 
 	{
@@ -3575,6 +3575,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 					g_editingField = qtrue;
 					g_editItem = item;
 					DC->setOverstrikeMode(qtrue);
+						Item_Action(item); // Tr!Force: [UIGeneral] Allow actions on edit fields
 				} else {
 						Item_Action(item);
 				}
@@ -3615,7 +3616,7 @@ void Item_SetTextExtents(itemDef_t *item, int *width, int *height, const char *t
 		{
 			originalWidth += DC->ownerDrawWidth(item->window.ownerDraw, item->textscale);
 		} 
-		else if (item->type == ITEM_TYPE_EDITFIELD && item->textalignment == ITEM_ALIGN_CENTER && item->cvar) 
+		else if (item->type == ITEM_TYPE_EDITFIELD && (item->textalignment == ITEM_ALIGN_CENTER || item->textalignment == ITEM_ALIGN_RIGHT_CVAR) && item->cvar) // Tr!Force: [UIGeneral] Cvar right alignment
 		{
 			char buff[256];
 			DC->getCVarString(item->cvar, buff, 256);
@@ -3628,7 +3629,7 @@ void Item_SetTextExtents(itemDef_t *item, int *width, int *height, const char *t
 		item->textRect.h = *height;
 		item->textRect.x = item->textalignx;
 		item->textRect.y = item->textaligny;
-		if (item->textalignment == ITEM_ALIGN_RIGHT) {
+		if (item->textalignment == ITEM_ALIGN_RIGHT || item->textalignment == ITEM_ALIGN_RIGHT_CVAR) { // Tr!Force: [UIGeneral] Cvar right alignment
 			item->textRect.x = item->textalignx - originalWidth;
 		} else if (item->textalignment == ITEM_ALIGN_CENTER) {
 			item->textRect.x = item->textalignx - originalWidth / 2;
@@ -7427,7 +7428,7 @@ void Menu_PaintAll() {
 
 	// motd
 	DC->getCVarString("cl_motdString", motd, sizeof(motd));
-	if (strlen(motd)) {
+	if (strlen(motd) && !DC->getCVarValue("jk_ui_hideMotd")) { // Tr!Force: [UIGeneral] Check motd
 		DC->drawText(10, DC->screenHeight - 15, 0.6f, v, motd, 0, 0, 0, 0);
 	}
 }
