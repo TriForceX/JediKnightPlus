@@ -941,6 +941,10 @@ static void CG_SetDeferredClientInfo( clientInfo_t *ci ) {
 			if ( !match->infoValid || match->deferred ) {
 				continue;
 			}
+			// Tr!Force: [CGameGeneral] Fix connect lag
+			if (match->jk2gameplay != ci->jk2gameplay) {
+				continue;
+			}
 			if ( Q_stricmp( ci->skinName, match->skinName ) ||
 				(cgs.gametype >= GT_TEAM && ci->team != match->team) ) {
 				continue;
@@ -961,6 +965,10 @@ static void CG_SetDeferredClientInfo( clientInfo_t *ci ) {
 	for ( i = 0 ; i < cgs.maxclients ; i++ ) {
 		match = &cgs.clientinfo[ i ];
 		if ( !match->infoValid ) {
+			continue;
+		}
+		// Tr!Force: [CGameGeneral] Fix connect lag
+		if (match->jk2gameplay != ci->jk2gameplay) {
 			continue;
 		}
 
@@ -1218,7 +1226,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		{ //rww - don't defer your own client info ever, unless really low on memory
 			CG_LoadClientInfo( &newInfo );
 		}
-		else if ( (forceDefer || ( cg_deferPlayers.integer && !cg_buildScript.integer && !cg.loading )) && ci->jk2gameplay == newInfo.jk2gameplay ) { // DON'T DEFER on gameplay changes
+		else if ( (forceDefer || ( cg_deferPlayers.integer && !cg_buildScript.integer && !cg.loading )) /* && ci->jk2gameplay == newInfo.jk2gameplay*/) { // DON'T DEFER on gameplay changes // Tr!Force: [CGameGeneral] Fix connect lag (Moved to CG_SetDeferredClientInfo)
 			// keep whatever they had if it won't violate team skins
 			CG_SetDeferredClientInfo( &newInfo );
 			// if we are low on memory, leave them with this model
