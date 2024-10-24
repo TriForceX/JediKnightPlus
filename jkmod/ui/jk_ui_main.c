@@ -307,7 +307,7 @@ void JKMod_UI_UpdateCvars(void)
 {
 	int i;
 	jkmod_ui_cvar_table_t *cv;
-	qboolean versionMismatch = fabs((double)jkcvar_ui_clientVersion.value - (double)JKModUIcvarClientVersion) > 0.000001; // Thanks Q3...
+	qboolean versionMismatch = fabs((double)jkcvar_ui_clientVersion.value - (double)JKModUIcvarClientVersion) > 0.000001; // Thanks QVMs...
 	
 	// Update all the cvars
 	for (i = 0, cv = JKModUIcvarTable; i < JKModUIcvarTableSize; i++, cv++) {

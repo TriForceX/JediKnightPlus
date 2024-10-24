@@ -198,9 +198,9 @@ void JKMod_CG_UpdateHDFonts(void)
 
 	if (!mvapi)
 	{
-		trap_R_RemapShader("fonts/anewhope", "fonts/jkmod_anewhope", va("%f", va("%f", (cg.time * 0.001))));
-		trap_R_RemapShader("fonts/ergoec", "fonts/jkmod_ergoec", va("%f", va("%f", (cg.time * 0.001))));
-		trap_R_RemapShader("fonts/ocr_a", "fonts/jkmod_ocr_a", va("%f", va("%f", (cg.time * 0.001))));
+		trap_R_RemapShader("fonts/anewhope", "fonts/jkmod_anewhope", va("%f", (cg.time * 0.001)));
+		trap_R_RemapShader("fonts/ergoec", "fonts/jkmod_ergoec", va("%f", (cg.time * 0.001)));
+		trap_R_RemapShader("fonts/ocr_a", "fonts/jkmod_ocr_a", va("%f", (cg.time * 0.001)));
 	}
 }
 
