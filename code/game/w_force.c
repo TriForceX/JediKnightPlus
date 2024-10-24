@@ -5044,7 +5044,9 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 			}
 		}
 	}
-	if ( !self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN) || (self->client->ps.fd.forcePowersActive == (1 << FP_TELEPATHY) && self->client->pers.jkmodPers.ghostPlayer)) // Tr!Force: [Ghost] Don't stop force power
+	if ( !self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN) 
+		|| (self->client->ps.fd.forcePowersActive == (1 << FP_TELEPATHY) && self->client->pers.jkmodPers.ghostPlayer)  // Tr!Force: [Ghost] Don't stop force power
+		|| (self->client->ps.fd.forcePowersActive == (1 << FP_LEVITATION) && (self->client->ps.eFlags & JK_JETPACK_FLAMING)) ) // Tr!Force: [JetPack] Don't stop force power
 	{//when not using the force, regenerate at 1 point per half second
 		if ( !self->client->ps.saberInFlight && self->client->ps.fd.forcePowerRegenDebounceTime < level.time )
 		{
