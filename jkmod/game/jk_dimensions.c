@@ -353,6 +353,9 @@ static void JKMod_DimensionPrivate(gentity_t *ent, char *option, char *args)
 					level.jkmodLocals.privateRoom[privateNum][PRIVATE_SPEED] == DEFAULT ? "^6default" : speed,
 					level.jkmodLocals.privateRoom[privateNum][PRIVATE_GRAVITY] == DEFAULT ? "^6default" : gravity
 				));
+
+				trap_SendServerCommand(ent - g_entities, "cp \"Open console for settings details\"");
+				JKMod_Cmd_ToggleConsole(ent);
 			}
 		}
 	}

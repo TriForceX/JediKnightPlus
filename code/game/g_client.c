@@ -1303,12 +1303,12 @@ void ClientUserinfoChanged( int clientNum ) {
 	// Tr!Force: [GameGeneral] Update instant force change
 	if (ent->client->pers.connected == CON_CONNECTED && ent->client->sess.sessionTeam != TEAM_SPECTATOR && client->jkmodClient.teamChangeDelay <= level.time)
 	{
-		if ((ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) && Q_stricmp(forcePowers, ent->client->pers.jkmodPers.forcePowers))
+		if ((ent->client->ps.stats[JK_DUEL] == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) && Q_stricmp(forcePowers, ent->client->pers.jkmodPers.forcePowers))
 		{
 			if (JKMod_PlayerMoving(ent, qtrue, qtrue) && !(ent->client->ps.stats[JK_TWEAKS] & JK_FORCECHANGE_MOVING)) {
 				trap_SendServerCommand(ent - g_entities, "print \"You can't change force powers while moving\n\"");
 			}
-			else if (!jkcvar_forceChangeTime.integer || jkcvar_forceChangeInstant.integer == 1 && (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FORCE)) {
+			else if (!jkcvar_forceChangeTime.integer || jkcvar_forceChangeInstant.integer == 1 && (ent->client->ps.stats[JK_DUEL] == DUEL_FORCE || ent->client->ps.stats[JK_DIMENSION] == DIMENSION_FORCE)) {
 				JKMod_ForcePowerChange(ent, DIMENSION_FORCE);
 			}
 			else if (jkcvar_forceChangeInstant.integer == 1) {

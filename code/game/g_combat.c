@@ -646,6 +646,11 @@ void TossClientItems( gentity_t *self ) {
 	int			i;
 	gentity_t	*drop;
 
+	// Tr!Force: [Duel] Don't drop weapon
+	if ( self->client->ps.duelInProgress ) {
+		return;
+	}
+
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
 
@@ -3110,8 +3115,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			{
 				return;
 			}
-			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
-			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->pers.jkmodPers.customDuel == DUEL_FORCE))
+			// Tr!Force: [Duel] Update for falling while dueling or custom duel damage
+			else if (attacker && attacker->client && !(mod == MOD_SABER || mod == MOD_FALLING || attacker->client->ps.stats[JK_DUEL] > DUEL_SABER))
 			{
 				return;
 			}
@@ -3122,8 +3127,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 			{
 				return;
 			}
-			// Tr!Force: [Duel] Update for falling while dueling, or full force dueling
-			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->pers.jkmodPers.customDuel == DUEL_FORCE))
+			// Tr!Force: [Duel] Update for falling while dueling or custom duel damage
+			else if (targ && targ->client && !(mod == MOD_SABER || mod == MOD_FALLING || targ->client->ps.stats[JK_DUEL] > DUEL_SABER))
 			{
 				return;
 			}

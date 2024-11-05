@@ -147,4 +147,19 @@ typedef enum
 
 } jkmod_letterCase_t;
 
+// Custom duel type
+typedef enum 
+{
+	/* List */
+	DUEL_SABER,
+	DUEL_FORCE	= ( 1 << 0 ),
+	DUEL_GUNS	= ( 1 << 1 ),
+	DUEL_PISTOL	= ( 1 << 2 ),
+	DUEL_KICK	= ( 1 << 3 ),
+
+	/* Total */
+	DUEL_MAX
+
+} jkmod_duelType_t;
+
 #endif //__JK_PUBLIC_H__

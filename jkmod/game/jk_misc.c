@@ -67,7 +67,7 @@ qboolean JKMod_ForcePowerValid(forcePowers_t power, playerState_t *ps)
 		JKMod_Printf("Duelforce: Ent bug! %i\n", ps->clientNum);
 		return qfalse;
 	}
-	if (ent->client->pers.jkmodPers.customDuel == DUEL_SABER)
+	if (ent->client->ps.stats[JK_DUEL] == DUEL_SABER)
 	{
 		return qfalse;
 	}
@@ -429,13 +429,14 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 			int i;
 			int checkLevel = forcelevel == DEFAULT ? FORCE_LEVEL_0 : forcelevel;
 			int checkDimension = ent->client->ps.stats[JK_DIMENSION];
+			int checkDuel = ent->client->ps.stats[JK_DUEL];
 			
 			i = 0;
 			while (i < NUM_FORCE_POWERS)
 			{
 				if (ent->client->ps.fd.forcePowersActive & (1 << i)) WP_ForcePowerStop(ent, i);
 
-				if ((checkDimension & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || ent->client->pers.jkmodPers.customDuel == DUEL_FORCE)
+				if ((checkDimension & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || checkDuel == DUEL_FORCE)
 				{
 					ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
 
@@ -461,6 +462,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 						ent->client->ps.fd.forcePowersKnown |= (1 << i);
 						if (checkDimension == DIMENSION_SABER && (i == FP_SABERATTACK || i == FP_SABERDEFEND)) checkLevel = FORCE_LEVEL_3;
 						if (checkDimension == DIMENSION_SABER && (i == FP_LEVITATION && jk2gameplay == VERSION_1_04)) checkLevel = FORCE_LEVEL_3;
+						if ((checkDimension == DIMENSION_RACE || checkDuel == DUEL_KICK) && (i == FP_SABERATTACK || i == FP_SABERDEFEND)) checkLevel = FORCE_LEVEL_1;
 						if (forcelevel != DEFAULT) ent->client->ps.fd.forcePowerLevel[i] = checkLevel;
 					}
 				}
@@ -494,7 +496,7 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 				i++;
 			}
 
-			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA) 
+			if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_INSTA || (ent->client->ps.stats[JK_DUEL] & (DUEL_GUNS | DUEL_PISTOL))) 
 				for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = INFINITE_VALUE;
 			else
 				for (i = 0; i < AMMO_MAX; i++) ent->client->ps.ammo[i] = ammoData[i].max;
@@ -538,7 +540,18 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 		}
 		else
 		{
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
+			int i;
+			qboolean hasBacta = (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_MEDPAC)) && 
+								(ent->client->ps.duelInProgress || 
+								((ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FREE | DIMENSION_DUEL)) && 
+								(ent->jkmodEnt.dimensionPrevious & (DIMENSION_FREE | DIMENSION_DUEL))));
+
+			i = 0;
+			while (i < HI_NUM_HOLDABLE)
+			{
+				if (!(i == HI_MEDPAC && hasBacta)) ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << i);
+				i++;
+			}
 		}
 	}
 

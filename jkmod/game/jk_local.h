@@ -129,16 +129,6 @@ typedef enum
 
 } jkmod_emotes_t;
 
-// Duel options
-typedef enum 
-{
-	DUEL_SABER,
-	DUEL_FORCE,
-	DUEL_GUNS,
-	DUEL_KICK
-
-} jkmod_duel_options_t;
-
 // Private options
 typedef enum 
 {
@@ -239,7 +229,6 @@ typedef struct
 {
 	qboolean		clientPlugin;				// Client plugin check
 	float			clientVersion;				// Client plugin version
-	int				customDuel;					// Client is in custom duel
 	int				emoteLastTime;				// Emote last time used
 	int				teleportChat[5];			// Player teleport x y z pitch yaw
 	int				teleportChatCheck;			// Player teleport check
@@ -558,6 +547,7 @@ void		JKMod_Cmd_ToggleConsole(gentity_t *ent);
 void		JKMod_Cmd_WhoIs(gentity_t *ent);
 void		JKMod_CallVote(gentity_t *ent);
 void		JKMod_EngageDuel(gentity_t *ent, int type);
+void		JKMod_SettingsDuel(gentity_t *ent, int *settings);
 qboolean	JKMod_playerStatus(gentity_t *ent, qboolean announce);
 void		JKMod_botControl(int botIndex, int ownerIndex, char *action);
 void		JKMod_Say(gentity_t *ent, int mode, qboolean arg0);

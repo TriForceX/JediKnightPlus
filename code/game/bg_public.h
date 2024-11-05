@@ -329,6 +329,7 @@ typedef enum {
 	JK_PLAYER,
 	JK_DIMENSION,
 	JK_TWEAKS,
+	JK_DUEL,
 	JK_FUEL
 } statIndex_t;
 

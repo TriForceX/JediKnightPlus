@@ -7410,7 +7410,7 @@ stillDoSaber:
 	}
 
 	// Tr!Force: [Dimensions] Don't show saber on racers
-	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE && cent->ghoul2)
+	if ((cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE || (cg.snap->ps.duelInProgress && cg.snap->ps.stats[JK_DUEL] == DUEL_KICK)) && cent->ghoul2)
 	{
 		trap_G2API_RemoveGhoul2Model(&(cent->ghoul2), 1);
 	}

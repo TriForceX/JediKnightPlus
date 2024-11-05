@@ -153,16 +153,23 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Your private duels are %s ^7and your auto duels accept is %s\n"
 			"^5----------\n"
 			"^7Command list:\n"
-			"^3engage_duel\n"
+			"%sengage_duel\n"
 			"%sengage_force\n"
+			"%sengage_guns\n"
+			"%sengage_pistol\n"
+			"%sengage_kick\n"
 			"%stoggle_auto\n"
 			"%stoggle_private\n"
 			"^5----------\n"
 			"^2Note 1: ^7Commands marked in ^1red ^7are disabled by the server\n"
-			"^2Note 2: ^7Toggle private command applies to ^5duel ^7and ^5force ^7commands\n\"", 
+			"^2Note 2: ^7Toggle private command will be applied to ^5engage ^7commands\n\"", 
 			(ent->client->sess.jkmodSess.privateDuel ? "^2enabled" : "^1disabled"), 
 			(ent->client->sess.jkmodSess.autoDuel ? "^2enabled" : "^1disabled"),
-			(jkcvar_allowCustomDuel.integer ? S_COLOR_YELLOW : S_COLOR_RED),
+			(g_privateDuel.integer ? S_COLOR_YELLOW : S_COLOR_RED),
+			(g_privateDuel.integer && (jkcvar_allowCustomDuel.integer & DUEL_FORCE) ? S_COLOR_YELLOW : S_COLOR_RED),
+			(g_privateDuel.integer && (jkcvar_allowCustomDuel.integer & DUEL_GUNS) ? S_COLOR_YELLOW : S_COLOR_RED),
+			(g_privateDuel.integer && (jkcvar_allowCustomDuel.integer & DUEL_PISTOL) ? S_COLOR_YELLOW : S_COLOR_RED),
+			(g_privateDuel.integer && (jkcvar_allowCustomDuel.integer & DUEL_KICK) ? S_COLOR_YELLOW : S_COLOR_RED),
 			(jkcvar_duelAutoAccept.integer ? S_COLOR_YELLOW : S_COLOR_RED),
 			(jkcvar_altDimension.integer & DIMENSION_DUEL ? S_COLOR_YELLOW : S_COLOR_RED)));
 		return;
@@ -446,6 +453,13 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	trace_t tr;
 	vec3_t forward, fwdOrg;
 	qboolean duelEmote = qfalse;
+	const char *duelMessage[DUEL_MAX];
+
+	duelMessage[DUEL_SABER] = "Saber only";
+	duelMessage[DUEL_FORCE] = "Full force";
+	duelMessage[DUEL_GUNS] = "Guns only";
+	duelMessage[DUEL_PISTOL] = "Pistol only";
+	duelMessage[DUEL_KICK] = "Kicks only";
 
 	if (!g_privateDuel.integer) return;
 
@@ -535,15 +549,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 		if (challenged->client->ps.duelIndex == ent->s.number && challenged->client->ps.duelTime >= level.time)
 		{
-			char *duelmessage;
-
-			if (challenged->client->pers.jkmodPers.customDuel == DUEL_FORCE) {
-				duelmessage = "Full force";
-			} else {
-				duelmessage = "Saber only";
-			}
-
-			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (%s%s)\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname, duelmessage,  (challenged->client->sess.jkmodSess.privateDuel ? " private" : "")));
+			// Challenge message
+			trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (%s%s)\n\"", challenged->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELACCEPT"), ent->client->pers.netname, duelMessage[challenged->client->ps.stats[JK_DUEL]],  (challenged->client->sess.jkmodSess.privateDuel ? " private" : "")));
 
 			// Enable duel
 			ent->client->ps.duelInProgress = qtrue;
@@ -559,7 +566,7 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 			}
 
 			// Set custom settings
-			if (challenged->client->pers.jkmodPers.customDuel == DUEL_FORCE) 
+			if (challenged->client->ps.stats[JK_DUEL] == DUEL_FORCE) 
 			{
 				int checkSide = (1 << FP_ABSORB) | (1 << FP_HEAL) | (1 << FP_PROTECT) | (1 << FP_TELEPATHY) | (1 << FP_GRIP) | (1 << FP_DRAIN) | (1 << FP_LIGHTNING) | (1 << FP_RAGE);
 
@@ -571,6 +578,42 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 				JKMod_DimensionSettings(ent, DIMENSION_FORCE);
 				JKMod_DimensionSettings(challenged, DIMENSION_FORCE);
+			}
+			else if (challenged->client->ps.stats[JK_DUEL] & (DUEL_GUNS | DUEL_PISTOL)) 
+			{
+				int duelGuns[PRIVATE_SETTINGS] = {
+					6,				// weapondisable
+					262141,			// forcedisable
+					FORCE_LEVEL_3,	// forcelevel
+					qfalse,			// holdables
+					qfalse,			// jetpack
+					qfalse,			// invulnerability
+					qfalse,			// passthrough
+					250,			// speed
+					800,			// gravity
+				};
+
+				if (challenged->client->ps.stats[JK_DUEL] == DUEL_PISTOL) duelGuns[PRIVATE_WEAPONDISABLE] = 16374;
+
+				JKMod_SettingsDuel(ent, duelGuns);
+				JKMod_SettingsDuel(challenged, duelGuns);
+			}
+			else if (challenged->client->ps.stats[JK_DUEL] == DUEL_KICK) 
+			{
+				int duelKick[PRIVATE_SETTINGS] = {
+					65531,			// weapondisable
+					229373,			// forcedisable
+					FORCE_LEVEL_3,	// forcelevel
+					qfalse,			// holdables
+					qfalse,			// jetpack
+					qfalse,			// invulnerability
+					qfalse,			// passthrough
+					250,			// speed
+					800,			// gravity
+				};
+
+				JKMod_SettingsDuel(ent, duelKick);
+				JKMod_SettingsDuel(challenged, duelKick);
 			}
 
 			ent->client->ps.duelTime = level.time + 2000;
@@ -636,20 +679,14 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 			if (jkcvar_allowCustomDuel.integer) 
 			{
-				if (type == DUEL_FORCE) 
+				// Print full force duel initiation in private
+				G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (%s%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), duelMessage[type], privateDuel ? " private" : ""));
+				G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (%s%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname,  duelMessage[type], privateDuel ? " private" : ""));
+				
+				if (type > DUEL_SABER) 
 				{
-					// Print full force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Full force%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Full force%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
-					
-					ent->client->pers.jkmodPers.customDuel = DUEL_FORCE;
-					challenged->client->pers.jkmodPers.customDuel = DUEL_FORCE;
-				}
-				else 
-				{
-					// Print full no-force duel initiation in private
-					G_CenterPrint(challenged - g_entities, 3, va("%s" S_COLOR_WHITE " %s (Saber only%s)\n", ent->client->pers.netname, G_GetStripEdString("SVINGAME", "PLDUELCHALLENGE"), privateDuel ? " private" : ""));
-					G_CenterPrint(ent - g_entities, 3, va("%s %s" S_COLOR_WHITE " (Saber only%s)\n", G_GetStripEdString("SVINGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, privateDuel ? " private" : ""));
+					ent->client->ps.stats[JK_DUEL] = type;
+					challenged->client->ps.stats[JK_DUEL] = type;
 				}
 			}
 			else 
@@ -690,23 +727,69 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 	}
 }
 
-// Re-route old function
-void Cmd_EngageDuel_f(gentity_t *ent) { JKMod_EngageDuel(ent, 0); }
+/*
+=====================================================================
+Settings for custom duel challenge
+=====================================================================
+*/
+void JKMod_SettingsDuel(gentity_t *ent, int *settings)
+{
+	JKMod_CustomGameSettings(ent, 
+		settings[PRIVATE_WEAPONDISABLE],
+		settings[PRIVATE_FORCEDISABLE],
+		settings[PRIVATE_FORCELEVEL],
+		settings[PRIVATE_HOLDABLES],
+		settings[PRIVATE_JETPACK],
+		settings[PRIVATE_INVULNERABILITY],
+		settings[PRIVATE_PASSTHROUGH],
+		settings[PRIVATE_SPEED],
+		settings[PRIVATE_GRAVITY]
+	);
+}
 
 /*
 =====================================================================
 Custom engage duel function
 =====================================================================
 */
+
+// Re-route old function
+void Cmd_EngageDuel_f(gentity_t *ent) { JKMod_EngageDuel(ent, DUEL_SABER); }
+
+// Custom engage duel commands
 static void JKMod_Cmd_EngageDuel(gentity_t *ent)
 {
-	if (!jkcvar_allowCustomDuel.integer) {
-		trap_SendServerCommand(ent - g_entities, "print \"Custom duels are ^3disabled ^7by the server. Applying normal duel...\n\"");
-		JKMod_EngageDuel(ent, 0);
-	} else {
-		JKMod_EngageDuel(ent, 1);
+	int type = DUEL_SABER;
+	char cmd[MAX_TOKEN_CHARS];
+	const char *duelMessage[DUEL_MAX];
+
+	duelMessage[DUEL_SABER] = "Saber only";
+	duelMessage[DUEL_FORCE] = "Full force";
+	duelMessage[DUEL_GUNS] = "Guns only";
+	duelMessage[DUEL_PISTOL] = "Pistol only";
+	duelMessage[DUEL_KICK] = "Kicks only";
+
+	trap_Argv(0, cmd, sizeof(cmd));
+
+	if (!g_privateDuel.integer) return;
+
+	if (!Q_stricmp(cmd, "engage_ff") || strstr(cmd, "force")) {
+		type = DUEL_FORCE;
+	} else if (!Q_stricmp(cmd, "engage_guns")) {
+		type = DUEL_GUNS;
+	} else if (!Q_stricmp(cmd, "engage_pistol")) {
+		type = DUEL_PISTOL;
+	} else if (!Q_stricmp(cmd, "engage_kick")) {
+		type = DUEL_KICK;
 	}
-	return;
+
+	if (type > DUEL_SABER && !(jkcvar_allowCustomDuel.integer & type))
+	{
+		trap_SendServerCommand(ent - g_entities, va("print \"%s duels are ^3disabled ^7by the server. Applying normal duel...\n\"", duelMessage[type]));
+		type = DUEL_SABER;
+	}
+
+	JKMod_EngageDuel(ent, type);
 }
 
 /*
@@ -2955,6 +3038,9 @@ jkmod_commands_t JKModCommandsTable[] =
 	{ "engage_fullforceduel",	JKMod_Cmd_EngageDuel },
 	{ "engage_duel_force",		JKMod_Cmd_EngageDuel },
 	{ "engage_ff",				JKMod_Cmd_EngageDuel },
+	{ "engage_guns",			JKMod_Cmd_EngageDuel },
+	{ "engage_pistol",			JKMod_Cmd_EngageDuel },
+	{ "engage_kick",			JKMod_Cmd_EngageDuel },
 	{ "engage_private",			JKMod_Cmd_EngagePrivate },
 	{ "toggle_auto",			JKMod_Cmd_ToggleAuto },
 	{ "toggle_private",			JKMod_Cmd_TogglePrivate },

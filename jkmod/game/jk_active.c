@@ -54,7 +54,7 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 			trap_SendServerCommand(ent - g_entities, va("cp \"Applying force changes in %d\"", ent->client->jkmodClient.forceChangeDelay));
 		} else {
 			trap_SendServerCommand(ent - g_entities, "cp \"Force updated!\"");
-			if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE))) {
+			if (ent->client->ps.stats[JK_DUEL] == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE))) {
 				JKMod_ForcePowerChange(ent, DIMENSION_FORCE);
 			} else {
 				JKMod_ForcePowerChange(ent, DIMENSION_FREE);
@@ -353,11 +353,14 @@ void JKMod_ClientThink_real(gentity_t *ent)
 		G_SetAngles(model, angles);
 	}
 
-	// Check race dimension saber toogle
-	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE && !ent->client->ps.saberHolstered)
+	// Check forced saber toogle
+	if (!ent->client->ps.saberHolstered)
 	{
-		ent->client->ps.saberHolstered = qtrue;
-		ent->client->ps.weaponTime = 400;
+		if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE || (ent->client->ps.duelInProgress && ent->client->ps.stats[JK_DUEL] == DUEL_KICK))
+		{
+			ent->client->ps.saberHolstered = qtrue;
+			ent->client->ps.weaponTime = 400;
+		}
 	}
 
 	// Check jetpack flaming

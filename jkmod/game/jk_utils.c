@@ -522,7 +522,7 @@ Remove private duel status
 void JKMod_DuelRemove(gentity_t *ent)
 {
 	ent->client->ps.duelInProgress = 0;
-	ent->client->pers.jkmodPers.customDuel = 0;
+	ent->client->ps.stats[JK_DUEL] = 0;
 	ent->client->pers.jkmodPers.duelHitCount = 0;
 	G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 	JKMod_DimensionSettings(ent, DIMENSION_FREE);

@@ -3578,7 +3578,7 @@ static void PM_Weapon( void )
 		pm->ps->weapon = WP_SABER;
 	}
 
-	if (pm->ps->duelInProgress)
+	if (pm->ps->duelInProgress && (pm->ps->stats[STAT_WEAPONS] & WP_SABER)) // Tr!Force: [Duel] Set saber only if settings allows it
 	{
 		pm->cmd.weapon = WP_SABER;
 		pm->ps->weapon = WP_SABER;
@@ -3722,7 +3722,7 @@ static void PM_Weapon( void )
 		PM_StartTorsoAnim( BOTH_GUNSIT1 );
 	}
 
-	if (pm->ps->isJediMaster || pm->ps->duelInProgress || pm->ps->trueJedi)
+	if (pm->ps->isJediMaster || (pm->ps->duelInProgress && (pm->ps->stats[STAT_WEAPONS] & WP_SABER)) || pm->ps->trueJedi) // Tr!Force: [Duel] Set saber only if settings allows it
 	{
 		pm->cmd.weapon = WP_SABER;
 		pm->ps->weapon = WP_SABER;

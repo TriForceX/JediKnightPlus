@@ -223,6 +223,15 @@ static jkmod_bit_info_t toggleAltDimension[] =
 	"PRIVATE ROOM",
 };
 
+// Options for jk_allowCustomDuel cvar
+static jkmod_bit_info_t toggleAllowCustomDuel[] = 
+{
+	"FULL FORCE",
+	"GUNS ONLY",
+	"PISTOL ONLY",
+	"KICKS ONLY",
+};
+
 // Options for jk_spawnActivateSaber cvar
 static jkmod_bit_info_t toggleSpawnActivateSaber[] = 
 {
@@ -288,6 +297,7 @@ static void JKMod_svCmd_toggleMod(void)
 			"^3jk_altDimensionBase\n"
 			"^3jk_altDimensionSpawn\n"
 			"^3jk_altDimensionNoScore\n"
+			"^3jk_allowCustomDuel\n"
 			"^3jk_spawnActivateSaber\n"
 			"^3jk_mapFixes\n"
 			"^3bot_forGimmick\n"
@@ -340,6 +350,11 @@ static void JKMod_svCmd_toggleMod(void)
 		{
 			toggleModOptions = toggleAltDimension;
 			toggleModSize = ARRAY_LEN(toggleAltDimension);
+		}
+		else if (!Q_stricmp(arg1, "jk_allowCustomDuel")) 
+		{
+			toggleModOptions = toggleAllowCustomDuel;
+			toggleModSize = ARRAY_LEN(toggleAllowCustomDuel);
 		}
 		else if (!Q_stricmp(arg1, "jk_spawnActivateSaber")) 
 		{

@@ -97,7 +97,7 @@ void JKMod_CG_Player(centity_t *cent)
 	}
 
 	// Render saber model
-	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	if (cg.snap->ps.stats[JK_DIMENSION] == DIMENSION_RACE || (cg.snap->ps.duelInProgress && cg.snap->ps.stats[JK_DUEL] == DUEL_KICK))
 	{
 		vec4_t jkmod_saberDetails = { 0, 0, -1.5, 0 };
 		JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, cgs.jkmodMedia.saberModel, "*hip_r", jkmod_saberDetails);

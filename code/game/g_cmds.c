@@ -962,7 +962,7 @@ void Cmd_ForceChanged_f( gentity_t *ent )
 		goto argCheck;
 	}
 	// Tr!Force: [GameGeneral] Update instant force change
-	else if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) 
+	else if (ent->client->ps.stats[JK_DUEL] == DUEL_FORCE || (ent->client->ps.stats[JK_DIMENSION] & (DIMENSION_FORCE | DIMENSION_PRIVATE)) || jkcvar_forceChangeInstant.integer) 
 	{
 		// Update done in ClientUserinfoChanged()
 		return;
@@ -2236,7 +2236,7 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 	}
 
 	// Tr!Force: [Dimensions] Don't allow saber toggle on race dimension
-	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE || (ent->client->ps.duelInProgress && ent->client->ps.stats[JK_DUEL] == DUEL_KICK))
 	{
 		return;
 	}

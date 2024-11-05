@@ -1258,16 +1258,17 @@ void BaseJK2_ClientThink_real( gentity_t *ent ) { // Tr!Force: [BaseJK2] Client 
 			// Tr!Force: [Duel] Display duel end stats
 			if (jkcvar_duelEndStats.integer)
 			{
-				char *duelmessage;
+				qboolean privateDuel = ((jkcvar_altDimension.integer & DIMENSION_DUEL) && (ent->client->ps.stats[JK_DIMENSION] & DIMENSION_DUEL));
+				const char *duelMessage[DUEL_MAX];
 
-				if (ent->client->pers.jkmodPers.customDuel == DUEL_FORCE) {
-					duelmessage = "won a full force duel";
-				} else {
-					duelmessage = "won a saber only duel";
-				}
+				duelMessage[DUEL_SABER] = "Saber only";
+				duelMessage[DUEL_FORCE] = "Full force";
+				duelMessage[DUEL_GUNS] = "Guns only";
+				duelMessage[DUEL_PISTOL] = "Pistol only";
+				duelMessage[DUEL_KICK] = "Kicks only";
 
-				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s with " S_COLOR_RED "%d" S_COLOR_WHITE "/" S_COLOR_GREEN "%d" S_COLOR_WHITE " health and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits on opponent\n\"",
-					ent->client->pers.netname, duelmessage, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], duelAgainst->client->pers.jkmodPers.duelHitCount+1));
+				trap_SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " won a duel with " S_COLOR_RED "%d" S_COLOR_WHITE "/" S_COLOR_GREEN "%d" S_COLOR_WHITE " health and " S_COLOR_CYAN "%d" S_COLOR_WHITE " hits on opponent (%s%s)\n\"",
+					ent->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], duelAgainst->client->pers.jkmodPers.duelHitCount+1, duelMessage[ent->client->ps.stats[JK_DUEL]], privateDuel ? " private" : ""));
 			}
 
 			// ent->client->ps.duelInProgress = 0;

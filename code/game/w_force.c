@@ -640,14 +640,14 @@ int ForcePowerUsableOn(gentity_t *attacker, gentity_t *other, forcePowers_t forc
 	{
 		if (attacker && attacker->client && attacker->client->ps.duelInProgress)
 		{
-			if ((attacker->client->pers.jkmodPers.customDuel == DUEL_SABER) || (attacker->client->ps.duelIndex != other->s.number))
+			if ((attacker->client->ps.stats[JK_DUEL] == DUEL_SABER) || (attacker->client->ps.duelIndex != other->s.number))
 			{
 				return 0;
 			}
 		}
 		if (other && other->client && other->client->ps.duelInProgress)
 		{
-			if ((other->client->pers.jkmodPers.customDuel == DUEL_SABER) || (other->client->ps.duelIndex != attacker->s.number))
+			if ((other->client->ps.stats[JK_DUEL] == DUEL_SABER) || (other->client->ps.duelIndex != attacker->s.number))
 			{
 				return 0;
 			}
