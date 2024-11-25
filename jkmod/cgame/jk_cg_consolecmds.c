@@ -199,3 +199,20 @@ void JKMod_CG_SpeedoMeterToggle(void)
 		CG_Printf("Speedometer: %s %s^7\n", sMeterSettings[index].string, ((jkcvar_cg_speedoMeter.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 	}
 }
+
+/*
+=====================================================================
+Dual saber toggle
+=====================================================================
+*/
+void JKMod_CG_DualSaberToggle(void)
+{
+	// Send server command
+	trap_SendConsoleCommand("cmd dualsaber\n");
+
+	// Allow changes from menu while following
+	if (cgs.jkmodCGS.dualSaber && (cg.snap->ps.pm_flags & PMF_FOLLOW))
+	{
+		trap_Cvar_Set("jk_ui_dualSaber", va("%i", jkcvar_cg_ui_dualSaber.integer ? 0 : 1));
+	}
+}

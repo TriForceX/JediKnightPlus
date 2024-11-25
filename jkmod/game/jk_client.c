@@ -135,7 +135,7 @@ void JKMod_ClientBegin(int clientNum, qboolean allowTeamReset)
 	if (client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(client->pers.jkmodPers.botControl[BOT_INDEX], clientNum, "remove");
 
 	// Check dual saber
-	if (client->sess.sessionTeam == TEAM_SPECTATOR && client->pers.jkmodPers.dualSaber) client->pers.jkmodPers.dualSaber = qfalse;
+	if (jkcvar_dualSaber.integer) client->ps.dualBlade = client->pers.jkmodPers.dualSaber;
 
 	// Check server news
 	if (jkcvar_serverNews.integer && level.jkmodLocals.serverNewsCount && level.numVotingClients == 1) level.jkmodLocals.serverNewsTime = level.time + (jkcvar_serverNewsTime.integer * 1000);

@@ -873,6 +873,9 @@ void StopFollowing( gentity_t *ent ) {
 	ent->client->ps.zoomMode = 0;
 	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
 
+	// Tr!Force: [DualSaber] Check spectators
+	ent->client->pers.jkmodPers.dualSaber = ent->client->ps.dualBlade = ent->client->sess.sessionTeam == TEAM_SPECTATOR ? ent->client->pers.jkmodPers.dualSaber : qfalse;
+
 	// Tr!Force: [Bots] Remove bot control
 	if (ent->client->pers.jkmodPers.botControl[BOT_ENABLED]) JKMod_botControl(ent->client->pers.jkmodPers.botControl[BOT_INDEX], ent->s.number, "remove");
 
@@ -2276,8 +2279,11 @@ void Cmd_ToggleSaber_f(gentity_t *ent)
 			G_Sound(ent, CHAN_AUTO, saberOffSound);
 
 			// Tr!Force: [DualSaber] Disable after toggle
-			ent->client->ps.dualBlade = qfalse;
-			ent->client->pers.jkmodPers.dualSaber = qfalse;
+			if (jkcvar_dualSaber.integer == 1) {
+				ent->client->ps.dualBlade = ent->client->pers.jkmodPers.dualSaber;
+			} else {
+				ent->client->ps.dualBlade = ent->client->pers.jkmodPers.dualSaber = qfalse;
+			}
 
 			//prevent anything from being done for 400ms after holster
 			ent->client->ps.weaponTime = 400;

@@ -314,28 +314,26 @@
 		// Saber Color display
 		itemDef 
 		{
-			name				effectfield
-			group				yessaber
-			style				0	
-			ownerdraw			UI_EFFECTS
-			rect				20 220 388 40
-			textalign			ITEM_ALIGN_LEFT		
-			textalignx			0
-			textaligny			0
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
-			forecolor			1 1 1 1
-			border				0
-			bordercolor			0 0 0 0
-			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
-			hideCvar 
+			name					effectfield
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS
+			rect					20 220 388 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
+			showCvar 
 			{ 
-				"5" ; 
-				"6" ; 
-				"7" ; 
-				"8" ;
+				"0"
 			}
-			visible				1     
+			visible					1     
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
@@ -391,36 +389,170 @@
 		// FAKE Saber Color display
 		itemDef 
 		{
-			name				effectfield2
-			group				yessaber
-			style				0	
-			ownerdraw			UI_EFFECTS
-			rect				20 220 388 40
-			textalign			ITEM_ALIGN_LEFT		
-			textalignx			0
-			textaligny			0
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
-			forecolor			1 1 1 1
-			border				0
-			bordercolor			0 0 0 0
-			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			name					effectfield2
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS
+			rect					20 220 388 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
 			showCvar 
 			{ 
-				"5" ; 
-				"6" ; 
-				"7" ; 
-				"8" ;
+				"0"
 			}
-			visible				1 
+			visible					1 
 			decoration
 			action 
 			{ 
 				play			"sound/interface/button1.wav" ;
 			}
-
+		}
+		
+		//----------------------------------------
+		// DUAL LIGHTSABER COLORS
+		//----------------------------------------
+		
+		// Saber Color display dual left
+		itemDef 
+		{
+			name					effectfieldDual
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS
+			rect					13 220 230 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"1"
+			}
+			visible					1     
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+			mouseEnter 
+			{ 
+				setitemcolor effectentry forecolor 1 1 1 1
+			} 
+			mouseExit 
+			{ 
+				setitemcolor effectentry forecolor 0.65 0.65 1 1
+			}
 		}
 
+		// FAKE Saber Color display dual left
+		itemDef 
+		{
+			name					effectfield2Dual
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS
+			rect					13 220 230 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"1"
+			}
+			visible					1 
+			decoration
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+		}
+		
+		// Saber Color display dual right
+		itemDef 
+		{
+			name					effectfieldDual2
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS_2
+			rect					188 220 230 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"1"
+			}
+			visible					1     
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+			mouseEnter 
+			{ 
+				setitemcolor effectentry forecolor 1 1 1 1
+			} 
+			mouseExit 
+			{ 
+				setitemcolor effectentry forecolor 0.65 0.65 1 1
+			}
+		}
+
+		// FAKE Saber Color display dual right
+		itemDef 
+		{
+			name					effectfield2Dual2
+			group					yessaber
+			style					0	
+			ownerdraw				UI_EFFECTS_2
+			rect					188 220 230 40
+			textalign				ITEM_ALIGN_LEFT		
+			textalignx				0
+			textaligny				0
+			outlinecolor			1 .5 .5 .5
+			backcolor				0 0 0 0
+			forecolor				1 1 1 1
+			border					0
+			bordercolor				0 0 0 0
+			descText				@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
+			cvarTest				"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"1"
+			}
+			visible					1 
+			decoration
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+			}
+		}
 
 		//----------------------------------------
 		// STUN BATON (if saber is disabled)
@@ -521,7 +653,7 @@
 			name				forcetitle
 			group				yesforce
 			style				0	
-			text				@MENUS2_THE_FORCE
+			text				@JKMENUS_CLIENT_SIDE_OTHERS
 			rect				220 270 0 0
 			textalign			ITEM_ALIGN_CENTER		
 			textalignx			0
@@ -646,7 +778,7 @@
 			rect				183 370 105 32
 			textalign			ITEM_ALIGN_LEFT
 			textalignx			0
-			textaligny			-5
+			textaligny			2
 			outlinecolor		1 .5 .5 .5
 			backcolor			0 0 0 0
 			font				2
@@ -661,6 +793,106 @@
 				uiScript		updateForceStatus
 			}
 		}
+		
+		// Configure saber button
+		itemDef 
+		{
+			name				configsaberbuttonback
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				190 334 121 32
+			background			"gfx/menus/menu_buttonback"	// Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		
+		itemDef 
+		{
+			name				configsaberbutton
+			group				"yesforce"
+			text				@JKMENUS_MOD_SINGLESABER
+			type				1
+			style				WINDOW_STYLE_EMPTY
+			rect				190 334 121 32
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			60.5
+			textaligny			6
+			font				3
+			textscale			.7
+			forecolor			0.65 0.65 1 1
+			descText			@JKMENUS_CLIENT_DUALSABER_DESC
+			visible				1
+			cvarTest			"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"1"
+			}
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				exec			"dualsaber" ; 
+			}
+			mouseEnter 
+			{ 
+				show			configsaberbuttonback
+			}
+			mouseExit 
+			{ 
+				hide			configsaberbuttonback
+ 			}
+		}
+		
+		itemDef 
+		{
+			name				configsaberbutton
+			group				"yesforce"
+			text				@JKMENUS_MOD_DUALSABER
+			type				1
+			style				WINDOW_STYLE_EMPTY
+			rect				190 334 121 32
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			60.5
+			textaligny			6
+			font				3
+			textscale			.7
+			forecolor			0.65 0.65 1 1
+			descText			@JKMENUS_CLIENT_DUALSABER_DESC
+			visible				1
+			cvarTest			"jk_ui_dualSaber"
+			showCvar 
+			{ 
+				"0"
+			}
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				exec			"dualsaber" ; 
+			}
+			mouseEnter 
+			{ 
+				show			configsaberbuttonback
+				show			highlightSvAllow
+			}
+			mouseExit 
+			{ 
+				hide			configsaberbuttonback
+				hide			highlightSvAllow
+ 			}
+		}
+		
+		itemDef
+		{
+			name				configsabermodel
+			group				yesforce
+			type 				ITEM_TYPE_MODEL
+			rect				224 292 52 52
+			model_angle			90
+			model_rotation		3.5
+			asset_model			"models/weapons2/saber/saber_w.md3"
+			visible			1
+			decoration
+		}
 
 		// Configure force button
 		itemDef 
@@ -668,26 +900,26 @@
 			name				configforcebuttonback
 			group				highlights
 			style				WINDOW_STYLE_SHADER
-			rect				225 310 195 32
+			rect				310 334 121 32
 			background			"gfx/menus/menu_buttonback"	// Frame around button
 			forecolor			1 1 1 1
 			decoration
 			visible				0
 		}
-
+		
 		itemDef 
 		{
 			name				configforcebutton
 			group				"yesforce"
-			text				@MENUS2_CONFIGURE_FORCE_POWERS
+			text				@MENUS2_THE_FORCE
 			type				1
 			style				WINDOW_STYLE_EMPTY
-			rect				225 310 195 32
-			textalign			1
-			textalignx			97
-			textaligny			1
-			font				2
-			textscale			.9
+			rect				310 334 121 32
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			60.5
+			textaligny			6
+			font				3
+			textscale			.7
 			forecolor			0.65 0.65 1 1
 			descText			@MENUS2_SET_UP_THE_FORCE_ABILITIES
 			visible				1
@@ -714,7 +946,42 @@
 				hide			configforcebuttonback
  			}
 		}
-
+		
+		itemDef
+		{
+			name				configforcemodel
+			group				yesforce
+			type 				ITEM_TYPE_MODEL
+			rect				344 292 52 52
+			model_angle			90
+			model_rotation		3.5
+			asset_model			"models/map_objects/mp/dk_rage.md3"
+			cvarTest			"jk_ui_forceSide"
+			showCvar 
+			{ 
+				"2"
+			}
+			visible			1
+			decoration
+		}
+		
+		itemDef
+		{
+			name				configforcemodel
+			group				yesforce
+			type 				ITEM_TYPE_MODEL
+			rect				344 292 52 52
+			model_angle			90
+			model_rotation		3.5
+			asset_model			"models/map_objects/mp/lt_healother.md3"
+			cvarTest			"jk_ui_forceSide"
+			showCvar 
+			{ 
+				"1"
+			}
+			visible			1
+			decoration
+		}
 
 		//----------------------------------------
 		// DISABLED FORCE POWER (If g_disableforcepower)
@@ -767,35 +1034,6 @@
 			decoration 
 		}
 
-		/*
-		itemDef 
-		{
-			name				text1
-			group				"noforce"
-			style				0	
-			// text				@MENUS3_NOFORCE_DISABLED_1
-			rect				20 300 400 20
-			textalign			ITEM_ALIGN_CENTER
-			textalignx			200
-			textaligny			-2
-			font				2
-			textscale			.7
-			forecolor			0.7 0.7 0.7 1
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
-			border				0
-			bordercolor			0 0 0 0
-			visible				1 
-			cvarTest			"ui_about_gametype"
-			hideCvar 
-			{ 
-				"1" ; 
-				"2"
-			}
-			decoration 
-		}
-		*/
-
 		itemDef 
 		{
 			name				text2
@@ -822,35 +1060,6 @@
 			}
 			decoration 
 		}
-
-		/*
-		itemDef 
-		{
-			name				text3
-			group				"noforce"
-			style				0	
-			// text				@MENUS3_NOFORCE_DISABLED_1
-			rect				20 340 400 20
-			textalign			ITEM_ALIGN_CENTER
-			textalignx			200
-			textaligny			-2
-			font				2
-			textscale			.7
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
-			forecolor			0.7 0.7 0.7 1
-			border				0
-			bordercolor			0 0 0 0
-			visible				1 
-			cvarTest			"ui_about_gametype"
-			hideCvar 
-			{ 
-				"1" ; 
-				"2"
-			}
-			decoration 
-		}
-		*/
 
 		//----------------------------------------
 		// HOLOCRON INFO

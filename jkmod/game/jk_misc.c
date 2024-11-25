@@ -475,6 +475,18 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 			WP_InitForcePowers(ent);
 		}
 
+		// True jedi
+		if (g_trueJedi.integer)
+		{
+			if (WP_HasForcePowers(&ent->client->ps)) {
+				ent->client->ps.trueNonJedi = qfalse;
+				ent->client->ps.trueJedi = qtrue;
+			} else {
+				ent->client->ps.trueNonJedi = qtrue;
+				ent->client->ps.trueJedi = qfalse;
+			}
+		}
+		
 		// Weapons
 		if (weapondisable != ent->client->ps.stats[STAT_WEAPONS] && weapondisable != g_weaponDisable.integer)
 		{
@@ -507,13 +519,14 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 		{
 			ent->client->ps.stats[STAT_WEAPONS] = 0;
 
-			if (WP_HasForcePowers(&ent->client->ps))
+			if (WP_HasForcePowers(&ent->client->ps) && ent->client->ps.fd.forcePowerLevel[FP_SABERATTACK])
 			{
 				ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
 				ent->client->ps.weapon = WP_SABER;
 			}
 			else if (!g_weaponDisable.integer || !(g_weaponDisable.integer & (1 << WP_BRYAR_PISTOL)))
 			{
+				ent->client->ps.stats[STAT_WEAPONS] &= ~(1 << WP_SABER);
 				ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_STUN_BATON);
 				ent->client->ps.stats[STAT_WEAPONS] |= (1 << WP_BRYAR_PISTOL);
 				ent->client->ps.ammo[AMMO_POWERCELL] = ammoData[AMMO_POWERCELL].max;
@@ -627,10 +640,9 @@ void JKMod_CustomGameSettings(gentity_t *ent, int weapondisable, int forcedisabl
 	ent->client->pers.jkmodPers.customGravity = gravity;
 
 	// Dual saber
-	ent->client->pers.jkmodPers.dualSaber = qfalse;
+	ent->client->pers.jkmodPers.dualSaber = ent->client->ps.dualBlade = ent->client->sess.sessionTeam == TEAM_SPECTATOR ? ent->client->pers.jkmodPers.dualSaber : qfalse;
 
 	// Cheats
-	ent->client->ps.dualBlade = qfalse;
 	ent->client->noclip = qfalse;
 	ent->flags &= ~(FL_GODMODE | FL_NOTARGET);
 

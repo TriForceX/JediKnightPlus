@@ -3432,9 +3432,44 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_FORCEDUEL
-			descText			@JKMENUS_CLIENT_FORCEDUEL_DESC
-			cvar				"engage_force"
+			text				@JKMENUS_CLIENT_JETPACK
+			descText			@JKMENUS_CLIENT_JETPACK_DESC
+			cvar				"jetpack"
+			rect				220 41 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{
+				show			highlight1
+				show			highlightSvAllow
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight1
+				hide			highlightSvAllow
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@MENUS1_USE
+			descText			@MENUS1_ACTIVATES_WORLD_DEVICES
+			cvar				"+use"
 			rect				220 61 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3451,13 +3486,11 @@
 			mouseEnter 
 			{
 				show			highlight2
-				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight2
-				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -3467,9 +3500,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_PRIVATEROOM
-			descText			@JKMENUS_CLIENT_PRIVATEROOM_DESC
-			cvar				"engage_private"
+			text				@JKMENUS_CLIENT_DUALSABER
+			descText			@JKMENUS_CLIENT_DUALSABER_DESC
+			cvar				"dualsaber"
 			rect				220 81 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3535,9 +3568,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_JETPACK
-			descText			@JKMENUS_CLIENT_JETPACK_DESC
-			cvar				"jetpack"
+			text				@JKMENUS_CLIENT_RESPAWN
+			descText			@JKMENUS_CLIENT_RESPAWN_DESC
+			cvar				"kill"
 			rect				220 121 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3554,13 +3587,11 @@
 			mouseEnter 
 			{ 
 				show			highlight5
-				show			highlightSvAllow
 				show			keybindstatus
 			}
 			mouseExit 
 			{ 
 				hide			highlight5
-				hide			highlightSvAllow
 				hide			keybindstatus
 			}
 		}
@@ -3570,9 +3601,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_RESPAWN
-			descText			@JKMENUS_CLIENT_RESPAWN_DESC
-			cvar				"kill"
+			text				@JKMENUS_CLIENT_SAVEPOS
+			descText			@JKMENUS_CLIENT_SAVEPOS_DESC
+			cvar				"savepos"
 			rect				220 141 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3603,9 +3634,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_SAVEPOS
-			descText			@JKMENUS_CLIENT_SAVEPOS_DESC
-			cvar				"savepos"
+			text				@JKMENUS_CLIENT_LOADPOS
+			descText			@JKMENUS_CLIENT_LOADPOS_DESC
+			cvar				"loadpos"
 			rect				220 161 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3636,9 +3667,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_LOADPOS
-			descText			@JKMENUS_CLIENT_LOADPOS_DESC
-			cvar				"loadpos"
+			text				@JKMENUS_CLIENT_PRIVATEROOM
+			descText			@JKMENUS_CLIENT_PRIVATEROOM_DESC
+			cvar				"engage_private"
 			rect				220 181 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3669,9 +3700,9 @@
 			name				none
 			group				clientBindsControls
 			type				ITEM_TYPE_BIND
-			text				@JKMENUS_CLIENT_DUALSABER
-			descText			@JKMENUS_CLIENT_DUALSABER_DESC
-			cvar				"dualsaber"
+			text				@JKMENUS_CLIENT_FORCEDUEL
+			descText			@JKMENUS_CLIENT_FORCEDUEL_DESC
+			cvar				"engage_force"
 			rect				220 201 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3703,8 +3734,10 @@
 		{
 			name				none
 			group				clientBindsControls
-			type				ITEM_TYPE_TEXT
-			text				@JKMENUS_CLIENT_DUALSABER_COLOR
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_GUNSDUEL
+			descText			@JKMENUS_CLIENT_GUNSDUEL_DESC
+			cvar				"engage_guns"
 			rect				220 221 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			151
@@ -3713,76 +3746,92 @@
 			textscale			0.8        
 			forecolor			1 1 1 1
 			visible				0
-		}
-		
-		// Dual saber color
-		itemDef 
-		{
-			name				effectfield
-			group				clientBindsControls
-			style				0	
-			ownerdraw			UI_EFFECTS_2
-			rect				375 225 100 13
-			textalign			ITEM_ALIGN_LEFT		
-			textalignx			0
-			textaligny			0
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
-			forecolor			1 1 1 1
-			border				0
-			bordercolor			0 0 0 0
-			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
-			hideCvar 
-			{ 
-				"5" ; 
-				"6" ; 
-				"7" ; 
-				"8" ;
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
 			}
-			visible				1     
-			action 
-			{ 
-				play			"sound/interface/button1.wav" ;
-			}
+
 			mouseEnter 
 			{ 
-				setitemcolor effectentry forecolor 1 1 1 1
-			} 
+				show			highlight10
+				show			highlightSvAllow
+				show			keybindstatus
+			}
 			mouseExit 
 			{ 
-				setitemcolor effectentry forecolor 0.65 0.65 1 1
+				hide			highlight10
+				hide			highlightSvAllow
+				hide			keybindstatus
 			}
 		}
 		
-		// Dual saber color
 		itemDef 
 		{
-			name				effectfield2
+			name				none
 			group				clientBindsControls
-			style				0	
-			ownerdraw			UI_EFFECTS_2
-			rect				375 225 100 13
-			textalign			ITEM_ALIGN_LEFT		
-			textalignx			0
-			textaligny			0
-			outlinecolor		1 .5 .5 .5
-			backcolor			0 0 0 0
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_PISTOLDUEL
+			descText			@JKMENUS_CLIENT_PISTOLDUEL_DESC
+			cvar				"engage_pistol"
+			rect				220 241 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
 			forecolor			1 1 1 1
-			border				0
-			bordercolor			0 0 0 0
-			descText			@MENUS2_CHOOSE_THE_COLOR_OF_YOUR
-			showCvar 
-			{ 
-				"5" ; 
-				"6" ; 
-				"7" ; 
-				"8" ;
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
 			}
-			visible				1 
-			decoration
-			action 
+
+			mouseEnter 
 			{ 
-				play			"sound/interface/button1.wav" ;
+				show			highlight11
+				show			highlightSvAllow
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight11
+				hide			highlightSvAllow
+				hide			keybindstatus
+			}
+		}
+		
+		itemDef 
+		{
+			name				none
+			group				clientBindsControls
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_CLIENT_KICKDUEL
+			descText			@JKMENUS_CLIENT_KICKDUEL_DESC
+			cvar				"engage_kick"
+			rect				220 261 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			151
+			textaligny			-2
+			font				2
+			textscale			0.8        
+			forecolor			1 1 1 1
+			visible				0
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			highlight12
+				show			highlightSvAllow
+				show			keybindstatus
+			}
+			mouseExit 
+			{ 
+				hide			highlight12
+				hide			highlightSvAllow
+				hide			keybindstatus
 			}
 		}
 

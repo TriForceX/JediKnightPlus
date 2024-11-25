@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 246
+COUNT 253
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -851,20 +851,20 @@ INDEX 93
 INDEX 94
 {
    REFERENCE CLIENT_FORCEDUEL
-   TEXT_LANGUAGE1 "Force duel challenge:"
-   TEXT_LANGUAGE2 "Défi duel de force:"
-   TEXT_LANGUAGE3 "Duell der force:"
-   TEXT_LANGUAGE6 "Force duel challenge:"
-   TEXT_LANGUAGE8 "Desafío duelo de fuerza:"
+   TEXT_LANGUAGE1 "Full force duel:"
+   TEXT_LANGUAGE2 "Duel de force:"
+   TEXT_LANGUAGE3 "Duell der machtkräfte:"
+   TEXT_LANGUAGE6 "Full force duel:"
+   TEXT_LANGUAGE8 "Duelo de fuerza:"
 }
 INDEX 95
 {
    REFERENCE CLIENT_FORCEDUEL_DESC
-   TEXT_LANGUAGE1 "Engage a force duel challenge."
-   TEXT_LANGUAGE2 "Participez à un défi de duel de force."
-   TEXT_LANGUAGE3 "Nimm an einem duell de force teil."
-   TEXT_LANGUAGE6 "Engage a force duel challenge."
-   TEXT_LANGUAGE8 "Participa en un desafío de duelo de fuerza."
+   TEXT_LANGUAGE1 "Challenge a duel with force powers only."
+   TEXT_LANGUAGE2 "Défier en duel uniquement avec les pouvoirs de la force."
+   TEXT_LANGUAGE3 "Fordere ein duell nur mit machtkräften heraus."
+   TEXT_LANGUAGE6 "Challenge a duel with force powers only."
+   TEXT_LANGUAGE8 "Desafía a un duelo sólo con poderes de la fuerza."
 }
 INDEX 96
 {
@@ -1300,30 +1300,30 @@ INDEX 143
 }
 INDEX 144
 {
-   REFERENCE CLIENT_DUALSABER
-   TEXT_LANGUAGE1 "Dual lightsaber:"
-   TEXT_LANGUAGE2 "Sabre laser double:"
-   TEXT_LANGUAGE3 "Doppellichtschwert:"
-   TEXT_LANGUAGE6 "Dual lightsaber:"
-   TEXT_LANGUAGE8 "Sáble láser doble:"
+   REFERENCE MOD_DUALSABER
+   TEXT_LANGUAGE1 "Dual saber"
+   TEXT_LANGUAGE2 "Sabre double"
+   TEXT_LANGUAGE3 "Doppelsäbel"
+   TEXT_LANGUAGE6 "Dual saber"
+   TEXT_LANGUAGE8 "Sáble doble"
 }
 INDEX 145
 {
-   REFERENCE CLIENT_DUALSABER_COLOR
-   TEXT_LANGUAGE1 "2nd lightsaber color:"
-   TEXT_LANGUAGE2 "Couleur 2e sabre laser:"
-   TEXT_LANGUAGE3 "2. Lichtschwertfarbe:"
-   TEXT_LANGUAGE6 "2nd lightsaber color:"
-   TEXT_LANGUAGE8 "Color 2do sáble láser:"
+   REFERENCE CLIENT_DUALSABER
+   TEXT_LANGUAGE1 "Dual saber:"
+   TEXT_LANGUAGE2 "Sabre double:"
+   TEXT_LANGUAGE3 "Doppelsäbel:"
+   TEXT_LANGUAGE6 "Dual saber:"
+   TEXT_LANGUAGE8 "Sáble doble:"
 }
 INDEX 146
 {
    REFERENCE CLIENT_DUALSABER_DESC
-   TEXT_LANGUAGE1 "Enables dual lightsaber."
-   TEXT_LANGUAGE2 "Activer le double sabre laser."
-   TEXT_LANGUAGE3 "Aktiviert doppellichtschwert."
-   TEXT_LANGUAGE6 "Enables dual lightsaber."
-   TEXT_LANGUAGE8 "Habilita el sáble láser doble."
+   TEXT_LANGUAGE1 "Toggles between single and dual lightsaber."
+   TEXT_LANGUAGE2 "Échange du sabre laser normal au sabre laser double."
+   TEXT_LANGUAGE3 "Schaltet zwischen Einzel- und Doppellichtschwert um."
+   TEXT_LANGUAGE6 "Toggles between single and dual lightsaber."
+   TEXT_LANGUAGE8 "Intercambia entre el sáble láser normal y doble."
 }
 INDEX 147
 {
@@ -2208,6 +2208,69 @@ INDEX 244
    TEXT_LANGUAGE8 "¿Qué hay de nuevo?"
 }
 INDEX 245
+{
+   REFERENCE MOD_SINGLESABER
+   TEXT_LANGUAGE1 "Single saber"
+   TEXT_LANGUAGE2 "Sabre normal"
+   TEXT_LANGUAGE3 "Einzel Säbel"
+   TEXT_LANGUAGE6 "Single saber"
+   TEXT_LANGUAGE8 "Sáble normal"
+}
+INDEX 246
+{
+   REFERENCE CLIENT_GUNSDUEL
+   TEXT_LANGUAGE1 "Guns duel:"
+   TEXT_LANGUAGE2 "Duel de armes:"
+   TEXT_LANGUAGE3 "Duell der waffen:"
+   TEXT_LANGUAGE6 "Guns duel:"
+   TEXT_LANGUAGE8 "Duelo de armas:"
+}
+INDEX 247
+{
+   REFERENCE CLIENT_GUNSDUEL_DESC
+   TEXT_LANGUAGE1 "Challenge a duel with weapons only."
+   TEXT_LANGUAGE2 "Défier en duel uniquement avec des armes."
+   TEXT_LANGUAGE3 "Duell nur mit waffen herausfordern."
+   TEXT_LANGUAGE6 "Challenge a duel with weapons only."
+   TEXT_LANGUAGE8 "Desafía a un duelo sólo con armas."
+}
+INDEX 248
+{
+   REFERENCE CLIENT_PISTOLDUEL
+   TEXT_LANGUAGE1 "Pistol duel:"
+   TEXT_LANGUAGE2 "Duel de pistolets:"
+   TEXT_LANGUAGE3 "Pistolen duell:"
+   TEXT_LANGUAGE6 "Pistol duel:"
+   TEXT_LANGUAGE8 "Duelo de pistola:"
+}
+INDEX 249
+{
+   REFERENCE CLIENT_PISTOLDUEL_DESC
+   TEXT_LANGUAGE1 "Challenge a duel with pistol only."
+   TEXT_LANGUAGE2 "Défier en duel uniquement avec un pistolet."
+   TEXT_LANGUAGE3 "Fordere ein duell nur mit pistole heraus."
+   TEXT_LANGUAGE6 "Challenge a duel with pistol only."
+   TEXT_LANGUAGE8 "Desafía a un duelo sólo con pistola."
+}
+INDEX 250
+{
+   REFERENCE CLIENT_KICKDUEL
+   TEXT_LANGUAGE1 "Kicks duel:"
+   TEXT_LANGUAGE2 "Duel de coups de pied:"
+   TEXT_LANGUAGE3 "Duell der tritte:"
+   TEXT_LANGUAGE6 "Kicks duel:"
+   TEXT_LANGUAGE8 "Duelo de patadas:"
+}
+INDEX 251
+{
+   REFERENCE CLIENT_KICKDUEL_DESC
+   TEXT_LANGUAGE1 "Challenge a duel with kicks only."
+   TEXT_LANGUAGE2 "Défier un duel uniquement avec des coups de pied."
+   TEXT_LANGUAGE3 "Duell nur mit tritten herausfordern."
+   TEXT_LANGUAGE6 "Challenge a duel with kicks only."
+   TEXT_LANGUAGE8 "Desafía a un duelo sólo con patadas."
+}
+INDEX 252
 {
    REFERENCE MOD_CHANGELOG
    TEXT_LANGUAGE1 "# 0.21.0\n- Fix some messages in chat color mode\n- Fix chatbox alignment during intermission\n- Fix player label alignment and menu options\n- Fix bots god mode enabled with other options\n- Add dual saber and idle damage new options\n- Add new player tweaks and bots options\n- Add more test cmds and entities checks\n- Add saber box and updated team overlay\n- Add restored loading icons and other tweaks\n- Add proper alignment and fixes for vote display\n- Add drop bacta option for players who die with it\n- Add proper checks for bots health & armor control\n- Add changelog pop-up and misc menus tweaks\n\n# 0.20.4\n- Add default cfg values and extra check on connect msg\n- Add missing check for weapons on game type changes\n- Add optional check for force usage in chair model\n- Merge updates from mvsdk\n- Add cvar to customize connect message\n- Add map list command and updated call votes\n- Add more checks for chair model usage\n- Add checks for player opacity and other tweaks\n- Add chat color command and its menu option\n\n# 0.20.3\n- Fix client connect check messages\n- Fix saber clash flare bug and more refactor\n- Add private duel to spawn activate sabers cvar\n- Add secure checks for config file reading\n- Add more patches for proper debugging\n- Add map on launch cmd to keep the map cycle\n\nMore info at https://jkplus.github.io"

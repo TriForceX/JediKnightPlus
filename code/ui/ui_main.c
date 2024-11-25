@@ -1800,7 +1800,7 @@ static void UI_DrawEffects(rectDef_t *rect, float scale, vec4_t color, qboolean 
 	if (dualsaber) {
 		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiSaberColorShaders[uiInfo.effectsColor2]);
 	} else {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiSaberColorShaders[uiInfo.effectsColor]);
+		UI_DrawHandlePic( rect->x, rect->y, (jkcvar_ui_dualSaber.integer ? -rect->w : rect->w), rect->h, uiSaberColorShaders[uiInfo.effectsColor]); // Tr!Force: [DualSaber] Rotate saber pic for 2 blades
 	}
 }
 
@@ -1965,7 +1965,7 @@ void UpdateForceStatus()
 		{
 			Menu_ShowItemByName(menu, "jedinonjedi", qtrue);
 		}
-		if ( allForceDisabled == qtrue || (trueJedi && uiJediNonJedi == FORCE_NONJEDI) )
+		if ( allForceDisabled == qtrue || (trueJedi && uiJediNonJedi == FORCE_NONJEDI) || (serverGameType == GT_HOLOCRON || serverGameType == GT_JEDIMASTER) ) // Tr!Force: [UIGeneral] Force menus hide not only by cvarTest
 		{	// No force stuff
 			Menu_ShowItemByName(menu, "noforce", qtrue);
 			Menu_ShowItemByName(menu, "yesforce", qfalse);

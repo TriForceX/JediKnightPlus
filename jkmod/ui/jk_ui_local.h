@@ -83,6 +83,8 @@ Cvar registration
 
 extern vmCvar_t						jkcvar_ui_motdString;
 extern vmCvar_t						jkcvar_ui_currentTeam;
+extern vmCvar_t						jkcvar_ui_dualSaber;
+extern vmCvar_t						jkcvar_ui_forceSide;
 extern vmCvar_t						jkcvar_ui_votePoll;
 extern vmCvar_t						jkcvar_ui_votePause;
 extern vmCvar_t						jkcvar_ui_emoteToggle;

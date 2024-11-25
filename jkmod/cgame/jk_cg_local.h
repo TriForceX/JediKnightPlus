@@ -298,6 +298,7 @@ extern vmCvar_t						jkcvar_cg_loadingIcons;
 extern vmCvar_t						jkcvar_cg_jetPackIdle;
 
 extern vmCvar_t						jkcvar_cg_ui_currentTeam;
+extern vmCvar_t						jkcvar_cg_ui_dualSaber;
 extern vmCvar_t						jkcvar_cg_test1;
 extern vmCvar_t						jkcvar_cg_test2;
 
@@ -329,6 +330,7 @@ char		*JKMod_CG_StrTok(char *str, const char *delim);
 void		JKMod_CG_EmoteCamera(void);
 void		JKMod_CG_StrafeHelperToggle(void);
 void		JKMod_CG_SpeedoMeterToggle(void);
+void		JKMod_CG_DualSaberToggle(void);
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);

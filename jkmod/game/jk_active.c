@@ -108,11 +108,18 @@ void JKMod_ClientTimerActions(gentity_t *ent, int msec)
 		if (client->jkmodClient.chatTime >= jkcvar_chatProtectTime.integer)
 		{
 			client->jkmodClient.chatTime = jkcvar_chatProtectTime.integer;
-
-			if (!(client->ps.stats[JK_PLAYER] & JK_CHAT_IN)) client->ps.stats[JK_PLAYER] |= JK_CHAT_IN;
+			// In chat check
+			if (!(client->ps.stats[JK_PLAYER] & JK_CHAT_IN))  {
+				// Turn off just once
+				if (!client->ps.saberHolstered && !JKMod_EmoteIn(ent, -1)) Cmd_ToggleSaber_f(ent);
+				// Add flag
+				client->ps.stats[JK_PLAYER] |= JK_CHAT_IN;
+			}
+			// Passthrough check
 			if (!(client->ps.eFlags & JK_PASS_THROUGH) && jkcvar_chatProtect.integer == 3) client->ps.eFlags |= JK_PASS_THROUGH;
+			// Invulnerability check
 			if (!client->pers.jkmodPers.invulnerability) client->pers.jkmodPers.invulnerability = qtrue;
-			if (!client->ps.saberHolstered && !JKMod_EmoteIn(ent, -1)) Cmd_ToggleSaber_f(ent);
+			
 		}
 		else
 		{

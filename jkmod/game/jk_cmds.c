@@ -1594,6 +1594,11 @@ static void JKMod_Cmd_JetPack(gentity_t* ent)
 		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack in a private duel\n\"");
 		return;
 	}
+	else if (g_trueJedi.integer && ent->client->ps.weapon == WP_SABER)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"You can't use jetpack as Jedi\n\"");
+		return;
+	}
 	else
 	{
 		// Disable
@@ -1657,27 +1662,24 @@ Dual saber command function
 */
 static void JKMod_Cmd_DualSaber(gentity_t* ent)
 {
+	qboolean inSpec = ent->client->sess.sessionTeam == TEAM_SPECTATOR;
+
 	if (!jkcvar_dualSaber.integer)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"This command is disabled by the server\n\"");
 		return;
 	}
-	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
-	{
-		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber in spectator\n\"");
-		return;
-	}
-	else if (level.jkmodLocals.pauseTime > level.time)
+	else if (!inSpec && level.jkmodLocals.pauseTime > level.time)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber during pause mode\n\"");
 		return;
 	}
-	else if (ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
+	else if (!inSpec && ent->client->ps.stats[JK_DIMENSION] == DIMENSION_RACE)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't use dual saber in this dimension\n\"");
 		return;
 	}
-	else if (ent->client->ps.weapon != WP_SABER)
+	else if (!inSpec && ent->client->ps.weapon != WP_SABER)
 	{
 		trap_SendServerCommand(ent - g_entities, "print \"You can't enable it using this weapon\n\"");
 		return;
@@ -1706,16 +1708,19 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 		{
 			return;
 		}
-		if (ent->client && ent->client->ps.weaponTime < 1)
+		if (ent->client && (ent->client->ps.weaponTime < 1 || inSpec))
 		{
 			// Disable
-			if (ent->client->ps.dualBlade)
+			if (ent->client->pers.jkmodPers.dualSaber)
 			{
 				ent->client->ps.dualBlade = qfalse;
 				ent->client->pers.jkmodPers.dualSaber = qfalse;
 				ent->client->ps.saberHolstered = qtrue;
 				ent->client->ps.weaponTime = 400;
-				G_Sound(ent, CHAN_AUTO, saberOffSound);
+				if (!inSpec) {
+					G_Sound(ent, CHAN_AUTO, saberOffSound);
+					trap_SendServerCommand(ent - g_entities, "cp \"" NEWLINES "Dual Saber Disabled\"");
+				}
 				return;
 			}
 			// Enable
@@ -1724,7 +1729,10 @@ static void JKMod_Cmd_DualSaber(gentity_t* ent)
 				ent->client->ps.dualBlade = qtrue;
 				ent->client->pers.jkmodPers.dualSaber = qtrue;
 				ent->client->ps.saberHolstered = qfalse;
-				G_Sound(ent, CHAN_AUTO, saberOnSound);
+				if (!inSpec) {
+					G_Sound(ent, CHAN_AUTO, saberOnSound);
+					trap_SendServerCommand(ent - g_entities, "cp \"" NEWLINES "Dual Saber Enabled\"");
+				}
 				return;
 			}
 		}

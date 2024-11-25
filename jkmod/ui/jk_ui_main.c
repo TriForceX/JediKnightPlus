@@ -8,6 +8,9 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 
 #include "../../code/ui/ui_local.h"	// Original header
 
+// Extern stuff
+extern int uiForceSide;
+
 /*
 =====================================================================
 Emotes table list
@@ -217,6 +220,8 @@ Cvar table list
 
 vmCvar_t	jkcvar_ui_motdString;
 vmCvar_t	jkcvar_ui_currentTeam;
+vmCvar_t	jkcvar_ui_dualSaber;
+vmCvar_t	jkcvar_ui_forceSide;
 vmCvar_t	jkcvar_ui_votePoll;
 vmCvar_t	jkcvar_ui_votePause;
 vmCvar_t	jkcvar_ui_emoteToggle;
@@ -237,6 +242,8 @@ static jkmod_ui_cvar_table_t JKModUIcvarTable[] = {
 	
 	{ &jkcvar_ui_motdString,		"jk_ui_motdString",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_currentTeam,		"jk_ui_currentTeam",		"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_dualSaber,			"jk_ui_dualSaber",			"0",	CVAR_ARCHIVE | CVAR_ROM },
+	{ &jkcvar_ui_forceSide,			"jk_ui_forceSide",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_votePoll,			"jk_ui_votePoll",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_votePause,			"jk_ui_votePause",			"0",	CVAR_ARCHIVE | CVAR_ROM },
 	{ &jkcvar_ui_emoteToggle,		"jk_ui_emoteToggle",		"0",	CVAR_ARCHIVE | CVAR_ROM },
@@ -282,6 +289,7 @@ void JKMod_UI_RegisterCvars(void)
 	// Set default cvars values
 	trap_Cvar_Set("jk_ui_votePoll", "");
 	trap_Cvar_Set("jk_ui_votePause", "0");
+	trap_Cvar_Set("jk_ui_forceSide", va("%i", uiForceSide));
 	trap_Cvar_Set("jk_ui_emoteToggle", JKModUIemotesTable[0].cmd);
 	trap_Cvar_Set("jk_ui_dimensionToggle", JKModUIdimensionsTable[0].cmd);
 	trap_Cvar_Set("jk_ui_motdString", Info_ValueForKey(cstate.updateInfoString, "motd"));
@@ -360,6 +368,11 @@ void JKMod_UI_UpdateCvars(void)
 	if (jkcvar_ui_screenClear.integer != JKModUIcvar_r_clear) {
 		JKModUIcvar_r_clear = jkcvar_ui_screenClear.integer;
 		trap_Cvar_Set("r_clear", va("%i", jkcvar_ui_screenClear.integer));
+	}
+
+	// Check force side
+	if (jkcvar_ui_forceSide.integer != uiForceSide) {
+		trap_Cvar_Set("jk_ui_forceSide", va("%i", uiForceSide));
 	}
 	
 	// Launch original update cvars function
