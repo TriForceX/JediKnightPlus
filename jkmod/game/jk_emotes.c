@@ -90,7 +90,7 @@ int JKModEmotesDataSize = ARRAY_LEN(JKModEmotesData);
 Emote command check
 =====================================================================
 */
-int JKMod_EmoteCheck(char *cmd, gentity_t *ent)
+int JKMod_EmoteCheck(char *cmd, gentity_t *ent, qboolean showAlert)
 {
 	int	i;
 
@@ -104,6 +104,7 @@ int JKMod_EmoteCheck(char *cmd, gentity_t *ent)
 	}
 
 	// It does not seem to be picked up, ignore it
+	if (showAlert) trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", cmd));
 	return 0;
 }
 

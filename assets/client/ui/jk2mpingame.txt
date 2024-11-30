@@ -11,6 +11,7 @@
 	loadMenu { "ui/jk2mp/ingame_jkmod.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_client.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_emotes.menu" }
+	loadMenu { "ui/jk2mp/ingame_jkmod_emotes_bind.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_info.menu" }
 	loadMenu { "ui/jk2mp/ingame_jkmod_servers_filter.menu" }

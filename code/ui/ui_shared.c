@@ -4130,6 +4130,67 @@ static bind_t g_bindings[] =
 	{"savepos",				-1,				-1,		-1,	-1},
 	{"loadpos",				-1,				-1,		-1,	-1},
 	{"dualsaber",			-1,				-1,		-1,	-1},
+	// Tr!Force: [Emotes] Add command for menus
+	{ "emote bar",			-1,				-1,		-1,	-1},
+	{ "emote beg",			-1,				-1,		-1,	-1},
+	{ "emote buried",		-1,				-1,		-1,	-1},
+	{ "emote cocky",		-1,				-1,		-1,	-1},
+	{ "emote comeon",		-1,				-1,		-1,	-1},
+	{ "emote comtalk",		-1,				-1,		-1,	-1},
+	{ "emote convulsion",	-1,				-1,		-1,	-1},
+	{ "emote crossarms",	-1,				-1,		-1,	-1},
+	{ "emote dontkillme",	-1,				-1,		-1,	-1},
+	{ "emote dontknow",		-1,				-1,		-1,	-1},
+	{ "emote dontknow2",	-1,				-1,		-1,	-1},
+	{ "emote explain",		-1,				-1,		-1,	-1},
+	{ "emote explain2",		-1,				-1,		-1,	-1},
+	{ "emote fakedead",		-1,				-1,		-1,	-1},
+	{ "emote fakedead2",	-1,				-1,		-1,	-1},
+	{ "emote falling",		-1,				-1,		-1,	-1},
+	{ "emote flip",			-1,				-1,		-1,	-1},
+	{ "emote getup",		-1,				-1,		-1,	-1},
+	{ "emote greet",		-1,				-1,		-1,	-1},
+	{ "emote handhips",		-1,				-1,		-1,	-1},
+	{ "emote hug",			-1,				-1,		-1,	-1},
+	{ "emote kiss",			-1,				-1,		-1,	-1},
+	{ "emote kneel",		-1,				-1,		-1,	-1},
+	{ "emote laugh",		-1,				-1,		-1,	-1},
+	{ "emote look",			-1,				-1,		-1,	-1},
+	{ "emote look2",		-1,				-1,		-1,	-1},
+	{ "emote nod",			-1,				-1,		-1,	-1},
+	{ "emote point",		-1,				-1,		-1,	-1},
+	{ "emote point2",		-1,				-1,		-1,	-1},
+	{ "emote posing",		-1,				-1,		-1,	-1},
+	{ "emote punch",		-1,				-1,		-1,	-1},
+	{ "emote reverence",	-1,				-1,		-1,	-1},
+	{ "emote sit",			-1,				-1,		-1,	-1},
+	{ "emote sit2",			-1,				-1,		-1,	-1},
+	{ "emote sit3",			-1,				-1,		-1,	-1},
+	{ "emote shake",		-1,				-1,		-1,	-1},
+	{ "emote super",		-1,				-1,		-1,	-1},
+	{ "emote super2",		-1,				-1,		-1,	-1},
+	{ "emote surrender",	-1,				-1,		-1,	-1},
+	{ "emote spin",			-1,				-1,		-1,	-1},
+	{ "emote spin2",		-1,				-1,		-1,	-1},
+	{ "emote spin3",		-1,				-1,		-1,	-1},
+	{ "emote spin4",		-1,				-1,		-1,	-1},
+	{ "emote taunt3",		-1,				-1,		-1,	-1},
+	{ "emote taunt4",		-1,				-1,		-1,	-1},
+	{ "emote think",		-1,				-1,		-1,	-1},
+	{ "emote threaten",		-1,				-1,		-1,	-1},
+	{ "emote thumbsup",		-1,				-1,		-1,	-1},
+	{ "emote thumbsdown",	-1,				-1,		-1,	-1},
+	{ "emote tossback",		-1,				-1,		-1,	-1},
+	{ "emote tossover",		-1,				-1,		-1,	-1},
+	{ "emote tossup",		-1,				-1,		-1,	-1},
+	{ "emote type",			-1,				-1,		-1,	-1},
+	{ "emote type2",		-1,				-1,		-1,	-1},
+	{ "emote victory",		-1,				-1,		-1,	-1},
+	{ "emote victory2",		-1,				-1,		-1,	-1},
+	{ "emote waiting",		-1,				-1,		-1,	-1},
+	{ "emote watchout",		-1,				-1,		-1,	-1},
+	{ "emote writing",		-1,				-1,		-1,	-1},
+	{ "emote writing2",		-1,				-1,		-1,	-1},
 };
 
 
@@ -4358,7 +4419,15 @@ void Item_Bind_Paint(itemDef_t *item)
 	if (item->text) 
 	{
 		Item_Text_Paint(item);
-		BindingFromName(item->cvar);
+
+		// Tr!Force: [Emotes] Get current menu bind
+		if (!Q_stricmpn(item->cvar, "emote ", 6)) {
+			char jkmod_emote[MAX_STRING_CHARS];
+			DC->getCVarString("jk_ui_emoteToggle", jkmod_emote, sizeof(jkmod_emote));
+			BindingFromName(va("emote %s", jkmod_emote));
+		} else {
+			BindingFromName(item->cvar);
+		}
 
 		// If the text runs past the limit bring the scale down until it fits.
 		textScale = item->textscale;
@@ -4429,7 +4498,14 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 				return qtrue;
 	
 			case A_BACKSPACE:
-				id = BindingIDFromName(item->cvar);
+				// Tr!Force: [Emotes] Get current menu bind
+				if (!Q_stricmpn(item->cvar, "emote ", 6)) {
+					char jkmod_emote[MAX_STRING_CHARS];
+					DC->getCVarString("jk_ui_emoteToggle", jkmod_emote, sizeof(jkmod_emote));
+					id = BindingIDFromName(va("emote %s", jkmod_emote));
+				} else {
+					id = BindingIDFromName(item->cvar);
+				}
 				if (id != -1) 
 				{
 					if ( g_bindings[id].bind1 != -1 )
@@ -4473,8 +4549,14 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 		}
 	}
 
-
-	id = BindingIDFromName(item->cvar);
+	// Tr!Force: [Emotes] Get current menu bind
+	if (!Q_stricmpn(item->cvar, "emote ", 6)) {
+		char jkmod_emote[MAX_STRING_CHARS];
+		DC->getCVarString("jk_ui_emoteToggle", jkmod_emote, sizeof(jkmod_emote));
+		id = BindingIDFromName(va("emote %s", jkmod_emote));
+	} else {
+		id = BindingIDFromName(item->cvar);
+	}
 
 	if (id != -1) {
 		if (key == -1) {

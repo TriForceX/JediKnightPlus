@@ -1,0 +1,100 @@
+//----------------------------------------------------------------------------------------------
+// INGAME EMOTES BIND
+//----------------------------------------------------------------------------------------------
+{
+	menuDef
+	{
+		name                    "ingame_jkmod_emotes_bind"
+		fullscreen              0
+		rect                    230 210 200 80
+		focusColor              1 1 1 1
+		style                   1
+		border                  1
+		onClose
+		{ 
+			close				ingame_jkmod_emotes ;
+		}
+		
+		//---------------------------------------------
+		//	BACKGROUND
+		//---------------------------------------------
+		
+		// Overall window backdrop
+		itemDef 
+		{
+			name				background_pic
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				-10 -10 200 80
+			background			"gfx/menus/menu_box_ingame"
+			forecolor			1 1 1 1
+			visible				1
+			decoration
+		}
+
+
+		//---------------------------------------------
+		//	TEXT
+		//---------------------------------------------
+		
+		itemDef
+		{
+			text				@JKMENUS_MOD_OPTIONS_EMOTES_BIND
+			type				ITEM_TYPE_TEXT
+			textalign           ITEM_ALIGN_CENTER
+			textalignx			88
+			rect				0 0 178 40
+			font				2
+			textscale			.7
+			backcolor			0 0 0 0
+			forecolor			1 1 1 1
+			visible				1
+			autowrapped
+		}
+		
+		//---------------------------------------------
+		//	BUTTONS
+		//---------------------------------------------
+		
+		itemDef 
+		{
+			name				emoteBindHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 40 178 25
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				emoteBindButton
+			type				ITEM_TYPE_BIND
+			text				@JKMENUS_MOD_OPTIONS_EMOTES_KEY
+			cvar				"emote cvar"
+			rect				0 40 178 25
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			79 // w/2 - 10
+			textaligny			2
+			font				2
+			textscale			0.7        
+			forecolor			.65 .65 1 1
+			visible				1
+			action
+			{
+				play			"sound/interface/button1.wav" ; 
+			}
+
+			mouseEnter 
+			{ 
+				show			emoteBindHover
+			}
+			mouseExit 
+			{ 
+				hide			emoteBindHover
+			}
+		}
+		
+	}
+}

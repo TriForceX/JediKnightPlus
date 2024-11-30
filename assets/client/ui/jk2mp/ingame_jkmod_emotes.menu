@@ -307,7 +307,7 @@
 			name				emotePlayHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				9 393 72 25
+			rect				0 393 55 25
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -318,12 +318,12 @@
 			name				emotePlayButton
 			text 				@JKMENUS_MOD_PLAY
 			type				ITEM_TYPE_BUTTON
-			textscale			.80
+			textscale			.70
 			style				WINDOW_STYLE_FILLED
-			rect				9 390 72 32
+			rect				0 390 55 32
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			36 // w/2 center
-			textaligny			4
+			textalignx			27.5 // w/2 center
+			textaligny			5
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
@@ -346,7 +346,7 @@
 			name				emoteStopHover
 			group				none
 			style				WINDOW_STYLE_SHADER
-			rect				82 393 72 25
+			rect				55 393 55 25
 			background			"gfx/menus/menu_buttonback" // Frame around button
 			forecolor			1 1 1 1
 			decoration
@@ -357,12 +357,12 @@
 			name				emoteStopButton
 			text 				@JKMENUS_MOD_STOP
 			type				ITEM_TYPE_BUTTON
-			textscale			.80
+			textscale			.70
 			style				WINDOW_STYLE_FILLED
-			rect				82 390 72 32
+			rect				55 390 55 32
 			textalign			ITEM_ALIGN_CENTER
-			textalignx			36 // w/2 center
-			textaligny			4
+			textalignx			27.5 // w/2 center
+			textaligny			5
 			forecolor			.65 .65 1 1
 			visible				1 
 			action 
@@ -377,6 +377,45 @@
 			mouseexit 
 			{ 
 				hide			emoteStopHover
+			}
+		}
+		// Bind button
+		itemDef 
+		{
+			name				emoteBindHover
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				110 393 55 25
+			background			"gfx/menus/menu_buttonback" // Frame around button
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+		itemDef 
+		{
+			name				emoteBindButton
+			text 				@JKMENUS_MOD_BIND
+			type				ITEM_TYPE_BUTTON
+			textscale			.70
+			style				WINDOW_STYLE_FILLED
+			rect				110 390 55 32
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			27.5 // w/2 center
+			textaligny			5
+			forecolor			.65 .65 1 1
+			visible				1 
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ;
+				open			ingame_jkmod_emotes_bind ;
+			}
+			mouseenter 
+			{ 
+				show			emoteBindHover
+			}
+			mouseexit 
+			{ 
+				hide			emoteBindHover
 			}
 		}
 	}

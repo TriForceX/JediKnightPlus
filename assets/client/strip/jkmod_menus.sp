@@ -1,7 +1,7 @@
 VERSION 1
 ID 138
 REFERENCE JKMENUS
-COUNT 253
+COUNT 256
 INDEX 0
 {
    REFERENCE MOD_OPTIONS
@@ -385,7 +385,7 @@ INDEX 42
    REFERENCE CLIENT_SIDE_DEFAULTS
    TEXT_LANGUAGE1 "Reset"
    TEXT_LANGUAGE2 "Réinit."
-   TEXT_LANGUAGE3 "Andere"
+   TEXT_LANGUAGE3 "Zurücksetzen"
    TEXT_LANGUAGE6 "Reset"
    TEXT_LANGUAGE8 "Resetear"
 }
@@ -2271,6 +2271,33 @@ INDEX 251
    TEXT_LANGUAGE8 "Desafía a un duelo sólo con patadas."
 }
 INDEX 252
+{
+   REFERENCE MOD_BIND
+   TEXT_LANGUAGE1 "Bind"
+   TEXT_LANGUAGE2 "Relier"
+   TEXT_LANGUAGE3 "Binden"
+   TEXT_LANGUAGE6 "Bind"
+   TEXT_LANGUAGE8 "Asignar"
+}
+INDEX 253
+{
+   REFERENCE MOD_OPTIONS_EMOTES_BIND
+   TEXT_LANGUAGE1 "Enter a key, press BACKSPACE to clear, or ESC to exit"
+   TEXT_LANGUAGE2 "Saisir la clé, effacer avec CLEAR, ou fermer avec ESC"
+   TEXT_LANGUAGE3 "Neue taste eingeben, BACKSPACE löscht, ESC beendet"
+   TEXT_LANGUAGE6 "Enter a key, press BACKSPACE to clear, or ESC to exit"
+   TEXT_LANGUAGE8 "Ingresa la tecla, limpia con BORRAR, o cierra con ESC"
+}
+INDEX 254
+{
+   REFERENCE MOD_OPTIONS_EMOTES_KEY
+   TEXT_LANGUAGE1 "Assign to:"
+   TEXT_LANGUAGE2 "Assigner à:"
+   TEXT_LANGUAGE3 "Zuweisen an:"
+   TEXT_LANGUAGE6 "Assign to:"
+   TEXT_LANGUAGE8 "Asignar a:"
+}
+INDEX 255
 {
    REFERENCE MOD_CHANGELOG
    TEXT_LANGUAGE1 "# 0.21.0\n- Fix some messages in chat color mode\n- Fix chatbox alignment during intermission\n- Fix player label alignment and menu options\n- Fix bots god mode enabled with other options\n- Add dual saber and idle damage new options\n- Add new player tweaks and bots options\n- Add more test cmds and entities checks\n- Add saber box and updated team overlay\n- Add restored loading icons and other tweaks\n- Add proper alignment and fixes for vote display\n- Add drop bacta option for players who die with it\n- Add proper checks for bots health & armor control\n- Add changelog pop-up and misc menus tweaks\n\n# 0.20.4\n- Add default cfg values and extra check on connect msg\n- Add missing check for weapons on game type changes\n- Add optional check for force usage in chair model\n- Merge updates from mvsdk\n- Add cvar to customize connect message\n- Add map list command and updated call votes\n- Add more checks for chair model usage\n- Add checks for player opacity and other tweaks\n- Add chat color command and its menu option\n\n# 0.20.3\n- Fix client connect check messages\n- Fix saber clash flare bug and more refactor\n- Add private duel to spawn activate sabers cvar\n- Add secure checks for config file reading\n- Add more patches for proper debugging\n- Add map on launch cmd to keep the map cycle\n\nMore info at https://jkplus.github.io"

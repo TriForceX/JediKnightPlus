@@ -1229,7 +1229,7 @@ void JKMod_ChairModelUse(gentity_t *self, gentity_t *other, gentity_t *activator
 		JKMod_ChairModelDisable(activator);
 	}
 	// Enable emote
-	else if (JKMod_EmoteCheck(JKModEmotesData[emote].cmd, activator))
+	else if (JKMod_EmoteCheck(JKModEmotesData[emote].cmd, activator, qfalse))
 	{
 		vec3_t	startspot, endspot, angles;
 		int		crouch = (activator->client->ps.pm_flags & PMF_DUCKED) ? abs(DEFAULT_MINS_2) : 0;

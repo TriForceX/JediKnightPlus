@@ -594,7 +594,7 @@ void		JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t mi
 int			JKMod_DimensionEntitiesInBox(const vec3_t mins, const vec3_t maxs, int *entityList, int maxcount, int entityNum);
 
 // jk_emotes.c
-int			JKMod_EmoteCheck(char *cmd, gentity_t *ent);
+int			JKMod_EmoteCheck(char *cmd, gentity_t *ent, qboolean showAlert);
 int			JKMod_EmoteIn(gentity_t *ent, int type);
 int			JKMod_EmoteOut(gentity_t* ent);
 int			JKMod_EmotePlay(gentity_t *ent, int emoteIndex);

@@ -21,6 +21,7 @@ extern int JKModEmotesDataSize;
 extern int G_ClientNumberFromName(const char* name);
 extern int G_ClientNumberFromStrippedName(const char* name);
 extern qboolean G_OtherPlayersDueling(void);
+extern stringID_table_t animTable [MAX_ANIMATIONS+1];
 
 /*
 =====================================================================
@@ -95,7 +96,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3dimension          !dimension     speedometer     effect\n"
 			"^3dualsaber          !status                        model\n"
 			"^3emote              !savepos                       shake\n"
-			"^3ignore             !loadpos\n"
+			"^3ignore             !loadpos                       animation\n"
 			"^3dropflag           !savespawn\n"
 			"^3callvote           !resetspawn\n"
 			"^3whois              !whois\n"
@@ -640,8 +641,8 @@ void JKMod_EngageDuel(gentity_t *ent, int type)
 
 			// Custom start emote
 			if (VALIDCVAR(jkcvar_duelStartEmote.string) && 
-				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, ent) && 
-				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, challenged))
+				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, ent, qfalse) && 
+				JKMod_EmoteCheck(jkcvar_duelStartEmote.string, challenged, qfalse))
 			{
 				duelEmote = qtrue;
 			}
@@ -1646,12 +1647,10 @@ static void JKMod_Cmd_Emote(gentity_t* ent)
 			ent->client->ps.forceDodgeAnim = 0;
 			ent->client->ps.forceHandExtendTime = 0;
 		}
-		return;
 	}
-	else if (!JKMod_EmoteCheck(arg1, ent))
+	else
 	{
-		trap_SendServerCommand(ent - g_entities, va("print \"Invalid emote ^3%s\n\"", arg1));
-		return;
+		JKMod_EmoteCheck(arg1, ent, qtrue);
 	}
 }
 
@@ -3026,6 +3025,61 @@ static void JKMod_Cmd_ScreenShake(gentity_t* ent)
 
 /*
 =====================================================================
+Animation play cmd
+=====================================================================
+*/
+static void JKMod_Cmd_AnimationPlay(gentity_t* ent)
+{
+	char arg2[MAX_TOKEN_CHARS];
+	char arg3[MAX_TOKEN_CHARS];
+	char arg4[MAX_TOKEN_CHARS];
+	qboolean isNumber = qfalse;
+	qboolean animValid = qfalse;
+	int i, animNumber;
+
+	if (trap_Argc() < 5)
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Usage: test animation <name/number> <torso/legs> <seconds>\n\"");
+		return;
+	}
+
+	trap_Argv(2, arg2, sizeof(arg2));
+	trap_Argv(3, arg3, sizeof(arg3));
+	trap_Argv(4, arg4, sizeof(arg4));
+
+	if (JKMod_ValidNumber(arg2)) isNumber = qtrue;
+
+	for(i = 0; i < MAX_ANIMATIONS; i++)
+	{	
+		if (animTable[i].name != NULL && (isNumber ? atoi(arg2) == i : !Q_stricmp(animTable[i].name, arg2)))
+		{
+			if (bgGlobalAnimations[i].firstFrame <= 0 && bgGlobalAnimations[i].numFrames <=0) {
+				animValid = qfalse;
+				break;
+			} else {
+				animValid = qtrue;
+				animNumber = i;
+				break;
+			}
+		}
+	}
+
+	if (animValid)
+	{
+		ent->client->ps.forceHandExtend = !Q_stricmp(arg3, "torso") ? HANDEXTEND_TAUNT : HANDEXTEND_DODGE;
+		ent->client->ps.forceDodgeAnim = animNumber;
+		ent->client->ps.forceHandExtendTime = level.time + (atoi(arg4)*1000);
+		trap_SendServerCommand(ent - g_entities, va("print \"Playing animation %s (#%i)\n\"", animTable[animNumber].name, animNumber));
+	}
+	else
+	{
+		trap_SendServerCommand(ent - g_entities, "print \"Invalid animation or empty reference\n\"");
+		return;
+	}
+}
+
+/*
+=====================================================================
 Custom client commands
 =====================================================================
 */
@@ -3080,6 +3134,7 @@ jkmod_commands_t JKModCommandsTest[] =
 	{ "effect",					JKMod_Cmd_PlayEffect },
 	{ "model",					JKMod_Cmd_TempModel },
 	{ "shake",					JKMod_Cmd_ScreenShake },
+	{ "animation",				JKMod_Cmd_AnimationPlay },
 };
 
 static const size_t JKModCommandsTestSize = ARRAY_LEN(JKModCommandsTest);
