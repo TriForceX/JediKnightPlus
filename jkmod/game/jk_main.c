@@ -78,6 +78,7 @@ vmCvar_t	jkcvar_dropBacta;
 vmCvar_t	jkcvar_dropFlag;
 vmCvar_t	jkcvar_dropFlagTime;
 vmCvar_t	jkcvar_damagePlums;
+vmCvar_t	jkcvar_teamPassThrough;
 vmCvar_t	jkcvar_customHats;
 
 vmCvar_t	jkcvar_emotesEnabled;
@@ -178,6 +179,7 @@ static jkmod_cvar_table_t JKModCvarTable[] =
 	{ &jkcvar_dropFlag,				"jk_dropFlag",				"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_dropFlagTime,			"jk_dropFlagTime",			"15",					NULL,						CVAR_ARCHIVE,						0, qtrue },
 	{ &jkcvar_damagePlums,			"jk_damagePlums",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
+	{ &jkcvar_teamPassThrough,		"jk_teamPassThrough",		"0",					JKMod_CVU_teamPassThrough,	CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 	{ &jkcvar_customHats,			"jk_customHats",			"0",					NULL,						CVAR_ARCHIVE | CVAR_SERVERINFO,		0, qtrue },
 
 	{ &jkcvar_emotesEnabled,		"jk_emotesEnabled",			"0",					NULL,						CVAR_ARCHIVE,						0, qtrue },
@@ -450,6 +452,27 @@ void JKMod_CVU_altDimension(void)
 						JKMod_DimensionSet(ent, level.jkmodLocals.dimensionBase);
 					}
 				}
+			}
+		}
+	}
+}
+
+// Update team passthrough cvar
+void JKMod_CVU_teamPassThrough(void)
+{
+	gentity_t *ent;
+	int i;
+
+	if (g_gametype.integer >= GT_TEAM)
+	{
+		for (i = 0, ent = g_entities; i < MAX_CLIENTS; ++i, ++ent)
+		{
+			if (ent && ent->client && ent->client->pers.connected != CON_DISCONNECTED)
+			{
+				// Check dimension
+				ent->jkmodEnt.dimensionNumber = jkcvar_teamPassThrough.integer ? ent->client->sess.sessionTeam : level.jkmodLocals.dimensionBase;
+				// Check stuck
+				if (JKMod_OthersInBox(ent)) JKMod_AntiStuckBox(ent);
 			}
 		}
 	}

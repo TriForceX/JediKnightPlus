@@ -623,6 +623,14 @@ void BaseJK2_G_RegisterCvars( void ) { // Tr!Force: [BaseJK2] Register cvars fun
 		return;
 	}
 
+	// Tr!Force: [Dimensions] Disable dimensions if jedivmerc is active
+	if (jkcvar_altDimension.integer != 0 && g_trueJedi.integer && !HasSetSaberOnly()) 
+	{
+		trap_Cvar_Set("jk_altDimension", "0");
+		trap_Cvar_Set("jk_altDimensionBase", "0");
+		G_Printf(S_COLOR_YELLOW "WARNING: Dimensions has been disabled (JediVMerc Uncompatible).\n");
+	}
+
 	if ( strcmp(g_gamename.string, GAMEVERSION) || strcmp(g_gamedate.string, gamedate) ) {
 		// Inform the host about the unexpected change
 		G_Printf( S_COLOR_YELLOW "WARNING: The gamename or gamedate changed after mapchange.\n"

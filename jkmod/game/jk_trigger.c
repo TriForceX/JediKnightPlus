@@ -123,10 +123,10 @@ void JKMod_TimerStop(gentity_t *ent, gentity_t *other, gentity_t *activator)
 	}
 
 	// Play sound
-	if (timeLast < timeBest) G_Sound(activator, CHAN_AUTO, G_SoundIndex("sound/movers/sec_panel_pass"));
+	if (timeLast <= timeBest) G_Sound(activator, CHAN_AUTO, G_SoundIndex("sound/movers/sec_panel_pass"));
 
 	// Show info
-	trap_SendServerCommand(activator - g_entities, "cp \"Race timer finished!\"");
+	trap_SendServerCommand(activator - g_entities, "cp \"Race timer finished!\nSay ^2!respawn ^7to back to start\"");
 
 	// Update timers
 	activator->client->pers.jkmodPers.raceLastTime = timeLast;

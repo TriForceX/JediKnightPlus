@@ -22,6 +22,7 @@ extern int G_ClientNumberFromName(const char* name);
 extern int G_ClientNumberFromStrippedName(const char* name);
 extern qboolean G_OtherPlayersDueling(void);
 extern stringID_table_t animTable [MAX_ANIMATIONS+1];
+extern void Cmd_Kill_f(gentity_t *ent);
 
 /*
 =====================================================================
@@ -99,13 +100,13 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^3ignore             !loadpos                       animation\n"
 			"^3dropflag           !savespawn\n"
 			"^3callvote           !resetspawn\n"
-			"^3whois              !whois\n"
-			"^3taunt2             !where\n"
-			"^3savepos            !racetime\n"
-			"^3loadpos            !pausetime\n"
-			"^3savespawn          !teleports\n"
-			"^3resetspawn         !bot\n"
-			"^3jetpack\n"
+			"^3whois              !respawn\n"
+			"^3taunt2             !whois\n"
+			"^3savepos            !where\n"
+			"^3loadpos            !time\n"
+			"^3savespawn          !pause\n"
+			"^3resetspawn         !teleports\n"
+			"^3jetpack            !bot\n"
 			"^3maplist\n"
 			"^3chatcolor\n"
 			"^3engage_force\n"
@@ -2606,7 +2607,7 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 		JKMod_Cmd_ToggleConsole(ent);
 	}
 	// Show pause time
-	else if (Q_stricmp(p, "!pausetime") == 0)
+	else if (Q_stricmp(p, "!pause") == 0)
 	{
 		if (level.jkmodLocals.pauseTime > level.time) {
 			trap_SendServerCommand(ent - g_entities, va("cp \"Remaining time:\n%s\"", JKMod_MsToWord(((level.jkmodLocals.pauseTime - level.time) + 1), qfalse)));
@@ -2824,8 +2825,13 @@ void JKMod_Say(gentity_t *ent, int mode, qboolean arg0)
 	{
 		if (!JKMod_playerStatus(ent, (jkcvar_chatAutoStatus.integer ? qfalse : qtrue))) return;
 	}
+	// Respawn
+	else if (Q_stricmp(p, "!respawn") == 0)
+	{
+		Cmd_Kill_f(ent); return;
+	}
 	// Race time
-	else if (Q_stricmp(p, "!racetime") == 0)
+	else if (Q_stricmp(p, "!time") == 0)
 	{
 		int timeLast = ent->client->pers.jkmodPers.raceLastTime;
 		int timeBest = ent->client->pers.jkmodPers.raceBestTime;

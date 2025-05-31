@@ -456,6 +456,7 @@ extern	vmCvar_t					jkcvar_dropBacta;
 extern	vmCvar_t					jkcvar_dropFlag;
 extern	vmCvar_t					jkcvar_dropFlagTime;
 extern	vmCvar_t					jkcvar_damagePlums;
+extern	vmCvar_t					jkcvar_teamPassThrough;
 extern	vmCvar_t					jkcvar_customHats;
 
 extern	vmCvar_t					jkcvar_emotesEnabled;
@@ -610,6 +611,7 @@ void		JKMod_CVU_gameType(void);
 void		JKMod_CVU_teleportChat(void);
 void		JKMod_CVU_gamePlay(void);
 void		JKMod_CVU_altDimension(void);
+void		JKMod_CVU_teamPassThrough(void);
 void		JKMod_CVU_jetPack(void);
 void		JKMod_CVU_playerTweaks(void);
 void		JKMod_CVU_pluginRequired(void);

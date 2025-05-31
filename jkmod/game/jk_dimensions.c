@@ -43,14 +43,17 @@ Dimension index from table
 */
 int JKMod_DimensionIndex(unsigned dimension)
 {
-	int	i;
-
-	for (i = 0; i < JKModDimensionDataSize; i++)
-	{
-		if (JKModDimensionData[i].dimension == dimension) return i;
-	}
-	
-	return 0;
+	switch (dimension)
+    {
+        case DIMENSION_FREE: return 0;
+        case DIMENSION_GUNS: return 1;
+        case DIMENSION_RACE: return 2;
+        case DIMENSION_SABER: return 3;
+        case DIMENSION_FORCE: return 4;
+        case DIMENSION_INSTA: return 5;
+        case DIMENSION_CHEAT: return 6;
+        default: return 0;
+    }
 }
 
 /*
@@ -649,12 +652,12 @@ void JKMod_DimensionOwnerCheck(int owner, gentity_t *ent)
 	ent->jkmodEnt.dimensionOwner = owner;
 
 	if (ent - g_entities < MAX_CLIENTS) {
-		ent->jkmodEnt.dimensionNumber = level.jkmodLocals.dimensionBase;
+		ent->jkmodEnt.dimensionNumber = jkcvar_teamPassThrough.integer && g_gametype.integer >= GT_TEAM ? ent->client->sess.sessionTeam : level.jkmodLocals.dimensionBase;
 	} else {
 		ent->jkmodEnt.dimensionNumber = DIMENSION_ALL;
 	}
 
-	if (mvapi)
+	if (mvapi && g_gametype.integer < GT_TEAM)
 	{
 		uint8_t *snapshotIgnore = mv_entities[ent->s.number].snapshotIgnore;
 		int	i;
@@ -804,7 +807,7 @@ void JKMod_DimensionSet(gentity_t *ent, unsigned dimension)
 		ent->jkmodEnt.dimensionNumberOld = dimension;
 		ent->jkmodEnt.dimensionPrevious = ent->client->ps.stats[JK_DIMENSION];
 
-		if (mvapi)
+		if (mvapi && g_gametype.integer < GT_TEAM)
 		{
 			for (i = 0; i < level.num_entities; i++) {
 				if (g_entities[i].inuse) {
@@ -848,11 +851,20 @@ qboolean JKMod_DimensionCollide(gentity_t *ent1, gentity_t *ent2)
 {
 	int owner1 = ent1->jkmodEnt.dimensionOwner;
 	int owner2 = ent2->jkmodEnt.dimensionOwner;
+
+	if (jkcvar_teamPassThrough.integer && g_gametype.integer >= GT_TEAM)
+	{
+		return !JKMod_DimensionCheck(owner1, owner2);
+	}
+
+	if (JKModDimensionData[JKMod_DimensionIndex(ent1->jkmodEnt.dimensionNumber)].passthrough && 
+		JKModDimensionData[JKMod_DimensionIndex(ent2->jkmodEnt.dimensionNumber)].passthrough)
+	{
+		return !JKMod_DimensionCheck(owner1, owner2);
+	}
 	
-	if ((JKModDimensionData[JKMod_DimensionIndex(ent1->jkmodEnt.dimensionNumber)].passthrough && 
-		JKModDimensionData[JKMod_DimensionIndex(ent2->jkmodEnt.dimensionNumber)].passthrough) || 
-		((ent1 && ent1->client && level.jkmodLocals.privateRoom[ent1->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH]) && 
-		(ent2 && ent2->client && level.jkmodLocals.privateRoom[ent2->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH])))
+	if ((ent1->client && level.jkmodLocals.privateRoom[ent1->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH]) && 
+		(ent2->client && level.jkmodLocals.privateRoom[ent2->client->pers.jkmodPers.privateRoom[PRIVATE_NUM]][PRIVATE_PASSTHROUGH]))
 	{
 		return !JKMod_DimensionCheck(owner1, owner2);
 	}
@@ -887,7 +899,7 @@ void JKMod_DimensionTrace(trace_t *results, const vec3_t start, const vec3_t min
 		}
 	}
 
-	if (results->startsolid && start != end) 
+	if (results->startsolid && !VectorCompare(start, end)) 
 	{
 		trace_t tw;
 

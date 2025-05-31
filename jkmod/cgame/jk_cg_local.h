@@ -64,6 +64,7 @@ typedef struct
 	int			jetPack;				// Tr!Force: [JetPack] Main cvar
 	int			dualSaber;				// Tr!Force: [DualSaber] Main cvar
 	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
+	int			teamPassThrough;		// Tr!Force: [TeamPassThrough] Main cvar
 	int			duelDistance;			// Tr!Force: [DuelDistance] Main cvar
 	int			pauseTime;				// Tr!Force: [Pause] Server pause time
 	int			gameType;				// Tr!Force: [GameType] Current or next game type
