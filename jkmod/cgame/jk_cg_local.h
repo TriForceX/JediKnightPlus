@@ -172,6 +172,14 @@ typedef enum
 
 } jkmod_movement_style_t;
 
+// Dimension data
+typedef struct
+{
+	unsigned		dimension;
+	char			*name;
+
+} jkmod_cg_dimension_data_t;
+
 // Bit value data
 typedef struct 
 { 
@@ -354,6 +362,7 @@ void		JKMod_CG_DrawInventory(int y);
 float		JKMod_CG_DrawPowerupIcons(int y);
 void		JKMod_CG_DrawJetPackFuel(void);
 void		JKMod_CG_DrawHealthBar(float chX, float chY, float chW, float chH, int type);
+char* JKMod_CG_GetDimensionString(unsigned dimension);
 void		JKMod_CG_DrawDimensionString(void);
 void		JKMod_CG_DrawRaceTimer(void);
 void		JKMod_CG_DrawPauseString(void);

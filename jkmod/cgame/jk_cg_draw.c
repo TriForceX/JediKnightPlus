@@ -917,34 +917,46 @@ void JKMod_CG_DrawHealthBar(float chX, float chY, float chW, float chH, int type
 
 /*
 =====================================================================
+Get Dimension strings
+=====================================================================
+*/
+char* JKMod_CG_GetDimensionString(unsigned dimension)
+{
+	switch (dimension)
+	{
+		// case DIMENSION_FREE: return "Normal";
+		case DIMENSION_GUNS: return "Guns Arena";
+		case DIMENSION_RACE: return "Race Defrag";
+		case DIMENSION_SABER: return "Saber Only";
+		case DIMENSION_FORCE: return "Full Force";
+		case DIMENSION_INSTA: return "Insta Kill";
+		case DIMENSION_CHEAT: return "Cheats Mode";
+		default: return NULL;
+	}
+}
+
+/*
+=====================================================================
 Draw dimension indicator
 =====================================================================
 */
 void JKMod_CG_DrawDimensionString(void)
 {
-	const char *dimensionStr = NULL;
+	char *dimensionStr = NULL;
 
 	if (trap_Key_GetCatcher() & KEYCATCH_UI) return;
 	if (cg.scoreBoardShowing) return;
 	if (JKMod_CG_IconHUDActive()) return;
 	if (cg.snap->ps.pm_type == PM_SPECTATOR) return;
 
-	switch (cg.snap->ps.stats[JK_DIMENSION]) 
-	{
-		case DIMENSION_DUEL: dimensionStr = "[Private Duel]"; break;
-		case DIMENSION_GUNS: dimensionStr = "[Guns Arena]"; break;
-		case DIMENSION_RACE: dimensionStr = "[Race Defrag]"; break;
-		case DIMENSION_SABER: dimensionStr = "[Saber Only]"; break;
-		case DIMENSION_FORCE: dimensionStr = "[Full Force]"; break;
-		case DIMENSION_INSTA: dimensionStr = "[Insta Kill]"; break;
-		case DIMENSION_CHEAT: dimensionStr = "[Cheats Mode]"; break;
-		case DIMENSION_PRIVATE: dimensionStr = "[Private Room]"; break;
-	}
+	dimensionStr = JKMod_CG_GetDimensionString(cg.snap->ps.stats[JK_DIMENSION]);
 
 	if (dimensionStr) {
 		if (cg_hudFiles.integer) {
-			CG_Text_Paint(85, cgs.screenHeight - 20, 0.7, colorTable[CT_LTORANGE], dimensionStr, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
+			CG_Text_Paint(85, cgs.screenHeight - 28, 0.5, colorTable[CT_LTORANGE], "Dimension", 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
+			CG_Text_Paint(90, cgs.screenHeight - 20, 0.7, colorTable[CT_LTORANGE], dimensionStr, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 		} else {
+			UI_DrawScaledProportionalString(101, cgs.screenHeight - 28, "Dimension", UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.4);
 			UI_DrawScaledProportionalString(101, cgs.screenHeight - 23, dimensionStr, UI_LEFT | UI_DROPSHADOW, colorTable[CT_LTORANGE], 0.7);
 		}
 	}

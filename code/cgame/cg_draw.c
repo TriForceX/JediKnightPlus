@@ -3491,7 +3491,13 @@ static void CG_DrawSpectator(void)
 	}
 	else if ( !jkmod_chatbox ) // Tr!Force: [ChatBox] Don't show text
 	{
+		char *dimensionStr = JKMod_CG_GetDimensionString(cg.snap->ps.stats[JK_DIMENSION]);
+
 		CG_Text_Paint ( 0.5f * cgs.screenWidth - CG_Text_Width ( s, 1.0f, 3 ) / 2, cgs.screenHeight-60, 1.0f, colorWhite, s, 0, 0, 0, 3 );
+
+		if (dimensionStr) {
+			UI_DrawScaledProportionalString(0.5f * cgs.screenWidth, cgs.screenHeight - 74, dimensionStr, UI_CENTER, colorWhite, 0.6);
+		}
 	}
 
 	if ( !jkmod_chatbox ) // Tr!Force: [ChatBox] Don't show text

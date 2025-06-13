@@ -501,7 +501,7 @@ qboolean JKMod_DimensionChange(gentity_t *ent, char *dimension, char *say)
 		trap_SendServerCommand(ent - g_entities, "print \"Dimensions are disabled by the server\n\"");
 		return qfalse;
 	}
-	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+	else if (ent->client->sess.sessionTeam == TEAM_SPECTATOR && ent->client->sess.spectatorState == SPECTATOR_FOLLOW)
 	{
 		trap_SendServerCommand(ent - g_entities, "cp \"Join the game first before switch dimension\"");
 		return qfalse;

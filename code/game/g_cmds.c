@@ -860,6 +860,8 @@ to free floating spectator mode
 =================
 */
 void StopFollowing( gentity_t *ent ) {
+	vec3_t	viewAngles;
+	VectorCopy(ent->client->ps.viewangles, viewAngles); // Tr!Force: [BaseJK] Workaround
 	ent->client->ps.persistant[ PERS_TEAM ] = TEAM_SPECTATOR;	
 	ent->client->sess.sessionTeam = TEAM_SPECTATOR;	
 	ent->client->sess.spectatorState = SPECTATOR_FREE;
@@ -872,6 +874,7 @@ void StopFollowing( gentity_t *ent ) {
 	ent->client->ps.duelInProgress = qfalse; 
 	ent->client->ps.zoomMode = 0;
 	memset(ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups));
+	SetClientViewAngle(ent, viewAngles);
 
 	// Tr!Force: [DualSaber] Check spectators
 	ent->client->pers.jkmodPers.dualSaber = ent->client->ps.dualBlade = ent->client->sess.sessionTeam == TEAM_SPECTATOR ? ent->client->pers.jkmodPers.dualSaber : qfalse;
