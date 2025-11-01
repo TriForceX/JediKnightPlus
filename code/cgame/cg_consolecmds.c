@@ -456,7 +456,8 @@ static consoleCommand_t	commands[] = {
 	{ "emotecamera", JKMod_CG_EmoteCamera },			// Tr!Force: [Emotes] Set emote camera
 	{ "strafehelper", JKMod_CG_StrafeHelperToggle },	// Tr!Force: [StrafeHelper] Toggle command
 	{ "speedometer", JKMod_CG_SpeedoMeterToggle },		// Tr!Force: [SpeedoMeter] Toggle command
-	{ "dualsaber", JKMod_CG_DualSaberToggle }			// Tr!Force: [DualSaber] Toggle command
+	{ "dualsaber", JKMod_CG_DualSaberToggle },			// Tr!Force: [DualSaber] Toggle command
+	{ "updatehats", JKMod_CG_UpdateCustomHats }			// Tr!Force: [Hats] Reload hats commands
 };
 
 

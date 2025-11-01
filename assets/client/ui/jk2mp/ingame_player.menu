@@ -21,12 +21,14 @@
 		{ 
 			uiScript			update "ui_GetName" ;
 			uiScript			updateForceStatus ;
+			uiScript			JKMod_hatsUpdate ;
 			hide				highlights ;
 		}
 		onClose 
 		{ 
 			uiScript			update "ui_SetName" ;
 			uiScript			updateForceStatus ;
+			uiScript			JKMod_hatsUpdate ;
 			hide				highlights ;
 		}
 
@@ -113,20 +115,9 @@
 			descText			@JKMENUS_CLIENT_CUSTOMHATS_DESC
 			cvar				"jk_cg_customHats"
 			cvarFloatList
-			{
-				@MENUS0_NO  	0
-				"Santa"  		1
-				"Pumpkin"  		2
-				"Cap"  			3
-				"Cowboy"  		4
-				"Cringe"  		5
-				"Sombrero"  	6
-				"Gentleman"  	7
-				"Pirate"  		8
-				"Probe"  		9
-				"Droid"  		10
-				"Ysalimari"  	11
-			}
+            {
+                @MENUS0_NO      0
+            }
 			visible				1
 			action 
 			{ 

@@ -1794,7 +1794,7 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
   Text_Paint(rect->x, rect->y, scale, finalColor, text, 0, 0, textStyle, iMenuFont);
 }
 
-static void UI_DrawEffects(rectDef_t *rect, float scale, vec4_t color, qboolean dualsaber) 
+static void UI_DrawEffects(rectDef_t *rect, float scale, vec4_t color, qboolean dualsaber) // Tr!Force: [DualSaber] Extra draw parameter
 {
 	// Tr!Force: [DualSaber] Blade color menu
 	if (dualsaber) {
@@ -3011,10 +3011,10 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
 		UI_DrawForceStars(&rect, scale, color, textStyle, findex, drawRank, 0, NUM_FORCE_POWER_LEVELS-1);
 		break;
     case UI_EFFECTS:
-      UI_DrawEffects(&rect, scale, color, qfalse);
+      UI_DrawEffects(&rect, scale, color, qfalse); // Tr!Force: [DualSaber] Extra draw parameter
       break;
 	case UI_EFFECTS_2:
-      UI_DrawEffects(&rect, scale, color, qtrue);
+      UI_DrawEffects(&rect, scale, color, qtrue); // Tr!Force: [DualSaber] Extra draw parameter
       break;
     case UI_PLAYERMODEL:
       //UI_DrawPlayerModel(&rect);
@@ -3332,7 +3332,7 @@ static qboolean UI_Handicap_HandleKey(int flags, float *special, int key) {
   return qfalse;
 }
 
-static qboolean UI_Effects_HandleKey(int flags, float *special, int key, qboolean dualsaber) {
+static qboolean UI_Effects_HandleKey(int flags, float *special, int key, qboolean dualsaber) { // Tr!Force: [DualSaber] Extra draw parameter
 	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER) {
 		
 		if ( !UI_TrueJediEnabled() )
@@ -3837,10 +3837,10 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
 		return UI_ForcePowerRank_HandleKey(flags, special, key, uiForcePowersRank[findex], 0, NUM_FORCE_POWER_LEVELS-1, ownerDraw);
 		break;
     case UI_EFFECTS:
-      return UI_Effects_HandleKey(flags, special, key, qfalse);
+      return UI_Effects_HandleKey(flags, special, key, qfalse); // Tr!Force: [DualSaber] Extra draw parameter
       break;
 	case UI_EFFECTS_2:
-      return UI_Effects_HandleKey(flags, special, key, qtrue);
+      return UI_Effects_HandleKey(flags, special, key, qtrue); // Tr!Force: [DualSaber] Extra draw parameter
       break;
     case UI_CLANNAME:
       return UI_ClanName_HandleKey(flags, special, key);

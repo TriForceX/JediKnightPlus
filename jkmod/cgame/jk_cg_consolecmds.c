@@ -216,3 +216,19 @@ void JKMod_CG_DualSaberToggle(void)
 		trap_Cvar_Set("jk_ui_dualSaber", va("%i", jkcvar_cg_ui_dualSaber.integer ? 0 : 1));
 	}
 }
+
+/*
+=====================================================================
+Custom hats update
+=====================================================================
+*/
+void JKMod_CG_UpdateCustomHats(void)
+{
+	// Allow updates if available
+	if (cgs.jkmodCGS.customHats)
+	{
+		JKMod_CG_LoadCustomHats();
+		trap_SendConsoleCommand("jk_ui_cmd_updateHats\n");
+		CG_Printf("Updated %i hats (%i fixes)\n", cgs.jkmodCGS.customHatsNum, cgs.jkmodCGS.customHatsNumFix);
+	}
+}

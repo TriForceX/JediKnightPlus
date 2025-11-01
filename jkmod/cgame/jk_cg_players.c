@@ -43,50 +43,35 @@ void JKMod_CG_Player(centity_t *cent)
 	}
 
 	// Render custom hats models
-	if (cgs.jkmodCGS.customHats)
-	{
-		qhandle_t	jkmod_hatFile = 0;
-		vec4_t		jkmod_hatDetails = { -0.3, 0, -2, 1 };
+	if (cgs.jkmodCGS.customHats || (cent->currentState.number == cg.predictedPlayerState.clientNum)) {
+		int hatIndex = cgs.clientinfo[cent->currentState.number].jkmod_hat;
 
-		switch (cgs.clientinfo[cent->currentState.number].jkmod_hat) 
-		{
-			case 1: jkmod_hatFile = cgs.jkmodMedia.hatSanta; break;
-			case 2: jkmod_hatFile = cgs.jkmodMedia.hatPumpkin; break;
-			case 3: jkmod_hatFile = cgs.jkmodMedia.hatCap; break;
-			case 4: jkmod_hatFile = cgs.jkmodMedia.hatCowboy; break;
-			case 5: jkmod_hatFile = cgs.jkmodMedia.hatCringe; break;
-			case 6: jkmod_hatFile = cgs.jkmodMedia.hatSombrero; break;
-			case 7: jkmod_hatFile = cgs.jkmodMedia.hatGentleman; break;
-			case 8: jkmod_hatFile = cgs.jkmodMedia.hatPirate; break;
-			case 9: jkmod_hatFile = cgs.jkmodMedia.hatProbe; break;
-			case 10: jkmod_hatFile = cgs.jkmodMedia.hatDroid; break;
-			case 11: jkmod_hatFile = cgs.jkmodMedia.hatYsalamiri; break;
+		if (hatIndex > 0 && hatIndex <= cgs.jkmodCGS.customHatsNum) {
+			int fixNum;
+			const char *playerModel = cgs.clientinfo[cent->currentState.number].modelName;
+			jkmod_cg_hats_t *hat = &cgs.jkmodCGS.customHatsDat[hatIndex - 1];
+
+			vec4_t jkmod_hatDetails = { -0.5, 0, -2, 1 }; // Defaults
+
+			if (hat->offsetX != 0) jkmod_hatDetails[0] = hat->offsetX;
+			if (hat->offsetY != 0) jkmod_hatDetails[1] = hat->offsetY;
+			if (hat->offsetZ != 0) jkmod_hatDetails[2] = hat->offsetZ;
+			if (hat->modelSize != 0) jkmod_hatDetails[3] = hat->modelSize;
+
+			// Custom per-model fixes
+			for (fixNum = 0; fixNum < cgs.jkmodCGS.customHatsNumFix; fixNum++) {
+				jkmod_cg_hats_t *fix = &cgs.jkmodCGS.customHatsDatFix[fixNum];
+				if (!Q_stricmp(playerModel, fix->modelPath)) {
+					jkmod_hatDetails[0] += fix->offsetX;
+					jkmod_hatDetails[1] += fix->offsetY;
+					jkmod_hatDetails[2] += fix->offsetZ;
+				}
+			}
+
+			if (hat->modelHandle) {
+				JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, hat->modelHandle, "*head_top", jkmod_hatDetails);
+			}
 		}
-
-		// Special cases
-		if (jkmod_hatFile == cgs.jkmodMedia.hatYsalamiri) {
-			jkmod_hatDetails[2] = -1;
-			jkmod_hatDetails[3] = 0.5;
-		}
-
-		if (jkmod_hatFile == cgs.jkmodMedia.hatDroid) {
-			jkmod_hatDetails[0] = -0.8;
-			jkmod_hatDetails[2] = -1;
-			jkmod_hatDetails[3] = 0.5;
-		}
-
-		if (jkmod_hatFile == cgs.jkmodMedia.hatProbe) {
-			jkmod_hatDetails[2] = 0;
-			jkmod_hatDetails[3] = 0.2;
-		}
-
-		if (!Q_stricmp(cgs.clientinfo[cent->currentState.number].modelName, "desann"))  {
-			jkmod_hatDetails[0] += 2.5;
-			jkmod_hatDetails[2] -= 0.5;
-		}
-
-		// Show hat
-		if (jkmod_hatFile) JKMod_CG_AddModelOnPlayer(cent, cg.time, cgs.gameModels, jkmod_hatFile, "*head_top", jkmod_hatDetails);
 	}
 
 	// Render jetpack model

@@ -17,8 +17,10 @@ Global definitions
 =====================================================================
 */
 
+#define MAX_FILE_LENGTH				32768
 #define MAX_TELEPORTS				256
 #define MAX_TELEPORTLENGTH			11
+#define MAX_HATS					64
 
 /*
 =====================================================================
@@ -65,13 +67,27 @@ typedef struct
 
 } jkmod_ui_reset_client_t;
 
+// Hats data
+typedef struct
+{
+	char		name[MAX_QPATH];
+	char		modelPath[MAX_OSPATH];
+	/*float		modelSize;
+	float		offsetX;
+	float		offsetY;
+	float		offsetZ;*/
+
+} jkmod_ui_hats_t;
+
 // UI info
 typedef struct
 {
-	char		teleportChats[MAX_TELEPORTS][MAX_INFO_STRING];		// Teleport chat strings
-	char		teleportTitle[MAX_TELEPORTS][MAX_TELEPORTLENGTH];	// Teleport chat strings
-	int			teleportCount;										// Teleport chat count
-	qboolean	teleportCheck;										// Teleport chat check
+	char				teleportChats[MAX_TELEPORTS][MAX_INFO_STRING];		// Teleport chat strings
+	char				teleportTitle[MAX_TELEPORTS][MAX_TELEPORTLENGTH];	// Teleport chat strings
+	int					teleportCount;										// Teleport chat count
+	qboolean			teleportCheck;										// Teleport chat check
+	int					customHatsNum;										// Hats count
+	jkmod_ui_hats_t		customHatsDat[MAX_HATS];							// Hats data
 
 } jkmod_ui_info_t;
 
@@ -123,6 +139,8 @@ qboolean	JKMod_UI_ConsoleCommand(char *cmd);
 
 // jk_main.c
 void		JKMod_UI_BuildTeleportList(void);
+void		JKMod_UI_LoadCustomHats(void);
+void		JKMod_UI_BuildHatsList(void);
 const char *JKMod_UI_FeederItemText(float feederID, int index, int column, qhandle_t *handle1, qhandle_t *handle2, qhandle_t *handle3, qhandle_t *handle4, qhandle_t *handle5, qhandle_t *handle6);
 int			JKMod_UI_FeederCount(float feederID);
 qboolean	JKMod_UI_FeederSelection(float feederID, int index);

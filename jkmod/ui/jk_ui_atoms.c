@@ -532,16 +532,22 @@ Console command function
 */
 qboolean JKMod_UI_ConsoleCommand(char *cmd)
 {
-	// Scan command
+	// Macro scan command
 	if (Q_stricmp(cmd, "jk_ui_cmd_macroScan") == 0)
 	{
 		JKMod_UI_MacroScan();
 		return qtrue;
 	}
-	// Enable command
+	// Macro enable command
 	if (Q_stricmp(cmd, "jk_ui_cmd_macroEnable") == 0)
 	{
 		JKMod_UI_MacroEnable();
+		return qtrue;
+	}
+	// Update hats command
+	if (Q_stricmp(cmd, "jk_ui_cmd_updateHats") == 0)
+	{
+		JKMod_UI_LoadCustomHats();
 		return qtrue;
 	}
 

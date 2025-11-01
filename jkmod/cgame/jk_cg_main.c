@@ -206,6 +206,141 @@ void JKMod_CG_UpdateHDFonts(void)
 	}
 }
 
+// Load Custom Hats
+void JKMod_CG_LoadCustomHats(void) 
+{
+	const char *text_p, *token, *peek, *peek2;
+	static char *text;
+	char sfilename[MAX_QPATH];
+	fileHandle_t f;
+	int len;
+
+	// Open the file
+	len = trap_FS_FOpenFile("configs/jkmod_custom_hats.cfg", &f, FS_READ);
+
+	if (len <= 0) {
+		return;
+	}
+	if (len >= MAX_FILE_LENGTH) {
+		Com_Printf(S_COLOR_YELLOW "Custom hats: File %s too long\n", sfilename);
+		trap_FS_FCloseFile(f);
+		return;
+	}
+
+	text = (char*)BG_TempAlloc(len+1);
+	if (!text) {
+		Com_Printf(S_COLOR_YELLOW "Custom hats: Failed to allocate memory for hats config\n");
+		trap_FS_FCloseFile(f);
+		return;
+	}
+
+	trap_FS_Read(text, len, f);
+	text[len] = '\0';
+	trap_FS_FCloseFile(f);
+
+	text_p = text;
+	cgs.jkmodCGS.customHatsNum = 0;
+	cgs.jkmodCGS.customHatsNumFix = 0;
+	memset(cgs.jkmodCGS.customHatsDat, 0, sizeof(cgs.jkmodCGS.customHatsDat));
+	memset(cgs.jkmodCGS.customHatsDatFix, 0, sizeof(cgs.jkmodCGS.customHatsDatFix));
+
+	// Parse file
+	while (1) {
+		jkmod_cg_hats_t *hat = &cgs.jkmodCGS.customHatsDat[cgs.jkmodCGS.customHatsNum];
+
+		token = COM_ParseExt(&text_p, qtrue);
+
+		if (!token[0]) break;
+
+		if (token[0] != '{') {
+			CG_Printf(S_COLOR_YELLOW "Custom hats: Expected '{' in .cfg file\n");
+			break;
+		}
+
+		// Parse fixes
+		peek = COM_ParseExt(&text_p, qtrue);
+
+		if (!peek[0]) break;
+
+		if (peek[0] == '{') {
+			while (cgs.jkmodCGS.customHatsNumFix < MAX_HATS) {
+				jkmod_cg_hats_t *fix = &cgs.jkmodCGS.customHatsDatFix[cgs.jkmodCGS.customHatsNumFix];
+				memset(fix, 0, sizeof(*fix));
+
+				while (1) {
+					token = COM_ParseExt(&text_p, qtrue);
+
+					if (!token[0]) break;
+
+					if (token[0] == '}') break;
+
+					if (!Q_stricmp(token, "model")) {
+						token = COM_ParseExt(&text_p, qfalse);
+						Q_strncpyz(fix->modelPath, token, sizeof(fix->modelPath));
+					}
+					else if (!Q_stricmp(token, "offsetX")) {
+						token = COM_ParseExt(&text_p, qfalse);
+						fix->offsetX = atof(token);
+					}
+					else if (!Q_stricmp(token, "offsetY")) {
+						token = COM_ParseExt(&text_p, qfalse);
+						fix->offsetY = atof(token);
+					}
+					else if (!Q_stricmp(token, "offsetZ")) {
+						token = COM_ParseExt(&text_p, qfalse);
+						fix->offsetZ = atof(token);
+					}
+				}
+
+				cgs.jkmodCGS.customHatsNumFix++;
+				peek2 = COM_ParseExt(&text_p, qtrue);
+
+				if (!peek2[0] || peek2[0] != '{') break;
+			}
+			break;
+		}
+
+		memset(hat, 0, sizeof(*hat));
+
+		// Parse hats
+		while (1) {
+			token = COM_ParseExt(&text_p, qtrue);
+
+			if (!token[0] || token[0] == '}') break;
+
+			if (!Q_stricmp(token, "name")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				Q_strncpyz(hat->name, token, sizeof(hat->name));
+			}
+			else if (!Q_stricmp(token, "model")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				Q_strncpyz(hat->modelPath, token, sizeof(hat->modelPath));
+			}
+			else if (!Q_stricmp(token, "size")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->modelSize = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetX")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetX = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetY")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetY = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetZ")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetZ = atof(token);
+			}
+		}
+
+		hat->modelHandle = trap_R_RegisterModel(hat->modelPath);
+		cgs.jkmodCGS.customHatsNum++;
+	}
+
+	BG_TempFree(len+1);
+}
+
 // Check speedometer cvar
 void JKMod_CG_CVU_sMeterCheck(void)
 {
@@ -370,17 +505,6 @@ void JKMod_CG_RegisterMedia(void)
 	cgs.jkmodMedia.saberModel			= trap_R_RegisterModel("models/weapons2/saber/saber_w.md3");
 	cgs.jkmodMedia.bactaModel			= trap_R_RegisterModel("models/items/bacta.md3");
 	cgs.jkmodMedia.jetpackModel			= trap_R_RegisterModel("models/items/jkmod_jetpack.md3");
-	cgs.jkmodMedia.hatSanta				= trap_R_RegisterModel("models/items/jkmod_hats/santa.md3");
-	cgs.jkmodMedia.hatPumpkin			= trap_R_RegisterModel("models/items/jkmod_hats/pumpkin.md3");
-	cgs.jkmodMedia.hatCap				= trap_R_RegisterModel("models/items/jkmod_hats/cap.md3");
-	cgs.jkmodMedia.hatCowboy			= trap_R_RegisterModel("models/items/jkmod_hats/cowboy.md3");
-	cgs.jkmodMedia.hatCringe			= trap_R_RegisterModel("models/items/jkmod_hats/cringe.md3");
-	cgs.jkmodMedia.hatSombrero			= trap_R_RegisterModel("models/items/jkmod_hats/sombrero.md3");
-	cgs.jkmodMedia.hatGentleman			= trap_R_RegisterModel("models/items/jkmod_hats/gentleman.md3");
-	cgs.jkmodMedia.hatPirate			= trap_R_RegisterModel("models/items/jkmod_hats/pirate.md3");
-	cgs.jkmodMedia.hatProbe				= trap_R_RegisterModel("models/players/droids/probe_droid_head.md3");
-	cgs.jkmodMedia.hatDroid				= trap_R_RegisterModel("models/players/droids/r5d2_head.md3");
-	cgs.jkmodMedia.hatYsalamiri			= trap_R_RegisterModel("models/map_objects/mp/ysalimari.md3");
 
 	cgs.jkmodMedia.hitBox				= trap_R_RegisterShader("jkmod_hitbox");
 	cgs.jkmodMedia.hitBoxNoCull			= trap_R_RegisterShader("jkmod_hitbox_nocull");
@@ -422,6 +546,8 @@ void JKMod_CG_RegisterMedia(void)
 	CG_UpdateConfigString(JK_CS_GAME_TYPE, qtrue);
 
 	JKMod_CG_UpdateHDFonts();
+
+	JKMod_CG_LoadCustomHats();
 	
 	Com_Printf( S_COLOR_CYAN "------------ JK+ Client Complete ------------\n" );
 }

@@ -27,6 +27,8 @@ Global definitions
 #define FPS_FRAMES					4
 #define CHAT_OPACITY				100
 #define DUEL_OPACITY				50
+#define MAX_HATS					64
+#define MAX_FILE_LENGTH				32768
 
 /*
 =====================================================================
@@ -55,24 +57,41 @@ typedef struct jkmod_chatbox_s
 
 } jkmod_chatbox_t;
 
+// Hats data
+typedef struct
+{
+	char		name[MAX_QPATH];
+	char		modelPath[MAX_OSPATH];
+	float		modelSize;
+	float		offsetX;
+	float		offsetY;
+	float		offsetZ;
+	qhandle_t	modelHandle;
+
+} jkmod_cg_hats_t;
+
 // Client game static
 typedef struct
 {
-	int			pluginRequired;			// Tr!Force: [Plugin] Main cvar
-	int			macroScan;				// Tr!Force: [MacroScan] Main cvar
-	int			customHats;				// Tr!Force: [CustomHats] Main cvar
-	int			jetPack;				// Tr!Force: [JetPack] Main cvar
-	int			dualSaber;				// Tr!Force: [DualSaber] Main cvar
-	int			duelPassThrough;		// Tr!Force: [DuelPassThrough] Main cvar
-	int			teamPassThrough;		// Tr!Force: [TeamPassThrough] Main cvar
-	int			duelDistance;			// Tr!Force: [DuelDistance] Main cvar
-	int			pauseTime;				// Tr!Force: [Pause] Server pause time
-	int			gameType;				// Tr!Force: [GameType] Current or next game type
-	char		gameDate[MAX_QPATH];	// Tr!Force: [Plugin] Server game date
-	char		gameName[MAX_OSPATH];	// Tr!Force: [Plugin] Server game name
-	qboolean	pluginCheck;			// Tr!Force: [Plugin] Client plugin check
-	float		clientVersion;			// Tr!Force: [Plugin] Client mod version
-	float		serverVersion;			// Tr!Force: [Plugin] Server mod version
+	int					pluginRequired;				// Tr!Force: [Plugin] Main cvar
+	int					macroScan;					// Tr!Force: [MacroScan] Main cvar
+	int					customHats;					// Tr!Force: [CustomHats] Main cvar
+	int					customHatsNum;				// Tr!Force: [CustomHats] Hats count
+	jkmod_cg_hats_t		customHatsDat[MAX_HATS];	// Tr!Force: [CustomHats] Hats data
+	int					customHatsNumFix;			// Tr!Force: [CustomHats] Hats fix count
+	jkmod_cg_hats_t		customHatsDatFix[MAX_HATS];	// Tr!Force: [CustomHats] Hats fix data
+	int					jetPack;					// Tr!Force: [JetPack] Main cvar
+	int					dualSaber;					// Tr!Force: [DualSaber] Main cvar
+	int					duelPassThrough;			// Tr!Force: [DuelPassThrough] Main cvar
+	int					teamPassThrough;			// Tr!Force: [TeamPassThrough] Main cvar
+	int					duelDistance;				// Tr!Force: [DuelDistance] Main cvar
+	int					pauseTime;					// Tr!Force: [Pause] Server pause time
+	int					gameType;					// Tr!Force: [GameType] Current or next game type
+	char				gameDate[MAX_QPATH];		// Tr!Force: [Plugin] Server game date
+	char				gameName[MAX_OSPATH];		// Tr!Force: [Plugin] Server game name
+	qboolean			pluginCheck;				// Tr!Force: [Plugin] Client plugin check
+	float				clientVersion;				// Tr!Force: [Plugin] Client mod version
+	float				serverVersion;				// Tr!Force: [Plugin] Server mod version
 
 } jkmod_cgs_t;
 
@@ -193,17 +212,6 @@ typedef struct
 	qhandle_t	saberModel;
 	qhandle_t	bactaModel;
 	qhandle_t	jetpackModel;
-	qhandle_t	hatSanta;
-	qhandle_t	hatPumpkin;
-	qhandle_t	hatCap;
-	qhandle_t	hatCowboy;
-	qhandle_t	hatCringe;
-	qhandle_t	hatSombrero;
-	qhandle_t	hatGentleman;
-	qhandle_t	hatPirate;
-	qhandle_t	hatProbe;
-	qhandle_t	hatDroid;
-	qhandle_t	hatYsalamiri;
 	
 	qhandle_t	hitBox;
 	qhandle_t	hitBoxNoCull;
@@ -325,6 +333,7 @@ void		BaseJK2_CG_UpdateCvars(void);
 void		JKMod_CG_RegisterCvars(void);
 void		JKMod_CG_UpdateCvars(void);
 void		JKMod_CG_UpdateHDFonts(void);
+void		JKMod_CG_LoadCustomHats(void);
 void		JKMod_CG_CVU_sMeterCheck(void);
 void		JKMod_CG_CVU_sHelperCheck(void);
 void		JKMod_CG_CVU_sHelperColor(void);
@@ -340,6 +349,7 @@ void		JKMod_CG_EmoteCamera(void);
 void		JKMod_CG_StrafeHelperToggle(void);
 void		JKMod_CG_SpeedoMeterToggle(void);
 void		JKMod_CG_DualSaberToggle(void);
+void		JKMod_CG_UpdateCustomHats(void);
 
 // jk_cg_draw.c
 void		JKMod_CG_Draw2D(void);

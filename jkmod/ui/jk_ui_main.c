@@ -10,6 +10,7 @@ By Tr!Force. Work copyrighted (C) with holder attribution 2005 - 2024
 
 // Extern stuff
 extern int uiForceSide;
+extern itemDef_t* Menu_FindItemByName(menuDef_t* menu, const char* p);
 
 /*
 =====================================================================
@@ -214,6 +215,156 @@ void JKMod_UI_BuildTeleportList(void)
 
 /*
 =====================================================================
+Load hats list
+=====================================================================
+*/
+void JKMod_UI_LoadCustomHats(void) 
+{
+	const char *text_p, *token, *peek;
+	static char text[MAX_FILE_LENGTH];
+	fileHandle_t f;
+	int len;
+	char sfilename[MAX_QPATH];
+
+	// Open the file
+	len = trap_FS_FOpenFile("configs/jkmod_custom_hats.cfg", &f, FS_READ);
+	if (!f) {
+		trap_Print(va(S_COLOR_RED "menu file not found: %s, using default\n", sfilename));
+		return;
+	}
+	if (len >= MAX_FILE_LENGTH) {
+		trap_Print(va(S_COLOR_RED "menu file too large: %s is %i, max allowed is %i", sfilename, len, MAX_MENUFILE));
+		trap_FS_FCloseFile(f);
+		return;
+	}
+
+	trap_FS_Read(text, len, f);
+	text[len] = 0;
+	trap_FS_FCloseFile(f);
+
+	text_p = text;
+	uiInfo.jkmodInfo.customHatsNum = 0;
+	memset(uiInfo.jkmodInfo.customHatsDat, 0, sizeof(uiInfo.jkmodInfo.customHatsDat));
+
+	while (uiInfo.jkmodInfo.customHatsNum < MAX_HATS) {
+		jkmod_ui_hats_t* hat = &uiInfo.jkmodInfo.customHatsDat[uiInfo.jkmodInfo.customHatsNum];
+
+		token = COM_ParseExt(&text_p, qtrue);
+
+		if (!token[0]) break;
+
+		if (token[0] != '{') continue;
+
+		// Skip fixes
+		peek = COM_ParseExt(&text_p, qtrue);
+
+		if (!peek[0]) break;
+
+		if (peek[0] == '{') break;
+
+		// Parse hats
+		text_p -= strlen(peek);
+
+		memset(hat, 0, sizeof(*hat));
+
+		while (1) {
+			token = COM_ParseExt(&text_p, qtrue);
+
+			if (!token[0] || token[0] == '}') break;
+			
+			if (!Q_stricmp(token, "name")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				Q_strncpyz(hat->name, token, sizeof(hat->name));
+			}
+			else if (!Q_stricmp(token, "model")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				Q_strncpyz(hat->modelPath, token, sizeof(hat->modelPath));
+			}
+			/*else if (!Q_stricmp(token, "size")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->modelSize = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetX")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetX = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetY")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetY = atof(token);
+			}
+			else if (!Q_stricmp(token, "offsetZ")) {
+				token = COM_ParseExt(&text_p, qfalse);
+				hat->offsetZ = atof(token);
+			}*/
+		}
+
+		uiInfo.jkmodInfo.customHatsNum++;
+	}
+}
+
+
+/*
+=====================================================================
+Build hats list
+=====================================================================
+*/
+void JKMod_UI_BuildHatsList(void)
+{
+	menuDef_t *menu;
+	itemDef_t *item;
+	multiDef_t *multi;
+	int i, selectedHat;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		Com_Printf("UI hats update: no menu focused\n");
+		return;
+	}
+
+	item = Menu_FindItemByName(menu, "sethat");
+
+	if (!item) {
+		Com_Printf("UI hats update: 'sethat' item not found\n");
+		return;
+	}
+
+	if (item->type != ITEM_TYPE_MULTI) {
+		Com_Printf("UI hats update: 'sethat' is not MULTI type\n");
+		return;
+	}
+
+	multi = (multiDef_t*)item->typeData;
+
+	if (!multi) {
+		Com_Printf("UI hats update: no typeData for sethat\n");
+		return;
+	}
+
+	multi->count = 0;
+	multi->strDef = qfalse;
+	multi->count++;
+
+	for (i = 0; i < uiInfo.jkmodInfo.customHatsNum && multi->count < MAX_MULTI_CVARS; i++) 
+	{
+		const char *hatName = uiInfo.jkmodInfo.customHatsDat[i].name;
+		multi->cvarStr[multi->count] = hatName;
+		multi->cvarList[multi->count] = hatName;
+		multi->cvarValue[multi->count] = (float)(i + 1);
+		multi->count++;
+	}
+
+	selectedHat = (int)trap_Cvar_VariableValue("jk_cg_customHats");
+
+	if (selectedHat < 0 || selectedHat >= multi->count) selectedHat = 0;
+
+	trap_Cvar_Set("jk_cg_customHats", va("%i", selectedHat));
+}
+
+
+
+/*
+=====================================================================
 Cvar table list
 =====================================================================
 */
@@ -297,6 +448,9 @@ void JKMod_UI_RegisterCvars(void)
 	// Build teleport list
 	if (jkcvar_ui_teleportMenu.integer || jkcvar_ui_currentTeam.integer != TEAM_SPECTATOR) JKMod_UI_BuildTeleportList();
 
+	// Build hats list
+	JKMod_UI_LoadCustomHats();
+
 	// Check motd
 	trap_Cvar_VariableStringBuffer("cl_motdString", JKModUIcvar_cl_motdString, sizeof(JKModUIcvar_cl_motdString));
 
@@ -358,6 +512,7 @@ void JKMod_UI_UpdateCvars(void)
 		*JKModUIcvar_cl_motdString = '\0';
 		trap_Cvar_Set("cl_motdString", "");
 	}
+
 	// Restore motd
 	else if (!jkcvar_ui_hideMotd.integer && !VALIDSTRING(JKModUIcvar_cl_motdString) && VALIDCVAR(jkcvar_ui_motdString.string)) {
 		Q_strncpyz(JKModUIcvar_cl_motdString, jkcvar_ui_motdString.string, sizeof(JKModUIcvar_cl_motdString));
@@ -618,6 +773,12 @@ qboolean JKMod_UI_RunMenuScript(const char **args, const char *name)
 	{
 		trap_Cmd_ExecuteText(EXEC_APPEND, "toggleConsole\n");
 		trap_Cmd_ExecuteText(EXEC_APPEND, "echo \"" S_COLOR_GREEN "Press ESC to close the console\"\n");
+		return qtrue;
+	}
+	// Toggle console from menu
+	if (Q_stricmp(name, "JKMod_hatsUpdate") == 0)
+	{
+		JKMod_UI_BuildHatsList();
 		return qtrue;
 	}
 

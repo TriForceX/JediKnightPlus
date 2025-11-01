@@ -95,7 +95,7 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7Console & Binds:   Chat / Say:    Plugin Only:    Testing:\n"
 			"^3motd               !motd          strafehelper    scan\n"
 			"^3dimension          !dimension     speedometer     effect\n"
-			"^3dualsaber          !status                        model\n"
+			"^3dualsaber          !status        updatehats      model\n"
 			"^3emote              !savepos                       shake\n"
 			"^3ignore             !loadpos                       animation\n"
 			"^3dropflag           !savespawn\n"
@@ -214,7 +214,8 @@ static void JKMod_Cmd_HelpInfo(gentity_t *ent)
 			"^7into a public version, just as a legacy.\n"
 			"^5----------\n"
 			"^7Mod Author: ^2Tr!^4For^1ce\n"
-			"^7Mod Website: ^5%s\n\"", JK_LONGNAME, JK_URL));
+			"^7Mod Website: ^5%s\n"
+			"^7Mod Version: ^2%i.%i.%i ^7(Build: %s)\n\"", JK_LONGNAME, JK_URL, JK_MAJOR, JK_MINOR, JK_PATCH, g_gamedate.string));
 
 		if (!Q_stricmp(arg1, "credits"))
 		{
